@@ -11,6 +11,7 @@
 
 
 @interface GLPStanfordTheme : GLPTheme
+
 -(id)init;
 
 @end

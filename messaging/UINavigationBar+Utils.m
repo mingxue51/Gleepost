@@ -9,11 +9,38 @@
 #import "UINavigationBar+Utils.h"
 #import "ShapeFormatterHelper.h"
 #import "AppearanceHelper.h"
+#import "GLPThemeManager.h"
 
 @implementation UINavigationBar (Utils)
 
 
 #pragma mark - Default Navigation bar
+
+/**
+ This method is used only for special buttons that we want custom colour and not the default from theme manager.
+ For now the special button variable will not have any effect.
+ */
+
+- (void)setButton:(GLPButtonType)type specialButton:(GLPSpecialButton)kind withImageName:(NSString *)imageOrTitle withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController
+
+{
+    UIButton *btn= [self generateButtonWithSize:size withSelector:selector andViewController:navController];
+    
+    UIBarButtonItem *barButtonItem = nil;
+    
+    [btn setBackgroundImage:[UIImage imageNamed:imageOrTitle] forState:UIControlStateNormal];
+    
+    barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+
+    if(type == kLeft)
+    {
+        [self addNewButton:barButtonItem withNavigationItem:navController.navigationItem inRightSide:NO];
+    }
+    else if (type == kRight)
+    {
+        [self addNewButton:barButtonItem withNavigationItem:navController.navigationItem inRightSide:YES];
+    }
+}
 
 - (void)setButton:(GLPButtonType)type withImageName:(NSString *)imageOrTitle withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController
 {
@@ -21,18 +48,26 @@
     
     UIBarButtonItem *barButtonItem = nil;
 
-        [btn setBackgroundImage:[UIImage imageNamed:imageOrTitle] forState:UIControlStateNormal];
+    if(type == kLeft)
+    {
+        UIImage *finalImage = [[GLPThemeManager sharedInstance] leftItemColouredImage:[UIImage imageNamed:imageOrTitle]];
 
+        [btn setBackgroundImage:finalImage forState:UIControlStateNormal];
+        
         barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
         
-        if(type == kLeft)
-        {
-            [self addNewButton:barButtonItem withNavigationItem:navController.navigationItem inRightSide:NO];
-        }
-        else if (type == kRight)
-        {
-            [self addNewButton:barButtonItem withNavigationItem:navController.navigationItem inRightSide:YES];
-        }
+        [self addNewButton:barButtonItem withNavigationItem:navController.navigationItem inRightSide:NO];
+    }
+    else if (type == kRight)
+    {
+        UIImage *finalImage = [[GLPThemeManager sharedInstance] rightItemColouredImage:[UIImage imageNamed:imageOrTitle]];
+        
+        [btn setBackgroundImage:finalImage forState:UIControlStateNormal];
+        
+        barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+        
+        [self addNewButton:barButtonItem withNavigationItem:navController.navigationItem inRightSide:YES];
+    }
 }
 
 - (void)setTextButton:(GLPButtonType)type withTitle:(NSString *)title withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController
@@ -144,6 +179,7 @@
  This method is used for navigation bars that have been created from storyboard. NOT the default ones.
  
  @param type the type of the button.
+ @param kind of button to help formatting it.
  @param image name of the image.
  @param size the size of the navigation button.
  @param selector the method to be called.
@@ -151,18 +187,15 @@
  @param navigationItem view controller's navigation item. (Note: Navigation item should be referenced from the storyboard to the navigation VC class, not the one from the default navigation bar.
  
  */
-- (void)setButton:(GLPButtonType)type withImage:(NSString *)image withButtonSize:(CGSize)size withSelector:(SEL)selector withTarget:(UIViewController *)viewController andNavigationItem:(UINavigationItem *)navigationItem
+- (void)setButton:(GLPButtonType)type specialButton:(GLPSpecialButton)kind withImage:(NSString *)image withButtonSize:(CGSize)size withSelector:(SEL)selector withTarget:(UIViewController *)viewController andNavigationItem:(UINavigationItem *)navigationItem
 {
     
-    UIBarButtonItem *fixedSpace = [self generateFixedSpaceBarButton];
+//    UIBarButtonItem *fixedSpace = [self generateFixedSpaceBarButton];
     
     UIButton *btn= [self generateButtonWithSize:size withSelector:selector andViewController:viewController];
     
     UIBarButtonItem *barButtonItem = nil;
     
-    [btn setBackgroundImage:[UIImage imageNamed:image] forState:UIControlStateNormal];
-    
-    barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
     
 //    if(type == kLeft)
 //    {
@@ -178,10 +211,38 @@
     
     if(type == kLeft)
     {
+        UIImage *finalImage = nil;
+        
+        if(kind == kNoSpecial || kind == kSettings)
+        {
+            finalImage = [[GLPThemeManager sharedInstance] leftItemColouredImage:[UIImage imageNamed:image]];
+
+        }
+        else if (kind == kQuit)
+        {
+            finalImage = [UIImage imageNamed:image];
+        }
+        
+        [btn setBackgroundImage:finalImage forState:UIControlStateNormal];
+        barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
         [self addNewButton:barButtonItem withNavigationItem:navigationItem inRightSide:NO];
     }
     else if (type == kRight)
     {
+        UIImage *finalImage = nil;
+        
+        if(kind == kNoSpecial || kind == kSettings)
+        {
+            finalImage = [[GLPThemeManager sharedInstance] rightItemColouredImage:[UIImage imageNamed:image]];
+        }
+        else if (kind == kQuit)
+        {
+            finalImage = [UIImage imageNamed:image];
+
+        }
+        
+        [btn setBackgroundImage:finalImage forState:UIControlStateNormal];
+        barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
         [self addNewButton:barButtonItem withNavigationItem:navigationItem inRightSide:YES];
     }
 }

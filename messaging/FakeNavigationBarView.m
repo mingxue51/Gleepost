@@ -11,6 +11,7 @@
 
 #import "FakeNavigationBarView.h"
 #import "ShapeFormatterHelper.h"
+#import "GLPThemeManager.h"
 
 @interface FakeNavigationBarView ()
 
@@ -43,6 +44,15 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
+    [self formatNavigationBar];
+}
+
+- (void)formatNavigationBar
+{
+    [self.titleLbl setTextColor: [[GLPThemeManager sharedInstance] navigationBarTitleColour]];
+    [self setBackgroundColor:[[GLPThemeManager sharedInstance] navigationBarColour]];
 }
 
 - (void)initiliaseObjects

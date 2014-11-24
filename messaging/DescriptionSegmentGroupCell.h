@@ -14,7 +14,6 @@
 
 @protocol DescriptionSegmentGroupCellDelegate <NSObject>
 
-- (void)showGroupImageOptionsWithImage:(UIImage *)image;
 - (void)segmentSwitchedWithButtonType:(ButtonType)buttonType;
 
 @end

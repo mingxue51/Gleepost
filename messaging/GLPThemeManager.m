@@ -9,6 +9,7 @@
 #import "GLPThemeManager.h"
 #import "GLPStanfordTheme.h"
 #import "GLPDefaultTheme.h"
+#import "AppearanceHelper.h"
 
 @interface GLPThemeManager()
 
@@ -78,6 +79,48 @@ static GLPThemeManager *instance = nil;
 -(NSString*)pullDownButton
 {
     return [self.selectedTheme pullDownImage];
+}
+
+#pragma mark - New implementation
+
+- (UIImage *)navigationBarImage
+{
+    return [self.selectedTheme navigationBarImage];
+}
+
+- (UIImage *)leftItemColouredImage:(UIImage *)leftImage
+{
+    return [self.selectedTheme leftItemColouredImage:leftImage];
+}
+
+- (UIImage *)rightItemColouredImage:(UIImage *)rightImage
+{
+    return [self.selectedTheme rightItemColouredImage:rightImage];
+}
+
+- (UIColor *)navigationBarColour
+{
+    return [self.selectedTheme firstColour];
+}
+
+- (UIColor *)navigationBarTitleColour
+{
+    return [self.selectedTheme fourthColour];
+}
+
+- (UIColor *)campusWallNavigationBarTitleColour
+{
+    return [self.selectedTheme fifthColour];
+}
+
+- (UIColor *)tabbarSelectedColour
+{
+    return [self.selectedTheme fifthColour];
+}
+
+- (UIColor *)tabbarUnselectedColour
+{
+    return [AppearanceHelper colourForRegisterTextFields];
 }
 
 -(GLPThemeType)themeIdentifier

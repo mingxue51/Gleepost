@@ -60,6 +60,24 @@
     }
 }
 
+- (void)testThemeManagerColours
+{
+    [[GLPThemeManager sharedInstance] setNetwork:@"University of Leeds"];
+    
+    UIImage *image = [[GLPThemeManager sharedInstance] navigationBarImage];
+    
+    if(image)
+    {
+        NSLog(@"Nav bar image %@", image);
+        
+        XCTAssert(YES, @"Pass");
+    }
+    else
+    {
+        XCTAssert(NO, @"Failed");
+    }
+}
+
 //- (void)testReadWriteOnPlistFile
 //{
 //    NSString* filename = @"/var/mobile/Library/Preferences/Gleepost-Info.plist";
