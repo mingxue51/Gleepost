@@ -85,9 +85,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
 
 - (void)addNavigationButtons
 {
-    
-    [self.navigationController.navigationBar setButton:kLeft withImageName:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissViewController) andTarget:self];
-
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissViewController) andTarget:self];
 }
 
 - (void)hideNetworkErrorViewIfNeeded
