@@ -12,6 +12,7 @@
 #import "UINavigationBar+Utils.h"
 #import "PendingPostManager.h"
 #import "AppearanceHelper.h"
+#import "GLPApprovalManager.h"
 
 @interface IntroKindOfNewPostViewController ()
 
@@ -26,6 +27,8 @@
     [self configureNavigationBar];
     
     [self configureIsGroupPost];
+    
+    [[GLPApprovalManager sharedInstance] reloadApprovalLevel];
 }
 
 //- (void)viewDidDisappear:(BOOL)animated

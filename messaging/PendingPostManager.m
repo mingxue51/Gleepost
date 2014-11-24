@@ -126,14 +126,26 @@ static PendingPostManager *instance = nil;
 
 #pragma mark - Accessors
 
-//- (BOOL)isGroupPost
-//{
-//    return [self isGroupPost];
-//}
-
 - (NSDate *)getDate
 {
     return _date;
+}
+
+- (BOOL)isEventParty
+{
+    for(GLPCategory *category in self.categories)
+    {
+        if([category.tag isEqualToString:@"party"])
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (BOOL)isPostEvent
+{
+    return !(self.categories.count == 0);
 }
 
 - (NSString *)description

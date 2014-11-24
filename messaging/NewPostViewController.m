@@ -33,6 +33,7 @@
 #import "PendingPostManager.h"
 #import "GLPVideoPostCWProgressManager.h"
 #import "GLPLiveGroupPostManager.h"
+#import "GLPApprovalManager.h"
 
 @interface NewPostViewController ()
 
@@ -110,8 +111,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     
     [self configureViewsPositions];
     
-    [self configureViewsGestures];
-    
     [self configureTextViews];
     
     [self formatBackgroundViews];
@@ -119,6 +118,18 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [self formatTextView];
     
     [self loadDataIfNeeded];
+    
+    DDLogDebug(@"Categories %@", [[PendingPostManager sharedInstance] categories]);
+    
+    if([self shouldPostPresentedInWall])
+    {
+        DDLogDebug(@"Post should be presented in the wall");
+    }
+    else
+    {
+        DDLogDebug(@"Post should not be presented in the wall");
+    }
+
 }
 
 
@@ -281,13 +292,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     }
 }
 
--(void)configureViewsGestures
-{
-  /**  UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToCategories:)];
-    [tap setNumberOfTapsRequired:1];
-    [_navigateToCategoriesView addGestureRecognizer:tap];*/
-}
-
 -(void)configureNavigationBar
 {
     [self.navigationController.navigationBar setTranslucent:NO];
@@ -303,7 +307,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 -(void)configureRightBarButton
 {    
     [self.navigationController.navigationBar setTextButton:kRight withTitle:@"POST" withButtonSize:CGSizeMake(50, 17) withSelector:@selector(postButtonClick:) andTarget:self];
-
 }
 
 -(void)formatStatusBar
@@ -347,75 +350,29 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)postButtonClick:(id)sender
 {
-    if ([self isInformationValidInElements]) {
-        
-        
+    if ([self isInformationValidInElements])
+    {
         [self.view endEditing:YES];
         
-        GLPPost* inPost = nil;
-        
         [[PendingPostManager sharedInstance] readyToSend];
-        NSArray *eventCategories = [[PendingPostManager sharedInstance] categories];
         
-        DDLogDebug(@"Post button clicked with event categories %@.", eventCategories);
-
+        GLPPost *inPost = nil;
         
         //Check if the post is group post or regular post.
         if([[PendingPostManager sharedInstance] isGroupPost])
         {
-            GLPGroup *group = [[PendingPostManager sharedInstance] group];
-
-            NSAssert(group, @"Group should exist to create a new group post.");
-            
-            
-            if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
-            {
-                inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil group:group andLocation:nil];
-                
-                FLog(@"GENERAL POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
-
-            }
-            else
-            {
-                inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text group:group andLocation:_selectedLocation];
-                
-                FLog(@"REGULAR POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
-            }
-            
-            if([inPost isVideoPost])
-            {
-                [[GLPLiveGroupPostManager sharedInstance] postButtonClicked];
-            }
+            inPost = [self createGroupPost];
         }
         else
         {
-            if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
-            {
-                FLog(@"GENERAL POST IS GOING TO BE CREATED");
-                
-                inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil andLocation:_selectedLocation];
-            }
-            else
-            {
-                inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andLocation:_selectedLocation];
-
-            }
-            
-            if([inPost isVideoPost])
-            {
-                [[GLPVideoPostCWProgressManager sharedInstance] postButtonClicked];
-            }
+            inPost = [self createRegularPost];
         }
         
-//        if([inPost isVideoPost])
-//        {
-//            [[GLPCampusWallProgressManager sharedInstance] postButtonClicked];
-//        }
+        if([self shouldPostPresentedInWall])
+        {
+            [self informParentVCForNewPost:inPost];
+        }
         
-        
-        [self informParentVCForNewPost:inPost];
-
-
         
         //We are doing that because in iOS 8 there is a weird issue with keyboard.
         double delayInSeconds = 0.5;
@@ -424,12 +381,122 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             
             //Dismiss view controller and show immediately the post in the Campus Wall.
-            
             [self dismissViewControllerAnimated:YES completion:nil];
         });
-        
-
     }
+}
+
+/**
+ Checks the approval level and the kind of post user already selected.
+ If the kind of post needs to be approved this method returns YES, otherwise NO.
+ */
+- (BOOL)shouldPostPresentedInWall
+{
+    if([[PendingPostManager sharedInstance] isGroupPost])
+    {
+        return YES;
+    }
+    else
+    {
+        switch ([[GLPApprovalManager sharedInstance] currentApprovalLevel])
+        {
+            case kNone:
+                DDLogInfo(@"NewPostViewController : Approval level off.");
+                return YES;
+                break;
+                
+            case kOnlyParties:
+                if([[PendingPostManager sharedInstance] isEventParty])
+                {
+                    DDLogInfo(@"NewPostViewController : Approval level on parties.");
+                    return NO;
+                }
+                else
+                {
+                    return YES;
+                }
+                break;
+                
+                case kAllEvents:
+                DDLogInfo(@"NewPostViewController : Approval level on all events.");
+                return ![[PendingPostManager sharedInstance] isPostEvent];
+                break;
+                
+                case kAll:
+                DDLogInfo(@"NewPostViewController : Approval level on all posts.");
+                return NO;
+                break;
+                
+            default:
+                break;
+        }
+        
+    }
+    
+    return NO;
+    
+}
+
+- (GLPPost *)createGroupPost
+{
+    GLPPost* inPost = nil;
+    
+    NSArray *eventCategories = [[PendingPostManager sharedInstance] categories];
+    
+    GLPGroup *group = [[PendingPostManager sharedInstance] group];
+    
+    DDLogDebug(@"Post button clicked with event categories %@.", eventCategories);
+
+    
+    NSAssert(group, @"Group should exist to create a new group post.");
+    
+    
+    if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
+    {
+        inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil group:group andLocation:nil];
+        
+        FLog(@"GENERAL POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
+        
+    }
+    else
+    {
+        inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text group:group andLocation:_selectedLocation];
+        
+        FLog(@"REGULAR POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
+    }
+    
+    if([inPost isVideoPost])
+    {
+        [[GLPLiveGroupPostManager sharedInstance] postButtonClicked];
+    }
+    
+    return inPost;
+}
+
+- (GLPPost *)createRegularPost
+{
+    GLPPost* inPost = nil;
+    
+    NSArray *eventCategories = [[PendingPostManager sharedInstance] categories];
+    
+    if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
+    {
+        FLog(@"GENERAL POST IS GOING TO BE CREATED");
+        
+        inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil andLocation:_selectedLocation];
+    }
+    else
+    {
+        inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andLocation:_selectedLocation];
+        
+    }
+    
+    if([inPost isVideoPost])
+    {
+        [[GLPVideoPostCWProgressManager sharedInstance] postButtonClicked];
+    }
+    
+    return inPost;
 }
 
 - (void)informParentVCForNewPost:(GLPPost *)post
@@ -444,13 +511,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         //Notify campus wall.
         [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil userInfo:@{@"new_post": post}];
     }
-}
-
--(void)navigateToCategories:(id)sender
-{
-//    [self performSegueWithIdentifier:@"show categories" sender:self];
-    
-//    [self navigateToCategoriesViewController];
 }
 
 //-(BOOL)isGroupPost

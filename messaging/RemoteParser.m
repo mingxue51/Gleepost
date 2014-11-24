@@ -118,6 +118,13 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return networkContent;
 }
 
+#pragma mark - Approval
+
++ (NSInteger)parseApprovalLevel:(NSDictionary *)approvalLevel
+{
+    return [approvalLevel[@"level"] integerValue];
+}
+
 + (NSString *)generateServerUserNameTypeWithNameSurname:(NSString *)nameSurname
 {
     NSRange range = [nameSurname rangeOfString:@" "];

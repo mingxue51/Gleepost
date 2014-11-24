@@ -69,6 +69,7 @@
 #import "GLPCalendarManager.h"
 #import "GLPShowUsersViewController.h"
 #import "GLPTableActivityIndicator.h"
+#import "GLPApprovalManager.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -192,6 +193,8 @@ const float TOP_OFFSET = 180.0f;
     
     /** Check if there are pending video posts. */
     [[GLPVideoUploadManager sharedInstance] startCheckingForNonUploadedVideoPosts];
+    
+    [GLPApprovalManager sharedInstance];
     
     [GLPVideoPostCWProgressManager sharedInstance];
     

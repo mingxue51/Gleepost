@@ -25,6 +25,9 @@
 + (NSArray *)parseAttendeesFromJson:(NSDictionary *)jsonDictionary;
 + (NSString *)generateServerUserNameTypeWithNameSurname:(NSString *)nameSurname;
 
+// approval
++ (NSInteger)parseApprovalLevel:(NSDictionary *)approvalLevel;
+
 // conversations
 + (GLPConversation *)parseConversationFromJson:(NSDictionary *)json;
 + (NSArray *)parseConversationsFilterByLive:(BOOL)live fromJson:(NSArray *)jsonConversations;

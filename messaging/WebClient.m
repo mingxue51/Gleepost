@@ -1772,6 +1772,23 @@ static WebClient *instance = nil;
     
 }
 
+#pragma mark - Approval
+
+- (void)getApprovalStatusCallbackBlock:(void (^) (BOOL success, NSInteger level))callbackBlock
+{
+    [self getPath:@"approve/level" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSInteger level = [RemoteParser parseApprovalLevel:responseObject];
+        
+        callbackBlock(YES, level);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, -1);
+        
+    }];
+}
+
 #pragma mark - Busy free status
 
 -(void)setBusyStatus:(BOOL)busy callbackBlock:(void (^)(BOOL success))callbackBlock

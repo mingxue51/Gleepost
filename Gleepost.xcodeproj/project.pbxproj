@@ -706,6 +706,7 @@
 		58E894A119DB3148005C1490 /* use_gleepost_as_this_group.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E894A019DB3148005C1490 /* use_gleepost_as_this_group.png */; };
 		58EA127019FA1079003D264E /* GLPEmptyViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58EA126F19FA1079003D264E /* GLPEmptyViewManager.m */; };
 		58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */; };
+		58ECE0C81A23DB0700B38FBA /* GLPApprovalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58ECE0C71A23DB0700B38FBA /* GLPApprovalManager.m */; };
 		58F0F0BE1934D6DF0032450F /* cancel_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0BD1934D6DF0032450F /* cancel_new_post.png */; };
 		58F0F0C01934DD780032450F /* textfield_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0BF1934DD780032450F /* textfield_background.png */; };
 		58F0F0C21934F91E0032450F /* categories_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0C11934F91E0032450F /* categories_image.png */; };
@@ -1897,6 +1898,8 @@
 		58EA126F19FA1079003D264E /* GLPEmptyViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPEmptyViewManager.m; sourceTree = "<group>"; };
 		58EB664A1829667100CE6550 /* ShapeFormatterHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShapeFormatterHelper.h; sourceTree = "<group>"; };
 		58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShapeFormatterHelper.m; sourceTree = "<group>"; };
+		58ECE0C61A23DB0700B38FBA /* GLPApprovalManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPApprovalManager.h; sourceTree = "<group>"; };
+		58ECE0C71A23DB0700B38FBA /* GLPApprovalManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPApprovalManager.m; sourceTree = "<group>"; };
 		58F0F0BD1934D6DF0032450F /* cancel_new_post.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_new_post.png; sourceTree = "<group>"; };
 		58F0F0BF1934DD780032450F /* textfield_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textfield_background.png; sourceTree = "<group>"; };
 		58F0F0C11934F91E0032450F /* categories_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = categories_image.png; sourceTree = "<group>"; };
@@ -4853,6 +4856,8 @@
 				582E44D8197E1E7F000BE3EC /* GLPServerPathManager.m */,
 				588F1DCC19EDF32E00DB6D23 /* GLPCalendarManager.h */,
 				588F1DCD19EDF32E00DB6D23 /* GLPCalendarManager.m */,
+				58ECE0C61A23DB0700B38FBA /* GLPApprovalManager.h */,
+				58ECE0C71A23DB0700B38FBA /* GLPApprovalManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -6218,6 +6223,7 @@
 				58299EA8184636160045427E /* GLPPostNotificationHelper.m in Sources */,
 				8087E436180ED90F00938264 /* AppearanceHelper.m in Sources */,
 				5879AC82196435C40053262A /* GLPCheckNameCell.m in Sources */,
+				58ECE0C81A23DB0700B38FBA /* GLPApprovalManager.m in Sources */,
 				58272F801896807900CD7522 /* FakeNavigationBar.m in Sources */,
 				58350A6E198AF9C2000BB1CA /* GLPNetworkErrorView.m in Sources */,
 				58C9E15719EC6A88008CB14A /* GLPConversationRead.m in Sources */,
@@ -6477,6 +6483,7 @@
 				58B6BF4D1A22964000113DB7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		807C4CDC180ADBA1003D67E6 /* Build configuration list for PBXAggregateTarget "Mogenerator" */ = {
 			isa = XCConfigurationList;

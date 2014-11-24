@@ -37,6 +37,8 @@ typedef NS_ENUM(NSUInteger, KindOfPost) {
 - (NSDate *)getDate;
 - (NSMutableArray *)categories;
 - (KindOfPost)kindOfPost;
+- (BOOL)isEventParty;
+- (BOOL)isPostEvent;
 
 - (BOOL)arePendingData;
 - (GLPGroup *)group;
