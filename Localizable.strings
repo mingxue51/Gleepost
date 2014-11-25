@@ -11,3 +11,5 @@
 "liked" = "%@ liked your post.";
 "commented" = "%@ commented on your post.";
 "group_post" = "%@ posted to %@.";
+"approved_post" = "%@ approved your post.";
+"rejected_post" = "%@ rejected your post.";
