@@ -404,7 +404,7 @@
 
 + (void)saveVideoWithEntity:(GLPPost *)entity inDb:(FMDatabase *)db
 {
-    BOOL s = [db executeUpdateWithFormat:@"replace into post_videos (post_remote_key, post_key, video_url, video_thumbnail_url, video_temp_key) values(%d, %d, %@, %@, %d)",
+    [db executeUpdateWithFormat:@"replace into post_videos (post_remote_key, post_key, video_url, video_thumbnail_url, video_temp_key) values(%d, %d, %@, %@, %d)",
               entity.remoteKey,
               entity.key,
               entity.video.url,
@@ -519,6 +519,18 @@
     [db executeUpdateWithFormat:@"update posts set attending=%d where remoteKey=%d",
      entity.attended,
      entity.remoteKey];
+}
+
++ (void)updatePendingStatuswithPost:(GLPPost *)entity
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+
+        BOOL pendingPostUpdated = [db executeUpdateWithFormat:@"update posts set pending=%d where remoteKey=%d",
+         [entity isPending],
+         entity.remoteKey];
+        
+        NSAssert(pendingPostUpdated, @"Pending post should exist in database before, in order to be updated.");
+    }];
 }
 
 +(void)updateCommentStatusWithNumberOfComments:(int)number andPostRemoteKey:(int)remoteKey inDb:(FMDatabase*)db

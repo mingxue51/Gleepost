@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 #import "GLPThemeManager.h"
+#import "GLPReviewHistoryDao.h"
+#import "GLPReviewHistory.h"
+#import "GLPPost.h"
 
 @interface Gleepost_Tests : XCTestCase
 
@@ -76,6 +79,30 @@
     {
         XCTAssert(NO, @"Failed");
     }
+}
+
+- (void)testReviewHistoryLocalDatabaseInteractions
+{
+    GLPPost *post = [[GLPPost alloc] initWithRemoteKey:2344];
+    
+    GLPReviewHistory *reviewHistoryEx1 = [[GLPReviewHistory alloc] initWithActionString:@"rejected" withDateHappened:[NSDate date] andReason:@"This post is stupid"];
+    
+    reviewHistoryEx1.remoteKey = 232;
+    
+    GLPReviewHistory *reviewHistoryEx2 = [[GLPReviewHistory alloc] initWithActionString:@"approved" andDateHappened:[NSDate date]];
+    
+    reviewHistoryEx2.remoteKey = 22312332;
+
+    
+//    [GLPReviewHistoryDao saveReviewHistory:reviewHistoryEx1 withPost:post];
+//    [GLPReviewHistoryDao saveReviewHistory:reviewHistoryEx2 withPost:post];
+    
+    NSArray *reviewHistories = [GLPReviewHistoryDao findReviewHistoryWithPostRemoteKey:post.remoteKey];
+    
+    
+    NSLog(@"Review histories %@", reviewHistories);
+
+    XCTAssert(YES, @"Pass");
 }
 
 //- (void)testReadWriteOnPlistFile

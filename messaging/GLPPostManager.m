@@ -693,6 +693,11 @@
     }];
 }
 
++ (void)updatePostPending:(GLPPost *)post
+{
+    [GLPPostDao updatePendingStatuswithPost:post];
+}
+
 +(void)deletePostWithPost:(GLPPost *)post
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {

@@ -10,6 +10,7 @@
 #import "GLPVideo.h"
 #import "DateFormatterHelper.h"
 #import "GLPLocation.h"
+#import "GLPReviewHistory.h"
 
 @implementation GLPPost
 
@@ -31,8 +32,7 @@
     }
     
     _sendStatus = kSendStatusLocal;
-    //_liked = NO;
-    
+    _pending = NO;
     return self;
 }
 
@@ -43,10 +43,27 @@
     if(self)
     {
         self.remoteKey = remoteKey;
+        _pending = NO;
     }
     
     return self;
 }
+
+#pragma mark - Modifiers
+
+- (void)addNewReviewHistory:(GLPReviewHistory *)reviewHistory
+{
+    if (self.reviewHistory == nil)
+    {
+        self.reviewHistory = [[NSMutableArray alloc] initWithObjects:reviewHistory, nil];
+    }
+    else
+    {
+        [self.reviewHistory addObject:reviewHistory];
+    }
+}
+
+#pragma mark - Accessors
 
 -(BOOL)imagePost
 {

@@ -27,6 +27,7 @@
 + (void)saveGroupPosts:(NSArray *)groupPosts withGroupRemoteKey:(NSInteger)groupRemoteKey;
 +(NSArray*)likedPostsInDb:(FMDatabase*)db;
 +(void)updatePostAttending:(GLPPost*)entity db:(FMDatabase *)db;
++ (void)updatePendingStatuswithPost:(GLPPost *)entity;
 + (void)updateVideoPostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db;
 +(void)deletePostWithPost:(GLPPost *)entity db:(FMDatabase *)db;
 + (void)updateImagesWithEntity:(GLPPost *)entity db:(FMDatabase *)db;

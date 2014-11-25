@@ -707,6 +707,10 @@
 		58EA127019FA1079003D264E /* GLPEmptyViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58EA126F19FA1079003D264E /* GLPEmptyViewManager.m */; };
 		58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */; };
 		58ECE0C81A23DB0700B38FBA /* GLPApprovalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58ECE0C71A23DB0700B38FBA /* GLPApprovalManager.m */; };
+		58ECE0CC1A24123200B38FBA /* GLPReviewHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 58ECE0CB1A24123200B38FBA /* GLPReviewHistory.m */; };
+		58ECE0CF1A24175E00B38FBA /* GLPReviewHistoryDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 58ECE0CE1A24175E00B38FBA /* GLPReviewHistoryDaoParser.m */; };
+		58ECE0D21A2419B900B38FBA /* GLPReviewHistoryDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 58ECE0D11A2419B900B38FBA /* GLPReviewHistoryDao.m */; };
+		58ECE0D61A241E7900B38FBA /* GLPPendingPostsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58ECE0D51A241E7900B38FBA /* GLPPendingPostsManager.m */; };
 		58F0F0BE1934D6DF0032450F /* cancel_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0BD1934D6DF0032450F /* cancel_new_post.png */; };
 		58F0F0C01934DD780032450F /* textfield_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0BF1934DD780032450F /* textfield_background.png */; };
 		58F0F0C21934F91E0032450F /* categories_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0C11934F91E0032450F /* categories_image.png */; };
@@ -1900,6 +1904,14 @@
 		58EB664B1829667100CE6550 /* ShapeFormatterHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShapeFormatterHelper.m; sourceTree = "<group>"; };
 		58ECE0C61A23DB0700B38FBA /* GLPApprovalManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPApprovalManager.h; sourceTree = "<group>"; };
 		58ECE0C71A23DB0700B38FBA /* GLPApprovalManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPApprovalManager.m; sourceTree = "<group>"; };
+		58ECE0CA1A24123200B38FBA /* GLPReviewHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPReviewHistory.h; sourceTree = "<group>"; };
+		58ECE0CB1A24123200B38FBA /* GLPReviewHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPReviewHistory.m; sourceTree = "<group>"; };
+		58ECE0CD1A24175E00B38FBA /* GLPReviewHistoryDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPReviewHistoryDaoParser.h; sourceTree = "<group>"; };
+		58ECE0CE1A24175E00B38FBA /* GLPReviewHistoryDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPReviewHistoryDaoParser.m; sourceTree = "<group>"; };
+		58ECE0D01A2419B900B38FBA /* GLPReviewHistoryDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPReviewHistoryDao.h; sourceTree = "<group>"; };
+		58ECE0D11A2419B900B38FBA /* GLPReviewHistoryDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPReviewHistoryDao.m; sourceTree = "<group>"; };
+		58ECE0D41A241E7900B38FBA /* GLPPendingPostsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPendingPostsManager.h; sourceTree = "<group>"; };
+		58ECE0D51A241E7900B38FBA /* GLPPendingPostsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPendingPostsManager.m; sourceTree = "<group>"; };
 		58F0F0BD1934D6DF0032450F /* cancel_new_post.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_new_post.png; sourceTree = "<group>"; };
 		58F0F0BF1934DD780032450F /* textfield_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textfield_background.png; sourceTree = "<group>"; };
 		58F0F0C11934F91E0032450F /* categories_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = categories_image.png; sourceTree = "<group>"; };
@@ -4159,6 +4171,28 @@
 			name = "Empty Views";
 			sourceTree = "<group>";
 		};
+		58ECE0C91A24120600B38FBA /* Approval */ = {
+			isa = PBXGroup;
+			children = (
+				582BB3821A20145800497457 /* GLPApproveLevel.h */,
+				582BB3831A20145800497457 /* GLPApproveLevel.m */,
+				58ECE0CA1A24123200B38FBA /* GLPReviewHistory.h */,
+				58ECE0CB1A24123200B38FBA /* GLPReviewHistory.m */,
+			);
+			name = Approval;
+			sourceTree = "<group>";
+		};
+		58ECE0D31A241DCD00B38FBA /* Approval */ = {
+			isa = PBXGroup;
+			children = (
+				58ECE0C61A23DB0700B38FBA /* GLPApprovalManager.h */,
+				58ECE0C71A23DB0700B38FBA /* GLPApprovalManager.m */,
+				58ECE0D41A241E7900B38FBA /* GLPPendingPostsManager.h */,
+				58ECE0D51A241E7900B38FBA /* GLPPendingPostsManager.m */,
+			);
+			name = Approval;
+			sourceTree = "<group>";
+		};
 		58F294FB19353C0700A638BA /* New post */ = {
 			isa = PBXGroup;
 			children = (
@@ -4524,6 +4558,7 @@
 		807C4CDE180AF08B003D67E6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				58ECE0C91A24120600B38FBA /* Approval */,
 				8087E425180EC02E00938264 /* _Comment.h */,
 				8087E426180EC02E00938264 /* _Comment.m */,
 				807C4CFD180AF0F6003D67E6 /* _Conversation.h */,
@@ -4584,8 +4619,6 @@
 				585CCD2719B91F06004009D7 /* GLPPushNotification.m */,
 				5879234E19E7926E007F3C20 /* GLPMember.h */,
 				5879234F19E7926E007F3C20 /* GLPMember.m */,
-				582BB3821A20145800497457 /* GLPApproveLevel.h */,
-				582BB3831A20145800497457 /* GLPApproveLevel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -4806,6 +4839,7 @@
 		80AB894A17C26EC10053E784 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				58ECE0D31A241DCD00B38FBA /* Approval */,
 				5851112719A7E2FF00488E79 /* Progress */,
 				58AE5FB91923A45400C4D59D /* Video */,
 				58CEA1E518C694E9009FDF2C /* Groups */,
@@ -4856,8 +4890,6 @@
 				582E44D8197E1E7F000BE3EC /* GLPServerPathManager.m */,
 				588F1DCC19EDF32E00DB6D23 /* GLPCalendarManager.h */,
 				588F1DCD19EDF32E00DB6D23 /* GLPCalendarManager.m */,
-				58ECE0C61A23DB0700B38FBA /* GLPApprovalManager.h */,
-				58ECE0C71A23DB0700B38FBA /* GLPApprovalManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -5090,6 +5122,8 @@
 				5819E66018C7E58E003361B3 /* GLPGroupDao.m */,
 				58D0E51F18D10E98004DF10D /* GLPMemberDao.h */,
 				58D0E52018D10E98004DF10D /* GLPMemberDao.m */,
+				58ECE0D01A2419B900B38FBA /* GLPReviewHistoryDao.h */,
+				58ECE0D11A2419B900B38FBA /* GLPReviewHistoryDao.m */,
 			);
 			name = Dao;
 			sourceTree = "<group>";
@@ -5123,6 +5157,8 @@
 				5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */,
 				5819E65C18C7E3FC003361B3 /* GLPGroupDaoParser.h */,
 				5819E65D18C7E3FC003361B3 /* GLPGroupDaoParser.m */,
+				58ECE0CD1A24175E00B38FBA /* GLPReviewHistoryDaoParser.h */,
+				58ECE0CE1A24175E00B38FBA /* GLPReviewHistoryDaoParser.m */,
 			);
 			name = DaoParser;
 			sourceTree = "<group>";
@@ -5897,6 +5933,7 @@
 				583E6D5B18A10E8C001076CC /* VerificationViewController.m in Sources */,
 				5887C7ED19FF09B7004441B9 /* GLPPrivateGroupPopUpViewController.m in Sources */,
 				586B1D2719E8D9D200E35A43 /* GLPImageLoader.m in Sources */,
+				58ECE0CF1A24175E00B38FBA /* GLPReviewHistoryDaoParser.m in Sources */,
 				58DF4158186463A900D53723 /* GLPPostOperationManager.m in Sources */,
 				5892F10819FB080900B6778F /* GLPProfilePostsEmptyView.m in Sources */,
 				80AB894217C26E610053E784 /* LoginViewController.m in Sources */,
@@ -6137,7 +6174,9 @@
 				58FD706F189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m in Sources */,
 				80C92AA918C0CC6F001CB621 /* GLPDateFormatterHelper.m in Sources */,
 				582A663618AB963700006419 /* EventBarView.m in Sources */,
+				58ECE0D21A2419B900B38FBA /* GLPReviewHistoryDao.m in Sources */,
 				58406AFE1823FCBE0032353E /* NewPostView.m in Sources */,
+				58ECE0D61A241E7900B38FBA /* GLPPendingPostsManager.m in Sources */,
 				80DDDF36180FD799009E17BD /* GLPLoginManager.m in Sources */,
 				58B74A8719C01541007E3416 /* GLPNotificationCell.m in Sources */,
 				588215A419F2185C00030CB2 /* GLPGroupSearchViewController.m in Sources */,
@@ -6223,6 +6262,7 @@
 				58299EA8184636160045427E /* GLPPostNotificationHelper.m in Sources */,
 				8087E436180ED90F00938264 /* AppearanceHelper.m in Sources */,
 				5879AC82196435C40053262A /* GLPCheckNameCell.m in Sources */,
+				58ECE0CC1A24123200B38FBA /* GLPReviewHistory.m in Sources */,
 				58ECE0C81A23DB0700B38FBA /* GLPApprovalManager.m in Sources */,
 				58272F801896807900CD7522 /* FakeNavigationBar.m in Sources */,
 				58350A6E198AF9C2000BB1CA /* GLPNetworkErrorView.m in Sources */,
@@ -6446,8 +6486,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = NerdNation;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "823e1739-ce04-42d0-a723-8c08df6e41a2";
+				PROVISIONING_PROFILE = "d4a1ac21-2b4a-4880-9fb2-e78ec2099d5a";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "d4a1ac21-2b4a-4880-9fb2-e78ec2099d5a";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -6459,15 +6499,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "messaging/Gleepost-Prefix.pch";
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = NerdNation;
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ab8072bc-45a3-4c5e-9f03-f49286f5a2ca";
+				PROVISIONING_PROFILE = "27aec5d7-ee1c-4b65-bf78-21fcc61e249c";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "27aec5d7-ee1c-4b65-bf78-21fcc61e249c";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
