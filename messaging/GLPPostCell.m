@@ -127,18 +127,18 @@ const float ONE_LINE_LIMIT = 18.0;
 -(void)setNewPositions
 {
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
     
         CGSize labelSize = [GLPPostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost cellType:[self findCellType]];
 
-        dispatch_async(dispatch_get_main_queue(), ^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
     
             [_mainView setHeightDependingOnLabelHeight:labelSize.height andIsViewPost:self.isViewPost];
 
-        });
+//        });
     
         
-    });
+//    });
     
 //    [_mainView setNewHeightDependingOnLabelHeight:labelSize.height andIsViewPost:self.isViewPost];
 
@@ -355,6 +355,11 @@ const float ONE_LINE_LIMIT = 18.0;
     
     // add content label height
     height += [GLPPostCell getContentLabelSizeForContent:post.content isViewPost:isViewPost cellType:cellType].height;
+    
+    if([post.content isEqualToString:@"12123 12ddd"])
+    {
+        DDLogDebug(@"EQUALS height %f", height);
+    }
     
     return height;
 }

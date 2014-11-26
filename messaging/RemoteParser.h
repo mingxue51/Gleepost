@@ -25,6 +25,9 @@
 + (NSArray *)parseAttendeesFromJson:(NSDictionary *)jsonDictionary;
 + (NSString *)generateServerUserNameTypeWithNameSurname:(NSString *)nameSurname;
 
+// pending posts
++ (NSArray *)parsePendingPostsFromJson:(NSArray *)jsonPosts;
+
 // approval
 + (NSInteger)parseApprovalLevel:(NSDictionary *)approvalLevel;
 

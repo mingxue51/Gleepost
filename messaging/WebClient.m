@@ -1628,22 +1628,6 @@ static WebClient *instance = nil;
     }];
 }
 
-/**
-- (void)getPostsWithCallbackBlock:(void (^)(BOOL success, NSArray *posts))callbackBlock
-{
-    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
-    [params addEntriesFromDictionary:self.sessionManager.authParameters];
-    
-    [self getPath:@"posts" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
-        NSLog(@"PARAMS: %@", params);
-        callbackBlock(YES, posts);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callbackBlock(NO, nil);
-    }];
-}
-*/
- 
 
 -(void)addContact:(int)contactRemoteKey callbackBlock:(void (^)(BOOL success))callbackBlock
 {
@@ -1770,6 +1754,23 @@ static WebClient *instance = nil;
     }];
     
     
+}
+
+#pragma mark - User's pending posts
+
+- (void)getPostsWaitingForApprovalCallbackBlock:(void (^) (BOOL success, NSArray *pendingPosts))callbackBlock
+{
+    [self getPath:@"profile/pending" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogDebug(@"Pending posts response object %@", responseObject);
+        
+        callbackBlock(YES, [RemoteParser parsePendingPostsFromJson:responseObject]);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+
+    }];
 }
 
 #pragma mark - Approval

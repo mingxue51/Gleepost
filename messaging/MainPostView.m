@@ -351,6 +351,14 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [_distanceFromTop setConstant:distanceFromTop];
     
+    if([self.post.content isEqualToString:@"test problem"])
+    {
+        DDLogDebug(@"EQUALS %f", _distanceFromTop.constant);
+    }
+    
+    DDLogDebug(@"EQUALS %f with content %@", _distanceFromTop.constant, self.post.content);
+
+    
     [self.mainViewHeight setConstant:height + fixedBottomViewHeight];
 
     [_contentLabelHeightConstrain setConstant:height];

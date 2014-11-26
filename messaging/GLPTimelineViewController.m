@@ -70,6 +70,8 @@
 #import "GLPShowUsersViewController.h"
 #import "GLPTableActivityIndicator.h"
 #import "GLPApprovalManager.h"
+#import "GLPPendingPostsManager.h"
+#import "GLPPendingCell.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -195,6 +197,8 @@ const float TOP_OFFSET = 180.0f;
     [[GLPVideoUploadManager sharedInstance] startCheckingForNonUploadedVideoPosts];
     
     [GLPApprovalManager sharedInstance];
+    
+    [GLPPendingPostsManager sharedInstance];
     
     [GLPVideoPostCWProgressManager sharedInstance];
     
@@ -392,6 +396,8 @@ const float TOP_OFFSET = 180.0f;
 -(void)updatePostRemoteKeyAndImage:(NSNotification*)notification
 {
     
+    //TODO: Refactor this code. (Add it in Notification Helper to parse the notification).
+    
     NSDictionary *dict = [notification userInfo];
     
     NSInteger key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
@@ -426,11 +432,7 @@ const float TOP_OFFSET = 180.0f;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewPostByUser" object:nil userInfo:nil];
     }
     
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-
-//    [self.tableView reloadData];
-    
-
+    [self refreshCellViewWithIndex: index];
 }
 
 /**
@@ -523,6 +525,11 @@ const float TOP_OFFSET = 180.0f;
     int index = -1;
     
     index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
+    
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        ++index;
+    }
     
     if(index != -1)
     {
@@ -727,6 +734,8 @@ const float TOP_OFFSET = 180.0f;
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"GLPPendingCell" bundle:nil] forCellReuseIdentifier:@"GLPPendingCell"];
 
     
 //    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderScrollView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"CampusWallHeaderSimple"];
@@ -817,8 +826,10 @@ const float TOP_OFFSET = 180.0f;
 
 #pragma mark - Table view refresh methods
 
--(void)refreshCellViewWithIndex:(const NSUInteger)index
+-(void)refreshCellViewWithIndex:(NSUInteger)index
 {
+    index = ([[GLPPendingPostsManager sharedInstance] arePendingPosts]) ? ++index : index;
+    
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
     [self.tableView endUpdates];
@@ -1736,11 +1747,33 @@ const float TOP_OFFSET = 180.0f;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     [_emptyGroupPostsMessage hideEmptyMessageView];
+    
     return self.posts.count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    static NSString *CellIdentifierWithImage = @"ImageCell";
+    static NSString *CellIdentifierWithoutImage = @"TextCell";
+    static NSString *CellIdentifierVideo = @"VideoCell";
+    static NSString *CellIdientifierPendingCell = @"GLPPendingCell";
+    
+    
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        if(indexPath.row == 0)
+        {
+            GLPPendingCell *pendingCell = [tableView dequeueReusableCellWithIdentifier:CellIdientifierPendingCell forIndexPath:indexPath];
+            
+            [pendingCell updateLabelWithNumberOfPendingPosts];
+            
+            return pendingCell;
+        }
+        
+    }
+    
+    DDLogDebug(@"cellForRowAtIndexPath arePendingPosts");
+
     if(indexPath.row == self.posts.count) {
         GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
         [loadingCell setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
@@ -1748,10 +1781,7 @@ const float TOP_OFFSET = 180.0f;
         return loadingCell;
     }
     
-    static NSString *CellIdentifierWithImage = @"ImageCell";
-    static NSString *CellIdentifierWithoutImage = @"TextCell";
-    static NSString *CellIdentifierVideo = @"VideoCell";
-   
+    
     GLPPostCell *postCell;
     
     GLPPost *post = [self currentPostWithIndexPath:indexPath];
@@ -1853,6 +1883,15 @@ const float TOP_OFFSET = 180.0f;
         return;
     }
     
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        if(indexPath.row == 0)
+        {
+            DDLogDebug(@"Pending post cell selected.");
+            return;
+        }
+    }
+    
     self.selectedPost = [self currentPostWithIndexPath:indexPath];
     
     self.selectedIndex = indexPath.row;
@@ -1865,14 +1904,26 @@ const float TOP_OFFSET = 180.0f;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        if(indexPath.row == 0)
+        {
+            return [GLPPendingCell cellHeight];
+        }
+    }
+    
     if(indexPath.row == self.posts.count) {
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }
+    
+    DDLogDebug(@"heightForRowAtIndexPath arePendingPosts");
 
     GLPPost *currentPost = [self currentPostWithIndexPath:indexPath];
     
     if([currentPost imagePost])
     {
+
         return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
     }
     else if ([currentPost isVideoPost])
@@ -1915,7 +1966,12 @@ const float TOP_OFFSET = 180.0f;
  */
 -(GLPPost *)currentPostWithIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.posts objectAtIndex:indexPath.row];
+    return [self.posts objectAtIndex:[self postCurrentIndexWithIndexPath:indexPath]];
+}
+
+- (NSInteger)postCurrentIndexWithIndexPath:(NSIndexPath *)indexPath
+{
+    return ([[GLPPendingPostsManager sharedInstance] arePendingPosts] ? indexPath.row - 1 : indexPath.row);
 }
 
 -(void) updateTableWithNewRowCount:(int)rowCount
@@ -1983,7 +2039,16 @@ const float TOP_OFFSET = 180.0f;
 - (void)updateTableViewWithNewPostsAndScrollToTop:(int)count
 {
     NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-    for(int i = 0; i < count; i++) {
+    
+    NSUInteger startIndex = 0;
+    
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        startIndex = 1;
+        ++count;
+    }
+    
+    for(int i = startIndex; i < count; i++) {
         [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
     }
     

@@ -9,7 +9,9 @@
 #import "GLPPendingPostsManager.h"
 #import "GLPPost.h"
 #import "GLPPostDao.h"
+#import "GLPPostManager.h"
 #import "GLPReviewHistoryDao.h"
+#import "WebClient.h"
 
 @interface GLPPendingPostsManager ()
 
@@ -39,6 +41,7 @@ static GLPPendingPostsManager *instance = nil;
     if(self)
     {
         self.pendingPosts = [[NSMutableArray alloc] init];
+        [self loadPendingPosts];
     }
     
     return self;
@@ -49,6 +52,11 @@ static GLPPendingPostsManager *instance = nil;
 - (NSInteger)numberOfPendingPosts
 {
     return self.pendingPosts.count;
+}
+
+- (BOOL)arePendingPosts
+{
+    return (self.pendingPosts.count != 0);
 }
 
 /**
@@ -80,8 +88,61 @@ static GLPPendingPostsManager *instance = nil;
 
     [GLPPostDao updatePendingStatuswithPost:pendingPost];
     
-    //TODO: Remove history.
+    //Remove history.
+    [GLPReviewHistoryDao removeReviewHistoryWithPost:pendingPost];
     
+}
+
+#pragma mark - Client
+
+/**
+ Load all user's pending posts and save them to local database.
+ */
+
+- (void)loadPendingPosts
+{
+    [[WebClient sharedInstance] getPostsWaitingForApprovalCallbackBlock:^(BOOL success, NSArray *pendingPosts) {
+       
+        if(success)
+        {
+            self.pendingPosts = pendingPosts.mutableCopy;
+            
+            //Update local database if there is a need.
+            [self updateLocalDatabase];
+            DDLogDebug(@"Pending posts from server %@", pendingPosts);
+        }
+        
+    }];
+}
+
+#pragma mark - Database
+
+/**
+ Checks if there is any new information in the new fetched posts and updates the database.
+ (Update pending post or create new ones). <br>
+ Actions <br>
+ - Removes all the data from review history and adds it again. <br>
+ - Checks if there is a new pending post (not possible except the user comes from a new log in) 
+ or post that is approved and change the status as appropriate. <br>
+ 
+ Use cases <br>
+ - A post is approved (so it will not be in the response). <br>
+ - There is an updated history on the post. (like a post is rejected etc.) <br>
+ - Post is edited (?)
+ */
+- (void)updateLocalDatabase
+{
+    [GLPReviewHistoryDao deleteReviewHistoryTable];
+    
+    for(GLPPost *pendingPost in self.pendingPosts)
+    {
+        
+        //Post.
+        [GLPPostDao saveOrUpdatePost:pendingPost];
+        
+        //Review history.
+        [GLPReviewHistoryDao saveReviewHistoryArrayOfPost:pendingPost];
+    }
 }
 
 #pragma mark - Helpers

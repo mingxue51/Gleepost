@@ -18,6 +18,7 @@
 + (GLPPendingPostsManager *)sharedInstance;
 
 - (NSInteger)numberOfPendingPosts;
+- (BOOL)arePendingPosts;
 - (void)addNewPendingPost:(GLPPost *)pendingPost;
 - (void)updatePendingPost:(GLPPost *)pendingPost;
 - (void)removePendingPost:(GLPPost *)pendingPost;

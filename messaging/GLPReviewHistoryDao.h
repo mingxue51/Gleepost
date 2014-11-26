@@ -14,6 +14,7 @@
 
 + (NSArray *)findReviewHistoryWithPostRemoteKey:(NSInteger)postRemoteKey;
 + (void)saveReviewHistory:(GLPReviewHistory *)reviewHistory withPost:(GLPPost *)post;
++ (void)saveReviewHistoryArrayOfPost:(GLPPost *)post;
 + (void)removeReviewHistoryWithPost:(GLPPost *)post;
-
++ (void)deleteReviewHistoryTable;
 @end

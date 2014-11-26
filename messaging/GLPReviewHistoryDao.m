@@ -52,12 +52,29 @@
     }];
 }
 
++ (void)saveReviewHistoryArrayOfPost:(GLPPost *)post
+{
+    if(post.reviewHistory)
+    {
+        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+            
+            DDLogDebug(@"Review histories %@", post.reviewHistory);
+            
+            for(GLPReviewHistory *reviewH in post.reviewHistory)
+            {
+                DDLogDebug(@"Review history %@", reviewH);
+                           
+                [GLPReviewHistoryDao save:reviewH withPostRemoteKey:post.remoteKey inDb:db];
+            }
+        }];
+    }
+}
+
 + (void)save:(GLPReviewHistory *)entity withPostRemoteKey:(NSInteger)postRemoteKey inDb:(FMDatabase *)db
 {
-    NSAssert(entity.remoteKey != 0, @"Remote key of entity should never be 0.");
+    NSAssert(postRemoteKey != 0, @"Remote key of entity should never be 0.");
 
-    BOOL reviewSaved = [db executeUpdateWithFormat:@"insert into review_history (remoteKey, post_remote_key, date, reason, action, user_remote_key) values(%d, %d, %d, %@, %d, %d)",
-     entity.remoteKey,
+    BOOL reviewSaved = [db executeUpdateWithFormat:@"insert into review_history (post_remote_key, date, reason, action, user_remote_key) values(%d, %d, %@, %d, %d)",
      postRemoteKey,
      entity.dateHappened,
      entity.reason,
@@ -76,9 +93,21 @@
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
 
-        [db executeUpdateWithFormat:@"delete from review_history where post_remote_key=%d",
+        BOOL removed = [db executeUpdateWithFormat:@"delete from review_history where post_remote_key=%d",
          post.remoteKey];
         
+        DDLogDebug(@"History removed %d", removed);
+        
+    }];
+}
+
++ (void)deleteReviewHistoryTable
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+
+        BOOL removed = [db executeUpdateWithFormat:@"delete from review_history"];
+        
+        NSAssert(removed, @"Review history table has not being removed as expected.");
     }];
 }
 

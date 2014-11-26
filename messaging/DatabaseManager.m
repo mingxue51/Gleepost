@@ -179,7 +179,7 @@ static DatabaseManager *instance = nil;
              dislikes integer, \
              comments integer, \
              sendStatus integer, \
-             pending integer, \
+             pending integer not null, \
              author_key integer, \
              liked integer, \
              event_title text, \
@@ -214,12 +214,11 @@ static DatabaseManager *instance = nil;
             
             [db executeUpdate:@"create table review_history ( \
              key integer primary key autoincrement, \
-             remoteKey integer unique not null, \
-             post_remote_key integer, \
-             date integer, \
+             post_remote_key integer not null, \
+             date integer unique not null, \
              reason text, \
-             action integer, \
-             user_remote_key integer);"];
+             action integer not null, \
+             user_remote_key integer not null);"];
             
             // notifications
             [db executeUpdate:@"create table notifications ( \

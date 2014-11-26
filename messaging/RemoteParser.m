@@ -16,7 +16,7 @@
 #import "GLPLocation.h"
 #import "GLPMember.h"
 #import "GLPConversationRead.h"
-
+#import "GLPReviewHistory.h"
 
 @interface RemoteParser()
 
@@ -116,6 +116,53 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //    }
     
     return networkContent;
+}
+
+#pragma mark - User's pending posts
+
++ (NSArray *)parsePendingPostsFromJson:(NSArray *)jsonPosts
+{
+    NSMutableArray *posts = [NSMutableArray array];
+    
+    for(id postJson in jsonPosts)
+    {
+        GLPPost *post = [RemoteParser parsePostFromJson:postJson];
+        
+        post.reviewHistory = [RemoteParser parseReviewHistories:postJson[@"review_history"]];
+        
+        post.pending = YES;
+        
+        post.sendStatus = kSendStatusSent;
+        
+        [posts addObject:post];
+    }
+    
+    return posts;
+}
+
++ (NSMutableArray *)parseReviewHistories:(NSArray *)jsonHistories
+{
+    NSMutableArray *reviewHistories = [[NSMutableArray alloc] init];
+    
+    for(NSDictionary *reviewHistoryJson in jsonHistories)
+    {
+        [reviewHistories addObject: [RemoteParser parseReviewHistory:reviewHistoryJson]];
+    }
+    
+    
+    DDLogDebug(@"Review histories array %@", reviewHistories);
+    
+    return reviewHistories;
+}
+
++ (GLPReviewHistory *)parseReviewHistory:(NSDictionary *)jsonHistory
+{
+    GLPReviewHistory *reviewHistory = [[GLPReviewHistory alloc] initWithActionString:jsonHistory[@"action"] withDateHappened:[RemoteParser parseDateFromString:jsonHistory[@"at"]] andReason:jsonHistory[@"reason"]];
+    reviewHistory.user = [RemoteParser parseUserFromJson:jsonHistory[@"by"]];
+    
+    DDLogDebug(@"Review history json %@", jsonHistory);
+
+    return reviewHistory;
 }
 
 #pragma mark - Approval

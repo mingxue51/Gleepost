@@ -34,6 +34,7 @@
 #import "GLPVideoPostCWProgressManager.h"
 #import "GLPLiveGroupPostManager.h"
 #import "GLPApprovalManager.h"
+#import "GLPPendingPostsManager.h"
 
 @interface NewPostViewController ()
 
@@ -372,6 +373,10 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         {
             [self informParentVCForNewPost:inPost];
         }
+        else
+        {
+            [self postIsPending:inPost];
+        }
         
         
         //We are doing that because in iOS 8 there is a weird issue with keyboard.
@@ -497,6 +502,23 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     }
     
     return inPost;
+}
+
+/**
+ Adds a new post to pending posts manager and informs Campus Wall to reload data
+ in the table view.
+ 
+ @param post the pending post.
+ 
+ */
+- (void)postIsPending:(GLPPost *)post
+{
+    post.pending = YES;
+    [[GLPPendingPostsManager sharedInstance] addNewPendingPost:post];
+    
+    //Reload data in campus wall to let the pending cell appear.
+    
+    
 }
 
 - (void)informParentVCForNewPost:(GLPPost *)post

@@ -120,7 +120,7 @@
 + (NSArray *)findPostsWithUsersRemoteKey:(NSInteger)usersRemoteKey inDb:(FMDatabase *)db
 {
     
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND author_key = %d order by date desc, remoteKey desc limit %d", usersRemoteKey, kGLPNumberOfPosts];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND author_key = %d AND pending = 0 order by date desc, remoteKey desc limit %d", usersRemoteKey, kGLPNumberOfPosts];
 
     
     NSMutableArray *result = [NSMutableArray array];
@@ -295,6 +295,13 @@
 
 #pragma mark - Save operations
 
++ (void)saveOrUpdatePost:(GLPPost *)entity
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPPostDao save:entity inDb:db];
+    }];
+}
+
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db
 {
     NSInteger postKey = [GLPPostDao findPostKeyByRemoteKey:entity.remoteKey inDB:db];
@@ -317,7 +324,7 @@
     BOOL postSaved;
     
     if(entity.remoteKey == 0) {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date, location_lat, location_lon, location_name, location_address, group_remote_key) values(%@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d, %f, %f, %@, %@, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date, location_lat, location_lon, location_name, location_address, group_remote_key, pending) values(%@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d, %f, %f, %@, %@, %d, %d)",
                      entity.content,
                      date,
                      entity.likes,
@@ -333,9 +340,10 @@
                      entity.location.longitude,
                      entity.location.name,
                      entity.location.address,
-                     groupRemoteKey];
+                     groupRemoteKey,
+                     entity.pending];
     } else {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date, location_lat, location_lon, location_name, location_address, group_remote_key) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d, %f, %f, %@, %@, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date, location_lat, location_lon, location_name, location_address, group_remote_key, pending) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d, %f, %f, %@, %@, %d, %d)",
                      entity.remoteKey,
                      entity.content,
                      date,
@@ -352,7 +360,8 @@
                      entity.location.longitude,
                      entity.location.name,
                      entity.location.address,
-                     groupRemoteKey];
+                     groupRemoteKey,
+                     entity.pending];
     }
     
     
@@ -525,9 +534,9 @@
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
 
-        BOOL pendingPostUpdated = [db executeUpdateWithFormat:@"update posts set pending=%d where remoteKey=%d",
+        BOOL pendingPostUpdated = [db executeUpdateWithFormat:@"update posts set pending=%d where key=%d",
          [entity isPending],
-         entity.remoteKey];
+         entity.key];
         
         NSAssert(pendingPostUpdated, @"Pending post should exist in database before, in order to be updated.");
     }];
@@ -579,7 +588,7 @@
     
     int eventDate = [entity.dateEventStarts timeIntervalSince1970];
     
-    [db executeUpdateWithFormat:@"update posts set content=%@, date=%d, likes=%d, dislikes=%d, comments=%d, sendStatus=%d, author_key=%d, liked=%d, attending=%d, event_title=%@, event_date=%d where remoteKey=%d",
+    [db executeUpdateWithFormat:@"update posts set content=%@, date=%d, likes=%d, dislikes=%d, comments=%d, sendStatus=%d, author_key=%d, liked=%d, attending=%d, event_title=%@, event_date=%d, pending=%d where remoteKey=%d",
      entity.content,
      date,
      entity.likes,
@@ -591,6 +600,7 @@
      entity.attended,
      entity.eventTitle,
      eventDate,
+     entity.pending,
      entity.remoteKey];
     
     if([entity imagePost])
@@ -653,11 +663,11 @@
     
     if([[CategoryManager sharedInstance] selectedCategory] == nil)
     {
-        resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND group_remote_key = 0 order by date desc, remoteKey desc limit %d", kGLPNumberOfPosts];
+        resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND group_remote_key = 0 AND pending = 0 order by date desc, remoteKey desc limit %d", kGLPNumberOfPosts];
     }
     else
     {
-        resultSet = [db executeQueryWithFormat:@"select * from posts p INNER JOIN categories cat where p.sendStatus = 3 AND p.group_remote_key = 0 AND cat.tag = %@ AND cat.post_remote_key = p.remoteKey order by date desc, p.remoteKey desc limit %d", tag, kGLPNumberOfPosts];
+        resultSet = [db executeQueryWithFormat:@"select * from posts p INNER JOIN categories cat where p.sendStatus = 3 AND p.group_remote_key = 0 AND cat.tag = %@ AND cat.post_remote_key = p.remoteKey AND p.pending = 0 order by date desc, p.remoteKey desc limit %d", tag, kGLPNumberOfPosts];
     }
     
     return resultSet;
@@ -671,13 +681,13 @@
     
     if([[CategoryManager sharedInstance] selectedCategory] == nil)
     {
-        resultSet = [db executeQueryWithFormat:@"select * from posts where (date < %d and remoteKey is null) or (remoteKey is not null and remoteKey < %d) AND group_remote_key = 0 order by date desc, remoteKey desc limit %d", post.date, post.remoteKey, kGLPNumberOfPosts];
+        resultSet = [db executeQueryWithFormat:@"select * from posts where (date < %d and remoteKey is null) or (remoteKey is not null and remoteKey < %d) AND group_remote_key = 0 AND p.pending = 0 order by date desc, remoteKey desc limit %d", post.date, post.remoteKey, kGLPNumberOfPosts];
     }
     else
     {
 //        resultSet = [db executeQueryWithFormat:@"select * from posts p INNER JOIN categories cat where p.sendStatus = 3 AND p.group_remote_key = 0 AND cat.tag = %@ AND cat.post_remote_key = p.remoteKey order by date desc, p.remoteKey desc limit %d", tag, kGLPNumberOfPosts];
         
-        resultSet = [db executeQueryWithFormat:@"select * from posts p INNER JOIN categories cat where (p.date < %d AND p.remoteKey is null) OR (p.remoteKey is not null AND p.remoteKey < %d) AND p.group_remote_key = 0 AND cat.tag = %@ AND cat.post_remote_key = p.remoteKey order by p.date desc, p.remoteKey desc limit %d", post.date, post.remoteKey, tag, kGLPNumberOfPosts];
+        resultSet = [db executeQueryWithFormat:@"select * from posts p INNER JOIN categories cat where (p.date < %d AND p.remoteKey is null) OR (p.remoteKey is not null AND p.remoteKey < %d) AND p.group_remote_key = 0 AND p.pending = 0 AND cat.tag = %@ AND cat.post_remote_key = p.remoteKey order by p.date desc, p.remoteKey desc limit %d", post.date, post.remoteKey, tag, kGLPNumberOfPosts];
     }
     
     return resultSet;

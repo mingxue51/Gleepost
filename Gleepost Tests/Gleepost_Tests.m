@@ -12,6 +12,7 @@
 #import "GLPReviewHistoryDao.h"
 #import "GLPReviewHistory.h"
 #import "GLPPost.h"
+#import "GLPPostManager.h"
 
 @interface Gleepost_Tests : XCTestCase
 
@@ -83,7 +84,7 @@
 
 - (void)testReviewHistoryLocalDatabaseInteractions
 {
-    GLPPost *post = [[GLPPost alloc] initWithRemoteKey:2344];
+    GLPPost *post = [[GLPPost alloc] initWithRemoteKey:2145];
     
     GLPReviewHistory *reviewHistoryEx1 = [[GLPReviewHistory alloc] initWithActionString:@"rejected" withDateHappened:[NSDate date] andReason:@"This post is stupid"];
     
@@ -99,6 +100,11 @@
     
     NSArray *reviewHistories = [GLPReviewHistoryDao findReviewHistoryWithPostRemoteKey:post.remoteKey];
     
+    [GLPReviewHistoryDao removeReviewHistoryWithPost:post];
+    
+    post.pending = YES;
+    
+    [GLPPostManager updatePostPending:post];
     
     NSLog(@"Review histories %@", reviewHistories);
 
