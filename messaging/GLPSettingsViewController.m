@@ -46,7 +46,6 @@
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    
     [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismissModalView) andTarget:self];
         
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];

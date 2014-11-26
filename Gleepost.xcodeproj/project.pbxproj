@@ -589,6 +589,8 @@
 		58B3A2FF1A254F180082AE81 /* GLPPendingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58B3A2FD1A254F180082AE81 /* GLPPendingCell.xib */; };
 		58B3A3031A2552800082AE81 /* pending_cell_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 58B3A3011A2552800082AE81 /* pending_cell_arrow.png */; };
 		58B3A3041A2552800082AE81 /* pending_cell_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58B3A3021A2552800082AE81 /* pending_cell_background.png */; };
+		58B3A3081A25CBCE0082AE81 /* GLPCategoryTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B3A3061A25CBCE0082AE81 /* GLPCategoryTitleCell.m */; };
+		58B3A3091A25CBCE0082AE81 /* GLPCategoryTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58B3A3071A25CBCE0082AE81 /* GLPCategoryTitleCell.xib */; };
 		58B6BF481A22963F00113DB7 /* Gleepost_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B6BF471A22963F00113DB7 /* Gleepost_Tests.m */; };
 		58B74A8719C01541007E3416 /* GLPNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B74A8619C01541007E3416 /* GLPNotificationCell.m */; };
 		58B74A8A19C037DA007E3416 /* NotificationsOrganiserHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B74A8919C037DA007E3416 /* NotificationsOrganiserHelper.m */; };
@@ -1749,6 +1751,9 @@
 		58B3A2FD1A254F180082AE81 /* GLPPendingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPPendingCell.xib; sourceTree = "<group>"; };
 		58B3A3011A2552800082AE81 /* pending_cell_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pending_cell_arrow.png; sourceTree = "<group>"; };
 		58B3A3021A2552800082AE81 /* pending_cell_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pending_cell_background.png; sourceTree = "<group>"; };
+		58B3A3051A25CBCE0082AE81 /* GLPCategoryTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCategoryTitleCell.h; sourceTree = "<group>"; };
+		58B3A3061A25CBCE0082AE81 /* GLPCategoryTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCategoryTitleCell.m; sourceTree = "<group>"; };
+		58B3A3071A25CBCE0082AE81 /* GLPCategoryTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPCategoryTitleCell.xib; sourceTree = "<group>"; };
 		58B6BF431A22963F00113DB7 /* Gleepost Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Gleepost Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		58B6BF461A22963F00113DB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		58B6BF471A22963F00113DB7 /* Gleepost_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Gleepost_Tests.m; sourceTree = "<group>"; };
@@ -3807,6 +3812,8 @@
 		58B3A2FA1A254EEF0082AE81 /* CampusWall */ = {
 			isa = PBXGroup;
 			children = (
+				58B3A3051A25CBCE0082AE81 /* GLPCategoryTitleCell.h */,
+				58B3A3061A25CBCE0082AE81 /* GLPCategoryTitleCell.m */,
 				58B3A2FB1A254F180082AE81 /* GLPPendingCell.h */,
 				58B3A2FC1A254F180082AE81 /* GLPPendingCell.m */,
 			);
@@ -3817,6 +3824,7 @@
 			isa = PBXGroup;
 			children = (
 				58B3A2FD1A254F180082AE81 /* GLPPendingCell.xib */,
+				58B3A3071A25CBCE0082AE81 /* GLPCategoryTitleCell.xib */,
 			);
 			name = "Campus Wall";
 			sourceTree = "<group>";
@@ -5517,6 +5525,7 @@
 				58451C00199B3E42003B94D2 /* setting_right_arrow.png in Resources */,
 				58FB7CC018565AC1002C6A00 /* ProfileViewMutualTableViewCell.xib in Resources */,
 				581B534719766D2900BAFAE7 /* splash.png in Resources */,
+				58B3A3091A25CBCE0082AE81 /* GLPCategoryTitleCell.xib in Resources */,
 				58AD86C11892DFD100016C6D /* profile_botton.png in Resources */,
 				58837D2D18CDE70400EB3435 /* group_posts_selected.png in Resources */,
 				5890D225184790BA00E293DD /* chat_background_default.png in Resources */,
@@ -6228,6 +6237,7 @@
 				5890D2181847676A00E293DD /* GLPTheme.m in Sources */,
 				5844293918BCDCBD00DFEAF4 /* GLPCommentDao.m in Sources */,
 				58FD7066188FFDF90024E8A1 /* GLPCategoriesViewController.m in Sources */,
+				58B3A3081A25CBCE0082AE81 /* GLPCategoryTitleCell.m in Sources */,
 				588D8598195B5679002F516A /* TopTableViewCell.m in Sources */,
 				58ACD1D218F599E200BD576B /* DCIntrospect.m in Sources */,
 				58459FB919901CF300E7D3C2 /* FakeNavigationBarView.m in Sources */,
