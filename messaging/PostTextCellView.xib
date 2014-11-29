@@ -133,8 +133,13 @@
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RLb-ca-bOp">
                                 <rect key="frame" x="0.0" y="99" width="300" height="40"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ArO-RH-2I5">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ArO-RH-2I5">
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="1"/>
                                         <color key="backgroundColor" red="0.94117647058823528" green="0.94117647058823528" blue="0.94117647058823528" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="300" id="iBl-Lc-leY"/>
+                                            <constraint firstAttribute="height" constant="1" id="jzT-fs-qwa"/>
+                                        </constraints>
                                     </imageView>
                                     <button contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2ws-C9-0Cf">
                                         <rect key="frame" x="122" y="0.0" width="40" height="39"/>
@@ -207,8 +212,10 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstItem="ArO-RH-2I5" firstAttribute="top" secondItem="RLb-ca-bOp" secondAttribute="top" id="CiH-H4-3S4"/>
                                     <constraint firstAttribute="height" constant="40" id="DvI-7p-nIj"/>
                                     <constraint firstAttribute="width" constant="300" id="hr2-I3-GjY"/>
+                                    <constraint firstItem="ArO-RH-2I5" firstAttribute="leading" secondItem="RLb-ca-bOp" secondAttribute="leading" id="jov-Dh-w34"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="270" translatesAutoresizingMaskIntoConstraints="NO" id="rsP-k7-Q9f">
@@ -258,12 +265,20 @@
                                     <action selector="moreOptions:" destination="lnW-OL-CTy" eventType="touchUpInside" id="2CE-pH-Ojo"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o93-uF-j4R"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o93-uF-j4R">
+                                <rect key="frame" x="277" y="47" width="10" height="10"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="10" id="XJg-KZ-xqo"/>
+                                    <constraint firstAttribute="width" constant="10" id="sKZ-h5-juQ"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="160" id="DGF-8Y-R96" userLabel="Height - (160) - Main Post Views"/>
+                            <constraint firstAttribute="trailing" secondItem="o93-uF-j4R" secondAttribute="trailing" constant="13" id="jrV-Xg-HvP"/>
                             <constraint firstItem="rsP-k7-Q9f" firstAttribute="top" secondItem="fIE-VY-MZi" secondAttribute="bottom" constant="5" id="p08-tc-yCM"/>
+                            <constraint firstItem="RLb-ca-bOp" firstAttribute="top" secondItem="o93-uF-j4R" secondAttribute="bottom" constant="42" id="wQm-0H-DUB"/>
                             <constraint firstItem="RLb-ca-bOp" firstAttribute="top" secondItem="rsP-k7-Q9f" secondAttribute="bottom" constant="10" id="zyu-XP-4ra"/>
                         </constraints>
                         <connections>

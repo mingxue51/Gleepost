@@ -99,7 +99,7 @@
     
     NSDictionary *dictionary = [_settingsItems objectAtIndex:indexPath.row];
     
-    NSString *title = [dictionary objectForKey:[NSNumber numberWithInt:indexPath.row]];
+    NSString *title = [dictionary objectForKey:[NSNumber numberWithInteger:indexPath.row]];
     
     SettingCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     

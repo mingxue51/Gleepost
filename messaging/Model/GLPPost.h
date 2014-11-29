@@ -10,6 +10,7 @@
 #import "GLPUser.h"
 #import "SendStatus.h"
 #import "GLPGroup.h"
+#import "GLPReviewHistory.h"
 
 @class GLPVideo;
 @class GLPLocation;
@@ -52,6 +53,7 @@
 -(BOOL)imagePost;
 -(BOOL)isGroupPost;
 -(BOOL)isVideoPost;
+- (Action)pendingPostStatus;
 - (NSDate *)generateDateEventEnds;
 - (NSString *)locationDescription;
 

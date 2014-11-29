@@ -97,6 +97,9 @@
 		58272F7D1896804300CD7522 /* FakeNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58272F7C1896804300CD7522 /* FakeNavigationBar.xib */; };
 		58272F801896807900CD7522 /* FakeNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 58272F7F1896807900CD7522 /* FakeNavigationBar.m */; };
 		58272F831896824500CD7522 /* fake_nav_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58272F821896824500CD7522 /* fake_nav_background.png */; };
+		58273F1A1A26895C00425605 /* GLPPendingPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58273F191A26895C00425605 /* GLPPendingPostsViewController.m */; };
+		58273F1E1A26977D00425605 /* GLPPostsOrganiserHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58273F1D1A26977D00425605 /* GLPPostsOrganiserHelper.m */; };
+		58273F211A26983800425605 /* PendingPostsOrganiserHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58273F201A26983800425605 /* PendingPostsOrganiserHelper.m */; };
 		5827B8901945C85F00DFC76E /* GBInfiniteScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5827B88D1945C85F00DFC76E /* GBInfiniteScrollView.m */; };
 		5827B8911945C85F00DFC76E /* GBInfiniteScrollViewPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5827B88F1945C85F00DFC76E /* GBInfiniteScrollViewPage.m */; };
 		582840FB180DBFBC000F3CF7 /* CurrentChatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 582840FA180DBFBC000F3CF7 /* CurrentChatButton.m */; };
@@ -1067,6 +1070,12 @@
 		58272F7E1896807900CD7522 /* FakeNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeNavigationBar.h; sourceTree = "<group>"; };
 		58272F7F1896807900CD7522 /* FakeNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeNavigationBar.m; sourceTree = "<group>"; };
 		58272F821896824500CD7522 /* fake_nav_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fake_nav_background.png; sourceTree = "<group>"; };
+		58273F181A26895C00425605 /* GLPPendingPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPendingPostsViewController.h; sourceTree = "<group>"; };
+		58273F191A26895C00425605 /* GLPPendingPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPendingPostsViewController.m; sourceTree = "<group>"; };
+		58273F1C1A26977D00425605 /* GLPPostsOrganiserHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostsOrganiserHelper.h; sourceTree = "<group>"; };
+		58273F1D1A26977D00425605 /* GLPPostsOrganiserHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostsOrganiserHelper.m; sourceTree = "<group>"; };
+		58273F1F1A26983800425605 /* PendingPostsOrganiserHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PendingPostsOrganiserHelper.h; sourceTree = "<group>"; };
+		58273F201A26983800425605 /* PendingPostsOrganiserHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PendingPostsOrganiserHelper.m; sourceTree = "<group>"; };
 		5827B88C1945C85F00DFC76E /* GBInfiniteScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBInfiniteScrollView.h; sourceTree = "<group>"; };
 		5827B88D1945C85F00DFC76E /* GBInfiniteScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBInfiniteScrollView.m; sourceTree = "<group>"; };
 		5827B88E1945C85F00DFC76E /* GBInfiniteScrollViewPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GBInfiniteScrollViewPage.h; sourceTree = "<group>"; };
@@ -2481,6 +2490,21 @@
 				588794BE18A85133002EEC8A /* whitney-medium.ttf */,
 			);
 			name = Fonts;
+			sourceTree = "<group>";
+		};
+		58273F1B1A26975900425605 /* Organisers */ = {
+			isa = PBXGroup;
+			children = (
+				58B74A8819C037DA007E3416 /* NotificationsOrganiserHelper.h */,
+				58B74A8919C037DA007E3416 /* NotificationsOrganiserHelper.m */,
+				5887C7DF19FDA52A004441B9 /* AttendingPostsOrganiserHelper.h */,
+				5887C7E019FDA52A004441B9 /* AttendingPostsOrganiserHelper.m */,
+				58273F1C1A26977D00425605 /* GLPPostsOrganiserHelper.h */,
+				58273F1D1A26977D00425605 /* GLPPostsOrganiserHelper.m */,
+				58273F1F1A26983800425605 /* PendingPostsOrganiserHelper.h */,
+				58273F201A26983800425605 /* PendingPostsOrganiserHelper.m */,
+			);
+			name = Organisers;
 			sourceTree = "<group>";
 		};
 		5827B88B1945C82300DFC76E /* GBInfiniteScrollView TO BE DELETED */ = {
@@ -4414,6 +4438,8 @@
 				586866E719B6B7AB00803512 /* GLPMapViewAnnotation.m */,
 				5892F11819FB4FAE00B6778F /* GLPAttendingPostsViewController.h */,
 				5892F11919FB4FAE00B6778F /* GLPAttendingPostsViewController.m */,
+				58273F181A26895C00425605 /* GLPPendingPostsViewController.h */,
+				58273F191A26895C00425605 /* GLPPendingPostsViewController.m */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -4989,6 +5015,7 @@
 		80AB898217C2A0560053E784 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				58273F1B1A26975900425605 /* Organisers */,
 				80AB898317C2A0660053E784 /* KeyboardHelper.h */,
 				80AB898417C2A0660053E784 /* KeyboardHelper.m */,
 				80CE307217CE4E4D003007D0 /* JsonParser.h */,
@@ -5021,12 +5048,8 @@
 				5831B41018DB28BB00574A53 /* UIImage+Alpha.m */,
 				5824C42B18E5B4D8006D4484 /* TableViewHelper.h */,
 				5824C42C18E5B4D8006D4484 /* TableViewHelper.m */,
-				58B74A8819C037DA007E3416 /* NotificationsOrganiserHelper.h */,
-				58B74A8919C037DA007E3416 /* NotificationsOrganiserHelper.m */,
 				58B7815E19F9E6B0003E0F9A /* GLPImageHelper.h */,
 				58B7815F19F9E6B0003E0F9A /* GLPImageHelper.m */,
-				5887C7DF19FDA52A004441B9 /* AttendingPostsOrganiserHelper.h */,
-				5887C7E019FDA52A004441B9 /* AttendingPostsOrganiserHelper.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -5960,6 +5983,7 @@
 				581C311A188EFE0400BAA082 /* GLPCategoryDaoParser.m in Sources */,
 				58DB02871810391F001C021A /* NSMutableArray+QueueAdditions.m in Sources */,
 				5841315C17FEE97D00A3278D /* NewCommentView.m in Sources */,
+				58273F1A1A26895C00425605 /* GLPPendingPostsViewController.m in Sources */,
 				584FA5F319B5199C00FBA61F /* PBJGLProgram.m in Sources */,
 				586866E819B6B7AB00803512 /* GLPMapViewAnnotation.m in Sources */,
 				80C8BA5018103203004F70DB /* GLPEntity.m in Sources */,
@@ -6012,6 +6036,7 @@
 				5851957D18CFA26E00F8CE46 /* GLPiOSSupportHelper.m in Sources */,
 				5844293C18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m in Sources */,
 				58774D41196568350034A1C6 /* GLPSearchBar.m in Sources */,
+				58273F1E1A26977D00425605 /* GLPPostsOrganiserHelper.m in Sources */,
 				8087E42D180EC02E00938264 /* _Comment.m in Sources */,
 				580B8D3318577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m in Sources */,
 				5819E64E18C79F2C003361B3 /* SearchGroupCell.m in Sources */,
@@ -6234,6 +6259,7 @@
 				582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				581C311D188EFE6800BAA082 /* GLPCategory.m in Sources */,
 				80C8BA6018103545004F70DB /* GLPEntityDaoParser.m in Sources */,
+				58273F211A26983800425605 /* PendingPostsOrganiserHelper.m in Sources */,
 				5890D2181847676A00E293DD /* GLPTheme.m in Sources */,
 				5844293918BCDCBD00DFEAF4 /* GLPCommentDao.m in Sources */,
 				58FD7066188FFDF90024E8A1 /* GLPCategoriesViewController.m in Sources */,

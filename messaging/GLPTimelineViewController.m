@@ -72,6 +72,7 @@
 #import "GLPApprovalManager.h"
 #import "GLPPendingPostsManager.h"
 #import "GLPPendingCell.h"
+#import "GLPCategoryTitleCell.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -96,7 +97,7 @@
 @property (assign, nonatomic) BOOL firstLoadSuccessful;
 @property (assign, nonatomic) BOOL tableViewInScrolling;
 @property (assign, nonatomic) int insertedNewRowsCount; // count of new rows inserted
-@property (assign, nonatomic) int postIndexToReload;
+@property (assign, nonatomic) NSInteger postIndexToReload;
 
 // Not need because we use performselector which areis deprioritized during scrolling
 @property (assign, nonatomic) BOOL shouldLoadNewPostsAfterScrolling;
@@ -110,7 +111,7 @@
 @property (assign, nonatomic) BOOL commentCreated;
 
 //TODO: Remove after the integration of image posts.
-@property int selectedIndex;
+@property NSInteger selectedIndex;
 
 @property (strong, nonatomic) UITabBarItem *homeTabbarItem;
 
@@ -1873,17 +1874,19 @@ const float TOP_OFFSET = 180.0f;
 //        return;
 //    }
     
-    if(indexPath.row >= _posts.count)
+    NSUInteger currentRow = [self postCurrentIndexWithIndexPath:indexPath];
+    
+    if(currentRow >= _posts.count)
     {
         //TODO: If this contition is YES then the app is going to crash.
         //That's why we have a temporary return.
         
-        DDLogDebug(@"Avoid crash didEndDisplayingCell index path: %d. Posts count: %d", indexPath.row, _posts.count);
+        DDLogDebug(@"Avoid crash didEndDisplayingCell index path: %ld. Posts count: %lu", (long)indexPath.row, (unsigned long)_posts.count);
 
         return;
     }
     
-    GLPPost *post = _posts[indexPath.row];
+    GLPPost *post = _posts[currentRow];
     
     if(![[cell class] isSubclassOfClass:[GLPPostCell class]])
     {
@@ -1922,7 +1925,9 @@ const float TOP_OFFSET = 180.0f;
     {
         if(indexPath.row == 0 || indexPath.row == 1)
         {
-            DDLogDebug(@"Pending post cell selected.");
+            //Navigate to pending posts view.
+            [self performSegueWithIdentifier:@"view pending posts" sender:self];
+            
             return;
         }
     }
@@ -1930,7 +1935,7 @@ const float TOP_OFFSET = 180.0f;
     {
         if(indexPath.row == 0)
         {
-            DDLogDebug(@"Pending post cell selected.");
+            //The title cell selected.
             return;
         }
     }
@@ -1956,14 +1961,14 @@ const float TOP_OFFSET = 180.0f;
         }
         else if (indexPath.row == 1)
         {
-            return 40.0;
+            return CATEGORY_TITLE_HEIGHT;
         }
     }
     else
     {
         if(indexPath.row == 0)
         {
-            return 40.0;
+            return CATEGORY_TITLE_HEIGHT;
         }
     }
     
@@ -2024,6 +2029,11 @@ const float TOP_OFFSET = 180.0f;
 - (NSInteger)postCurrentIndexWithIndexPath:(NSIndexPath *)indexPath
 {
     return ([[GLPPendingPostsManager sharedInstance] arePendingPosts] ? indexPath.row - 2 : indexPath.row - 1);
+}
+
+- (NSInteger)convertArrayIndexToTableViewIndex:(NSInteger)arrayIndex
+{
+    return ([[GLPPendingPostsManager sharedInstance] arePendingPosts] ? arrayIndex + 2 : arrayIndex + 1);
 }
 
 -(void) updateTableWithNewRowCount:(int)rowCount
@@ -2169,26 +2179,7 @@ const float TOP_OFFSET = 180.0f;
     [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
     
     self.isLoading = NO;
-
-    
-//    for(index = 0; index < self.posts.count; ++index)
-//    {
-//        GLPPost *p = [self.posts objectAtIndex:index];
-//        
-//        if(p.remoteKey == post.remoteKey)
-//        {
-//            [self.posts removeObject:p];
-//            
-//            [self removeTableViewPostWithIndex:index];
-//            
-//
-//            return;
-//        }
-//    }
-    
 }
-
-
 
 #pragma mark - Change category
 
@@ -2196,7 +2187,6 @@ const float TOP_OFFSET = 180.0f;
 {
      [self loadInitialPosts];
 }
-
 
 #pragma mark - UI methods
 
@@ -2231,9 +2221,11 @@ const float TOP_OFFSET = 180.0f;
     {
         //Avoid any out of bounds access in array
         
-        if(path.row < self.posts.count)
+        NSUInteger row = [self postCurrentIndexWithIndexPath:path];
+        
+        if(row < self.posts.count)
         {
-            [visiblePosts addObject:[self.posts objectAtIndex:path.row]];
+            [visiblePosts addObject:[self.posts objectAtIndex:row]];
         }
         
     }

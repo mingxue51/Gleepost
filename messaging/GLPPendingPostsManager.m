@@ -115,6 +115,32 @@ static GLPPendingPostsManager *instance = nil;
     }];
 }
 
+- (void)loadPendingPostsWithLocalCallback:(void (^) (NSArray *localPosts))localCallback withRemoteCallback:(void (^) (BOOL success, NSArray *remotePosts))remoteCallback
+{
+    
+    localCallback(self.pendingPosts);
+    
+    [[WebClient sharedInstance] getPostsWaitingForApprovalCallbackBlock:^(BOOL success, NSArray *pendingPosts) {
+        
+        if(success)
+        {
+            self.pendingPosts = pendingPosts.mutableCopy;
+            
+            //Update local database if there is a need.
+            [self updateLocalDatabase];
+            
+            remoteCallback(YES, self.pendingPosts.mutableCopy);
+            
+            DDLogDebug(@"Pending posts from server %@", pendingPosts);
+        }
+        else
+        {
+            remoteCallback(NO, nil);
+        }
+        
+    }];
+}
+
 #pragma mark - Database
 
 /**

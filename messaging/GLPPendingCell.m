@@ -8,6 +8,8 @@
 
 #import "GLPPendingCell.h"
 #import "GLPPendingPostsManager.h"
+#import "ShapeFormatterHelper.h"
+#import "AppearanceHelper.h"
 
 @interface GLPPendingCell ()
 
@@ -34,11 +36,24 @@
 
 - (void)formatBackgroundImageView
 {
+    [ShapeFormatterHelper setBorderToView:_backgroundImageView withColour:[AppearanceHelper borderGleepostColour] andWidth:1.5];
+    
+    [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:4];
 }
 
 - (void)configureCell
 {
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+}
+
+- (void)configureNumberLabelWidthWithText:(NSString *)text
+{
+    UIFont *font = [UIFont fontWithName:GLP_TITLE_FONT size:19.0];
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text attributes:@{NSFontAttributeName: font}];
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){CGFLOAT_MAX, CGFLOAT_MAX}
+                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                               context:nil];
+    [self.pendingPostsLabelWidth setConstant:rect.size.width + 1.0];
 }
 
 #pragma mark - Accessors
@@ -47,12 +62,16 @@
 {
     NSInteger numberOfPendingPosts = [[GLPPendingPostsManager sharedInstance] numberOfPendingPosts];
     
-    [self.numberPendingPostsLabel setText:[@(numberOfPendingPosts) stringValue]];
+    NSString *stringForLabel = [NSString stringWithFormat:@"(%@)", [@(numberOfPendingPosts) stringValue]];
+    
+    [self.numberPendingPostsLabel setText:stringForLabel];
+    
+    [self configureNumberLabelWidthWithText:stringForLabel];
 }
 
 + (CGFloat)cellHeight
 {
-    return 50.0;
+    return 40.0;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

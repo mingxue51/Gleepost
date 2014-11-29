@@ -95,6 +95,21 @@
     return NO;
 }
 
+- (Action)pendingPostStatus
+{
+    if(!self.reviewHistory || self.reviewHistory.count == 0)
+    {
+        return kPending;
+    }
+    else
+    {
+        GLPReviewHistory *firstReviewHistory = self.reviewHistory[0];
+        
+        return [firstReviewHistory action];
+    }
+    
+}
+
 - (NSDate *)generateDateEventEnds
 {
     return [DateFormatterHelper addHours:2 toDate:_dateEventStarts];

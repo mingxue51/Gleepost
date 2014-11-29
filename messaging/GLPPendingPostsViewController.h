@@ -1,5 +1,5 @@
 //
-//  GLPCategoryTitleCell.h
+//  GLPPendingPostsViewController.h
 //  Gleepost
 //
 //  Created by Silouanos on 26/11/14.
@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface GLPCategoryTitleCell : UITableViewCell
-
-extern const CGFloat CATEGORY_TITLE_HEIGHT;
+@interface GLPPendingPostsViewController : UIViewController
 
 @end

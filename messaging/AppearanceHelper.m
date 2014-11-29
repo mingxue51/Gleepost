@@ -188,13 +188,17 @@
 
 +(UIColor*)defaultGleepostColour
 {
-//    return [UIColor colorWithRed:0.0/255.0f green:201.0/255.0f blue:201.0/255.0f alpha:1.0];
     return [UIColor colorWithRed:28.0/255.0f green:207.0/255.0f blue:208.0/255.0f alpha:1.0];
 }
 
 + (UIColor *)grayGleepostColour
 {
     return [UIColor colorWithR:152 withG:152 andB:152];
+}
+
++ (UIColor *)borderGleepostColour
+{
+    return [UIColor colorWithR:210.0 withG:210.0 andB:210.0];
 }
 
 + (UIColor *)redGleepostColour

@@ -13,7 +13,8 @@
 typedef NS_ENUM(NSUInteger, Action) {
     kRejected = 1,
     kApproved = 2,
-    kEdited = 3
+    kEdited = 3,
+    kPending = 4
 };
 
 @interface GLPReviewHistory : GLPEntity

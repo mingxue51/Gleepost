@@ -307,9 +307,7 @@
 - (void)updateRealImage:(NSNotification *)notification
 {
     GLPPost *currentPost = nil;
-    
-    int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:_events];
-    
+        
     NSIndexPath *postIndexPath = [_attendingPostsOrganiserHelper indexPathWithPost:currentPost];
         
     if(currentPost)

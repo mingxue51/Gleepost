@@ -17,8 +17,10 @@
 
 + (GLPPendingPostsManager *)sharedInstance;
 
+- (NSMutableArray *)pendingPosts;
 - (NSInteger)numberOfPendingPosts;
 - (BOOL)arePendingPosts;
+- (void)loadPendingPostsWithLocalCallback:(void (^) (NSArray *localPosts))localCallback withRemoteCallback:(void (^) (BOOL success, NSArray *remotePosts))remoteCallback;
 - (void)addNewPendingPost:(GLPPost *)pendingPost;
 - (void)updatePendingPost:(GLPPost *)pendingPost;
 - (void)removePendingPost:(GLPPost *)pendingPost;

@@ -1761,9 +1761,7 @@ static WebClient *instance = nil;
 - (void)getPostsWaitingForApprovalCallbackBlock:(void (^) (BOOL success, NSArray *pendingPosts))callbackBlock
 {
     [self getPath:@"profile/pending" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        DDLogDebug(@"Pending posts response object %@", responseObject);
-        
+                
         callbackBlock(YES, [RemoteParser parsePendingPostsFromJson:responseObject]);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

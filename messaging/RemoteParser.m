@@ -150,8 +150,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     
-    DDLogDebug(@"Review histories array %@", reviewHistories);
-    
     return reviewHistories;
 }
 
