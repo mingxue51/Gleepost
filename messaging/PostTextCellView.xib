@@ -265,20 +265,11 @@
                                     <action selector="moreOptions:" destination="lnW-OL-CTy" eventType="touchUpInside" id="2CE-pH-Ojo"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o93-uF-j4R">
-                                <rect key="frame" x="277" y="47" width="10" height="10"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="10" id="XJg-KZ-xqo"/>
-                                    <constraint firstAttribute="width" constant="10" id="sKZ-h5-juQ"/>
-                                </constraints>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="160" id="DGF-8Y-R96" userLabel="Height - (160) - Main Post Views"/>
-                            <constraint firstAttribute="trailing" secondItem="o93-uF-j4R" secondAttribute="trailing" constant="13" id="jrV-Xg-HvP"/>
                             <constraint firstItem="rsP-k7-Q9f" firstAttribute="top" secondItem="fIE-VY-MZi" secondAttribute="bottom" constant="5" id="p08-tc-yCM"/>
-                            <constraint firstItem="RLb-ca-bOp" firstAttribute="top" secondItem="o93-uF-j4R" secondAttribute="bottom" constant="42" id="wQm-0H-DUB"/>
                             <constraint firstItem="RLb-ca-bOp" firstAttribute="top" secondItem="rsP-k7-Q9f" secondAttribute="bottom" constant="10" id="zyu-XP-4ra"/>
                         </constraints>
                         <connections>
@@ -290,7 +281,6 @@
                             <outlet property="contentLbl" destination="rsP-k7-Q9f" id="QLL-Vb-s8V"/>
                             <outlet property="distanceFromTop" destination="sQF-Y3-fHR" id="6fg-nl-ozx"/>
                             <outlet property="goingBtn" destination="l4K-xD-V8U" id="z4g-0M-gBv"/>
-                            <outlet property="indicatorImageView" destination="o93-uF-j4R" id="LB8-Xe-DgO"/>
                             <outlet property="likeBtn" destination="SMo-Nc-dV3" id="6KB-HP-MQy"/>
                             <outlet property="likesLbl" destination="Guf-kH-3QR" id="Bhh-S9-3P7"/>
                             <outlet property="mainViewHeight" destination="DGF-8Y-R96" id="LTD-fR-Vgz"/>
