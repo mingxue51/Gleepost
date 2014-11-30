@@ -11,6 +11,7 @@
 #import "GLPPost.h"
 #import "GLPPostCell.h"
 #import "CommentCell.h"
+#import "UINavigationBar+Utils.h"
 
 @interface GLPViewPendingPostViewController () <UITableViewDataSource, UITabBarDelegate, GLPPostCellDelegate>
 
@@ -27,6 +28,8 @@
     [self registerTableViewCells];
     
     [self loadCommentsIfExist];
+    
+    [self configureNavigationBar];
 }
 
 #pragma mark - Configuration
@@ -50,6 +53,11 @@
 - (void)loadCommentsIfExist
 {
     
+}
+
+- (void)configureNavigationBar
+{
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"EDIT" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(editPendingPost) andTarget:self];
 }
 
 #pragma mark - Table view data source
@@ -166,6 +174,39 @@
         
         return [CommentCell getCellHeightWithContent:comment.content image:NO];
     }
+}
+
+#pragma mark - Selectors
+
+- (void)editPendingPost
+{
+    DDLogDebug(@"Edit post.");
+}
+
+#pragma mark - GLPPostCellDelegate
+
+//TODO: Implement the following methods.
+
+- (void)showLocationWithLocation:(GLPLocation *)location
+{
+    DDLogDebug(@"showLocationWithLocation");
+}
+
+- (void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
+{
+    DDLogDebug(@"elementTouchedWithRemoteKey");
+}
+
+- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
+{
+    //TODO: Pending implementation.
+}
+
+#pragma mark - RemovePostCellDelegate
+
+-(void)removePostWithPost:(GLPPost *)post
+{
+    
 }
 
 - (void)didReceiveMemoryWarning {

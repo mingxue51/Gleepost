@@ -230,6 +230,11 @@
     DDLogDebug(@"elementTouchedWithRemoteKey");
 }
 
+- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
+{
+    //TODO: Pending implementation.
+}
+
 #pragma mark - RemovePostCellDelegate
 
 -(void)removePostWithPost:(GLPPost *)post
