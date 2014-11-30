@@ -473,6 +473,7 @@
 		5890249B195DF02700084E2F /* PrivateProfileTopViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5890249A195DF02700084E2F /* PrivateProfileTopViewCell.xib */; };
 		5890249E195DF05C00084E2F /* PrivateProfileTopViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890249D195DF05C00084E2F /* PrivateProfileTopViewCell.m */; };
 		589024A0195DF1ED00084E2F /* message_button_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 5890249F195DF1ED00084E2F /* message_button_old.png */; };
+		5890D0401A2AA7D10088C302 /* GLPViewPendingPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D03F1A2AA7D10088C302 /* GLPViewPendingPostViewController.m */; };
 		5890D214184763E700E293DD /* GLPThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D213184763E700E293DD /* GLPThemeManager.m */; };
 		5890D2181847676A00E293DD /* GLPTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D2171847676A00E293DD /* GLPTheme.m */; };
 		5890D21B1847692B00E293DD /* GLPStanfordTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D21A1847692B00E293DD /* GLPStanfordTheme.m */; };
@@ -1597,6 +1598,8 @@
 		5890249C195DF05C00084E2F /* PrivateProfileTopViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivateProfileTopViewCell.h; sourceTree = "<group>"; };
 		5890249D195DF05C00084E2F /* PrivateProfileTopViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivateProfileTopViewCell.m; sourceTree = "<group>"; };
 		5890249F195DF1ED00084E2F /* message_button_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message_button_old.png; sourceTree = "<group>"; };
+		5890D03E1A2AA7D10088C302 /* GLPViewPendingPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPViewPendingPostViewController.h; sourceTree = "<group>"; };
+		5890D03F1A2AA7D10088C302 /* GLPViewPendingPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPViewPendingPostViewController.m; sourceTree = "<group>"; };
 		5890D212184763E700E293DD /* GLPThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPThemeManager.h; sourceTree = "<group>"; };
 		5890D213184763E700E293DD /* GLPThemeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPThemeManager.m; sourceTree = "<group>"; };
 		5890D2161847676A00E293DD /* GLPTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTheme.h; sourceTree = "<group>"; };
@@ -4440,6 +4443,8 @@
 				5892F11919FB4FAE00B6778F /* GLPAttendingPostsViewController.m */,
 				58273F181A26895C00425605 /* GLPPendingPostsViewController.h */,
 				58273F191A26895C00425605 /* GLPPendingPostsViewController.m */,
+				5890D03E1A2AA7D10088C302 /* GLPViewPendingPostViewController.h */,
+				5890D03F1A2AA7D10088C302 /* GLPViewPendingPostViewController.m */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -6153,6 +6158,7 @@
 				80AB897717C28D750053E784 /* ViewTopicViewController.m in Sources */,
 				584FA5F519B5199C00FBA61F /* PBJVision.m in Sources */,
 				58DF415E186463E000D53723 /* GLPPostUploaderManager.m in Sources */,
+				5890D0401A2AA7D10088C302 /* GLPViewPendingPostViewController.m in Sources */,
 				581AAF0B181DA08D00F091A9 /* LongPollContactsOperation.m in Sources */,
 				805358CC182EF37600579079 /* GLPPostDao.m in Sources */,
 				5828D7B0181E9B5E002D71F9 /* GLPLiveConversationDaoParser.m in Sources */,

@@ -130,9 +130,11 @@
     
     for(NSString *key in headerPosts)
     {
-        NSArray *notifications = [headerPosts objectForKey:key];
+        NSArray *posts = [headerPosts objectForKey:key];
         
-        return [notifications objectAtIndex:postIndex];
+        DDLogDebug(@"Organise post %@", [[posts objectAtIndex:postIndex] reviewHistory]);
+        
+        return [posts objectAtIndex:postIndex];
     }
     
     return nil;

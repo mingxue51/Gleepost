@@ -529,6 +529,11 @@ const float TOP_OFFSET = 180.0f;
     
     index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
     
+    if(index == -1)
+    {
+        return;
+    }
+    
     if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
     {
         index+= 2;
@@ -537,12 +542,8 @@ const float TOP_OFFSET = 180.0f;
     {
         ++index;
     }
-    
-    //TODO: This now doesn't work.
-    if(index != -1)
-    {
-        [self removeTableViewPostWithIndex:index];
-    }
+
+    [self removeTableViewPostWithIndex:index];
 }
 
 #pragma mark - Init config

@@ -15,12 +15,14 @@
 #import "AppearanceHelper.h"
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
+#import "GLPViewPendingPostViewController.h"
+#import "GLPReviewHistory.h"
 
 @interface GLPPendingPostsViewController () <UITableViewDataSource, UITableViewDelegate, GLPPostCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) PendingPostsOrganiserHelper *pendingPostOrganiser;
-@property (assign, nonatomic) GLPPost *selectedPost;
+@property (strong, nonatomic) GLPPost *selectedPost;
 
 @end
 
@@ -149,7 +151,7 @@
 {
     self.selectedPost = [_pendingPostOrganiser postWithIndex:indexPath.row andSectionIndex:indexPath.section];
     
-//    [self performSegueWithIdentifier:@"view post" sender:self];
+    [self performSegueWithIdentifier:@"view post" sender:self];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -247,6 +249,13 @@
         
         [[GLPPostImageLoader sharedInstance] addPostsImages: [[GLPPendingPostsManager sharedInstance] pendingPosts]];
         
+        DDLogDebug(@"Local posts history");
+        
+        for (GLPPost *p in localPosts)
+        {
+            DDLogDebug(@"Post %@", p.reviewHistory);
+        }
+        
         [_tableView reloadData];
         
     } withRemoteCallback:^(BOOL success, NSArray *remotePosts) {
@@ -256,6 +265,13 @@
             [self.pendingPostOrganiser organisePosts:remotePosts];
             
             [[GLPPostImageLoader sharedInstance] addPostsImages: [[GLPPendingPostsManager sharedInstance] pendingPosts]];
+            
+            DDLogDebug(@"Local posts history");
+            
+            for (GLPPost *p in remotePosts)
+            {
+                DDLogDebug(@"Post %@", p.reviewHistory);
+            }
             
             [_tableView reloadData];
         }
@@ -273,14 +289,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"view post"])
+    {
+        GLPViewPendingPostViewController *viewPendingPostVC = segue.destinationViewController;
+        viewPendingPostVC.pendingPost = self.selectedPost;
+     }
 }
-*/
+
 
 @end

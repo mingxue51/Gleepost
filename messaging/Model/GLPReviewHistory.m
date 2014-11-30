@@ -7,6 +7,7 @@
 //
 
 #import "GLPReviewHistory.h"
+#import "GLPComment.h"
 
 @implementation GLPReviewHistory
 
@@ -65,6 +66,25 @@
     {
         _action = kEdited;
     }
+}
+
+/**
+ Converts the GLPReviewHistory object to GLPComment to be able 
+ to be used in current comment UI implementation. See more
+ in GLPViewPendingPostViewController.
+ */
+- (GLPComment *)toComment
+{
+    GLPComment *comment = [[GLPComment alloc] init];
+    
+    comment.content = self.reason;
+    comment.date = self.dateHappened;
+    comment.author = self.user;
+    comment.sendStatus = kSendStatusSent;
+    
+    DDLogDebug(@"Review history content %@, Comment content %@", self.reason, comment.content);
+    
+    return comment;
 }
 
 - (NSString *)description

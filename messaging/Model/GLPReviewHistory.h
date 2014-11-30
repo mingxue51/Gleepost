@@ -9,6 +9,7 @@
 #import "GLPEntity.h"
 
 @class GLPUser;
+@class GLPComment;
 
 typedef NS_ENUM(NSUInteger, Action) {
     kRejected = 1,
@@ -28,5 +29,7 @@ typedef NS_ENUM(NSUInteger, Action) {
 - (id)initWithAction:(Action)action withDateHappened:(NSDate *)dateHappened andReason:(NSString *)reason;
 
 - (id)initWithActionString:(NSString *)actionStr andDateHappened:(NSDate *)dateHappened;
+
+- (GLPComment *)toComment;
 
 @end

@@ -2408,14 +2408,46 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="PENDING POSTS" id="gTz-xt-jcv"/>
+                    <navigationItem key="navigationItem" title="PENDING POSTS" id="gTz-xt-jcv">
+                        <barButtonItem key="backBarButtonItem" title=" " id="lcq-gK-ycW"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="qZf-oH-6aj" id="3mj-Kd-EIy"/>
+                        <segue destination="fMx-n7-554" kind="push" identifier="view post" id="8oh-gD-Cs7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zjO-N3-HeB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3255" y="-1376"/>
+        </scene>
+        <!--VIEW PENDING POST-->
+        <scene sceneID="yPV-D0-iSF">
+            <objects>
+                <viewController id="fMx-n7-554" customClass="GLPViewPendingPostViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BMS-vl-2ni">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="l8S-yw-0kR">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="fMx-n7-554" id="e7n-95-3X2"/>
+                                    <outlet property="delegate" destination="fMx-n7-554" id="GG9-ts-7UT"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="VIEW PENDING POST" id="daP-4c-96X"/>
+                    <connections>
+                        <outlet property="tableView" destination="l8S-yw-0kR" id="Sm2-BP-aUy"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ixF-Q2-kVy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3629" y="-1376"/>
         </scene>
         <!--Select Location View Controller-->
         <scene sceneID="OPc-Sm-XnV">
