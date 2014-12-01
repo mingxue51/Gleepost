@@ -754,7 +754,6 @@
                 [self.tableView reloadData];
             }
         }
-
         
     } andRemoteCallback:^(BOOL success, NSArray *remoteNotifications) {
         

@@ -109,7 +109,8 @@ static GLPPendingPostsManager *instance = nil;
             
             //Update local database if there is a need.
             [self updateLocalDatabase];
-            DDLogDebug(@"Pending posts from server %@", pendingPosts);
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
         }
         
     }];
@@ -135,6 +136,9 @@ static GLPPendingPostsManager *instance = nil;
             remoteCallback(YES, self.pendingPosts.mutableCopy);
             
             DDLogDebug(@"Pending posts from server %@", pendingPosts);
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
+
         }
         else
         {

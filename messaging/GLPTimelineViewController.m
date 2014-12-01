@@ -355,6 +355,8 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
+
 }
 
 - (void)showNetworkErrorViewIfNeeded
@@ -492,6 +494,17 @@ const float TOP_OFFSET = 180.0f;
         }
         
     });
+}
+
+/**
+ This method should be called from the NewPostViewController via an nsnotification in
+ order to update the number of pending posts.
+ */
+- (void)refreshPendingPostCell
+{
+    //TODO: Fixed that later: Refresh only the pending post cell.
+    
+    [self.tableView reloadData];
 }
 
 -(void)updateLikedPost:(NSNotification*)notification
@@ -715,6 +728,10 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewImagePostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPendingPostCell) name:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
+
+    
 }
 
 /** This notification called when user presses the going button on post. */
@@ -2123,7 +2140,9 @@ const float TOP_OFFSET = 180.0f;
     }
     else
     {
-        [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView reloadData];
+
+//        [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
     }
     
     //    [self scrollToTheTop];
@@ -2150,7 +2169,8 @@ const float TOP_OFFSET = 180.0f;
     tableViewOffset.y += heightForNewRows;
     
     [self.tableView setContentOffset:tableViewOffset animated:NO];
-    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadData];
+//    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
     
     [UIView setAnimationsEnabled:YES];
     

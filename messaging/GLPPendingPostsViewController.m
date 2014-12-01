@@ -193,11 +193,11 @@
 
 - (void)updateRealImage:(NSNotification *)notification
 {
-    GLPPost *currentPost = nil;
+    NSInteger currentPostRemoteKey = [notification.userInfo[@"RemoteKey"] integerValue];
     
-    NSIndexPath *postIndexPath = [_pendingPostOrganiser indexPathWithPost:currentPost];
+    NSIndexPath *postIndexPath = [_pendingPostOrganiser indexPathWithPostRemoteKey:currentPostRemoteKey];
     
-    if(currentPost)
+    if(postIndexPath)
     {
         [self refreshCellViewWithIndexPath:postIndexPath];
     }
@@ -209,35 +209,10 @@
     
     NSDictionary *dict = [notification userInfo];
     
-    NSInteger key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
     NSInteger remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
     NSString *urlImage = [dict objectForKey:@"imageUrl"];
     
     [self refreshCellViewWithIndexPath:[_pendingPostOrganiser addImageUrl:urlImage toPostWithRemoteKey:remoteKey]];
-    
-//    int index = 0;
-//    
-//    GLPPost *uploadedPost = nil;
-//    
-//    for(GLPPost* p in self.posts)
-//    {
-//        if(key == p.key)
-//        {
-//            if(urlImage && ![urlImage isEqualToString:@""])
-//            {
-//                p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
-//            }
-//            
-//            p.remoteKey = remoteKey;
-//            uploadedPost = p;
-//            //            p.tempImage = nil;
-//            break;
-//        }
-//        ++index;
-//    }
-    
-
-    
 }
 
 #pragma mark - Table view refresh methods

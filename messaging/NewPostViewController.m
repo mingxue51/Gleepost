@@ -517,7 +517,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [[GLPPendingPostsManager sharedInstance] addNewPendingPost:post];
     
     //Reload data in campus wall to let the pending cell appear.
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
     
 }
 

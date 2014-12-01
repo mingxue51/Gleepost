@@ -169,6 +169,32 @@
     return nil;
 }
 
+- (NSIndexPath *)indexPathWithPostRemoteKey:(NSInteger)postRemoteKey
+{
+    NSInteger row = 0;
+    NSInteger section = 0;
+    
+    for(NSDictionary *sectionDict in self.sections)
+    {
+        NSArray *postsSection = [sectionDict objectForKey:[[sectionDict allKeys] objectAtIndex:0]];
+        
+        for(GLPPost *p in postsSection)
+        {
+            if(p.remoteKey == postRemoteKey)
+            {
+                return [NSIndexPath indexPathForItem:row inSection:section];
+            }
+            ++row;
+        }
+        row = 0;
+        
+        ++section;
+    }
+    
+    return nil;
+}
+
+
 - (NSIndexPath *)removePost:(GLPPost *)post
 {
     NSIndexPath *indexPath = [self indexPathWithPost:post];

@@ -89,6 +89,7 @@
         {
             if(p.remoteKey == postRemoteKey)
             {
+                p.imagesUrls = [[NSArray alloc] initWithObjects:imageUrl, nil];
                 return [NSIndexPath indexPathForItem:row inSection:section];
             }
             ++row;
