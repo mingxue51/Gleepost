@@ -128,6 +128,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     {
         GLPPost *post = [RemoteParser parsePostFromJson:postJson];
         
+        
         post.reviewHistory = [RemoteParser parseReviewHistories:postJson[@"review_history"]];
         
         post.pending = YES;
@@ -158,8 +159,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     GLPReviewHistory *reviewHistory = [[GLPReviewHistory alloc] initWithActionString:jsonHistory[@"action"] withDateHappened:[RemoteParser parseDateFromString:jsonHistory[@"at"]] andReason:jsonHistory[@"reason"]];
     reviewHistory.user = [RemoteParser parseUserFromJson:jsonHistory[@"by"]];
     
-    DDLogDebug(@"Review history json %@", jsonHistory);
-
     return reviewHistory;
 }
 

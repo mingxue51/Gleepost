@@ -13,6 +13,7 @@
 
 @property (strong, nonatomic) NSString *firstHeader;
 @property (strong, nonatomic) NSString *secondHeader;
+@property (strong, nonatomic) NSMutableArray *sections;
 
 - (id)initWithFirstHeader:(NSString *)firstHeader andSecondHeader:(NSString *)secondHeader;
 - (void)addPost:(GLPPost *)post withHeader:(NSString *)header;

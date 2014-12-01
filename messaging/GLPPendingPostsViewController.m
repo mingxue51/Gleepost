@@ -95,11 +95,16 @@
 - (void)configureNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
+
 }
 
 - (void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
+
 }
 
 #pragma mark - Table view data source
@@ -198,6 +203,43 @@
     }
 }
 
+- (void)updatePostRemoteKeyAndImage:(NSNotification *)notification
+{
+    //TODO: Refactor this code. (Add it in Notification Helper to parse the notification).
+    
+    NSDictionary *dict = [notification userInfo];
+    
+    NSInteger key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
+    NSInteger remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
+    NSString *urlImage = [dict objectForKey:@"imageUrl"];
+    
+    [self refreshCellViewWithIndexPath:[_pendingPostOrganiser addImageUrl:urlImage toPostWithRemoteKey:remoteKey]];
+    
+//    int index = 0;
+//    
+//    GLPPost *uploadedPost = nil;
+//    
+//    for(GLPPost* p in self.posts)
+//    {
+//        if(key == p.key)
+//        {
+//            if(urlImage && ![urlImage isEqualToString:@""])
+//            {
+//                p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
+//            }
+//            
+//            p.remoteKey = remoteKey;
+//            uploadedPost = p;
+//            //            p.tempImage = nil;
+//            break;
+//        }
+//        ++index;
+//    }
+    
+
+    
+}
+
 #pragma mark - Table view refresh methods
 
 -(void)refreshCellViewWithIndexPath:(NSIndexPath *)indexPath
@@ -235,6 +277,11 @@
     //TODO: Pending implementation.
 }
 
+-(void)viewPostImage:(UIImage*)postImage
+{
+    
+}
+
 #pragma mark - RemovePostCellDelegate
 
 -(void)removePostWithPost:(GLPPost *)post
@@ -267,6 +314,8 @@
         
         if(success)
         {
+            [self.pendingPostOrganiser resetData];
+            
             [self.pendingPostOrganiser organisePosts:remotePosts];
             
             [[GLPPostImageLoader sharedInstance] addPostsImages: [[GLPPendingPostsManager sharedInstance] pendingPosts]];
@@ -275,7 +324,7 @@
             
             for (GLPPost *p in remotePosts)
             {
-                DDLogDebug(@"Post %@", p.reviewHistory);
+                DDLogDebug(@"Post %@", p.content);
             }
             
             [_tableView reloadData];

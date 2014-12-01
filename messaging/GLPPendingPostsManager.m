@@ -67,7 +67,7 @@ static GLPPendingPostsManager *instance = nil;
 {
     NSAssert([pendingPost isPending], @"Pending post's variable should be true");
     
-    [self.pendingPosts addObject:pendingPost];
+    [self.pendingPosts insertObject:pendingPost atIndex:0];
     
     [GLPPostDao updatePendingStatuswithPost:pendingPost];
 }
@@ -124,10 +124,13 @@ static GLPPendingPostsManager *instance = nil;
         
         if(success)
         {
-            self.pendingPosts = pendingPosts.mutableCopy;
+            
+//            self.pendingPosts = pendingPosts.mutableCopy;
             
             //Update local database if there is a need.
             [self updateLocalDatabase];
+            
+            [self addAnySendingPendingPostsWithRemotePendingPosts:pendingPosts.mutableCopy];
             
             remoteCallback(YES, self.pendingPosts.mutableCopy);
             
@@ -187,6 +190,31 @@ static GLPPendingPostsManager *instance = nil;
     }
     
     [self.pendingPosts removeObjectAtIndex:index];
+}
+
+- (void)addAnySendingPendingPostsWithRemotePendingPosts:(NSMutableArray *)remotePendingPosts
+{
+    NSMutableArray *oldPendingPosts = [[NSMutableArray alloc] init];
+    
+    //Find the posts with send status local.
+    
+    for(GLPPost *p in self.pendingPosts)
+    {
+        if(p.sendStatus == kSendStatusLocal)
+        {
+            DDLogDebug(@"Pending post %@", p.content);
+            [oldPendingPosts addObject:p];
+        }
+    }
+    
+    for(GLPPost *p in oldPendingPosts)
+    {
+        [remotePendingPosts setObject:p atIndexedSubscript:0];
+    }
+    
+    
+    self.pendingPosts = remotePendingPosts;
+    
 }
 
 @end

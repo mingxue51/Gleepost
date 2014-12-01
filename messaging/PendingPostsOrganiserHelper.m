@@ -33,17 +33,74 @@
 - (void)organisePosts:(NSArray *)posts
 {
     for(GLPPost *post in posts)
-    {        
+    {
+        
+        DDLogDebug(@"Content %@, Pending status %d", post.content, [post pendingPostStatus]);
+        
         if ([post pendingPostStatus] == kRejected)
         {
             [self addPost:post withHeader:self.firstHeader];
+            
+            if ([post.content isEqualToString:@"I'm so"])
+            {
+                DDLogDebug(@"Rejected I AM SO %@", post.reviewHistory);
+            }
         }
         else
         {
             [self addPost:post withHeader:self.secondHeader];
+            
+            if ([post.content isEqualToString:@"I'm so "])
+            {
+                DDLogDebug(@"Pending I AM SO %@", post.reviewHistory);
+            }
         }
     }
+    
+    [self fixPositionsHeadersInSectionArrayIfNeeded];
 }
+
+- (void)fixPositionsHeadersInSectionArrayIfNeeded
+{
+    NSDictionary *d = self.sections[0];
+    
+    if(![d objectForKey:self.firstHeader])
+    {
+        DDLogDebug(@"PROBLEM!!");
+        
+        NSDictionary *d1 = self.sections[0];
+        
+        self.sections[0] = self.sections[1];
+        self.sections[1] = d1;
+    }
+    
+}
+
+- (NSIndexPath *)addImageUrl:(NSString *)imageUrl toPostWithRemoteKey:(NSInteger)postRemoteKey
+{
+    NSInteger row = 0;
+    NSInteger section = 0;
+    
+    for(NSDictionary *sectionDict in self.sections)
+    {
+        NSArray *postsSection = [sectionDict objectForKey:[[sectionDict allKeys] objectAtIndex:0]];
+        
+        for(GLPPost *p in postsSection)
+        {
+            if(p.remoteKey == postRemoteKey)
+            {
+                return [NSIndexPath indexPathForItem:row inSection:section];
+            }
+            ++row;
+        }
+        row = 0;
+        
+        ++section;
+    }
+    
+    return nil;
+}
+
 
 
 

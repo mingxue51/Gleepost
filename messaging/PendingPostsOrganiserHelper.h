@@ -11,5 +11,6 @@
 @interface PendingPostsOrganiserHelper : GLPPostsOrganiserHelper
 
 - (void)organisePosts:(NSArray *)posts;
+- (NSIndexPath *)addImageUrl:(NSString *)imageUrl toPostWithRemoteKey:(NSInteger)postRemoteKey;
 
 @end

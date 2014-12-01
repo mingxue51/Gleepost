@@ -180,7 +180,7 @@
 
 - (void)editPendingPost
 {
-    DDLogDebug(@"Edit post.");
+    //
 }
 
 #pragma mark - GLPPostCellDelegate

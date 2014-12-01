@@ -13,7 +13,6 @@
 
 @interface GLPPostsOrganiserHelper ()
 
-@property (strong, nonatomic) NSMutableArray *sections;
 
 @end
 
@@ -37,7 +36,7 @@
 #pragma mark - Operations
 
 - (void)addPost:(GLPPost *)post withHeader:(NSString *)header
-{
+{    
     NSDictionary *currentDictionary = [self containsDictionaryWithHeader:header];
     
     if(currentDictionary)
@@ -52,6 +51,9 @@
         currentDictionary = [[NSDictionary alloc] initWithObjectsAndKeys:currentNotifications, header, nil];
         [_sections addObject:currentDictionary];
     }
+    
+    
+    
 }
 
 - (NSDictionary *)containsDictionaryWithHeader:(NSString *)header
@@ -71,6 +73,8 @@
 
 - (void)resetData
 {
+    DDLogDebug(@"Reset data sections %@", _sections);
+    
     [_sections removeAllObjects];
 }
 

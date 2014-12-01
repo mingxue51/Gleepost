@@ -9,6 +9,7 @@
 #import "PendingPostManager.h"
 #import "GLPCategory.h"
 #import "CategoryManager.h"
+#import "GLPPost.h"
 
 @interface PendingPostManager ()
 
@@ -97,6 +98,19 @@ static PendingPostManager *instance = nil;
     _pendingData = YES;
 
     _kindOfPost = kindOfPost;
+}
+
+/**
+ This method is used when user wants to edit a pending post.
+ It takes as parameter the pending post and sets all data to the 
+ singleton where they applied.
+ 
+ @param the pending post.
+ 
+ */
+- (void)setPendingPost:(GLPPost *)pendingPost
+{
+    
 }
 
 - (void)reset
