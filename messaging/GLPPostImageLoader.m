@@ -237,7 +237,10 @@ static GLPPostImageLoader *instance = nil;
             
             remoteKey = [self.imagesNotStarted dequeue];
             //Take the one item from queue.
-            //remoteKey = (NSNumber*)[[_loadingImages allKeys] objectAtIndex:0]; // Assumes 'message' is not empty
+            //remoteKey = (NSNumber*)[[_loadingImages allKeys] objectAtIndex:0];
+            // Assumes 'message' is not empty
+            
+            FLog(@"GLPPostImageLoader : consumeQueue loading images %@, remote key %d", self.loadingImages, remoteKey);
             urlStr = (NSString*)[self.loadingImages objectForKey:remoteKey];
             
 //            [_loadingImages removeObjectForKey:remoteKey];
@@ -247,7 +250,7 @@ static GLPPostImageLoader *instance = nil;
 //            NSLog(@"RemoteKey token: %@ with thread: %x", remoteKey, machTID);
         }
 
-        DDLogDebug(@"Url string %@", urlStr);
+        FLog(@"Url string %@", urlStr);
        
         NSURL *imageUrl = [NSURL URLWithString:urlStr];
         

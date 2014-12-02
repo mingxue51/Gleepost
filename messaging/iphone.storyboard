@@ -2420,10 +2420,10 @@
             </objects>
             <point key="canvasLocation" x="3255" y="-1376"/>
         </scene>
-        <!--VIEW PENDING POST-->
+        <!--VIEW POST-->
         <scene sceneID="yPV-D0-iSF">
             <objects>
-                <viewController id="fMx-n7-554" customClass="GLPViewPendingPostViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GLPViewPendingPostViewController" id="fMx-n7-554" customClass="GLPViewPendingPostViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="BMS-vl-2ni">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2440,7 +2440,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="VIEW PENDING POST" id="daP-4c-96X"/>
+                    <navigationItem key="navigationItem" title="VIEW POST" id="daP-4c-96X"/>
                     <connections>
                         <outlet property="tableView" destination="l8S-yw-0kR" id="Sm2-BP-aUy"/>
                     </connections>

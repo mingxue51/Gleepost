@@ -43,6 +43,7 @@
 
 + (void)showSaveImageMessage;
 + (void)showErrorSavingImageWithMessage:(NSString *)errorMessage;
++ (void)showWebSocketReceivedBadEvent:(NSString *)socketEvent;
 
 + (void)showChangedModeServerMessageWithServerMode:(NSString *)mode;
 

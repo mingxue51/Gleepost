@@ -161,6 +161,8 @@ const float ONE_LINE_LIMIT = 18.0;
 
 -(void)reloadMedia:(BOOL)loadMedia
 {
+    DDLogDebug(@"GLPPostCell : reloadMedia %d", loadMedia);
+    
     self.mediaNeedsToReload = loadMedia;
 }
 

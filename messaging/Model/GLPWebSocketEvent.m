@@ -7,6 +7,7 @@
 //
 
 #import "GLPWebSocketEvent.h"
+#import "WebClientHelper.h"
 
 @implementation GLPWebSocketEvent
 
@@ -33,7 +34,10 @@
         _type = kGLPWebSocketEventTypeRead;
     }
     else {
-        [NSException raise:@"GLPWebSocketEventType unknown" format:@"For string value: %@", string];
+        
+        [WebClientHelper showWebSocketReceivedBadEvent:string];
+        
+//        [NSException raise:@"GLPWebSocketEventType unknown" format:@"For string value: %@", string];
     }
 }
 

@@ -247,6 +247,13 @@
     [WebClientHelper showAlertWithTitle:@"Success!" andMessage:[NSString stringWithFormat:@"The server mode has been changed to %@. If you come from sign out progress please kill the app and launch again to let this change to be applied.", mode]];
 }
 
+#pragma mark - Testing
+
++ (void)showWebSocketReceivedBadEvent:(NSString *)socketEvent
+{
+    [WebClientHelper showAlertWithTitle:@"Error" andMessage:[NSString stringWithFormat:@"Unexpected event in socket %@", socketEvent]];
+}
+
 #pragma mark - Calendar
 
 + (void)showErrorSavingEventToCalendar

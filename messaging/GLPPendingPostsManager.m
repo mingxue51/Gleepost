@@ -161,6 +161,11 @@ static GLPPendingPostsManager *instance = nil;
     }];
 }
 
+- (void)clean
+{
+    [self.pendingPosts removeAllObjects];
+}
+
 #pragma mark - Database
 
 /**

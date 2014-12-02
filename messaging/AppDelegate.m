@@ -50,6 +50,7 @@
 #import "GLPiOSSupportHelper.h"
 #import "FileLogger.h"
 #import "GLPThemeManager.h"
+#import "GLPViewPendingPostViewController.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -238,7 +239,6 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     
     
     if(application.applicationState == UIApplicationStateInactive) {
-        
 
         [self receivePushNotification:userInfo];
     }
@@ -263,7 +263,12 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
             
         case kPNKindLikedYourPost:
         case kPNKindCommentedYourPost:
+        case kPNKindPostApproved:
             [self navigateToPostWithPNNotification:pushNotification];
+            break;
+            
+        case kPNKindPostRejected:
+            [self navigateToPendingPostWithPNNotification:pushNotification];
             break;
             
         case kPNKindNewAppVersion:
@@ -347,6 +352,45 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
         [_tabBarController setSelectedIndex:3];
     }
     
+    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[3] class]));
+    UINavigationController *navVC = _tabBarController.viewControllers[3];
+    
+    DDLogInfo(@"Profile VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+    GLPProfileViewController *profileVC = navVC.viewControllers[0];
+    
+    //Navigate to notifications.
+    profileVC.fromPushNotification = YES;
+    
+    ViewPostViewController *viewPostVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"ViewPostViewController"];
+    
+    viewPostVC.isViewPostFromNotifications = YES;
+    
+    DDLogDebug(@"Post Remote Key push notification: %d", (int)postRemoteKey);
+
+    
+    viewPostVC.post = [[GLPPost alloc] initWithRemoteKey:postRemoteKey];
+    viewPostVC.post.content = @"Loading...";
+    //Add loaded post to view post VC.
+    [viewPostVC setHidesBottomBarWhenPushed:YES];
+    [navVC setViewControllers:@[profileVC, viewPostVC] animated:YES];
+//    [self navigateToPostWithPostRemoteKey:postRemoteKey withProfileVC:profileVC withViewPostVC:viewPostVC andBasicVC:navVC];
+}
+
+- (void)navigateToPendingPostWithPNNotification:(GLPPushNotification *)pushNotification
+{
+    NSInteger postRemoteKey = [pushNotification.postId integerValue];
+    
+    if(!_tabBarController) {
+        DDLogError(@"Cannot find tab bar VC, abort");
+        return;
+    }
+    
+    if(_tabBarController.selectedIndex != 3) {
+        UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+        [currentNavigationVC popToRootViewControllerAnimated:NO];
+        
+        [_tabBarController setSelectedIndex:3];
+    }
     
     DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[3] class]));
     UINavigationController *navVC = _tabBarController.viewControllers[3];
@@ -354,20 +398,22 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     DDLogInfo(@"Profile VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
     GLPProfileViewController *profileVC = navVC.viewControllers[0];
     
-
-    
     //Navigate to notifications.
     profileVC.fromPushNotification = YES;
     
-    ViewPostViewController *viewPostVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"ViewPostViewController"];
     
-    viewPostVC.isViewPostNotifications = YES;
+    GLPViewPendingPostViewController *viewPendingVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GLPViewPendingPostViewController"];
     
+    viewPendingVC.isViewPostFromNotifications = YES;
     
     DDLogDebug(@"Post Remote Key push notification: %d", (int)postRemoteKey);
-
-    [self navigateToPostWithPostRemoteKey:postRemoteKey withProfileVC:profileVC withViewPostVC:viewPostVC andBasicVC:navVC];
     
+    viewPendingVC.pendingPost = [[GLPPost alloc] initWithRemoteKey:postRemoteKey];
+    viewPendingVC.pendingPost.content = @"Loading...";
+    
+    //Add loaded post to view post VC.
+    [viewPendingVC setHidesBottomBarWhenPushed:YES];
+    [navVC setViewControllers:@[profileVC, viewPendingVC] animated:YES];
 }
 
 -(void)navigateToPostWithPostRemoteKey:(NSInteger)remoteKey withProfileVC:(GLPProfileViewController *)profileVC withViewPostVC:(ViewPostViewController *)viewPostVC andBasicVC:(UINavigationController *)basicVC
@@ -392,9 +438,30 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
             [WebClientHelper showStandardErrorWithTitle:@"Failed to load post" andContent:@"Check your internet connection and try again"];
         }
     }];
+}
+
+-(void)navigateToPendingPostWithPostRemoteKey:(NSInteger)remoteKey withProfileVC:(GLPProfileViewController *)profileVC withViewPostVC:(GLPViewPendingPostViewController *)viewPostVC andBasicVC:(UINavigationController *)basicVC
+{
+    [WebClientHelper showStandardLoaderWithTitle:@"Loading" forView:profileVC.view];
     
-
-
+    //Load post.
+    
+    [GLPPostManager loadPostWithRemoteKey:remoteKey callback:^(BOOL success, GLPPost *post) {
+        
+        [WebClientHelper hideStandardLoaderForView:profileVC.view];
+        
+        if(success)
+        {
+            viewPostVC.pendingPost = post;
+            //Add loaded post to view post VC.
+            [viewPostVC setHidesBottomBarWhenPushed:YES];
+            [basicVC setViewControllers:@[profileVC, viewPostVC] animated:YES];
+        }
+        else
+        {
+            [WebClientHelper showStandardErrorWithTitle:@"Failed to load post" andContent:@"Check your internet connection and try again"];
+        }
+    }];
 }
 
 -(void)navigateToGleepostApp

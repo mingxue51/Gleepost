@@ -564,20 +564,7 @@ const float TOP_OFFSET = 180.0f;
 
     UIColor *tabColour = [[GLPThemeManager sharedInstance] tabbarSelectedColour];
 
-    
-    //    [[UINavigationBar appearance] setTitleTextAttributes: @{UITextAttributeFont: [UIFont fontWithName:@"Helvetica Neue" size:20.0f]}];
-
-    
-//    self.tabBarController.tabBar.hidden = NO;
     [AppearanceHelper showTabBar:self];
-    
-    //[[CustomTabBarButtonManager sharedInstance] showItemHidden];
-    
-    
-    //Set colour of the border navigation bar image. TODO: Set one line image.
-//    [[UINavigationBar appearance] setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
-    
-
 
     
     

@@ -111,6 +111,10 @@ static GLPMessageProcessor *instance = nil;
                 
                 break;
             }
+           
+            default:
+                DDLogInfo(@"Websocket event: Not recognised");
+                break;
         }
     });
 }

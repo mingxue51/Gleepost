@@ -55,6 +55,14 @@
             _version = json[@"version"];
             break;
             
+        case kPNKindPostApproved:
+            _postId = json[@"post-id"];
+            break;
+            
+        case kPNKindPostRejected:
+            _postId = json[@"post-id"];
+            break;
+            
         case kPNKindUnknown:
             DDLogError(@"Unknown push notification.");
             break;
@@ -71,7 +79,6 @@
     if(!kindOfPN)
     {
         _kindOfPN = kPNKindUnknown;
-        
         return;
     }
     
@@ -98,6 +105,14 @@
     else if ([kindOfPN isEqualToString:@"version"])
     {
         _kindOfPN = kPNKindNewAppVersion;
+    }
+    else if ([kindOfPN isEqualToString:@"approved_post"])
+    {
+        _kindOfPN = kPNKindPostApproved;
+    }
+    else if ([kindOfPN isEqualToString:@"rejected_post"])
+    {
+        _kindOfPN = kPNKindPostRejected;
     }
     else
     {

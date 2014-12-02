@@ -1768,7 +1768,6 @@
         vc.post = self.selectedPost;
         vc.showComment = _showComment;
         vc.isFromCampusLive = NO;
-        vc.isViewPostNotifications = YES;
         vc.isViewPostFromNotifications = self.isPostFromNotifications;
         self.selectedPost = nil;
         _showComment = NO;

@@ -19,7 +19,6 @@
 //TODO: Remove after the integration of image posts.
 @property (assign, nonatomic) NSInteger selectedUserId;
 @property (assign, nonatomic) BOOL commentJustCreated;
-@property (assign, nonatomic) BOOL isViewPostNotifications;
 @property (assign, nonatomic, getter = comesFromNotifications) BOOL isViewPostFromNotifications;
 
 @property (assign, nonatomic) BOOL isFromCampusLive;

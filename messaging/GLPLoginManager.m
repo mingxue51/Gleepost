@@ -24,6 +24,7 @@
 #import "GLPFacebookConnect.h"
 #import "RemoteParser.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "GLPPendingPostsManager.h"
 
 @implementation GLPLoginManager
 
@@ -233,6 +234,7 @@
     [[SDImageCache sharedImageCache] clearMemory];
     [[SDImageCache sharedImageCache] clearDisk];
 
+    [[GLPPendingPostsManager sharedInstance] clean];
     
     [[GLPPushManager sharedInstance] unregisterPushTokenWithAuthParams:authParams];
 }

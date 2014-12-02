@@ -390,6 +390,8 @@
 {
     [self startLoading];
     
+    FLog(@"MessengerViewController : reloadConversations Started");
+    
     [[GLPLiveConversationsManager sharedInstance] conversationsList:^(NSArray *liveConversations, NSArray *regularConversations) {
         self.loadingCellStatus = kGLPLoadingCellStatusFinished;
 //        _liveConversations = [NSMutableArray arrayWithArray:[self sortedByDateOnArray:liveConversations]];
@@ -399,6 +401,7 @@
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         [self.tableView reloadData];
         [self stopLoading];
+        FLog(@"MessengerViewController : reloadConversations Finished");
     }];
 }
 

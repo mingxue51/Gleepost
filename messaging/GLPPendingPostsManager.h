@@ -25,5 +25,6 @@
 - (void)addNewPendingPost:(GLPPost *)pendingPost;
 - (void)updatePendingPost:(GLPPost *)pendingPost;
 - (void)removePendingPost:(GLPPost *)pendingPost;
+- (void)clean;
 
 @end

@@ -187,7 +187,7 @@
         
         [GLPPostManager loadPostWithRemoteKey:self.pendingPost.remoteKey callback:^(BOOL success, GLPPost *post) {
             
-            self.title = @"VIEW REJECTED POST";
+            self.title = @"VIEW POST";
             
             if(success)
             {

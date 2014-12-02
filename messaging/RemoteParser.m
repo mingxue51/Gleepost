@@ -1273,6 +1273,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     event.data = json[@"data"];
     event.location = json[@"location"];
     
+    DDLogDebug(@"RemoteParser : parseWebSocketEventFromJson %@", json);
+    
     return event;
 }
 
