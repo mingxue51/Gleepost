@@ -612,6 +612,12 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     post.group = [RemoteParser parseGroupFromJson:json[@"network"]];
     
+    if(json[@"review_history"])
+    {
+        post.reviewHistory = [RemoteParser parseReviewHistories:json[@"review_history"]];
+        
+        DDLogDebug(@"Review history from parse post %@", post.reviewHistory);
+    }
 
 //    
 //    NSArray *jsonArray = json[@"images"];
@@ -1221,6 +1227,14 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     else if([notificationsType isEqualToString:@"group_post"])
     {
         type = kGLPNotificationTypeCreatedPostGroup;
+    }
+    else if([notificationsType isEqualToString:@"approved_post"])
+    {
+        type = kGLPNotificationTypePostApproved;
+    }
+    else if ([notificationsType isEqualToString:@"rejected_post"])
+    {
+        type = kGLPNotificationTypePostRejected;
     }
     
     notification.notificationType = type;

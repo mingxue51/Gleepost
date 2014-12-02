@@ -152,6 +152,30 @@
     return postIndex;
 }
 
++ (NSInteger)parsePostWithImageUrlNotification:(NSNotification *)notification withPostsArray:(NSArray *)posts
+{
+    NSDictionary *dict = [notification userInfo];
+    
+    NSInteger remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
+    NSString *urlImage = [dict objectForKey:@"imageUrl"];
+    
+    GLPPost *currentPost = nil;
+    
+    int postIndex = [GLPPostNotificationHelper findPost:&currentPost with:remoteKey fromPosts:posts];
+    
+    
+    if(!currentPost)
+    {
+        return postIndex;
+    }
+    else
+    {
+        currentPost.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
+    }
+    
+    return postIndex;
+}
+
 + (NSInteger)parseRefreshCellNotification:(NSNotification *)notification withPostsArray:(NSArray *)posts
 {
     NSDictionary *dict = [notification userInfo];

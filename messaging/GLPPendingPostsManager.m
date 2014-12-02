@@ -93,6 +93,19 @@ static GLPPendingPostsManager *instance = nil;
     
 }
 
+- (GLPPost *)postWithRemoteKey:(NSInteger)postRemoteKey
+{
+    for(GLPPost *p in self.pendingPosts)
+    {
+        if(p.remoteKey == postRemoteKey)
+        {
+            return p;
+        }
+    }
+    return nil;
+}
+
+
 #pragma mark - Client
 
 /**

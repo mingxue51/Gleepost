@@ -11,7 +11,9 @@
 #import "GLPPost.h"
 #import "GLPPostCell.h"
 #import "CommentCell.h"
+#import "GLPPendingPostsManager.h"
 #import "UINavigationBar+Utils.h"
+#import "GLPPostManager.h"
 
 @interface GLPViewPendingPostViewController () <UITableViewDataSource, UITabBarDelegate, GLPPostCellDelegate>
 
@@ -27,7 +29,7 @@
     
     [self registerTableViewCells];
     
-    [self loadCommentsIfExist];
+    [self selfLoadPendingPostIfNeeded];
     
     [self configureNavigationBar];
 }
@@ -43,16 +45,10 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
     
-    
     //Register nib files in table view.
     [self.tableView registerNib:[UINib nibWithNibName:@"CommentTextCellView" bundle:nil] forCellReuseIdentifier:@"CommentTextCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"CommentTitleCellView" bundle:nil] forCellReuseIdentifier:@"CommentTitleCellView"];
-}
-
-- (void)loadCommentsIfExist
-{
-    
 }
 
 - (void)configureNavigationBar
@@ -77,6 +73,7 @@
             self.pendingPost.reviewHistory = [[NSMutableArray alloc] init];
         }
     }
+    
     return self.pendingPost.reviewHistory.count + 2;
 }
 
@@ -173,6 +170,41 @@
         GLPComment *comment = [[self.pendingPost.reviewHistory objectAtIndex:indexPath.row-2] toComment];
         
         return [CommentCell getCellHeightWithContent:comment.content image:NO];
+    }
+}
+
+#pragma mark - Client
+
+- (void)selfLoadPendingPostIfNeeded
+{
+//    self.pendingPost = [[GLPPendingPostsManager sharedInstance] postWithRemoteKey:self.pendingPost.remoteKey];
+    
+    if([self comesFromNotifications])
+    {
+        //Load the post.
+        self.pendingPost.content = @"Loading...";
+        self.title = @"Loading...";
+        
+        [GLPPostManager loadPostWithRemoteKey:self.pendingPost.remoteKey callback:^(BOOL success, GLPPost *post) {
+            
+            self.title = @"VIEW REJECTED POST";
+            
+            if(success)
+            {
+                self.pendingPost = post;
+                
+                self.pendingPost = [GLPPostManager setFakeKeyToPost:self.pendingPost];
+                
+                [self.tableView reloadData];
+            }
+            else
+            {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Post may not exist anymore." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+                
+                [alertView show];
+            }
+            
+        }];
     }
 }
 

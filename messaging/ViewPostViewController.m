@@ -129,7 +129,6 @@ static BOOL likePushed;
     [super viewWillAppear:animated];
     
     [self registerNotifications];
-
     
     [self hideNetworkErrorViewIfNeeded];
     

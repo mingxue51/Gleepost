@@ -356,11 +356,6 @@ const float ONE_LINE_LIMIT = 18.0;
     // add content label height
     height += [GLPPostCell getContentLabelSizeForContent:post.content isViewPost:isViewPost cellType:cellType].height;
     
-    if([post.content isEqualToString:@"12123 12ddd"])
-    {
-        DDLogDebug(@"EQUALS height %f", height);
-    }
-    
     return height;
 }
 

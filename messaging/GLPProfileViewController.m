@@ -57,6 +57,7 @@
 #import "GLPShowUsersViewController.h"
 #import "GLPEmptyViewManager.h"
 #import "GLPAttendingPostsViewController.h"
+#import "GLPViewPendingPostViewController.h"
 
 @interface GLPProfileViewController () <MFMessageComposeViewControllerDelegate, UIActionSheetDelegate, GLPAttendingPopUpViewControllerDelegate>
 
@@ -1285,6 +1286,26 @@
                 _userCreatedTheGroupPost = notification.user;
                 [self performSegueWithIdentifier:@"view group" sender:self];
             }
+            else if(notification.notificationType == kGLPNotificationTypePostApproved)
+            {
+                self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
+                
+                self.selectedPost.content = @"Loading...";
+                self.isPostFromNotifications = YES;
+                
+                self.commentNotificationDate = nil;
+                
+                [self performSegueWithIdentifier:@"view post" sender:self];
+            }
+            else if(notification.notificationType == kGLPNotificationTypePostRejected)
+            {
+                self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
+                
+//                self.selectedPost.content = @"Loading...";
+                self.isPostFromNotifications = YES;
+                
+                [self performSegueWithIdentifier:@"view pending post" sender:self];
+            }
         }
     }
     // click on internal notification cell
@@ -1752,6 +1773,15 @@
         self.selectedPost = nil;
         _showComment = NO;
         
+    }
+    else if([segue.identifier isEqualToString:@"view pending post"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+
+        GLPViewPendingPostViewController *vc = segue.destinationViewController;
+        vc.pendingPost = self.selectedPost;
+        vc.isViewPostFromNotifications = self.isPostFromNotifications;
+        self.selectedPost = nil;
     }
     else if([segue.identifier isEqualToString:@"view private profile"])
     {

@@ -13,5 +13,6 @@
 @interface GLPViewPendingPostViewController : UIViewController
 
 @property (strong, nonatomic) GLPPost *pendingPost;
+@property (assign, nonatomic, getter = comesFromNotifications) BOOL isViewPostFromNotifications;
 
 @end

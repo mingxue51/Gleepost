@@ -398,38 +398,11 @@ const float TOP_OFFSET = 180.0f;
     }
 }
 
--(void)updatePostRemoteKeyAndImage:(NSNotification*)notification
+- (void)updatePostRemoteKeyAndImage:(NSNotification*)notification
 {
-    
-    //TODO: Refactor this code. (Add it in Notification Helper to parse the notification).
-    
-    NSDictionary *dict = [notification userInfo];
-    
-    NSInteger key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
-    NSInteger remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
-    NSString *urlImage = [dict objectForKey:@"imageUrl"];
-    
-    int index = 0;
-    
-    GLPPost *uploadedPost = nil;
-    
-    for(GLPPost* p in self.posts)
-    {
-        if(key == p.key)
-        {
-            if(urlImage && ![urlImage isEqualToString:@""])
-            {
-                p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
-            }
-            
-            p.remoteKey = remoteKey;
-            uploadedPost = p;
-//            p.tempImage = nil;
-            break;
-        }
-        ++index;
-    }
+    NSInteger index = [GLPPostNotificationHelper parsePostWithImageUrlNotification:notification withPostsArray:self.posts];
 
+    GLPPost *uploadedPost = self.posts[index];
     
     if(uploadedPost.author.remoteKey == [SessionManager sharedInstance].user.remoteKey)
     {
@@ -456,8 +429,6 @@ const float TOP_OFFSET = 180.0f;
     
     DDLogDebug(@"New video post received in campus wall: %@", inPost);
     
-    
-    
     //Check if the video post is already in the campus wall.
     
     if([self isPostVisible:inPost])
@@ -468,7 +439,6 @@ const float TOP_OFFSET = 180.0f;
 
         return;
     }
-
     
     [self reloadNewVideoPost:inPost];
 }
@@ -487,7 +457,6 @@ const float TOP_OFFSET = 180.0f;
         
         if(index != -1)
         {
-            DDLogDebug(@"Index to be refreshed %ld", (long)index);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self refreshCellViewWithIndex:index];
             });
@@ -856,7 +825,7 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)refreshCellViewWithIndex:(NSUInteger)index
 {
-    index = ([[GLPPendingPostsManager sharedInstance] arePendingPosts]) ? ++index : index;
+    index = ([[GLPPendingPostsManager sharedInstance] arePendingPosts]) ? (index+=2) : (index+=1);
     
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
@@ -1822,9 +1791,6 @@ const float TOP_OFFSET = 180.0f;
         }
     }
     
-    
-    
-    DDLogDebug(@"cellForRowAtIndexPath arePendingPosts");
 
     if(indexPath.row - 1 == self.posts.count) {
         GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
@@ -2125,7 +2091,8 @@ const float TOP_OFFSET = 180.0f;
     if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
     {
         startIndex = 2;
-        ++count;
+//        ++count;
+        count+=2;
     }
     
     for(int i = startIndex; i < count; i++) {
@@ -2140,9 +2107,9 @@ const float TOP_OFFSET = 180.0f;
     }
     else
     {
-        [self.tableView reloadData];
+//        [self.tableView reloadData];
 
-//        [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
     }
     
     //    [self scrollToTheTop];
@@ -2159,7 +2126,16 @@ const float TOP_OFFSET = 180.0f;
     
     int heightForNewRows = 0;
     NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-    for (NSInteger i = 0; i < count; i++) {
+    
+    NSUInteger startIndex = 1;
+
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        startIndex = 2;
+        count+=2;
+    }
+    
+    for (NSInteger i = startIndex; i < count; i++) {
         NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
         [rowsInsertIndexPath addObject:tempIndexPath];
         
