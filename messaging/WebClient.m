@@ -559,13 +559,69 @@ static WebClient *instance = nil;
 {
     if(post.group)
     {
-        
         return [NSString stringWithFormat:@"networks/%d/posts", post.group.remoteKey];
     }
     else
     {
         return @"posts";
     }
+}
+
+- (void)editPost:(GLPPost *)editedPost callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock
+{
+    NSMutableDictionary *params = self.sessionManager.authParameters.mutableCopy;
+    
+    [params setObject:editedPost.content forKey:@"text"];
+ 
+    //For now we don't want that.
+    
+//    if(editedPost.categories)
+//    {
+//        [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:editedPost.categories], @"tags", nil]];
+//    }
+    
+    DDLogDebug(@"Edit Post params: %@, Categories: %@", params, editedPost.categories);
+    
+    //TODO: add a new param url rather than call second method after the post request.
+    
+    if(editedPost.video.pendingKey)
+    {
+        [params setObject:editedPost.video.pendingKey forKey:@"video"];
+    }
+    
+    if(editedPost.eventTitle)
+    {
+//        [params setObject:[DateFormatterHelper dateUnixFormat:editedPost.dateEventStarts] forKey:@"event-time"];
+        [params setObject:editedPost.eventTitle forKey:@"title"];
+    }
+    
+    if(editedPost.location)
+    {
+        [params setObject:[NSString stringWithFormat:@"%lf,%lf", editedPost.location.latitude, editedPost.location.longitude] forKey:@"location-gps"];
+        
+        [params setObject:editedPost.location.name forKey:@"location-name"];
+        [params setObject:editedPost.location.address forKey:@"location-desc"];
+    }
+    
+    if([editedPost imagePost])
+    {
+        [params setObject:editedPost.imagesUrls[0] forKey:@"url"];
+    }
+    
+    NSString *path = [NSString stringWithFormat:@"posts/%ld", (long)editedPost.remoteKey];
+    
+    [self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        GLPPost *editedPost = [RemoteParser parsePostFromJson:responseObject];
+        
+        callbackBlock(YES, editedPost.remoteKey);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, -1);
+
+    }];
+
 }
 
 -(void)getPostWithRemoteKey:(NSInteger)remoteKey withCallbackBlock:(void (^) (BOOL success, GLPPost *post))callbackBlock

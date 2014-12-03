@@ -156,10 +156,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (GLPReviewHistory *)parseReviewHistory:(NSDictionary *)jsonHistory
 {
-    GLPReviewHistory *reviewHistory = [[GLPReviewHistory alloc] initWithActionString:jsonHistory[@"action"] withDateHappened:[RemoteParser parseDateFromString:jsonHistory[@"at"]] andReason:jsonHistory[@"reason"]];
-    reviewHistory.user = [RemoteParser parseUserFromJson:jsonHistory[@"by"]];
-    
-    return reviewHistory;
+    return [[GLPReviewHistory alloc] initWithActionString:jsonHistory[@"action"] withDateHappened:[RemoteParser parseDateFromString:jsonHistory[@"at"]] reason:jsonHistory[@"reason"] andUser:[RemoteParser parseUserFromJson:jsonHistory[@"by"]]];
 }
 
 #pragma mark - Approval
@@ -615,8 +612,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     if(json[@"review_history"])
     {
         post.reviewHistory = [RemoteParser parseReviewHistories:json[@"review_history"]];
-        
-        DDLogDebug(@"Review history from parse post %@", post.reviewHistory);
     }
 
 //    

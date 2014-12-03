@@ -22,11 +22,12 @@ typedef NS_ENUM(NSUInteger, Action) {
 
 @property (assign, nonatomic, readonly) Action action;
 @property (strong, nonatomic, readonly) NSDate *dateHappened;
-@property (strong, nonatomic) GLPUser *user;
+@property (strong, nonatomic, readonly) GLPUser *user;
 @property (strong, nonatomic, readonly) NSString *reason;
 
-- (id)initWithActionString:(NSString *)actionStr withDateHappened:(NSDate *)dateHappened andReason:(NSString *)reason;
-- (id)initWithAction:(Action)action withDateHappened:(NSDate *)dateHappened andReason:(NSString *)reason;
+- (id)initWithActionString:(NSString *)actionStr withDateHappened:(NSDate *)dateHappened reason:(NSString *)reason andUser:(GLPUser *)user;
+
+- (id)initWithAction:(Action)action withDateHappened:(NSDate *)dateHappened reason:(NSString *)reason andUser:(GLPUser *)user;
 
 - (id)initWithActionString:(NSString *)actionStr andDateHappened:(NSDate *)dateHappened;
 

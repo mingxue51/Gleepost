@@ -86,7 +86,7 @@
 {
     GLPPost *post = [[GLPPost alloc] initWithRemoteKey:2145];
     
-    GLPReviewHistory *reviewHistoryEx1 = [[GLPReviewHistory alloc] initWithActionString:@"rejected" withDateHappened:[NSDate date] andReason:@"This post is stupid"];
+    GLPReviewHistory *reviewHistoryEx1 = [[GLPReviewHistory alloc] initWithActionString:@"rejected" withDateHappened:[NSDate date] reason:@"This post is stupid" andUser:nil];
     
     reviewHistoryEx1.remoteKey = 232;
     

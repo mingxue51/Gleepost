@@ -538,8 +538,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     if(imageUrl!=nil && _post.tempImage==nil)
     {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-
-        
         
         // Look in cache and request for the image.
         [[GLPPostImageLoader sharedInstance] findImageWithUrl:imageUrl callback:^(UIImage *image, BOOL found) {

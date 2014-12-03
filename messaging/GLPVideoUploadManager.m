@@ -96,7 +96,6 @@ static GLPVideoUploadManager *instance = nil;
 
             
             //Post ready for uploading.
-//            [_postUploader uploadPostWithTimestamp:t andVideoId:videoId];
             [_postUploader prepareVideoPostForUploadWithTimestamp:t andVideoId:videoId];
             
             //Remove id from the Video Operation.

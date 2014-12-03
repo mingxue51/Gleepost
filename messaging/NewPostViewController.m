@@ -35,8 +35,9 @@
 #import "GLPLiveGroupPostManager.h"
 #import "GLPApprovalManager.h"
 #import "GLPPendingPostsManager.h"
+#import "GLPLocation.h"
 
-@interface NewPostViewController ()
+@interface NewPostViewController () <GLPImageViewDelegate>
 
 
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *contentTextView;
@@ -52,6 +53,8 @@
 
 //Top Buttons.
 @property (weak, nonatomic) IBOutlet UIButton *addImageButton;
+/** This imageview is used only when user tries to edit existing post */
+@property (weak, nonatomic) IBOutlet GLPImageView *pendingImageView;
 @property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
 @property (weak, nonatomic) IBOutlet UIButton *addLocationButton;
 
@@ -341,9 +344,29 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [_contentTextView setText:[[PendingPostManager sharedInstance] eventDescription]];
     _eventDateStart = [[PendingPostManager sharedInstance] getDate];
     
+    NSString *videoUrl = [[PendingPostManager sharedInstance] videoUrl];
+    
+    if(videoUrl)
+    {
+        [self showVideoToButtonWithPath:videoUrl];
+    }
+    
+    NSString *imageUrl = [[PendingPostManager sharedInstance] imageUrl];
+    
+    if(imageUrl)
+    {
+        //Load and set image url to pending image view.
+        [self showPendingImageViewWithImageUrl:imageUrl];
+    }
+    
+    GLPLocation *location = [[PendingPostManager sharedInstance] location];
+    
+    if(location)
+    {
+        [_addLocationButton setTitle:location.name.uppercaseString forState:UIControlStateNormal];
+    }
     
     DDLogDebug(@"Data loaded: %@", [[PendingPostManager sharedInstance] description]);
-    
 }
 
 
@@ -369,7 +392,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
             inPost = [self createRegularPost];
         }
         
-        if([self shouldPostPresentedInWall])
+        if([self shouldPostPresentedInWall] && ![[PendingPostManager sharedInstance] isEditMode])
         {
             [self informParentVCForNewPost:inPost];
         }
@@ -379,15 +402,23 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         }
         
         
-        //We are doing that because in iOS 8 there is a weird issue with keyboard.
-        double delayInSeconds = 0.5;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        if(inPost.pending)
+        {
+            //PopUp view controller.
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else
+        {
+            //We are doing that because in iOS 8 there is a weird issue with keyboard.
+            double delayInSeconds = 0.5;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
             
-            //Dismiss view controller and show immediately the post in the Campus Wall.
-            [self dismissViewControllerAnimated:YES completion:nil];
-        });
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                
+                //Dismiss view controller and show immediately the post in the Campus Wall.
+                [self dismissViewControllerAnimated:YES completion:nil];
+            });
+        }
     }
 }
 
@@ -615,7 +646,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 //    }
 //    else if([selectedButtonTitle isEqualToString:@"Capture a video"])
 //    {
-//        //Remove video preview view if is on the addImageButton.
+//        //Remove video preview view if is on the `.
 //        [self removeVideoPreviewView];
 //        
 //        //Capture a video.
@@ -803,6 +834,25 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     DDLogInfo(@"Location selected in NewPostViewController: %@", location);
     _selectedLocation = location;
     
+}
+
+#pragma mark - Pending Image View
+
+- (void)showPendingImageViewWithImageUrl:(NSString *)imageUrl
+{
+    [_pendingImageView setGesture:YES];
+    
+    _pendingImageView.viewControllerDelegate = self;
+    
+    [_pendingImageView setHidden:NO];
+    
+    [_pendingImageView setImageUrl:imageUrl withPlaceholderImage:nil];
+}
+
+- (void)imageTouchedWithImageView:(UIImageView *)imageView;
+{
+    //Show image selector.
+    [self addImageOrImage:nil];
 }
 
 #pragma mark - Helpers

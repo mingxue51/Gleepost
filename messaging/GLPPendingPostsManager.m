@@ -147,9 +147,7 @@ static GLPPendingPostsManager *instance = nil;
             [self addAnySendingPendingPostsWithRemotePendingPosts:pendingPosts.mutableCopy];
             
             remoteCallback(YES, self.pendingPosts.mutableCopy);
-            
-            DDLogDebug(@"Pending posts from server %@", pendingPosts);
-            
+                        
             [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
 
         }

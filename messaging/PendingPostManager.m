@@ -10,6 +10,8 @@
 #import "GLPCategory.h"
 #import "CategoryManager.h"
 #import "GLPPost.h"
+#import "GLPVideo.h"
+#import "GLPLocation.h"
 
 @interface PendingPostManager ()
 
@@ -20,9 +22,14 @@
 @property (strong, nonatomic) NSMutableArray *categories;
 @property (strong, nonatomic) NSString *eventTitle;
 @property (strong, nonatomic) NSString *eventDescription;
+@property (strong, nonatomic) NSString *imageUrl;
+@property (strong, nonatomic) NSString *videoUrl;
+@property (assign, nonatomic) NSInteger pendingPostRemoteKey;
+@property (strong, nonatomic) GLPLocation *location;
 @property (assign, nonatomic) KindOfPost kindOfPost;
 @property (assign, nonatomic, getter = arePendingData) BOOL pendingData;
 @property (assign, nonatomic, getter = isGroupPost) BOOL groupPost;
+@property (assign, nonatomic, getter=isEditMode) BOOL editMode;
 @property (strong, nonatomic) GLPGroup *group;
 
 @end
@@ -49,6 +56,7 @@ static PendingPostManager *instance = nil;
     {
         _categories = [[NSMutableArray alloc] init];
         _pendingData = NO;
+        _editMode = NO;
         _eventDescription = @"";
         _eventTitle = @"";
     }
@@ -110,7 +118,43 @@ static PendingPostManager *instance = nil;
  */
 - (void)setPendingPost:(GLPPost *)pendingPost
 {
+    _editMode = YES;
     
+    [self findKindOfPendingPost:pendingPost];
+    
+    _eventTitle = pendingPost.eventTitle;
+    _eventDescription = pendingPost.content;
+    _categories = pendingPost.categories.mutableCopy;
+    
+    if(pendingPost.imagesUrls && pendingPost.imagesUrls.count > 0)
+    {
+        _imageUrl = pendingPost.imagesUrls[0];
+    }
+    
+    if([pendingPost isVideoPost])
+    {
+        _videoUrl = pendingPost.video.url;
+    }
+    
+    if([pendingPost location])
+    {
+        _location = pendingPost.location;
+    }
+    
+    _pendingPostRemoteKey = pendingPost.remoteKey;
+    _pendingData = YES;
+}
+
+- (void)findKindOfPendingPost:(GLPPost *)pendingPost
+{
+    if(pendingPost.eventTitle)
+    {
+        _kindOfPost = kEventPost;
+    }
+    else
+    {
+        _kindOfPost = kGeneralPost;
+    }
 }
 
 - (void)reset
@@ -164,7 +208,7 @@ static PendingPostManager *instance = nil;
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"Kind of post: %u, Event type: %@, Title: %@, Description: %@, Date: %@", _kindOfPost, _categories, _eventTitle, _eventDescription, _date];
+    return [NSString stringWithFormat:@"Kind of post: %lu, Event type: %@, Title: %@, Description: %@, Date: %@", _kindOfPost, _categories, _eventTitle, _eventDescription, _date];
 }
 
 @end

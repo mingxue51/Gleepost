@@ -135,9 +135,7 @@
     for(NSString *key in headerPosts)
     {
         NSArray *posts = [headerPosts objectForKey:key];
-        
-        DDLogDebug(@"Organise post %@", [[posts objectAtIndex:postIndex] reviewHistory]);
-        
+                
         return [posts objectAtIndex:postIndex];
     }
     

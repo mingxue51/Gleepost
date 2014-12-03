@@ -168,7 +168,8 @@
     {
         return postIndex;
     }
-    else
+    
+    if(urlImage)
     {
         currentPost.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
     }

@@ -266,9 +266,6 @@ static GLPPostImageLoader *instance = nil;
         
         UIImage *img = [[UIImage alloc] initWithData:data];
         
-        
-        
-        
         if(img)
         {
             //Save image with image url.
@@ -299,8 +296,6 @@ static GLPPostImageLoader *instance = nil;
 - (void)notifyViewControllerToRefreshCellWithRemoteKey:(NSNumber *)remoteKey
 {
     DDLogDebug(@"notifyViewControllerToRefreshCellWithRemoteKeyRemote key image: %@", remoteKey);
-
-    
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil userInfo:@{@"RemoteKey":remoteKey}];
 }
 

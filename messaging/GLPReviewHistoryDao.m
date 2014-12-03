@@ -58,12 +58,8 @@
     {
         [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
             
-            DDLogDebug(@"Review histories %@", post.reviewHistory);
-            
             for(GLPReviewHistory *reviewH in post.reviewHistory)
             {
-                DDLogDebug(@"Review history %@", reviewH);
-                           
                 [GLPReviewHistoryDao save:reviewH withPostRemoteKey:post.remoteKey inDb:db];
             }
         }];

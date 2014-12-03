@@ -16,11 +16,12 @@
 
 + (GLPReviewHistory *)parseResultSet:(FMResultSet *)resultSet inDb:(FMDatabase *)db
 {
-    GLPReviewHistory *entity = [[GLPReviewHistory alloc] initWithAction:[resultSet intForColumn:@"action"] withDateHappened:[resultSet dateForColumn:@"date"] andReason:[resultSet stringForColumn:@"reason"]];
+    GLPUser *user = [GLPUserDao findByRemoteKey:[resultSet intForColumn:@"user_remote_key"] db:db];
+    
+    GLPReviewHistory *entity = [[GLPReviewHistory alloc] initWithAction:[resultSet intForColumn:@"action"] withDateHappened:[resultSet dateForColumn:@"date"] reason:[resultSet stringForColumn:@"reason"] andUser:user];
     
     [GLPEntityDaoParser parseResultSet:resultSet into:entity];
     
-    entity.user = [GLPUserDao findByRemoteKey:[resultSet intForColumn:@"user_remote_key"] db:db];
     
     return entity;
 }

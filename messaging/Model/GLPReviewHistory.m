@@ -11,21 +11,23 @@
 
 @implementation GLPReviewHistory
 
-- (id)initWithActionString:(NSString *)actionStr withDateHappened:(NSDate *)dateHappened andReason:(NSString *)reason
+- (id)initWithActionString:(NSString *)actionStr withDateHappened:(NSDate *)dateHappened reason:(NSString *)reason andUser:(GLPUser *)user;
 {
     self = [super init];
     
     if (self)
     {
         [self configureAction:actionStr];
+        _user = user;
         _dateHappened = dateHappened;
-        _reason = reason;
+        [self configureReasonWithCurrentReason:reason];
+//        _reason = reason;
     }
     
     return self;
 }
 
-- (id)initWithAction:(Action)action withDateHappened:(NSDate *)dateHappened andReason:(NSString *)reason
+- (id)initWithAction:(Action)action withDateHappened:(NSDate *)dateHappened reason:(NSString *)reason andUser:(GLPUser *)user
 {
     self = [super init];
     
@@ -33,7 +35,10 @@
     {
         _action = action;
         _dateHappened = dateHappened;
-        _reason = reason;
+        _user = user;
+        [self configureReasonWithCurrentReason:reason];
+        
+//        _reason = reason;
     }
     
     return self;
@@ -50,6 +55,17 @@
     }
     
     return self;
+}
+
+- (void)configureReasonWithCurrentReason:(NSString *)reason
+{
+    if(_action == kEdited)
+    {
+        _reason = [NSString stringWithFormat:@"%@ edited the post", _user.name];
+        return;
+    }
+    
+    _reason = reason;
 }
 
 - (void)configureAction:(NSString *)actionStr
@@ -81,9 +97,6 @@
     comment.date = self.dateHappened;
     comment.author = self.user;
     comment.sendStatus = kSendStatusSent;
-    
-    DDLogDebug(@"Review history content %@, Comment content %@", self.reason, comment.content);
-    
     return comment;
 }
 

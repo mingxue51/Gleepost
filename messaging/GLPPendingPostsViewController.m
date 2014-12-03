@@ -261,7 +261,11 @@
 
 -(void)removePostWithPost:(GLPPost *)post
 {
+    NSIndexPath *postIndexPath = [_pendingPostOrganiser indexPathWithPost:post];
     
+    [_pendingPostOrganiser removePost:post];
+    
+    [self removeTableViewPostWithIndexPath:postIndexPath];
 }
 
 #pragma mark - Client

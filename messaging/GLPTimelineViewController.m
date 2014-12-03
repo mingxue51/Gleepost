@@ -398,7 +398,7 @@ const float TOP_OFFSET = 180.0f;
     }
 }
 
-- (void)updatePostRemoteKeyAndImage:(NSNotification*)notification
+- (void)updatePostAfterUploading:(NSNotification*)notification
 {
     NSInteger index = [GLPPostNotificationHelper parsePostWithImageUrlNotification:notification withPostsArray:self.posts];
 
@@ -667,7 +667,7 @@ const float TOP_OFFSET = 180.0f;
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostWithRemoteKey:) name:@"GLPPostUpdated" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostAfterUploading:) name:@"GLPPostUploaded" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     
@@ -1740,7 +1740,6 @@ const float TOP_OFFSET = 180.0f;
     {
         return self.posts.count + 1;
     }
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -2073,21 +2072,27 @@ const float TOP_OFFSET = 180.0f;
 {
     NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
     
-    NSUInteger startIndex = 1;
+    NSUInteger startIndex = 0;
     
     if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
     {
         startIndex = 2;
 //        ++count;
-        count+=2;
+        count += 2;
+    }
+    else
+    {
+        startIndex = 1;
+        count += 1;
     }
     
     for(int i = startIndex; i < count; i++) {
         [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
     }
     
-    //The condition is added to prevent error when there are no posts in the table view.
+    FLog(@"GLPTimelineViewController : updateTableViewWithNewPostsAndScrollToTop count %d start index %d", count, startIndex);
     
+    //The condition is added to prevent error when there are no posts in the table view.
     if(self.posts.count == 1 || !self.posts)
     {
         [self.tableView reloadData];
@@ -2380,8 +2385,7 @@ const float TOP_OFFSET = 180.0f;
 - (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
 {
     _showComment = YES;
-    self.selectedPost = [self currentPostWithIndexPath:[NSIndexPath indexPathForRow:postIndex inSection:0]];
-    
+    self.selectedPost = [self.posts objectAtIndex:postIndex];
     self.selectedIndex = postIndex;
     self.postIndexToReload = postIndex;
     self.commentCreated = NO;

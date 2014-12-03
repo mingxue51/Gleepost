@@ -19,6 +19,8 @@ typedef NS_ENUM(NSUInteger, KindOfPost) {
 
 @class GLPCategory;
 @class GLPGroup;
+@class GLPLocation;
+@class GLPPost;
 
 @interface PendingPostManager : NSObject
 
@@ -32,13 +34,19 @@ typedef NS_ENUM(NSUInteger, KindOfPost) {
 - (void)setEventTitle:(NSString *)title;
 - (void)setEventDescription:(NSString *)description;
 - (void)setKindOfPost:(KindOfPost)kindOfPost;
+- (void)setPendingPost:(GLPPost *)pendingPost;
+- (NSInteger)pendingPostRemoteKey;
 - (NSString *)eventDescription;
 - (NSString *)eventTitle;
+- (NSString *)imageUrl;
+- (NSString *)videoUrl;
+- (GLPLocation *)location;
 - (NSDate *)getDate;
 - (NSMutableArray *)categories;
 - (KindOfPost)kindOfPost;
 - (BOOL)isEventParty;
 - (BOOL)isPostEvent;
+- (BOOL)isEditMode;
 
 - (BOOL)arePendingData;
 - (GLPGroup *)group;

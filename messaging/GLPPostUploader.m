@@ -18,6 +18,7 @@
 #import "GLPVideo.h"
 #import "GLPVideoPostCWProgressManager.h"
 #import "GLPLiveGroupPostManager.h"
+#import "PendingPostManager.h"
 
 typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     GLPImageStatusUploaded = 0,
@@ -127,28 +128,15 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     [[GLPVideoPostCWProgressManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
     
     
-
+    if([[PendingPostManager sharedInstance] isEditMode])
+    {
+        post.pending = YES;
+        post.sendStatus = kEdited;
+        post.remoteKey = [[PendingPostManager sharedInstance] pendingPostRemoteKey];
+    }
 
     //Create a new operation.
-    
     post = [self uploadPostWithPost:post];
-    
-//    if(_postImage)
-//    {
-//        post.date = [NSDate date];
-//        post.tempImage = _postImage;
-//        post.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
-//        
-//        [GLPPostManager createLocalPost:post];
-//        
-//        [[GLPPostOperationManager sharedInstance] setPost:post withTimestamp:timestamp];
-//        
-////        [[GLPQueueManager sharedInstance] uploadPost:post withId:1];
-//    }
-//    else
-//    {
-//        [self createLocalAndUploadPost:post];
-//    }
     
     return post;
 }
@@ -180,31 +168,21 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         post.date = [NSDate date];
         post.tempImage = _postImage;
         post.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
-        
         [GLPPostManager createLocalPost:post];
-        
         [[GLPPostOperationManager sharedInstance] setPost:post withTimestamp:timestamp];
-        
         FLog(@"Image post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
-
-        //        [[GLPQueueManager sharedInstance] uploadPost:post withId:1];
     }
     else if(_videoPath)
     {
         post.date = [NSDate date];
         post.video = [[GLPVideo alloc] initWithPath:_videoPath];
         [GLPPostManager createLocalPost:post];
-        
         [[GLPVideoUploadManager sharedInstance] setPost:post withTimestamp:timestamp];
-        
         FLog(@"Video post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
-
     }
     else
     {
         FLog(@"Text post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
-        
-//        [self createLocalAndUploadPost:post];
         [[GLPPostOperationManager sharedInstance] uploadTextPost:post];
     }
     

@@ -11,6 +11,7 @@
 #import "ImageFormatterHelper.h"
 #import "NSMutableArray+QueueAdditions.h"
 #import "GLPiOSSupportHelper.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface GLPImageUploaderManager ()
 
@@ -229,53 +230,25 @@ const NSString *IMAGE_PENDING = @"PENDING";
     
     NSDate *timestamp = [_pendingTimestamps dequeue];
     
-   // DDLogCDebug(@"Starting uploading image with timestamp: %@",timestamp);
-
-    
     UIImage *image = [_pendingImages objectForKey:timestamp];
     
     __block NSData *data;
-    
+    __block UIImage *resizedImage;
     NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-        
-        UIImage *resizedImage = [ImageFormatterHelper imageWithImage:image scaledToHeight:640];
+        resizedImage = [ImageFormatterHelper imageWithImage:image scaledToHeight:640];
         data = UIImagePNGRepresentation(resizedImage);
-        
     }];
     
     [operation setCompletionBlock:^{
         
-        [self uploadResizedImageWithImageData:data withTimestamp:timestamp];
+        [self uploadResizedImageWithImageData:data withTimestamp:timestamp image:resizedImage];
         
     }];
     
     [[[NSOperationQueue alloc] init] addOperation:operation];
 }
 
-- (void)startUploadingImage:(UIImage*)image withTimestamp:(NSDate*)timestamp
-{
-    //    _postImage = image;
-    //    _imageStatus = GLPImageStatusUploading;
-    
-    __block NSData *data;
-    
-    NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-        
-        UIImage *resizedImage = [ImageFormatterHelper imageWithImage:image scaledToHeight:640];
-        data = UIImagePNGRepresentation(resizedImage);
-        
-    }];
-    
-    [operation setCompletionBlock:^{
-    
-        [self uploadResizedImageWithImageData:data withTimestamp:timestamp];
-    
-    }];
-    
-    [[[NSOperationQueue alloc] init] addOperation:operation];
-}
-
-- (void)uploadResizedImageWithImageData:(NSData *)imageData withTimestamp:(NSDate*)timestamp
+- (void)uploadResizedImageWithImageData:(NSData *)imageData withTimestamp:(NSDate*)timestamp image:(UIImage *)image
 {
     
     __block BOOL finished = NO;
@@ -303,12 +276,10 @@ const NSString *IMAGE_PENDING = @"PENDING";
                     //Add image url
                     [self updateImageToDictionary:imageUrl withTimestamp:timestamp];
                     
-                    //NSLog(@"Image url after notify: %@",imageUrlSend);
-                    
+                    //Cache image.
+                    [[SDImageCache sharedImageCache] storeImage:image forKey:imageUrl];
                 }
-                
-                
-                
+    
             } else {
                 NSLog(@"Error occured. Post image cannot be uploaded.");
                 self.networkAvailable = NO;

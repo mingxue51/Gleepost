@@ -445,37 +445,55 @@
     {
         _uploadContentBlock = ^(GLPPost* post){
             
-            //Notify GLPTimelineViewController after finish.
-            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey],
-                                                                                                                            @"imageUrl":@"",
-                                                                                                                            @"key":[NSNumber numberWithInt:post.key]}];
+            if(post.isPending)
+            {
+                //TODO: Notify GLPPendingPostsViewController after edit.
+            }
+            else
+            {
+                //Notify GLPTimelineViewController after finish.
+                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey], @"key":[NSNumber numberWithInt:post.key]}];
+            }
         };
     }
     
     
     DDLogInfo(@"Text post uploading task started with post content: %@.",textPost.content);
     
-    
-    [[WebClient sharedInstance] createPost:textPost callbackBlock:^(BOOL success, int remoteKey) {
-        
-        
-        textPost.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-        textPost.remoteKey = success ? remoteKey : 0;
-        
-        DDLogInfo(@"Text post uploaded with success: %d and post remoteKey: %d", success, textPost.remoteKey);
-        
-        
-        [GLPPostManager updatePostAfterSending:textPost];
-        
-        _uploadContentBlock(textPost);
-        
-    }];
-
+    if(textPost.pending)
+    {
+        [[WebClient sharedInstance] editPost:textPost callbackBlock:^(BOOL success, int remoteKey) {
+            
+            textPost.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+            textPost.remoteKey = success ? remoteKey : 0;
+            
+            DDLogInfo(@"Text post edited with success: %d and post remoteKey: %d", success, textPost.remoteKey);
+            
+            [GLPPostManager updatePostAfterSending:textPost];
+            
+            _uploadContentBlock(textPost);
+            
+        }];
+    }
+    else
+    {
+        [[WebClient sharedInstance] createPost:textPost callbackBlock:^(BOOL success, int remoteKey) {
+            
+            textPost.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+            textPost.remoteKey = success ? remoteKey : 0;
+            
+            DDLogInfo(@"Text post uploaded with success: %d and post remoteKey: %d", success, textPost.remoteKey);
+            
+            [GLPPostManager updatePostAfterSending:textPost];
+            
+            _uploadContentBlock(textPost);
+            
+        }];
+    }
 }
 
 -(void)uploadPostWithTimestamp:(NSDate*)timestamp andImageUrl:(NSString*)url
 {
-    
     //Post ready to be uploaded.
     
     void (^_uploadImageContentBlock)(GLPPost*);
@@ -489,130 +507,74 @@
         
         _uploadImageContentBlock = ^(GLPPost* post){
             
-            NSLog(@"Into uploadImageContentBlock");
+            if(post.pending)
+            {
+                //TODO: Notify glppendingpostsmanager.
+                DDLogDebug(@"Pending post edited");
+            }
+            else
+            {
+                //Notify GLPTimelineViewController after finish.
+                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey], @"imageUrl":[post.imagesUrls objectAtIndex:0], @"key":[NSNumber numberWithInt:post.key]}];
+            }
             
-            //Notify GLPTimelineViewController after finish.
-            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey],
-                                                                                                                            @"imageUrl":[post.imagesUrls objectAtIndex:0],
-                                                                                                                            @"key":[NSNumber numberWithInt:post.key]}];
         };
     }
     
 
     NSLog(@"Post uploading task started with post content: %@ and image url: %@.",post.content, [post.imagesUrls objectAtIndex:0]);
     
+    if(post.pending)
+    {
+        [[WebClient sharedInstance] editPost:post callbackBlock:^(BOOL success, int remoteKey) {
+           
+            post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+            post.remoteKey = success ? remoteKey : 0;
+            
+            NSLog(@"!!Post edited with success: %d and post remoteKey: %d", success, post.remoteKey);
     
-//    _incomingPost.imagesUrls = [[NSArray alloc] initWithObjects:[self.urls objectForKey:[NSNumber numberWithInt:1]], nil];
-    
-    [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
-        
-        
-        post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-        post.remoteKey = success ? remoteKey : 0;
-        
-        NSLog(@"!!Post uploaded with success: %d and post remoteKey: %d", success, post.remoteKey);
-
-        if([post imagePost])
-        {
             [GLPPostManager updateImagePostAfterSending:post];
-        }
-        else
-        {
-            [GLPPostManager updatePostAfterSending:post];
-        }
-        
-        
-        
-        
-//        self.incomingKey = _incomingPost.key;
-//        self.incomingRemoteKey = remoteKey;
-        //self.imageUrl = [_incomingPost.imagesUrls objectAtIndex:0];
-//        self.imageUrl = [self.urls objectForKey:[NSNumber numberWithInt:1]];
-        
-//        NSLog(@"IMAGE URL BEFORE INFORMATION: %@",self.imageUrl);
-        
-        
-        if(success)
-        {
-            _uploadImageContentBlock(post);
-
-            [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
             
-            //Add post to uploaded posts.
-            [_uploadedPosts addObject:post];
+            if(success)
+            {
+                _uploadImageContentBlock(post);
+                
+                [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
+                
+                //Add post to uploaded posts.
+                [_uploadedPosts addObject:post];
+                
+                //Remove post from the NSDictionary.
+                [self removePostWithTimestamp:timestamp];
+            }
+        }];
+    }
+    else
+    {
+        [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
             
-            //Remove post from the NSDictionary.
-            [self removePostWithTimestamp:timestamp];
-        }
-        
-        //        [self cleanUpPost];
-    }];
+            post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+            post.remoteKey = success ? remoteKey : 0;
+            
+            NSLog(@"!!Post uploaded with success: %d and post remoteKey: %d", success, post.remoteKey);
 
+            [GLPPostManager updateImagePostAfterSending:post];
+
+            if(success)
+            {
+                _uploadImageContentBlock(post);
+                
+                [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
+                
+                //Add post to uploaded posts.
+                [_uploadedPosts addObject:post];
+                
+                //Remove post from the NSDictionary.
+                [self removePostWithTimestamp:timestamp];
+            }
+        }];
+    }
 }
-
-//-(void)uploadPostWithTimestamp:(NSDate*)timestamp andVideoUrl:(NSString*)url
-//{
-//    //Post ready to be uploaded.
-//    
-//    void (^_uploadVideoContentBlock)(GLPPost*);
-//    
-//    GLPPost *post = nil;
-//    
-//    @synchronized(_readyPosts)
-//    {
-//        post = [_readyPosts objectForKey:timestamp];
-//        post.videosUrls = [[NSArray alloc] initWithObjects:url, nil];
-//        
-//        _uploadVideoContentBlock = ^(GLPPost* post){
-//            
-//            //Notify GLPTimelineViewController after finish.
-//            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey],
-//                                                                                                                            @"videoUrl":@"",
-//                                                                                                                            @"key":[NSNumber numberWithInt:post.key]}];
-//        };
-//    }
-//    
-//    
-//    NSLog(@"Post uploading task started with post content: %@ and video url: %@.",post.content, [post.videosUrls objectAtIndex:0]);
-//    
-//    
-//    //    _incomingPost.imagesUrls = [[NSArray alloc] initWithObjects:[self.urls objectForKey:[NSNumber numberWithInt:1]], nil];
-//    
-//    [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
-//        
-//        
-//        post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-//        post.remoteKey = success ? remoteKey : 0;
-//        
-//        NSLog(@"Video Post uploaded with success: %d and post remoteKey: %d", success, post.remoteKey);
-//        
-//        
-//        [GLPPostManager updatePostAfterSending:post];
-//        
-//        //        self.incomingKey = _incomingPost.key;
-//        //        self.incomingRemoteKey = remoteKey;
-//        //self.imageUrl = [_incomingPost.imagesUrls objectAtIndex:0];
-//        //        self.imageUrl = [self.urls objectForKey:[NSNumber numberWithInt:1]];
-//        
-//        //        NSLog(@"IMAGE URL BEFORE INFORMATION: %@",self.imageUrl);
-//        
-//        
-//        if(success)
-//        {
-//            _uploadVideoContentBlock(post);
-//            
-//            [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
-//            
-//            //Add post to uploaded posts.
-//            [_uploadedPosts addObject:post];
-//            
-//            //Remove post from the NSDictionary.
-//            [self removePostWithTimestamp:timestamp];
-//        }
-//        
-//        //        [self cleanUpPost];
-//    }];
-//}
 
 -(void)uploadPostWithTimestamp:(NSDate*)timestamp withVideoData:(NSDictionary *)videoData
 {
@@ -636,70 +598,70 @@
     
     
     _uploadVideoContentBlock = ^(GLPPost *post){
-        
-        //Notify GLPTimelineViewController after finish.
-        
-//        NSDictionary *data = @{@"remoteKey": [NSNumber numberWithInteger:post.remoteKey], @"key" : [NSNumber numberWithInteger:post.key]};
-        
         DDLogDebug(@"Post video data before notify Campus Wall: %@", post.video);
-        
-//        [[GLPCampusWallProgressManager sharedInstance] progressFinished];
-        
         [self notifyTheRightViewControllerWithPost:post];
-        
-//        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_VIDEO_POST_READY object:self userInfo:@{@"final_post": post}];
-        
         [self videoPostReadyToUpload];
-
     };
 
-    NSLog(@"Post uploading task started with post content: %@ and video url: %@.",post.content, post.video.url);
+    NSLog(@"Post uploading task started with post content: %@ and video url: %@, pending %d.",post.content, post.video.url, post.pending);
     
-    
-    //    _incomingPost.imagesUrls = [[NSArray alloc] initWithObjects:[self.urls objectForKey:[NSNumber numberWithInt:1]], nil];
-    
-    [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
-        
-        
-        post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-        post.remoteKey = success ? remoteKey : 0;
-        
-        DDLogInfo(@"Video Post uploaded with success: %d and post remoteKey: %d", success, post.remoteKey);
-        
-        
-//        [GLPPostManager updatePostAfterSending:post];
-        [GLPPostManager updateVideoPostAfterSending:post];
-        
-        //        self.incomingKey = _incomingPost.key;
-        //        self.incomingRemoteKey = remoteKey;
-        //self.imageUrl = [_incomingPost.imagesUrls objectAtIndex:0];
-        //        self.imageUrl = [self.urls objectForKey:[NSNumber numberWithInt:1]];
-        
-        //        NSLog(@"IMAGE URL BEFORE INFORMATION: %@",self.imageUrl);
-        
-        
-        if(success)
-        {
-            _uploadVideoContentBlock(post);
+    if(post.pending)
+    {
+        [[WebClient sharedInstance] editPost:post callbackBlock:^(BOOL success, int remoteKey) {
             
-            [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
+            post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+            post.remoteKey = success ? remoteKey : 0;
             
-            //Add post to uploaded posts.
-            [_uploadedPosts addObject:post];
+            DDLogInfo(@"Video Post edited with success: %d and post remoteKey: %ld", success, (long)post.remoteKey);
             
-            //Remove post from the NSDictionary.
-            [self removePostWithTimestamp:timestamp];
-        }
-        
-        //        [self cleanUpPost];
-    }];
+            [GLPPostManager updateVideoPostAfterSending:post];
+            
+            if(success)
+            {
+                _uploadVideoContentBlock(post);
+                
+                [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
+                
+                //Add post to uploaded posts.
+                [_uploadedPosts addObject:post];
+                
+                //Remove post from the NSDictionary.
+                [self removePostWithTimestamp:timestamp];
+            }
+        }];
+    }
+    else
+    {
+        [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
+            
+            post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+            post.remoteKey = success ? remoteKey : 0;
+            
+            DDLogInfo(@"Video Post uploaded with success: %d and post remoteKey: %ld", success, (long)post.remoteKey);
+            
+            
+            [GLPPostManager updateVideoPostAfterSending:post];
+            
+            if(success)
+            {
+                _uploadVideoContentBlock(post);
+                
+                [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
+                
+                //Add post to uploaded posts.
+                [_uploadedPosts addObject:post];
+                
+                //Remove post from the NSDictionary.
+                [self removePostWithTimestamp:timestamp];
+            }
+        }];
+    }
 }
 
 /**
  This method is ONLY used after the app finds that there are pending video posts.
  
  Once the server response the video data this method is called to create the post.
- 
  
  @param videoPost the post with the video data included.
  */
@@ -722,23 +684,43 @@
     
     DDLogInfo(@"Post uploading task started with post content: %@ and video url: %@.",videoPost.content, videoPost.video.url);
     
+    if(videoPost.pending)
+    {
+        [[WebClient sharedInstance] editPost:videoPost callbackBlock:^(BOOL success, int remoteKey) {
+            
+            videoPost.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+            videoPost.remoteKey = success ? remoteKey : 0;
+            
+            DDLogInfo(@"Pending Video Post edited with success: %d and post remoteKey: %ld", success, (long)videoPost.remoteKey);
+            
+            [GLPPostManager updateVideoPostAfterSending:videoPost];
+            
+            if(success)
+            {
+                _uploadVideoContentBlock(videoPost);
+            }
+        }];
+    }
+    else
+    {
+        [[WebClient sharedInstance] createPost:videoPost callbackBlock:^(BOOL success, int remoteKey) {
+            
+            videoPost.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+            videoPost.remoteKey = success ? remoteKey : 0;
+            
+            DDLogInfo(@"Pending Video Post uploaded with success: %d and post remoteKey: %ld", success, (long)videoPost.remoteKey);
+            
+            [GLPPostManager updateVideoPostAfterSending:videoPost];
+            
+            if(success)
+            {
+                _uploadVideoContentBlock(videoPost);
+            }
+            
+        }];
+    }
     
-    [[WebClient sharedInstance] createPost:videoPost callbackBlock:^(BOOL success, int remoteKey) {
-        
-        
-        videoPost.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-        videoPost.remoteKey = success ? remoteKey : 0;
-        
-        DDLogInfo(@"Pending Video Post uploaded with success: %d and post remoteKey: %d", success, videoPost.remoteKey);
-        
-        [GLPPostManager updateVideoPostAfterSending:videoPost];
-        
-        if(success)
-        {
-            _uploadVideoContentBlock(videoPost);
-        }
-        
-    }];
+
 }
 
 /**
@@ -823,6 +805,16 @@
 - (void)notifyTheRightViewControllerWithPost:(GLPPost *)post
 {
     DDLogDebug(@"Group post? %@", post.group);
+    
+    if(post.pending)
+    {
+        //TODO: Notify pending posts view controller.
+        
+        //TODO: Remove that and replace it with other kind of progress bar.
+        [[GLPVideoPostCWProgressManager sharedInstance] progressFinished];
+
+        return;
+    }
     
     if(post.group)
     {

@@ -14,6 +14,8 @@
 #import "GLPPendingPostsManager.h"
 #import "UINavigationBar+Utils.h"
 #import "GLPPostManager.h"
+#import "PendingPostManager.h"
+#import "NewPostViewController.h"
 
 @interface GLPViewPendingPostViewController () <UITableViewDataSource, UITabBarDelegate, GLPPostCellDelegate>
 
@@ -210,9 +212,15 @@
 
 #pragma mark - Selectors
 
+/**
+ Set the selected post to PendingPostManager and show NewPostViewController.
+ */
 - (void)editPendingPost
 {
-    //
+    _pendingPost.sendStatus = kEdited;
+    [[PendingPostManager sharedInstance] setPendingPost:_pendingPost];
+    
+    [self performSegueWithIdentifier:@"edit post" sender:self];
 }
 
 #pragma mark - GLPPostCellDelegate
@@ -246,14 +254,17 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"edit post"])
+    {
+//        NewPostViewController *postViewController = segue.destinationViewController;
+    }
 }
-*/
+
 
 @end
