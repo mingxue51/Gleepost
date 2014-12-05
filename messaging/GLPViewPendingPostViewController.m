@@ -34,6 +34,13 @@
     [self selfLoadPendingPostIfNeeded];
     
     [self configureNavigationBar];
+    
+    [self configureNotificationsAfterViewDidLoad];
+}
+
+- (void)dealloc
+{
+    [self removeNotificationsJustBeforeDealloc];
 }
 
 #pragma mark - Configuration
@@ -56,6 +63,18 @@
 - (void)configureNavigationBar
 {
     [self.navigationController.navigationBar setTextButton:kRight withTitle:@"EDIT" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(editPendingPost) andTarget:self];
+}
+
+- (void)configureNotificationsAfterViewDidLoad
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postEditedFinished:) name:GLPNOTIFICATION_POST_EDITED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postEditedStartedUploading:) name:GLPNOTIFICATION_POST_STARTED_EDITING object:nil];
+}
+
+- (void)removeNotificationsJustBeforeDealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_EDITED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_STARTED_EDITING object:nil];
 }
 
 #pragma mark - Table view data source
@@ -242,11 +261,52 @@
     //TODO: Pending implementation.
 }
 
+#pragma mark - Notifications
+
+/**
+ This method is called once a post is finished editing.
+ 
+ @param nsnotification
+ 
+ */
+- (void)postEditedFinished:(NSNotification *)notification
+{
+    NSDictionary *notificationDict = [notification userInfo];
+    [self setNewPostAndRefreshPostCell:notificationDict[@"post_edited"]];
+}
+
+- (void)postEditedStartedUploading:(NSNotification *)notification
+{
+    NSDictionary *notificationDict = [notification userInfo];
+    [self setNewPostAndRefreshPostCell:notificationDict[@"post_edited"]];
+}
+
+- (void)setNewPostAndRefreshPostCell:(GLPPost *)newPost
+{
+    if(newPost.remoteKey == _pendingPost.remoteKey)
+    {
+        _pendingPost = newPost;
+        
+        DDLogDebug(@"GLPViewPendingPostViewController : pending post %@, edited post %@", _pendingPost, newPost);
+        
+        [self refreshCellViewWithIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    }
+}
+
 #pragma mark - RemovePostCellDelegate
 
 -(void)removePostWithPost:(GLPPost *)post
 {
     
+}
+
+#pragma mark - Table view refresh methods
+
+-(void)refreshCellViewWithIndexPath:(NSIndexPath *)indexPath
+{
+    [self.tableView beginUpdates];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView endUpdates];
 }
 
 - (void)didReceiveMemoryWarning {

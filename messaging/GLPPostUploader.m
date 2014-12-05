@@ -54,28 +54,6 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     return self;
 }
 
-- (void)startUploadingImage:(UIImage *)image {
-    _postImage = image;
-    _imageStatus = GLPImageStatusUploading;
-    
-    __block NSData *data;
-    
-    NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-        UIImage *resizedImage = [ImageFormatterHelper imageWithImage:image scaledToHeight:640];
-        data = UIImagePNGRepresentation(resizedImage);
-    }];
-    
-    uploadKey = 3;
-    
-    [operation setCompletionBlock:^{
-        [self uploadResizedImageWithImageData:data];
-//        [[GLPQueueManager sharedInstance]uploadImage:image withId:uploadKey];
-
-    }];
-    
-    [[[NSOperationQueue alloc] init] addOperation:operation];
-}
-
 -(void)uploadImageToQueue:(UIImage*)image
 {
     timestamp = [NSDate date];
@@ -104,7 +82,6 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     [[GLPVideoUploadManager sharedInstance] uploadVideo:path withTimestamp:timestamp];
 }
 
-//ADDED.
 /**
  Method used for upload regular post.
  */
@@ -136,7 +113,7 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     }
 
     //Create a new operation.
-    post = [self uploadPostWithPost:post];
+    post = [self uploadOrEditPostWithPost:post];
     
     return post;
 }
@@ -157,10 +134,10 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     [[GLPLiveGroupPostManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
 
     
-    return [self uploadPostWithPost:post];
+    return [self uploadOrEditPostWithPost:post];
 }
 
-- (GLPPost *)uploadPostWithPost:(GLPPost *)post
+- (GLPPost *)uploadOrEditPostWithPost:(GLPPost *)post
 {
     //Create a new operation.
     if(_postImage)
@@ -191,91 +168,12 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     return post;
 }
 
-
-- (GLPPost *)uploadPostWithContent:(NSString *)content {
-    if (content) {
-        _post = [[GLPPost alloc] init];
-        _post.content = content;
-        _post.author = [SessionManager sharedInstance].user;
-        
-        
-        if (_postImage) {
-            _post.date = [NSDate date];
-            _post.tempImage = _postImage;
-            
-            [GLPPostManager createLocalPost:_post];
-            
-           // [[GLPQueueManager sharedInstance] uploadPost:_post withId:uploadKey];
-
-        }
-        
-        if (_imageStatus == GLPImageStatusUploaded || _imageStatus == GLPImageStatusNone) {
-            
-            //[self createLocalAndUploadPost:_post];
-
-            
-        } else if (_imageStatus == GLPImageStatusUploading) {
-            
-            __weak GLPPostUploader *weakSelf = self;
-            __weak GLPPost *weakPost = _post;
-            _uploadContentBlock = ^{
-                
-                [weakSelf assignUrlToPost:weakPost];
-                [[GLPQueueManager sharedInstance] uploadPost:weakPost withId:-1];
-
-                //[weakSelf createLocalAndUploadPost:weakPost];
-            };
-        }
-    }
-    
-    return _post;
-}
-
 # pragma mark - Uploading
-
-- (void)uploadResizedImageWithImageData:(NSData *)imageData {
-    if (imageData) {
-        [[WebClient sharedInstance] uploadImage:imageData callback:^(BOOL success, NSString *imageUrl) {
-            if (success) {
-                _imageStatus    = GLPImageStatusUploaded;
-                _imageURL       = imageUrl;
-                
-                if (_uploadContentBlock) _uploadContentBlock();
-                
-            } else {
-                _imageStatus = GLPImageStatusFailed;
-                
-                NSLog(@"Error occured. Post image cannot be uploaded.");
-            }
-        }];
-    }
-}
 
 -(void)assignUrlToPost:(GLPPost*)post
 {
     post.imagesUrls = (_imageURL) ? @[_imageURL] : nil;
     
-}
-
-- (void)createLocalAndUploadPost:(GLPPost *)post {
-    if (post) {
-        post.imagesUrls = (_imageURL) ? @[_imageURL] : nil;
-        
-        [GLPPostManager createLocalPost:post];
-        
-        [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
-            
-            post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-            post.remoteKey = success ? remoteKey : 0;
-            
-            [GLPPostManager updatePostAfterSending:post];
-            
-            //TODO: Communicate with Campus Wall to inform post.
-            
-            
-            [self cleanUpPost];
-        }];
-    }
 }
 
 # pragma mark - Clean up

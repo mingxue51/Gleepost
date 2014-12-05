@@ -17,6 +17,7 @@
 #import "UINavigationBar+Utils.h"
 #import "GLPViewPendingPostViewController.h"
 #import "GLPReviewHistory.h"
+#import "GLPPostNotificationHelper.h"
 
 @interface GLPPendingPostsViewController () <UITableViewDataSource, UITableViewDelegate, GLPPostCellDelegate>
 
@@ -36,6 +37,7 @@
     [self configureObjects];
     [self loadCurrentPendingPosts];
     [self configureNavigationBar];
+    [self configureNotificationsAfterViewDidLoad];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -50,6 +52,11 @@
     [self removeNotifications];
     
     [super viewWillDisappear:animated];
+}
+
+- (void)dealloc
+{
+    [self removeNotificationsJustBeforeDealloc];
 }
 
 #pragma mark - Configuration
@@ -97,14 +104,22 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
-
 }
 
 - (void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
+}
 
+- (void)configureNotificationsAfterViewDidLoad
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postEditedFinished:) name:GLPNOTIFICATION_POST_EDITED object:nil];
+}
+
+- (void)removeNotificationsJustBeforeDealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_EDITED object:nil];
 }
 
 #pragma mark - Table view data source
@@ -213,6 +228,27 @@
     NSString *urlImage = [dict objectForKey:@"imageUrl"];
     
     [self refreshCellViewWithIndexPath:[_pendingPostOrganiser addImageUrl:urlImage toPostWithRemoteKey:remoteKey]];
+}
+
+/**
+ This method is called once a post is finished editing.
+ 
+ @param nsnotification
+ 
+ */
+- (void)postEditedFinished:(NSNotification *)notification
+{
+    NSDictionary *notificationDict = [notification userInfo];
+    
+    GLPPost *postEdited = notificationDict[@"post_edited"];
+    
+    NSIndexPath *postIndexPath = [_pendingPostOrganiser indexPathWithPostRemoteKey:postEdited.remoteKey];
+    
+    if(postIndexPath)
+    {
+//        [self refreshCellViewWithIndexPath:postIndexPath];
+        [self loadCurrentPendingPosts];
+    }
 }
 
 #pragma mark - Table view refresh methods

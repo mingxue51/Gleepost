@@ -16,6 +16,7 @@
 #import "GLPVideo.h"
 #import "GLPVideoPostCWProgressManager.h"
 #import "GLPLiveGroupPostManager.h"
+#import "GLPPendingPostsManager.h"
 
 @interface GLPPostUploaderManager ()
 
@@ -434,6 +435,8 @@
 -(void)uploadTextPost:(GLPPost *)textPost
 {
     
+    DDLogDebug(@"Text post sending status before sending %d", textPost.sendStatus);
+    
     [GLPPostManager createLocalPost:textPost];
 
     //Post ready to be uploaded.
@@ -447,12 +450,13 @@
             
             if(post.isPending)
             {
-                //TODO: Notify GLPPendingPostsViewController after edit.
+                //Notify GLPPendingPostView, GLPPendingPostManager and maybe GLPPendingPostsVC after edit.
+                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_EDITED object:nil userInfo:@{@"edited_post": post}];
             }
             else
             {
                 //Notify GLPTimelineViewController after finish.
-                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey], @"key":[NSNumber numberWithInt:post.key]}];
+                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInteger:post.remoteKey], @"key":[NSNumber numberWithInteger:post.key]}];
             }
         };
     }
@@ -462,14 +466,26 @@
     
     if(textPost.pending)
     {
-        [[WebClient sharedInstance] editPost:textPost callbackBlock:^(BOOL success, int remoteKey) {
+        //There is no need to send nsnotification once the editing started. There is no need for now.
+        
+        [[WebClient sharedInstance] editPost:textPost callbackBlock:^(BOOL success, GLPPost *updatedPost) {
             
-            textPost.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-            textPost.remoteKey = success ? remoteKey : 0;
+            if(!success)
+            {
+                DDLogError(@"Failed to edit the post");
+                textPost.sendStatus = kSendStatusFailure;
+                [GLPPostManager updatePostAfterSending:textPost];
+                return;
+            }
             
-            DDLogInfo(@"Text post edited with success: %d and post remoteKey: %d", success, textPost.remoteKey);
+            textPost.sendStatus = kSendStatusSent;
+            textPost.remoteKey = updatedPost.remoteKey;
+            
+            DDLogInfo(@"Text post edited with success: %d and post: %@", success, updatedPost);
             
             [GLPPostManager updatePostAfterSending:textPost];
+            
+            [[GLPPendingPostsManager sharedInstance] updatePendingPostAfterEdit:textPost];
             
             _uploadContentBlock(textPost);
             

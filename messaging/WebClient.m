@@ -567,7 +567,7 @@ static WebClient *instance = nil;
     }
 }
 
-- (void)editPost:(GLPPost *)editedPost callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock
+- (void)editPost:(GLPPost *)editedPost callbackBlock:(void (^)(BOOL success, GLPPost *updatedPost))callbackBlock
 {
     NSMutableDictionary *params = self.sessionManager.authParameters.mutableCopy;
     
@@ -614,11 +614,11 @@ static WebClient *instance = nil;
         
         GLPPost *editedPost = [RemoteParser parsePostFromJson:responseObject];
         
-        callbackBlock(YES, editedPost.remoteKey);
+        callbackBlock(YES, editedPost);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        callbackBlock(NO, -1);
+        callbackBlock(NO, nil);
 
     }];
 

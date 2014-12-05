@@ -23,7 +23,7 @@
 - (void)loadPendingPostsWithLocalCallback:(void (^) (NSArray *localPosts))localCallback withRemoteCallback:(void (^) (BOOL success, NSArray *remotePosts))remoteCallback;
 - (GLPPost *)postWithRemoteKey:(NSInteger)postRemoteKey;
 - (void)addNewPendingPost:(GLPPost *)pendingPost;
-- (void)updatePendingPost:(GLPPost *)pendingPost;
+- (void)updatePendingPostAfterEdit:(GLPPost *)pendingPost;
 - (void)removePendingPost:(GLPPost *)pendingPost;
 - (void)clean;
 

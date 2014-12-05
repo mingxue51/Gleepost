@@ -72,11 +72,13 @@ static GLPPendingPostsManager *instance = nil;
     [GLPPostDao updatePendingStatuswithPost:pendingPost];
 }
 
-- (void)updatePendingPost:(GLPPost *)pendingPost
+- (void)updatePendingPostAfterEdit:(GLPPost *)pendingPost
 {
     NSAssert([pendingPost isPending], @"Pending post's variable should be true");
     
-    [GLPPostDao updatePendingStatuswithPost:pendingPost];
+    [self updatePendingPostInMemory:pendingPost];
+    
+    [GLPPostDao saveOrUpdatePost:pendingPost];
     
     //Add new history record.
     [GLPReviewHistoryDao saveReviewHistory:[pendingPost.reviewHistory lastObject] withPost:pendingPost];
@@ -198,6 +200,21 @@ static GLPPendingPostsManager *instance = nil;
 
 - (void)removePost:(GLPPost *)pendingPost
 {
+    NSInteger postIndex = [self findPostIndexWithPost:pendingPost];
+    [self.pendingPosts removeObjectAtIndex:postIndex];
+}
+
+- (void)updatePendingPostInMemory:(GLPPost *)pendingPost
+{
+    NSInteger postIndex = [self findPostIndexWithPost:pendingPost];
+    
+    DDLogInfo(@"GLPPendingPostsManager replace post with remote key %ld current post remote key %ld", (long)pendingPost.remoteKey, (long)[(GLPPost *)[self.pendingPosts objectAtIndex:postIndex] remoteKey]);
+    
+    [self.pendingPosts replaceObjectAtIndex:postIndex withObject:pendingPost];
+}
+
+- (NSInteger)findPostIndexWithPost:(GLPPost *)pendingPost
+{
     NSUInteger index = 0;
     
     for(GLPPost *post in self.pendingPosts)
@@ -208,8 +225,7 @@ static GLPPendingPostsManager *instance = nil;
         }
         ++index;
     }
-    
-    [self.pendingPosts removeObjectAtIndex:index];
+    return index;
 }
 
 - (void)addAnySendingPendingPostsWithRemotePendingPosts:(NSMutableArray *)remotePendingPosts

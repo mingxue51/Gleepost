@@ -63,6 +63,8 @@
 //#define GLPNOTIFICATION_VIDEO_PROCESSED                 @"GLPVideoProcessed"
 #define GLPNOTIFICATION_VIDEO_POST_READY                @"GLPVidePostReady"
 #define GLPNOTIFICATION_GROUP_VIDEO_POST_READY          @"GLPGroupVideoPostReady"
+#define GLPNOTIFICATION_POST_EDITED                     @"GLPPostEdited"
+#define GLPNOTIFICATION_POST_STARTED_EDITING            @"GLPPostIsBeingEdited"
 
 #define GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE           @"GLPVideoProgressUpdated"
 #define GLPNOTIFICATION_VIDEO_PROGRESS_UPLOADING_COMPLETED  @"GLPVideoProgressUploadingCompleted"
