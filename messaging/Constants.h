@@ -113,9 +113,9 @@
 
 // DDLog
 #ifdef ENV_DEBUG
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+static const NSUInteger ddLogLevel = DDLogLevelVerbose;
 #else
-static const int ddLogLevel = LOG_LEVEL_ERROR;
+static const NSUInteger ddLogLevel = DDLogLevelError;
 #endif
 
 // Google Analytics Constants

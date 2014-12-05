@@ -115,11 +115,14 @@
 - (void)configureNotificationsAfterViewDidLoad
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postEditedFinished:) name:GLPNOTIFICATION_POST_EDITED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postEditedStartedUploading:) name:GLPNOTIFICATION_POST_STARTED_EDITING object:nil];
 }
 
 - (void)removeNotificationsJustBeforeDealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_EDITED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_STARTED_EDITING object:nil];
+
 }
 
 #pragma mark - Table view data source
@@ -240,13 +243,27 @@
 {
     NSDictionary *notificationDict = [notification userInfo];
     
-    GLPPost *postEdited = notificationDict[@"post_edited"];
+    DDLogDebug(@"GLPPendingPostsViewController : postEditedFinished %@", notificationDict);
+
+    [self reloadPendingPostsAfterEditingPost:notificationDict[@"post_edited"]];
+}
+
+- (void)postEditedStartedUploading:(NSNotification *)notification
+{
+    NSDictionary *notificationDict = [notification userInfo];
     
+    DDLogDebug(@"GLPPendingPostsViewController : postEditedStartedUploading %@", notificationDict);
+    
+    [self reloadPendingPostsAfterEditingPost:notificationDict[@"posts_started_editing"]];
+
+}
+
+- (void)reloadPendingPostsAfterEditingPost:(GLPPost *)postEdited
+{
     NSIndexPath *postIndexPath = [_pendingPostOrganiser indexPathWithPostRemoteKey:postEdited.remoteKey];
     
     if(postIndexPath)
     {
-//        [self refreshCellViewWithIndexPath:postIndexPath];
         [self loadCurrentPendingPosts];
     }
 }
@@ -320,7 +337,7 @@
         
         for (GLPPost *p in localPosts)
         {
-            DDLogDebug(@"Post %@", p.reviewHistory);
+            DDLogDebug(@"Post %@", p);
         }
         
         [_tableView reloadData];

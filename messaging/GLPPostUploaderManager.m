@@ -437,7 +437,6 @@
     
     DDLogDebug(@"Text post sending status before sending %d", textPost.sendStatus);
     
-    [GLPPostManager createLocalPost:textPost];
 
     //Post ready to be uploaded.
     
@@ -446,12 +445,12 @@
     
     @synchronized(_readyPosts)
     {
-        _uploadContentBlock = ^(GLPPost* post){
+        _uploadContentBlock = ^(GLPPost *post){
             
             if(post.isPending)
             {
-                //Notify GLPPendingPostView, GLPPendingPostManager and maybe GLPPendingPostsVC after edit.
-                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_EDITED object:nil userInfo:@{@"edited_post": post}];
+                //Notify GLPPendingPostView and GLPPendingPostsVC after edit.
+                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_EDITED object:nil userInfo:@{@"post_edited": post}];
             }
             else
             {
@@ -466,6 +465,11 @@
     
     if(textPost.pending)
     {
+        
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_STARTED_EDITING object:nil userInfo:@{@"posts_started_editing": textPost}];
+        [[GLPPendingPostsManager sharedInstance] updatePendingPostBeforeEdit:textPost];
+
+        
         //There is no need to send nsnotification once the editing started. There is no need for now.
         
         [[WebClient sharedInstance] editPost:textPost callbackBlock:^(BOOL success, GLPPost *updatedPost) {
@@ -478,14 +482,13 @@
                 return;
             }
             
-            textPost.sendStatus = kSendStatusSent;
-            textPost.remoteKey = updatedPost.remoteKey;
+            updatedPost.sendStatus = kSendStatusSent;
             
             DDLogInfo(@"Text post edited with success: %d and post: %@", success, updatedPost);
             
-            [GLPPostManager updatePostAfterSending:textPost];
+            [GLPPostManager updatePostAfterSending:updatedPost];
             
-            [[GLPPendingPostsManager sharedInstance] updatePendingPostAfterEdit:textPost];
+            [[GLPPendingPostsManager sharedInstance] updatePendingPostAfterEdit:updatedPost];
             
             _uploadContentBlock(textPost);
             
@@ -493,6 +496,8 @@
     }
     else
     {
+        [GLPPostManager createLocalPost:textPost];
+
         [[WebClient sharedInstance] createPost:textPost callbackBlock:^(BOOL success, int remoteKey) {
             
             textPost.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
@@ -525,8 +530,11 @@
             
             if(post.pending)
             {
-                //TODO: Notify glppendingpostsmanager.
+                
                 DDLogDebug(@"Pending post edited");
+                
+                //Notify GLPPendingPostView and GLPPendingPostsVC after edit.
+                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_EDITED object:nil userInfo:@{@"post_edited": post}];
             }
             else
             {
@@ -542,27 +550,38 @@
     
     if(post.pending)
     {
-        [[WebClient sharedInstance] editPost:post callbackBlock:^(BOOL success, int remoteKey) {
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_STARTED_EDITING object:nil userInfo:@{@"posts_started_editing": post}];
+        
+        [[GLPPendingPostsManager sharedInstance] updatePendingPostBeforeEdit:post];
+        
+        [[WebClient sharedInstance] editPost:post callbackBlock:^(BOOL success, GLPPost *updatedPost) {
            
-            post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-            post.remoteKey = success ? remoteKey : 0;
-            
-            NSLog(@"!!Post edited with success: %d and post remoteKey: %d", success, post.remoteKey);
-    
-            [GLPPostManager updateImagePostAfterSending:post];
-            
-            if(success)
+            if(!success)
             {
-                _uploadImageContentBlock(post);
-                
-                [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
-                
-                //Add post to uploaded posts.
-                [_uploadedPosts addObject:post];
-                
-                //Remove post from the NSDictionary.
-                [self removePostWithTimestamp:timestamp];
+                DDLogError(@"Failed to edit the post");
+                updatedPost.sendStatus = kSendStatusFailure;
+                [GLPPostManager updatePostAfterSending:post];
+                return;
             }
+            
+            updatedPost.sendStatus = kSendStatusSent;
+            
+            DDLogInfo(@"!!Post edited with success: %d and post remoteKey: %d", success, updatedPost.remoteKey);
+    
+            [GLPPostManager updateImagePostAfterSending:updatedPost];
+            
+            [[GLPPendingPostsManager sharedInstance] updatePendingPostAfterEdit:updatedPost];
+            
+            _uploadImageContentBlock(updatedPost);
+            
+            [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
+            
+            //Add post to uploaded posts.
+            [_uploadedPosts addObject:post];
+            
+            //Remove post from the NSDictionary.
+            [self removePostWithTimestamp:timestamp];
+
         }];
     }
     else
@@ -623,10 +642,10 @@
     
     if(post.pending)
     {
-        [[WebClient sharedInstance] editPost:post callbackBlock:^(BOOL success, int remoteKey) {
+        [[WebClient sharedInstance] editPost:post callbackBlock:^(BOOL success, GLPPost *editedPost) {
             
             post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-            post.remoteKey = success ? remoteKey : 0;
+            post.remoteKey = success ? editedPost.remoteKey : 0;
             
             DDLogInfo(@"Video Post edited with success: %d and post remoteKey: %ld", success, (long)post.remoteKey);
             
@@ -702,10 +721,10 @@
     
     if(videoPost.pending)
     {
-        [[WebClient sharedInstance] editPost:videoPost callbackBlock:^(BOOL success, int remoteKey) {
+        [[WebClient sharedInstance] editPost:videoPost callbackBlock:^(BOOL success, GLPPost *editedPost) {
             
             videoPost.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-            videoPost.remoteKey = success ? remoteKey : 0;
+            videoPost.remoteKey = success ? editedPost.remoteKey : 0;
             
             DDLogInfo(@"Pending Video Post edited with success: %d and post remoteKey: %ld", success, (long)videoPost.remoteKey);
             

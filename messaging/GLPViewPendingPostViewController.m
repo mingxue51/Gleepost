@@ -110,6 +110,7 @@
     
     CommentCell *cell;
     
+
     if(indexPath.row == 0)
     {
         if([self.pendingPost imagePost])
@@ -272,13 +273,17 @@
 - (void)postEditedFinished:(NSNotification *)notification
 {
     NSDictionary *notificationDict = [notification userInfo];
+    
+    DDLogDebug(@"GLPViewPendingPostsViewController : postEditedFinished %@", notificationDict);
     [self setNewPostAndRefreshPostCell:notificationDict[@"post_edited"]];
 }
 
 - (void)postEditedStartedUploading:(NSNotification *)notification
 {
     NSDictionary *notificationDict = [notification userInfo];
-    [self setNewPostAndRefreshPostCell:notificationDict[@"post_edited"]];
+    DDLogDebug(@"GLPViewPendingPostViewController : postEditedStartedUploading %@", notificationDict);
+
+    [self setNewPostAndRefreshPostCell:notificationDict[@"posts_started_editing"]];
 }
 
 - (void)setNewPostAndRefreshPostCell:(GLPPost *)newPost
@@ -288,8 +293,12 @@
         _pendingPost = newPost;
         
         DDLogDebug(@"GLPViewPendingPostViewController : pending post %@, edited post %@", _pendingPost, newPost);
+
+        //TODO: Remove reload data.
+        [self.tableView reloadData];
         
-        [self refreshCellViewWithIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        
+//        [self refreshCellViewWithIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     }
 }
 

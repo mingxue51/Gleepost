@@ -80,8 +80,20 @@ static GLPPendingPostsManager *instance = nil;
     
     [GLPPostDao saveOrUpdatePost:pendingPost];
     
+    DDLogDebug(@"GLPPendingPostsManager : New review history %@", [pendingPost.reviewHistory lastObject]);
+    
     //Add new history record.
     [GLPReviewHistoryDao saveReviewHistory:[pendingPost.reviewHistory lastObject] withPost:pendingPost];
+}
+
+- (void)updatePendingPostBeforeEdit:(GLPPost *)pendingPost
+{
+    pendingPost.sendStatus = kSendStatusSentEdited;
+    
+    DDLogDebug(@"updatePendingPostBeforeEdit %@", pendingPost);
+    
+    [self updatePendingPostInMemory:pendingPost];
+    [GLPPostDao saveOrUpdatePost:pendingPost];
 }
 
 - (void)removePendingPost:(GLPPost *)pendingPost
@@ -116,6 +128,8 @@ static GLPPendingPostsManager *instance = nil;
 
 - (void)loadPendingPosts
 {
+    self.pendingPosts = [GLPPostDao loadPendingPosts].mutableCopy;
+
     [[WebClient sharedInstance] getPostsWaitingForApprovalCallbackBlock:^(BOOL success, NSArray *pendingPosts) {
        
         if(success)
@@ -133,6 +147,8 @@ static GLPPendingPostsManager *instance = nil;
 
 - (void)loadPendingPostsWithLocalCallback:(void (^) (NSArray *localPosts))localCallback withRemoteCallback:(void (^) (BOOL success, NSArray *remotePosts))remoteCallback
 {
+    
+    self.pendingPosts = [GLPPostDao loadPendingPosts].mutableCopy;
     
     localCallback(self.pendingPosts);
     

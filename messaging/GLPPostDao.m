@@ -16,6 +16,7 @@
 #import "GLPVideo.h"
 #import "GLPLocation.h"
 #import "CategoryManager.h"
+#import "GLPReviewHistoryDaoParser.h"
 
 @implementation GLPPostDao
 
@@ -291,6 +292,44 @@
     }
     
     return result;
+}
+
+#pragma mark - Pending posts load operations
+
++ (NSArray *)loadPendingPosts
+{
+    __block NSMutableArray *pendingPosts = [[NSMutableArray alloc] init];
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        FMResultSet *resultSet = [self allPostsWaitingForApprovalWithDb:db];
+        
+        while ([resultSet next]) {
+            
+            GLPPost *post = [GLPPostDaoParser createFromResultSet:resultSet inDb:db];
+            
+            post.reviewHistory = [GLPPostDao loadReviewHistoriesWithPost:post andDb:db];
+
+            [pendingPosts addObject:post];
+        }
+    }];
+    
+    return pendingPosts;
+}
+
+
++ (NSMutableArray *)loadReviewHistoriesWithPost:(GLPPost *)post andDb:(FMDatabase *)db
+{
+    NSMutableArray *reviewHistories = [[NSMutableArray alloc] init];
+    
+    FMResultSet *resultSet = [GLPPostDao reviewHistoryWithPost:post andDb:db];
+    
+    while ([resultSet next]) {
+        GLPReviewHistory *reviewHistory = [GLPReviewHistoryDaoParser createFromResultSet:resultSet inDb:db];
+        [reviewHistories addObject:reviewHistory];
+    }
+    
+    return reviewHistories;
 }
 
 #pragma mark - Save operations
@@ -653,7 +692,7 @@
     [db executeUpdateWithFormat:@"delete from post_videos"];
 }
 
-#pragma mark - Helpers
+#pragma mark - FMResultSet constructors
 
 + (FMResultSet *)lastPostsFromSelectedCategoryWithDb:(FMDatabase *)db
 {
@@ -691,6 +730,16 @@
     }
     
     return resultSet;
+}
+
++ (FMResultSet *)allPostsWaitingForApprovalWithDb:(FMDatabase *)db
+{
+    return [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND group_remote_key = 0 AND pending = 1 order by date desc"];
+}
+
++ (FMResultSet *)reviewHistoryWithPost:(GLPPost *)post andDb:(FMDatabase *)db
+{
+    return [db executeQueryWithFormat:@"select * from review_history where post_remote_key = %d AND action != 0 order by date desc", post.remoteKey];
 }
 
 @end

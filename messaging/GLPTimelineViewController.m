@@ -686,8 +686,6 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPendingPostCell) name:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
-
-    
 }
 
 /** This notification called when user presses the going button on post. */

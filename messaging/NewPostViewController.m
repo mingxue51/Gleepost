@@ -524,7 +524,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     else
     {
         inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andLocation:_selectedLocation];
-        
     }
     
     if([inPost isVideoPost])
@@ -549,7 +548,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     
     //Reload data in campus wall to let the pending cell appear.
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
-    
 }
 
 - (void)informParentVCForNewPost:(GLPPost *)post

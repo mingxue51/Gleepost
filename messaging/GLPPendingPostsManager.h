@@ -24,6 +24,7 @@
 - (GLPPost *)postWithRemoteKey:(NSInteger)postRemoteKey;
 - (void)addNewPendingPost:(GLPPost *)pendingPost;
 - (void)updatePendingPostAfterEdit:(GLPPost *)pendingPost;
+- (void)updatePendingPostBeforeEdit:(GLPPost *)pendingPost;
 - (void)removePendingPost:(GLPPost *)pendingPost;
 - (void)clean;
 

@@ -20,9 +20,8 @@
     
     GLPReviewHistory *entity = [[GLPReviewHistory alloc] initWithAction:[resultSet intForColumn:@"action"] withDateHappened:[resultSet dateForColumn:@"date"] reason:[resultSet stringForColumn:@"reason"] andUser:user];
     
-    [GLPEntityDaoParser parseResultSet:resultSet into:entity];
-    
-    
+    entity.key = [resultSet intForColumn:@"key"];
+
     return entity;
 }
 

@@ -66,8 +66,6 @@
     
     if(![d objectForKey:self.firstHeader])
     {
-        DDLogDebug(@"PROBLEM!!");
-        
         NSDictionary *d1 = self.sections[0];
         
         self.sections[0] = self.sections[1];
