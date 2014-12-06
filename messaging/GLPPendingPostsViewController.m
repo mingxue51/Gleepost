@@ -297,7 +297,7 @@
 
 - (void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
 {
-    DDLogDebug(@"elementTouchedWithRemoteKey");
+    [self performSegueWithIdentifier:@"view profile" sender:self];
 }
 
 - (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex

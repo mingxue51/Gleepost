@@ -304,14 +304,17 @@
         
         FMResultSet *resultSet = [self allPostsWaitingForApprovalWithDb:db];
         
-        while ([resultSet next]) {
-            
+        while ([resultSet next])
+        {
             GLPPost *post = [GLPPostDaoParser createFromResultSet:resultSet inDb:db];
             
             post.reviewHistory = [GLPPostDao loadReviewHistoriesWithPost:post andDb:db];
 
             [pendingPosts addObject:post];
         }
+        
+        [GLPPostDao loadImagesWithPosts:pendingPosts withDb:db];
+        [GLPPostDao loadVideosWithPosts:pendingPosts withDb:db];
     }];
     
     return pendingPosts;

@@ -350,13 +350,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [_backgroundImageHeight setConstant:backgroundImageViewHeight];
     
     [_distanceFromTop setConstant:distanceFromTop];
-    
-    if([self.post.content isEqualToString:@"test problem"])
-    {
-        DDLogDebug(@"EQUALS %f", _distanceFromTop.constant);
-    }
-    
-    DDLogDebug(@"EQUALS %f with content %@", _distanceFromTop.constant, self.post.content);
 
     
     [self.mainViewHeight setConstant:height + fixedBottomViewHeight];
@@ -373,9 +366,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     backgroundImageViewHeight = 371.0f + height;    //378.0f
     fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
-
-    float constantBetweenClockViewAndTitle = 8;
-    
     
     if([self isCurrentPostEvent])
     {

@@ -16,10 +16,13 @@
 #import "GLPPostManager.h"
 #import "PendingPostManager.h"
 #import "NewPostViewController.h"
+#import "GLPPrivateProfileViewController.h"
+#import "ContactsManager.h"
 
-@interface GLPViewPendingPostViewController () <UITableViewDataSource, UITabBarDelegate, GLPPostCellDelegate>
+@interface GLPViewPendingPostViewController () <UITableViewDataSource, UITabBarDelegate, GLPPostCellDelegate, GLPImageViewDelegate, GLPLabelDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (assign, nonatomic) NSInteger selectedUserRemoteKey;
 
 @end
 
@@ -254,7 +257,9 @@
 
 - (void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
 {
-    DDLogDebug(@"elementTouchedWithRemoteKey");
+    //Decide where to navigate. Private or current profile.
+    
+    [self performSegueWithIdentifier:@"view profile" sender:self];
 }
 
 - (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
@@ -309,6 +314,31 @@
     
 }
 
+#pragma mark - GLPImageViewDelegate
+
+- (void)imageTouchedWithImageView:(UIImageView *)imageView
+{
+    NSInteger userRemoteKey = imageView.tag;
+    
+    //Decide where to navigate. Private or current profile.
+    if([[ContactsManager sharedInstance] userRelationshipWithId:userRemoteKey] == kCurrentUser)
+    {
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else
+    {
+        self.selectedUserRemoteKey = userRemoteKey;
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
+}
+
+#pragma mark - GLPLabelDelegate
+
+- (void)labelTouchedWithTag:(NSInteger)tag
+{
+    
+}
+
 #pragma mark - Table view refresh methods
 
 -(void)refreshCellViewWithIndexPath:(NSIndexPath *)indexPath
@@ -329,9 +359,11 @@
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([segue.identifier isEqualToString:@"edit post"])
+    if([segue.identifier isEqualToString:@"view private profile"])
     {
-//        NewPostViewController *postViewController = segue.destinationViewController;
+        GLPPrivateProfileViewController *profileViewController = segue.destinationViewController;
+        
+        profileViewController.selectedUserId = self.selectedUserRemoteKey;
     }
 }
 

@@ -486,7 +486,7 @@
             
             DDLogInfo(@"Text post edited with success: %d and post: %@", success, updatedPost);
             
-            [GLPPostManager updatePostAfterSending:updatedPost];
+//            [GLPPostManager updatePostAfterSending:updatedPost];
             
             [[GLPPendingPostsManager sharedInstance] updatePendingPostAfterEdit:updatedPost];
             
