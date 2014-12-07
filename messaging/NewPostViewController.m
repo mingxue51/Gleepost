@@ -404,6 +404,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         
         if(inPost.pending)
         {
+            [[PendingPostManager sharedInstance] reset];
+
             //PopUp view controller.
             [self.navigationController popViewControllerAnimated:YES];
         }

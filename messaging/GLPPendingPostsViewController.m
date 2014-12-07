@@ -333,12 +333,6 @@
         
         [[GLPPostImageLoader sharedInstance] addPostsImages: [[GLPPendingPostsManager sharedInstance] pendingPosts]];
         
-        DDLogDebug(@"Local posts history");
-        
-        for (GLPPost *p in localPosts)
-        {
-            DDLogDebug(@"Post %@", p);
-        }
         
         [_tableView reloadData];
         
@@ -351,13 +345,6 @@
             [self.pendingPostOrganiser organisePosts:remotePosts];
             
             [[GLPPostImageLoader sharedInstance] addPostsImages: [[GLPPendingPostsManager sharedInstance] pendingPosts]];
-            
-            DDLogDebug(@"Local posts history");
-            
-            for (GLPPost *p in remotePosts)
-            {
-                DDLogDebug(@"Post %@", p.content);
-            }
             
             [_tableView reloadData];
         }

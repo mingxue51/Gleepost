@@ -70,7 +70,7 @@
 {
     NSAssert(postRemoteKey != 0, @"Remote key of entity should never be 0.");
 
-    BOOL reviewSaved = [db executeUpdateWithFormat:@"insert into review_history (post_remote_key, date, reason, action, user_remote_key) values(%d, %d, %@, %d, %d)",
+    [db executeUpdateWithFormat:@"insert into review_history (post_remote_key, date, reason, action, user_remote_key) values(%d, %d, %@, %d, %d)",
      postRemoteKey,
      entity.dateHappened,
      entity.reason,
@@ -81,8 +81,6 @@
     
     //Save the author.
     [GLPUserDao saveIfNotExist:entity.user db:db];
-    
-    DDLogDebug(@"Review saved with status %d", reviewSaved);
 }
 
 + (void)removeReviewHistoryWithPost:(GLPPost *)post

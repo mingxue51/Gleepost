@@ -12,7 +12,7 @@
 
 - (id)init
 {
-    self = [super initWithFirstHeader:@"Rejected Posts" andSecondHeader:@"Pending Posts"];
+    self = [super initWithFirstHeader:@"REJECTED POSTS" andSecondHeader:@"PENDING POSTS"];
     
     if(self)
     {

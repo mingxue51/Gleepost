@@ -74,9 +74,9 @@ static GLPPendingPostsManager *instance = nil;
 
 - (void)updatePendingPostAfterEdit:(GLPPost *)pendingPost
 {
-    NSAssert([pendingPost isPending], @"Pending post's variable should be true");
+//    NSAssert([pendingPost isPending], @"Pending post's variable should be true");
     
-    [self updatePendingPostInMemory:pendingPost];
+//    [self updatePendingPostInMemory:pendingPost];
     
     [GLPPostDao saveOrUpdatePost:pendingPost];
     
@@ -92,7 +92,7 @@ static GLPPendingPostsManager *instance = nil;
     
     DDLogDebug(@"updatePendingPostBeforeEdit %@", pendingPost);
     
-    [self updatePendingPostInMemory:pendingPost];
+//    [self updatePendingPostInMemory:pendingPost];
     [GLPPostDao saveOrUpdatePost:pendingPost];
 }
 
@@ -220,14 +220,17 @@ static GLPPendingPostsManager *instance = nil;
     [self.pendingPosts removeObjectAtIndex:postIndex];
 }
 
-- (void)updatePendingPostInMemory:(GLPPost *)pendingPost
-{
-    NSInteger postIndex = [self findPostIndexWithPost:pendingPost];
-    
-    DDLogInfo(@"GLPPendingPostsManager replace post with remote key %ld current post remote key %ld", (long)pendingPost.remoteKey, (long)[(GLPPost *)[self.pendingPosts objectAtIndex:postIndex] remoteKey]);
-    
-    [self.pendingPosts replaceObjectAtIndex:postIndex withObject:pendingPost];
-}
+//For now don't use this method. It's useless because we are doing the update in
+//local database.
+
+//- (void)updatePendingPostInMemory:(GLPPost *)pendingPost
+//{
+//    NSInteger postIndex = [self findPostIndexWithPost:pendingPost];
+//    
+//    DDLogInfo(@"GLPPendingPostsManager replace post with remote key %ld current post remote key %ld", (long)pendingPost.remoteKey, (long)[(GLPPost *)[self.pendingPosts objectAtIndex:postIndex] remoteKey]);
+//    
+//    [self.pendingPosts replaceObjectAtIndex:postIndex withObject:pendingPost];
+//}
 
 - (NSInteger)findPostIndexWithPost:(GLPPost *)pendingPost
 {
@@ -235,6 +238,8 @@ static GLPPendingPostsManager *instance = nil;
     
     for(GLPPost *post in self.pendingPosts)
     {
+        DDLogDebug(@"findPostIndexWithPost post %@", post);
+        
         if(post.remoteKey == pendingPost.remoteKey)
         {
             break;

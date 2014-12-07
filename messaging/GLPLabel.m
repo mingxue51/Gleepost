@@ -24,9 +24,7 @@
 }
 
 - (void)configureLabel
-{
-    DDLogDebug(@"configureLabel");
-    
+{    
     [self setUserInteractionEnabled:YES];
     
     //Add gesture to label.

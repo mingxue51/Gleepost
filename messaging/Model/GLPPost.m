@@ -103,7 +103,7 @@
     }
     else
     {
-        GLPReviewHistory *firstReviewHistory = self.reviewHistory[0];
+        GLPReviewHistory *firstReviewHistory = [self.reviewHistory lastObject];
         
         return [firstReviewHistory action];
     }

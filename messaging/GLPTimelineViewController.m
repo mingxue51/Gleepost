@@ -992,7 +992,6 @@ const float TOP_OFFSET = 180.0f;
         }
     }
     
-    
     [self startLoading];
     
     [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
@@ -1002,13 +1001,6 @@ const float TOP_OFFSET = 180.0f;
         {
             //Load campus live events posts.
             [_campusWallHeader reloadData];
-        }
-        
-        
-        if(!success) {
-//            [self showLoadingError:@"Failed to load new posts"];
-            
-            return;
         }
         
         if(posts.count > 0) {

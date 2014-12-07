@@ -578,8 +578,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     else if(_post.finalImage==nil && !self.mediaNeedsToReload)
     {
-        DDLogDebug(@"Image view should be nil");
-        
 //        [_postImageView sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil]];
         
         [_postImageView setImage:nil];

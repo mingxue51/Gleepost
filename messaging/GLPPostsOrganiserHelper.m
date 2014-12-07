@@ -73,8 +73,6 @@
 
 - (void)resetData
 {
-    DDLogDebug(@"Reset data sections %@", _sections);
-    
     [_sections removeAllObjects];
 }
 

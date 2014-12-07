@@ -465,8 +465,6 @@
     
     if(textPost.pending)
     {
-        
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_STARTED_EDITING object:nil userInfo:@{@"posts_started_editing": textPost}];
         [[GLPPendingPostsManager sharedInstance] updatePendingPostBeforeEdit:textPost];
 
         
@@ -484,13 +482,13 @@
             
             updatedPost.sendStatus = kSendStatusSent;
             
-            DDLogInfo(@"Text post edited with success: %d and post: %@", success, updatedPost);
+            DDLogInfo(@"Text post edited with success: %d and post event date: %@", success, updatedPost.dateEventStarts);
             
 //            [GLPPostManager updatePostAfterSending:updatedPost];
             
             [[GLPPendingPostsManager sharedInstance] updatePendingPostAfterEdit:updatedPost];
             
-            _uploadContentBlock(textPost);
+            _uploadContentBlock(updatedPost);
             
         }];
     }

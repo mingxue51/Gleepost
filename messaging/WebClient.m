@@ -612,9 +612,10 @@ static WebClient *instance = nil;
     
     [self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        GLPPost *editedPost = [RemoteParser parsePostFromJson:responseObject];
-        
-        callbackBlock(YES, editedPost);
+        GLPPost *newEditedPost = [RemoteParser parsePostFromJson:responseObject];
+        newEditedPost.pending = YES;
+                
+        callbackBlock(YES, newEditedPost);
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         

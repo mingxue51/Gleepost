@@ -136,6 +136,7 @@
         postViewCell.delegate = self;
         
         [postViewCell setIsViewPost:YES];
+        
         [postViewCell setPost:self.pendingPost withPostIndex:indexPath.row];
         
         return postViewCell;
@@ -296,6 +297,7 @@
     if(newPost.remoteKey == _pendingPost.remoteKey)
     {
         _pendingPost = newPost;
+        
         
         DDLogDebug(@"GLPViewPendingPostViewController : pending post %@, edited post %@", _pendingPost, newPost);
 

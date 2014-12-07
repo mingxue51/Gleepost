@@ -89,7 +89,7 @@
 
 + (void)loadRemotePostsBefore:(GLPPost *)post withNotUploadedPosts:(NSArray*)notUploadedPosts andCurrentPosts:(NSArray*)posts callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
 {
-    NSLog(@"load posts before %d - %@", post.remoteKey, post.content);
+    FLog(@"load posts before %d - %@", post.remoteKey, post.content);
     
     NSString *categoryName = [[CategoryManager sharedInstance] selectedCategoryName];
     

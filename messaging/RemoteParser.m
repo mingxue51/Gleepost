@@ -128,7 +128,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     {
         GLPPost *post = [RemoteParser parsePostFromJson:postJson];
         
-        
         post.reviewHistory = [RemoteParser parseReviewHistories:postJson[@"review_history"]];
         
         post.pending = YES;
