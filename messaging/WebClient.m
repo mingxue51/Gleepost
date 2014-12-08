@@ -579,9 +579,7 @@ static WebClient *instance = nil;
 //    {
 //        [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:editedPost.categories], @"tags", nil]];
 //    }
-    
-    DDLogDebug(@"Edit Post params: %@, Categories: %@", params, editedPost.categories);
-    
+        
     //TODO: add a new param url rather than call second method after the post request.
     
     if(editedPost.video.pendingKey)

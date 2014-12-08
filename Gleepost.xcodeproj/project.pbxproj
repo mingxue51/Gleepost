@@ -133,6 +133,13 @@
 			<key>sourceTree</key>
 			<string>&lt;group&gt;</string>
 		</dict>
+		<key>346B43B59A004605BA6D906B</key>
+		<dict>
+			<key>fileRef</key>
+			<string>82D6C24A4DFC4BA5B92AFE98</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
 		<key>4016C489223342EA86950C44</key>
 		<dict>
 			<key>buildActionMask</key>
@@ -154,6 +161,8 @@
 			<key>shellScript</key>
 			<string>"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh"
 </string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
 		</dict>
 		<key>58056BEA18632DEA0089EB09</key>
 		<dict>
@@ -24772,7 +24781,7 @@ fi
 				<string>80AB891D17C267F50053E784</string>
 				<string>80AB891F17C267F50053E784</string>
 				<string>80AB892117C267F50053E784</string>
-				<string>D23E342C04344F0B93695525</string>
+				<string>346B43B59A004605BA6D906B</string>
 			</array>
 			<key>isa</key>
 			<string>PBXFrameworksBuildPhase</string>
@@ -28690,13 +28699,6 @@ fi
 		<dict>
 			<key>fileRef</key>
 			<string>C04613971834E87000B422A3</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>D23E342C04344F0B93695525</key>
-		<dict>
-			<key>fileRef</key>
-			<string>82D6C24A4DFC4BA5B92AFE98</string>
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>

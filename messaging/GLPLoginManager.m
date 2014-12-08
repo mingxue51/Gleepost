@@ -157,9 +157,7 @@
     [[DatabaseManager sharedInstance] initDatabase];
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        DDLogDebug(@"DB error : validateLoginForUser");
         [GLPUserDao save:user inDb:db];
-        
     }];
     
     [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];

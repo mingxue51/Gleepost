@@ -19,6 +19,8 @@
 #import "GLPVideoPostCWProgressManager.h"
 #import "GLPLiveGroupPostManager.h"
 #import "PendingPostManager.h"
+#import "NSNotificationCenter+Utils.h"
+#import "GLPPendingPostsManager.h"
 
 typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     GLPImageStatusUploaded = 0,
@@ -108,12 +110,22 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     if([[PendingPostManager sharedInstance] isEditMode])
     {
         post.pending = YES;
-        post.sendStatus = kEdited;
+        post.sendStatus = kSendStatusLocalEdited;
         post.remoteKey = [[PendingPostManager sharedInstance] pendingPostRemoteKey];
+        
+        //Notify the PendingPostVC and the ViewPendingPostVC that the post is going to be edited.
+        //TODO: See if that works for text, image and video together.
+        
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_STARTED_EDITING object:nil userInfo:@{@"posts_started_editing" : post}];
+        
+        [self editPostWithPost:post];
+    }
+    else
+    {
+        post = [self uploadPostWithPost:post];
     }
 
-    //Create a new operation.
-    post = [self uploadOrEditPostWithPost:post];
+
     
     return post;
 }
@@ -134,10 +146,10 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     [[GLPLiveGroupPostManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
 
     
-    return [self uploadOrEditPostWithPost:post];
+    return [self uploadPostWithPost:post];
 }
 
-- (GLPPost *)uploadOrEditPostWithPost:(GLPPost *)post
+- (GLPPost *)uploadPostWithPost:(GLPPost *)post
 {
     //Create a new operation.
     if(_postImage)
@@ -166,6 +178,32 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     FLog(@"VIDEO PATH FOR POST %@: %@", post, _videoPath);
     
     return post;
+}
+
+- (void)editPostWithPost:(GLPPost *)post
+{
+    [[GLPPendingPostsManager sharedInstance] updatePendingPostBeforeEdit:post];
+
+    if(_postImage)
+    {
+        post.date = [NSDate date];
+        post.tempImage = _postImage;
+        post.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
+        [[GLPPostOperationManager sharedInstance] setPost:post withTimestamp:timestamp];
+        FLog(@"Image post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
+    }
+    else if(_videoPath)
+    {
+        post.date = [NSDate date];
+        post.video = [[GLPVideo alloc] initWithPath:_videoPath];
+        [[GLPVideoUploadManager sharedInstance] setPost:post withTimestamp:timestamp];
+        FLog(@"Video post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
+    }
+    else
+    {
+        FLog(@"Text post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
+        [[GLPPostOperationManager sharedInstance] uploadTextPost:post];
+    }
 }
 
 # pragma mark - Uploading

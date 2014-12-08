@@ -705,6 +705,16 @@
     }];
 }
 
+// update local post to either sent or error
++ (void)updatePostBeforeEditing:(GLPPost *)post
+{
+    DDLogInfo(@"Update post before editing: %@", post);
+    post.sendStatus = kSendStatusLocalEdited;
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        post.key = [GLPPostDao findPostKeyByRemoteKey:post.remoteKey inDB:db];
+        [GLPPostDao updatePostSendingData:post inDb:db];
+    }];
+}
 
 // update local post to either sent or error
 + (void)updatePostAfterSending:(GLPPost *)post

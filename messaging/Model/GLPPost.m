@@ -110,6 +110,23 @@
     
 }
 
+/**
+ Updates the current post with new data if there are from the newPost.
+ 
+ @param the new updated post.
+ 
+ */
+- (void)updatePostWithNewPost:(GLPPost *)newPost
+{
+    self.eventTitle = newPost.eventTitle;
+    
+    self.content = newPost.content;
+    
+    self.imagesUrls = newPost.imagesUrls;
+    
+    self.video = newPost.video;
+}
+
 - (NSDate *)generateDateEventEnds
 {
     return [DateFormatterHelper addHours:2 toDate:_dateEventStarts];

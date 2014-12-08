@@ -57,9 +57,7 @@ int const NumberMaxOfMessagesLoaded = 20;
 + (void)initialSaveConversationsToDatabase:(NSArray *)conversations
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        
-        DDLogDebug(@"DB error : initialSaveConversationsToDatabase");
-        
+                
         [GLPConversationDao deleteAllNormalConversationsInDb:db];
 
         for(GLPConversation *conversation in conversations)

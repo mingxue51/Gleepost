@@ -69,6 +69,45 @@
     return nil;
 }
 
+#pragma mark - Modifiers
+
+- (void)markPostAsEdited:(GLPPost *)post
+{
+    
+    GLPPost *selectedPost = [self findPostPost:post];
+    
+    selectedPost.sendStatus = kSendStatusLocalEdited;
+}
+
+- (void)updatePostAfterSent:(GLPPost *)post
+{
+    GLPPost *selectedPost = [self findPostPost:post];
+    
+    [selectedPost updatePostWithNewPost:post];
+    
+    selectedPost.sendStatus = kSendStatusSent;
+}
+
+- (GLPPost *)findPostPost:(GLPPost *)post
+{
+    NSIndexPath *postIndexPath = [self indexPathWithPost:post];
+
+    NSDictionary *section = self.sections[postIndexPath.section];
+    
+    NSArray *posts = nil;
+    
+    for(NSString *header in section)
+    {
+        posts = [section objectForKey:header];
+    }
+    
+    GLPPost *selectedPost = [posts objectAtIndex:postIndexPath.row];
+    
+    DDLogDebug(@"GLPPostOrganiserHelper : selected post %@", selectedPost);
+    
+    return selectedPost;
+}
+
 #pragma mark - Accessors
 
 - (void)resetData

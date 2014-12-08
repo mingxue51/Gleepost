@@ -111,7 +111,6 @@
     __block NSArray *localPosts = nil;
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        DDLogDebug(@"DB error : findPostsWithUsersRemoteKey");
         localPosts = [GLPPostDao findPostsWithUsersRemoteKey:usersRemoteKey inDb:db];
     }];
     
@@ -445,11 +444,9 @@
 {
     for(NSString* imageUrl in entity.imagesUrls)
     {
-        BOOL b = [db executeUpdateWithFormat:@"insert into post_images (post_remote_key, image_url) values(%d, %@)",
+        [db executeUpdateWithFormat:@"replace into post_images (post_remote_key, image_url) values(%d, %@)",
          entity.remoteKey,
          imageUrl];
-        
-        DDLogDebug(@"Image url updated %d.", b);
     }
 }
 
@@ -669,11 +666,11 @@
 
 + (void)updateImagesWithEntity:(GLPPost *)entity db:(FMDatabase *)db
 {
-    if(![GLPPostDao loadImagesWithPost:entity db:db])
-    {
+//    if(![GLPPostDao loadImagesWithPost:entity db:db])
+//    {
         //If there are not images of this post in database then insert them.
         [GLPPostDao insertImagesWithEntity:entity andDb:db];
-    }
+//    }
 }
 
 #pragma mark - Delete operations

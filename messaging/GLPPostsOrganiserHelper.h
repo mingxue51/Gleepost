@@ -17,6 +17,8 @@
 
 - (id)initWithFirstHeader:(NSString *)firstHeader andSecondHeader:(NSString *)secondHeader;
 - (void)addPost:(GLPPost *)post withHeader:(NSString *)header;
+- (void)markPostAsEdited:(GLPPost *)post;
+- (void)updatePostAfterSent:(GLPPost *)post;
 - (NSInteger)numberOfSections;
 - (NSString *)headerInSection:(NSInteger)sectionIndex;
 - (NSArray *)postsAtSectionIndex:(NSInteger)sectionIndex;

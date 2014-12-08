@@ -289,7 +289,11 @@
     NSDictionary *notificationDict = [notification userInfo];
     DDLogDebug(@"GLPViewPendingPostViewController : postEditedStartedUploading %@", notificationDict);
 
-    [self setNewPostAndRefreshPostCell:notificationDict[@"posts_started_editing"]];
+    GLPPost *editedPost = notificationDict[@"posts_started_editing"];
+    
+    editedPost.sendStatus = kSendStatusLocalEdited;
+    
+    [self setNewPostAndRefreshPostCell:editedPost];
 }
 
 - (void)setNewPostAndRefreshPostCell:(GLPPost *)newPost
@@ -299,7 +303,7 @@
         _pendingPost = newPost;
         
         
-        DDLogDebug(@"GLPViewPendingPostViewController : pending post %@, edited post %@", _pendingPost, newPost);
+        DDLogDebug(@"GLPViewPendingPostViewController : pending post %@, edited post %@ sendstatus %d", _pendingPost.imagesUrls, newPost.imagesUrls, newPost.sendStatus);
 
         //TODO: Remove reload data.
         [self.tableView reloadData];

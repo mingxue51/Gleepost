@@ -87,13 +87,10 @@ static GLPPendingPostsManager *instance = nil;
 }
 
 - (void)updatePendingPostBeforeEdit:(GLPPost *)pendingPost
-{
-    pendingPost.sendStatus = kSendStatusSentEdited;
+{    
+    [GLPPostManager updatePostBeforeEditing:pendingPost];
     
     DDLogDebug(@"updatePendingPostBeforeEdit %@", pendingPost);
-    
-//    [self updatePendingPostInMemory:pendingPost];
-    [GLPPostDao saveOrUpdatePost:pendingPost];
 }
 
 - (void)removePendingPost:(GLPPost *)pendingPost
@@ -147,8 +144,10 @@ static GLPPendingPostsManager *instance = nil;
 
 - (void)loadPendingPostsWithLocalCallback:(void (^) (NSArray *localPosts))localCallback withRemoteCallback:(void (^) (BOOL success, NSArray *remotePosts))remoteCallback
 {
-    
-    self.pendingPosts = [GLPPostDao loadPendingPosts].mutableCopy;
+    if(self.pendingPosts.count == 0)
+    {
+        self.pendingPosts = [GLPPostDao loadPendingPosts].mutableCopy;
+    }
     
     localCallback(self.pendingPosts);
     
@@ -206,6 +205,8 @@ static GLPPendingPostsManager *instance = nil;
         
         //Post.
         [GLPPostDao saveOrUpdatePost:pendingPost];
+        
+        DDLogDebug(@"GLPPendingPostsManager : pending post key %ld", (long)pendingPost.key);
         
         //Review history.
         [GLPReviewHistoryDao saveReviewHistoryArrayOfPost:pendingPost];

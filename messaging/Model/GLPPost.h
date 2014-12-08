@@ -53,6 +53,7 @@
 -(BOOL)imagePost;
 -(BOOL)isGroupPost;
 -(BOOL)isVideoPost;
+- (void)updatePostWithNewPost:(GLPPost *)newPost;
 - (Action)pendingPostStatus;
 - (NSDate *)generateDateEventEnds;
 - (NSString *)locationDescription;

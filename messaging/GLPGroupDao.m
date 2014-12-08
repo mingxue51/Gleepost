@@ -81,8 +81,6 @@
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
-        DDLogDebug(@"DB error : findRemoteGroups");
-        
         groups = [GLPGroupDao findRemoteGroupsdb:db];
         
     }];
@@ -233,8 +231,6 @@
 +(void)saveGroups:(NSArray *)groups
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-
-        DDLogDebug(@"DB error : saveGroups");
         
         [self cleanTable:db];
         

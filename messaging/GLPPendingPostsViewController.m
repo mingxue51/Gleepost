@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) PendingPostsOrganiserHelper *pendingPostOrganiser;
 @property (strong, nonatomic) GLPPost *selectedPost;
+@property (strong, nonatomic) NSIndexPath *postToBeRefreshed;
 
 @end
 
@@ -64,6 +65,7 @@
 - (void)configureObjects
 {
     _pendingPostOrganiser = [[PendingPostsOrganiserHelper alloc] init];
+    _postToBeRefreshed = nil;
 }
 
 - (void)configureTableView
@@ -163,6 +165,20 @@
     //Set this class as delegate.
     postViewCell.delegate = self;
     
+    
+    if([_postToBeRefreshed compare:indexPath] == NSOrderedSame)
+    {
+        DDLogDebug(@"Post to be refreshed YES");
+        
+        [postViewCell reloadMedia:YES];
+        _postToBeRefreshed = nil;
+    }
+    else
+    {
+        DDLogDebug(@"Post to be refreshed NO");
+        [postViewCell reloadMedia:NO];
+    }
+    
     [postViewCell setPost:post withPostIndex:indexPath.row];
     
     return postViewCell;
@@ -254,7 +270,7 @@
     
     DDLogDebug(@"GLPPendingPostsViewController : postEditedStartedUploading %@", notificationDict);
     
-    [self reloadPendingPostsAfterEditingPost:notificationDict[@"posts_started_editing"]];
+    [self reloadPendingPostsBeforeEditingFinished:notificationDict[@"posts_started_editing"]];
 
 }
 
@@ -262,10 +278,22 @@
 {
     NSIndexPath *postIndexPath = [_pendingPostOrganiser indexPathWithPostRemoteKey:postEdited.remoteKey];
     
+    DDLogDebug(@"reloadPendingPostsAfterEditingPost updated post content %@", postEdited.content);
+    
+    [_pendingPostOrganiser updatePostAfterSent:postEdited];
+
     if(postIndexPath)
     {
-        [self loadCurrentPendingPosts];
+        _postToBeRefreshed = postIndexPath;
+        [self refreshCellViewWithIndexPath:postIndexPath];
     }
+}
+
+- (void)reloadPendingPostsBeforeEditingFinished:(GLPPost *)postUploading
+{
+    [_pendingPostOrganiser markPostAsEdited:postUploading];
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view refresh methods

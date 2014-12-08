@@ -65,6 +65,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
+@property (weak, nonatomic) IBOutlet UIView *loadingView;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentLabelHeightConstrain;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromTopView;
@@ -74,6 +76,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewHeight;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *backgroundImageHeight;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *loadingViewHeight;
 
 //This variable is temporary.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceBetweenTitleAndClockView;
@@ -146,6 +150,19 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 {
     /** TODO: See if this assign is good. */
     _post = post;
+    
+    if(_post.sendStatus == kSendStatusLocalEdited)
+    {
+        DDLogDebug(@"MainPostView : kSendStatusLocalEdited YES %d", _post.sendStatus);
+        
+        [_loadingView setHidden:NO];
+    }
+    else
+    {
+        DDLogDebug(@"MainPostView : kSendStatusLocalEdited NO %d", _post.sendStatus);
+
+        [_loadingView setHidden:YES];
+    }
     
     [self showOrHideLikeLabel];
     
@@ -402,6 +419,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [_backgroundImageHeight setConstant:backgroundImageViewHeight];
     
+    [_loadingViewHeight setConstant:backgroundImageViewHeight];
+    
     [_contentLabelHeightConstrain setConstant:height];
     
     [self.distanceFromTop setConstant:distanceFromTop];
@@ -507,6 +526,14 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         [self hideVideoView];
     }
     
+    if([self doesMediaNeedLoadAgain])
+    {
+        [_activityIndicator stopAnimating];
+        [_postImageView setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
+        return;
+    }
+    
     if(self.isViewPost && _postImageView.image != nil)
     {
         [_activityIndicator stopAnimating];
@@ -584,12 +611,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         
         [_activityIndicator startAnimating];
 
-    }
-    
-    if([self doesMediaNeedLoadAgain])
-    {
-        [_activityIndicator stopAnimating];
-        [_postImageView setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
 }
 

@@ -40,23 +40,13 @@
         if ([post pendingPostStatus] == kRejected)
         {
             [self addPost:post withHeader:self.firstHeader];
-            
-            if ([post.content isEqualToString:@"I'm so"])
-            {
-                DDLogDebug(@"Rejected I AM SO %@", post.reviewHistory);
-            }
         }
         else
         {
             [self addPost:post withHeader:self.secondHeader];
-            
-            if ([post.content isEqualToString:@"I'm so "])
-            {
-                DDLogDebug(@"Pending I AM SO %@", post.reviewHistory);
-            }
         }
     }
-    
+        
     [self fixPositionsHeadersInSectionArrayIfNeeded];
 }
 

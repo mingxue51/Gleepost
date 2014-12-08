@@ -465,7 +465,7 @@
     
     if(textPost.pending)
     {
-        [[GLPPendingPostsManager sharedInstance] updatePendingPostBeforeEdit:textPost];
+//        [[GLPPendingPostsManager sharedInstance] updatePendingPostBeforeEdit:textPost];
 
         
         //There is no need to send nsnotification once the editing started. There is no need for now.
@@ -523,48 +523,47 @@
     {
         post = [_readyPosts objectForKey:timestamp];
         post.imagesUrls = [[NSArray alloc] initWithObjects:url, nil];
-        
-        _uploadImageContentBlock = ^(GLPPost* post){
-            
-            if(post.pending)
-            {
-                
-                DDLogDebug(@"Pending post edited");
-                
-                //Notify GLPPendingPostView and GLPPendingPostsVC after edit.
-                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_EDITED object:nil userInfo:@{@"post_edited": post}];
-            }
-            else
-            {
-                //Notify GLPTimelineViewController after finish.
-                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInteger:post.remoteKey], @"imageUrl":[post.imagesUrls objectAtIndex:0], @"key":[NSNumber numberWithInteger:post.key]}];
-            }
-            
-        };
     }
+    
+    _uploadImageContentBlock = ^(GLPPost* post){
+        
+        if(post.pending)
+        {
+            
+            DDLogDebug(@"Pending post edited");
+            
+            //Notify GLPPendingPostView and GLPPendingPostsVC after edit.
+            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_EDITED object:nil userInfo:@{@"post_edited": post}];
+        }
+        else
+        {
+            //Notify GLPTimelineViewController after finish.
+            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInteger:post.remoteKey], @"imageUrl":[post.imagesUrls objectAtIndex:0], @"key":[NSNumber numberWithInteger:post.key]}];
+        }
+        
+    };
     
 
     NSLog(@"Post uploading task started with post content: %@ and image url: %@.",post.content, [post.imagesUrls objectAtIndex:0]);
     
     if(post.pending)
     {
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_STARTED_EDITING object:nil userInfo:@{@"posts_started_editing": post}];
-        
-        [[GLPPendingPostsManager sharedInstance] updatePendingPostBeforeEdit:post];
+//        [[GLPPendingPostsManager sharedInstance] updatePendingPostBeforeEdit:post];
         
         [[WebClient sharedInstance] editPost:post callbackBlock:^(BOOL success, GLPPost *updatedPost) {
            
             if(!success)
             {
                 DDLogError(@"Failed to edit the post");
-                updatedPost.sendStatus = kSendStatusFailure;
+                post.sendStatus = kSendStatusFailure;
                 [GLPPostManager updatePostAfterSending:post];
                 return;
             }
             
             updatedPost.sendStatus = kSendStatusSent;
+            updatedPost.key = post.key;
             
-            DDLogInfo(@"!!Post edited with success: %d and post remoteKey: %ld", success, (long)updatedPost.remoteKey);
+            DDLogInfo(@"!!Post edited with success: %d and post image url %@ and content: %@", success, updatedPost.imagesUrls[0], updatedPost.content);
     
             [GLPPostManager updateImagePostAfterSending:updatedPost];
             
