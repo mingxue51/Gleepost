@@ -209,7 +209,7 @@
  @return NSDictionary.
  
  */
--(NSDictionary *)isPostInQueueWithKey:(int)postKey
+-(NSDictionary *)isPostInQueueWithKey:(NSInteger)postKey
 {
     for(NSDate *timestamp in _readyPosts)
     {
@@ -308,9 +308,9 @@
  @param postKey post's key.
  
  */
--(void)checkForPendingCommentsWithPostkey:(int)postKey andPostRemoteKey:(int)postRemoteKey
+-(void)checkForPendingCommentsWithPostkey:(NSInteger)postKey andPostRemoteKey:(NSInteger)postRemoteKey
 {
-    NSArray *currentComments = [_pendingComments objectForKey: [NSNumber numberWithInt:postKey]];
+    NSArray *currentComments = [_pendingComments objectForKey: [NSNumber numberWithInteger:postKey]];
     
     for (GLPComment *comment in currentComments)
     {
@@ -537,7 +537,7 @@
             else
             {
                 //Notify GLPTimelineViewController after finish.
-                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInt:post.remoteKey], @"imageUrl":[post.imagesUrls objectAtIndex:0], @"key":[NSNumber numberWithInt:post.key]}];
+                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPPostUploaded" object:nil userInfo:@{@"remoteKey":[NSNumber numberWithInteger:post.remoteKey], @"imageUrl":[post.imagesUrls objectAtIndex:0], @"key":[NSNumber numberWithInteger:post.key]}];
             }
             
         };
@@ -564,7 +564,7 @@
             
             updatedPost.sendStatus = kSendStatusSent;
             
-            DDLogInfo(@"!!Post edited with success: %d and post remoteKey: %d", success, updatedPost.remoteKey);
+            DDLogInfo(@"!!Post edited with success: %d and post remoteKey: %ld", success, (long)updatedPost.remoteKey);
     
             [GLPPostManager updateImagePostAfterSending:updatedPost];
             

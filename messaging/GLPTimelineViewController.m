@@ -2094,7 +2094,6 @@ const float TOP_OFFSET = 180.0f;
         [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
     }
     
-    //    [self scrollToTheTop];
     [self scrollToTheNavigationBar];
     
     //Bring the fake navigation bar to from because is hidden by new cell.
