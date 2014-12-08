@@ -465,9 +465,6 @@
     
     if(textPost.pending)
     {
-//        [[GLPPendingPostsManager sharedInstance] updatePendingPostBeforeEdit:textPost];
-
-        
         //There is no need to send nsnotification once the editing started. There is no need for now.
         
         [[WebClient sharedInstance] editPost:textPost callbackBlock:^(BOOL success, GLPPost *updatedPost) {
@@ -511,7 +508,7 @@
     }
 }
 
--(void)uploadPostWithTimestamp:(NSDate*)timestamp andImageUrl:(NSString*)url
+-(void)uploadPostWithTimestamp:(NSDate *)timestamp andImageUrl:(NSString*)url
 {
     //Post ready to be uploaded.
     
@@ -529,7 +526,6 @@
         
         if(post.pending)
         {
-            
             DDLogDebug(@"Pending post edited");
             
             //Notify GLPPendingPostView and GLPPendingPostsVC after edit.
@@ -548,8 +544,6 @@
     
     if(post.pending)
     {
-//        [[GLPPendingPostsManager sharedInstance] updatePendingPostBeforeEdit:post];
-        
         [[WebClient sharedInstance] editPost:post callbackBlock:^(BOOL success, GLPPost *updatedPost) {
            
             if(!success)

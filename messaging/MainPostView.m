@@ -67,6 +67,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingViewIndicator;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentLabelHeightConstrain;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromTopView;
@@ -156,6 +158,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         DDLogDebug(@"MainPostView : kSendStatusLocalEdited YES %d", _post.sendStatus);
         
         [_loadingView setHidden:NO];
+        
+        [_loadingViewIndicator startAnimating];
     }
     else
     {
@@ -710,7 +714,14 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:5];
     
+    
     [ShapeFormatterHelper setBorderToView:_backgroundImageView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0f];
+    
+    [ShapeFormatterHelper setCornerRadiusWithView:_loadingView andValue:5];
+    
+    [ShapeFormatterHelper setBorderToView:_loadingView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0f];
+
+
     
     _contentLbl.attributedText = contentAttributeText;
 }
