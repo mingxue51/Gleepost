@@ -13,6 +13,7 @@
 #import "GLPReviewHistoryDao.h"
 #import "WebClient.h"
 #import "GLPVideoPendingPostProgressManager.h"
+#import "GLPVideoLoaderManager.h"
 
 @interface GLPPendingPostsManager ()
 
@@ -87,10 +88,22 @@ static GLPPendingPostsManager *instance = nil;
     
     [GLPPostDao saveOrUpdatePost:pendingPost];
     
+    [GLPPostManager updateVideoPostAfterSending:pendingPost];
+    
+    [self updateVideoPendingPostIfNeeded:pendingPost];
+    
     DDLogDebug(@"GLPPendingPostsManager : New review history %@", [pendingPost.reviewHistory lastObject]);
     
     //Add new history record.
     [GLPReviewHistoryDao saveReviewHistory:[pendingPost.reviewHistory lastObject] withPost:pendingPost];
+}
+
+- (void)updateVideoPendingPostIfNeeded:(GLPPost *)post
+{
+    if([post isVideoPost])
+    {
+        [[GLPVideoLoaderManager sharedInstance] replaceVideoWithPost:post];
+    }
 }
 
 - (void)updatePendingPostBeforeEdit:(GLPPost *)pendingPost
@@ -125,9 +138,9 @@ static GLPPendingPostsManager *instance = nil;
 
 #pragma mark - Progress Manager
 
-- (UploadingProgressView *)progressViewWithGroupRemoteKey:(NSInteger)groupRemoteKey
+- (UploadingProgressView *)progressViewWithPostRemoteKey:(NSInteger)postRemoteKey
 {
-    if(groupRemoteKey != _progressManager.pendingPost.remoteKey)
+    if(postRemoteKey != _progressManager.pendingPost.remoteKey)
     {
         return nil;
     }
@@ -165,12 +178,12 @@ static GLPPendingPostsManager *instance = nil;
     return [_progressManager registeredTimestamp];
 }
 
-- (NSString *)generateNSNotificationNameForPendingGroupPost
+- (NSString *)generateNSNotificationNameForPendingPost
 {
     return [_progressManager generateNSNotificationNameForPendingPost];
 }
 
-- (NSString *)generateNSNotificationUploadFinshedNameForPendingGroupPost
+- (NSString *)generateNSNotificationUploadFinshedNameForPendingPost
 {
     return [_progressManager generateNSNotificationUploadFinshedNameForPendingPost];
 }
@@ -214,16 +227,17 @@ static GLPPendingPostsManager *instance = nil;
         if(success)
         {
             
-//            self.pendingPosts = pendingPosts.mutableCopy;
-            
             //Update local database if there is a need.
             [self updateLocalDatabase];
             
             [self addAnySendingPendingPostsWithRemotePendingPosts:pendingPosts.mutableCopy];
             
+            //TODO: I don't know why I am doing that.
+            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
+
+            
             remoteCallback(YES, self.pendingPosts.mutableCopy);
                         
-            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
 
         }
         else
@@ -318,6 +332,11 @@ static GLPPendingPostsManager *instance = nil;
     {
         if(p.sendStatus == kSendStatusLocal)
         {
+            if([self containedToRemotePosts:remotePendingPosts withPostRemoteKey:p.remoteKey])
+            {
+                continue;
+            }
+            
             DDLogDebug(@"Pending post %@", p.content);
             [oldPendingPosts addObject:p];
         }
@@ -328,9 +347,34 @@ static GLPPendingPostsManager *instance = nil;
         [remotePendingPosts setObject:p atIndexedSubscript:0];
     }
     
-    
     self.pendingPosts = remotePendingPosts;
+}
+
+- (BOOL)containedToRemotePosts:(NSArray *)remotePosts withPostRemoteKey:(NSInteger)postRemoteKey
+{
+    NSPredicate *postContained = [NSPredicate predicateWithBlock: ^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        
+        GLPPost *evPost = (GLPPost *)evaluatedObject;
+        if(evPost.remoteKey == postRemoteKey)
+        {
+            return YES;
+        }
+        else
+        {
+            return NO;
+        }
+    }];
     
+    NSArray *postsContained = [remotePosts filteredArrayUsingPredicate:postContained];
+    
+    DDLogDebug(@"GLPPendingPostsManager : posts contained %@", postsContained);
+    
+    if (postsContained.count > 0)
+    {
+        return YES;
+    }
+    
+    return NO;
 }
 
 @end

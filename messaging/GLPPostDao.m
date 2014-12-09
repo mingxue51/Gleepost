@@ -646,6 +646,8 @@
     {
         [GLPPostDao updateImagesWithEntity:entity db:db];
     }
+    
+    //TODO: Add operation to update video as well.
 }
 
 + (void)updateVideoPostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db

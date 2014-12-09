@@ -39,6 +39,8 @@
     [self configureNavigationBar];
     
     [self configureNotificationsAfterViewDidLoad];
+    
+    [self getProgressViewAndAddItIfNeeded];
 }
 
 - (void)dealloc
@@ -78,6 +80,11 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_EDITED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_STARTED_EDITING object:nil];
+}
+
+- (void)getProgressViewAndAddItIfNeeded
+{
+    [self.view addSubview:(UIView *)[[GLPPendingPostsManager sharedInstance] progressViewWithPostRemoteKey:_pendingPost.remoteKey]];
 }
 
 #pragma mark - Table view data source
@@ -280,12 +287,15 @@
 {
     NSDictionary *notificationDict = [notification userInfo];
     
-    DDLogDebug(@"GLPViewPendingPostsViewController : postEditedFinished %@", notificationDict);
+    DDLogDebug(@"GLPViewPendingPostsViewController : postEditedFinished %@", [(GLPPost *)notificationDict[@"post_edited"] video]);
+    
     [self setNewPostAndRefreshPostCell:notificationDict[@"post_edited"]];
 }
 
 - (void)postEditedStartedUploading:(NSNotification *)notification
 {
+    [self getProgressViewAndAddItIfNeeded];
+    
     NSDictionary *notificationDict = [notification userInfo];
     DDLogDebug(@"GLPViewPendingPostViewController : postEditedStartedUploading %@", notificationDict);
 
@@ -301,7 +311,6 @@
     if(newPost.remoteKey == _pendingPost.remoteKey)
     {
         _pendingPost = newPost;
-        
         
         DDLogDebug(@"GLPViewPendingPostViewController : pending post %@, edited post %@ sendstatus %d", _pendingPost.imagesUrls, newPost.imagesUrls, newPost.sendStatus);
 

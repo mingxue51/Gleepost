@@ -56,7 +56,14 @@ static GLPCWProgressManager *instance = nil;
 {
     UploadingProgressView *view = [[[NSBundle mainBundle] loadNibNamed:@"UploadingProgressView" owner:self options:nil] objectAtIndex:0];
     [view setFrame:view.frame];
-    CGRectSetY(view, 45);
+    
+    UIImageView *v = [[UIImageView alloc] initWithFrame:view.frame];
+    [v setBackgroundColor:[UIColor whiteColor]];
+    [view addSubview:v];
+    [view sendSubviewToBack:v];
+    
+    CGRectSetY(view, 0);
+    [view setTransparencyToView:NO];
     _progressView = view;
 }
 

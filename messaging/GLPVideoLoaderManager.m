@@ -233,6 +233,19 @@ static GLPVideoLoaderManager *instance = nil;
     return nil;
 }
 
+/**
+ Replaces a video in manager. This method is used after a video post is edited.
+ 
+ @param post the updated post.
+ 
+ */
+- (void)replaceVideoWithPost:(GLPPost *)post
+{
+    [_videoAssetsCache removeObjectForKey:@(post.remoteKey)];
+    
+    [self addVideoWithUrl:post.video.url andPostRemoteKey:post.remoteKey];
+}
+
 - (void)disableTimelineJustFetched
 {
     _timelineJustFetched = NO;
@@ -265,7 +278,6 @@ static GLPVideoLoaderManager *instance = nil;
 
     if(asset)
     {
-        
         //If cell is visible return the controller.
         
         videoPlayer = [[PBJVideoPlayerController alloc] init];

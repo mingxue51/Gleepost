@@ -2229,16 +2229,14 @@ static WebClient *instance = nil;
     NSDate *timestamp = [self parseTimestampWithNotificationDict:notificationDict];
     
     if([[[GLPPendingPostsManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
-    {
-        DDLogDebug(@"CampusWall progress manager timestamp %@ and current one %@",[[GLPPendingPostsManager sharedInstance] registeredTimestamp], timestamp);
-        
+    {        
         //Inform GLPVideoPendingPostProgressManager.
-        [[NSNotificationCenter defaultCenter] postNotificationName:[[GLPPendingPostsManager sharedInstance] generateNSNotificationNameForPendingGroupPost] object:self userInfo:notificationDict];
+        [[NSNotificationCenter defaultCenter] postNotificationName:[[GLPPendingPostsManager sharedInstance] generateNSNotificationNameForPendingPost] object:self userInfo:notificationDict];
     }
     else if(totalBytesExpectedToWrite == totalBytesWritten)
     {
         //Inform GLPVideoPendingPostProgressManager that the video is uploaded and now is started processing.
-        [[NSNotificationCenter defaultCenter] postNotificationName:[[GLPPendingPostsManager sharedInstance] generateNSNotificationUploadFinshedNameForPendingGroupPost] object:self userInfo:@{@"timestamp": timestamp}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:[[GLPPendingPostsManager sharedInstance] generateNSNotificationUploadFinshedNameForPendingPost] object:self userInfo:@{@"timestamp": timestamp}];
     }
 }
 

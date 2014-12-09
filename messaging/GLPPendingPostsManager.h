@@ -24,15 +24,15 @@
 - (void)loadPendingPostsWithLocalCallback:(void (^) (NSArray *localPosts))localCallback withRemoteCallback:(void (^) (BOOL success, NSArray *remotePosts))remoteCallback;
 - (GLPPost *)postWithRemoteKey:(NSInteger)postRemoteKey;
 
-- (UploadingProgressView *)progressViewWithGroupRemoteKey:(NSInteger)groupRemoteKey;
+- (UploadingProgressView *)progressViewWithPostRemoteKey:(NSInteger)postRemoteKey;
 - (void)registerVideoWithTimestamp:(NSDate *)timestamp withPost:(GLPPost *)post;
 - (void)setThumbnailImage:(UIImage *)thumbnail;
 - (void)progressFinished;
 - (void)postButtonClicked;
 - (BOOL)isProgressFinished;
 - (NSDate *)registeredTimestamp;
-- (NSString *)generateNSNotificationNameForPendingGroupPost;
-- (NSString *)generateNSNotificationUploadFinshedNameForPendingGroupPost;
+- (NSString *)generateNSNotificationNameForPendingPost;
+- (NSString *)generateNSNotificationUploadFinshedNameForPendingPost;
 
 - (void)addNewPendingPost:(GLPPost *)pendingPost;
 - (void)updatePendingPostAfterEdit:(GLPPost *)pendingPost;

@@ -208,7 +208,7 @@ static PendingPostManager *instance = nil;
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"Kind of post: %lu, Event type: %@, Title: %@, Description: %@, Date: %@", _kindOfPost, _categories, _eventTitle, _eventDescription, _date];
+    return [NSString stringWithFormat:@"Kind of post: %u, Event type: %@, Title: %@, Description: %@, Date: %@", _kindOfPost, _categories, _eventTitle, _eventDescription, _date];
 }
 
 @end

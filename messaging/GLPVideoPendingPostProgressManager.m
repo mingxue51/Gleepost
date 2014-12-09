@@ -31,7 +31,6 @@ static GLPVideoPendingPostProgressManager *instance = nil;
     
     if(self)
     {
-        [self configureNotifications];
     }
     
     return self;
@@ -52,6 +51,8 @@ static GLPVideoPendingPostProgressManager *instance = nil;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoUploadingProgress:) name:[self generateNSNotificationNameForPendingPost] object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoUploadCompleted:) name:[self generateNSNotificationUploadFinshedNameForPendingPost] object:nil];
+    
+    DDLogDebug(@"GLPVideoPendingPostManager : notification progress %@", [self generateNSNotificationNameForPendingPost]);
     
     DDLogDebug(@"Configure notifications: %@", [self generateNSNotificationUploadFinshedNameForPendingPost]);
 }
@@ -82,6 +83,7 @@ static GLPVideoPendingPostProgressManager *instance = nil;
     self.currentProcessedTimestamp = timestamp;
     self.pendingPost = post;
     [self.progressView setTransparencyToView:NO];
+    [self configureNotifications];
 }
 
 - (NSString *)generateNSNotificationNameForPendingPost

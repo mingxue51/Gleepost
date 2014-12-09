@@ -634,6 +634,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [_activityIndicator stopAnimating];
     [_videoView setHidden:NO];
     [_postImageView setHidden:YES];
+    DDLogDebug(@"MainPostView : New video %@", _post.video);
+    
     [_videoView setUpVideoViewWithPost:_post];
 //    [_videoView setUpPreviewWithUrl:self.post.videosUrls[0] withRemoteKey:_post.remoteKey];
 //    [_videoView initialisePreviewWithUrl:self.post.videosUrls[0]];

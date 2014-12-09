@@ -102,12 +102,9 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     post.eventTitle = title;
     post.location = location;
     
-
-
-    
-    
     if([[PendingPostManager sharedInstance] isEditMode])
     {
+        post.remoteKey = [[PendingPostManager sharedInstance] pendingPostRemoteKey];
         [[GLPPendingPostsManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
         
         post.pending = YES;

@@ -56,7 +56,7 @@ static GLPImagePostCWProgressManager *instance = nil;
 {
     self.currentProcessedTimestamp = timestamp;
     self.pendingPost = post;
-    [self.progressView setTransparencyToView:NO];
+//    [self.progressView setTransparencyToView:NO];
 }
 
 #pragma mark - Notification methods

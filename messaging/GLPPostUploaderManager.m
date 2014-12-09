@@ -647,8 +647,8 @@
             
             DDLogInfo(@"Video Post edited with success: %d and post remoteKey: %ld", success, (long)post.remoteKey);
             
-            [GLPPostManager updateVideoPostAfterSending:updatedPost];
-        
+            [[GLPPendingPostsManager sharedInstance] updatePendingPostAfterEdit:updatedPost];
+            
             _uploadVideoContentBlock(updatedPost);
             
             [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];

@@ -58,6 +58,12 @@ const NSString *PROCESSING_TEXT = @"FINISHING UP...";
     _thumbnailImageView.layer.borderColor = [[AppearanceHelper mediumGrayGleepostColour] CGColor];
     _thumbnailImageView.layer.masksToBounds = YES;
     
+    //Fixing an issue caused between iOS7 and iOS8 with positioning with progress view. (don't know why)
+    if(![GLPiOSSupportHelper isIOS7] && ![GLPiOSSupportHelper isIOS6])
+    {
+        [_progressViewDistanceFromTop setConstant:6.0];
+    }
+    
 //    [ShapeFormatterHelper setCornerRadiusWithView:_thumbnailImageView andValue:5.0];
 
 //    [ShapeFormatterHelper setCornerRadiusWithView:_thumbnailImageView andValue:2.0];
@@ -96,7 +102,6 @@ const NSString *PROCESSING_TEXT = @"FINISHING UP...";
 {
     [_uploadingLabel setText:PROCESSING_TEXT.copy];
     [_progressView setProgress:1.0f];
-
 }
 
 - (void)setTransparencyToView:(BOOL)transparency
@@ -109,7 +114,6 @@ const NSString *PROCESSING_TEXT = @"FINISHING UP...";
     {
         [self setBackgroundColor:[UIColor whiteColor]];
     }
-    
 }
 
 /*
