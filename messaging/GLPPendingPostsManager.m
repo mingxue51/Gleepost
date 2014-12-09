@@ -12,10 +12,16 @@
 #import "GLPPostManager.h"
 #import "GLPReviewHistoryDao.h"
 #import "WebClient.h"
+#import "GLPVideoPendingPostProgressManager.h"
 
 @interface GLPPendingPostsManager ()
 
 @property (strong, nonatomic) NSMutableArray *pendingPosts;
+
+/** This class is singleton but for now we are using it as an instance. */
+//TODO: In the future we should create a queue.
+
+@property (strong, nonatomic) GLPVideoPendingPostProgressManager *progressManager;
 
 @end
 
@@ -42,6 +48,7 @@ static GLPPendingPostsManager *instance = nil;
     {
         self.pendingPosts = [[NSMutableArray alloc] init];
         [self loadPendingPosts];
+        _progressManager = [[GLPVideoPendingPostProgressManager alloc] init];
     }
     
     return self;
@@ -116,6 +123,57 @@ static GLPPendingPostsManager *instance = nil;
     return nil;
 }
 
+#pragma mark - Progress Manager
+
+- (UploadingProgressView *)progressViewWithGroupRemoteKey:(NSInteger)groupRemoteKey
+{
+    if(groupRemoteKey != _progressManager.pendingPost.remoteKey)
+    {
+        return nil;
+    }
+    
+    return [_progressManager progressView];
+}
+
+- (void)registerVideoWithTimestamp:(NSDate *)timestamp withPost:(GLPPost *)post
+{
+    [_progressManager registerWithTimestamp:timestamp withPost:post];
+}
+
+- (void)setThumbnailImage:(UIImage *)thumbnail
+{
+    [_progressManager setThumbnailImage:thumbnail];
+}
+
+- (void)progressFinished
+{
+    [_progressManager progressFinished];
+}
+
+- (void)postButtonClicked
+{
+    [_progressManager postButtonClicked];
+}
+
+- (BOOL)isProgressFinished
+{
+    return [_progressManager isProgressFinished];
+}
+
+- (NSDate *)registeredTimestamp
+{
+    return [_progressManager registeredTimestamp];
+}
+
+- (NSString *)generateNSNotificationNameForPendingGroupPost
+{
+    return [_progressManager generateNSNotificationNameForPendingPost];
+}
+
+- (NSString *)generateNSNotificationUploadFinshedNameForPendingGroupPost
+{
+    return [_progressManager generateNSNotificationUploadFinshedNameForPendingPost];
+}
 
 #pragma mark - Client
 

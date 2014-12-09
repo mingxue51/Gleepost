@@ -17,6 +17,7 @@
 #import "GLPPostManager.h"
 #import "GLPVideo.h"
 #import "GLPVideoPostCWProgressManager.h"
+#import "GLPPendingPostsManager.h"
 
 @interface GLPVideoUploadManager ()
 
@@ -166,6 +167,13 @@ static GLPVideoUploadManager *instance = nil;
     }
     
     if(![[GLPVideoPostCWProgressManager sharedInstance] isProgressFinished])
+    {
+        DDLogInfo(@"Can't check for non uploaded video posts, video is in progress.");
+        
+        return;
+    }
+    
+    if(![[GLPPendingPostsManager sharedInstance] isProgressFinished])
     {
         DDLogInfo(@"Can't check for non uploaded video posts, video is in progress.");
         

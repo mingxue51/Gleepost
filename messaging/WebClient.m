@@ -23,6 +23,7 @@
 #import "GLPVideoPostCWProgressManager.h"
 #import "GLPLiveGroupPostManager.h"
 #import "GLPLiveGroupManager.h"
+#import "GLPPendingPostsManager.h"
 
 @interface WebClient()
 
@@ -572,15 +573,6 @@ static WebClient *instance = nil;
     NSMutableDictionary *params = self.sessionManager.authParameters.mutableCopy;
     
     [params setObject:editedPost.content forKey:@"text"];
- 
-    //For now we don't want that.
-    
-//    if(editedPost.categories)
-//    {
-//        [params addEntriesFromDictionary:[NSMutableDictionary dictionaryWithObjectsAndKeys:[RemoteParser parseCategoriesToTags:editedPost.categories], @"tags", nil]];
-//    }
-        
-    //TODO: add a new param url rather than call second method after the post request.
     
     if(editedPost.video.pendingKey)
     {
@@ -589,7 +581,6 @@ static WebClient *instance = nil;
     
     if(editedPost.eventTitle)
     {
-//        [params setObject:[DateFormatterHelper dateUnixFormat:editedPost.dateEventStarts] forKey:@"event-time"];
         [params setObject:editedPost.eventTitle forKey:@"title"];
     }
     
@@ -2148,8 +2139,6 @@ static WebClient *instance = nil;
 {
     NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"videos" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
-//        [formData appendPartWithFileData:videoData name:@"video" fileName:[NSString stringWithFormat:@"user_id_%ld_video.mp4", (long)self.sessionManager.user.remoteKey] mimeType:@"application/mp4"];
-        
         [formData appendPartWithFileData:videoData name:@"video" fileName:[NSString stringWithFormat:@"user_id_%ld_video.mp4", (long)self.sessionManager.user.remoteKey] mimeType:@"video/mp4"];
     }];
     
@@ -2159,55 +2148,14 @@ static WebClient *instance = nil;
     AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
     
     [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-//        DDLogInfo(@"Sent video %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
-        
-        NSMutableDictionary *finalDictNotification = [[NSMutableDictionary alloc] init];
-        
-        NSDictionary *progressData = [[NSDictionary alloc] initWithObjectsAndKeys:@(totalBytesWritten), @"data_written", @(totalBytesExpectedToWrite), @"data_expected", nil];
-        
-        [finalDictNotification setObject:progressData forKey:@"update"];
-        
-        [finalDictNotification setObject:timestamp forKey:@"timestamp"];
 
+        NSDictionary *notificationDict = [self generateDictionaryWithExpectedBytes:totalBytesExpectedToWrite withCurrentBytes:totalBytesWritten andTimestamp:timestamp];
         
-        
-        if([[[GLPVideoPostCWProgressManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
-        {
-            
-            DDLogDebug(@"CampusWall progress manager timestamp %@ and current one %@",[[GLPVideoPostCWProgressManager sharedInstance] registeredTimestamp], timestamp);
-            
-            //Inform GLPCampusWallProgressManager.
-            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE object:self userInfo:finalDictNotification];
-            
-           
-            
-        }
-        else if(totalBytesExpectedToWrite == totalBytesWritten)
-        {
-            //Inform GLPCampusWallProgressManager that the video is uploaded and now is started processed.
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPLOADING_COMPLETED object:self userInfo:@{@"timestamp": timestamp}];
-        }
+        [self updateCampusWallProgressBarIfNeededWithNotificationDict:notificationDict];
 
+        [self updateGroupProgressBarIfNeededWithNotificationDict:notificationDict];
         
-        if ([[[GLPLiveGroupPostManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
-        {
-            
-            NSString *notificationName = [[GLPLiveGroupPostManager sharedInstance] generateNSNotificationNameForPendingGroupPost];
-            
-            
-            DDLogDebug(@"Group progress manager timstamp %@ and current one %@. Notification name: %@",[[GLPLiveGroupPostManager sharedInstance] registeredTimestamp], timestamp, notificationName);
-            
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:finalDictNotification];
-        }
-        else if(totalBytesExpectedToWrite == totalBytesWritten)
-        {
-            NSString *notificationName = [[GLPLiveGroupPostManager sharedInstance] generateNSNotificationUploadFinshedNameForPendingGroupPost];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:finalDictNotification];
-        }
-        
+        [self updatePendingPostProgressBarIfNeededWithNotificationDict:notificationDict];
     }];
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -2222,6 +2170,112 @@ static WebClient *instance = nil;
     }];
     
     [self enqueueHTTPRequestOperation:operation];
+}
+
+- (void)updateCampusWallProgressBarIfNeededWithNotificationDict:(NSDictionary *)notificationDict
+{
+    long totalBytesExpectedToWrite = [self parseExpectedBytesToWriteWithNotificationDict:notificationDict];
+    long totalBytesWritten = [self parseBytesWrittenWithNotificationDict:notificationDict];
+    NSDate *timestamp = [self parseTimestampWithNotificationDict:notificationDict];
+    
+    if([[[GLPVideoPostCWProgressManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
+    {
+        
+        DDLogDebug(@"CampusWall progress manager timestamp %@ and current one %@",[[GLPVideoPostCWProgressManager sharedInstance] registeredTimestamp], timestamp);
+        
+        //Inform GLPCampusWallProgressManager.
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE object:self userInfo:notificationDict];
+        
+        
+        
+    }
+    else if(totalBytesExpectedToWrite == totalBytesWritten)
+    {
+        //Inform GLPCampusWallProgressManager that the video is uploaded and now is started processed.
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_VIDEO_PROGRESS_UPLOADING_COMPLETED object:self userInfo:@{@"timestamp": timestamp}];
+    }
+}
+
+- (void)updateGroupProgressBarIfNeededWithNotificationDict:(NSDictionary *)notificationDict
+{
+    long totalBytesExpectedToWrite = [self parseExpectedBytesToWriteWithNotificationDict:notificationDict];
+    long totalBytesWritten = [self parseBytesWrittenWithNotificationDict:notificationDict];
+    NSDate *timestamp = [self parseTimestampWithNotificationDict:notificationDict];
+
+    if ([[[GLPLiveGroupPostManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
+    {
+        
+        NSString *notificationName = [[GLPLiveGroupPostManager sharedInstance] generateNSNotificationNameForPendingGroupPost];
+        
+        
+        DDLogDebug(@"Group progress manager timstamp %@ and current one %@. Notification name: %@",[[GLPLiveGroupPostManager sharedInstance] registeredTimestamp], timestamp, notificationName);
+        
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:notificationDict];
+    }
+    else if(totalBytesExpectedToWrite == totalBytesWritten)
+    {
+        NSString *notificationName = [[GLPLiveGroupPostManager sharedInstance] generateNSNotificationUploadFinshedNameForPendingGroupPost];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:notificationDict];
+    }
+}
+
+- (void)updatePendingPostProgressBarIfNeededWithNotificationDict:(NSDictionary *)notificationDict
+{
+    long totalBytesExpectedToWrite = [self parseExpectedBytesToWriteWithNotificationDict:notificationDict];
+    long totalBytesWritten = [self parseBytesWrittenWithNotificationDict:notificationDict];
+    NSDate *timestamp = [self parseTimestampWithNotificationDict:notificationDict];
+    
+    if([[[GLPPendingPostsManager sharedInstance] registeredTimestamp] isEqualToDate:timestamp])
+    {
+        DDLogDebug(@"CampusWall progress manager timestamp %@ and current one %@",[[GLPPendingPostsManager sharedInstance] registeredTimestamp], timestamp);
+        
+        //Inform GLPVideoPendingPostProgressManager.
+        [[NSNotificationCenter defaultCenter] postNotificationName:[[GLPPendingPostsManager sharedInstance] generateNSNotificationNameForPendingGroupPost] object:self userInfo:notificationDict];
+    }
+    else if(totalBytesExpectedToWrite == totalBytesWritten)
+    {
+        //Inform GLPVideoPendingPostProgressManager that the video is uploaded and now is started processing.
+        [[NSNotificationCenter defaultCenter] postNotificationName:[[GLPPendingPostsManager sharedInstance] generateNSNotificationUploadFinshedNameForPendingGroupPost] object:self userInfo:@{@"timestamp": timestamp}];
+    }
+}
+
+- (long)parseExpectedBytesToWriteWithNotificationDict:(NSDictionary *)notificationDict
+{
+    NSDictionary *progressData = [notificationDict objectForKey:@"update"];
+    
+    NSNumber *bytesExpected = progressData[@"data_expected"];
+    
+    return bytesExpected.longValue;
+}
+
+- (long)parseBytesWrittenWithNotificationDict:(NSDictionary *)notificationDict
+{
+    NSDictionary *progressData = [notificationDict objectForKey:@"update"];
+    
+    NSNumber *bytesWritten = progressData[@"data_written"];
+    
+    return bytesWritten.longValue;
+}
+
+- (NSDate *)parseTimestampWithNotificationDict:(NSDictionary *)notficationDict
+{
+    return [notficationDict objectForKey:@"timestamp"];
+}
+
+- (NSDictionary *)generateDictionaryWithExpectedBytes:(long long)expectedBytes withCurrentBytes:(long long)currentBytes andTimestamp:(NSDate *)timestamp
+{
+    NSMutableDictionary *finalDictNotification = [[NSMutableDictionary alloc] init];
+    
+    NSDictionary *progressData = [[NSDictionary alloc] initWithObjectsAndKeys:@(currentBytes), @"data_written", @(expectedBytes), @"data_expected", nil];
+    
+    [finalDictNotification setObject:progressData forKey:@"update"];
+    
+    [finalDictNotification setObject:timestamp forKey:@"timestamp"];
+    
+    return finalDictNotification;
 }
 
 - (void)checkForReadyVideoWithPendingVideoKey:(NSNumber *)videoKey callback:(void (^) (BOOL success, GLPVideo *result))callback

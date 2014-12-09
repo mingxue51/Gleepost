@@ -14,8 +14,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="409"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3nq-qG-n6x">
-                        <rect key="frame" x="10" y="8" width="300" height="390"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3nq-qG-n6x">
+                        <rect key="frame" x="10" y="7" width="300" height="390"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="390" id="EZw-eh-zsu"/>
@@ -47,7 +47,7 @@
                                     <action selector="moreOptions:" destination="gZY-ao-KSb" eventType="touchUpInside" id="ZPV-JJ-elK"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TIn-bn-41b">
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TIn-bn-41b">
                                 <rect key="frame" x="0.0" y="36" width="300" height="22"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="clock.png" translatesAutoresizingMaskIntoConstraints="NO" id="A8E-nW-P06">
@@ -333,14 +333,14 @@
                             <outlet property="userImageView" destination="zBQ-cm-AFU" id="LdP-bM-1QJ"/>
                         </connections>
                     </view>
-                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ds2-LG-8Zh" userLabel="Loading View">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ds2-LG-8Zh" userLabel="Loading View">
                         <rect key="frame" x="10" y="8" width="300" height="390"/>
                         <subviews>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="q67-xH-8SJ">
                                 <rect key="frame" x="132" y="104" width="37" height="37"/>
                                 <color key="color" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
                             </activityIndicatorView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your post is being uploaded..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="41k-m2-RjD">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We're changing your post" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="41k-m2-RjD">
                                 <rect key="frame" x="8" y="151" width="284" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -365,7 +365,7 @@
                     <constraint firstItem="3nq-qG-n6x" firstAttribute="leading" secondItem="rQv-1X-efO" secondAttribute="leading" constant="10" id="KZk-Is-jV7"/>
                     <constraint firstItem="jCQ-SX-55v" firstAttribute="leading" secondItem="rQv-1X-efO" secondAttribute="leading" constant="10" id="Maq-48-S1z"/>
                     <constraint firstItem="jCQ-SX-55v" firstAttribute="top" secondItem="rQv-1X-efO" secondAttribute="top" constant="80" id="SCs-Pl-H83"/>
-                    <constraint firstItem="Ds2-LG-8Zh" firstAttribute="top" secondItem="rQv-1X-efO" secondAttribute="top" constant="7" id="bvk-a4-Eru"/>
+                    <constraint firstItem="Ds2-LG-8Zh" firstAttribute="top" secondItem="rQv-1X-efO" secondAttribute="top" constant="8" id="bvk-a4-Eru"/>
                     <constraint firstItem="Ds2-LG-8Zh" firstAttribute="leading" secondItem="rQv-1X-efO" secondAttribute="leading" constant="10" id="esR-hX-7hl"/>
                     <constraint firstItem="3nq-qG-n6x" firstAttribute="top" secondItem="rQv-1X-efO" secondAttribute="top" constant="7" id="wQN-BY-b7Q"/>
                 </constraints>

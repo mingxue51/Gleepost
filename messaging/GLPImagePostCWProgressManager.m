@@ -7,7 +7,7 @@
 //
 //  This manager is responsible for receiving the progress of the uploading element
 //  (image only in this class) calculate the percentage and send it to GLPTimelineViewController.
-//
+//  //NOT USED.
 
 #import "GLPImagePostCWProgressManager.h"
 

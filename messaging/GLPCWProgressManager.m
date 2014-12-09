@@ -1,6 +1,6 @@
 //
 //  GLPCWProgressManager.m
-//  ;
+//  
 //
 //  Created by Silouanos on 21/11/14.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
@@ -14,8 +14,10 @@
 //@property (strong, nonatomic) NSMutableArray *videosTimestamps;
 
 
-///** This object is used only when the video is uploaded and don't viewed to user.*/
+///** This object is used only when the video is uploaded and didn't view to user.*/
 //@property (strong, nonatomic) NSDate *uploadedVideoTimestamp;
+
+
 ////This variable is YES only if the uploading view is appeared to the user.
 //@property (assign, nonatomic, getter=isProgressUploadingStarted) BOOL progressUploadingStarted;
 
@@ -61,6 +63,7 @@ static GLPCWProgressManager *instance = nil;
 - (void)configureObjects
 {
     _currentProcessedTimestamp = nil;
+    _uploadedVideoTimestamp = nil;
     [_progressView setHidden:YES];
     _postClicked = NO;
     _progressFinished = YES;
@@ -113,6 +116,13 @@ static GLPCWProgressManager *instance = nil;
     [self showProgressView];
     _postClicked = YES;
     _progressFinished = NO;
+    
+    FLog(@"Current processed timestamp %@, uploaded video timestamp %@", _currentProcessedTimestamp, _uploadedVideoTimestamp);
+    
+    if([_currentProcessedTimestamp isEqualToDate:_uploadedVideoTimestamp])
+    {
+        [_progressView startProcessing];
+    }
 }
 
 @end

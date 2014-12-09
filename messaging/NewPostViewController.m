@@ -528,7 +528,13 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andLocation:_selectedLocation];
     }
     
-    if([inPost isVideoPost])
+    
+    if([inPost isVideoPost] && [[PendingPostManager sharedInstance] isEditMode])
+    {
+        [[GLPPendingPostsManager sharedInstance] postButtonClicked];
+    }
+    
+    if([inPost isVideoPost] && ![[PendingPostManager sharedInstance] isEditMode])
     {
         [[GLPVideoPostCWProgressManager sharedInstance] postButtonClicked];
     }

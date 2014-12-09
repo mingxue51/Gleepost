@@ -12,6 +12,7 @@
 #import <Foundation/Foundation.h>
 
 @class GLPPost;
+@class UploadingProgressView;
 
 @interface GLPPendingPostsManager : NSObject
 
@@ -22,6 +23,17 @@
 - (BOOL)arePendingPosts;
 - (void)loadPendingPostsWithLocalCallback:(void (^) (NSArray *localPosts))localCallback withRemoteCallback:(void (^) (BOOL success, NSArray *remotePosts))remoteCallback;
 - (GLPPost *)postWithRemoteKey:(NSInteger)postRemoteKey;
+
+- (UploadingProgressView *)progressViewWithGroupRemoteKey:(NSInteger)groupRemoteKey;
+- (void)registerVideoWithTimestamp:(NSDate *)timestamp withPost:(GLPPost *)post;
+- (void)setThumbnailImage:(UIImage *)thumbnail;
+- (void)progressFinished;
+- (void)postButtonClicked;
+- (BOOL)isProgressFinished;
+- (NSDate *)registeredTimestamp;
+- (NSString *)generateNSNotificationNameForPendingGroupPost;
+- (NSString *)generateNSNotificationUploadFinshedNameForPendingGroupPost;
+
 - (void)addNewPendingPost:(GLPPost *)pendingPost;
 - (void)updatePendingPostAfterEdit:(GLPPost *)pendingPost;
 - (void)updatePendingPostBeforeEdit:(GLPPost *)pendingPost;

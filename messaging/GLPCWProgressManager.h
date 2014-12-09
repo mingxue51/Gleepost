@@ -17,6 +17,8 @@
 @property (assign, nonatomic, getter=isPostButtonClicked) BOOL postClicked;
 @property (assign, nonatomic, getter = isProgressFinished) BOOL progressFinished;
 @property (strong, nonatomic) GLPPost *pendingPost;
+/** This object is used only when the video is uploaded and don't viewed to user.*/
+@property (strong, nonatomic) NSDate *uploadedVideoTimestamp;
 
 + (GLPCWProgressManager *)sharedInstance;
 

@@ -526,8 +526,6 @@
         
         if(post.pending)
         {
-            DDLogDebug(@"Pending post edited");
-            
             //Notify GLPPendingPostView and GLPPendingPostsVC after edit.
             [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_EDITED object:nil userInfo:@{@"post_edited": post}];
         }
@@ -622,8 +620,8 @@
         
     }
     
-    
     _uploadVideoContentBlock = ^(GLPPost *post){
+        
         DDLogDebug(@"Post video data before notify Campus Wall: %@", post.video);
         [self notifyTheRightViewControllerWithPost:post];
         [self videoPostReadyToUpload];
@@ -633,27 +631,33 @@
     
     if(post.pending)
     {
-        [[WebClient sharedInstance] editPost:post callbackBlock:^(BOOL success, GLPPost *editedPost) {
+        [[WebClient sharedInstance] editPost:post callbackBlock:^(BOOL success, GLPPost *updatedPost) {
             
-            post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-            post.remoteKey = success ? editedPost.remoteKey : 0;
+            
+            if(!success)
+            {
+                DDLogError(@"Failed to edit the video post");
+                post.sendStatus = kSendStatusFailure;
+                [GLPPostManager updatePostAfterSending:post];
+                return;
+            }
+            
+            updatedPost.sendStatus = kSendStatusSent;
+            updatedPost.key = post.key;
             
             DDLogInfo(@"Video Post edited with success: %d and post remoteKey: %ld", success, (long)post.remoteKey);
             
-            [GLPPostManager updateVideoPostAfterSending:post];
+            [GLPPostManager updateVideoPostAfterSending:updatedPost];
+        
+            _uploadVideoContentBlock(updatedPost);
             
-            if(success)
-            {
-                _uploadVideoContentBlock(post);
-                
-                [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
-                
-                //Add post to uploaded posts.
-                [_uploadedPosts addObject:post];
-                
-                //Remove post from the NSDictionary.
-                [self removePostWithTimestamp:timestamp];
-            }
+            [self checkForPendingCommentsWithPostkey:post.key andPostRemoteKey:post.remoteKey];
+            
+            //Add post to uploaded posts.
+            [_uploadedPosts addObject:post];
+            
+            //Remove post from the NSDictionary.
+            [self removePostWithTimestamp:timestamp];
         }];
     }
     else
@@ -834,10 +838,10 @@
     
     if(post.pending)
     {
-        //TODO: Notify pending posts view controller.
+        //Notify pending posts GLPPendingPostView and GLPPendingPostsVC after edit.
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_EDITED object:nil userInfo:@{@"post_edited": post}];
         
-        //TODO: Remove that and replace it with other kind of progress bar.
-        [[GLPVideoPostCWProgressManager sharedInstance] progressFinished];
+        [[GLPPendingPostsManager sharedInstance] progressFinished];
 
         return;
     }

@@ -458,6 +458,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [_backgroundImageHeight setConstant:backgroundImageViewHeight];
     
+    [_loadingViewHeight setConstant:backgroundImageViewHeight];
+    
     [self.distanceFromTop setConstant:distanceFromTop];
     
     [self.mainViewHeight setConstant:height + fixedBottomViewHeight];

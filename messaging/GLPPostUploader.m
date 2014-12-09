@@ -103,12 +103,13 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     post.location = location;
     
 
-    //Register the timestamp in order to avoid problems when a video selected and then unselected.
-    [[GLPVideoPostCWProgressManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
+
     
     
     if([[PendingPostManager sharedInstance] isEditMode])
     {
+        [[GLPPendingPostsManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
+        
         post.pending = YES;
         post.sendStatus = kSendStatusLocalEdited;
         post.remoteKey = [[PendingPostManager sharedInstance] pendingPostRemoteKey];
@@ -122,6 +123,8 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     }
     else
     {
+        //Register the timestamp in order to avoid problems when a video selected and then unselected.
+        [[GLPVideoPostCWProgressManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
         post = [self uploadPostWithPost:post];
     }
 
