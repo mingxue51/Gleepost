@@ -215,6 +215,8 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    DDLogDebug(@"GLPPendingPostsViewController : section %d", section);
+    
     return [TableViewHelper generateHeaderViewWithTitle:[_pendingPostOrganiser headerInSection:section] andBottomLine:NO];
 }
 

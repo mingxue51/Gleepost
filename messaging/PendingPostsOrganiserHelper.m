@@ -52,12 +52,17 @@
 
 - (void)fixPositionsHeadersInSectionArrayIfNeeded
 {
-    NSDictionary *d = self.sections[0];
     
-    if(![d objectForKey:self.firstHeader])
+    if(self.sections.count <= 1)
+    {
+        return;
+    }
+    
+    NSDictionary *firstPosts = self.sections[0];
+    
+    if(![firstPosts objectForKey:self.firstHeader])
     {
         NSDictionary *d1 = self.sections[0];
-        
         self.sections[0] = self.sections[1];
         self.sections[1] = d1;
     }

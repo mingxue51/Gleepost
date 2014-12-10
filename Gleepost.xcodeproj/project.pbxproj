@@ -278,6 +278,7 @@
 		584FA61019B5268C00FBA61F /* location_pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 584FA60C19B5268C00FBA61F /* location_pin.png */; };
 		584FA61119B5268C00FBA61F /* my_location.png in Resources */ = {isa = PBXBuildFile; fileRef = 584FA60D19B5268C00FBA61F /* my_location.png */; };
 		584FA61319B531F300FBA61F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 584FA61219B531F300FBA61F /* MapKit.framework */; };
+		5850220C1A376547002F0C46 /* GLPEditingModePendingPosts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5850220B1A376547002F0C46 /* GLPEditingModePendingPosts.m */; };
 		585106C8199D85DB000F06BB /* IntroKindOfNewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106C7199D85DB000F06BB /* IntroKindOfNewPostViewController.m */; };
 		585106CB199D85FC000F06BB /* IntroKindOfEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106CA199D85FC000F06BB /* IntroKindOfEventViewController.m */; };
 		585106CE199D8635000F06BB /* FinalNewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106CD199D8635000F06BB /* FinalNewPostViewController.m */; };
@@ -1329,6 +1330,8 @@
 		584FA60C19B5268C00FBA61F /* location_pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_pin.png; sourceTree = "<group>"; };
 		584FA60D19B5268C00FBA61F /* my_location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = my_location.png; sourceTree = "<group>"; };
 		584FA61219B531F300FBA61F /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		5850220A1A376547002F0C46 /* GLPEditingModePendingPosts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPEditingModePendingPosts.h; sourceTree = "<group>"; };
+		5850220B1A376547002F0C46 /* GLPEditingModePendingPosts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPEditingModePendingPosts.m; sourceTree = "<group>"; };
 		585106C6199D85DB000F06BB /* IntroKindOfNewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroKindOfNewPostViewController.h; sourceTree = "<group>"; };
 		585106C7199D85DB000F06BB /* IntroKindOfNewPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroKindOfNewPostViewController.m; sourceTree = "<group>"; };
 		585106C9199D85FC000F06BB /* IntroKindOfEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroKindOfEventViewController.h; sourceTree = "<group>"; };
@@ -4257,6 +4260,8 @@
 		58ECE0D31A241DCD00B38FBA /* Approval */ = {
 			isa = PBXGroup;
 			children = (
+				5850220A1A376547002F0C46 /* GLPEditingModePendingPosts.h */,
+				5850220B1A376547002F0C46 /* GLPEditingModePendingPosts.m */,
 				58ECE0C61A23DB0700B38FBA /* GLPApprovalManager.h */,
 				58ECE0C71A23DB0700B38FBA /* GLPApprovalManager.m */,
 				58ECE0D41A241E7900B38FBA /* GLPPendingPostsManager.h */,
@@ -6092,6 +6097,7 @@
 				5892F0F919FAE8B100B6778F /* GLPEmptyView.m in Sources */,
 				80666C7F1806FF4900E4E515 /* MessagesSendingProcessor.m in Sources */,
 				58451BF3199B26C2003B94D2 /* GLPSettingsViewController.m in Sources */,
+				5850220C1A376547002F0C46 /* GLPEditingModePendingPosts.m in Sources */,
 				C02120431850AA1200831872 /* GLPPostUploader.m in Sources */,
 				80AB894D17C26ECA0053E784 /* SessionManager.m in Sources */,
 				80E93FB618C8D4A3008769CB /* GLPSearchUserCell.m in Sources */,

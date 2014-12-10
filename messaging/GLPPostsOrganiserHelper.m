@@ -73,7 +73,6 @@
 
 - (void)markPostAsEdited:(GLPPost *)post
 {
-    
     GLPPost *selectedPost = [self findPostPost:post];
     
     selectedPost.sendStatus = kSendStatusLocalEdited;
@@ -122,28 +121,27 @@
 
 - (NSString *)headerInSection:(NSInteger)sectionIndex
 {
-    
-    if(sectionIndex == 0)
-    {
-        return self.firstHeader;
-    }
-    else if(sectionIndex == 1)
-    {
-        return self.secondHeader;
-    }
-    else
-    {
-        return @"Unknown header";
-    }
-    
-//    NSDictionary *header = [_sections objectAtIndex:sectionIndex];
-//    
-//    for(NSString *key in header)
+//    if(sectionIndex == 0)
 //    {
-//        return key;
+//        return self.firstHeader;
 //    }
-//    
-//    return nil;
+//    else if(sectionIndex == 1)
+//    {
+//        return self.secondHeader;
+//    }
+//    else
+//    {
+//        return @"Unknown header";
+//    }
+    
+    NSDictionary *header = [_sections objectAtIndex:sectionIndex];
+    
+    for(NSString *key in header)
+    {
+        return key;
+    }
+    
+    return nil;
 }
 
 - (NSArray *)postsAtSectionIndex:(NSInteger)sectionIndex

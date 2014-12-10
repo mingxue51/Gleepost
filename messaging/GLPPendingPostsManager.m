@@ -14,6 +14,7 @@
 #import "WebClient.h"
 #import "GLPVideoPendingPostProgressManager.h"
 #import "GLPVideoLoaderManager.h"
+#import "GLPEditingModePendingPosts.h"
 
 @interface GLPPendingPostsManager ()
 
@@ -23,6 +24,7 @@
 //TODO: In the future we should create a queue.
 
 @property (strong, nonatomic) GLPVideoPendingPostProgressManager *progressManager;
+@property (strong, nonatomic) GLPEditingModePendingPosts *editingModePosts;
 
 @end
 
@@ -50,6 +52,7 @@ static GLPPendingPostsManager *instance = nil;
         self.pendingPosts = [[NSMutableArray alloc] init];
         [self loadPendingPosts];
         _progressManager = [[GLPVideoPendingPostProgressManager alloc] init];
+        _editingModePosts = [[GLPEditingModePendingPosts alloc] init];
     }
     
     return self;
@@ -82,9 +85,7 @@ static GLPPendingPostsManager *instance = nil;
 
 - (void)updatePendingPostAfterEdit:(GLPPost *)pendingPost
 {
-//    NSAssert([pendingPost isPending], @"Pending post's variable should be true");
-    
-//    [self updatePendingPostInMemory:pendingPost];
+    [_editingModePosts removePost:pendingPost];
     
     [GLPPostDao saveOrUpdatePost:pendingPost];
     
@@ -98,19 +99,21 @@ static GLPPendingPostsManager *instance = nil;
     [GLPReviewHistoryDao saveReviewHistory:[pendingPost.reviewHistory lastObject] withPost:pendingPost];
 }
 
+- (void)updatePendingPostBeforeEdit:(GLPPost *)pendingPost
+{
+    [GLPPostManager updatePostBeforeEditing:pendingPost];
+    
+    [_editingModePosts addNewPost:pendingPost];
+    
+    DDLogDebug(@"updatePendingPostBeforeEdit %@", pendingPost);
+}
+
 - (void)updateVideoPendingPostIfNeeded:(GLPPost *)post
 {
     if([post isVideoPost])
     {
         [[GLPVideoLoaderManager sharedInstance] replaceVideoWithPost:post];
     }
-}
-
-- (void)updatePendingPostBeforeEdit:(GLPPost *)pendingPost
-{    
-    [GLPPostManager updatePostBeforeEditing:pendingPost];
-    
-    DDLogDebug(@"updatePendingPostBeforeEdit %@", pendingPost);
 }
 
 - (void)removePendingPost:(GLPPost *)pendingPost
@@ -230,15 +233,15 @@ static GLPPendingPostsManager *instance = nil;
             //Update local database if there is a need.
             [self updateLocalDatabase];
             
+            pendingPosts = [_editingModePosts replacePostWithAnyPostIsEditingWithRemotePosts:pendingPosts.mutableCopy];
+
             [self addAnySendingPendingPostsWithRemotePendingPosts:pendingPosts.mutableCopy];
+            
             
             //TODO: I don't know why I am doing that.
             [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
 
-            
             remoteCallback(YES, self.pendingPosts.mutableCopy);
-                        
-
         }
         else
         {
@@ -349,6 +352,8 @@ static GLPPendingPostsManager *instance = nil;
     
     self.pendingPosts = remotePendingPosts;
 }
+
+
 
 - (BOOL)containedToRemotePosts:(NSArray *)remotePosts withPostRemoteKey:(NSInteger)postRemoteKey
 {

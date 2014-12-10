@@ -144,7 +144,7 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Post id: %ld, Content: %@ Sending status: %d Date: %@, Group: %@ ", (long)self.remoteKey, self.content, self.sendStatus, self.date, self.group];
+    return [NSString stringWithFormat:@"Post id: %ld, Content: %@ Sending status: %d Date: %@, Group: %@, SendStatus %d", (long)self.remoteKey, self.content, self.sendStatus, self.date, self.group, self.sendStatus];
 }
 
 
