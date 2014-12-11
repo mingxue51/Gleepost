@@ -76,16 +76,9 @@
         
         [self loadThumbnail];
         
-//        [self deregisterNotifications];
-        
         [self registerNotifications];
         
         [self showLoadingElements];
-
-        
-//        [[GLPVideoLoaderManager sharedInstance] addVideoWithUrl:_post.video.url andPostRemoteKey:_remoteKey];
-        
-//        [[GLPVideoLoaderManager sharedInstance] setVideoWithUrl:_post.video.url andPostRemoteKey:_remoteKey];
 
         PBJVideoPlayerController *p = [[GLPVideoLoaderManager sharedInstance] setVideoWithPost:_post];
         
@@ -95,74 +88,6 @@
             
             [NSThread detachNewThreadSelector:@selector(videoLoadedWithPBJVideoVC) toTarget:self withObject:nil];
         }
-
-//        _previewVC = [[GLPVideoLoaderManager sharedInstance] videoWithPostRemoteKey:_remoteKey];
-//        
-//        if(!_previewVC)
-//        {
-//            return;
-//        }
-//        
-//        [NSThread detachNewThreadSelector:@selector(videoLoadedWithPBJVideoVC) toTarget:self withObject:nil];
-
-        
-
-        
-        
-        
-//        [[GLPVideoLoaderManager sharedInstance] configureVideoPlayerControllerAndPostNotificationWithRemoteKey:@(_remoteKey) callbackBlock:^(NSNumber *remoteKey, PBJVideoPlayerController *player) {
-//           
-//            DDLogDebug(@"videoLoadedWithPBJVideoVC: %@ : %@", player, _post.content);
-////            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
-//            
-// 
-//            
-//            if([remoteKey integerValue] == _remoteKey && player)
-//            {
-//                
-////                [self videoLoadedWithPBJVideoVC:player];
-//
-////                dispatch_async(queue, ^{
-////                    
-////                    _previewVC = player;
-////                    
-////                    _previewVC.view.tag = _remoteKey;
-////                    
-////                    _previewVC.delegate = self;
-////                    
-//                    _previewVC.view.frame = _videoView.bounds;
-//                    [_videoView addSubview:_previewVC.view];
-////
-////                    
-////                    [self configurePlaybackElementsWithPreviewVC:_previewVC];
-////
-////                });
-//                
-//            }
-//            
-//        }];
-        
-//        if(!_previewVC)
-//        {
-//            DDLogInfo(@"Abord playing, wait to load.");
-//            
-//            return;
-//        }
-        
-        
-        
-        
-        
-//        _previewVC.view.tag = _remoteKey;
-//                
-//        _previewVC.delegate = self;
-//        
-//        _previewVC.view.frame = _videoView.bounds;
-//        [_videoView addSubview:_previewVC.view];
-//        
-//        
-//        [self configurePlaybackElementsWithPreviewVC:_previewVC];
-        
     }
 
 }
@@ -295,16 +220,10 @@
     DDLogDebug(@"Deregister Notifications: %@ RegNotVar: %d", _post.content, _registeredNotifications);
     
     _registeredNotifications = NO;
-
-    
     _previewVC = nil;
-//    DDLogDebug(@"Deregister notifications for post: %@", _post.content);
-//
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_VIDEO_READY, (long)_post.remoteKey];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_LOADED object:nil];
-
 }
 
 - (void)videoLoaded

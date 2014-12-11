@@ -229,7 +229,6 @@ static GLPPendingPostsManager *instance = nil;
         
         if(success)
         {
-            
             //Update local database if there is a need.
             [self updateLocalDatabase];
             
@@ -280,8 +279,6 @@ static GLPPendingPostsManager *instance = nil;
         
         //Post.
         [GLPPostDao saveOrUpdatePost:pendingPost];
-        
-        DDLogDebug(@"GLPPendingPostsManager : pending post key %ld", (long)pendingPost.key);
         
         //Review history.
         [GLPReviewHistoryDao saveReviewHistoryArrayOfPost:pendingPost];

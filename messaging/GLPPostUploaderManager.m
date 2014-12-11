@@ -622,7 +622,7 @@
     
     _uploadVideoContentBlock = ^(GLPPost *post){
         
-        DDLogDebug(@"Post video data before notify Campus Wall: %@", post.video);
+        DDLogDebug(@"Post video data before notify Campus Wall: %@, post event date %@", post.video, post.dateEventStarts);
         [self notifyTheRightViewControllerWithPost:post];
         [self videoPostReadyToUpload];
     };
@@ -645,7 +645,7 @@
             updatedPost.sendStatus = kSendStatusSent;
             updatedPost.key = post.key;
             
-            DDLogInfo(@"Video Post edited with success: %d and post remoteKey: %ld", success, (long)post.remoteKey);
+            DDLogInfo(@"Video Post edited with success: %d and post remoteKey: %ld post event time %@", success, (long)updatedPost.remoteKey, updatedPost.dateEventStarts);
             
             [[GLPPendingPostsManager sharedInstance] updatePendingPostAfterEdit:updatedPost];
             
@@ -839,7 +839,7 @@
     if(post.pending)
     {
         //Notify pending posts GLPPendingPostView and GLPPendingPostsVC after edit.
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_EDITED object:nil userInfo:@{@"post_edited": post}];
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_EDITED object:nil userInfo:@{@"post_edited" : post}];
         
         [[GLPPendingPostsManager sharedInstance] progressFinished];
 

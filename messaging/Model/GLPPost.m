@@ -120,6 +120,8 @@
 {
     self.eventTitle = newPost.eventTitle;
     
+    self.dateEventStarts = newPost.dateEventStarts;
+    
     self.content = newPost.content;
     
     self.imagesUrls = newPost.imagesUrls;
@@ -144,7 +146,7 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Post id: %ld, Content: %@ Sending status: %d Date: %@, Group: %@, SendStatus %d", (long)self.remoteKey, self.content, self.sendStatus, self.date, self.group, self.sendStatus];
+    return [NSString stringWithFormat:@"Post id: %ld, Content: %@ Sending status: %d Date: %@, Group: %@, SendStatus %d, Event date: %@", (long)self.remoteKey, self.content, self.sendStatus, self.date, self.group, self.sendStatus, self.dateEventStarts];
 }
 
 

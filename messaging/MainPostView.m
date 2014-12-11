@@ -129,21 +129,9 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     return self;
 }
 
--(void)initialiseObjects
+- (void)awakeFromNib
 {
-//    _mediaAvailable = NO;
-}
 
--(void)configureMediaAvailable
-{
-//    if((_post.imagesUrls && _post.imagesUrls.count > 0) || (_post.videosUrls && _post.videosUrls.count > 0))
-//    {
-//        _mediaAvailable = YES;
-//    }
-//    else
-//    {
-//        _mediaAvailable = NO;
-//    }
 }
 
 #pragma mark - Modifiers
@@ -153,6 +141,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     /** TODO: See if this assign is good. */
     _post = post;
     
+    [self formatElements];
+    
     if(_post.sendStatus == kSendStatusLocalEdited)
     {
         DDLogDebug(@"MainPostView : kSendStatusLocalEdited YES %d", _post.sendStatus);
@@ -160,6 +150,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         [_loadingView setHidden:NO];
         
         [_loadingViewIndicator startAnimating];
+        
+        return;
     }
     else
     {
@@ -181,8 +173,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [_nameLbl setText:post.author.name];
     _nameLbl.tag = _post.author.remoteKey;
     
-    [self configureMediaAvailable];
-    
     _viewPost = viewPost;
     
     [self configureIfComesFromViewPost];
@@ -200,7 +190,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [self setVideo];
     
-    [self formatElements];
+//    [self formatElements];
     
     [self updateIndicatorWithRemoteKey:post.remoteKey];
     
@@ -709,7 +699,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
        contentAttributeText = [[NSAttributedString alloc] initWithString:_contentLbl.text attributes:@{ NSKernAttributeName : @(0.3f)}];
     }
     
-
     [ShapeFormatterHelper setRoundedView:_indicatorImageView toDiameter:_indicatorImageView.frame.size.height];
     
     [ShapeFormatterHelper setRoundedView:_userImageView toDiameter:_userImageView.frame.size.height];
@@ -724,8 +713,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [ShapeFormatterHelper setCornerRadiusWithView:_loadingView andValue:5];
     
     [ShapeFormatterHelper setBorderToView:_loadingView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0f];
-
-
     
     _contentLbl.attributedText = contentAttributeText;
 }

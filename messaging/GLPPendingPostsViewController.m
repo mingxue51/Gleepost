@@ -18,6 +18,7 @@
 #import "GLPViewPendingPostViewController.h"
 #import "GLPReviewHistory.h"
 #import "GLPPostNotificationHelper.h"
+#import "GLPVideoLoaderManager.h"
 
 @interface GLPPendingPostsViewController () <UITableViewDataSource, UITableViewDelegate, GLPPostCellDelegate>
 
@@ -52,6 +53,8 @@
 {
     [self removeNotifications];
     
+    [[GLPVideoLoaderManager sharedInstance] enableTimelineJustFetched];
+
     [super viewWillDisappear:animated];
 }
 
@@ -155,6 +158,11 @@
     }
     else if ([post isVideoPost])
     {
+        if(indexPath.row != 0)
+        {
+            [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
+        }
+        
         postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
     }
     else
@@ -168,7 +176,7 @@
     
     if([_postToBeRefreshed compare:indexPath] == NSOrderedSame)
     {
-        DDLogDebug(@"Post to be refreshed YES");
+        DDLogDebug(@"Post to be refreshed YES %@ post content %@", _postToBeRefreshed, post.content);
         
         [postViewCell reloadMedia:YES];
         _postToBeRefreshed = nil;
@@ -363,7 +371,6 @@
         
         [[GLPPostImageLoader sharedInstance] addPostsImages: [[GLPPendingPostsManager sharedInstance] pendingPosts]];
         
-        
         [_tableView reloadData];
         
     } withRemoteCallback:^(BOOL success, NSArray *remotePosts) {
@@ -385,6 +392,57 @@
 
         
     }];
+}
+
+#pragma mark - Scroll view
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if(self.pendingPostOrganiser.numberOfSections == 0)
+    {
+        return;
+    }
+    
+    //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
+    
+    NSArray *visiblePosts = [self snapshotVisibleCells];
+    
+    [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
+    
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(decelerate == 0)
+    {
+        NSArray *visiblePosts = [self snapshotVisibleCells];
+        
+        [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
+    }
+}
+
+/**
+ This method is used to take a snapshot of the current visible posts cells.
+ 
+ @return The visible posts.
+ 
+ */
+-(NSArray *)snapshotVisibleCells
+{
+    NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
+    
+    NSArray *paths = [self.tableView indexPathsForVisibleRows];
+    
+    for (NSIndexPath *path in paths)
+    {
+        //Avoid any out of bounds access in array
+        [visiblePosts addObject:[_pendingPostOrganiser postWithIndex:path.row andSectionIndex:path.section]];
+        
+        DDLogDebug(@"Visible cell with row %d and section %d", path.row, path.section);
+        
+    }
+    
+    return visiblePosts;
 }
 
 - (void)didReceiveMemoryWarning {

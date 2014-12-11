@@ -1,4 +1,4 @@
-    //
+//
 //  WebClient.m
 //  messaging
 //
@@ -603,6 +603,8 @@ static WebClient *instance = nil;
         
         GLPPost *newEditedPost = [RemoteParser parsePostFromJson:responseObject];
         newEditedPost.pending = YES;
+        
+        DDLogDebug(@"WebClient : after edit post %@, actual post %@", responseObject, newEditedPost);
                 
         callbackBlock(YES, newEditedPost);
         
