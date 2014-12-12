@@ -117,7 +117,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     
     [self configureTextViews];
     
-    [self formatBackgroundViews];
+    [self formatElements];
     
     [self formatTextView];
     
@@ -276,13 +276,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     _titleTextField.delegate = self;
 }
 
--(void)formatBackgroundViews
+-(void)formatElements
 {
     [ShapeFormatterHelper setCornerRadiusWithView:_textFieldView andValue:4];
 
-    
-//    [ShapeFormatterHelper setBorderToView:_textFieldBackgroundImageView withColour:[UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f] andWidth:1.0f];
-    
+    [ShapeFormatterHelper setCornerRadiusWithView:_pendingImageView andValue:2];
 }
 
 //TODO: Finish that for the other views.
@@ -630,7 +628,14 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     
     [[self.addImageButton imageView] setContentMode: UIViewContentModeScaleAspectFill];
     
-    [self.addImageButton setImage:image forState:UIControlStateNormal];
+    if([[PendingPostManager sharedInstance] isEditMode])
+    {
+        [_pendingImageView setImage:image];
+    }
+    else
+    {
+        [self.addImageButton setImage:image forState:UIControlStateNormal];
+    }
     
     self.imgToUpload = image;
     

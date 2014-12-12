@@ -6589,8 +6589,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = NerdNation;
-				PROVISIONING_PROFILE = "d4a1ac21-2b4a-4880-9fb2-e78ec2099d5a";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "d4a1ac21-2b4a-4880-9fb2-e78ec2099d5a";
+				PROVISIONING_PROFILE = "fa516454-55e9-4cf4-a569-9125f94fc772";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "fa516454-55e9-4cf4-a569-9125f94fc772";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -6609,8 +6609,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = NerdNation;
-				PROVISIONING_PROFILE = "27aec5d7-ee1c-4b65-bf78-21fcc61e249c";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "27aec5d7-ee1c-4b65-bf78-21fcc61e249c";
+				PROVISIONING_PROFILE = "2120a669-ab75-48f8-8f50-dceced760fda";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2120a669-ab75-48f8-8f50-dceced760fda";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

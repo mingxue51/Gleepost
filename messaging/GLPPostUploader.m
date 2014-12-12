@@ -104,9 +104,12 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     
     if([[PendingPostManager sharedInstance] isEditMode])
     {
-        post.remoteKey = [[PendingPostManager sharedInstance] pendingPostRemoteKey];
-        [[GLPPendingPostsManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
+        if([post isVideoPost])
+        {
+            [[GLPPendingPostsManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
+        }
         
+        post.remoteKey = [[PendingPostManager sharedInstance] pendingPostRemoteKey];
         post.pending = YES;
         post.sendStatus = kSendStatusLocalEdited;
         post.remoteKey = [[PendingPostManager sharedInstance] pendingPostRemoteKey];

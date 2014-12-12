@@ -332,30 +332,9 @@ static GLPVideoLoaderManager *instance = nil;
     {
         if([p isVideoPost])
         {
-//            PBJVideoPlayerController *videoVC = [self runningVideoWithPostRemoteKey:p.remoteKey];
-//
-//            DDLogDebug(@"Video vc loaded: %@ : %ld", videoVC.videoPath, videoVC.bufferingState);
-//            
-//            if(videoVC)
-//            {
-//                DDLogDebug(@"visiblePosts Video VC found: %@", videoVC);
-//                
-//                [self postNotificationWithVideoVC:videoVC andRemoteKey:p.remoteKey];
-//            }
-//            else
-//            {
-//                videoVC = [self videoWithPostRemoteKey:p.remoteKey];
-//                
-//                [self replaceOldVideoVCWithNew:videoVC withPostRemoteKey:p.remoteKey];
-            
-            
             PBJVideoPlayerController *videoVC = [self videoWithPostRemoteKey:p.remoteKey];
 
-                [self postNotificationWithVideoVC:videoVC andRemoteKey:p.remoteKey];
-                
-//                DDLogDebug(@"visiblePosts Video VC not found: %@", videoVC);
-
-//            }
+            [self postNotificationWithVideoVC:videoVC andRemoteKey:p.remoteKey];
             
         }
     }

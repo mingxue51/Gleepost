@@ -80,6 +80,8 @@ static GLPVideoPendingPostProgressManager *instance = nil;
 
 - (void)registerWithTimestamp:(NSDate *)timestamp withPost:(GLPPost *)post
 {
+    DDLogDebug(@"GLPVideoPendingPostProgressManager : registerWithTimestamp");
+    
     self.currentProcessedTimestamp = timestamp;
     self.pendingPost = post;
     [self.progressView setTransparencyToView:NO];
