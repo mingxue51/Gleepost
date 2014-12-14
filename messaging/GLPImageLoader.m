@@ -28,18 +28,4 @@
     return self;
 }
 
-
-#pragma mark - Client
-
--(void)startConsume
-{
-    if(self.networkAvailable)
-    {
-        
-        //If there is network then start threads.
-        [NSThread detachNewThreadSelector:@selector(consumeQueue:) toTarget:self withObject:nil];
-        [NSThread detachNewThreadSelector:@selector(consumeQueue:) toTarget:self withObject:nil];
-    }
-}
-
 @end

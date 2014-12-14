@@ -52,8 +52,7 @@
             return;
         }
         
-        DDLogDebug(@"Logged in user's remote image posts");
-
+        DDLogInfo(@"Logged in user's remote posts %@", posts);
     
         //Find all the event posts that the user attends.
         [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
@@ -65,23 +64,24 @@
             
             
             // take only new posts
-            __block NSMutableArray *userPosts = [NSMutableArray array];
+//            __block NSMutableArray *userPosts = [NSMutableArray array];
             
-//            [DatabaseManager run:^(FMDatabase *db) {
+//            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//            
+//                for (GLPPost *newPost in posts)
+//                {
+//                    newPost.sendStatus = kSendStatusSent;
+//                    
+//                    [userPosts addObject:newPost];
+//                    
+//                    [GLPPostDao save:newPost inDb:db];
+//                }
+//            }];
             
-            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+            [GLPPostDao saveUpdateOrRemovePosts:posts withCreatorRemoteKey:remoteKey];
             
-                for (GLPPost *newPost in posts)
-                {
-                    newPost.sendStatus = kSendStatusSent;
-                    
-                    [userPosts addObject:newPost];
-                    
-                    [GLPPostDao save:newPost inDb:db];
-                }
-            }];
             
-            remoteCallback(YES, userPosts);
+            remoteCallback(YES, posts);
         }];
 
     }];
@@ -262,7 +262,6 @@
             return;
         }
         
-        
         //Find all the event posts that the user attends.
         [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
             
@@ -273,30 +272,22 @@
                 return;
             }
             
+//            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//                
+//                //Set liked to the database if the user liked from other device (?)
+//                for(GLPPost *post in posts)
+//                {
+//                    post.sendStatus = kSendStatusSent;
+//                    [GLPPostDao save:post inDb:db];
+//                }
+//            }];
             
-            
-            
-            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-                
-                // clean posts table
-//                [GLPPostDao deleteAllInDb:db];
-                
-                //Set liked to the database if the user liked from other device (?)
-                for(GLPPost *post in posts)
-                {
-                    post.sendStatus = kSendStatusSent;
-                    [GLPPostDao save:post inDb:db];
-                }
-            }];
+            [GLPPostDao saveUpdateOrRemovePostsInCW:posts];
             
             BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
             
             remoteCallback(YES, remains, posts);
-            
-            
         }];
-        
-        
         
 //        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
 //            

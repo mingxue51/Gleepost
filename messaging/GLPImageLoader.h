@@ -14,6 +14,4 @@
 @property (strong, nonatomic) NSMutableArray *imagesNotStarted;
 @property (assign, nonatomic) BOOL networkAvailable;
 
--(void)startConsume;
-
 @end

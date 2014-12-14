@@ -343,6 +343,99 @@
     }];
 }
 
+/**
+ Saves, updates or removes posts. In case of removing posts, the method
+ compares the server's posts with database's posts, and removes any
+ unnecessary posts. This method is for profile view controller.
+ 
+ @param posts the remote posts.
+ @param kindOfQuery the kind of query.
+ */
+
++ (void)saveUpdateOrRemovePosts:(NSArray *)posts withCreatorRemoteKey:(NSInteger)userRemoteKey
+{
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+
+        NSArray *profilePosts = [GLPPostDao findPostsWithUsersRemoteKey:userRemoteKey inDb:db];
+        
+        DDLogDebug(@"GLPPostDao : Profile posts %@", profilePosts);
+
+        
+        NSArray *postsToDelete = [GLPPostDao subtractRemotePosts:posts withLocalPosts:profilePosts.mutableCopy];
+        
+        DDLogDebug(@"GLPPostDao : Posts to delete %@", postsToDelete);
+        
+        if(postsToDelete)
+        {
+            [GLPPostDao removePostsFromDatabase:postsToDelete withDb:db];
+        }
+        
+        for(GLPPost *p in posts)
+        {
+            p.sendStatus = kSendStatusSent;
+            [GLPPostDao save:p inDb:db];
+        }
+        
+        DDLogDebug(@"GLPPostDao : remote posts %@", posts);
+        
+    }];
+}
+
++ (void)saveUpdateOrRemovePostsInCW:(NSArray *)posts
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        NSArray *campusWallPosts = [GLPPostDao findLastPostsInDb:db];
+        
+        DDLogDebug(@"GLPPostDao : Campus wall posts %@", campusWallPosts);
+        
+        NSArray *postsToDelete = [GLPPostDao subtractRemotePosts:posts withLocalPosts:campusWallPosts.mutableCopy];
+        
+        DDLogDebug(@"GLPPostDao : Posts to delete %@", postsToDelete);
+        
+        if(postsToDelete)
+        {
+            [GLPPostDao removePostsFromDatabase:postsToDelete withDb:db];
+        }
+        
+        for(GLPPost *p in posts)
+        {
+            p.sendStatus = kSendStatusSent;
+            [GLPPostDao save:p inDb:db];
+        }
+        
+        DDLogDebug(@"GLPPostDao : remote posts %@", posts);
+        
+    }];
+}
+
++ (NSArray *)subtractRemotePosts:(NSArray *)remotePosts withLocalPosts:(NSMutableArray *)localPosts
+{
+    [localPosts removeObjectsInArray:remotePosts];
+    
+    DDLogDebug(@"GLPPostDao : subtractRemotePosts local %@", localPosts);
+    
+    DDLogDebug(@"GLPPostDao : subtractRemotePosts remote %@", remotePosts);
+    DDLogDebug(@"GLPPostDao : subtractRemotePosts %d : %d", remotePosts.count, localPosts.count);
+
+    
+    if(localPosts.count == remotePosts.count)
+    {
+        return nil;
+    }
+    
+    return localPosts;
+}
+
++ (void)removePostsFromDatabase:(NSArray *)posts withDb:(FMDatabase *)db
+{
+    for(GLPPost *p in posts)
+    {
+        [GLPPostDao deletePostWithPost:p db:db];
+    }
+}
+
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db
 {
     NSInteger postKey = [GLPPostDao findPostKeyByRemoteKey:entity.remoteKey inDB:db];
@@ -597,11 +690,11 @@
     if(entity.remoteKey != 0)
     {
         DDLogDebug(@"updatePostSendingData remote key not zero");
+        
         [db executeUpdateWithFormat:@"update posts set remoteKey=%d, sendStatus=%d where key=%d",
          entity.remoteKey,
          entity.sendStatus,
          entity.key];
-        
     } else
     {
         DDLogDebug(@"updatePostSendingData remote key zero");
@@ -681,6 +774,20 @@
 {
     [db executeUpdateWithFormat:@"delete from posts where remoteKey=%d",
      entity.remoteKey];
+    
+    [db executeUpdateWithFormat:@"delete from post_images where post_remote_key=%d",
+     entity.remoteKey];
+    
+    [db executeUpdateWithFormat:@"delete from post_videos where post_remote_key=%d",
+     entity.remoteKey];
+    
+    [db executeUpdateWithFormat:@"delete from review_history where post_remote_key=%d",
+     entity.remoteKey];
+}
+
++ (void)deletePostsWithGroupRemoteKey:(NSInteger)groupRemoteKey db:(FMDatabase *)db
+{
+    [db executeUpdateWithFormat:@"delete from posts where group_remote_key=%d", groupRemoteKey];
 }
 
 + (void)deleteAllInDb:(FMDatabase *)db

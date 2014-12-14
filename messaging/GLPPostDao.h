@@ -10,6 +10,12 @@
 #import "GLPPost.h"
 #import "FMDatabase.h"
 
+typedef NS_ENUM(NSUInteger, KindOfQuery) {
+    kProfileQuery,
+    kCampusWallQuery,
+    kGroupQuery
+};
+
 @interface GLPPostDao : NSObject
 
 + (NSArray *)findLastPostsInDb:(FMDatabase *)db;
@@ -22,6 +28,8 @@
 + (NSArray *)loadPendingPosts;
 + (NSArray *)findAllPendingPostsWithVideosInDb:(FMDatabase *)db;
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db;
++ (void)saveUpdateOrRemovePosts:(NSArray *)posts withCreatorRemoteKey:(NSInteger)userRemoteKey;
++ (void)saveUpdateOrRemovePostsInCW:(NSArray *)posts;
 + (void)saveOrUpdatePost:(GLPPost *)entity;
 + (void)updatePostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db;
 + (void)deleteAllInDb:(FMDatabase *)db;
@@ -33,6 +41,7 @@
 + (void)updatePendingStatuswithPost:(GLPPost *)entity;
 + (void)updateVideoPostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db;
 +(void)deletePostWithPost:(GLPPost *)entity db:(FMDatabase *)db;
++ (void)deletePostsWithGroupRemoteKey:(NSInteger)groupRemoteKey db:(FMDatabase *)db;
 + (void)updateImagesWithEntity:(GLPPost *)entity db:(FMDatabase *)db;
 
 @end

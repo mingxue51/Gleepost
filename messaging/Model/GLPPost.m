@@ -144,6 +144,31 @@
     return _location.name;
 }
 
+- (BOOL)isEqual:(id)other
+{
+//    if (other == self) {
+//        DDLogDebug(@"GLPPost : equal YES %d %@ : %@", [(GLPPost *)other remoteKey] == self.remoteKey, [(GLPPost *)other content], self.content);
+//        return YES;
+//    } else if (![super isEqual:other]) {
+//        DDLogDebug(@"GLPPost : equal NO %d %@ : %@", [(GLPPost *)other remoteKey] == self.remoteKey, [(GLPPost *)other content], self.content);
+//        return NO;
+//    } else {
+//        DDLogDebug(@"GLPPost : equal %d %@ : %@", [(GLPPost *)other remoteKey] == self.remoteKey, [(GLPPost *)other content], self.content);
+//        
+//        return [(GLPPost *)other remoteKey] == self.remoteKey;
+//    }
+    
+    DDLogDebug(@"GLPPost : equal %d %@ : %@", [(GLPPost *)other remoteKey] == self.remoteKey, [(GLPPost *)other content], self.content);
+
+    return [(GLPPost *)other remoteKey] == self.remoteKey;
+
+}
+
+- (NSUInteger)hash
+{
+    return self.remoteKey;
+}
+
 -(NSString *)description
 {
     return [NSString stringWithFormat:@"Post id: %ld, Content: %@ Sending status: %d Date: %@, Group: %@, SendStatus %d, Event date: %@", (long)self.remoteKey, self.content, self.sendStatus, self.date, self.group, self.sendStatus, self.dateEventStarts];

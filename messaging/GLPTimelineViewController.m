@@ -401,6 +401,11 @@ const float TOP_OFFSET = 180.0f;
 {
     NSInteger index = [GLPPostNotificationHelper parsePostWithImageUrlNotification:notification withPostsArray:self.posts];
 
+    if(index == -1)
+    {
+        return;
+    }
+    
     GLPPost *uploadedPost = self.posts[index];
     
     if(uploadedPost.author.remoteKey == [SessionManager sharedInstance].user.remoteKey)
@@ -809,11 +814,51 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)refreshCellViewWithIndex:(NSUInteger)index
 {
-    index = ([[GLPPendingPostsManager sharedInstance] arePendingPosts]) ? (index+=2) : (index+=1);
+//    index = ([[GLPPendingPostsManager sharedInstance] arePendingPosts]) ? (index+=2) : (index+=1);
     
-    [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        index+=2;
+    }
+    else
+    {
+        index+=1;
+    }
+    
+    DDLogDebug(@"refreshCellViewWithIndex %lu", (unsigned long)index);
+    
+    if([self cellNeedsReloadWithIndex:index])
+    {
+
+        //For now we are reloading all the data (for now) because there was a problem reloading each cell as individual.
+        [self.tableView reloadData];
+        
+        
+        //            [self.tableView beginUpdates];
+        //            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        //            [self.tableView endUpdates];
+
+    }
+    else
+    {
+        DDLogDebug(@"GLPTimelineViewController : no need to refresh cell with index %lu", (unsigned long)index);
+    }
+    
+
+}
+
+- (BOOL)cellNeedsReloadWithIndex:(NSInteger)index
+{
+    NSArray *paths = [self.tableView indexPathsForVisibleRows];
+    
+    for(NSIndexPath *indexPath in paths)
+    {
+        if(indexPath.row == index)
+        {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 #pragma mark - Posts
@@ -1620,7 +1665,7 @@ const float TOP_OFFSET = 180.0f;
     
     //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
     
-    NSArray *visiblePosts = [self snapshotVisibleCells];
+    NSArray *visiblePosts = [self getVisiblePostsInTableView];
     
     [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
     
@@ -1645,7 +1690,7 @@ const float TOP_OFFSET = 180.0f;
             return;
         }
         
-        NSArray *visiblePosts = [self snapshotVisibleCells];
+        NSArray *visiblePosts = [self getVisiblePostsInTableView];
         
         [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
         
@@ -1794,9 +1839,7 @@ const float TOP_OFFSET = 180.0f;
         {
             [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
         }
-        
-        DDLogDebug(@"Dequeue cell");
-        
+                
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
     }
 //    else if ([post isVideoPost])
@@ -2188,7 +2231,7 @@ const float TOP_OFFSET = 180.0f;
  @return The visible posts.
  
  */
--(NSArray *)snapshotVisibleCells
+-(NSArray *)getVisiblePostsInTableView
 {
     NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
     
@@ -2204,9 +2247,7 @@ const float TOP_OFFSET = 180.0f;
         {
             [visiblePosts addObject:[self.posts objectAtIndex:row]];
         }
-        
     }
-    
     return visiblePosts;
 }
 
