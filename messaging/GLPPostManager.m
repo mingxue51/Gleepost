@@ -87,7 +87,7 @@
     }];
 }
 
-+ (void)loadRemotePostsBefore:(GLPPost *)post withNotUploadedPosts:(NSArray*)notUploadedPosts andCurrentPosts:(NSArray*)posts callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
++ (void)loadRemotePostsBefore:(GLPPost *)post withNotUploadedPosts:(NSArray *)notUploadedPosts andCurrentPosts:(NSArray *)currentPosts callback:(void (^)(BOOL success, BOOL remain, NSArray *posts, NSArray *deletedPosts))callback
 {
     FLog(@"load posts before %d - %@", post.remoteKey, post.content);
     
@@ -95,7 +95,7 @@
     
     [[WebClient sharedInstance] getPostsAfter:nil withCategoryTag:categoryName callback:^(BOOL success, NSArray *posts) {
         if(!success) {
-            callback(NO, NO, nil);
+            callback(NO, NO, nil, nil);
             return;
         }
         
@@ -103,62 +103,62 @@
         [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
            
             if(!success) {
-                callback(NO, NO, nil);
+                callback(NO, NO, nil, nil);
                 return;
             }
             
+
+//            for (GLPPost *newPost in posts)
+//            {
+//                if(newPost.remoteKey == post.remoteKey)
+//                {
+//                    break;
+//                }
+//                
+//  
+//                if([GLPPostManager isPost:newPost containedInArray:notUploadedPosts])
+//                {
+//                    continue;
+//                }
+//                
+//                
+//                //If newPost is contained to already posted posts then continue.
+//                //Avoid duplications.
+//                [newPosts addObject:newPost];
+//            }
+            
+            
+//            if(notUploadedPosts.count > 0)
+//            {
+//                DDLogDebug(@"GLPPostManager : Not uploaded posts exist abort.");
+//                callback(YES, NO, nil, deletedPosts);
+//            }
+            
             // take only new posts
-            NSMutableArray *newPosts = [NSMutableArray array];
-            for (GLPPost *newPost in posts) {
-                
-                if(newPost.remoteKey == post.remoteKey) {
-                    
-                    break;
-                }
-                
-                
-                if([GLPPostManager isPost:newPost containedInArray:notUploadedPosts])
-                {
-                    continue;
-                }
-                
-                //If newPost is contained to already posted posts then continue.
-                //Avoid duplications.
-                //            if([GLPPostManager isPost:newPost containedInArray:posts])
-                //            {
-                //                continue;
-                //            }
-                
-                
-                
-                [newPosts addObject:newPost];
-            }
+            NSArray *newPosts = [GLPPostDao getTheNewPostsWithRemotePosts:posts];
             
-            //[newPosts addObject:post]; //[newPosts addObject:post]; [newPosts addObject:post]; // comment / uncomment for debug reasons
+            NSArray *deletedPosts = [GLPPostDao saveUpdateOrRemovePostsInCW:posts];
+
             
-            DDLogInfo(@"remote posts %d", newPosts.count);
+            DDLogInfo(@"remote posts %lu", (unsigned long)newPosts.count);
             
             if(!newPosts || newPosts.count == 0) {
-                callback(YES, NO, nil);
+                callback(YES, NO, nil, deletedPosts);
                 return;
             }
             
             // only new posts loaded, means it may remain some
             BOOL remain = newPosts.count == posts.count;
             
-            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-                for (GLPPost *newPost in newPosts) {
-                    newPost.sendStatus = kSendStatusSent;
-                    [GLPPostDao save:newPost inDb:db];
-                }
-            }];
+//            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+//                for (GLPPost *newPost in newPosts) {
+//                    newPost.sendStatus = kSendStatusSent;
+//                    [GLPPostDao save:newPost inDb:db];
+//                }
+//            }];
             
-            callback(YES, remain, newPosts);
-            
-            
+            callback(YES, remain, newPosts, deletedPosts);
         }];
-        
-        
         
 //        // take only new posts
 //        NSMutableArray *newPosts = [NSMutableArray array];
@@ -225,8 +225,6 @@
             return YES;
         }
     }
-
-    
     return NO;
 }
 

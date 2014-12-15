@@ -158,7 +158,7 @@
 //        return [(GLPPost *)other remoteKey] == self.remoteKey;
 //    }
     
-    DDLogDebug(@"GLPPost : equal %d %@ : %@", [(GLPPost *)other remoteKey] == self.remoteKey, [(GLPPost *)other content], self.content);
+//    DDLogDebug(@"GLPPost : equal %d %@ : %@", [(GLPPost *)other remoteKey] == self.remoteKey, [(GLPPost *)other content], self.content);
 
     return [(GLPPost *)other remoteKey] == self.remoteKey;
 
@@ -171,7 +171,9 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Post id: %ld, Content: %@ Sending status: %d Date: %@, Group: %@, SendStatus %d, Event date: %@", (long)self.remoteKey, self.content, self.sendStatus, self.date, self.group, self.sendStatus, self.dateEventStarts];
+//    return [NSString stringWithFormat:@"Post id: %ld, Content: %@ Sending status: %d Date: %@, Group: %@, SendStatus %d, Event date: %@", (long)self.remoteKey, self.content, self.sendStatus, self.date, self.group, self.sendStatus, self.dateEventStarts];
+    
+    return [NSString stringWithFormat:@"Post content %@, remote key %d", self.content, self.remoteKey];
 }
 
 

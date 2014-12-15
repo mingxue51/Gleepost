@@ -96,7 +96,7 @@
 @property (assign, nonatomic) BOOL isLoading;
 @property (assign, nonatomic) BOOL firstLoadSuccessful;
 @property (assign, nonatomic) BOOL tableViewInScrolling;
-@property (assign, nonatomic) int insertedNewRowsCount; // count of new rows inserted
+@property (assign, nonatomic) NSInteger insertedNewRowsCount; // count of new rows inserted
 @property (assign, nonatomic) NSInteger postIndexToReload;
 
 // Not need because we use performselector which areis deprioritized during scrolling
@@ -1038,13 +1038,20 @@ const float TOP_OFFSET = 180.0f;
     
     [self startLoading];
     
-    [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
+    [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts, NSArray *deletedPosts) {
         [self stopLoading];
         
         if(!saveScrollingState)
         {
             //Load campus live events posts.
             [_campusWallHeader reloadData];
+        }
+        
+        if(deletedPosts.count > 0)
+        {
+            DDLogInfo(@"GLPTimelineViewController : deleted posts %@", deletedPosts);
+            [self.posts removeObjectsInArray:deletedPosts];
+            [self.tableView reloadData];
         }
         
         if(posts.count > 0) {
@@ -1463,8 +1470,6 @@ const float TOP_OFFSET = 180.0f;
     
     self.isLoading = NO;
     DDLogDebug(@"Is loading NO");
-
-
 }
 
 #pragma mark - Request management
@@ -2100,7 +2105,7 @@ const float TOP_OFFSET = 180.0f;
 }
 
 
-- (void)updateTableViewWithNewPostsAndScrollToTop:(int)count
+- (void)updateTableViewWithNewPostsAndScrollToTop:(NSInteger)count
 {
     NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
     
@@ -2118,7 +2123,7 @@ const float TOP_OFFSET = 180.0f;
         count += 1;
     }
     
-    for(int i = startIndex; i < count; i++) {
+    for(NSInteger i = startIndex; i < count; i++) {
         [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
     }
     

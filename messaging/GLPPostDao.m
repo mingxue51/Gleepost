@@ -117,6 +117,68 @@
     return localPosts;
 }
 
++ (NSArray *)findLastSentPosts
+{
+    __block NSArray *lastPosts = nil;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        lastPosts = [GLPPostDao findLastSentPostsWithDb:db];
+    }];
+    
+    return lastPosts;
+}
+
++ (NSArray *)findLastSentPostsWithDb:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND group_remote_key = 0 AND pending = 0 order by date desc, remoteKey desc"];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        [result addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
+    }
+    
+    
+    [GLPPostDao loadImagesWithPosts:result withDb:db];
+    
+    [GLPPostDao loadVideosWithPosts:result withDb:db];
+    
+    return result;
+}
+
+
+
++ (NSArray *)findLastPostsInAnySendStatus
+{
+    __block NSArray *lastPosts = nil;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        lastPosts = [GLPPostDao findLastPostsInAnySendStatusWithDb:db];
+    }];
+    
+    return lastPosts;
+}
+
++ (NSArray *)findLastPostsInAnySendStatusWithDb:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where group_remote_key = 0 AND pending = 0 order by date desc, remoteKey desc"];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        [result addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
+    }
+    
+    
+    [GLPPostDao loadImagesWithPosts:result withDb:db];
+    
+    [GLPPostDao loadVideosWithPosts:result withDb:db];
+    
+    return result;
+}
+
+
+
 + (NSArray *)findPostsWithUsersRemoteKey:(NSInteger)usersRemoteKey inDb:(FMDatabase *)db
 {
     
@@ -382,8 +444,10 @@
     }];
 }
 
-+ (void)saveUpdateOrRemovePostsInCW:(NSArray *)posts
++ (NSArray *)saveUpdateOrRemovePostsInCW:(NSArray *)posts
 {
+    __block NSArray *deletedPosts = [[NSArray alloc] init];
+    
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
         NSArray *campusWallPosts = [GLPPostDao findLastPostsInDb:db];
@@ -407,7 +471,11 @@
         
         DDLogDebug(@"GLPPostDao : remote posts %@", posts);
         
+        deletedPosts = postsToDelete;
+        
     }];
+    
+    return deletedPosts;
 }
 
 + (NSArray *)subtractRemotePosts:(NSArray *)remotePosts withLocalPosts:(NSMutableArray *)localPosts
@@ -434,6 +502,34 @@
     {
         [GLPPostDao deletePostWithPost:p db:db];
     }
+}
+
++ (NSArray *)getTheNewPostsWithRemotePosts:(NSArray *)remotePosts
+{
+    
+    NSArray *allDatabasePosts = [GLPPostDao findLastPostsInAnySendStatus];
+    
+    NSArray *allSentDatabasePosts = [GLPPostDao findLastSentPosts];
+    
+    NSMutableArray *newPosts = remotePosts.mutableCopy;
+    
+    [newPosts removeObjectsInArray:allDatabasePosts];
+    
+    if(newPosts.count > 0)
+    {
+        if([(GLPPost *)[newPosts firstObject] remoteKey] < [(GLPPost *)[allSentDatabasePosts firstObject] remoteKey])
+        {
+            DDLogDebug(@"GLPPostDao : new post remote key smaller than the last.");
+            
+            return [NSArray array];
+        }
+    }
+    
+    DDLogDebug(@"GLPPostDao : last 20 posts %@", allSentDatabasePosts);
+
+    DDLogDebug(@"GLPPostDao : new posts %@", newPosts);
+    
+    return newPosts;
 }
 
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db
