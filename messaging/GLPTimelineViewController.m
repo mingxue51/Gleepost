@@ -1123,14 +1123,17 @@ const float TOP_OFFSET = 180.0f;
         self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
         
         if(posts.count > 0) {
-            int firstInsertRow = self.posts.count;
+            
+            int firstInsertRow = ([[GLPPendingPostsManager sharedInstance] arePendingPosts]) ? self.posts.count + 1 : self.posts.count;
             
             [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
 
             [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.posts.count, posts.count)]];
             
+            int finalRowsCount = ([[GLPPendingPostsManager sharedInstance] arePendingPosts]) ? self.posts.count + 1 : self.posts.count;
+            
             NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-            for(int i = firstInsertRow; i < self.posts.count; i++) {
+            for(int i = firstInsertRow; i < finalRowsCount; i++) {
                 [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
             }
             
