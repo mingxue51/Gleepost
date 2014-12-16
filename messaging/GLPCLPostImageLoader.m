@@ -50,10 +50,30 @@ static GLPCLPostImageLoader *instance = nil;
         }
         
         [[NSTimer timerWithTimeInterval:3.0 target:self selector:@selector(showCurrentOperationsInQueue) userInfo:nil repeats:YES] fire];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
     }
     
     return self;
 }
+
+- (void)updateNetworkStatus:(NSNotification *)notification
+{
+    BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
+    DDLogInfo(@"GLPCLPostImageLoader network status: %d", isNetwork);
+    
+    DDLogDebug(@"GLPCLPostImageLoader operation queue count %d %d", _operationQueue.operationCount, _pendingOperations.count);
+
+    if(isNetwork)
+    {
+        [self retryLoadImagesAfterLostConnection];
+    }
+    else
+    {
+        
+    }
+}
+
 
 - (void)addPosts:(NSArray *)posts
 {
@@ -82,20 +102,25 @@ static GLPCLPostImageLoader *instance = nil;
     if(![_pendingOperations objectForKey:@(remoteKey)])
     {
         [_pendingOperations setObject:imageUrl forKey:@(remoteKey)];
-        
-        DDLogDebug(@"GLPCLPostImageLoader : image added %ld - %@", (long)remoteKey, imageUrl);
-        
-        GLPCampusLiveImageOperation *operation = [[GLPCampusLiveImageOperation alloc] initWithImageUrl:imageUrl andRemoteKey:remoteKey];
-        
-        [operation setDelegate:self];
-        
-        [_operationQueue addOperation:operation];
+
+        [self loadImageWithRemoteKey:remoteKey andImageUrl:imageUrl];
     }
+}
+
+- (void)loadImageWithRemoteKey:(NSInteger)remoteKey andImageUrl:(NSString *)imageUrl
+{    
+    DDLogDebug(@"GLPCLPostImageLoader : image added %ld - %@", (long)remoteKey, imageUrl);
+    
+    GLPCampusLiveImageOperation *operation = [[GLPCampusLiveImageOperation alloc] initWithImageUrl:imageUrl andRemoteKey:remoteKey];
+    
+    [operation setDelegate:self];
+    
+    [_operationQueue addOperation:operation];
 }
 
 - (void)notifyCampusLiveWithImage:(UIImage *)image andPostRemoteKey:(NSInteger)remoteKey
 {
-    DDLogDebug(@"GLPCLPostImageLoader : notifyCampusLiveWithImage %ld", (long)remoteKey);
+    DDLogDebug(@"GLPCLPostImageLoader : notifyCampusLiveWithImage %ld image %@", (long)remoteKey, image);
     
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:[self generateNotificationWithRemoteKey:remoteKey] object:self userInfo:@{@"image_loaded" : image, @"remote_key" : @(remoteKey)}];
 }
@@ -103,6 +128,21 @@ static GLPCLPostImageLoader *instance = nil;
 - (NSString *)generateNotificationWithRemoteKey:(NSInteger)remoteKey
 {
     return [NSString stringWithFormat:@"%@_%@", GLPNOTIFICATION_CAMPUS_LIVE_IMAGE_LOADED, @(remoteKey)];
+}
+
+#pragma mark - Error methods
+
+/**
+ This method is called only if network is connected after its lost.
+ It takes all the images that never load (because of loosing connection) -from the
+ pendingOperations dictionary and adds them again on the queue in order to retry download them.
+ */
+- (void)retryLoadImagesAfterLostConnection
+{
+    for(NSNumber *remoteKey in self.pendingOperations)
+    {
+        [self loadImageWithRemoteKey:remoteKey.integerValue andImageUrl:[self.pendingOperations objectForKey:remoteKey]];
+    }
 }
 
 #pragma mark - GLPCampusLiveImageOperationDelegate

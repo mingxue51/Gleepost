@@ -31,6 +31,7 @@
     return self;
 }
 
+
 - (void)main {
     @autoreleasepool {
         DDLogInfo(@"GLPCampusLiveImageOperation : operation started %@ : %ld", _imageUrl, (long)_remoteKey);
@@ -44,6 +45,12 @@
     UIImage *img = [self loadImage];
     [[SDImageCache sharedImageCache] storeImage:img forKey:_imageUrl];
     
+    if(!img)
+    {
+        DDLogError(@"GLPCampusLiveImageOperation : Connection lost retry with url %@", _imageUrl);
+        return;
+    }
+    
     [self.delegate operationFinishedWithImage:img andRemoteKey:_remoteKey];
 }
 
@@ -52,7 +59,7 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:_imageUrl] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:600.0];
     
     NSURLResponse *response = [NSURLResponse new];
-    NSError *error = [NSError new];
+    NSError *error = nil;
     
     NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
     

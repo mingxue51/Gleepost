@@ -116,6 +116,8 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 -(void)setData:(GLPPost*)post
 {
     self.postData = post;
+        
+    [self removeNotification];
     
     [self configureNotification];
     
