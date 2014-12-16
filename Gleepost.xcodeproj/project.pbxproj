@@ -31,6 +31,8 @@
 		5806C75C191BF603005C907E /* mypost_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C75A191BF603005C907E /* mypost_btn_selected.png */; };
 		5806C75D191BF603005C907E /* notification_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C75B191BF603005C907E /* notification_btn_selected.png */; };
 		5806C761191BFA5D005C907E /* fb_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C760191BFA5D005C907E /* fb_login.png */; };
+		5809FF0A1A40376400AF7912 /* GLPCLPostImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5809FF091A40376400AF7912 /* GLPCLPostImageLoader.m */; };
+		5809FF0D1A403F7000AF7912 /* GLPCampusLiveImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5809FF0C1A403F7000AF7912 /* GLPCampusLiveImageOperation.m */; };
 		580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */; };
 		580B8D3318577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D3218577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m */; };
 		580B8D3518577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580B8D3418577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib */; };
@@ -64,6 +66,7 @@
 		581AAF08181D9E9D00F091A9 /* GLPNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF07181D9E9D00F091A9 /* GLPNotificationManager.m */; };
 		581AAF0B181DA08D00F091A9 /* LongPollContactsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF0A181DA08D00F091A9 /* LongPollContactsOperation.m */; };
 		581AAF0E181DA88700F091A9 /* InvitationSentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AAF0D181DA88700F091A9 /* InvitationSentView.m */; };
+		581AC4251A40789400385553 /* UIImageView+Animations.m in Sources */ = {isa = PBXBuildFile; fileRef = 581AC4241A40789400385553 /* UIImageView+Animations.m */; };
 		581B53431976618900BAFAE7 /* down_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 581B53421976618900BAFAE7 /* down_arrow.png */; };
 		581B534619766D2900BAFAE7 /* splash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 581B534419766D2900BAFAE7 /* splash@2x.png */; };
 		581B534719766D2900BAFAE7 /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = 581B534519766D2900BAFAE7 /* splash.png */; };
@@ -968,6 +971,10 @@
 		5806C75A191BF603005C907E /* mypost_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn_selected.png; sourceTree = "<group>"; };
 		5806C75B191BF603005C907E /* notification_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_btn_selected.png; sourceTree = "<group>"; };
 		5806C760191BFA5D005C907E /* fb_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fb_login.png; sourceTree = "<group>"; };
+		5809FF081A40376400AF7912 /* GLPCLPostImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCLPostImageLoader.h; sourceTree = "<group>"; };
+		5809FF091A40376400AF7912 /* GLPCLPostImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCLPostImageLoader.m; sourceTree = "<group>"; };
+		5809FF0B1A403F7000AF7912 /* GLPCampusLiveImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCampusLiveImageOperation.h; sourceTree = "<group>"; };
+		5809FF0C1A403F7000AF7912 /* GLPCampusLiveImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCampusLiveImageOperation.m; sourceTree = "<group>"; };
 		580B8D2918577A0E00A84E0E /* GLPProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileViewController.h; sourceTree = "<group>"; };
 		580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPProfileViewController.m; sourceTree = "<group>"; };
 		580B8D3118577E5500A84E0E /* ProfileTwoButtonsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileTwoButtonsTableViewCell.h; sourceTree = "<group>"; };
@@ -1021,6 +1028,8 @@
 		581AAF0A181DA08D00F091A9 /* LongPollContactsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LongPollContactsOperation.m; sourceTree = "<group>"; };
 		581AAF0C181DA88700F091A9 /* InvitationSentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InvitationSentView.h; sourceTree = "<group>"; };
 		581AAF0D181DA88700F091A9 /* InvitationSentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InvitationSentView.m; sourceTree = "<group>"; };
+		581AC4231A40789400385553 /* UIImageView+Animations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Animations.h"; sourceTree = "<group>"; };
+		581AC4241A40789400385553 /* UIImageView+Animations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Animations.m"; sourceTree = "<group>"; };
 		581B53421976618900BAFAE7 /* down_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down_arrow.png; sourceTree = "<group>"; };
 		581B534419766D2900BAFAE7 /* splash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "splash@2x.png"; sourceTree = "<group>"; };
 		581B534519766D2900BAFAE7 /* splash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash.png; sourceTree = "<group>"; };
@@ -2353,6 +2362,17 @@
 				58065F8519BF985A00892B6B /* ChangeImageProgressView.m */,
 			);
 			name = Progress;
+			sourceTree = "<group>";
+		};
+		5809FF071A40374600AF7912 /* Campus Live */ = {
+			isa = PBXGroup;
+			children = (
+				5809FF081A40376400AF7912 /* GLPCLPostImageLoader.h */,
+				5809FF091A40376400AF7912 /* GLPCLPostImageLoader.m */,
+				5809FF0B1A403F7000AF7912 /* GLPCampusLiveImageOperation.h */,
+				5809FF0C1A403F7000AF7912 /* GLPCampusLiveImageOperation.m */,
+			);
+			name = "Campus Live";
 			sourceTree = "<group>";
 		};
 		580B8D2C18577DF200A84E0E /* ProfileView Two Buttons */ = {
@@ -4494,6 +4514,7 @@
 		8057E33A1834C1040089F4D9 /* Processors */ = {
 			isa = PBXGroup;
 			children = (
+				5809FF071A40374600AF7912 /* Campus Live */,
 				C02120411850AA1200831872 /* GLPPostUploader.h */,
 				C02120421850AA1200831872 /* GLPPostUploader.m */,
 				808F6B63187D92DB0062FE39 /* GLPMessageProcessor.h */,
@@ -5160,6 +5181,8 @@
 				80C92AA318C0C446001CB621 /* UIImageView+CommonHelper.h */,
 				80C92AA418C0C446001CB621 /* UIImageView+CommonHelper.m */,
 				80C92AA618C0C4E7001CB621 /* GLPCommonHelper.h */,
+				581AC4231A40789400385553 /* UIImageView+Animations.h */,
+				581AC4241A40789400385553 /* UIImageView+Animations.m */,
 			);
 			name = "Common helpers";
 			sourceTree = "<group>";
@@ -6072,6 +6095,7 @@
 				580B8D3318577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m in Sources */,
 				5819E64E18C79F2C003361B3 /* SearchGroupCell.m in Sources */,
 				58D113D618857D3A00C6B953 /* GLPPostImageLoader.m in Sources */,
+				5809FF0D1A403F7000AF7912 /* GLPCampusLiveImageOperation.m in Sources */,
 				585106E3199D9E64000F06BB /* PendingPostManager.m in Sources */,
 				C0090C2018A8BC2800153878 /* GLPLoadMoreCell.m in Sources */,
 				807C4D11180AF0F6003D67E6 /* _Conversation.m in Sources */,
@@ -6148,7 +6172,9 @@
 				80D2D0CB180ACD30007FB020 /* NSNumber+Enums.m in Sources */,
 				80DDDF39180FDCC8009E17BD /* DateFormatterHelper.m in Sources */,
 				588F1DBE19EDCFBE00DB6D23 /* GLPAttendingPopUpViewController.m in Sources */,
+				581AC4251A40789400385553 /* UIImageView+Animations.m in Sources */,
 				581AAF0E181DA88700F091A9 /* InvitationSentView.m in Sources */,
+				5809FF0A1A40376400AF7912 /* GLPCLPostImageLoader.m in Sources */,
 				80728A52187C68A4008624B8 /* GLPWebSocketEvent.m in Sources */,
 				582E44D6197DB22B000BE3EC /* UIView+GLPDesign.m in Sources */,
 				582A664D18AC215C00006419 /* WalkThroughHelper.m in Sources */,

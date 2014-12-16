@@ -22,6 +22,7 @@
 #import "GLPVideo.h"
 #import "GLPImageHelper.h"
 #import "GLPPostImageLoader.h"
+#import "UIImageView+Animations.h"
 
 @interface CampusWallHeaderCell ()
 
@@ -60,7 +61,6 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
         
         [self formatElements];
         
-        
 //        [ShapeFormatterHelper setBorderToView:_eventTitleLbl withColour:[UIColor redColor] andWidth:1.0f];
 //        
 //        [ShapeFormatterHelper setBorderToView:_timeLbl withColour:[UIColor redColor] andWidth:1.0f];
@@ -81,27 +81,45 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
 - (void)configureNotification
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageLoaded:) name:[self notificationForCurrentCell] object:nil];
 }
 
 - (void)removeNotification
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:[self notificationForCurrentCell] object:nil];
 }
 
-- (void)dealloc
+- (NSString *)notificationForCurrentCell
 {
+    return [NSString stringWithFormat:@"%@_%@", GLPNOTIFICATION_CAMPUS_LIVE_IMAGE_LOADED, @(_postData.remoteKey)];
+}
+
+- (void)imageLoaded:(NSNotification *)notification
+{
+    NSDictionary *d = notification.userInfo;
+    
+    UIImage *img = d[@"image_loaded"];
+    NSNumber *remoteKey = d[@"remote_key"];
+    
+    if(remoteKey.integerValue != self.postData.remoteKey)
+    {
+        DDLogDebug(@"CampusWallHeaderCell : this image does not belong to that post.");
+        
+        return;
+    }
+    [_eventImage setImageWithAnimation:img];
+    [_imageActivityIndicatior stopAnimating];
+    
     [self removeNotification];
 }
 
 -(void)setData:(GLPPost*)post
 {
-
     self.postData = post;
     
     [self configureNotification];
-
     
     [self setDataInElements:post];
-    
     
     [self formatFontInElements];
 }
@@ -194,54 +212,16 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
         
         if(found)
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                [_eventImage setImage:image];
-                [_imageActivityIndicatior stopAnimating];
+            [self removeNotification];
+
+            [_eventImage setImage:image];
+            [_imageActivityIndicatior stopAnimating];
                 
                 DDLogDebug(@"Image loaded from cache %@", imgUrl);
-                
-            });
         }
         else
         {
-            
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-
-                //Load image.
-                
-                NSURLRequest *request = [NSURLRequest requestWithURL:imgUrl cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:600.0];
-                
-                NSURLResponse *response = [NSURLResponse new];
-                NSError *error = [NSError new];
-                
-                NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-                
-                
-                UIImage *img = [[UIImage alloc] initWithData:data];
-                
-                
-                DDLogDebug(@"Image loaded from server %@ Image %@", imgUrl, img);
-
-                
-
-                
-                if(img)
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        
-                        [_eventImage setImage:img];
-                        [_imageActivityIndicatior stopAnimating];
-                        
-                    });
-                    
-                    //Save image with image url.
-                    [[SDImageCache sharedImageCache] storeImage:img forKey:imgUrl.absoluteString];
-                }
-                
-
-                
-            });
+            DDLogInfo(@"CampusWallHeaderCell : Image not found. Waiting for loader...");
         }
         
     }];
