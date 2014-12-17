@@ -18,6 +18,18 @@
     return self;
 }
 
+- (id)initWithRemoteKey:(NSInteger)remoteKey
+{
+    self = [super init];
+    
+    if(self)
+    {
+        self.remoteKey = remoteKey;
+    }
+    
+    return self;
+}
+
 -(id)initWithName:(NSString *)name withId:(NSInteger)key andImageUrl:(NSString *)imgUrl
 {
     self = [super init];

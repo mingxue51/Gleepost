@@ -18,8 +18,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (strong, nonatomic) NSArray *users;
-
 @property (assign, nonatomic) NSInteger selectedUserId;
 
 @end
@@ -34,7 +32,9 @@
     
     [self configureTableView];
     
-    [self loadAttendees];
+    [self loadAttendeesIfNeeded];
+    
+    [self showUsers];
     
 }
 
@@ -108,10 +108,25 @@
     }
 }
 
+#pragma mark - UI
+
+- (void)showUsers
+{
+    if(_users && _users.count > 0)
+    {
+        [self.tableView reloadData];
+    }
+}
+
 #pragma mark - Client
 
-- (void)loadAttendees
+- (void)loadAttendeesIfNeeded
 {
+    if(self.postRemoteKey == -1)
+    {
+        return;
+    }
+    
     [[WebClient sharedInstance] loadAttendeesWithPostRemoteKey:self.postRemoteKey callback:^(NSArray *users, BOOL success) {
         
         if(success)
@@ -122,6 +137,7 @@
         
     }];
 }
+
 
 
 - (void)didReceiveMemoryWarning {

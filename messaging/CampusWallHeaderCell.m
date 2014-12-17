@@ -232,7 +232,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
 - (void)loadThumbnail
 {
-    [_eventImage sd_setImageWithURL:[NSURL URLWithString: _postData.video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"default_thumbnail"] options:SDWebImageRetryFailed];
+    [_eventImage sd_setImageWithURL:[NSURL URLWithString: _postData.video.thumbnailUrl] placeholderImage:[GLPImageHelper placeholderLiveEventImage] options:SDWebImageRetryFailed];
 }
 
 + (CGSize)getContentLabelSizeForContent:(NSString *)content

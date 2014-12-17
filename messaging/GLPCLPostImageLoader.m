@@ -49,8 +49,6 @@ static GLPCLPostImageLoader *instance = nil;
             _operationQueue.qualityOfService =  NSQualityOfServiceUtility;
         }
         
-        [[NSTimer timerWithTimeInterval:3.0 target:self selector:@selector(showCurrentOperationsInQueue) userInfo:nil repeats:YES] fire];
-        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
     }
     
@@ -173,11 +171,6 @@ static GLPCLPostImageLoader *instance = nil;
     
     
     return [posts filteredArrayUsingPredicate:imagePosts];
-}
-
-- (void)showCurrentOperationsInQueue
-{
-    DDLogDebug(@"Current operations in queue %@", _operationQueue.operations);
 }
 
 @end

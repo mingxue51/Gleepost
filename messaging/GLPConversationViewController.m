@@ -46,6 +46,7 @@
 #import "ShapeFormatterHelper.h"
 #import "UIView+GLPDesign.h"
 #import <TAPKeyboardPop/UIViewController+TAPKeyboardPop.h>
+#import "GLPShowUsersViewController.h"
 
 @interface GLPConversationViewController ()
 
@@ -214,26 +215,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [self.navigationController setNavigationBarHidden:NO];
     
     // navigate to profile through navigation bar for user-to-user conversation
-    if(!_conversation.isGroup /*&& ![self isNewChat] */)
-    {
-        //Create a button instead of using the default title view for recognising gestures.
-        UIButton *titleLabelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [titleLabelBtn setTitle:[_conversation.title uppercaseString] forState:UIControlStateNormal];
-        [titleLabelBtn.titleLabel setFont:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0]];
-        titleLabelBtn.tag = [_conversation getUniqueParticipant].remoteKey;
-        
-        //Set colour to the view.
-        [titleLabelBtn setTitleColor:[[GLPThemeManager sharedInstance] navigationBarTitleColour] forState:UIControlStateNormal];
-    
-        //Set navigation to profile selector.
-        titleLabelBtn.frame = CGRectMake(0, 0, 70, 44);
-        [titleLabelBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
-        self.navigationItem.titleView = titleLabelBtn;
-    }
-    else
-    {
-        self.title = [_conversation.title uppercaseString];
-    }
+    [self setTitleViewOnNavigationBar];
     
 
     if([self isNewChat])
@@ -247,6 +229,31 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     _comesFromTableViewClick = NO;
     
+}
+
+- (void)setTitleViewOnNavigationBar
+{
+    //Create a button instead of using the default title view for recognising gestures.
+    UIButton *titleLabelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [titleLabelBtn setTitle:[_conversation.title uppercaseString] forState:UIControlStateNormal];
+    [titleLabelBtn.titleLabel setFont:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0]];
+    
+    if([_conversation isGroup])
+    {
+        titleLabelBtn.tag = -1;
+    }
+    else
+    {
+        titleLabelBtn.tag = [_conversation getUniqueParticipant].remoteKey;
+    }
+    
+    //Set colour to the view.
+    [titleLabelBtn setTitleColor:[[GLPThemeManager sharedInstance] navigationBarTitleColour] forState:UIControlStateNormal];
+    
+    //Set navigation to profile selector.
+    titleLabelBtn.frame = CGRectMake(0, 0, 70, 44);
+    [titleLabelBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.titleView = titleLabelBtn;
 }
 
 - (void)configureNavigationBar
@@ -673,27 +680,16 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 -(void)navigateToProfile:(id)sender
 {
-    // bad way of doing this
-    if([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        UITapGestureRecognizer *incomingUser = (UITapGestureRecognizer*) sender;
-        UIImageView *incomingView = (UIImageView*)incomingUser.view;
-        self.selectedUserId = incomingView.tag;
-    }
-    else if([sender isKindOfClass:[UIButton class]]) {
-        UIButton *userButton = (UIButton*)sender;
-        self.selectedUserId = userButton.tag;
-    }
+    UIButton *userButton = (UIButton *)sender;
     
-    
-    if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
+    if(userButton.tag == -1)
     {
-        self.selectedUserId = -1;
-        
-        [self performSegueWithIdentifier:@"view profile" sender:self];
+        //Navigate to view a list of users like the attending list.
+        [self performSegueWithIdentifier:@"show users" sender:self];
     }
     else
     {
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
+        [self navigateToUserProfile:[[GLPUser alloc] initWithRemoteKey:userButton.tag]];
     }
 }
 
@@ -788,6 +784,12 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     }
     else if([segue.identifier isEqualToString:@"view profile"]) {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+    }
+    else if([segue.identifier isEqualToString:@"show users"])
+    {
+        GLPShowUsersViewController *showUsers = segue.destinationViewController;
+        showUsers.selectedTitle = @"PARTICIPANTS";
+        showUsers.users = _conversation.participants;
     }
 }
 
