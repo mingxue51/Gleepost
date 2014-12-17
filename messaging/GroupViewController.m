@@ -49,6 +49,7 @@
 #import "GLPEmptyViewManager.h"
 #import "GLPPublicGroupPopUpViewController.h"
 #import "GLPInviteUsersViewController.h"
+#import "GLPTableActivityIndicator.h"
 
 @interface GroupViewController () <GLPAttendingPopUpViewControllerDelegate, GLPGroupSettingsViewControllerDelegate, GLPPublicGroupPopUpViewControllerDelegate>
 
@@ -89,6 +90,8 @@
 //@property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 
@@ -157,8 +160,6 @@ const float TOP_OFF_SET = -64.0;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-//    [self configureNavigationItems];
     
     [self configureNotifications];
 
@@ -369,9 +370,7 @@ const float TOP_OFF_SET = -64.0;
 
     _showComment = NO;
     
-//    _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    
-//    _strechedImageView = [[GLPStretchedImageView alloc] init];
+    _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.view];
 }
 
 - (void)configureNavigationItems
@@ -697,8 +696,6 @@ const float TOP_OFF_SET = -64.0;
 //    if(self.selectedTabStatus == kGLPPosts)
 //    {
 //        int i = (self.posts.count == 0) ? 0 : 1;
-    
-    [self showOrHidePostsEmptyView];
     
     
     self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count + 1 /*+ i*/;
@@ -1037,48 +1034,33 @@ const float TOP_OFF_SET = -64.0;
 
 -(void)loadPosts
 {
+    [_tableActivityIndicator startActivityIndicator];
+    
     [GLPGroupManager loadInitialPostsWithGroupId:_group.remoteKey localCallback:^(NSArray *localPosts) {
         
         FLog(@"Local group posts: %@", localPosts);
+        
+        if(localPosts.count != 0)
+        {
+            [_tableActivityIndicator stopActivityIndicator];
+        }
         
         [self setNewLocalPosts:localPosts];
         
     } remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
         
-        [self setNewRemotePosts:remotePosts withRemain:remain];
+        [_tableActivityIndicator stopActivityIndicator];
+
+        [self showOrHidePostsEmptyView];
+
+        if(success)
+        {
+            [self setNewRemotePosts:remotePosts withRemain:remain];
+        }
+        
+
         
     }];
-    
-//    [GLPGroupManager loadInitialPostsWithGroupId:_group.remoteKey remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
-//       
-//        if(success)
-//        {
-////            DDLogDebug(@"Posts from network: %@ - %@", _group.name, remotePosts);
-//            
-//            _posts = remotePosts.mutableCopy;
-//            
-//            [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
-//            
-//            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
-//            
-//            [self.tableView reloadData];
-//            
-//            self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
-//            
-//            //If the view comes from notifications, focus on the user's latest post.
-//            [self focusOnTheLatestUsersPostIfNeeded];
-//            
-//            [self removeAnyAlreadyUploadedImagePosts];
-//            
-//            [self insertPendingImagePostsIfNeeded];
-//               
-//        }
-//        else
-//        {
-//            self.loadingCellStatus = kGLPLoadingCellStatusError;
-//        }
-//        
-//    }];
 }
 
 - (void)setNewRemotePosts:(NSArray *)remotePosts withRemain:(BOOL)remain
