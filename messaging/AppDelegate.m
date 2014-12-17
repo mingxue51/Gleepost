@@ -583,13 +583,13 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     DDLogInfo(@"Messages VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
     MessengerViewController *messagesVC = navVC.viewControllers[0];
     
-    GLPConversationViewController *conversationVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"ViewTopicViewController"];
+    GLPConversationViewController *conversationVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GLPConversationViewController"];
     conversationVC.conversation = conversation;
-    [conversationVC setHidesBottomBarWhenPushed:YES];
     conversationVC.comesFromPN = YES;
+    conversationVC.hidesBottomBarWhenPushed = YES;
     
     
-    [navVC setViewControllers:@[messagesVC, conversationVC] animated:NO];
+    [navVC setViewControllers:@[messagesVC, conversationVC] animated:YES];
 }
 
 # pragma mark - Handle custom URL Scheme (gleepost://)

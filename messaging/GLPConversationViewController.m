@@ -51,7 +51,6 @@
 @interface GLPConversationViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *formView;
-@property (weak, nonatomic) IBOutlet UITextField *formTextField;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet HPGrowingTextView *formTextView;
@@ -111,7 +110,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     if(_comesFromPN)
     {
-        [self.tabBarController.tabBar setHidden:YES];
+//        [self.tabBarController.tabBar setHidden:YES];
     }
     
     
@@ -134,23 +133,24 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     [self hideNetworkErrorViewIfNeeded];
     
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
+//    CGRect screenRect = [[UIScreen mainScreen] bounds];
 
     
-    if(self.tableView.frame.size.height < 465.0f) {
-        
-        if(screenRect.size.height == 568.0)
-        {
-            [self.tableView setFrame:CGRectMake(0, 0, 320, 455)];
-
-        }
-        else
-        {
-            [self.tableView setFrame:CGRectMake(0, 0, 320, 375)];
-        }
-        
-    }
-        
+//    if(self.tableView.frame.size.height < 465.0f) {
+//        
+//        if(screenRect.size.height == 568.0)
+//        {
+//            [self.tableView setFrame:CGRectMake(0, 0, 320, 455)];
+//
+//        }
+//        else
+//        {
+//            [self.tableView setFrame:CGRectMake(0, 0, 320, 375)];
+//        }
+//        
+//    }
+    
+    
     // keyboard management
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
@@ -298,15 +298,15 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 -(void)configureHeader
 {
-    if([self isNewChat]) {
-        NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPIntroducedProfile" owner:self options:nil];
-        
-        self.introduced = [array objectAtIndex:0];
-        [self.introduced updateContents:[_conversation getUniqueParticipant]];
-        self.introduced.delegate = self;
-        
-        self.tableView.tableHeaderView = self.introduced;
-    }
+//    if([self isNewChat]) {
+//        NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPIntroducedProfile" owner:self options:nil];
+//        
+//        self.introduced = [array objectAtIndex:0];
+//        [self.introduced updateContents:[_conversation getUniqueParticipant]];
+//        self.introduced.delegate = self;
+//        
+//        self.tableView.tableHeaderView = self.introduced;
+//    }
 }
 
 - (void)configureForm
@@ -800,6 +800,9 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     // get keyboard size and loctaion
 	CGRect keyboardBounds;
     
+    DDLogDebug(@"keyboardWillShow Y %f", self.tableView.frame.origin.y);
+
+    
     [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
     NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     
@@ -837,6 +840,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         
         return;
     }
+    
+    DDLogDebug(@"keyboardWillHide Y %f", self.tableView.frame.origin.y);
     
     _comesFromTableViewClick = NO;
     

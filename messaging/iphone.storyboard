@@ -1775,10 +1775,10 @@
             </objects>
             <point key="canvasLocation" x="1368" y="388"/>
         </scene>
-        <!--ViewTopicViewController-->
+        <!--GLPConversationViewController-->
         <scene sceneID="etG-PG-ZFM">
             <objects>
-                <viewController storyboardIdentifier="ViewTopicViewController" title="ViewTopicViewController" id="p7E-nR-kMk" customClass="GLPConversationViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GLPConversationViewController" title="GLPConversationViewController" id="p7E-nR-kMk" customClass="GLPConversationViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LAc-ph-K7S">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1808,7 +1808,7 @@
                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="70" sectionHeaderHeight="22" sectionFooterHeight="22" id="CuF-td-RD0">
-                                <rect key="frame" x="0.0" y="60" width="320" height="457"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="517"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
@@ -1976,7 +1976,7 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="formTextView" destination="3aj-QJ-wDM" id="Fiz-JO-YGF"/>
-                        <outlet property="formView" destination="9Eq-0j-BH2" id="Vd3-3X-t0s"/>
+                        <outlet property="formView" destination="9Eq-0j-BH2" id="XEh-7j-pIU"/>
                         <outlet property="sendButton" destination="3v9-7h-mSC" id="PtJ-ss-l9Y"/>
                         <outlet property="tableView" destination="CuF-td-RD0" id="Gg4-Ow-Sit"/>
                         <segue destination="ZBE-A4-gdJ" kind="push" identifier="view private profile" id="woK-8Q-gjw"/>
