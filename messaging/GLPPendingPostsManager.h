@@ -21,6 +21,7 @@
 - (NSMutableArray *)pendingPosts;
 - (NSInteger)numberOfPendingPosts;
 - (BOOL)arePendingPosts;
+- (void)loadPendingPosts;
 - (void)loadPendingPostsWithLocalCallback:(void (^) (NSArray *localPosts))localCallback withRemoteCallback:(void (^) (BOOL success, NSArray *remotePosts))remoteCallback;
 - (GLPPost *)postWithRemoteKey:(NSInteger)postRemoteKey;
 

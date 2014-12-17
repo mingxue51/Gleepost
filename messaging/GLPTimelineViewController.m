@@ -194,16 +194,7 @@ const float TOP_OFFSET = 180.0f;
     
     [self loadInitialPosts];
     
-    
-    //TODO: Move these to GLPNetworkManager.
-    /** Check if there are pending video posts. */
-    [[GLPVideoUploadManager sharedInstance] startCheckingForNonUploadedVideoPosts];
-    
-    [GLPApprovalManager sharedInstance];
-    
-    [GLPPendingPostsManager sharedInstance];
-    
-    [GLPVideoPostCWProgressManager sharedInstance];
+    [self startBackgroundOperations];
     
     //Find the sunset sunrise for preparation of the new chat.
     //TODO: That's will be used in GleepostSD app.
@@ -281,10 +272,7 @@ const float TOP_OFFSET = 180.0f;
     [super viewDidDisappear:animated];
 }
 
-//- (BOOL)prefersStatusBarHidden
-//{
-//    return NO;
-//}
+#pragma mark - Configuration 
 
 -(void)initialiseObjects
 {
@@ -340,6 +328,18 @@ const float TOP_OFFSET = 180.0f;
     _showComment = NO;
     
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.tableView];
+}
+
+- (void)startBackgroundOperations
+{
+    /** Check if there are pending video posts. */
+    [[GLPVideoUploadManager sharedInstance] startCheckingForNonUploadedVideoPosts];
+    
+    [GLPApprovalManager sharedInstance];
+    
+    [[GLPPendingPostsManager sharedInstance] loadPendingPosts];
+    
+    [GLPVideoPostCWProgressManager sharedInstance];
 }
 
 

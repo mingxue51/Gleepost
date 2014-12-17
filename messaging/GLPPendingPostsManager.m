@@ -5,6 +5,7 @@
 //  Created by Silouanos on 24/11/14.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
+//  This singleton class
 
 #import "GLPPendingPostsManager.h"
 #import "GLPPost.h"
@@ -50,7 +51,6 @@ static GLPPendingPostsManager *instance = nil;
     if(self)
     {
         self.pendingPosts = [[NSMutableArray alloc] init];
-        [self loadPendingPosts];
         _progressManager = [[GLPVideoPendingPostProgressManager alloc] init];
         _editingModePosts = [[GLPEditingModePendingPosts alloc] init];
     }
