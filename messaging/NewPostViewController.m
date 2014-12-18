@@ -160,6 +160,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [self configureContents];
 
     [self hideNetworkErrorViewIfNeeded];
+    
+    [self removeUnnecessaryViews];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -327,6 +329,14 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 - (void)hideNetworkErrorViewIfNeeded
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_HIDE_ERROR_VIEW object:self userInfo:nil];
+}
+
+- (void)removeUnnecessaryViews
+{
+    if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost || [[PendingPostManager sharedInstance] kindOfPost] == kAnnouncementPost)
+    {
+        [_addLocationButton setHidden:YES];
+    }
 }
 
 - (void)loadDataIfNeeded
