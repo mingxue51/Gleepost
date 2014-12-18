@@ -78,6 +78,11 @@ static GLPVideoPendingPostProgressManager *instance = nil;
 
 #pragma mark - Accessors
 
+/**
+ Register the timestamp in order to avoid problems when a video selected and then unselected.
+ 
+ */
+
 - (void)registerWithTimestamp:(NSDate *)timestamp withPost:(GLPPost *)post
 {
     DDLogDebug(@"GLPVideoPendingPostProgressManager : registerWithTimestamp");

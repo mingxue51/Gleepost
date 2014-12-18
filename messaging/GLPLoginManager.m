@@ -25,6 +25,7 @@
 #import "RemoteParser.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "GLPPendingPostsManager.h"
+#import "CategoryManager.h"
 
 @implementation GLPLoginManager
 
@@ -222,6 +223,7 @@
     [[GLPNetworkManager sharedInstance] stopNetworkOperations];
     [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
     
+    [[CategoryManager sharedInstance] reset];
     [[GLPLiveConversationsManager sharedInstance] clear];
     [[SessionManager sharedInstance] cleanSession];
     [[DatabaseManager sharedInstance] dropDatabase];

@@ -904,10 +904,10 @@ const float TOP_OFFSET = 180.0f;
         [_tableActivityIndicator stopActivityIndicator];
 
         if(success) {
-                    
-            self.posts = [self preserveRealImagesWithPosts:remotePosts.mutableCopy];
             
-//            self.posts = [remotePosts mutableCopy];
+//            self.posts = [self preserveRealImagesWithPosts:remotePosts.mutableCopy];
+            
+            self.posts = [remotePosts mutableCopy];
 
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
             [[GLPVideoLoaderManager sharedInstance] addVideoPosts:self.posts];
@@ -938,6 +938,8 @@ const float TOP_OFFSET = 180.0f;
 
 /**
  Helps to preserve the actual images have been saved before to the post data structure.
+ 
+ DEPRECATED: we are not using the finalImage attribute anymore.
  
  @param posts the new posts.
  
@@ -1774,6 +1776,8 @@ const float TOP_OFFSET = 180.0f;
 {
     [_emptyGroupPostsMessage hideEmptyMessageView];
     
+    DDLogDebug(@"numberOfRowsInSection Posts count %ld", (unsigned long)self.posts.count);
+    
     if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
     {
         return self.posts.count + 2;
@@ -1819,8 +1823,13 @@ const float TOP_OFFSET = 180.0f;
         }
     }
     
+    
 
-    if(indexPath.row - 1 == self.posts.count) {
+    
+    NSInteger countOfCells = [self convertArrayIndexToTableViewIndex:self.posts.count];
+
+    if(indexPath.row - 1 == countOfCells) {
+        
         GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
         [loadingCell setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
         [loadingCell updateWithStatus:self.loadingCellStatus];
@@ -1982,7 +1991,9 @@ const float TOP_OFFSET = 180.0f;
         }
     }
     
-    if(indexPath.row - 1 == self.posts.count) {
+    NSInteger countOfCells = [self convertArrayIndexToTableViewIndex:self.posts.count];
+    
+    if(indexPath.row - 1 == countOfCells) {
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }
     

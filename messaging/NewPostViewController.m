@@ -533,6 +533,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     }
     else
     {
+        DDLogDebug(@"Event categories %@", eventCategories);
+        
         inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andLocation:_selectedLocation];
     }
     

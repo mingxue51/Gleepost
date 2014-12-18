@@ -89,8 +89,6 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
  */
 -(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate title:(NSString *)title andLocation:(GLPLocation *)location
 {
-//    //Register the timestamp in order to avoid problems when a video selected and then unselected.
-//    [[GLPCampusWallProgressManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:<#(GLPPost *)#>];
     FLog(@"REGISTERED TIMESTAMP: %@", timestamp);
 
     //Add the date to a new post.
@@ -127,8 +125,6 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         [[GLPVideoPostCWProgressManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
         post = [self uploadPostWithPost:post];
     }
-
-
     
     return post;
 }

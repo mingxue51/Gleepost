@@ -166,6 +166,11 @@ static CategoryManager *instance = nil;
     return [[GLPCategory alloc] initWithTag:@"event" name:@"Event" postRemoteKey:0 andRemoteKey:5];
 }
 
+- (void)reset
+{
+    _selectedCategory = nil;
+}
+
 #pragma mark - Accesssors
 
 - (NSString *)selectedCategoryName
