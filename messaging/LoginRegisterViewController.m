@@ -732,9 +732,8 @@ static NSString * const kOkButtonTitle       = @"Ok";
             NSLog(@"logged in successfully via facebook");
             [GLPLoginManager loginFacebookUserWithName:name withEmail:email response:response callback:^(BOOL success, NSString *re, NSString *email) {
                 if (success)    [weakSelf performSegueWithIdentifier:@"start" sender:weakSelf];
-                else            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occured while loading your data"];
+//                else            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occured while loading your data"];
             }];
-            #warning TODO: add segue in storyboard!
         } else {
             if ([response rangeOfString:@"Email is required"].location != NSNotFound) {
                 NSLog(@"University Email id required for Facebook Login");

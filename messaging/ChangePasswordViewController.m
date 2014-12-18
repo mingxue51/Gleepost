@@ -124,7 +124,7 @@
 {
     if(![self areDetailsValid])
     {
-        [WebClientHelper showStandardErrorWithTitle:@"Complete fields" andContent:@"Please ensure that all the fields are completed."];
+        [WebClientHelper errorWrongCredentials];
         
         return;
     }
@@ -143,7 +143,7 @@
             
             if(success)
             {
-                [WebClientHelper showStandardErrorWithTitle:@"Password changed" andContent:@"Your password has been changed"];
+                [WebClientHelper showPasswordChanged];
                 
                 
                 [self.navigationController popViewControllerAnimated:YES];
@@ -167,7 +167,7 @@
     //Change name.
     if(![self areNameDetailsValid])
     {
-        [WebClientHelper showStandardErrorWithTitle:@"Complete fields" andContent:@"Please ensure that all the fieds are not empty."];
+        [WebClientHelper errorWrongCredentials];
         
         return;
     }
@@ -183,7 +183,7 @@
             
             if(success)
             {
-                [WebClientHelper showStandardErrorWithTitle:@"Name changed" andContent:[NSString stringWithFormat:@"Your new name is: %@ %@.",_oldPassWord.text, _passWord.text]];
+                [WebClientHelper showNameChangedWithName:_oldPassWord.text andSurname:_passWord.text];
                 
                 //Update database with the new name.
                 [GLPUserDao updateLoggedInUsersName:_oldPassWord.text andSurname:_passWord.text];
@@ -207,7 +207,7 @@
 {
     if([_oldPassWord.text isEqualToString:@""])
     {
-        [WebClientHelper showStandardErrorWithTitle:@"Complete fields" andContent:@"Please ensure that all the fieds are not empty."];
+        [WebClientHelper errorWrongCredentials];
         
         return;
     }
@@ -223,7 +223,7 @@
             
             if(success)
             {
-                [WebClientHelper showStandardErrorWithTitle:@"Tagline changed" andContent:[NSString stringWithFormat:@"Your new tagline is: %@.",_oldPassWord.text]];
+                [WebClientHelper showTaglineChangedWithNewTagline:_oldPassWord.text];
                 
                 //Update database with the new name.
                 [GLPUserDao updateLoggedInUsersTagline:_oldPassWord.text];

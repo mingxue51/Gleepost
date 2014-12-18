@@ -1159,11 +1159,11 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         
         if(success)
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Post Reported" andContent:@"Thanks for helping us keep Gleepost a fun and safe environment. Our team will review this post ASAP."];
+            [WebClientHelper showReportedDone];
         }
         else
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Error Sending Report" andContent:@"Something went wrong reporting this post, please try again in a few moments."];
+            [WebClientHelper showFailedToReport];
         }
         
     }];

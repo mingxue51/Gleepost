@@ -290,7 +290,7 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
         [WebClientHelper hideStandardLoaderForView:self.view];
         
         if(!success) {
-            [WebClientHelper showStandardErrorWithTitle:@"Request failed" andContent:@"Something went wrong. Please check your internet connection and retry."];
+            [WebClientHelper failedToAddUsers];
             return;
         }
         

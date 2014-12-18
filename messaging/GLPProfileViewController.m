@@ -714,7 +714,7 @@
             
             if([errorMessage isEqualToString:@"No access"])
             {
-                [WebClientHelper showStandardErrorWithTitle:@"Error loading group" andContent:@"It seems that you are not belonging to this group anymore"];
+                [WebClientHelper errorLoadingGroup];
             }
             else
             {
@@ -1866,7 +1866,7 @@
 
 - (void)showMessageViewControllerWithBody:(NSString *)messageBody {
     if (![MFMessageComposeViewController canSendText]) {
-        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"Your device doesn't support SMS."];
+//        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"Your device doesn't support SMS."];
         return;
     }
     
@@ -1883,11 +1883,11 @@
                  didFinishWithResult:(MessageComposeResult)result {
     switch (result) {
         case MessageComposeResultFailed: {
-            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while sending the SMS"];
+//            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while sending the SMS"];
             break;
         }
         case MessageComposeResultSent: {
-            [WebClientHelper showStandardErrorWithTitle:@"Sent" andContent:@"SMS sent successfully"];
+//            [WebClientHelper showStandardErrorWithTitle:@"Sent" andContent:@"SMS sent successfully"];
             break;
         }
         default:

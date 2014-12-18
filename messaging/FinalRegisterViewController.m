@@ -236,7 +236,7 @@
             else
             {
                 NSLog(@"User not registered.");
-                [WebClientHelper showStandardErrorWithTitle:@"Authentication Failed" andContent:responseMessage];
+//                [WebClientHelper showStandardErrorWithTitle:@"Authentication Failed" andContent:responseMessage];
             }
             
         }];
@@ -245,7 +245,7 @@
     }
     else
     {
-        [WebClientHelper showStandardErrorWithTitle:@"Please Check your details" andContent:@"Please check your details if are valid."];
+//        [WebClientHelper showStandardErrorWithTitle:@"Please Check your details" andContent:@"Please check your details if are valid."];
     }
 }
 
@@ -288,7 +288,7 @@
         else
         {
             NSLog(@"ERROR");
-            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
+//            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
             
         }
     }];

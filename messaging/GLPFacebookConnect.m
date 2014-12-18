@@ -529,7 +529,7 @@
         else
         {
             DDLogInfo(@"Problem to associate with api.");
-            [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"There was a problem inviting your selected facebook friends"];
+            [WebClientHelper errorInvitingFacebookFriends];
         }
         
     }];

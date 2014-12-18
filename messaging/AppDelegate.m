@@ -435,7 +435,7 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
         }
         else
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Failed to load post" andContent:@"Check your internet connection and try again"];
+            [WebClientHelper failedToLoadPost];
         }
     }];
 }
@@ -459,7 +459,7 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
         }
         else
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Failed to load post" andContent:@"Check your internet connection and try again"];
+            [WebClientHelper failedToLoadPost];
         }
     }];
 }
@@ -656,11 +656,11 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
                             
                             weakSelf.window.rootViewController = initVC;
                         } else {
-                            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while logging in"];
+                            [WebClientHelper accountLoginError];
                         }
                     }];
                 } else {
-                    [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while verifying user account"];
+                    [WebClientHelper accountVerificationError];
                 }
             }];
         }
@@ -743,7 +743,7 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
         }
         else
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Failed to load post" andContent:@"Check your internet connection and try again"];
+            [WebClientHelper failedToLoadPost];
         }
     }];
     

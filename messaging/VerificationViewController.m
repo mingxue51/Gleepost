@@ -76,7 +76,7 @@
         else
         {
             NSLog(@"ERROR");
-            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
+//            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
             
         }
     }];
@@ -149,7 +149,7 @@
         
         if(success)
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Email verification sent" andContent:@"Please check your email and try to login in."];
+//            [WebClientHelper showStandardErrorWithTitle:@"Email verification sent" andContent:@"Please check your email and try to login in."];
         }
         else
         {

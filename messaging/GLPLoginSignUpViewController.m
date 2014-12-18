@@ -224,7 +224,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
                 }
                 else
                 {
-                    [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:status];
+                    [WebClientHelper facebookLoginErrorWithStatus:status];
                 }
             }];
             
@@ -244,7 +244,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
                 
             } else if([response rangeOfString:@"To use your Facebook account"].location != NSNotFound)
             {
-                [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:response];
+                [WebClientHelper facebookLoginErrorWithStatus:response];
             }
             else
             {

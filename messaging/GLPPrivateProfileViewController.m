@@ -477,7 +477,7 @@
         }
         else
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Error loading posts" andContent:@"Please ensure that you are connected to the internet"];
+            [WebClientHelper loadingPostsError];
         }
         
     }];
