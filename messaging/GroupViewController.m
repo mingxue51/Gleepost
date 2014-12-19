@@ -1413,6 +1413,8 @@ const float TOP_OFF_SET = -64.0;
     
     [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
     
+    [self showOrHidePostsEmptyView];
+    
     [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
     
     
@@ -1452,7 +1454,6 @@ const float TOP_OFF_SET = -64.0;
     
     int index;
     
-    
     for(index = 0; index < self.posts.count; ++index)
     {
         GLPPost *p = [self.posts objectAtIndex:index];
@@ -1467,6 +1468,8 @@ const float TOP_OFF_SET = -64.0;
     [self.posts removeObjectAtIndex:index];
     
     [self removeTableViewPostWithIndex:index];
+    
+    [self showOrHidePostsEmptyView];
     
 }
 
