@@ -37,7 +37,7 @@
 /** Other variables. */
 @property (assign, nonatomic) BOOL mediaNeedsToReload;
 @property (strong, nonatomic) GLPPost *post;
-@property (assign, nonatomic) NSInteger postIndex;
+@property (strong, nonatomic) NSIndexPath *postIndexPath;
 
 @end
 
@@ -77,10 +77,10 @@ const float ONE_LINE_LIMIT = 18.0;
 
 #pragma mark - Modifiers
 
--(void)setPost:(GLPPost *)post withPostIndex:(NSInteger)index
+-(void)setPost:(GLPPost *)post withPostIndexPath:(NSIndexPath *)indexPath
 {
     _post = post;
-    _postIndex = index;
+    _postIndexPath = indexPath;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     [self configureTopView];
@@ -267,7 +267,7 @@ const float ONE_LINE_LIMIT = 18.0;
 
 -(void)commentButtonSelected
 {
-    [_delegate navigateToPostForCommentWithIndex:self.postIndex];
+    [_delegate navigateToPostForCommentWithIndexPath:self.postIndexPath];
 }
 
 #pragma mark - Static methods

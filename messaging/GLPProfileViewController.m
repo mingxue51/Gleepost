@@ -1176,7 +1176,7 @@
                 //Set this class as delegate.
                 postViewCell.delegate = self;
                 
-                [postViewCell setPost:post withPostIndex:indexPath.row];
+                [postViewCell setPost:post withPostIndexPath:indexPath];
 //            }
             
             return postViewCell;
@@ -1497,10 +1497,10 @@
     [self performSegueWithIdentifier:@"show location" sender:self];
 }
 
-- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
+- (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
 {
     _showComment = YES;
-    self.selectedPost = _posts[postIndex - 1];
+    self.selectedPost = _posts[postIndexPath.row - 1];
     
     self.commentCreated = NO;
     [self performSegueWithIdentifier:@"view post" sender:self];

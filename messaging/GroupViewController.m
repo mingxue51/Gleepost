@@ -784,7 +784,7 @@ const float TOP_OFF_SET = -64.0;
             //Set this class as delegate.
             postViewCell.delegate = self;
             
-            [postViewCell setPost:post withPostIndex:indexPath.row];
+            [postViewCell setPost:post withPostIndexPath:indexPath];
         }
 
 
@@ -807,7 +807,6 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     if(indexPath.row < 1)
     {
         return;
@@ -826,9 +825,6 @@ const float TOP_OFF_SET = -64.0;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.row - 1 == self.posts.count) {
-        
-        
-        
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }
     
@@ -1051,15 +1047,13 @@ const float TOP_OFF_SET = -64.0;
         
         [_tableActivityIndicator stopActivityIndicator];
 
-        [self showOrHidePostsEmptyView];
-
         if(success)
         {
             [self setNewRemotePosts:remotePosts withRemain:remain];
         }
         
+        [self showOrHidePostsEmptyView];
 
-        
     }];
 }
 
@@ -1699,11 +1693,10 @@ const float TOP_OFF_SET = -64.0;
     [self performSegueWithIdentifier:@"show location" sender:self];
 }
 
-- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
+- (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
 {
     _showComment = YES;
-    self.selectedPost = _posts[postIndex - 1];
-    
+    self.selectedPost = _posts[postIndexPath.row - 1];
     self.commentCreated = NO;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }

@@ -1875,7 +1875,11 @@ const float TOP_OFFSET = 180.0f;
     
     postCell.delegate = self;
     
-    [postCell setPost:post withPostIndex:indexPath.row - 2];
+    
+    NSIndexPath *postIndexPath = [NSIndexPath indexPathForRow:[self postCurrentIndexWithIndexPath:indexPath] inSection:0];
+    
+    
+    [postCell setPost:post withPostIndexPath:postIndexPath];
     
 //    [self.tableView bringSubviewToFront:self.reNavBar];
     
@@ -2430,12 +2434,14 @@ const float TOP_OFFSET = 180.0f;
     [self performSegueWithIdentifier:@"show location" sender:self];
 }
 
-- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
+- (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
 {
+    DDLogDebug(@"navigateToPostForCommentWithIndexPath Post index path %d : %d", postIndexPath.row, postIndexPath.section);
+
     _showComment = YES;
-    self.selectedPost = [self.posts objectAtIndex:postIndex];
-    self.selectedIndex = postIndex;
-    self.postIndexToReload = postIndex;
+    self.selectedPost = [self.posts objectAtIndex:postIndexPath.row];
+    self.selectedIndex = postIndexPath.row;
+    self.postIndexToReload = postIndexPath.row;
     self.commentCreated = NO;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }

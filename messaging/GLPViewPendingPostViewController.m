@@ -144,7 +144,7 @@
         
         [postViewCell setIsViewPost:YES];
         
-        [postViewCell setPost:self.pendingPost withPostIndex:indexPath.row];
+        [postViewCell setPost:self.pendingPost withPostIndexPath:indexPath];
         
         return postViewCell;
     }
@@ -268,11 +268,6 @@
     //Decide where to navigate. Private or current profile.
     
     [self performSegueWithIdentifier:@"view profile" sender:self];
-}
-
-- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
-{
-    //TODO: Pending implementation.
 }
 
 #pragma mark - Notifications

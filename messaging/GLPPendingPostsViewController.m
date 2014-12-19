@@ -20,7 +20,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "GLPVideoLoaderManager.h"
 
-@interface GLPPendingPostsViewController () <UITableViewDataSource, UITableViewDelegate, GLPPostCellDelegate>
+@interface GLPPendingPostsViewController () <UITableViewDataSource, UITableViewDelegate, GLPPostCellDelegate, NewCommentDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) PendingPostsOrganiserHelper *pendingPostOrganiser;
@@ -187,7 +187,7 @@
         [postViewCell reloadMedia:NO];
     }
     
-    [postViewCell setPost:post withPostIndex:indexPath.row];
+    [postViewCell setPost:post withPostIndexPath:indexPath];
     
     return postViewCell;
 }
@@ -346,6 +346,11 @@
 -(void)viewPostImage:(UIImage*)postImage
 {
     
+}
+
+- (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
+{
+    //TODO: Pending implementation.
 }
 
 #pragma mark - RemovePostCellDelegate

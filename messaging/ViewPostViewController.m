@@ -866,7 +866,7 @@ static bool firstTime = YES;
         
         
         [postViewCell setIsViewPost:YES];
-        [postViewCell setPost:_post withPostIndex:indexPath.row];
+        [postViewCell setPost:_post withPostIndexPath:indexPath];
         
         
         return postViewCell;

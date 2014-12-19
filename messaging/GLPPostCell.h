@@ -29,7 +29,7 @@ typedef NS_ENUM(NSInteger, GLPCellType) {
 @optional
 -(void)setPreviousViewToNavigationBar;
 -(void)setPreviousNavigationBarName;
-- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex;
+- (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath;
 -(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle;
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex;
 
@@ -54,7 +54,7 @@ extern const float TEXT_CELL_HEIGHT;
 @property (assign, nonatomic) UIViewController <RemovePostCellDelegate, NewCommentDelegate, ViewImageDelegate, GLPPostCellDelegate> *delegate;
 
 
--(void)setPost:(GLPPost *)post withPostIndex:(NSInteger)index;
+-(void)setPost:(GLPPost *)post withPostIndexPath:(NSIndexPath *)indexPath;
 
 +(CGFloat)getCellHeightWithContent:(GLPPost *)post cellType:(GLPCellType)cellType isViewPost:(BOOL)isViewPost;
 
