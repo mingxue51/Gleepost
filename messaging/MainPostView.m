@@ -26,6 +26,7 @@
 #import "GLPImageHelper.h"
 #import "GLPPostImageLoader.h"
 #import "GLPImageHelper.h"
+#import "GLPThemeManager.h"
 
 @interface MainPostView ()
 
@@ -171,6 +172,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [_contentLbl setText:post.content];
     
     [_nameLbl setText:post.author.name];
+    [_nameLbl setTextColor:[[GLPThemeManager sharedInstance] nameTintColour]];
     _nameLbl.tag = _post.author.remoteKey;
     
     _viewPost = viewPost;

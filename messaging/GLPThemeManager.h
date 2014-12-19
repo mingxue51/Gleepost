@@ -25,6 +25,7 @@
 - (UIColor *)navigationBarColour;
 - (UIColor *)navigationBarTitleColour;
 - (UIColor *)campusWallNavigationBarTitleColour;
+- (UIColor *)nameTintColour;
 - (UIColor *)tabbarSelectedColour;
 - (UIColor *)tabbarUnselectedColour;
 - (NSString *)appNameWithString:(NSString *)string;

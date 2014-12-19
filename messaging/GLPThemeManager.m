@@ -113,6 +113,11 @@ static GLPThemeManager *instance = nil;
     return [self.selectedTheme fifthColour];
 }
 
+- (UIColor *)nameTintColour
+{
+    return [self.selectedTheme fifthColour];
+}
+
 - (UIColor *)tabbarSelectedColour
 {
     return [self.selectedTheme fifthColour];
