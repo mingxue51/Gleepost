@@ -16,6 +16,7 @@
 #import "GLPVideo.h"
 #import "GLPLocation.h"
 #import "CategoryManager.h"
+#import "GLPReviewHistoryDaoParser.h"
 
 @implementation GLPPostDao
 
@@ -110,17 +111,78 @@
     __block NSArray *localPosts = nil;
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        DDLogDebug(@"DB error : findPostsWithUsersRemoteKey");
         localPosts = [GLPPostDao findPostsWithUsersRemoteKey:usersRemoteKey inDb:db];
     }];
     
     return localPosts;
 }
 
++ (NSArray *)findLastSentPosts
+{
+    __block NSArray *lastPosts = nil;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        lastPosts = [GLPPostDao findLastSentPostsWithDb:db];
+    }];
+    
+    return lastPosts;
+}
+
++ (NSArray *)findLastSentPostsWithDb:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND group_remote_key = 0 AND pending = 0 order by date desc, remoteKey desc"];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        [result addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
+    }
+    
+    
+    [GLPPostDao loadImagesWithPosts:result withDb:db];
+    
+    [GLPPostDao loadVideosWithPosts:result withDb:db];
+    
+    return result;
+}
+
+
+
++ (NSArray *)findLastPostsInAnySendStatus
+{
+    __block NSArray *lastPosts = nil;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        lastPosts = [GLPPostDao findLastPostsInAnySendStatusWithDb:db];
+    }];
+    
+    return lastPosts;
+}
+
++ (NSArray *)findLastPostsInAnySendStatusWithDb:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where group_remote_key = 0 AND pending = 0 order by date desc, remoteKey desc"];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        [result addObject:[GLPPostDaoParser createFromResultSet:resultSet inDb:db]];
+    }
+    
+    
+    [GLPPostDao loadImagesWithPosts:result withDb:db];
+    
+    [GLPPostDao loadVideosWithPosts:result withDb:db];
+    
+    return result;
+}
+
+
+
 + (NSArray *)findPostsWithUsersRemoteKey:(NSInteger)usersRemoteKey inDb:(FMDatabase *)db
 {
     
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND author_key = %d order by date desc, remoteKey desc limit %d", usersRemoteKey, kGLPNumberOfPosts];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND author_key = %d AND pending = 0 order by date desc, remoteKey desc limit %d", usersRemoteKey, kGLPNumberOfPosts];
 
     
     NSMutableArray *result = [NSMutableArray array];
@@ -293,7 +355,182 @@
     return result;
 }
 
+#pragma mark - Pending posts load operations
+
++ (NSArray *)loadPendingPosts
+{
+    __block NSMutableArray *pendingPosts = [[NSMutableArray alloc] init];
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        FMResultSet *resultSet = [self allPostsWaitingForApprovalWithDb:db];
+        
+        while ([resultSet next])
+        {
+            GLPPost *post = [GLPPostDaoParser createFromResultSet:resultSet inDb:db];
+            
+            post.reviewHistory = [GLPPostDao loadReviewHistoriesWithPost:post andDb:db];
+
+            [pendingPosts addObject:post];
+        }
+        
+        [GLPPostDao loadImagesWithPosts:pendingPosts withDb:db];
+        [GLPPostDao loadVideosWithPosts:pendingPosts withDb:db];
+    }];
+    
+    return pendingPosts;
+}
+
+
++ (NSMutableArray *)loadReviewHistoriesWithPost:(GLPPost *)post andDb:(FMDatabase *)db
+{
+    NSMutableArray *reviewHistories = [[NSMutableArray alloc] init];
+    
+    FMResultSet *resultSet = [GLPPostDao reviewHistoryWithPost:post andDb:db];
+    
+    while ([resultSet next]) {
+        GLPReviewHistory *reviewHistory = [GLPReviewHistoryDaoParser createFromResultSet:resultSet inDb:db];
+        [reviewHistories addObject:reviewHistory];
+    }
+    
+    return reviewHistories;
+}
+
 #pragma mark - Save operations
+
++ (void)saveOrUpdatePost:(GLPPost *)entity
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [GLPPostDao save:entity inDb:db];
+    }];
+}
+
+/**
+ Saves, updates or removes posts. In case of removing posts, the method
+ compares the server's posts with database's posts, and removes any
+ unnecessary posts. This method is for profile view controller.
+ 
+ @param posts the remote posts.
+ @param kindOfQuery the kind of query.
+ */
+
++ (void)saveUpdateOrRemovePosts:(NSArray *)posts withCreatorRemoteKey:(NSInteger)userRemoteKey
+{
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+
+        NSArray *profilePosts = [GLPPostDao findPostsWithUsersRemoteKey:userRemoteKey inDb:db];
+        
+        DDLogDebug(@"GLPPostDao : Profile posts %@", profilePosts);
+
+        
+        NSArray *postsToDelete = [GLPPostDao subtractRemotePosts:posts withLocalPosts:profilePosts.mutableCopy];
+        
+        DDLogDebug(@"GLPPostDao : Posts to delete %@", postsToDelete);
+        
+        if(postsToDelete)
+        {
+            [GLPPostDao removePostsFromDatabase:postsToDelete withDb:db];
+        }
+        
+        for(GLPPost *p in posts)
+        {
+            p.sendStatus = kSendStatusSent;
+            [GLPPostDao save:p inDb:db];
+        }
+        
+        DDLogDebug(@"GLPPostDao : remote posts %@", posts);
+        
+    }];
+}
+
++ (NSArray *)saveUpdateOrRemovePostsInCW:(NSArray *)posts
+{
+    __block NSArray *deletedPosts = [[NSArray alloc] init];
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        NSArray *campusWallPosts = [GLPPostDao findLastPostsInDb:db];
+        
+        DDLogDebug(@"GLPPostDao : Campus wall posts %@", campusWallPosts);
+        
+        NSArray *postsToDelete = [GLPPostDao subtractRemotePosts:posts withLocalPosts:campusWallPosts.mutableCopy];
+        
+        DDLogDebug(@"GLPPostDao : Posts to delete %@", postsToDelete);
+        
+        if(postsToDelete)
+        {
+            [GLPPostDao removePostsFromDatabase:postsToDelete withDb:db];
+        }
+        
+        for(GLPPost *p in posts)
+        {
+            p.sendStatus = kSendStatusSent;
+            [GLPPostDao save:p inDb:db];
+        }
+        
+        DDLogDebug(@"GLPPostDao : remote posts %@", posts);
+        
+        deletedPosts = postsToDelete;
+        
+    }];
+    
+    return deletedPosts;
+}
+
++ (NSArray *)subtractRemotePosts:(NSArray *)remotePosts withLocalPosts:(NSMutableArray *)localPosts
+{
+    [localPosts removeObjectsInArray:remotePosts];
+    
+    DDLogDebug(@"GLPPostDao : subtractRemotePosts local %@", localPosts);
+    
+    DDLogDebug(@"GLPPostDao : subtractRemotePosts remote %@", remotePosts);
+    DDLogDebug(@"GLPPostDao : subtractRemotePosts %d : %d", remotePosts.count, localPosts.count);
+
+    
+    if(localPosts.count == remotePosts.count)
+    {
+        return nil;
+    }
+    
+    return localPosts;
+}
+
++ (void)removePostsFromDatabase:(NSArray *)posts withDb:(FMDatabase *)db
+{
+    for(GLPPost *p in posts)
+    {
+        [GLPPostDao deletePostWithPost:p db:db];
+    }
+}
+
++ (NSArray *)getTheNewPostsWithRemotePosts:(NSArray *)remotePosts
+{
+    
+    NSArray *allDatabasePosts = [GLPPostDao findLastPostsInAnySendStatus];
+    
+    NSArray *allSentDatabasePosts = [GLPPostDao findLastSentPosts];
+    
+    NSMutableArray *newPosts = remotePosts.mutableCopy;
+    
+    [newPosts removeObjectsInArray:allDatabasePosts];
+    
+    if(newPosts.count > 0)
+    {
+        if([(GLPPost *)[newPosts firstObject] remoteKey] < [(GLPPost *)[allSentDatabasePosts firstObject] remoteKey])
+        {
+            DDLogDebug(@"GLPPostDao : new post remote key smaller than the last.");
+            
+            return [NSArray array];
+        }
+    }
+    
+    DDLogDebug(@"GLPPostDao : last 20 posts %@", allSentDatabasePosts);
+
+    DDLogDebug(@"GLPPostDao : new posts %@", newPosts);
+    
+    return newPosts;
+}
 
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db
 {
@@ -317,7 +554,7 @@
     BOOL postSaved;
     
     if(entity.remoteKey == 0) {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date, location_lat, location_lon, location_name, location_address, group_remote_key) values(%@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d, %f, %f, %@, %@, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date, location_lat, location_lon, location_name, location_address, group_remote_key, pending) values(%@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d, %f, %f, %@, %@, %d, %d)",
                      entity.content,
                      date,
                      entity.likes,
@@ -333,9 +570,10 @@
                      entity.location.longitude,
                      entity.location.name,
                      entity.location.address,
-                     groupRemoteKey];
+                     groupRemoteKey,
+                     entity.pending];
     } else {
-        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date, location_lat, location_lon, location_name, location_address, group_remote_key) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d, %f, %f, %@, %@, %d)",
+        postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date, location_lat, location_lon, location_name, location_address, group_remote_key, pending) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d, %f, %f, %@, %@, %d, %d)",
                      entity.remoteKey,
                      entity.content,
                      date,
@@ -352,13 +590,14 @@
                      entity.location.longitude,
                      entity.location.name,
                      entity.location.address,
-                     groupRemoteKey];
+                     groupRemoteKey,
+                     entity.pending];
     }
     
     
     entity.key = [db lastInsertRowId];
     
-//   DDLogDebug(@"Post saved with status: %d and content: %@ location: %@ group: %@", entity.sendStatus, entity.content, entity.location, entity.group);
+   DDLogInfo(@"Post saved with status: %d and content: %@ location: %@ group: %@", entity.sendStatus, entity.content, entity.location, entity.group);
     
     
     [GLPPostDao insertCategoriesWithEntity:entity andDb:db];
@@ -394,24 +633,22 @@
 {
     for(NSString* imageUrl in entity.imagesUrls)
     {
-        BOOL b = [db executeUpdateWithFormat:@"insert into post_images (post_remote_key, image_url) values(%d, %@)",
+        [db executeUpdateWithFormat:@"replace into post_images (post_remote_key, image_url) values(%d, %@)",
          entity.remoteKey,
          imageUrl];
-        
-        DDLogDebug(@"Image url updated %d.", b);
     }
 }
 
 + (void)saveVideoWithEntity:(GLPPost *)entity inDb:(FMDatabase *)db
 {
-    BOOL s = [db executeUpdateWithFormat:@"replace into post_videos (post_remote_key, post_key, video_url, video_thumbnail_url, video_temp_key) values(%d, %d, %@, %@, %d)",
+    [db executeUpdateWithFormat:@"replace into post_videos (post_remote_key, post_key, video_url, video_thumbnail_url, video_temp_key) values(%d, %d, %@, %@, %d)",
               entity.remoteKey,
               entity.key,
               entity.video.url,
               entity.video.thumbnailUrl,
               -1];
     
-    DDLogDebug(@"Video data replaced (status %d): %d : %@ : post key: %ld", entity.sendStatus, s, entity.video, (long)entity.key);
+//    DDLogDebug(@"Video data replaced (status %d): %d : %@ : post key: %ld", entity.sendStatus, s, entity.video, (long)entity.key);
 }
 
 + (void)insertVideoWithEntity:(GLPPost *)entity andDb:(FMDatabase *)db
@@ -521,6 +758,18 @@
      entity.remoteKey];
 }
 
++ (void)updatePendingStatuswithPost:(GLPPost *)entity
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+
+        BOOL pendingPostUpdated = [db executeUpdateWithFormat:@"update posts set pending=%d where key=%d",
+         [entity isPending],
+         entity.key];
+        
+        NSAssert(pendingPostUpdated, @"Pending post should exist in database before, in order to be updated.");
+    }];
+}
+
 +(void)updateCommentStatusWithNumberOfComments:(int)number andPostRemoteKey:(int)remoteKey inDb:(FMDatabase*)db
 {
     BOOL ex = [db executeUpdateWithFormat:@"update posts set comments=%d where remoteKey=%d",
@@ -537,11 +786,11 @@
     if(entity.remoteKey != 0)
     {
         DDLogDebug(@"updatePostSendingData remote key not zero");
+        
         [db executeUpdateWithFormat:@"update posts set remoteKey=%d, sendStatus=%d where key=%d",
          entity.remoteKey,
          entity.sendStatus,
          entity.key];
-        
     } else
     {
         DDLogDebug(@"updatePostSendingData remote key zero");
@@ -567,7 +816,7 @@
     
     int eventDate = [entity.dateEventStarts timeIntervalSince1970];
     
-    [db executeUpdateWithFormat:@"update posts set content=%@, date=%d, likes=%d, dislikes=%d, comments=%d, sendStatus=%d, author_key=%d, liked=%d, attending=%d, event_title=%@, event_date=%d where remoteKey=%d",
+    [db executeUpdateWithFormat:@"update posts set content=%@, date=%d, likes=%d, dislikes=%d, comments=%d, sendStatus=%d, author_key=%d, liked=%d, attending=%d, event_title=%@, event_date=%d, pending=%d where remoteKey=%d",
      entity.content,
      date,
      entity.likes,
@@ -579,12 +828,15 @@
      entity.attended,
      entity.eventTitle,
      eventDate,
+     entity.pending,
      entity.remoteKey];
     
     if([entity imagePost])
     {
         [GLPPostDao updateImagesWithEntity:entity db:db];
     }
+    
+    //TODO: Add operation to update video as well.
 }
 
 + (void)updateVideoPostSendingData:(GLPPost *)entity inDb:(FMDatabase *)db
@@ -605,11 +857,11 @@
 
 + (void)updateImagesWithEntity:(GLPPost *)entity db:(FMDatabase *)db
 {
-    if(![GLPPostDao loadImagesWithPost:entity db:db])
-    {
+//    if(![GLPPostDao loadImagesWithPost:entity db:db])
+//    {
         //If there are not images of this post in database then insert them.
         [GLPPostDao insertImagesWithEntity:entity andDb:db];
-    }
+//    }
 }
 
 #pragma mark - Delete operations
@@ -618,6 +870,20 @@
 {
     [db executeUpdateWithFormat:@"delete from posts where remoteKey=%d",
      entity.remoteKey];
+    
+    [db executeUpdateWithFormat:@"delete from post_images where post_remote_key=%d",
+     entity.remoteKey];
+    
+    [db executeUpdateWithFormat:@"delete from post_videos where post_remote_key=%d",
+     entity.remoteKey];
+    
+    [db executeUpdateWithFormat:@"delete from review_history where post_remote_key=%d",
+     entity.remoteKey];
+}
+
++ (void)deletePostsWithGroupRemoteKey:(NSInteger)groupRemoteKey db:(FMDatabase *)db
+{
+    [db executeUpdateWithFormat:@"delete from posts where group_remote_key=%d", groupRemoteKey];
 }
 
 + (void)deleteAllInDb:(FMDatabase *)db
@@ -631,7 +897,7 @@
     [db executeUpdateWithFormat:@"delete from post_videos"];
 }
 
-#pragma mark - Helpers
+#pragma mark - FMResultSet constructors
 
 + (FMResultSet *)lastPostsFromSelectedCategoryWithDb:(FMDatabase *)db
 {
@@ -641,11 +907,11 @@
     
     if([[CategoryManager sharedInstance] selectedCategory] == nil)
     {
-        resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND group_remote_key = 0 order by date desc, remoteKey desc limit %d", kGLPNumberOfPosts];
+        resultSet = [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND group_remote_key = 0 AND pending = 0 order by date desc, remoteKey desc limit %d", kGLPNumberOfPosts];
     }
     else
     {
-        resultSet = [db executeQueryWithFormat:@"select * from posts p INNER JOIN categories cat where p.sendStatus = 3 AND p.group_remote_key = 0 AND cat.tag = %@ AND cat.post_remote_key = p.remoteKey order by date desc, p.remoteKey desc limit %d", tag, kGLPNumberOfPosts];
+        resultSet = [db executeQueryWithFormat:@"select * from posts p INNER JOIN categories cat where p.sendStatus = 3 AND p.group_remote_key = 0 AND cat.tag = %@ AND cat.post_remote_key = p.remoteKey AND p.pending = 0 order by date desc, p.remoteKey desc limit %d", tag, kGLPNumberOfPosts];
     }
     
     return resultSet;
@@ -659,16 +925,26 @@
     
     if([[CategoryManager sharedInstance] selectedCategory] == nil)
     {
-        resultSet = [db executeQueryWithFormat:@"select * from posts where (date < %d and remoteKey is null) or (remoteKey is not null and remoteKey < %d) AND group_remote_key = 0 order by date desc, remoteKey desc limit %d", post.date, post.remoteKey, kGLPNumberOfPosts];
+        resultSet = [db executeQueryWithFormat:@"select * from posts where (date < %d and remoteKey is null) or (remoteKey is not null and remoteKey < %d) AND group_remote_key = 0 AND p.pending = 0 order by date desc, remoteKey desc limit %d", post.date, post.remoteKey, kGLPNumberOfPosts];
     }
     else
     {
 //        resultSet = [db executeQueryWithFormat:@"select * from posts p INNER JOIN categories cat where p.sendStatus = 3 AND p.group_remote_key = 0 AND cat.tag = %@ AND cat.post_remote_key = p.remoteKey order by date desc, p.remoteKey desc limit %d", tag, kGLPNumberOfPosts];
         
-        resultSet = [db executeQueryWithFormat:@"select * from posts p INNER JOIN categories cat where (p.date < %d AND p.remoteKey is null) OR (p.remoteKey is not null AND p.remoteKey < %d) AND p.group_remote_key = 0 AND cat.tag = %@ AND cat.post_remote_key = p.remoteKey order by p.date desc, p.remoteKey desc limit %d", post.date, post.remoteKey, tag, kGLPNumberOfPosts];
+        resultSet = [db executeQueryWithFormat:@"select * from posts p INNER JOIN categories cat where (p.date < %d AND p.remoteKey is null) OR (p.remoteKey is not null AND p.remoteKey < %d) AND p.group_remote_key = 0 AND p.pending = 0 AND cat.tag = %@ AND cat.post_remote_key = p.remoteKey order by p.date desc, p.remoteKey desc limit %d", post.date, post.remoteKey, tag, kGLPNumberOfPosts];
     }
     
     return resultSet;
+}
+
++ (FMResultSet *)allPostsWaitingForApprovalWithDb:(FMDatabase *)db
+{
+    return [db executeQueryWithFormat:@"select * from posts where sendStatus = 3 AND group_remote_key = 0 AND pending = 1 order by date desc"];
+}
+
++ (FMResultSet *)reviewHistoryWithPost:(GLPPost *)post andDb:(FMDatabase *)db
+{
+    return [db executeQueryWithFormat:@"select * from review_history where post_remote_key = %d AND action != 0 order by date desc", post.remoteKey];
 }
 
 @end

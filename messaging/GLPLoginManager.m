@@ -24,6 +24,8 @@
 #import "GLPFacebookConnect.h"
 #import "RemoteParser.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "GLPPendingPostsManager.h"
+#import "CategoryManager.h"
 
 @implementation GLPLoginManager
 
@@ -156,9 +158,7 @@
     [[DatabaseManager sharedInstance] initDatabase];
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        DDLogDebug(@"DB error : validateLoginForUser");
         [GLPUserDao save:user inDb:db];
-        
     }];
     
     [[SessionManager sharedInstance] registerUser:user withToken:token andExpirationDate:expirationDate];
@@ -223,6 +223,7 @@
     [[GLPNetworkManager sharedInstance] stopNetworkOperations];
     [[[WebClient sharedInstance] operationQueue] cancelAllOperations];
     
+    [[CategoryManager sharedInstance] reset];
     [[GLPLiveConversationsManager sharedInstance] clear];
     [[SessionManager sharedInstance] cleanSession];
     [[DatabaseManager sharedInstance] dropDatabase];
@@ -233,6 +234,7 @@
     [[SDImageCache sharedImageCache] clearMemory];
     [[SDImageCache sharedImageCache] clearDisk];
 
+    [[GLPPendingPostsManager sharedInstance] clean];
     
     [[GLPPushManager sharedInstance] unregisterPushTokenWithAuthParams:authParams];
 }

@@ -9,10 +9,11 @@
 #import "VideoCaptureView.h"
 #import "VideoProgressView.h"
 #import "AppearanceHelper.h"
-#import "GLPCampusWallProgressManager.h"
+#import "GLPVideoPostCWProgressManager.h"
 #import <AssetsLibrary/ALAsset.h>
 #import "PendingPostManager.h"
 #import "GLPLiveGroupPostManager.h"
+#import "GLPPendingPostsManager.h"
 
 @interface VideoCaptureView ()
 
@@ -135,10 +136,15 @@
     {
         [[GLPLiveGroupPostManager sharedInstance] setThumbnailImage:thumbnail];
     }
+    else if([[PendingPostManager sharedInstance] isEditMode])
+    {
+        DDLogDebug(@"VideoCaptureView : Edit mode");
+        [[GLPPendingPostsManager sharedInstance] setThumbnailImage:thumbnail];
+    }
     else
     {
         //Add thumbnail to GLPProgressManager.
-        [[GLPCampusWallProgressManager sharedInstance] setThumbnailImage: thumbnail];
+        [[GLPVideoPostCWProgressManager sharedInstance] setThumbnailImage: thumbnail];
     }
     
     

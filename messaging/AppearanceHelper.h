@@ -23,6 +23,7 @@
 + (UIColor *)colourForUnselectedSegment;
 + (UIColor *)colourForRegisterTextFields;
 + (UIColor *)grayGleepostColour;
++ (UIColor *)borderGleepostColour;
 + (UIColor *)blueGleepostColour;
 + (UIColor *)greenGleepostColour;
 + (UIColor *)blackGleepostColour;

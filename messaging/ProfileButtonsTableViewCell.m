@@ -161,7 +161,7 @@ const float BUTTONS_CELL_HEIGHT = 45.0f;
         {
             NSLog(@"Failed to send to the user.");
             //This section of code should never be reached.
-            [WebClientHelper showStandardErrorWithTitle:@"Failed to send request" andContent:@"Please check your internet connection and try again"];
+//            [WebClientHelper showStandardErrorWithTitle:@"Failed to send request" andContent:@"Please check your internet connection and try again"];
         }
     }];
 }
@@ -300,7 +300,7 @@ const float BUTTONS_CELL_HEIGHT = 45.0f;
         {
             NSLog(@"Failed to send to the user.");
             //This section of code should never be reached.
-            [WebClientHelper showStandardErrorWithTitle:@"Failed to send request" andContent:@"Please check your internet connection and try again"];
+//            [WebClientHelper showStandardErrorWithTitle:@"Failed to send request" andContent:@"Please check your internet connection and try again"];
         }
     }];
 }

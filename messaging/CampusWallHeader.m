@@ -15,6 +15,7 @@
 #import "DateFormatterHelper.h"
 #import "CampusLiveManager.h"
 #import "GLPTableActivityIndicator.h"
+#import "GLPCLPostImageLoader.h"
 
 @interface CampusWallHeader ()
 
@@ -128,6 +129,8 @@ NSString *BORING_IMAGE;
         if(success)
         {
 
+            [[GLPCLPostImageLoader sharedInstance] addPosts:posts];
+            
             _posts = posts;
             
             [self clearAndLoad];

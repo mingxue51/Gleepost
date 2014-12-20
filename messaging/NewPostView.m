@@ -205,7 +205,7 @@ static BOOL visibility = NO;
             else
             {
                 NSLog(@"ERROR");
-                [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
+//                [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
                 
             }
         }];

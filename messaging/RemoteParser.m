@@ -16,7 +16,7 @@
 #import "GLPLocation.h"
 #import "GLPMember.h"
 #import "GLPConversationRead.h"
-
+#import "GLPReviewHistory.h"
 
 @interface RemoteParser()
 
@@ -116,6 +116,53 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 //    }
     
     return networkContent;
+}
+
+#pragma mark - User's pending posts
+
++ (NSArray *)parsePendingPostsFromJson:(NSArray *)jsonPosts
+{
+    NSMutableArray *posts = [NSMutableArray array];
+    
+    for(id postJson in jsonPosts)
+    {
+        GLPPost *post = [RemoteParser parsePostFromJson:postJson];
+        
+        post.reviewHistory = [RemoteParser parseReviewHistories:postJson[@"review_history"]];
+        
+        post.pending = YES;
+        
+        post.sendStatus = kSendStatusSent;
+        
+        [posts addObject:post];
+    }
+    
+    return posts;
+}
+
++ (NSMutableArray *)parseReviewHistories:(NSArray *)jsonHistories
+{
+    NSMutableArray *reviewHistories = [[NSMutableArray alloc] init];
+    
+    for(NSDictionary *reviewHistoryJson in jsonHistories)
+    {
+        [reviewHistories addObject: [RemoteParser parseReviewHistory:reviewHistoryJson]];
+    }
+    
+    
+    return reviewHistories;
+}
+
++ (GLPReviewHistory *)parseReviewHistory:(NSDictionary *)jsonHistory
+{
+    return [[GLPReviewHistory alloc] initWithActionString:jsonHistory[@"action"] withDateHappened:[RemoteParser parseDateFromString:jsonHistory[@"at"]] reason:jsonHistory[@"reason"] andUser:[RemoteParser parseUserFromJson:jsonHistory[@"by"]]];
+}
+
+#pragma mark - Approval
+
++ (NSInteger)parseApprovalLevel:(NSDictionary *)approvalLevel
+{
+    return [approvalLevel[@"level"] integerValue];
 }
 
 + (NSString *)generateServerUserNameTypeWithNameSurname:(NSString *)nameSurname
@@ -465,7 +512,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 #pragma mark - Posts, comments, likes and categories
 
 + (GLPPost *)parsePostFromJson:(NSDictionary *)json
-{    
+{
     GLPPost *post = [[GLPPost alloc] init];
     post.remoteKey = [json[@"id"] integerValue];
     post.author = [RemoteParser parseUserFromJson:json[@"by"]];
@@ -477,7 +524,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.likes = [json[@"like_count"] integerValue];
     
     post.dislikes = [json[@"hates"] integerValue];
-    
     
     if(json[@"attribs"])
     {
@@ -561,6 +607,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     post.group = [RemoteParser parseGroupFromJson:json[@"network"]];
     
+    if(json[@"review_history"])
+    {
+        post.reviewHistory = [RemoteParser parseReviewHistories:json[@"review_history"]];
+    }
 
 //    
 //    NSArray *jsonArray = json[@"images"];
@@ -1171,6 +1221,14 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     {
         type = kGLPNotificationTypeCreatedPostGroup;
     }
+    else if([notificationsType isEqualToString:@"approved_post"])
+    {
+        type = kGLPNotificationTypePostApproved;
+    }
+    else if ([notificationsType isEqualToString:@"rejected_post"])
+    {
+        type = kGLPNotificationTypePostRejected;
+    }
     
     notification.notificationType = type;
     notification.seen = [json[@"seen"] boolValue];
@@ -1207,6 +1265,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     [event typeFromString:json[@"type"]];
     event.data = json[@"data"];
     event.location = json[@"location"];
+    
+    DDLogDebug(@"RemoteParser : parseWebSocketEventFromJson %@", json);
     
     return event;
 }

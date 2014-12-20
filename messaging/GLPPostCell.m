@@ -37,7 +37,7 @@
 /** Other variables. */
 @property (assign, nonatomic) BOOL mediaNeedsToReload;
 @property (strong, nonatomic) GLPPost *post;
-@property (assign, nonatomic) NSInteger postIndex;
+@property (strong, nonatomic) NSIndexPath *postIndexPath;
 
 @end
 
@@ -77,10 +77,10 @@ const float ONE_LINE_LIMIT = 18.0;
 
 #pragma mark - Modifiers
 
--(void)setPost:(GLPPost *)post withPostIndex:(NSInteger)index
+-(void)setPost:(GLPPost *)post withPostIndexPath:(NSIndexPath *)indexPath
 {
     _post = post;
-    _postIndex = index;
+    _postIndexPath = indexPath;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     
     [self configureTopView];
@@ -127,18 +127,18 @@ const float ONE_LINE_LIMIT = 18.0;
 -(void)setNewPositions
 {
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    
         CGSize labelSize = [GLPPostCell getContentLabelSizeForContent:self.post.content isViewPost:self.isViewPost cellType:[self findCellType]];
 
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
+//        dispatch_async(dispatch_get_main_queue(), ^{
+    
             [_mainView setHeightDependingOnLabelHeight:labelSize.height andIsViewPost:self.isViewPost];
 
-        });
+//        });
+    
         
-        
-    });
+//    });
     
 //    [_mainView setNewHeightDependingOnLabelHeight:labelSize.height andIsViewPost:self.isViewPost];
 
@@ -161,6 +161,8 @@ const float ONE_LINE_LIMIT = 18.0;
 
 -(void)reloadMedia:(BOOL)loadMedia
 {
+    DDLogDebug(@"GLPPostCell : reloadMedia %d", loadMedia);
+    
     self.mediaNeedsToReload = loadMedia;
 }
 
@@ -265,16 +267,7 @@ const float ONE_LINE_LIMIT = 18.0;
 
 -(void)commentButtonSelected
 {
-    //Hide navigation bar.
-//    [self.delegate hideNavigationBarAndButtonWithNewTitle:@"New Comment"];
-//    
-//    NewCommentView *loadingView = [NewCommentView loadingViewInView:[self.delegate.view.window.subviews objectAtIndex:0]];
-//    
-//    loadingView.post = self.post;
-//    loadingView.postIndex = self.postIndex;
-//    loadingView.profileDelegate = self.delegate;
-    
-    [_delegate navigateToPostForCommentWithIndex:self.postIndex];
+    [_delegate navigateToPostForCommentWithIndexPath:self.postIndexPath];
 }
 
 #pragma mark - Static methods

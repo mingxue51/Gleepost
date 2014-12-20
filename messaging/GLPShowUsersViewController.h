@@ -12,6 +12,8 @@
 
 @property (strong, nonatomic) NSString *selectedTitle;
 
+@property (strong, nonatomic) NSArray *users;
+
 @property (assign, nonatomic) NSInteger postRemoteKey;
 
 @end

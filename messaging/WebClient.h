@@ -64,6 +64,7 @@ extern NSString * const kWebserviceBaseUrl;
 -(void)getEventPostsAfterDate:(NSDate*)date withCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock;
 - (void)getAttendingEventsForUserWithRemoteKey:(NSInteger)userRemoteKey callback:(void (^) (BOOL success, NSArray *posts))callback;
 - (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock;
+- (void)editPost:(GLPPost *)editedPost callbackBlock:(void (^)(BOOL success, GLPPost *updatedPost))callbackBlock;
 -(void)getPostWithRemoteKey:(NSInteger)remoteKey withCallbackBlock:(void (^) (BOOL success, GLPPost *post))callbackBlock;
 -(void)userPostsWithRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL sucess, NSArray *posts))callbackBlock;
 -(void)deletePostWithRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock;
@@ -147,6 +148,13 @@ extern NSString * const kWebserviceBaseUrl;
 
 
 -(void)postLike:(BOOL)like forPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock;
+
+// pending posts
+
+- (void)getPostsWaitingForApprovalCallbackBlock:(void (^) (BOOL success, NSArray *pendingPosts))callbackBlock;
+
+// approval
+- (void)getApprovalStatusCallbackBlock:(void (^) (BOOL success, NSInteger level))callbackBlock;
 
 // notifications
 -(void)getNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;

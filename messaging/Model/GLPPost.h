@@ -10,9 +10,11 @@
 #import "GLPUser.h"
 #import "SendStatus.h"
 #import "GLPGroup.h"
+#import "GLPReviewHistory.h"
 
 @class GLPVideo;
 @class GLPLocation;
+@class GLPReviewHistory;
 
 @interface GLPPost : GLPEntity
 
@@ -25,6 +27,8 @@
 @property (strong, nonatomic) NSString *eventTitle;
 @property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) NSArray *imagesUrls;
+//This array is filled only if the post is waiting for approval.
+@property (strong, nonatomic) NSMutableArray *reviewHistory;
 //@property (strong, nonatomic) NSArray *videosUrls;
 //@property (strong, nonatomic) NSString *videoThumbnail;
 //@property (assign, nonatomic) NSNumber *pendingVideoKey;
@@ -39,14 +43,18 @@
 @property (assign, nonatomic) int popularity;
 @property (assign, nonatomic) NSInteger attendees;
 @property (assign, nonatomic) BOOL attended;
+@property (assign, nonatomic, getter=isPending) BOOL pending;
 
 //In case post has group information.
 @property (strong, nonatomic) GLPGroup *group;
 
 - (id)initWithRemoteKey:(NSInteger)remoteKey;
+- (void)addNewReviewHistory:(GLPReviewHistory *)reviewHistory;
 -(BOOL)imagePost;
 -(BOOL)isGroupPost;
 -(BOOL)isVideoPost;
+- (void)updatePostWithNewPost:(GLPPost *)newPost;
+- (Action)pendingPostStatus;
 - (NSDate *)generateDateEventEnds;
 - (NSString *)locationDescription;
 

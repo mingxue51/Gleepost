@@ -16,7 +16,8 @@
 #import "WebClient.h"
 #import "GLPPostManager.h"
 #import "GLPVideo.h"
-#import "GLPCampusWallProgressManager.h"
+#import "GLPVideoPostCWProgressManager.h"
+#import "GLPPendingPostsManager.h"
 
 @interface GLPVideoUploadManager ()
 
@@ -96,7 +97,6 @@ static GLPVideoUploadManager *instance = nil;
 
             
             //Post ready for uploading.
-//            [_postUploader uploadPostWithTimestamp:t andVideoId:videoId];
             [_postUploader prepareVideoPostForUploadWithTimestamp:t andVideoId:videoId];
             
             //Remove id from the Video Operation.
@@ -166,7 +166,14 @@ static GLPVideoUploadManager *instance = nil;
         return;
     }
     
-    if(![[GLPCampusWallProgressManager sharedInstance] isProgressFinished])
+    if(![[GLPVideoPostCWProgressManager sharedInstance] isProgressFinished])
+    {
+        DDLogInfo(@"Can't check for non uploaded video posts, video is in progress.");
+        
+        return;
+    }
+    
+    if(![[GLPPendingPostsManager sharedInstance] isProgressFinished])
     {
         DDLogInfo(@"Can't check for non uploaded video posts, video is in progress.");
         

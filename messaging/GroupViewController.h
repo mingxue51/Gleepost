@@ -21,7 +21,7 @@
 
 @end
 
-@interface GroupViewController : UIViewController<ViewImageDelegate, UIActionSheetDelegate, DescriptionSegmentGroupCellDelegate, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate, GLPImageViewDelegate, ImageSelectorViewControllerDelegate>
+@interface GroupViewController : UIViewController<ViewImageDelegate, UIActionSheetDelegate, DescriptionSegmentGroupCellDelegate, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate, NewCommentDelegate, GLPImageViewDelegate, ImageSelectorViewControllerDelegate>
 
 @property (weak, nonatomic) UIViewController<GroupViewControllerDelegate> *delegate;
 

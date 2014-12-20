@@ -8,9 +8,6 @@
 //  This class helps the GLPAttendingPostsViewController to organise the posts
 //  into sections and headers to view appropriately in table view.
 
-
-//    if([self.post.dateEventStarts compare:[NSDate date]] == NSOrderedAscending)
-
 #import "AttendingPostsOrganiserHelper.h"
 #import "GLPPost.h"
 
@@ -78,7 +75,6 @@
         NSMutableArray *array = [todaysDictionary objectForKey:header];
         
         [array addObject:post];
-        
     }
     else
     {
@@ -106,8 +102,6 @@
 
 - (void)resetData
 {
-    DDLogDebug(@"SECTIONS POSTS %@", _sections);
-    
     [_sections removeAllObjects];
 }
 

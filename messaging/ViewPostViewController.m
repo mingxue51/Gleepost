@@ -129,7 +129,6 @@ static BOOL likePushed;
     [super viewWillAppear:animated];
     
     [self registerNotifications];
-
     
     [self hideNetworkErrorViewIfNeeded];
     
@@ -294,13 +293,10 @@ static BOOL likePushed;
         [self.navigationController.navigationBar setButton:kRight withImageName:@"pad_icon" withButtonSize:CGSizeMake(25.0, 25.0) withSelector:@selector(showAttendees) andTarget:self];
     }
     
-    
-
     if(self.isFromCampusLive)
     {
         [self addCustomBackButton];
     }
-    
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
@@ -870,7 +866,7 @@ static bool firstTime = YES;
         
         
         [postViewCell setIsViewPost:YES];
-        [postViewCell setPost:_post withPostIndex:indexPath.row];
+        [postViewCell setPost:_post withPostIndexPath:indexPath];
         
         
         return postViewCell;

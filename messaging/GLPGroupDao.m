@@ -9,6 +9,7 @@
 #import "GLPGroupDao.h"
 #import "DatabaseManager.h"
 #import "GLPGroupDaoParser.h"
+#import "GLPPostDao.h"
 
 @implementation GLPGroupDao
 
@@ -80,8 +81,6 @@
     __block NSArray *groups = [[NSMutableArray alloc] init];
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        
-        DDLogDebug(@"DB error : findRemoteGroups");
         
         groups = [GLPGroupDao findRemoteGroupsdb:db];
         
@@ -164,9 +163,11 @@
     }];
 }
 
-+(void)remove:(GLPGroup *)group inDb:(FMDatabase*)db
++(void)remove:(GLPGroup *)group inDb:(FMDatabase *)db
 {
     BOOL removed = [db executeUpdateWithFormat:@"delete from groups where remoteKey=%d", group.remoteKey];
+    
+    [GLPPostDao deletePostsWithGroupRemoteKey:group.remoteKey db:db];
     
     DDLogInfo(@"Group with key %d removed status %d.", group.remoteKey, removed);
 }
@@ -233,8 +234,6 @@
 +(void)saveGroups:(NSArray *)groups
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-
-        DDLogDebug(@"DB error : saveGroups");
         
         [self cleanTable:db];
         

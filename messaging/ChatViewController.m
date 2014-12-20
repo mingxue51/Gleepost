@@ -121,7 +121,7 @@
         //[WebClientHelper hideStandardLoaderForView:self.view];
         
         if(!success) {
-            [WebClientHelper showStandardErrorWithTitle:@"Refreshing live chat failed" andContent:@"Cannot connect to the live chat, check your network status and retry later."];
+//            [WebClientHelper showStandardErrorWithTitle:@"Refreshing live chat failed" andContent:@"Cannot connect to the live chat, check your network status and retry later."];
             return;
         }
         

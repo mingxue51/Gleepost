@@ -127,7 +127,7 @@ const float HEIGHT = 210.0f;
         {
             DDLogError(@"Failed to send to the user.");
             //This section of code should never be reached.
-            [WebClientHelper showStandardErrorWithTitle:@"Failed to send request" andContent:@"Please check your internet connection and try again"];
+//            [WebClientHelper showStandardErrorWithTitle:@"Failed to send request" andContent:@"Please check your internet connection and try again"];
         }
     }];
 }

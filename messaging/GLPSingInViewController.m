@@ -125,7 +125,7 @@
             
             if(success)
             {
-                [WebClientHelper showStandardErrorWithTitle:@"" andContent:[NSString stringWithFormat:@"No problem. We've just sent you a password recovery link at: %@",self.email]];
+                [WebClientHelper showRecoveryEmailMessage:self.email];
             }
             else
             {

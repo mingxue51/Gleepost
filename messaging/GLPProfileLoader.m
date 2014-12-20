@@ -292,8 +292,7 @@ static GLPProfileLoader *instance = nil;
         }
         else
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
-            
+            [WebClientHelper uploadingImageError];
         }
     }];
 }

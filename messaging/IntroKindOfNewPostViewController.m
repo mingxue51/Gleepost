@@ -12,6 +12,7 @@
 #import "UINavigationBar+Utils.h"
 #import "PendingPostManager.h"
 #import "AppearanceHelper.h"
+#import "GLPApprovalManager.h"
 
 @interface IntroKindOfNewPostViewController ()
 
@@ -26,6 +27,8 @@
     [self configureNavigationBar];
     
     [self configureIsGroupPost];
+    
+    [[GLPApprovalManager sharedInstance] reloadApprovalLevel];
 }
 
 //- (void)viewDidDisappear:(BOOL)animated
@@ -46,8 +49,7 @@
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
-    
-    [self.navigationController.navigationBar setButton:kLeft withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismiss) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismiss) andTarget:self];
     
     self.navigationController.navigationBar.tintColor = [AppearanceHelper blueGleepostColour];
 

@@ -32,6 +32,7 @@
     entity.sendStatus = [resultSet intForColumn:@"sendStatus"];
     entity.author = [GLPUserDao findByRemoteKey:[resultSet intForColumn:@"author_key"] db:db];
     entity.categories = [GLPCategoryDao findByPostRemoteKey:entity.remoteKey db:db];
+    entity.pending = [resultSet boolForColumn:@"pending"];
     
     //Parse group remote key if exists. If group remote key is 0 then the post is a campus wall post.
     entity.group = [GLPGroupDao findByRemoteKey:[resultSet intForColumn:@"group_remote_key"] db:db];

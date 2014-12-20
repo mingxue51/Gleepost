@@ -200,7 +200,7 @@ float const NEW_CHAT_DELAY = 2.0;
             _conversation = conversation;
             [self navigateToChat];
         } else {
-            [WebClientHelper showStandardErrorWithTitle:@"Cannot create new random conversation" andContent:@"Something wrong happenned, check your internet connection and try again."];
+//            [WebClientHelper showStandardErrorWithTitle:@"Cannot create new random conversation" andContent:@"Something wrong happenned, check your internet connection and try again."];
         }
     }];
 }

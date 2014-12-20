@@ -8,6 +8,7 @@
 
 #import "WebClientHelper.h"
 #import "MBProgressHUD.h"
+#import "GLPThemeManager.h"
 
 @implementation WebClientHelper
 
@@ -173,6 +174,16 @@
     [alert show];
 }
 
++ (void)failedToAddUsers
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops!"
+                                                    message:@"There was a problem adding friends to the group."
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
 + (void)failedToSendEmailResettingPassword
 {
     
@@ -183,6 +194,88 @@
                                           otherButtonTitles:nil];
     [alert show];
 }
+
++ (void)showReportedDone
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Post Reported" andContent:@"Thanks for helping us keep Gleepost a fun and safe environment. Our team will review this post ASAP."];
+
+}
+
++ (void)showFailedToReport
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Error Sending Report" andContent:@"Something went wrong reporting this post, please try again in a few moments."];
+}
+
++ (void)failedToLoadPost
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Failed to load post" andContent:@"Check your internet connection and try again"];
+}
+
++ (void)accountVerificationError
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while verifying user account"];
+}
+
++ (void)accountLoginError
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while logging in"];
+}
+
++ (void)loadingPostsError
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Error loading posts" andContent:@"Please ensure that you are connected to the internet"];
+}
+
++ (void)facebookLoginErrorWithStatus:(NSString *)status
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:status];
+}
+
++ (void)uploadingImageError
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
+}
+
++ (void)showRecoveryEmailMessage:(NSString *)email
+{
+    [WebClientHelper showStandardErrorWithTitle:@"" andContent:[NSString stringWithFormat:@"No problem. We've just sent you a password recovery link at: %@", email]];
+}
+
++ (void)errorRegisteringUserWithResponse:(NSString *)response
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:response];
+}
+
++ (void)errorWrongCredentials
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Please check your information" andContent:@"Please check your provided information and try again."];
+}
+
++ (void)errorUnverifiedUser
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"You still unverified."];
+}
+
++ (void)errorLoadingData
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occured while loading your data"];
+}
+
++ (void)showPasswordChanged
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Password changed" andContent:@"Your password has been changed"];
+}
+
++ (void)showNameChangedWithName:(NSString *)fullName andSurname:(NSString *)surname
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Name changed" andContent:[NSString stringWithFormat:@"Your new name is: %@ %@.",fullName, surname]];
+}
+
++ (void)showTaglineChangedWithNewTagline:(NSString *)tagline
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Tagline changed" andContent:[NSString stringWithFormat:@"Your new tagline is: %@.", tagline]];
+}
+
 
 #pragma mark - Media
 
@@ -223,6 +316,11 @@
     [self showAlertWithTitle:@"Friends invited to group!" andMessage:[NSString stringWithFormat:@"You have invited %ld facebook friends to this group", (long)numberOfFriends]];
 }
 
++ (void)errorInvitingFacebookFriends
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"There was a problem inviting your selected facebook friends"];
+}
+
 #pragma mark - Groups
 
 + (void)showFailedToJoinGroupWithName:(NSString *)groupName
@@ -246,6 +344,18 @@
     [WebClientHelper showAlertWithTitle:@"Success!" andMessage:[NSString stringWithFormat:@"The server mode has been changed to %@. If you come from sign out progress please kill the app and launch again to let this change to be applied.", mode]];
 }
 
++ (void)errorLoadingGroup
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Error loading group" andContent:@"It seems that you are not belonging to this group anymore"];
+}
+
+#pragma mark - Testing
+
++ (void)showWebSocketReceivedBadEvent:(NSString *)socketEvent
+{
+    [WebClientHelper showAlertWithTitle:@"Error" andMessage:[NSString stringWithFormat:@"Unexpected event in socket %@", socketEvent]];
+}
+
 #pragma mark - Calendar
 
 + (void)showErrorSavingEventToCalendar
@@ -260,7 +370,9 @@
 
 + (void)showErrorPermissionsToCalendar
 {
-    [WebClientHelper showAlertWithTitle:@"Error" andMessage:@"Gleepost needs permissions to save that event to your Calendar. Please check your settings and try again."];
+    NSString *message = [[GLPThemeManager sharedInstance] appNameWithString:@"%@ needs permissions to save that event to your Calendar. Please check your settings and try again."];
+    
+    [WebClientHelper showAlertWithTitle:@"Error" andMessage:message];
 }
 
 @end

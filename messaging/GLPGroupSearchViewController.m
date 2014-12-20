@@ -15,6 +15,7 @@
 #import "GroupViewController.h"
 #import "GLPPrivateGroupPopUpViewController.h"
 #import "TDPopUpAfterGoingView.h"
+#import "GLPThemeManager.h"
 
 @interface GLPGroupSearchViewController () <GLPSearchBarDelegate, GroupViewControllerDelegate>
 
@@ -27,6 +28,8 @@
 @property (strong, nonatomic) GLPSearchBar *glpSearchBar;
 
 @property (strong, nonatomic) GLPGroup *selectedGroup;
+
+@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *navItem;
 
@@ -103,13 +106,18 @@
 
 - (void)configureNavigationBar
 {
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:NO];
-    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
-    [self.navigationController.navigationBar setTranslucent:NO];
+    CGRectSetH(_navigationBar, 64.0);
+    
+    CGRectSetY(_navigationBar, 0.0);
+    
+    [_navigationBar whiteBackgroundFormatWithShadow:NO];
+    
+    [_navigationBar setFontFormatWithColour:kBlack];
+    
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImage:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissModalView) withTarget:self andNavigationItem:_navItem];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
-    [self.navigationController.navigationBar setButton:kLeft withImage:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissModalView) withTarget:self andNavigationItem:_navItem];
 }
 
 - (void)configureSearchBar

@@ -49,6 +49,7 @@
 #import "GLPEmptyViewManager.h"
 #import "GLPPublicGroupPopUpViewController.h"
 #import "GLPInviteUsersViewController.h"
+#import "GLPTableActivityIndicator.h"
 
 @interface GroupViewController () <GLPAttendingPopUpViewControllerDelegate, GLPGroupSettingsViewControllerDelegate, GLPPublicGroupPopUpViewControllerDelegate>
 
@@ -89,6 +90,8 @@
 //@property (strong, nonatomic) UIRefreshControl *refreshControl;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 
@@ -157,8 +160,6 @@ const float TOP_OFF_SET = -64.0;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-//    [self configureNavigationItems];
     
     [self configureNotifications];
 
@@ -369,9 +370,7 @@ const float TOP_OFF_SET = -64.0;
 
     _showComment = NO;
     
-//    _activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-    
-//    _strechedImageView = [[GLPStretchedImageView alloc] init];
+    _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.view];
 }
 
 - (void)configureNavigationItems
@@ -391,8 +390,9 @@ const float TOP_OFF_SET = -64.0;
     }
     
     if([_group.loggedInUser isAuthenticatedForChanges])
-    {
-        [self.navigationController.navigationBar setButton:kRight withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
+    {        
+        [self.navigationController.navigationBar setButton:kRight specialButton:kQuit withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
+
     }
     else if (![_group.loggedInUser isMemberOfGroup] && _group.privacy == kPublicGroup)
     {
@@ -697,8 +697,6 @@ const float TOP_OFF_SET = -64.0;
 //    {
 //        int i = (self.posts.count == 0) ? 0 : 1;
     
-    [self showOrHidePostsEmptyView];
-    
     
     self.currentNumberOfRows = NUMBER_OF_ROWS + self.posts.count + 1 /*+ i*/;
 //    }
@@ -786,7 +784,7 @@ const float TOP_OFF_SET = -64.0;
             //Set this class as delegate.
             postViewCell.delegate = self;
             
-            [postViewCell setPost:post withPostIndex:indexPath.row];
+            [postViewCell setPost:post withPostIndexPath:indexPath];
         }
 
 
@@ -809,7 +807,6 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     if(indexPath.row < 1)
     {
         return;
@@ -828,9 +825,6 @@ const float TOP_OFF_SET = -64.0;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(indexPath.row - 1 == self.posts.count) {
-        
-        
-        
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }
     
@@ -1036,48 +1030,31 @@ const float TOP_OFF_SET = -64.0;
 
 -(void)loadPosts
 {
+    [_tableActivityIndicator startActivityIndicator];
+    
     [GLPGroupManager loadInitialPostsWithGroupId:_group.remoteKey localCallback:^(NSArray *localPosts) {
         
         FLog(@"Local group posts: %@", localPosts);
+        
+        if(localPosts.count != 0)
+        {
+            [_tableActivityIndicator stopActivityIndicator];
+        }
         
         [self setNewLocalPosts:localPosts];
         
     } remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
         
-        [self setNewRemotePosts:remotePosts withRemain:remain];
+        [_tableActivityIndicator stopActivityIndicator];
+
+        if(success)
+        {
+            [self setNewRemotePosts:remotePosts withRemain:remain];
+        }
         
+        [self showOrHidePostsEmptyView];
+
     }];
-    
-//    [GLPGroupManager loadInitialPostsWithGroupId:_group.remoteKey remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
-//       
-//        if(success)
-//        {
-////            DDLogDebug(@"Posts from network: %@ - %@", _group.name, remotePosts);
-//            
-//            _posts = remotePosts.mutableCopy;
-//            
-//            [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
-//            
-//            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
-//            
-//            [self.tableView reloadData];
-//            
-//            self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
-//            
-//            //If the view comes from notifications, focus on the user's latest post.
-//            [self focusOnTheLatestUsersPostIfNeeded];
-//            
-//            [self removeAnyAlreadyUploadedImagePosts];
-//            
-//            [self insertPendingImagePostsIfNeeded];
-//               
-//        }
-//        else
-//        {
-//            self.loadingCellStatus = kGLPLoadingCellStatusError;
-//        }
-//        
-//    }];
 }
 
 - (void)setNewRemotePosts:(NSArray *)remotePosts withRemain:(BOOL)remain
@@ -1436,6 +1413,8 @@ const float TOP_OFF_SET = -64.0;
     
     [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
     
+    [self showOrHidePostsEmptyView];
+    
     [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
     
     
@@ -1475,7 +1454,6 @@ const float TOP_OFF_SET = -64.0;
     
     int index;
     
-    
     for(index = 0; index < self.posts.count; ++index)
     {
         GLPPost *p = [self.posts objectAtIndex:index];
@@ -1490,6 +1468,8 @@ const float TOP_OFF_SET = -64.0;
     [self.posts removeObjectAtIndex:index];
     
     [self removeTableViewPostWithIndex:index];
+    
+    [self showOrHidePostsEmptyView];
     
 }
 
@@ -1716,11 +1696,10 @@ const float TOP_OFF_SET = -64.0;
     [self performSegueWithIdentifier:@"show location" sender:self];
 }
 
-- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
+- (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
 {
     _showComment = YES;
-    self.selectedPost = _posts[postIndex - 1];
-    
+    self.selectedPost = _posts[postIndexPath.row - 1];
     self.commentCreated = NO;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }

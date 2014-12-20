@@ -10,6 +10,7 @@
 #import "GLPVideo.h"
 #import "DateFormatterHelper.h"
 #import "GLPLocation.h"
+#import "GLPReviewHistory.h"
 
 @implementation GLPPost
 
@@ -31,8 +32,7 @@
     }
     
     _sendStatus = kSendStatusLocal;
-    //_liked = NO;
-    
+    _pending = NO;
     return self;
 }
 
@@ -43,10 +43,27 @@
     if(self)
     {
         self.remoteKey = remoteKey;
+        _pending = NO;
     }
     
     return self;
 }
+
+#pragma mark - Modifiers
+
+- (void)addNewReviewHistory:(GLPReviewHistory *)reviewHistory
+{
+    if (self.reviewHistory == nil)
+    {
+        self.reviewHistory = [[NSMutableArray alloc] initWithObjects:reviewHistory, nil];
+    }
+    else
+    {
+        [self.reviewHistory addObject:reviewHistory];
+    }
+}
+
+#pragma mark - Accessors
 
 -(BOOL)imagePost
 {
@@ -78,6 +95,40 @@
     return NO;
 }
 
+- (Action)pendingPostStatus
+{
+    if(!self.reviewHistory || self.reviewHistory.count == 0)
+    {
+        return kPending;
+    }
+    else
+    {
+        GLPReviewHistory *firstReviewHistory = [self.reviewHistory lastObject];
+        
+        return [firstReviewHistory action];
+    }
+    
+}
+
+/**
+ Updates the current post with new data if there are from the newPost.
+ 
+ @param the new updated post.
+ 
+ */
+- (void)updatePostWithNewPost:(GLPPost *)newPost
+{
+    self.eventTitle = newPost.eventTitle;
+    
+    self.dateEventStarts = newPost.dateEventStarts;
+    
+    self.content = newPost.content;
+    
+    self.imagesUrls = newPost.imagesUrls;
+    
+    self.video = newPost.video;
+}
+
 - (NSDate *)generateDateEventEnds
 {
     return [DateFormatterHelper addHours:2 toDate:_dateEventStarts];
@@ -93,9 +144,36 @@
     return _location.name;
 }
 
+- (BOOL)isEqual:(id)other
+{
+//    if (other == self) {
+//        DDLogDebug(@"GLPPost : equal YES %d %@ : %@", [(GLPPost *)other remoteKey] == self.remoteKey, [(GLPPost *)other content], self.content);
+//        return YES;
+//    } else if (![super isEqual:other]) {
+//        DDLogDebug(@"GLPPost : equal NO %d %@ : %@", [(GLPPost *)other remoteKey] == self.remoteKey, [(GLPPost *)other content], self.content);
+//        return NO;
+//    } else {
+//        DDLogDebug(@"GLPPost : equal %d %@ : %@", [(GLPPost *)other remoteKey] == self.remoteKey, [(GLPPost *)other content], self.content);
+//        
+//        return [(GLPPost *)other remoteKey] == self.remoteKey;
+//    }
+    
+//    DDLogDebug(@"GLPPost : equal %d %@ : %@", [(GLPPost *)other remoteKey] == self.remoteKey, [(GLPPost *)other content], self.content);
+
+    return [(GLPPost *)other remoteKey] == self.remoteKey;
+
+}
+
+- (NSUInteger)hash
+{
+    return self.remoteKey;
+}
+
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Post id: %ld, Content: %@ Sending status: %d Date: %@, Group: %@ ", (long)self.remoteKey, self.content, self.sendStatus, self.date, self.group];
+//    return [NSString stringWithFormat:@"Post id: %ld, Content: %@ Sending status: %d Date: %@, Group: %@, SendStatus %d, Event date: %@", (long)self.remoteKey, self.content, self.sendStatus, self.date, self.group, self.sendStatus, self.dateEventStarts];
+    
+    return [NSString stringWithFormat:@"Post content %@, remote key %d", self.content, self.remoteKey];
 }
 
 

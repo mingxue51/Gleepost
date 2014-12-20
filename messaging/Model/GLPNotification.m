@@ -43,6 +43,10 @@
             return [NSString stringWithFormat:@"%@ added you to a group", self.user.name];
         case kGLPNotificationTypeCreatedPostGroup:
             return [NSString stringWithFormat:@"%@ created new post in group.", self.user.name];
+        case kGLPNotificationTypePostApproved:
+            return [NSString stringWithFormat:@"%@ approved your post.", self.user.name];
+        case kGLPNotificationTypePostRejected:
+            return [NSString stringWithFormat:@"%@ rejected your post.", self.user.name];
         default:
             return @"Something happened";
     }

@@ -46,8 +46,7 @@
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    
-    [self.navigationController.navigationBar setButton:kLeft withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismissModalView) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismissModalView) andTarget:self];
         
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
@@ -100,7 +99,7 @@
     
     NSDictionary *dictionary = [_settingsItems objectAtIndex:indexPath.row];
     
-    NSString *title = [dictionary objectForKey:[NSNumber numberWithInt:indexPath.row]];
+    NSString *title = [dictionary objectForKey:[NSNumber numberWithInteger:indexPath.row]];
     
     SettingCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     

@@ -87,8 +87,6 @@
 
 + (void)save:(GLPUser *)entity inDb:(FMDatabase *)db
 {
-    DDLogDebug(@"DB error : save GLPUserDao");
-    
     [db executeUpdateWithFormat:@"insert into users(remoteKey, name, full_name, image_url, course, network_id, network_name, tagline, email, rsvp_count, group_count, post_count) values(%d, %@, %@, %@, %@, %d, %@, %@, %@, %d, %d, %d)", entity.remoteKey, entity.name, entity.fullName, entity.profileImageUrl, entity.course, entity.networkId, entity.networkName, entity.personalMessage, entity.email, [entity.rsvpCount intValue], [entity.groupCount intValue], [entity.postsCount intValue]];
     
     entity.key = [db lastInsertRowId];

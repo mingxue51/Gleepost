@@ -26,6 +26,7 @@
 #import "GLPImageHelper.h"
 #import "GLPPostImageLoader.h"
 #import "GLPImageHelper.h"
+#import "GLPThemeManager.h"
 
 @interface MainPostView ()
 
@@ -65,6 +66,10 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
+@property (weak, nonatomic) IBOutlet UIView *loadingView;
+
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingViewIndicator;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentLabelHeightConstrain;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromTopView;
@@ -74,6 +79,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewHeight;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *backgroundImageHeight;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *loadingViewHeight;
 
 //This variable is temporary.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceBetweenTitleAndClockView;
@@ -123,21 +130,9 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     return self;
 }
 
--(void)initialiseObjects
+- (void)awakeFromNib
 {
-//    _mediaAvailable = NO;
-}
 
--(void)configureMediaAvailable
-{
-//    if((_post.imagesUrls && _post.imagesUrls.count > 0) || (_post.videosUrls && _post.videosUrls.count > 0))
-//    {
-//        _mediaAvailable = YES;
-//    }
-//    else
-//    {
-//        _mediaAvailable = NO;
-//    }
 }
 
 #pragma mark - Modifiers
@@ -146,6 +141,25 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 {
     /** TODO: See if this assign is good. */
     _post = post;
+    
+    [self formatElements];
+    
+    if(_post.sendStatus == kSendStatusLocalEdited)
+    {
+        DDLogDebug(@"MainPostView : kSendStatusLocalEdited YES %d", _post.sendStatus);
+        
+        [_loadingView setHidden:NO];
+        
+        [_loadingViewIndicator startAnimating];
+        
+        return;
+    }
+    else
+    {
+        DDLogDebug(@"MainPostView : kSendStatusLocalEdited NO %d", _post.sendStatus);
+
+        [_loadingView setHidden:YES];
+    }
     
     [self showOrHideLikeLabel];
     
@@ -158,9 +172,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [_contentLbl setText:post.content];
     
     [_nameLbl setText:post.author.name];
+    [_nameLbl setTextColor:[[GLPThemeManager sharedInstance] nameTintColour]];
     _nameLbl.tag = _post.author.remoteKey;
-    
-    [self configureMediaAvailable];
     
     _viewPost = viewPost;
     
@@ -179,7 +192,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [self setVideo];
     
-    [self formatElements];
+//    [self formatElements];
     
     [self updateIndicatorWithRemoteKey:post.remoteKey];
     
@@ -350,6 +363,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [_backgroundImageHeight setConstant:backgroundImageViewHeight];
     
     [_distanceFromTop setConstant:distanceFromTop];
+
     
     [self.mainViewHeight setConstant:height + fixedBottomViewHeight];
 
@@ -365,9 +379,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     backgroundImageViewHeight = 371.0f + height;    //378.0f
     fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
-
-    float constantBetweenClockViewAndTitle = 8;
-    
     
     if([self isCurrentPostEvent])
     {
@@ -404,6 +415,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [_backgroundImageHeight setConstant:backgroundImageViewHeight];
     
+    [_loadingViewHeight setConstant:backgroundImageViewHeight];
+    
     [_contentLabelHeightConstrain setConstant:height];
     
     [self.distanceFromTop setConstant:distanceFromTop];
@@ -436,6 +449,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     
     [_backgroundImageHeight setConstant:backgroundImageViewHeight];
+    
+    [_loadingViewHeight setConstant:backgroundImageViewHeight];
     
     [self.distanceFromTop setConstant:distanceFromTop];
     
@@ -509,6 +524,14 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         [self hideVideoView];
     }
     
+    if([self doesMediaNeedLoadAgain])
+    {
+        [_activityIndicator stopAnimating];
+        [_postImageView setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        
+        return;
+    }
+    
     if(self.isViewPost && _postImageView.image != nil)
     {
         [_activityIndicator stopAnimating];
@@ -516,7 +539,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     
     if(_postImageView.image != nil && self.post.remoteKey == _postImageView.tag)
-        
     {
         [_activityIndicator stopAnimating];
         return;
@@ -530,9 +552,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     //This happens only when the image is not fetched or is save in cache.
     if(imageUrl!=nil && _post.tempImage==nil)
     {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-
-        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
         // Look in cache and request for the image.
         [[GLPPostImageLoader sharedInstance] findImageWithUrl:imageUrl callback:^(UIImage *image, BOOL found) {
@@ -583,20 +603,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     else if(_post.finalImage==nil && !self.mediaNeedsToReload)
     {
-        DDLogDebug(@"Image view should be nil");
-        
 //        [_postImageView sd_setImageWithURL:nil placeholderImage:[UIImage imageNamed:nil]];
         
         [_postImageView setImage:nil];
         
         [_activityIndicator startAnimating];
 
-    }
-    
-    if([self doesMediaNeedLoadAgain])
-    {
-        [_activityIndicator stopAnimating];
-        [_postImageView setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:nil] usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
 }
 
@@ -614,6 +626,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [_activityIndicator stopAnimating];
     [_videoView setHidden:NO];
     [_postImageView setHidden:YES];
+    DDLogDebug(@"MainPostView : New video %@", _post.video);
+    
     [_videoView setUpVideoViewWithPost:_post];
 //    [_videoView setUpPreviewWithUrl:self.post.videosUrls[0] withRemoteKey:_post.remoteKey];
 //    [_videoView initialisePreviewWithUrl:self.post.videosUrls[0]];
@@ -687,7 +701,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
        contentAttributeText = [[NSAttributedString alloc] initWithString:_contentLbl.text attributes:@{ NSKernAttributeName : @(0.3f)}];
     }
     
-
     [ShapeFormatterHelper setRoundedView:_indicatorImageView toDiameter:_indicatorImageView.frame.size.height];
     
     [ShapeFormatterHelper setRoundedView:_userImageView toDiameter:_userImageView.frame.size.height];
@@ -696,7 +709,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:5];
     
+    
     [ShapeFormatterHelper setBorderToView:_backgroundImageView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0f];
+    
+    [ShapeFormatterHelper setCornerRadiusWithView:_loadingView andValue:5];
+    
+    [ShapeFormatterHelper setBorderToView:_loadingView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0f];
     
     _contentLbl.attributedText = contentAttributeText;
 }
@@ -1143,11 +1161,11 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         
         if(success)
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Post Reported" andContent:@"Thanks for helping us keep Gleepost a fun and safe environment. Our team will review this post ASAP."];
+            [WebClientHelper showReportedDone];
         }
         else
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Error Sending Report" andContent:@"Something went wrong reporting this post, please try again in a few moments."];
+            [WebClientHelper showFailedToReport];
         }
         
     }];

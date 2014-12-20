@@ -25,7 +25,6 @@ typedef enum
 
 @interface CategoryManager : NSObject
 
-
 +(CategoryManager*)sharedInstance;
 
 -(GLPCategory*)categoryWithTag:(NSString*)tag;
@@ -38,6 +37,6 @@ typedef enum
 - (void)setSelectedCategory:(GLPCategory *)selectedCategory;
 - (NSString *)selectedCategoryName;
 - (GLPCategory *)selectedCategory;
-
+- (void)reset;
 
 @end

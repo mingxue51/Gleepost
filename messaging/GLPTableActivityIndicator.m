@@ -53,11 +53,10 @@
             
             case kActivityIndicatorCenter:
             yPosition = ([[UIScreen mainScreen] bounds].size.height/2 - _activityIndicator.frame.size.height * 2);
-            DDLogDebug(@"");
             break;
             
         case kActivityIndicatorBottom:
-            yPosition = 300.0f;
+            yPosition = ([[UIScreen mainScreen] bounds].size.height/2 + _activityIndicator.frame.size.height * 4);
             break;
             
         default:

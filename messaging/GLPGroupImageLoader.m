@@ -50,7 +50,7 @@ static GLPGroupImageLoader *instance = nil;
         
         DDLogInfo(@"Continue all operations of loading group images.");
         
-        [super startConsume];
+        [self startConsume];
         
     } else
     {
@@ -104,12 +104,24 @@ static GLPGroupImageLoader *instance = nil;
             {
                 DDLogInfo(@"Group image loader starts consuming");
                 
-                [super startConsume];
+                [self startConsume];
                 
                 readyToConsume = NO;
             }
             
         }];
+    }
+}
+
+#pragma mark - Client
+
+- (void)startConsume
+{
+    if(self.networkAvailable)
+    {
+        //If there is network then start threads.
+        [NSThread detachNewThreadSelector:@selector(consumeQueue:) toTarget:self withObject:nil];
+        [NSThread detachNewThreadSelector:@selector(consumeQueue:) toTarget:self withObject:nil];
     }
 }
 
@@ -243,7 +255,7 @@ static GLPGroupImageLoader *instance = nil;
         else
         {
             //TODO: No internet connection. Retry later.
-            DDLogInfo(@"GLPGroupImageLoader : No network!");
+            DDLogInfo(@"GLPGroupImageLoader : Failed to fetch image with url %@", imageUrl);
             
             break;
         }

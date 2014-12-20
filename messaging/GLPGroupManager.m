@@ -81,11 +81,6 @@
       }];
 }
 
-//+(NSArray *)removePendingGroupsIfExist:(NSArray *)pending withRemoteGroups:(NSArray *)remoteGroups
-//{
-//    
-//}
-
 + (NSArray *)addLocalGroups:(NSArray *)localGroups toRemoteGroups:(NSArray *)remoteGroups
 {
     NSMutableArray *finalGroups = remoteGroups.mutableCopy;

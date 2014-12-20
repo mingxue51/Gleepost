@@ -58,7 +58,7 @@
 #import "UIRefreshControl+CustomLoader.h"
 #import "IntroKindOfNewPostViewController.h"
 #import "GLPVideoUploadManager.h"
-#import "GLPCampusWallProgressManager.h"
+#import "GLPVideoPostCWProgressManager.h"
 #import "UploadingProgressView.h"
 #import "NewPostViewController.h"
 #import "GLPShowLocationViewController.h"
@@ -69,16 +69,16 @@
 #import "GLPCalendarManager.h"
 #import "GLPShowUsersViewController.h"
 #import "GLPTableActivityIndicator.h"
+#import "GLPApprovalManager.h"
+#import "GLPPendingPostsManager.h"
+#import "GLPPendingCell.h"
+#import "GLPCategoryTitleCell.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *posts;
-@property (strong, nonatomic) NSMutableArray *usersImages;
-@property (strong, nonatomic) NSMutableArray *postsImages;
-@property (strong, nonatomic) NSMutableArray *users;
 @property (strong, nonatomic) GLPPost *selectedPost;
 @property (strong, nonatomic) GLPUser *selectedUser;
-@property (strong, nonatomic) NSMutableArray *postsHeight;;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSMutableArray *shownCells;
 @property (strong, nonatomic) NewPostView *postView;
@@ -96,8 +96,8 @@
 @property (assign, nonatomic) BOOL isLoading;
 @property (assign, nonatomic) BOOL firstLoadSuccessful;
 @property (assign, nonatomic) BOOL tableViewInScrolling;
-@property (assign, nonatomic) int insertedNewRowsCount; // count of new rows inserted
-@property (assign, nonatomic) int postIndexToReload;
+@property (assign, nonatomic) NSInteger insertedNewRowsCount; // count of new rows inserted
+@property (assign, nonatomic) NSInteger postIndexToReload;
 
 // Not need because we use performselector which areis deprioritized during scrolling
 @property (assign, nonatomic) BOOL shouldLoadNewPostsAfterScrolling;
@@ -111,7 +111,7 @@
 @property (assign, nonatomic) BOOL commentCreated;
 
 //TODO: Remove after the integration of image posts.
-@property int selectedIndex;
+@property NSInteger selectedIndex;
 
 @property (strong, nonatomic) UITabBarItem *homeTabbarItem;
 
@@ -137,7 +137,7 @@
 /** Captures the visibility of current cells. */
 @property (strong, nonatomic) GLPFlurryVisibleCellProcessor *flurryVisibleProcessor;
 
-@property (strong ,nonatomic) EmptyMessage *emptyGroupPostsMessage;
+@property (strong ,nonatomic ) EmptyMessage *emptyGroupPostsMessage;
 
 //@property (strong, nonatomic) EmptyMessage *emptyCategoryPostsMessage;
 
@@ -194,10 +194,7 @@ const float TOP_OFFSET = 180.0f;
     
     [self loadInitialPosts];
     
-    /** Check if there are pending video posts. */
-    [[GLPVideoUploadManager sharedInstance] startCheckingForNonUploadedVideoPosts];
-    
-    [GLPCampusWallProgressManager sharedInstance];
+    [self startBackgroundOperations];
     
     //Find the sunset sunrise for preparation of the new chat.
     //TODO: That's will be used in GleepostSD app.
@@ -275,24 +272,13 @@ const float TOP_OFFSET = 180.0f;
     [super viewDidDisappear:animated];
 }
 
-//- (BOOL)prefersStatusBarHidden
-//{
-//    return NO;
-//}
+#pragma mark - Configuration 
 
 -(void)initialiseObjects
 {
-    self.postsHeight = [[NSMutableArray alloc] init];
-    
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
-    
-    self.users = [[NSMutableArray alloc] init];
-    
-    
-    self.usersImages = [[NSMutableArray alloc] init];
-    self.postsImages = [[NSMutableArray alloc] init];
     
     //Create the array and initialise.
     self.shownCells = [[NSMutableArray alloc] init];
@@ -344,6 +330,18 @@ const float TOP_OFFSET = 180.0f;
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.tableView];
 }
 
+- (void)startBackgroundOperations
+{
+    /** Check if there are pending video posts. */
+    [[GLPVideoUploadManager sharedInstance] startCheckingForNonUploadedVideoPosts];
+    
+    [GLPApprovalManager sharedInstance];
+    
+    [[GLPPendingPostsManager sharedInstance] loadPendingPosts];
+    
+    [GLPVideoPostCWProgressManager sharedInstance];
+}
+
 
 -(void)dealloc
 {
@@ -357,6 +355,7 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_HOME_TAPPED_TWICE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
 }
 
 - (void)showNetworkErrorViewIfNeeded
@@ -398,36 +397,16 @@ const float TOP_OFFSET = 180.0f;
     }
 }
 
--(void)updatePostRemoteKeyAndImage:(NSNotification*)notification
+- (void)updatePostAfterUploading:(NSNotification*)notification
 {
-    
-    NSDictionary *dict = [notification userInfo];
-    
-    NSInteger key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
-    NSInteger remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
-    NSString *urlImage = [dict objectForKey:@"imageUrl"];
-    
-    int index = 0;
-    
-    GLPPost *uploadedPost = nil;
-    
-    for(GLPPost* p in self.posts)
-    {
-        if(key == p.key)
-        {
-            if(urlImage && ![urlImage isEqualToString:@""])
-            {
-                p.imagesUrls = [[NSArray alloc] initWithObjects:urlImage, nil];
-            }
-            
-            p.remoteKey = remoteKey;
-            uploadedPost = p;
-//            p.tempImage = nil;
-            break;
-        }
-        ++index;
-    }
+    NSInteger index = [GLPPostNotificationHelper parsePostWithImageUrlNotification:notification withPostsArray:self.posts];
 
+    if(index == -1)
+    {
+        return;
+    }
+    
+    GLPPost *uploadedPost = self.posts[index];
     
     if(uploadedPost.author.remoteKey == [SessionManager sharedInstance].user.remoteKey)
     {
@@ -435,11 +414,7 @@ const float TOP_OFFSET = 180.0f;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPNewPostByUser" object:nil userInfo:nil];
     }
     
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-
-//    [self.tableView reloadData];
-    
-
+    [self refreshCellViewWithIndex: index];
 }
 
 /**
@@ -458,8 +433,6 @@ const float TOP_OFFSET = 180.0f;
     
     DDLogDebug(@"New video post received in campus wall: %@", inPost);
     
-    
-    
     //Check if the video post is already in the campus wall.
     
     if([self isPostVisible:inPost])
@@ -470,7 +443,6 @@ const float TOP_OFFSET = 180.0f;
 
         return;
     }
-
     
     [self reloadNewVideoPost:inPost];
 }
@@ -489,13 +461,23 @@ const float TOP_OFFSET = 180.0f;
         
         if(index != -1)
         {
-            DDLogDebug(@"Index to be refreshed %ld", (long)index);
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self refreshCellViewWithIndex:index];
             });
         }
         
     });
+}
+
+/**
+ This method should be called from the NewPostViewController via an nsnotification in
+ order to update the number of pending posts.
+ */
+- (void)refreshPendingPostCell
+{
+    //TODO: Fixed that later: Refresh only the pending post cell.
+    
+    [self.tableView reloadData];
 }
 
 -(void)updateLikedPost:(NSNotification*)notification
@@ -531,16 +513,23 @@ const float TOP_OFFSET = 180.0f;
     
     int index = -1;
     
-
     index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
     
-    
-    
-    if(index != -1)
+    if(index == -1)
     {
-        [self removeTableViewPostWithIndex:index];
+        return;
     }
     
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        index+= 2;
+    }
+    else
+    {
+        ++index;
+    }
+
+    [self removeTableViewPostWithIndex:index];
 }
 
 #pragma mark - Init config
@@ -576,44 +565,19 @@ const float TOP_OFFSET = 180.0f;
     
     
 //    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
-    UIColor *tabColour = [AppearanceHelper redGleepostColour];
 
-    
-    //    [[UINavigationBar appearance] setTitleTextAttributes: @{UITextAttributeFont: [UIFont fontWithName:@"Helvetica Neue" size:20.0f]}];
+    UIColor *tabColour = [[GLPThemeManager sharedInstance] tabbarSelectedColour];
 
-    
-//    self.tabBarController.tabBar.hidden = NO;
     [AppearanceHelper showTabBar:self];
-    
-    //[[CustomTabBarButtonManager sharedInstance] showItemHidden];
-    
-    
-    //Set colour of the border navigation bar image. TODO: Set one line image.
-//    [[UINavigationBar appearance] setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:tabColour]];
-    
-
 
     
     
 //    UIColor *tabColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     self.tabBarController.tabBar.tintColor = tabColour;
     
-
-//    NSArray *items = self.tabBarController.tabBar.items;
-//    UITabBarItem *i = [items objectAtIndex:0];
-//    
-//    [self.homeTabbarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: tabColour, UITextAttributeTextColor, nil] forState:UIControlStateHighlighted];
-    
     [AppearanceHelper setSelectedColourForTabbarItem:self.homeTabbarItem withColour:tabColour];
     
-    
-//    [self configTabbarFormat];
-
-    
     [self setCustomBackgroundToTableView];
-    
-    //Show temporary top image view.
-//    [_topImageView setHidden:NO];
 }
 
 -(void)setCustomBackgroundToTableView
@@ -625,14 +589,9 @@ const float TOP_OFFSET = 180.0f;
         return;
     }
     
-//    UIImageView *backImgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"campus_wall_background_main"]];
-//    
-//    [backImgView setFrame:CGRectMake(0.0f, 0.0f, backImgView.frame.size.width, backImgView.frame.size.height)];
-    
     [self.tableView setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
     
     [self.view setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
-//    [self.tableView setBackgroundView:backImgView];
 }
 
 -(void)configTabbarFormat
@@ -640,74 +599,7 @@ const float TOP_OFFSET = 180.0f;
     
     if([GLPiOSSupportHelper isIOS6])
     {
-        
         return;
-        
-//        [GLPiOS6Helper configureTabbarController:self.tabBarController];
-//        
-//        NSArray *items = self.tabBarController.tabBar.items;
-//        
-//        
-//        UITabBarItem *item = [items objectAtIndex:0];
-//                
-////        item.image = [UIImage imageNamed:@"bird-house-7"];
-////        
-////        item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
-//        
-////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-//        
-//        
-//        self.homeTabbarItem = item;
-//        
-//        
-//        
-//        item = [items objectAtIndex:1];
-//        
-////        item.image = [UIImage imageNamed:@"message-7"];
-////        
-////        item.selectedImage = [UIImage imageNamed:@"message-7"];
-//        
-////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-//        
-//        
-//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-//        
-//        
-//        item = [items objectAtIndex:2];
-//        
-////        item.image = [UIImage imageNamed:@"proximity-7"];
-////        
-////        item.selectedImage = [UIImage imageNamed:@"proximity-7"];
-//        
-////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-//        
-//        
-//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-//        
-//        
-//        item = [items objectAtIndex:3];
-//        
-////        item.image = [UIImage imageNamed:@"man-7"];
-////        
-////        item.selectedImage = [UIImage imageNamed:@"man-7"];
-//        
-////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-//        
-//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-//        
-//        
-//        item = [items objectAtIndex:4];
-//        
-////        item.image = [UIImage imageNamed:@"id-card-7"];
-////        
-////        item.selectedImage = [UIImage imageNamed:@"id-card-7"];
-//        
-////        item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-//        
-//        
-//        [AppearanceHelper setUnselectedColourForTabbarItem:item];
-        
-        
     }
     
     // set selected and unselected icons
@@ -779,7 +671,7 @@ const float TOP_OFFSET = 180.0f;
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostWithRemoteKey:) name:@"GLPPostUpdated" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostRemoteKeyAndImage:) name:@"GLPPostUploaded" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatePostAfterUploading:) name:@"GLPPostUploaded" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     
@@ -796,6 +688,8 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewImagePostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPendingPostCell) name:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
 }
 
 /** This notification called when user presses the going button on post. */
@@ -824,6 +718,10 @@ const float TOP_OFFSET = 180.0f;
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"GLPPendingCell" bundle:nil] forCellReuseIdentifier:@"GLPPendingCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"GLPCategoryTitleCell" bundle:nil] forCellReuseIdentifier:@"GLPCategoryTitleCell"];
 
     
 //    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderScrollView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"CampusWallHeaderSimple"];
@@ -836,20 +734,6 @@ const float TOP_OFFSET = 180.0f;
     animatedImageView.animationRepeatCount = 10;
     [animatedImageView startAnimating];
     */
-    
-//    UIImageView *subView = [[UIImageView alloc] initWithFrame:CGRectMake(130, -2, 56, 56)];
-//    
-//    NSString *filePath = [[NSBundle mainBundle] pathForResource: @"loader2" ofType: @"gif"];
-//    
-//    NSData *gifData = [NSData dataWithContentsOfFile: filePath];
-//    
-//    [subView setImage: [UIImage animatedImageWithAnimatedGIFData:gifData]];
-//    
-//    [self.refreshControl insertSubview:subView atIndex:1];
-//
-//    
-//    [self.refreshControl setBackgroundColor:[UIColor whiteColor]];
-//    [self.refreshControl setTintColor:[UIColor whiteColor]];
 }
 
 -(void)configHeader
@@ -866,9 +750,7 @@ const float TOP_OFFSET = 180.0f;
     self.tableView.tableHeaderView = self.campusWallHeader;
     
     [self.campusWallHeader reloadData];
-    
-   
-    [self.navigationController.navigationBar addSubview:[[GLPCampusWallProgressManager sharedInstance] progressView]];
+    [self.navigationController.navigationBar addSubview:[[GLPVideoPostCWProgressManager sharedInstance] progressView]];
 }
 
 - (void)configNewElementsIndicatorView
@@ -877,7 +759,6 @@ const float TOP_OFFSET = 180.0f;
     self.elementsIndicatorView.hidden = YES;
     self.elementsIndicatorView.center = self.navigationController.view.center;
     CGRectSetY(self.elementsIndicatorView, 80); //TODO: something better than arbitrary value
-    
     [self.navigationController.view addSubview:self.elementsIndicatorView];
 }
 
@@ -886,24 +767,10 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)configNavigationBar
 {
-    
-    //    [AppearanceHelper setNavigationBarColour:self];
-    
-    //    [AppearanceHelper setWhiteNavigationBarFormat:self.navigationController.navigationBar];
-    
-    
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
-    
-//    [self.navigationController.navigationBar setFontFormatWithColour:kRed];
     [self.navigationController.navigationBar setCampusWallFontFormat];
-    
-    
-    //    [AppearanceHelper setNavigationBarFontFor:self];
-    
-    
     //Set to all the application the status bar text white.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-    
 }
 
 - (void)addNavigationButtons
@@ -918,29 +785,6 @@ const float TOP_OFFSET = 180.0f;
 //    [_pView resetView];
 //    [_pView setHidden:NO];
 //}
-
-
-/**
- Not used.
- */
--(void) setBackgroundToNavigationBar
-{
-    UINavigationBar *bar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0.f, -20.f, 320.f, 65.f)];
-    
-    
-    [bar setBackgroundColor:[UIColor clearColor]];
-    [bar setBackgroundImage:[UIImage imageNamed:@"navigationbar_4"] forBarMetrics:UIBarMetricsDefault];
-    [bar setTranslucent:YES];
-    
-    
-    //Change the format of the navigation bar.
-    [self.navigationController.navigationBar setTranslucent:YES];
-    
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"] forBarMetrics:UIBarMetricsDefault];
-    
-    [self.navigationController.navigationBar insertSubview:bar atIndex:0];
-    
-}
 
 /*
  
@@ -968,11 +812,53 @@ const float TOP_OFFSET = 180.0f;
 
 #pragma mark - Table view refresh methods
 
--(void)refreshCellViewWithIndex:(const NSUInteger)index
+-(void)refreshCellViewWithIndex:(NSUInteger)index
 {
-    [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
-    [self.tableView endUpdates];
+//    index = ([[GLPPendingPostsManager sharedInstance] arePendingPosts]) ? (index+=2) : (index+=1);
+    
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        index+=2;
+    }
+    else
+    {
+        index+=1;
+    }
+    
+    DDLogDebug(@"refreshCellViewWithIndex %lu", (unsigned long)index);
+    
+    if([self cellNeedsReloadWithIndex:index])
+    {
+
+        //For now we are reloading all the data (for now) because there was a problem reloading each cell as individual.
+        [self.tableView reloadData];
+        
+        
+        //            [self.tableView beginUpdates];
+        //            [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+        //            [self.tableView endUpdates];
+
+    }
+    else
+    {
+        DDLogDebug(@"GLPTimelineViewController : no need to refresh cell with index %lu", (unsigned long)index);
+    }
+    
+
+}
+
+- (BOOL)cellNeedsReloadWithIndex:(NSInteger)index
+{
+    NSArray *paths = [self.tableView indexPathsForVisibleRows];
+    
+    for(NSIndexPath *indexPath in paths)
+    {
+        if(indexPath.row == index)
+        {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 #pragma mark - Posts
@@ -1018,10 +904,10 @@ const float TOP_OFFSET = 180.0f;
         [_tableActivityIndicator stopActivityIndicator];
 
         if(success) {
-                    
-            self.posts = [self preserveRealImagesWithPosts:remotePosts.mutableCopy];
             
-//            self.posts = [remotePosts mutableCopy];
+//            self.posts = [self preserveRealImagesWithPosts:remotePosts.mutableCopy];
+            
+            self.posts = [remotePosts mutableCopy];
 
             [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
             [[GLPVideoLoaderManager sharedInstance] addVideoPosts:self.posts];
@@ -1052,6 +938,8 @@ const float TOP_OFFSET = 180.0f;
 
 /**
  Helps to preserve the actual images have been saved before to the post data structure.
+ 
+ DEPRECATED: we are not using the finalImage attribute anymore.
  
  @param posts the new posts.
  
@@ -1150,10 +1038,9 @@ const float TOP_OFFSET = 180.0f;
         }
     }
     
-    
     [self startLoading];
     
-    [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts) {
+    [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts, NSArray *deletedPosts) {
         [self stopLoading];
         
         if(!saveScrollingState)
@@ -1162,11 +1049,11 @@ const float TOP_OFFSET = 180.0f;
             [_campusWallHeader reloadData];
         }
         
-        
-        if(!success) {
-//            [self showLoadingError:@"Failed to load new posts"];
-            
-            return;
+        if(deletedPosts.count > 0)
+        {
+            DDLogInfo(@"GLPTimelineViewController : deleted posts %@", deletedPosts);
+            [self.posts removeObjectsInArray:deletedPosts];
+            [self.tableView reloadData];
         }
         
         if(posts.count > 0) {
@@ -1238,14 +1125,17 @@ const float TOP_OFFSET = 180.0f;
         self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
         
         if(posts.count > 0) {
-            int firstInsertRow = self.posts.count;
+            
+            int firstInsertRow = ([[GLPPendingPostsManager sharedInstance] arePendingPosts]) ? self.posts.count + 1 : self.posts.count;
             
             [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
 
             [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.posts.count, posts.count)]];
             
+            int finalRowsCount = ([[GLPPendingPostsManager sharedInstance] arePendingPosts]) ? self.posts.count + 1 : self.posts.count;
+            
             NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-            for(int i = firstInsertRow; i < self.posts.count; i++) {
+            for(int i = firstInsertRow; i < finalRowsCount; i++) {
                 [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
             }
             
@@ -1585,27 +1475,7 @@ const float TOP_OFFSET = 180.0f;
     
     self.isLoading = NO;
     DDLogDebug(@"Is loading NO");
-
-
 }
-
--(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey
-{
-    [[WebClient sharedInstance] postLike:like forPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success) {
-        
-        if(success)
-        {
-            NSLog(@"Timeline Like for post %d succeed.",postRemoteKey);
-        }
-        else
-        {
-            NSLog(@"Timeline for post %d not succeed.",postRemoteKey);
-        }
-        
-        
-    }];
-}
-
 
 #pragma mark - Request management
 
@@ -1767,10 +1637,6 @@ const float TOP_OFFSET = 180.0f;
         {
 //            DDLogDebug(@"up");
         }
-        
-    }
-    else
-    {
     }
     
     if((differenceFromStart) < 0)
@@ -1789,13 +1655,10 @@ const float TOP_OFFSET = 180.0f;
         }
             //[self contract];
     }
-    
 }
-
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    
     DDLogDebug(@"scrollViewDidEndDecelerating1 did scroll: %f", scrollView.contentOffset.y);
     
     if(self.posts.count == 0)
@@ -1812,14 +1675,13 @@ const float TOP_OFFSET = 180.0f;
     
     //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
     
-    NSArray *visiblePosts = [self snapshotVisibleCells];
+    NSArray *visiblePosts = [self getVisiblePostsInTableView];
     
     [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
     
     DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
     
     [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
-    
     
     _tableViewFirstTimeScrolled = YES;
 }
@@ -1838,7 +1700,7 @@ const float TOP_OFFSET = 180.0f;
             return;
         }
         
-        NSArray *visiblePosts = [self snapshotVisibleCells];
+        NSArray *visiblePosts = [self getVisiblePostsInTableView];
         
         [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
         
@@ -1851,8 +1713,6 @@ const float TOP_OFFSET = 180.0f;
 
     }
 }
-
-
 
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {
@@ -1905,8 +1765,7 @@ const float TOP_OFFSET = 180.0f;
 //    [self configAppearance];
 //}
 
-#pragma mark - Table view
-
+#pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -1916,14 +1775,61 @@ const float TOP_OFFSET = 180.0f;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     [_emptyGroupPostsMessage hideEmptyMessageView];
-    return self.posts.count + 1;
+    
+    DDLogDebug(@"numberOfRowsInSection Posts count %ld", (unsigned long)self.posts.count);
+    
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        return self.posts.count + 2;
+    }
+    else
+    {
+        return self.posts.count + 1;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
- 
+    static NSString *CellIdentifierWithImage = @"ImageCell";
+    static NSString *CellIdentifierWithoutImage = @"TextCell";
+    static NSString *CellIdentifierVideo = @"VideoCell";
+    static NSString *CellIdentifierPendingCell = @"GLPPendingCell";
+    static NSString *CellIdentifierCategoryTitle = @"GLPCategoryTitleCell";
+    
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        if(indexPath.row == 0)
+        {
+            GLPPendingCell *pendingCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierPendingCell forIndexPath:indexPath];
+            
+            [pendingCell updateLabelWithNumberOfPendingPosts];
+            
+            return pendingCell;
+        }
+        else if(indexPath.row == 1)
+        {
+            UITableViewCell *categoryTitle = [tableView dequeueReusableCellWithIdentifier:CellIdentifierCategoryTitle forIndexPath:indexPath];
+            
+            return categoryTitle;
+        }
+    }
+    else
+    {
+        if(indexPath.row == 0)
+        {
+            UITableViewCell *categoryTitle = [tableView dequeueReusableCellWithIdentifier:CellIdentifierCategoryTitle forIndexPath:indexPath];
+            
+            return categoryTitle;
+        }
+    }
+    
+    
 
-    if(indexPath.row == self.posts.count) {
+    
+    NSInteger countOfCells = [self convertArrayIndexToTableViewIndex:self.posts.count];
+
+    if(indexPath.row - 1 == countOfCells) {
+        
         GLPLoadingCell *loadingCell = [tableView dequeueReusableCellWithIdentifier:@"LoadingCell" forIndexPath:indexPath];
         [loadingCell setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
         [loadingCell updateWithStatus:self.loadingCellStatus];
@@ -1931,18 +1837,9 @@ const float TOP_OFFSET = 180.0f;
     }
     
     
-    static NSString *CellIdentifierWithImage = @"ImageCell";
-    static NSString *CellIdentifierWithoutImage = @"TextCell";
-    static NSString *CellIdentifierVideo = @"VideoCell";
-
-   
     GLPPostCell *postCell;
-
     
     GLPPost *post = [self currentPostWithIndexPath:indexPath];
-    
-
-    
     
     if([post imagePost])
     {
@@ -1959,9 +1856,7 @@ const float TOP_OFFSET = 180.0f;
         {
             [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
         }
-        
-        DDLogDebug(@"Dequeue cell");
-        
+                
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
     }
 //    else if ([post isVideoPost])
@@ -1980,12 +1875,18 @@ const float TOP_OFFSET = 180.0f;
     
     postCell.delegate = self;
     
-    [postCell setPost:post withPostIndex:indexPath.row];
+    
+    NSIndexPath *postIndexPath = [NSIndexPath indexPathForRow:[self postCurrentIndexWithIndexPath:indexPath] inSection:0];
+    
+    
+    [postCell setPost:post withPostIndexPath:postIndexPath];
     
 //    [self.tableView bringSubviewToFront:self.reNavBar];
     
     return postCell;
 }
+
+#pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1996,24 +1897,25 @@ const float TOP_OFFSET = 180.0f;
 //        return;
 //    }
     
-    if(indexPath.row >= _posts.count)
+    NSUInteger currentRow = [self postCurrentIndexWithIndexPath:indexPath];
+    
+    if(currentRow >= _posts.count)
     {
         //TODO: If this contition is YES then the app is going to crash.
         //That's why we have a temporary return.
         
-        DDLogDebug(@"Avoid crash didEndDisplayingCell index path: %d. Posts count: %d", indexPath.row, _posts.count);
+        DDLogDebug(@"Avoid crash didEndDisplayingCell index path: %ld. Posts count: %lu", (long)indexPath.row, (unsigned long)_posts.count);
 
         return;
     }
     
-    GLPPost *post = _posts[indexPath.row];
+    GLPPost *post = _posts[currentRow];
     
     if(![[cell class] isSubclassOfClass:[GLPPostCell class]])
     {
         DDLogDebug(@"%@ not subclass", [cell class]);
         
         return;
-        
     }
     
     
@@ -2038,21 +1940,31 @@ const float TOP_OFFSET = 180.0f;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //TODO: implement manual reloading
-    if(indexPath.row == self.posts.count) {
+    if(indexPath.row - 1 == self.posts.count) {
         return;
+    }
+    
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        if(indexPath.row == 0 || indexPath.row == 1)
+        {
+            //Navigate to pending posts view.
+            [self performSegueWithIdentifier:@"view pending posts" sender:self];
+            
+            return;
+        }
+    }
+    else
+    {
+        if(indexPath.row == 0)
+        {
+            //The title cell selected.
+            return;
+        }
     }
     
     
     self.selectedPost = [self currentPostWithIndexPath:indexPath];
-    
-//    if(_groupsMode)
-//    {
-//        self.selectedPost = [[CampusWallGroupsPostsManager sharedInstance] postAtIndex:indexPath.row];
-//    }
-//    else
-//    {
-//        self.selectedPost = self.posts[indexPath.row];
-//    }
     
     self.selectedIndex = indexPath.row;
     self.postIndexToReload = indexPath.row;
@@ -2064,31 +1976,35 @@ const float TOP_OFFSET = 180.0f;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        if(indexPath.row == 0)
+        {
+            return [GLPPendingCell cellHeight];
+        }
+        else if (indexPath.row == 1)
+        {
+            return CATEGORY_TITLE_HEIGHT;
+        }
+    }
+    else
+    {
+        if(indexPath.row == 0)
+        {
+            return CATEGORY_TITLE_HEIGHT;
+        }
+    }
     
-    if(indexPath.row == self.posts.count) {
+    NSInteger countOfCells = [self convertArrayIndexToTableViewIndex:self.posts.count];
+    
+    if(indexPath.row - 1 == countOfCells) {
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }
     
-    
-    //float height = [[self.postsHeight objectAtIndex:indexPath.row] floatValue];
-    
-    //static float imageSize = 300;
-    //static float lowerPostLimit = 115;
-    //static float fixedLimitHeight = 70;
-    
-    
-//    if(indexPath.row == 0)
-//    {
-//        return 200;
-//    }
-//    else
-//    {
-//        GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row];
     GLPPost *currentPost = [self currentPostWithIndexPath:indexPath];
     
     if([currentPost imagePost])
     {
-        //NSLog(@"heightForRowAtIndexPath With Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:YES], currentPost.content);
 
         return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
     }
@@ -2098,14 +2014,8 @@ const float TOP_OFFSET = 180.0f;
     }
     else
     {
-        //NSLog(@"heightForRowAtIndexPath Without Image %f and text: %@",[PostCell getCellHeightWithContent:currentPost.content image:NO], currentPost.content);
-        
         return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
     }
-    
-
-//    }
-
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -2125,7 +2035,6 @@ const float TOP_OFFSET = 180.0f;
 }
 
 
-
 #pragma mark - Table view manager methods
 
 /**
@@ -2139,7 +2048,17 @@ const float TOP_OFFSET = 180.0f;
  */
 -(GLPPost *)currentPostWithIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.posts objectAtIndex:indexPath.row];
+    return [self.posts objectAtIndex:[self postCurrentIndexWithIndexPath:indexPath]];
+}
+
+- (NSInteger)postCurrentIndexWithIndexPath:(NSIndexPath *)indexPath
+{
+    return ([[GLPPendingPostsManager sharedInstance] arePendingPosts] ? indexPath.row - 2 : indexPath.row - 1);
+}
+
+- (NSInteger)convertArrayIndexToTableViewIndex:(NSInteger)arrayIndex
+{
+    return ([[GLPPendingPostsManager sharedInstance] arePendingPosts] ? arrayIndex + 2 : arrayIndex + 1);
 }
 
 -(void) updateTableWithNewRowCount:(int)rowCount
@@ -2182,17 +2101,13 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)scrollToTheNavigationBar
 {
-    
     [UIView animateWithDuration:0.5f animations:^{
         
         [self.tableView setContentOffset:CGPointMake(0, TOP_OFFSET)];
         
-        
     } completion:^(BOOL finished) {
         
-        
     }];
-    
 }
 
 /**
@@ -2208,27 +2123,42 @@ const float TOP_OFFSET = 180.0f;
 }
 
 
-- (void)updateTableViewWithNewPostsAndScrollToTop:(int)count
+- (void)updateTableViewWithNewPostsAndScrollToTop:(NSInteger)count
 {
     NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-    for(int i = 0; i < count; i++) {
+    
+    NSUInteger startIndex = 0;
+    
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        startIndex = 2;
+//        ++count;
+        count += 2;
+    }
+    else
+    {
+        startIndex = 1;
+        count += 1;
+    }
+    
+    for(NSInteger i = startIndex; i < count; i++) {
         [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
     }
     
-    //The condition is added to prevent error when there are no posts in the table view.
+    FLog(@"GLPTimelineViewController : updateTableViewWithNewPostsAndScrollToTop count %d start index %d", count, startIndex);
     
+    //The condition is added to prevent error when there are no posts in the table view.
     if(self.posts.count == 1 || !self.posts)
     {
         [self.tableView reloadData];
     }
     else
     {
+//        [self.tableView reloadData];
+
         [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
     }
     
-    
-    
-    //    [self scrollToTheTop];
     [self scrollToTheNavigationBar];
     
     //Bring the fake navigation bar to from because is hidden by new cell.
@@ -2242,7 +2172,16 @@ const float TOP_OFFSET = 180.0f;
     
     int heightForNewRows = 0;
     NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-    for (NSInteger i = 0; i < count; i++) {
+    
+    NSUInteger startIndex = 1;
+
+    if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
+    {
+        startIndex = 2;
+        count+=2;
+    }
+    
+    for (NSInteger i = startIndex; i < count; i++) {
         NSIndexPath *tempIndexPath = [NSIndexPath indexPathForRow:i inSection:0];
         [rowsInsertIndexPath addObject:tempIndexPath];
         
@@ -2252,7 +2191,8 @@ const float TOP_OFFSET = 180.0f;
     tableViewOffset.y += heightForNewRows;
     
     [self.tableView setContentOffset:tableViewOffset animated:NO];
-    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadData];
+//    [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
     
     [UIView setAnimationsEnabled:YES];
     
@@ -2282,26 +2222,7 @@ const float TOP_OFFSET = 180.0f;
     [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
     
     self.isLoading = NO;
-
-    
-//    for(index = 0; index < self.posts.count; ++index)
-//    {
-//        GLPPost *p = [self.posts objectAtIndex:index];
-//        
-//        if(p.remoteKey == post.remoteKey)
-//        {
-//            [self.posts removeObject:p];
-//            
-//            [self removeTableViewPostWithIndex:index];
-//            
-//
-//            return;
-//        }
-//    }
-    
 }
-
-
 
 #pragma mark - Change category
 
@@ -2309,7 +2230,6 @@ const float TOP_OFFSET = 180.0f;
 {
      [self loadInitialPosts];
 }
-
 
 #pragma mark - UI methods
 
@@ -2334,7 +2254,7 @@ const float TOP_OFFSET = 180.0f;
  @return The visible posts.
  
  */
--(NSArray *)snapshotVisibleCells
+-(NSArray *)getVisiblePostsInTableView
 {
     NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
     
@@ -2344,13 +2264,13 @@ const float TOP_OFFSET = 180.0f;
     {
         //Avoid any out of bounds access in array
         
-        if(path.row < self.posts.count)
-        {
-            [visiblePosts addObject:[self.posts objectAtIndex:path.row]];
-        }
+        NSUInteger row = [self postCurrentIndexWithIndexPath:path];
         
+        if(row < self.posts.count)
+        {
+            [visiblePosts addObject:[self.posts objectAtIndex:row]];
+        }
     }
-    
     return visiblePosts;
 }
 
@@ -2485,72 +2405,6 @@ const float TOP_OFFSET = 180.0f;
     [self scrollToTheTop];
 }
 
-
-
-#pragma mark - Other stuff
-
-//-(void)showFullPostImage:(id)sender
-//{
-//    
-//    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
-//    
-//    UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
-//    
-//    
-//    self.imageToBeView = clickedImageView.image;
-//    
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-//    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-//    vc.image = clickedImageView.image;
-//    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-//    vc.modalPresentationStyle= UIModalPresentationCustom;
-//
-//    [vc setTransitioningDelegate:self.transitionViewImageController];
-//    
-//    [self.view setBackgroundColor:[UIColor whiteColor]];
-//    [self presentViewController:vc animated:YES completion:nil];
-//    
-//}
-
-
-
-/*
- When like button is pushed turn it to our application's custom colour.
- */
--(void)likeButtonPushed: (id) sender
-{
-    UIButton *btn = (UIButton*) sender;
-    
-    //If like button is pushed then set the pushed variable to NO and change the
-    //colour of the image.
-    if([[self.posts objectAtIndex:btn.tag] liked])
-    {
-        [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        
-        //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"thumbs-up"] forState:UIControlStateNormal];
-        
-        [[self.posts objectAtIndex:btn.tag] setLiked:NO];
-        
-        //Change the like status and send to server the change.
-        [self postLike:NO withPostRemoteKey:[[self.posts objectAtIndex:btn.tag] remoteKey]];
-    }
-    else
-    {
-        [btn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
-        //Add the thumbs up selected version of image.
-        [btn setImage:[UIImage imageNamed:@"thumbs-up_pushed"] forState:UIControlStateNormal];
-        
-        
-        [[self.posts objectAtIndex:btn.tag] setLiked:YES];
-        
-        //Change the like status and send to server the change.
-        [self postLike:YES withPostRemoteKey:[[self.posts objectAtIndex:btn.tag] remoteKey]];
-        
-    }
-    
-}
-
 #pragma mark GLPPostCellDelegate
 
 -(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
@@ -2580,13 +2434,14 @@ const float TOP_OFFSET = 180.0f;
     [self performSegueWithIdentifier:@"show location" sender:self];
 }
 
-- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
+- (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
 {
+    DDLogDebug(@"navigateToPostForCommentWithIndexPath Post index path %d : %d", postIndexPath.row, postIndexPath.section);
+
     _showComment = YES;
-    self.selectedPost = [self currentPostWithIndexPath:[NSIndexPath indexPathForRow:postIndex inSection:0]];
-    
-    self.selectedIndex = postIndex;
-    self.postIndexToReload = postIndex;
+    self.selectedPost = [self.posts objectAtIndex:postIndexPath.row];
+    self.selectedIndex = postIndexPath.row;
+    self.postIndexToReload = postIndexPath.row;
     self.commentCreated = NO;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
@@ -2650,72 +2505,8 @@ const float TOP_OFFSET = 180.0f;
     }];
 }
 
-/**
- If YES navigate to real profile, if no to private profile.
- */
-//-(BOOL)navigateToUnlockedProfile
-//{
-//    //Check if the user is already in contacts.
-//    //If yes show the regular profie view (unlocked).
-//    if([[ContactsManager sharedInstance] isUserContactWithId:self.selectedUserId])
-//    {
-//        NSLog(@"PrivateProfileViewController : Unlock Profile.");
-//        
-//        return YES;
-//    }
-//    else
-//    {
-//        //If no, check in database if the user is already requested.
-//        
-//        //If yes change the button of add user to user already requested.
-//        
-//        if([[ContactsManager sharedInstance] isContactWithIdRequested:self.selectedUserId])
-//        {
-//            NSLog(@"PrivateProfileViewController : User already requested by you.");
-//            //            UIImage *img = [UIImage imageNamed:@"invitesent"];
-//            //            [self.addUserButton setImage:img forState:UIControlStateNormal];
-//            //            [self.addUserButton setEnabled:NO];
-//            //
-//            //For now just navigate to the unlocked profile.
-//            
-//            return YES;
-//            
-//        }
-//        else
-//        {
-//            //If not show the private profile view as is.
-//            NSLog(@"PrivateProfileViewController : Private profile as is.");
-//            
-//            return NO;
-//        }
-//    }
-//}
-
-
-//-(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
-//{
-//    self.selectedPost = self.posts[postIndex];
-//    [self performSegueWithIdentifier:@"view post" sender:self];
-//}
-
-
 - (void)newPostButtonClick
 {
-    
-    //    if(![NewPostView visible])
-    //    {
-    //        self.postView = [NewPostView loadingViewInView:[self.view.window.subviews objectAtIndex:0]];
-    //        self.postView.delegate = self;
-    //    }
-    //    else
-    //    {
-    //        [self.postView cancelPushed:nil];
-    //    }
-    
-    
-    
-    
-    
     if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
     {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
@@ -2730,8 +2521,6 @@ const float TOP_OFFSET = 180.0f;
     {
         
         //If iOS6
-        
-        NSLog(@"Modal View iOS 6");
         
         /**
          Takes screenshot from the current view controller to bring the sense of the transparency after the load
@@ -2750,24 +2539,6 @@ const float TOP_OFFSET = 180.0f;
         vc.view.backgroundColor = [UIColor colorWithPatternImage:image];
         self.modalPresentationStyle = UIModalPresentationCurrentContext;
         [self presentViewController:vc animated:YES completion:nil];
-        
-        /**
-         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
-         UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"SecondViewController"];
-         vc.view.backgroundColor = [UIColor clearColor];
-         self.modalPresentationStyle = UIModalPresentationCurrentContext;
-         [self presentViewController:vc animated:NO completion:nil];
-         
-         */
-        
-        //        self.modalPresentationStyle = UIModalPresentationFullScreen;
-        //
-        
-        //        presenterViewController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        //        [presenterViewController presentViewController:loginViewController animated:YES completion:NULL];
-        
-        //[self performSegueWithIdentifier:@"new post" sender:self];
-        
     }
 }
 
@@ -2828,11 +2599,6 @@ const float TOP_OFFSET = 180.0f;
 //    vc.view.backgroundColor = [UIColor colorWithPatternImage:image];
 //    self.modalPresentationStyle = UIModalPresentationCurrentContext;
 //    [self presentViewController:vc animated:YES completion:nil];
-    
-    
-    
-
-    
 }
 
 - (void)showCategoriesViewController
@@ -2923,7 +2689,7 @@ const float TOP_OFFSET = 180.0f;
 {
     [super didReceiveMemoryWarning];
     
-    DDLogError(@"GLPTimelineViewController : didReceiveMemoryWarning");
+    FLog(@"GLPTimelineViewController : didReceiveMemoryWarning");
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -2933,25 +2699,18 @@ const float TOP_OFFSET = 180.0f;
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
 
-        
-        
         ViewPostViewController *vc = segue.destinationViewController;
         /**
          Forward data of the post the to the view. Or in future just forward the post id
          in order to fetch it from the server.
          */
         
-//        self.postIndexToReload = 
         
         vc.commentJustCreated = self.commentCreated;
         vc.isFromCampusLive = NO;
         vc.post = self.selectedPost;
         vc.showComment = _showComment;
         _showComment = NO;
-//        vc.selectedIndex = self.selectedIndex;
-        
-        
-        //self.selectedPost = nil;
         
     }
     else if([segue.identifier isEqualToString:@"new comment"])

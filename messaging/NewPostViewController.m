@@ -31,10 +31,13 @@
 #import "UINavigationBar+Utils.h"
 #import "UINavigationBar+Format.h"
 #import "PendingPostManager.h"
-#import "GLPCampusWallProgressManager.h"
+#import "GLPVideoPostCWProgressManager.h"
 #import "GLPLiveGroupPostManager.h"
+#import "GLPApprovalManager.h"
+#import "GLPPendingPostsManager.h"
+#import "GLPLocation.h"
 
-@interface NewPostViewController ()
+@interface NewPostViewController () <GLPImageViewDelegate>
 
 
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *contentTextView;
@@ -50,6 +53,8 @@
 
 //Top Buttons.
 @property (weak, nonatomic) IBOutlet UIButton *addImageButton;
+/** This imageview is used only when user tries to edit existing post */
+@property (weak, nonatomic) IBOutlet GLPImageView *pendingImageView;
 @property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
 @property (weak, nonatomic) IBOutlet UIButton *addLocationButton;
 
@@ -110,15 +115,25 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     
     [self configureViewsPositions];
     
-    [self configureViewsGestures];
-    
     [self configureTextViews];
     
-    [self formatBackgroundViews];
+    [self formatElements];
     
     [self formatTextView];
     
     [self loadDataIfNeeded];
+    
+    DDLogDebug(@"Categories %@", [[PendingPostManager sharedInstance] categories]);
+    
+    if([self shouldPostPresentedInWall])
+    {
+        DDLogDebug(@"Post should be presented in the wall");
+    }
+    else
+    {
+        DDLogDebug(@"Post should not be presented in the wall");
+    }
+
 }
 
 
@@ -145,6 +160,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [self configureContents];
 
     [self hideNetworkErrorViewIfNeeded];
+    
+    [self removeUnnecessaryViews];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -261,13 +278,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     _titleTextField.delegate = self;
 }
 
--(void)formatBackgroundViews
+-(void)formatElements
 {
     [ShapeFormatterHelper setCornerRadiusWithView:_textFieldView andValue:4];
 
-    
-//    [ShapeFormatterHelper setBorderToView:_textFieldBackgroundImageView withColour:[UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f] andWidth:1.0f];
-    
+    [ShapeFormatterHelper setCornerRadiusWithView:_pendingImageView andValue:2];
 }
 
 //TODO: Finish that for the other views.
@@ -279,13 +294,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         CGRectAddH(_textFieldView, -50.0);
         CGRectMoveY(_descriptionCharactersLeftLbl, -52.0);
     }
-}
-
--(void)configureViewsGestures
-{
-  /**  UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToCategories:)];
-    [tap setNumberOfTapsRequired:1];
-    [_navigateToCategoriesView addGestureRecognizer:tap];*/
 }
 
 -(void)configureNavigationBar
@@ -303,7 +311,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 -(void)configureRightBarButton
 {    
     [self.navigationController.navigationBar setTextButton:kRight withTitle:@"POST" withButtonSize:CGSizeMake(50, 17) withSelector:@selector(postButtonClick:) andTarget:self];
-
 }
 
 -(void)formatStatusBar
@@ -324,6 +331,14 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_HIDE_ERROR_VIEW object:self userInfo:nil];
 }
 
+- (void)removeUnnecessaryViews
+{
+    if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost || [[PendingPostManager sharedInstance] kindOfPost] == kAnnouncementPost)
+    {
+        [_addLocationButton setHidden:YES];
+    }
+}
+
 - (void)loadDataIfNeeded
 {
     //Load data from PendingPostManager and add them to the fields.
@@ -337,9 +352,29 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [_contentTextView setText:[[PendingPostManager sharedInstance] eventDescription]];
     _eventDateStart = [[PendingPostManager sharedInstance] getDate];
     
+    NSString *videoUrl = [[PendingPostManager sharedInstance] videoUrl];
+    
+    if(videoUrl)
+    {
+        [self showVideoToButtonWithPath:videoUrl];
+    }
+    
+    NSString *imageUrl = [[PendingPostManager sharedInstance] imageUrl];
+    
+    if(imageUrl)
+    {
+        //Load and set image url to pending image view.
+        [self showPendingImageViewWithImageUrl:imageUrl];
+    }
+    
+    GLPLocation *location = [[PendingPostManager sharedInstance] location];
+    
+    if(location)
+    {
+        [_addLocationButton setTitle:location.name.uppercaseString forState:UIControlStateNormal];
+    }
     
     DDLogDebug(@"Data loaded: %@", [[PendingPostManager sharedInstance] description]);
-    
 }
 
 
@@ -347,89 +382,190 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)postButtonClick:(id)sender
 {
-    if ([self isInformationValidInElements]) {
-        
-        
+    if ([self isInformationValidInElements])
+    {
         [self.view endEditing:YES];
         
-        GLPPost* inPost = nil;
-        
         [[PendingPostManager sharedInstance] readyToSend];
-        NSArray *eventCategories = [[PendingPostManager sharedInstance] categories];
         
-        DDLogDebug(@"Post button clicked with event categories %@.", eventCategories);
-
+        GLPPost *inPost = nil;
         
         //Check if the post is group post or regular post.
         if([[PendingPostManager sharedInstance] isGroupPost])
         {
-            GLPGroup *group = [[PendingPostManager sharedInstance] group];
-
-            NSAssert(group, @"Group should exist to create a new group post.");
-            
-            
-            if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
-            {
-                inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil group:group andLocation:nil];
-                
-                FLog(@"GENERAL POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
-
-            }
-            else
-            {
-                inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text group:group andLocation:_selectedLocation];
-                
-                FLog(@"REGULAR POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
-            }
-            
-            if([inPost isVideoPost])
-            {
-                [[GLPLiveGroupPostManager sharedInstance] postButtonClicked];
-            }
+            inPost = [self createGroupPost];
         }
         else
         {
-            if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
-            {
-                FLog(@"GENERAL POST IS GOING TO BE CREATED");
-                
-                inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil andLocation:_selectedLocation];
-            }
-            else
-            {
-                inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andLocation:_selectedLocation];
-
-            }
-            
-            if([inPost isVideoPost])
-            {
-                [[GLPCampusWallProgressManager sharedInstance] postButtonClicked];
-            }
+            inPost = [self createRegularPost];
         }
         
-//        if([inPost isVideoPost])
-//        {
-//            [[GLPCampusWallProgressManager sharedInstance] postButtonClicked];
-//        }
+        if([self shouldPostPresentedInWall] && ![[PendingPostManager sharedInstance] isEditMode])
+        {
+            [self informParentVCForNewPost:inPost];
+        }
+        else
+        {
+            [self postIsPending:inPost];
+        }
         
         
-        [self informParentVCForNewPost:inPost];
+        if(inPost.pending)
+        {
+            [[PendingPostManager sharedInstance] reset];
 
-
-        
-        //We are doing that because in iOS 8 there is a weird issue with keyboard.
-        double delayInSeconds = 0.5;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            //PopUp view controller.
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else
+        {
+            //We are doing that because in iOS 8 there is a weird issue with keyboard.
+            double delayInSeconds = 0.5;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
             
-            //Dismiss view controller and show immediately the post in the Campus Wall.
-            
-            [self dismissViewControllerAnimated:YES completion:nil];
-        });
-        
-
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                
+                //Dismiss view controller and show immediately the post in the Campus Wall.
+                [self dismissViewControllerAnimated:YES completion:nil];
+            });
+        }
     }
+}
+
+/**
+ Checks the approval level and the kind of post user already selected.
+ If the kind of post needs to be approved this method returns YES, otherwise NO.
+ */
+- (BOOL)shouldPostPresentedInWall
+{
+    if([[PendingPostManager sharedInstance] isGroupPost])
+    {
+        return YES;
+    }
+    else
+    {
+        switch ([[GLPApprovalManager sharedInstance] currentApprovalLevel])
+        {
+            case kNone:
+                DDLogInfo(@"NewPostViewController : Approval level off.");
+                return YES;
+                break;
+                
+            case kOnlyParties:
+                if([[PendingPostManager sharedInstance] isEventParty])
+                {
+                    DDLogInfo(@"NewPostViewController : Approval level on parties.");
+                    return NO;
+                }
+                else
+                {
+                    return YES;
+                }
+                break;
+                
+                case kAllEvents:
+                DDLogInfo(@"NewPostViewController : Approval level on all events.");
+                return ![[PendingPostManager sharedInstance] isPostEvent];
+                break;
+                
+                case kAll:
+                DDLogInfo(@"NewPostViewController : Approval level on all posts.");
+                return NO;
+                break;
+                
+            default:
+                break;
+        }
+        
+    }
+    
+    return NO;
+    
+}
+
+- (GLPPost *)createGroupPost
+{
+    GLPPost* inPost = nil;
+    
+    NSArray *eventCategories = [[PendingPostManager sharedInstance] categories];
+    
+    GLPGroup *group = [[PendingPostManager sharedInstance] group];
+    
+    DDLogDebug(@"Post button clicked with event categories %@.", eventCategories);
+
+    
+    NSAssert(group, @"Group should exist to create a new group post.");
+    
+    
+    if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
+    {
+        inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil group:group andLocation:nil];
+        
+        FLog(@"GENERAL POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
+        
+    }
+    else
+    {
+        inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text group:group andLocation:_selectedLocation];
+        
+        FLog(@"REGULAR POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
+    }
+    
+    if([inPost isVideoPost])
+    {
+        [[GLPLiveGroupPostManager sharedInstance] postButtonClicked];
+    }
+    
+    return inPost;
+}
+
+- (GLPPost *)createRegularPost
+{
+    GLPPost* inPost = nil;
+    
+    NSArray *eventCategories = [[PendingPostManager sharedInstance] categories];
+    
+    if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
+    {
+        FLog(@"GENERAL POST IS GOING TO BE CREATED");
+        
+        inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil andLocation:_selectedLocation];
+    }
+    else
+    {
+        DDLogDebug(@"Event categories %@", eventCategories);
+        
+        inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andLocation:_selectedLocation];
+    }
+    
+    
+    if([inPost isVideoPost] && [[PendingPostManager sharedInstance] isEditMode])
+    {
+        [[GLPPendingPostsManager sharedInstance] postButtonClicked];
+    }
+    
+    if([inPost isVideoPost] && ![[PendingPostManager sharedInstance] isEditMode])
+    {
+        [[GLPVideoPostCWProgressManager sharedInstance] postButtonClicked];
+    }
+    
+    return inPost;
+}
+
+/**
+ Adds a new post to pending posts manager and informs Campus Wall to reload data
+ in the table view.
+ 
+ @param post the pending post.
+ 
+ */
+- (void)postIsPending:(GLPPost *)post
+{
+    post.pending = YES;
+    [[GLPPendingPostsManager sharedInstance] addNewPendingPost:post];
+    
+    //Reload data in campus wall to let the pending cell appear.
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
 }
 
 - (void)informParentVCForNewPost:(GLPPost *)post
@@ -444,13 +580,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         //Notify campus wall.
         [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil userInfo:@{@"new_post": post}];
     }
-}
-
--(void)navigateToCategories:(id)sender
-{
-//    [self performSegueWithIdentifier:@"show categories" sender:self];
-    
-//    [self navigateToCategoriesViewController];
 }
 
 //-(BOOL)isGroupPost
@@ -511,7 +640,14 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     
     [[self.addImageButton imageView] setContentMode: UIViewContentModeScaleAspectFill];
     
-    [self.addImageButton setImage:image forState:UIControlStateNormal];
+    if([[PendingPostManager sharedInstance] isEditMode])
+    {
+        [_pendingImageView setImage:image];
+    }
+    else
+    {
+        [self.addImageButton setImage:image forState:UIControlStateNormal];
+    }
     
     self.imgToUpload = image;
     
@@ -533,7 +669,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 //    }
 //    else if([selectedButtonTitle isEqualToString:@"Capture a video"])
 //    {
-//        //Remove video preview view if is on the addImageButton.
+//        //Remove video preview view if is on the `.
 //        [self removeVideoPreviewView];
 //        
 //        //Capture a video.
@@ -721,6 +857,25 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     DDLogInfo(@"Location selected in NewPostViewController: %@", location);
     _selectedLocation = location;
     
+}
+
+#pragma mark - Pending Image View
+
+- (void)showPendingImageViewWithImageUrl:(NSString *)imageUrl
+{
+    [_pendingImageView setGesture:YES];
+    
+    _pendingImageView.viewControllerDelegate = self;
+    
+    [_pendingImageView setHidden:NO];
+    
+    [_pendingImageView setImageUrl:imageUrl withPlaceholderImage:nil];
+}
+
+- (void)imageTouchedWithImageView:(UIImageView *)imageView;
+{
+    //Show image selector.
+    [self addImageOrImage:nil];
 }
 
 #pragma mark - Helpers

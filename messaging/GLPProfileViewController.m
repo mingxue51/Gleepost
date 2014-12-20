@@ -57,6 +57,7 @@
 #import "GLPShowUsersViewController.h"
 #import "GLPEmptyViewManager.h"
 #import "GLPAttendingPostsViewController.h"
+#import "GLPViewPendingPostViewController.h"
 
 @interface GLPProfileViewController () <MFMessageComposeViewControllerDelegate, UIActionSheetDelegate, GLPAttendingPopUpViewControllerDelegate>
 
@@ -155,7 +156,7 @@
     if(![GLPiOSSupportHelper isIOS6])
     {
         //Change the colour of the tab bar.
-        self.tabBarController.tabBar.tintColor = [AppearanceHelper redGleepostColour];
+        self.tabBarController.tabBar.tintColor = [[GLPThemeManager sharedInstance] tabbarSelectedColour];
         [AppearanceHelper setSelectedColourForTabbarItem:self.profileTabbarItem withColour:[AppearanceHelper redGleepostColour]];
     }
 
@@ -290,7 +291,7 @@
 
 -(void)addNavigationButtons
 {
-    [self.navigationController.navigationBar setButton:kRight withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
+    [self.navigationController.navigationBar setButton:kRight specialButton:kQuit withImageName:@"settings_btn" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
 }
 
 -(void)configureNavigationBar
@@ -713,7 +714,7 @@
             
             if([errorMessage isEqualToString:@"No access"])
             {
-                [WebClientHelper showStandardErrorWithTitle:@"Error loading group" andContent:@"It seems that you are not belonging to this group anymore"];
+                [WebClientHelper errorLoadingGroup];
             }
             else
             {
@@ -754,7 +755,6 @@
                 [self.tableView reloadData];
             }
         }
-
         
     } andRemoteCallback:^(BOOL success, NSArray *remoteNotifications) {
         
@@ -1176,7 +1176,7 @@
                 //Set this class as delegate.
                 postViewCell.delegate = self;
                 
-                [postViewCell setPost:post withPostIndex:indexPath.row];
+                [postViewCell setPost:post withPostIndexPath:indexPath];
 //            }
             
             return postViewCell;
@@ -1285,6 +1285,26 @@
                 
                 _userCreatedTheGroupPost = notification.user;
                 [self performSegueWithIdentifier:@"view group" sender:self];
+            }
+            else if(notification.notificationType == kGLPNotificationTypePostApproved)
+            {
+                self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
+                
+                self.selectedPost.content = @"Loading...";
+                self.isPostFromNotifications = YES;
+                
+                self.commentNotificationDate = nil;
+                
+                [self performSegueWithIdentifier:@"view post" sender:self];
+            }
+            else if(notification.notificationType == kGLPNotificationTypePostRejected)
+            {
+                self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
+                
+//                self.selectedPost.content = @"Loading...";
+                self.isPostFromNotifications = YES;
+                
+                [self performSegueWithIdentifier:@"view pending post" sender:self];
             }
         }
     }
@@ -1477,10 +1497,10 @@
     [self performSegueWithIdentifier:@"show location" sender:self];
 }
 
-- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
+- (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
 {
     _showComment = YES;
-    self.selectedPost = _posts[postIndex - 1];
+    self.selectedPost = _posts[postIndexPath.row - 1];
     
     self.commentCreated = NO;
     [self performSegueWithIdentifier:@"view post" sender:self];
@@ -1748,11 +1768,19 @@
         vc.post = self.selectedPost;
         vc.showComment = _showComment;
         vc.isFromCampusLive = NO;
-        vc.isViewPostNotifications = YES;
         vc.isViewPostFromNotifications = self.isPostFromNotifications;
         self.selectedPost = nil;
         _showComment = NO;
         
+    }
+    else if([segue.identifier isEqualToString:@"view pending post"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+
+        GLPViewPendingPostViewController *vc = segue.destinationViewController;
+        vc.pendingPost = self.selectedPost;
+        vc.isViewPostFromNotifications = self.isPostFromNotifications;
+        self.selectedPost = nil;
     }
     else if([segue.identifier isEqualToString:@"view private profile"])
     {
@@ -1838,7 +1866,7 @@
 
 - (void)showMessageViewControllerWithBody:(NSString *)messageBody {
     if (![MFMessageComposeViewController canSendText]) {
-        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"Your device doesn't support SMS."];
+//        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"Your device doesn't support SMS."];
         return;
     }
     
@@ -1855,11 +1883,11 @@
                  didFinishWithResult:(MessageComposeResult)result {
     switch (result) {
         case MessageComposeResultFailed: {
-            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while sending the SMS"];
+//            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while sending the SMS"];
             break;
         }
         case MessageComposeResultSent: {
-            [WebClientHelper showStandardErrorWithTitle:@"Sent" andContent:@"SMS sent successfully"];
+//            [WebClientHelper showStandardErrorWithTitle:@"Sent" andContent:@"SMS sent successfully"];
             break;
         }
         default:

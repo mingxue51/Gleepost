@@ -11,5 +11,6 @@
 @interface UIColor (GLPAdditions)
 
 + (UIColor *)colorWithR:(float)r withG:(float)g andB:(float)b;
+- (UIImage *)filledImageFrom:(UIImage *)source;
 
 @end

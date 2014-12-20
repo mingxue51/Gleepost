@@ -16,6 +16,7 @@
 #import "AppearanceHelper.h"
 #import "UIView+RoudedCorners.h"
 #import "UIView+Borders.h"
+#import "GLPImageHelper.h"
 
 @interface CommentCell()
 
@@ -66,7 +67,7 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
     [self.contentLabel setText:comment.content];
     
     
-    [_userImageView setImageUrl:comment.author.profileImageUrl withPlaceholderImage:@"default_user_image"];
+    [_userImageView setImageUrl:comment.author.profileImageUrl withPlaceholderImage:[GLPImageHelper placeholderUserImagePath]];
     [_userImageView setTag:comment.author.remoteKey];
     [_userImageView setViewControllerDelegate:_delegate];
     [_userImageView setGesture:YES];

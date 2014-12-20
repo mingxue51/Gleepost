@@ -51,13 +51,14 @@ const float ONE_LINE_HEIGHT = 20;
 {
 //    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blueColor] andWidth:1.0f];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
+    //TODO: Fix that by creating specific queue. There is a problem here where an
+    //      empty post is viewed without data in and then the actual data appeared.
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    
         float height = [TopPostView getContentLabelSizeForContent:post.eventTitle];
 
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            
+//        dispatch_async(dispatch_get_main_queue(), ^{
+    
             [_eventTitleLblHeight setConstant:height];
             
             [_eventTitleLbl setText:post.eventTitle];
@@ -65,10 +66,9 @@ const float ONE_LINE_HEIGHT = 20;
             [self setEventTimeWithTime:post.dateEventStarts];
             
             [self configureLocationElementsWithPost:post];
-        });
+//        });
         
-        
-    });
+//    });
 
 }
 

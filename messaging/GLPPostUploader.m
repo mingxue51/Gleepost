@@ -16,8 +16,11 @@
 #import "GLPPostOperationManager.h"
 #import "GLPVideoUploadManager.h"
 #import "GLPVideo.h"
-#import "GLPCampusWallProgressManager.h"
+#import "GLPVideoPostCWProgressManager.h"
 #import "GLPLiveGroupPostManager.h"
+#import "PendingPostManager.h"
+#import "NSNotificationCenter+Utils.h"
+#import "GLPPendingPostsManager.h"
 
 typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     GLPImageStatusUploaded = 0,
@@ -53,28 +56,6 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     return self;
 }
 
-- (void)startUploadingImage:(UIImage *)image {
-    _postImage = image;
-    _imageStatus = GLPImageStatusUploading;
-    
-    __block NSData *data;
-    
-    NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-        UIImage *resizedImage = [ImageFormatterHelper imageWithImage:image scaledToHeight:640];
-        data = UIImagePNGRepresentation(resizedImage);
-    }];
-    
-    uploadKey = 3;
-    
-    [operation setCompletionBlock:^{
-        [self uploadResizedImageWithImageData:data];
-//        [[GLPQueueManager sharedInstance]uploadImage:image withId:uploadKey];
-
-    }];
-    
-    [[[NSOperationQueue alloc] init] addOperation:operation];
-}
-
 -(void)uploadImageToQueue:(UIImage*)image
 {
     timestamp = [NSDate date];
@@ -103,14 +84,11 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     [[GLPVideoUploadManager sharedInstance] uploadVideo:path withTimestamp:timestamp];
 }
 
-//ADDED.
 /**
  Method used for upload regular post.
  */
 -(GLPPost*)uploadPost:(NSString*)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate title:(NSString *)title andLocation:(GLPLocation *)location
 {
-//    //Register the timestamp in order to avoid problems when a video selected and then unselected.
-//    [[GLPCampusWallProgressManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:<#(GLPPost *)#>];
     FLog(@"REGISTERED TIMESTAMP: %@", timestamp);
 
     //Add the date to a new post.
@@ -122,33 +100,31 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     post.eventTitle = title;
     post.location = location;
     
-
-    //Register the timestamp in order to avoid problems when a video selected and then unselected.
-    [[GLPCampusWallProgressManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
-    
-    
-
-
-    //Create a new operation.
-    
-    post = [self uploadPostWithPost:post];
-    
-//    if(_postImage)
-//    {
-//        post.date = [NSDate date];
-//        post.tempImage = _postImage;
-//        post.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
-//        
-//        [GLPPostManager createLocalPost:post];
-//        
-//        [[GLPPostOperationManager sharedInstance] setPost:post withTimestamp:timestamp];
-//        
-////        [[GLPQueueManager sharedInstance] uploadPost:post withId:1];
-//    }
-//    else
-//    {
-//        [self createLocalAndUploadPost:post];
-//    }
+    if([[PendingPostManager sharedInstance] isEditMode])
+    {
+        if([post isVideoPost])
+        {
+            [[GLPPendingPostsManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
+        }
+        
+        post.remoteKey = [[PendingPostManager sharedInstance] pendingPostRemoteKey];
+        post.pending = YES;
+        post.sendStatus = kSendStatusLocalEdited;
+        post.remoteKey = [[PendingPostManager sharedInstance] pendingPostRemoteKey];
+        
+        //Notify the PendingPostVC and the ViewPendingPostVC that the post is going to be edited.
+        //TODO: See if that works for text, image and video together.
+        
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_STARTED_EDITING object:nil userInfo:@{@"posts_started_editing" : post}];
+        
+        [self editPostWithPost:post];
+    }
+    else
+    {
+        //Register the timestamp in order to avoid problems when a video selected and then unselected.
+        [[GLPVideoPostCWProgressManager sharedInstance] registerVideoWithTimestamp:timestamp withPost:post];
+        post = [self uploadPostWithPost:post];
+    }
     
     return post;
 }
@@ -180,31 +156,21 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
         post.date = [NSDate date];
         post.tempImage = _postImage;
         post.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
-        
         [GLPPostManager createLocalPost:post];
-        
         [[GLPPostOperationManager sharedInstance] setPost:post withTimestamp:timestamp];
-        
         FLog(@"Image post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
-
-        //        [[GLPQueueManager sharedInstance] uploadPost:post withId:1];
     }
     else if(_videoPath)
     {
         post.date = [NSDate date];
         post.video = [[GLPVideo alloc] initWithPath:_videoPath];
         [GLPPostManager createLocalPost:post];
-        
         [[GLPVideoUploadManager sharedInstance] setPost:post withTimestamp:timestamp];
-        
         FLog(@"Video post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
-
     }
     else
     {
         FLog(@"Text post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
-        
-//        [self createLocalAndUploadPost:post];
         [[GLPPostOperationManager sharedInstance] uploadTextPost:post];
     }
     
@@ -213,91 +179,38 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     return post;
 }
 
+- (void)editPostWithPost:(GLPPost *)post
+{
+    [[GLPPendingPostsManager sharedInstance] updatePendingPostBeforeEdit:post];
 
-- (GLPPost *)uploadPostWithContent:(NSString *)content {
-    if (content) {
-        _post = [[GLPPost alloc] init];
-        _post.content = content;
-        _post.author = [SessionManager sharedInstance].user;
-        
-        
-        if (_postImage) {
-            _post.date = [NSDate date];
-            _post.tempImage = _postImage;
-            
-            [GLPPostManager createLocalPost:_post];
-            
-           // [[GLPQueueManager sharedInstance] uploadPost:_post withId:uploadKey];
-
-        }
-        
-        if (_imageStatus == GLPImageStatusUploaded || _imageStatus == GLPImageStatusNone) {
-            
-            //[self createLocalAndUploadPost:_post];
-
-            
-        } else if (_imageStatus == GLPImageStatusUploading) {
-            
-            __weak GLPPostUploader *weakSelf = self;
-            __weak GLPPost *weakPost = _post;
-            _uploadContentBlock = ^{
-                
-                [weakSelf assignUrlToPost:weakPost];
-                [[GLPQueueManager sharedInstance] uploadPost:weakPost withId:-1];
-
-                //[weakSelf createLocalAndUploadPost:weakPost];
-            };
-        }
+    if(_postImage)
+    {
+        post.date = [NSDate date];
+        post.tempImage = _postImage;
+        post.imagesUrls = [[NSArray alloc] initWithObjects:@"LIVE", nil];
+        [[GLPPostOperationManager sharedInstance] setPost:post withTimestamp:timestamp];
+        FLog(@"Image post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
     }
-    
-    return _post;
+    else if(_videoPath)
+    {
+        post.date = [NSDate date];
+        post.video = [[GLPVideo alloc] initWithPath:_videoPath];
+        [[GLPVideoUploadManager sharedInstance] setPost:post withTimestamp:timestamp];
+        FLog(@"Video post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
+    }
+    else
+    {
+        FLog(@"Text post created: %@ : %@ : %@", post, post.video, post.imagesUrls);
+        [[GLPPostOperationManager sharedInstance] uploadTextPost:post];
+    }
 }
 
 # pragma mark - Uploading
-
-- (void)uploadResizedImageWithImageData:(NSData *)imageData {
-    if (imageData) {
-        [[WebClient sharedInstance] uploadImage:imageData callback:^(BOOL success, NSString *imageUrl) {
-            if (success) {
-                _imageStatus    = GLPImageStatusUploaded;
-                _imageURL       = imageUrl;
-                
-                if (_uploadContentBlock) _uploadContentBlock();
-                
-            } else {
-                _imageStatus = GLPImageStatusFailed;
-                
-                NSLog(@"Error occured. Post image cannot be uploaded.");
-            }
-        }];
-    }
-}
 
 -(void)assignUrlToPost:(GLPPost*)post
 {
     post.imagesUrls = (_imageURL) ? @[_imageURL] : nil;
     
-}
-
-- (void)createLocalAndUploadPost:(GLPPost *)post {
-    if (post) {
-        post.imagesUrls = (_imageURL) ? @[_imageURL] : nil;
-        
-        [GLPPostManager createLocalPost:post];
-        
-        [[WebClient sharedInstance] createPost:post callbackBlock:^(BOOL success, int remoteKey) {
-            
-            post.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-            post.remoteKey = success ? remoteKey : 0;
-            
-            [GLPPostManager updatePostAfterSending:post];
-            
-            //TODO: Communicate with Campus Wall to inform post.
-            
-            
-            [self cleanUpPost];
-        }];
-    }
 }
 
 # pragma mark - Clean up

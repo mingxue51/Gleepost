@@ -62,7 +62,7 @@ static GLPPostImageLoader *instance = nil;
         
         FLog(@"GLPPostImageLoader : Continue all operations of loading images.");
         
-        [super startConsume];
+        [self startConsume];
 
     } else
     {
@@ -80,8 +80,12 @@ static GLPPostImageLoader *instance = nil;
 
 -(void)addPostsImages:(NSArray *)posts /*fromCampusLive:(BOOL)fromCampusLive*/
 {
-    
     posts = [self findImagePosts:posts];
+    
+    for(GLPPost *p in posts)
+    {
+        DDLogDebug(@"GLPPostImageLoader : post %@", p.content);
+    }
     
     __block BOOL newPost = NO;
  
@@ -97,13 +101,11 @@ static GLPPostImageLoader *instance = nil;
            
             if(image)
             {
-                //Inform Campus Wall.
-//                [self notifyCampusWallWithRemoteKey:[NSNumber numberWithInteger:p.remoteKey] andImage:image];
+                //Don't do anything because once the cell is dequeued, its fetched the image from cache.
             }
             else
             {                
                 //Check if some posts are already in.
-                
                 newPost = [self addPostImageInQueueWithPost:p];
                 
                 if(newPost)
@@ -115,9 +117,9 @@ static GLPPostImageLoader *instance = nil;
             
             if(readyToConsume /* && posts.count - 1 == i */)
             {
-                DDLogInfo(@"Image loader starts consuming");
+                DDLogInfo(@"GLPPostImageLoader : Image loader starts consuming");
                 
-                [super startConsume];
+                [self startConsume];
                 
                 readyToConsume = NO;
             }
@@ -236,8 +238,12 @@ static GLPPostImageLoader *instance = nil;
             }
             
             remoteKey = [self.imagesNotStarted dequeue];
+            
             //Take the one item from queue.
-            //remoteKey = (NSNumber*)[[_loadingImages allKeys] objectAtIndex:0]; // Assumes 'message' is not empty
+            //remoteKey = (NSNumber*)[[_loadingImages allKeys] objectAtIndex:0];
+            // Assumes 'message' is not empty
+            
+            FLog(@"GLPPostImageLoader : consumeQueue loading images %@, remote key %d", self.loadingImages, remoteKey);
             urlStr = (NSString*)[self.loadingImages objectForKey:remoteKey];
             
 //            [_loadingImages removeObjectForKey:remoteKey];
@@ -247,7 +253,7 @@ static GLPPostImageLoader *instance = nil;
 //            NSLog(@"RemoteKey token: %@ with thread: %x", remoteKey, machTID);
         }
 
-        DDLogDebug(@"Url string %@", urlStr);
+        FLog(@"Url string %@", urlStr);
        
         NSURL *imageUrl = [NSURL URLWithString:urlStr];
         
@@ -262,9 +268,6 @@ static GLPPostImageLoader *instance = nil;
         
         
         UIImage *img = [[UIImage alloc] initWithData:data];
-        
-        
-        
         
         if(img)
         {
@@ -296,8 +299,6 @@ static GLPPostImageLoader *instance = nil;
 - (void)notifyViewControllerToRefreshCellWithRemoteKey:(NSNumber *)remoteKey
 {
     DDLogDebug(@"notifyViewControllerToRefreshCellWithRemoteKeyRemote key image: %@", remoteKey);
-
-    
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil userInfo:@{@"RemoteKey":remoteKey}];
 }
 
@@ -314,18 +315,15 @@ static GLPPostImageLoader *instance = nil;
 
 #pragma mark - Client
 
-//-(void)startConsume
-//{
-//    if(self.networkAvailable)
-//    {
-//        
-//        //If there is network then start threads.
-//        [NSThread detachNewThreadSelector:@selector(consumeQueue:) toTarget:self withObject:nil];
-//        [NSThread detachNewThreadSelector:@selector(consumeQueue:) toTarget:self withObject:nil];
-//    }
-//}
-
-
+- (void)startConsume
+{
+    if(self.networkAvailable)
+    {
+        //If there is network then start threads.
+        [NSThread detachNewThreadSelector:@selector(consumeQueue:) toTarget:self withObject:nil];
+        [NSThread detachNewThreadSelector:@selector(consumeQueue:) toTarget:self withObject:nil];
+    }
+}
 
 //-(void)startLoadingImages
 //{

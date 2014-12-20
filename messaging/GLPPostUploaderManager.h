@@ -19,8 +19,6 @@
 -(void)addComment:(GLPComment *)comment;
 -(NSArray *)getPendingCommentsWithPostKey:(int)postKey;
 -(NSDate *)cancelPendingPostWithKey:(int)postKey;
-//-(void)uploadPostWithTimestamp:(NSDate*)timestamp andVideoUrl:(NSString*)url;
--(void)uploadPostWithTimestamp:(NSDate*)timestamp andVideoId:(NSNumber *)videoId;
 - (void)prepareVideoPostForUploadWithTimestamp:(NSDate *)timestamp andVideoId:(NSNumber *)videoId;
 - (void)uploadPostWithVideoData:(NSDictionary *)videoData;
 - (void)uploadVideoPost:(GLPPost *)videoPost;

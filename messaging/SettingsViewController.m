@@ -198,7 +198,7 @@ const int CORNER_VALUE = 16;
 {
     if(![segue.identifier isEqualToString:@"start"])
     {
-        ChangePasswordViewController *change = segue.destinationViewController;
+//        ChangePasswordViewController *change = segue.destinationViewController;
         
 //        change.isPasswordChange = _isPassWordChanged;
     }
@@ -209,7 +209,7 @@ const int CORNER_VALUE = 16;
 
 - (void)showMessageViewControllerWithBody:(NSString *)messageBody {
     if (![MFMessageComposeViewController canSendText]) {
-        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"Your device doesn't support SMS."];
+//        [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"Your device doesn't support SMS."];
         return;
     }
     
@@ -226,11 +226,11 @@ const int CORNER_VALUE = 16;
                  didFinishWithResult:(MessageComposeResult)result {
     switch (result) {
         case MessageComposeResultFailed: {
-            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while sending the SMS."];
+//            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while sending the SMS."];
             break;
         }
         case MessageComposeResultSent: {
-            [WebClientHelper showStandardErrorWithTitle:@"Sent" andContent:@"SMS sent successfully."];
+//            [WebClientHelper showStandardErrorWithTitle:@"Sent" andContent:@"SMS sent successfully."];
             break;
         }
         default:

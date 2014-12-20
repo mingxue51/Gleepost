@@ -39,7 +39,7 @@
     }
     else
     {
-        [WebClientHelper showStandardErrorWithTitle:@"Please Check your details" andContent:@"Please check your e-mail or your password."];
+//        [WebClientHelper showStandardErrorWithTitle:@"Please Check your details" andContent:@"Please check your e-mail or your password."];
     }
     
     //TODO: Check if e-mail is a valid university e-mail.

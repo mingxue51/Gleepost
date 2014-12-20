@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "GLPiOSSupportHelper.h"
 #import "UIColor+GLPAdditions.h"
+#import "GLPThemeManager.h"
 
 @implementation AppearanceHelper
 
@@ -165,32 +166,39 @@
 
 +(void)setUnselectedColourForTabbarItem:(UITabBarItem *)item
 {    
-    float rgb = 200.0;
+//    float rgb = 200.0;
     
-    UIColor *colour = [UIColor colorWithR:rgb withG:rgb andB:rgb];
+    UIColor *colour = [[GLPThemeManager sharedInstance] tabbarUnselectedColour];
 
     UIFont *font = [UIFont fontWithName:@"Helvetica" size:12];
     
 
-    [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:colour , UITextAttributeTextColor, font, NSFontAttributeName, nil] forState:UIControlStateNormal];
+    [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:colour , NSForegroundColorAttributeName, font, NSFontAttributeName, nil] forState:UIControlStateNormal];
 }
 
+/**
+ For now we ignore the colour parameter.
+ */
 +(void)setSelectedColourForTabbarItem:(UITabBarItem *)item withColour:(UIColor *)colour
 {
     UIFont *font = [UIFont fontWithName:@"Helvetica" size:12];
     
-    [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: colour, UITextAttributeTextColor, font, NSFontAttributeName, nil] forState:UIControlStateSelected];
+    [item setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [[GLPThemeManager sharedInstance] tabbarSelectedColour], NSForegroundColorAttributeName, font, NSFontAttributeName, nil] forState:UIControlStateSelected];
 }
 
 +(UIColor*)defaultGleepostColour
 {
-//    return [UIColor colorWithRed:0.0/255.0f green:201.0/255.0f blue:201.0/255.0f alpha:1.0];
     return [UIColor colorWithRed:28.0/255.0f green:207.0/255.0f blue:208.0/255.0f alpha:1.0];
 }
 
 + (UIColor *)grayGleepostColour
 {
     return [UIColor colorWithR:152 withG:152 andB:152];
+}
+
++ (UIColor *)borderGleepostColour
+{
+    return [UIColor colorWithR:210.0 withG:210.0 andB:210.0];
 }
 
 + (UIColor *)redGleepostColour

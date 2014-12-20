@@ -12,7 +12,8 @@
 typedef enum {
     kSendStatusLocal = 1,
     kSendStatusFailure = 2,
-    kSendStatusSent = 3
+    kSendStatusSent = 3,
+    kSendStatusLocalEdited = 4
 } SendStatus;
 
 #endif

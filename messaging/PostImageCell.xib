@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -10,7 +10,7 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ImageCell" rowHeight="299" id="Pjw-FJ-4mG" customClass="GLPPostCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="410"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pjw-FJ-4mG" id="rQv-1X-efO">
+            <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Pjw-FJ-4mG" id="rQv-1X-efO">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="409"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
@@ -25,7 +25,7 @@
                     <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gZY-ao-KSb" customClass="TopPostView">
                         <rect key="frame" x="10" y="15" width="300" height="67"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EJA-Rf-TPo">
+                            <button contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EJA-Rf-TPo">
                                 <rect key="frame" x="258" y="2" width="42" height="27"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="42" id="1LG-oJ-etq"/>
@@ -102,18 +102,18 @@
                             <outlet property="moreOptionsBtn" destination="EJA-Rf-TPo" id="Y3R-tB-FyJ"/>
                         </connections>
                     </view>
-                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jCQ-SX-55v" customClass="MainPostView">
-                        <rect key="frame" x="10" y="80" width="300" height="316"/>
+                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jCQ-SX-55v" customClass="MainPostView">
+                        <rect key="frame" x="10" y="81" width="300" height="316"/>
                         <subviews>
-                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i0H-Wa-ioj">
-                                <rect key="frame" x="1" y="7" width="298" height="190"/>
+                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i0H-Wa-ioj">
+                                <rect key="frame" x="1" y="8" width="298" height="190"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="190" id="MD9-4z-Cxp"/>
                                     <constraint firstAttribute="width" constant="298" id="SCj-qf-WEQ"/>
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p9l-bX-fhh" userLabel="User View">
-                                <rect key="frame" x="0.0" y="200" width="298" height="41"/>
+                                <rect key="frame" x="0.0" y="201" width="298" height="41"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GUe-OU-BSE">
                                         <rect key="frame" x="54" y="25" width="165" height="16"/>
@@ -134,7 +134,7 @@
                                             <constraint firstAttribute="height" constant="35" id="rbz-aa-qRP"/>
                                         </constraints>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CRJ-gT-Nhx">
+                                    <button contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CRJ-gT-Nhx">
                                         <rect key="frame" x="256" y="11" width="42" height="27"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="42" id="Icv-rk-Lz5"/>
@@ -156,7 +156,7 @@
                                             <action selector="moreOptions:" destination="jCQ-SX-55v" eventType="touchUpInside" id="N70-Ij-NZ0"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NqB-Nx-PIG">
+                                    <button contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NqB-Nx-PIG">
                                         <rect key="frame" x="215" y="5" width="76" height="38"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="38" id="aZu-KK-Pkv"/>
@@ -205,7 +205,7 @@
                                         <color key="textColor" red="0.67450980390000004" green="0.67450980390000004" blue="0.67450980390000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ze-7F-x8n">
+                                    <button contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2ze-7F-x8n">
                                         <rect key="frame" x="14" y="-3" width="54" height="45"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="54" id="4aL-IS-S4l"/>
@@ -227,7 +227,7 @@
                                             <action selector="likePost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="elv-e9-ses"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4HT-5v-R3a">
+                                    <button contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4HT-5v-R3a">
                                         <rect key="frame" x="122" y="0.0" width="40" height="39"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="1M8-Ij-LTN"/>
@@ -249,7 +249,7 @@
                                             <action selector="commentPost:" destination="jCQ-SX-55v" eventType="touchUpInside" id="W8P-8l-IgX"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7NR-Mx-RHV">
+                                    <button contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7NR-Mx-RHV">
                                         <rect key="frame" x="234" y="2" width="40" height="36"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="LhR-zX-7Sh"/>
@@ -290,7 +290,7 @@
                                     <constraint firstAttribute="width" constant="10" id="gqA-Ly-oWb"/>
                                 </constraints>
                             </imageView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="AjV-Bo-EsP">
+                            <activityIndicatorView contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="AjV-Bo-EsP">
                                 <rect key="frame" x="140" y="92" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
@@ -318,6 +318,9 @@
                             <outlet property="indicatorImageView" destination="aWH-Xg-WwD" id="Rna-uE-NLs"/>
                             <outlet property="likeBtn" destination="2ze-7F-x8n" id="Fov-Mc-qzA"/>
                             <outlet property="likesLbl" destination="qK5-yt-6we" id="xmi-N8-4tC"/>
+                            <outlet property="loadingView" destination="Ds2-LG-8Zh" id="uzp-nr-esK"/>
+                            <outlet property="loadingViewHeight" destination="0aP-x8-yZN" id="QxT-eG-Qqb"/>
+                            <outlet property="loadingViewIndicator" destination="q67-xH-8SJ" id="eJz-MT-Z2Q"/>
                             <outlet property="mainViewHeight" destination="gMJ-Fr-UtF" id="qb1-ZR-Ynw"/>
                             <outlet property="moreBtn" destination="CRJ-gT-Nhx" id="UKg-tV-OTC"/>
                             <outlet property="nameLbl" destination="ksK-Rs-vLX" id="AdP-Zl-XTT"/>
@@ -330,11 +333,40 @@
                             <outlet property="userImageView" destination="zBQ-cm-AFU" id="LdP-bM-1QJ"/>
                         </connections>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ds2-LG-8Zh" userLabel="Loading View">
+                        <rect key="frame" x="10" y="8" width="300" height="390"/>
+                        <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="q67-xH-8SJ">
+                                <rect key="frame" x="132" y="104" width="37" height="37"/>
+                                <color key="color" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We're changing your post" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="41k-m2-RjD">
+                                <rect key="frame" x="8" y="151" width="284" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.74509803919999995" green="0.74509803919999995" blue="0.74509803919999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="390" id="0aP-x8-yZN"/>
+                            <constraint firstItem="q67-xH-8SJ" firstAttribute="leading" secondItem="Ds2-LG-8Zh" secondAttribute="leading" constant="132" id="35N-K6-ZaA"/>
+                            <constraint firstAttribute="trailing" secondItem="q67-xH-8SJ" secondAttribute="trailing" constant="131" id="4of-Ac-nVB"/>
+                            <constraint firstItem="q67-xH-8SJ" firstAttribute="top" secondItem="Ds2-LG-8Zh" secondAttribute="top" constant="104" id="4rY-Nq-xOA"/>
+                            <constraint firstAttribute="width" constant="300" id="6T0-K8-vgy"/>
+                            <constraint firstItem="41k-m2-RjD" firstAttribute="leading" secondItem="Ds2-LG-8Zh" secondAttribute="leading" constant="8" id="O16-96-Spj"/>
+                            <constraint firstAttribute="trailing" secondItem="41k-m2-RjD" secondAttribute="trailing" constant="8" id="W3d-m7-FKd"/>
+                            <constraint firstItem="41k-m2-RjD" firstAttribute="top" secondItem="q67-xH-8SJ" secondAttribute="bottom" constant="10" id="bub-zl-INa"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
                     <constraint firstItem="3nq-qG-n6x" firstAttribute="leading" secondItem="rQv-1X-efO" secondAttribute="leading" constant="10" id="KZk-Is-jV7"/>
+                    <constraint firstItem="jCQ-SX-55v" firstAttribute="leading" secondItem="rQv-1X-efO" secondAttribute="leading" constant="10" id="Maq-48-S1z"/>
                     <constraint firstItem="jCQ-SX-55v" firstAttribute="top" secondItem="rQv-1X-efO" secondAttribute="top" constant="80" id="SCs-Pl-H83"/>
+                    <constraint firstItem="Ds2-LG-8Zh" firstAttribute="top" secondItem="rQv-1X-efO" secondAttribute="top" constant="8" id="bvk-a4-Eru"/>
+                    <constraint firstItem="Ds2-LG-8Zh" firstAttribute="leading" secondItem="rQv-1X-efO" secondAttribute="leading" constant="10" id="esR-hX-7hl"/>
                     <constraint firstItem="3nq-qG-n6x" firstAttribute="top" secondItem="rQv-1X-efO" secondAttribute="top" constant="7" id="wQN-BY-b7Q"/>
                 </constraints>
             </tableViewCellContentView>
@@ -342,6 +374,7 @@
                 <outlet property="mainView" destination="jCQ-SX-55v" id="Zfm-mE-R6p"/>
                 <outlet property="topView" destination="gZY-ao-KSb" id="okb-cU-28U"/>
             </connections>
+            <point key="canvasLocation" x="370" y="275"/>
         </tableViewCell>
     </objects>
     <resources>

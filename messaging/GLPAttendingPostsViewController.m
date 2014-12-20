@@ -157,7 +157,7 @@
     //Set this class as delegate.
     postViewCell.delegate = self;
     
-    [postViewCell setPost:post withPostIndex:indexPath.row];
+    [postViewCell setPost:post withPostIndexPath:indexPath];
     
     return postViewCell;
 }
@@ -274,11 +274,10 @@
     DDLogDebug(@"showLocationWithLocation");
 }
 
-- (void)navigateToPostForCommentWithIndex:(NSInteger)postIndex
+- (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
 {
     _showComment = YES;
-    self.selectedPost = [_events objectAtIndex:postIndex];
-    
+    self.selectedPost = [_attendingPostsOrganiserHelper postWithIndex:postIndexPath.row andSectionIndex:postIndexPath.section];
 //    self.selectedIndex = postIndex;
 //    self.postIndexToReload = postIndex;
 //    self.commentCreated = NO;
@@ -307,9 +306,7 @@
 - (void)updateRealImage:(NSNotification *)notification
 {
     GLPPost *currentPost = nil;
-    
-    int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:_events];
-    
+        
     NSIndexPath *postIndexPath = [_attendingPostsOrganiserHelper indexPathWithPost:currentPost];
         
     if(currentPost)

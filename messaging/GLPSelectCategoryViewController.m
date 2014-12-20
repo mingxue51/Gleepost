@@ -372,13 +372,13 @@
     }
     else if (pendingPostStatus == kTitleMissing)
     {
-        [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"Please type event title to continue"];
+//        [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"Please type event title to continue"];
         
         return NO;
     }
     else
     {
-        [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"Please select date of your event to continue"];
+//        [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"Please select date of your event to continue"];
      
         return NO;
     }

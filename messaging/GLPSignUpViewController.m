@@ -279,17 +279,14 @@
                 }
                 else
                 {
-                    [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:responseMessage];
+                    [WebClientHelper errorRegisteringUserWithResponse:responseMessage];
                 }
-
-                
             }
-            
         }];
     }
     else
     {
-        [WebClientHelper showStandardErrorWithTitle:@"Please check your information" andContent:@"Please check your provided information and try again."];
+        [WebClientHelper errorWrongCredentials];
     }
 }
 
@@ -352,11 +349,11 @@
         }
         else if(!success && [serverResponse isEqualToString:@"unverified"])
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"You still unverified."];
+            [WebClientHelper errorUnverifiedUser];
         }
         else
         {
-            [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occured while loading your data"];
+            [WebClientHelper errorLoadingData];
         }
     }];
 }

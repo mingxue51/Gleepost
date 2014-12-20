@@ -57,15 +57,22 @@
 
 #define GLPNOTIFICATION_RELOAD_DATA_IN_CW               @"GLPReloadDataInCW"
 #define GLPNOTIFICATION_RELOAD_DATA_IN_GVC              @"GLPReloadDataInGVC"
+#define GLPNOTIFICATION_NEW_PENDING_POST                @"GLPNewPendingPostInGVC"
+
 
 //#define GLPNOTIFICATION_VIDEO_PROCESSED                 @"GLPVideoProcessed"
 #define GLPNOTIFICATION_VIDEO_POST_READY                @"GLPVidePostReady"
 #define GLPNOTIFICATION_GROUP_VIDEO_POST_READY          @"GLPGroupVideoPostReady"
+#define GLPNOTIFICATION_POST_EDITED                     @"GLPPostEdited"
+#define GLPNOTIFICATION_POST_STARTED_EDITING            @"GLPPostIsBeingEdited"
 
 #define GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE           @"GLPVideoProgressUpdated"
 #define GLPNOTIFICATION_VIDEO_PROGRESS_UPLOADING_COMPLETED  @"GLPVideoProgressUploadingCompleted"
 #define GLPNOTIFICATION_GROUP_VIDEO_PROGRESS_UPDATE     @"GLPGroupVideoProgressUpdated"
 #define GLPNOTIFICATION_PROGRESS_BAR_VISIBILITY         @"GLPProgressBarVisibility"
+#define GLPNOTIFICATION_IMAGE_PROGRESS_UPDATE           @"GLPImageProgressUpdate"
+#define GLPNOTIFICATION_PENDING_VIDEO_PROGRESS_UPDATE   @"GLPPendingVideoProgressUpdate"
+#define GLPNOTIFICATION_CAMPUS_LIVE_IMAGE_LOADED         @"GLPCampusLiveImageLoaded"
 
 #define GLPNOTIFICATION_VIDEO_READY                     @"GLPVideoReady"
 #define GLPNOTIFICATION_VIDEO_LOADED                    @"GLPVideoLoaded"
@@ -108,9 +115,9 @@
 
 // DDLog
 #ifdef ENV_DEBUG
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+static const NSUInteger ddLogLevel = DDLogLevelVerbose;
 #else
-static const int ddLogLevel = LOG_LEVEL_ERROR;
+static const NSUInteger ddLogLevel = DDLogLevelError;
 #endif
 
 // Google Analytics Constants

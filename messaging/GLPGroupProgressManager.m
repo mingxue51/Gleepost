@@ -90,16 +90,22 @@ const NSString *GROUP_DATA_EXPECTED = @"data_expected";
     DDLogDebug(@"Configure notifications: %@", notificationName);
 }
 
-- (void)dealloc
+- (void)deregisterNotifications
 {
+    DDLogDebug(@"GLPGroupProgressManager : Notifications deregistered.");
+    
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_VIDEO_PROGRESS_UPDATE, (long)_groupPost.group.remoteKey];
-
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
     
     notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_VIDEO_PROGRESS_UPLOADING_COMPLETED, (long)_groupPost.group.remoteKey];
-
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
+}
 
+- (void)dealloc
+{
+    [self deregisterNotifications];
 }
 
 - (void)showProgressView
@@ -161,7 +167,6 @@ const NSString *GROUP_DATA_EXPECTED = @"data_expected";
 
 - (void)setThumbnailImage:(UIImage *)thumbnail
 {
-    
     [_progressView setThumbnailImage:[UIImage imageWithCGImage:thumbnail.CGImage]];
     
     DDLogDebug(@"GLPGroupProgressManager : setThumbnailImage");
@@ -180,7 +185,7 @@ const NSString *GROUP_DATA_EXPECTED = @"data_expected";
     
     _progressFinished = YES;
     
-    
+    [self deregisterNotifications];
 }
 
 - (void)postButtonClicked

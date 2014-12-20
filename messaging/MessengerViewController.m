@@ -19,6 +19,7 @@
 #import "UINavigationBar+Utils.h"
 #import "NewGroupMessageViewController.h"
 #import "GLPEmptyViewManager.h"
+#import "GLPThemeManager.h"
 
 @interface MessengerViewController ()
 
@@ -89,7 +90,7 @@
 //    self.tabBarController.tabBar.tintColor = [UIColor colorWithR:75.0 withG:208.0 andB:210.0];
 //    [AppearanceHelper setSelectedColourForTabbarItem:self.messagesTabbarItem withColour:[UIColor colorWithR:75.0 withG:208.0 andB:210.0]];
     
-    self.tabBarController.tabBar.tintColor = [AppearanceHelper redGleepostColour];
+    self.tabBarController.tabBar.tintColor = [[GLPThemeManager sharedInstance] tabbarSelectedColour];
     [AppearanceHelper setSelectedColourForTabbarItem:self.messagesTabbarItem withColour:[AppearanceHelper redGleepostColour]];
     
     
@@ -389,6 +390,8 @@
 {
     [self startLoading];
     
+    FLog(@"MessengerViewController : reloadConversations Started");
+    
     [[GLPLiveConversationsManager sharedInstance] conversationsList:^(NSArray *liveConversations, NSArray *regularConversations) {
         self.loadingCellStatus = kGLPLoadingCellStatusFinished;
 //        _liveConversations = [NSMutableArray arrayWithArray:[self sortedByDateOnArray:liveConversations]];
@@ -398,6 +401,7 @@
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         [self.tableView reloadData];
         [self stopLoading];
+        FLog(@"MessengerViewController : reloadConversations Finished");
     }];
 }
 

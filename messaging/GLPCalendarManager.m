@@ -15,6 +15,7 @@
 #import <EventKit/EKEvent.h>
 #import <EventKit/EKCalendar.h>
 #import <EventKit/EKSource.h>
+#import "GLPThemeManager.h"
 
 @interface GLPCalendarManager ()
 
@@ -123,7 +124,7 @@ static GLPCalendarManager *instance = nil;
 - (EKCalendar *)generateCalendar
 {
     EKCalendar *calendar = nil;
-    NSString *calendarIdentifier = [[NSUserDefaults standardUserDefaults] valueForKey:@"nerdnation"];
+    NSString *calendarIdentifier = [[NSUserDefaults standardUserDefaults] valueForKey:[[GLPThemeManager sharedInstance] lowerCaseAppName]];
  
     // when identifier exists, my calendar probably already exists
     // note that user can delete my calendar. In that case I have to create it again.
@@ -140,7 +141,7 @@ static GLPCalendarManager *instance = nil;
         calendar = [EKCalendar calendarForEntityType:EKEntityTypeEvent eventStore:_eventStore];
         
         // set calendar name. This is what users will see in their Calendar app
-        [calendar setTitle:@"NerdNation"];
+        [calendar setTitle:[[GLPThemeManager sharedInstance] appNameWithString:@"%@"]];
         
         // find appropriate source type. I'm interested only in local calendars but
         // there are also calendars in iCloud, MS Exchange, ...
@@ -160,7 +161,7 @@ static GLPCalendarManager *instance = nil;
         if (saved) {
             // http://stackoverflow.com/questions/1731530/whats-the-easiest-way-to-persist-data-in-an-iphone-app
             // saved successfuly, store it's identifier in NSUserDefaults
-            [[NSUserDefaults standardUserDefaults] setObject:calendarIdentifier forKey:@"nerdnation"];
+            [[NSUserDefaults standardUserDefaults] setObject:calendarIdentifier forKey:[[GLPThemeManager sharedInstance] lowerCaseAppName]];
         } else {
             // unable to save calendar
             return nil;
