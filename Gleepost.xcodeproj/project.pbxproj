@@ -740,6 +740,7 @@
 		58F2D3811974F3E900498E55 /* badges_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F2D3801974F3E900498E55 /* badges_button.png */; };
 		58F2D3831974FA1E00498E55 /* message_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F2D3821974FA1E00498E55 /* message_button.png */; };
 		58F562A51923A5ED00841918 /* GLPVideoUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F562A41923A5ED00841918 /* GLPVideoUploader.m */; };
+		58F68DBB1A48316F0041A003 /* WebClientJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F68DBA1A48316F0041A003 /* WebClientJSON.m */; };
 		58F6CF2518CE6F8100ABE244 /* group_posts.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F6CF2418CE6F8100ABE244 /* group_posts.png */; };
 		58F8C32E18A4FB4B005EC7ED /* GLPSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F8C32D18A4FB4B005EC7ED /* GLPSignUpViewController.m */; };
 		58F8C33118A4FC1E005EC7ED /* GLPRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F8C33018A4FC1E005EC7ED /* GLPRegisterViewController.m */; };
@@ -1973,6 +1974,8 @@
 		58F2D3821974FA1E00498E55 /* message_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message_button.png; sourceTree = "<group>"; };
 		58F562A31923A5ED00841918 /* GLPVideoUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoUploader.h; sourceTree = "<group>"; };
 		58F562A41923A5ED00841918 /* GLPVideoUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoUploader.m; sourceTree = "<group>"; };
+		58F68DB91A48316F0041A003 /* WebClientJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebClientJSON.h; sourceTree = "<group>"; };
+		58F68DBA1A48316F0041A003 /* WebClientJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebClientJSON.m; sourceTree = "<group>"; };
 		58F6CF2418CE6F8100ABE244 /* group_posts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group_posts.png; sourceTree = "<group>"; };
 		58F8C32C18A4FB4B005EC7ED /* GLPSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSignUpViewController.h; sourceTree = "<group>"; };
 		58F8C32D18A4FB4B005EC7ED /* GLPSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSignUpViewController.m; sourceTree = "<group>"; };
@@ -4944,6 +4947,8 @@
 				80AB894817C26EB50053E784 /* WebClient.m */,
 				807D5EBB188DEE8700673F01 /* GLPWebSocketClient.h */,
 				807D5EBC188DEE8700673F01 /* GLPWebSocketClient.m */,
+				58F68DB91A48316F0041A003 /* WebClientJSON.h */,
+				58F68DBA1A48316F0041A003 /* WebClientJSON.m */,
 			);
 			name = Webservice;
 			sourceTree = "<group>";
@@ -6220,6 +6225,7 @@
 				585CCD2819B91F06004009D7 /* GLPPushNotification.m in Sources */,
 				8087E433180ED6F700938264 /* _GLPMessage.m in Sources */,
 				8056764318059DC4006E058E /* LongPollOperation.m in Sources */,
+				58F68DBB1A48316F0041A003 /* WebClientJSON.m in Sources */,
 				5890249E195DF05C00084E2F /* PrivateProfileTopViewCell.m in Sources */,
 				581AAF08181D9E9D00F091A9 /* GLPNotificationManager.m in Sources */,
 				582143D017FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m in Sources */,
@@ -6615,8 +6621,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = NerdNation;
-				PROVISIONING_PROFILE = "fa516454-55e9-4cf4-a569-9125f94fc772";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "fa516454-55e9-4cf4-a569-9125f94fc772";
+				PROVISIONING_PROFILE = "34f4375c-a5eb-4661-8e52-9f1bf5e5fd9c";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "34f4375c-a5eb-4661-8e52-9f1bf5e5fd9c";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -6635,8 +6641,8 @@
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = NerdNation;
-				PROVISIONING_PROFILE = "2120a669-ab75-48f8-8f50-dceced760fda";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2120a669-ab75-48f8-8f50-dceced760fda";
+				PROVISIONING_PROFILE = "8542f7a6-2e6c-4c6d-a8c7-a79bdb1e31e3";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8542f7a6-2e6c-4c6d-a8c7-a79bdb1e31e3";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

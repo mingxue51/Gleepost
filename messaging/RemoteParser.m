@@ -605,27 +605,14 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         }
     }
     
+    post.viewsCount = [json[@"views"] integerValue];
+    
     post.group = [RemoteParser parseGroupFromJson:json[@"network"]];
     
     if(json[@"review_history"])
     {
         post.reviewHistory = [RemoteParser parseReviewHistories:json[@"review_history"]];
     }
-
-//    
-//    NSArray *jsonArray = json[@"images"];
-//    
-//    if(jsonArray.count > 0) {
-//        NSMutableArray *imagesUrls = [NSMutableArray arrayWithCapacity:jsonArray.count];
-//        for(NSString *url in jsonArray) {
-//            [imagesUrls addObject:url];
-//        }
-//        post.imagesUrls = imagesUrls;
-//    } else {
-//        post.imagesUrls = [NSArray array];
-//    }
-    
-    
     
     return post;
 }

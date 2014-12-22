@@ -66,6 +66,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
+@property (weak, nonatomic) IBOutlet UILabel *viewsCountLabel;
+
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingViewIndicator;
@@ -145,9 +147,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [self formatElements];
     
     if(_post.sendStatus == kSendStatusLocalEdited)
-    {
-        DDLogDebug(@"MainPostView : kSendStatusLocalEdited YES %d", _post.sendStatus);
-        
+    {        
         [_loadingView setHidden:NO];
         
         [_loadingViewIndicator startAnimating];
@@ -156,8 +156,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     else
     {
-        DDLogDebug(@"MainPostView : kSendStatusLocalEdited NO %d", _post.sendStatus);
-
         [_loadingView setHidden:YES];
     }
     
@@ -174,6 +172,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [_nameLbl setText:post.author.name];
     [_nameLbl setTextColor:[[GLPThemeManager sharedInstance] nameTintColour]];
     _nameLbl.tag = _post.author.remoteKey;
+    
+    [self configureCountViewsLabel];
     
     _viewPost = viewPost;
     
@@ -339,7 +339,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     float fixedBottomViewHeight = FIXED_BOTTOM_TEXT_VIEW_HEIGHT;
     float backgroundImageViewHeight = 0.0f;
 
-    backgroundImageViewHeight = 190.0f + height;
+    backgroundImageViewHeight = 210.0f + height; //190
 
     
     if([self isCurrentPostEvent])
@@ -377,14 +377,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     float fixedBottomViewHeight = 0.0f;
     float distanceFromTop = 0.0f;
     
-    backgroundImageViewHeight = 371.0f + height;    //378.0f
+    backgroundImageViewHeight = 388.0f + height;  //371 (+17)
     fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
     
     if([self isCurrentPostEvent])
     {
         [_postImageDistanceFromTopConstrain setConstant:0];
-//        [_postImageDistanceFromLeftConstrain setConstant:0];
-        
 
         distanceFromTop = 83;
 
@@ -427,7 +425,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 -(void)setPositionsForVideoWithHeight:(float)height
 {
     float fixedBottomViewHeight = 412.0f;
-    float backgroundImageViewHeight = 495.0f + height;
+    float backgroundImageViewHeight = 512.0f + height;
     float distanceFromTop = 0.0f;
     
     if([self isCurrentPostEvent])
@@ -723,6 +721,19 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 {
     //Add the post's time.
     [_timePostLbl setText:[date timeAgo]];
+}
+
+- (void)configureCountViewsLabel
+{
+    if(_post.viewsCount == 0)
+    {
+        [_viewsCountLabel setHidden:YES];
+    }
+    else
+    {
+        [_viewsCountLabel setHidden:NO];
+        [_viewsCountLabel setText:[NSString stringWithFormat:@"%@ Views", @(_post.viewsCount)]];
+    }
 }
 
 -(void)setUserImage

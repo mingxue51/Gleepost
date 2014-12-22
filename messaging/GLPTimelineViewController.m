@@ -73,6 +73,7 @@
 #import "GLPPendingPostsManager.h"
 #import "GLPPendingCell.h"
 #import "GLPCategoryTitleCell.h"
+#import "WebClientJSON.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -1681,6 +1682,10 @@ const float TOP_OFFSET = 180.0f;
     
     DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
     
+    [[WebClientJSON sharedInstance] visibleViewsWithPosts:visiblePosts withCallbackBlock:^(BOOL success) {
+        
+    }];
+    
     [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
     
     _tableViewFirstTimeScrolled = YES;
@@ -1704,8 +1709,11 @@ const float TOP_OFFSET = 180.0f;
         
         [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
         
-//        DDLogDebug(@"scrollViewDidEndDragging2 posts: %@", visiblePosts);
+        DDLogDebug(@"scrollViewDidEndDragging2 posts: %@", visiblePosts);
 
+        [[WebClientJSON sharedInstance] visibleViewsWithPosts:visiblePosts withCallbackBlock:^(BOOL success) {
+            
+        }];
         
         [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
         

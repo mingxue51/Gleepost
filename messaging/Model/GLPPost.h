@@ -43,6 +43,7 @@
 @property (assign, nonatomic) int popularity;
 @property (assign, nonatomic) NSInteger attendees;
 @property (assign, nonatomic) BOOL attended;
+@property (assign, nonatomic) NSInteger viewsCount;
 @property (assign, nonatomic, getter=isPending) BOOL pending;
 
 //In case post has group information.

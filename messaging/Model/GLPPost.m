@@ -33,6 +33,7 @@
     
     _sendStatus = kSendStatusLocal;
     _pending = NO;
+    _viewsCount = 0;
     return self;
 }
 
@@ -44,6 +45,7 @@
     {
         self.remoteKey = remoteKey;
         _pending = NO;
+        _viewsCount = 0;
     }
     
     return self;
@@ -173,9 +175,7 @@
 {
 //    return [NSString stringWithFormat:@"Post id: %ld, Content: %@ Sending status: %d Date: %@, Group: %@, SendStatus %d, Event date: %@", (long)self.remoteKey, self.content, self.sendStatus, self.date, self.group, self.sendStatus, self.dateEventStarts];
     
-    return [NSString stringWithFormat:@"Post content %@, remote key %d", self.content, self.remoteKey];
+    return [NSString stringWithFormat:@"Post content %@, remote key %d Views count %d", self.content, self.remoteKey, self.viewsCount];
 }
-
-
 
 @end

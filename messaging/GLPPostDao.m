@@ -439,8 +439,6 @@
             [GLPPostDao save:p inDb:db];
         }
         
-        DDLogDebug(@"GLPPostDao : remote posts %@", posts);
-        
     }];
 }
 
@@ -451,9 +449,7 @@
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
         NSArray *campusWallPosts = [GLPPostDao findLastPostsInDb:db];
-        
-        DDLogDebug(@"GLPPostDao : Campus wall posts %@", campusWallPosts);
-        
+                
         NSArray *postsToDelete = [GLPPostDao subtractRemotePosts:posts withLocalPosts:campusWallPosts.mutableCopy];
         
         DDLogDebug(@"GLPPostDao : Posts to delete %@", postsToDelete);
@@ -468,9 +464,7 @@
             p.sendStatus = kSendStatusSent;
             [GLPPostDao save:p inDb:db];
         }
-        
-        DDLogDebug(@"GLPPostDao : remote posts %@", posts);
-        
+                
         deletedPosts = postsToDelete;
         
     }];
@@ -482,12 +476,8 @@
 {
     [localPosts removeObjectsInArray:remotePosts];
     
-    DDLogDebug(@"GLPPostDao : subtractRemotePosts local %@", localPosts);
-    
-    DDLogDebug(@"GLPPostDao : subtractRemotePosts remote %@", remotePosts);
     DDLogDebug(@"GLPPostDao : subtractRemotePosts %d : %d", remotePosts.count, localPosts.count);
 
-    
     if(localPosts.count == remotePosts.count)
     {
         return nil;
