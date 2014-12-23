@@ -67,7 +67,6 @@ const float VISIBILITY_TIME = 2.0f;
 
 -(void)addVisiblePosts:(NSArray *)posts
 {
-    
     for(GLPPost *p in posts)
     {
         NSDate *timestamp = [NSDate date];

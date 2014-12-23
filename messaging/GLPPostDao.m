@@ -515,8 +515,6 @@
         }
     }
     
-    DDLogDebug(@"GLPPostDao : last 20 posts %@", allSentDatabasePosts);
-
     DDLogDebug(@"GLPPostDao : new posts %@", newPosts);
     
     return newPosts;

@@ -29,7 +29,7 @@ static WebClientJSON *instance = nil;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        DDLogDebug(@"WebClientJSON init %@", [[SessionManager sharedInstance] serverPath]);
+        DDLogInfo(@"WebClientJSON init %@", [[SessionManager sharedInstance] serverPath]);
         instance = [[WebClientJSON alloc] initWithBaseURL:[NSURL URLWithString:[[SessionManager sharedInstance] serverPath]]];
         instance.defaultSSLPinningMode = AFSSLPinningModeCertificate;
     });
@@ -52,11 +52,7 @@ static WebClientJSON *instance = nil;
     [self setParameterEncoding:AFJSONParameterEncoding];
     [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
     [self setDefaultHeader:@"Accept" value:@"application/json"];
-    DDLogDebug(@"Auth params %@ %@ %@",@(self.sessionManager.user.remoteKey),  self.sessionManager.token, self.sessionManager.authParameters);
-    
     [self setDefaultHeader:@"X-GP-Auth" value:[NSString stringWithFormat:@"%@-%@", @(self.sessionManager.user.remoteKey), self.sessionManager.token]];
-    
-    
     
     return self;
 }

@@ -73,7 +73,7 @@
 #import "GLPPendingPostsManager.h"
 #import "GLPPendingCell.h"
 #import "GLPCategoryTitleCell.h"
-#import "WebClientJSON.h"
+#import "GLPTrackViewsCountProcessor.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -137,6 +137,7 @@
 
 /** Captures the visibility of current cells. */
 @property (strong, nonatomic) GLPFlurryVisibleCellProcessor *flurryVisibleProcessor;
+@property (strong, nonatomic) GLPTrackViewsCountProcessor *trackViewsCountProcessor;
 
 @property (strong ,nonatomic ) EmptyMessage *emptyGroupPostsMessage;
 
@@ -316,6 +317,7 @@ const float TOP_OFFSET = 180.0f;
 //    [self.view addSubview:_topImageView];
     
     _flurryVisibleProcessor = [[GLPFlurryVisibleCellProcessor alloc] init];
+    _trackViewsCountProcessor = [[GLPTrackViewsCountProcessor alloc] init];
     _emptyGroupPostsMessage = [[EmptyMessage alloc] initWithText:@"No more group posts." withPosition:EmptyMessagePositionFurtherBottom andTableView:self.tableView];
     
 //    _emptyCategoryPostsMessage = [[EmptyMessage alloc] initWithText:@"No posts yet" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
@@ -1571,6 +1573,7 @@ const float TOP_OFFSET = 180.0f;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [_flurryVisibleProcessor resetVisibleCells];
+    [_trackViewsCountProcessor resetVisibleCells];
     
     
     CGFloat currentOffset = scrollView.contentOffset.y;
@@ -1666,7 +1669,7 @@ const float TOP_OFFSET = 180.0f;
     {
         return;
     }
-    //|| scrollView.contentOffset.y < 0
+
     if(self.isLoading )
     {
         DDLogDebug(@"scrollViewDidEndDecelerating1 is loading abort.");
@@ -1680,11 +1683,9 @@ const float TOP_OFFSET = 180.0f;
     
     [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
     
-    DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
+    [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
     
-    [[WebClientJSON sharedInstance] visibleViewsWithPosts:visiblePosts withCallbackBlock:^(BOOL success) {
-        
-    }];
+    DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
     
     [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
     
@@ -1694,7 +1695,7 @@ const float TOP_OFFSET = 180.0f;
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
 //    DDLogDebug(@"scrollViewDidEndDragging2 did scroll: %f", scrollView.contentOffset.y);
-
+    
     if(decelerate == 0)
     {
         //|| scrollView.contentOffset.y < 0
@@ -1709,16 +1710,13 @@ const float TOP_OFFSET = 180.0f;
         
         [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
         
-        DDLogDebug(@"scrollViewDidEndDragging2 posts: %@", visiblePosts);
-
-        [[WebClientJSON sharedInstance] visibleViewsWithPosts:visiblePosts withCallbackBlock:^(BOOL success) {
-            
-        }];
+        [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
+        
+        DDLogDebug(@"scrollViewDidEndDragging2 posts %d", visiblePosts.count);
         
         [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
         
         _tableViewFirstTimeScrolled = YES;
-
     }
 }
 
@@ -1727,6 +1725,8 @@ const float TOP_OFFSET = 180.0f;
     //[self contract];
     return YES;
 }
+
+
 
 #pragma mark - Hidden navigation bar
 

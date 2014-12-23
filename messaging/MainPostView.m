@@ -204,6 +204,10 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [self addGesturesToElements];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    [self configureNotifications];
+    
     
 //    [ShapeFormatterHelper setBorderToView:_wideCommentBtn withColour:[UIColor redColor]];
     
@@ -222,12 +226,15 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 - (void)configureNotifications
 {
-//    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_SHOW_MORE_OPTIONS, (long)_post.remoteKey];
+    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE, (long)_post.remoteKey];
 //    
 //    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
 //
 //    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moreOptions:) name:notificationName object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(increaseViewsCount) name:notificationName object:nil];
+    
+    
+    DDLogDebug(@"MainPostView : configureNotifications %ld", (long)_post.remoteKey);
 }
 
 - (void)dealloc
@@ -235,6 +242,16 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 //    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_SHOW_MORE_OPTIONS, (long)_post.remoteKey];
 //    
 //    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
+    DDLogDebug(@"MainPostView : dealloc %ld", (long)_post.remoteKey);
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+}
+
+- (void)increaseViewsCount
+{
+    DDLogDebug(@"MainPostView : increaseViewsCount");
+    ++_post.viewsCount;
+    [self configureCountViewsLabel];
 }
 
 

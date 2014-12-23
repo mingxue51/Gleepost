@@ -242,6 +242,7 @@
 		584906C217FDA57B0045B65D /* PostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906C117FDA57B0045B65D /* PostView.m */; };
 		584906C517FDE8710045B65D /* GCPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906C417FDE8710045B65D /* GCPlaceholderTextView.m */; };
 		584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906C717FDEE4C0045B65D /* TypeTextView.m */; };
+		58498FD21A49879A00F1720F /* GLPTrackViewsCountProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 58498FD11A49879A00F1720F /* GLPTrackViewsCountProcessor.m */; };
 		584AD53018576C5A006589BF /* in-contacts.png in Resources */ = {isa = PBXBuildFile; fileRef = 584AD52F18576C5A006589BF /* in-contacts.png */; };
 		584BB7F5198B0E18000B08BC /* cancel_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 584BB7F4198B0E18000B08BC /* cancel_white.png */; };
 		584C1EEA181AC53600862E81 /* GLPContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 584C1EE9181AC53600862E81 /* GLPContact.m */; };
@@ -1288,6 +1289,8 @@
 		584906C417FDE8710045B65D /* GCPlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCPlaceholderTextView.m; sourceTree = "<group>"; };
 		584906C617FDEE4C0045B65D /* TypeTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypeTextView.h; sourceTree = "<group>"; };
 		584906C717FDEE4C0045B65D /* TypeTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TypeTextView.m; sourceTree = "<group>"; };
+		58498FD01A49879A00F1720F /* GLPTrackViewsCountProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTrackViewsCountProcessor.h; sourceTree = "<group>"; };
+		58498FD11A49879A00F1720F /* GLPTrackViewsCountProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTrackViewsCountProcessor.m; sourceTree = "<group>"; };
 		584AD52F18576C5A006589BF /* in-contacts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in-contacts.png"; sourceTree = "<group>"; };
 		584BB7F4198B0E18000B08BC /* cancel_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_white.png; sourceTree = "<group>"; };
 		584C1EE8181AC53600862E81 /* GLPContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPContact.h; sourceTree = "<group>"; };
@@ -2882,6 +2885,17 @@
 				58299EA7184636160045427E /* GLPPostNotificationHelper.m */,
 			);
 			name = "Post Classes";
+			sourceTree = "<group>";
+		};
+		58498FCF1A49874100F1720F /* Campus Wall */ = {
+			isa = PBXGroup;
+			children = (
+				58BF03E718F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.h */,
+				58BF03E818F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.m */,
+				58498FD01A49879A00F1720F /* GLPTrackViewsCountProcessor.h */,
+				58498FD11A49879A00F1720F /* GLPTrackViewsCountProcessor.m */,
+			);
+			name = "Campus Wall";
 			sourceTree = "<group>";
 		};
 		584CF672182303B500EFABB8 /* Notifications */ = {
@@ -4517,6 +4531,7 @@
 		8057E33A1834C1040089F4D9 /* Processors */ = {
 			isa = PBXGroup;
 			children = (
+				58498FCF1A49874100F1720F /* Campus Wall */,
 				5809FF071A40374600AF7912 /* Campus Live */,
 				C02120411850AA1200831872 /* GLPPostUploader.h */,
 				C02120421850AA1200831872 /* GLPPostUploader.m */,
@@ -4534,8 +4549,6 @@
 				5810F0BB18870C740066D4CE /* GLPProfileLoader.m */,
 				5844293118BCD17600DFEAF4 /* GLPCommentUploader.h */,
 				5844293218BCD17600DFEAF4 /* GLPCommentUploader.m */,
-				58BF03E718F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.h */,
-				58BF03E818F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.m */,
 				58BBACB819788D9C00A8A265 /* GLPImageSelectorLoader.h */,
 				58BBACB919788D9C00A8A265 /* GLPImageSelectorLoader.m */,
 			);
@@ -6422,6 +6435,7 @@
 				58451BFB199B2DCF003B94D2 /* SettingCell.m in Sources */,
 				584EE2D019D5A1590049D7B2 /* GLPGroupProgressManager.m in Sources */,
 				58ACD1D318F599E200BD576B /* DCStatusBarOverlay.m in Sources */,
+				58498FD21A49879A00F1720F /* GLPTrackViewsCountProcessor.m in Sources */,
 				80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */,
 				5861575B193CAB7B009BAD33 /* GLPWalkthroughModelController.m in Sources */,
 			);
