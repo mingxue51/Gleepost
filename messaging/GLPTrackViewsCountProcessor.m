@@ -37,12 +37,13 @@
 }
 
 - (void)trackVisiblePosts:(NSArray *)visiblePosts
-{    
+{
     for(GLPPost *p in visiblePosts)
     {
+        [_currentPostsDictionary setObject:p forKey:@(p.remoteKey)];
+
         if(![self isPostInArray:p])
         {
-            [_currentPostsDictionary setObject:p forKey:@(p.remoteKey)];
             
             [NSTimer scheduledTimerWithTimeInterval:_visibilityTime target:self selector:@selector(trackPost:) userInfo:p repeats:NO];
         }
