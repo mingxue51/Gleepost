@@ -7,10 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+@class GLPPost;
 
 @interface GLPTrackViewsCountProcessor : NSObject
 
 - (void)trackVisiblePosts:(NSArray *)visiblePosts;
 - (void)resetVisibleCells;
+- (void)subscribePost:(GLPPost *)post;
++ (void)updateViewsCounterOnPost:(GLPPost *)post;
 
 @end

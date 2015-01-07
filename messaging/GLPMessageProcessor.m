@@ -17,6 +17,7 @@
 #import "NSNotificationCenter+Utils.h"
 #import "WebClient.h"
 #import "GLPVideoUploadManager.h"
+#import "GLPTrackViewsCountProcessor.h"
 
 @interface GLPMessageProcessor()
 
@@ -68,6 +69,19 @@ static GLPMessageProcessor *instance = nil;
         }
         
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:[webSocketMessage dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+        
+        DDLogDebug(@"processWebSocketMessage %@", json);
+        
+        if([RemoteParser isCountViewsPostEventWithJson:json])
+        {
+            //{"post":123, "views":355}
+            
+            NSInteger remoteKey = [json[@"post"] integerValue];
+            
+            [GLPTrackViewsCountProcessor updateViewsCounterOnPost:[[GLPPost alloc] initWithRemoteKey:remoteKey]];
+            
+            return;
+        }
         
         GLPWebSocketEvent *event = [RemoteParser parseWebSocketEventFromJson:json];
         

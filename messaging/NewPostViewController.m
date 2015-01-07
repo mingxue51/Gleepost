@@ -409,26 +409,17 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
             [self postIsPending:inPost];
         }
         
+        [[PendingPostManager sharedInstance] reset];
         
-        if(inPost.pending)
-        {
-            [[PendingPostManager sharedInstance] reset];
-
-            //PopUp view controller.
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-        else
-        {
-            //We are doing that because in iOS 8 there is a weird issue with keyboard.
-            double delayInSeconds = 0.5;
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        //We are doing that because in iOS 8 there is a weird issue with keyboard.
+        double delayInSeconds = 0.5;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
             
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                
-                //Dismiss view controller and show immediately the post in the Campus Wall.
-                [self dismissViewControllerAnimated:YES completion:nil];
-            });
-        }
+            //Dismiss view controller and show immediately the post in the Campus Wall.
+            [self dismissViewControllerAnimated:YES completion:nil];
+        });
     }
 }
 

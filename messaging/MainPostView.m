@@ -249,7 +249,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 - (void)increaseViewsCount
 {
-    DDLogDebug(@"MainPostView : increaseViewsCount");
+    DDLogDebug(@"MainPostView : increaseViewsCount new count %d", _post.viewsCount + 1);
     ++_post.viewsCount;
     [self configureCountViewsLabel];
 }
@@ -574,9 +574,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
             
             if (found)
             {
-                DDLogDebug(@"Image found YES current image url %@ title %@", imageUrl, _post.eventTitle);
-                
-
                     if([imageUrl.absoluteString isEqualToString:_post.imagesUrls[0]])
                     {
                         dispatch_async(dispatch_get_main_queue(), ^{

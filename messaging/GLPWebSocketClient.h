@@ -14,5 +14,6 @@
 + (GLPWebSocketClient *)sharedInstance;
 - (void)startWebSocket;
 - (void)stopWebSocket;
+- (void)sendMessageWithJson:(NSData *)data;
 
 @end

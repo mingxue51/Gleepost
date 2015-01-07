@@ -1712,7 +1712,7 @@ const float TOP_OFFSET = 180.0f;
         
         [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
         
-        DDLogDebug(@"scrollViewDidEndDragging2 posts %d", visiblePosts.count);
+        DDLogDebug(@"scrollViewDidEndDragging2 posts %lu", (unsigned long)visiblePosts.count);
         
         [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
         

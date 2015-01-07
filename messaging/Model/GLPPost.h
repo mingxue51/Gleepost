@@ -45,6 +45,7 @@
 @property (assign, nonatomic) BOOL attended;
 @property (assign, nonatomic) NSInteger viewsCount;
 @property (assign, nonatomic, getter=isPending) BOOL pending;
+//@property (assign, nonatomic, getter=isPendingApprove) BOOL pendingApprove;
 
 //In case post has group information.
 @property (strong, nonatomic) GLPGroup *group;

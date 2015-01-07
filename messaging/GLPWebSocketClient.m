@@ -86,14 +86,18 @@ static GLPWebSocketClient *instance = nil;
     _webSocket = nil;
 }
 
+- (void)sendMessageWithJson:(NSData *)data
+{
+    [_webSocket send:data];
+}
+
+# pragma mark - Web socket delegate
+
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)response
 {
     DDLogInfo(@"Web socket received response: %@", response);
     [[GLPMessageProcessor sharedInstance] processWebSocketMessage:response];
 }
-
-
-# pragma mark - Web socket delegate
 
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket
 {

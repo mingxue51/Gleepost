@@ -619,7 +619,7 @@ static WebClient *instance = nil;
 -(void)getPostWithRemoteKey:(NSInteger)remoteKey withCallbackBlock:(void (^) (BOOL success, GLPPost *post))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"posts/%d/", (int)remoteKey];
-    
+
     
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

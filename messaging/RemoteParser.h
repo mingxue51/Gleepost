@@ -91,6 +91,7 @@
 
 // web socket event
 + (GLPWebSocketEvent *)parseWebSocketEventFromJson:(NSDictionary *)json;
++ (BOOL)isCountViewsPostEventWithJson:(NSDictionary *)json;
 
 +(BOOL)parseBusyStatus:(NSDictionary*)json;
 

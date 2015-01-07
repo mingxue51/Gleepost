@@ -2572,11 +2572,11 @@
             <objects>
                 <viewController id="gby-Gq-HqZ" customClass="GLPShowLocationViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qe2-jN-uZe">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="Lwi-RM-iiC">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </mapView>
                         </subviews>
@@ -4020,7 +4020,7 @@
             <objects>
                 <viewController id="4OP-r4-FjX" customClass="GLPBadgesViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uEE-Vl-Zdc">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -5047,7 +5047,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Gleepost_mai" width="20" height="34"/>
+        <image name="Gleepost_mai" width="11" height="43"/>
         <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="accept.png" width="254" height="185"/>
         <image name="add-user.png" width="254" height="185"/>
@@ -5148,24 +5148,24 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="J6b-Ty-4qO"/>
+        <segue reference="lQn-ic-ohV"/>
+        <segue reference="WK7-hw-eyD"/>
+        <segue reference="NSy-Xb-H1O"/>
+        <segue reference="PMB-JP-q3M"/>
+        <segue reference="NkQ-j5-6rL"/>
+        <segue reference="Ji2-Jv-WyQ"/>
         <segue reference="2ju-Ui-QdM"/>
-        <segue reference="icH-IF-qcr"/>
-        <segue reference="rdb-8v-KiD"/>
+        <segue reference="bc7-so-Tnw"/>
+        <segue reference="7l2-k5-pHQ"/>
         <segue reference="fah-A8-Ky9"/>
+        <segue reference="rdb-8v-KiD"/>
         <segue reference="HwX-gN-njw"/>
         <segue reference="8oh-gD-Cs7"/>
         <segue reference="b0z-f7-UHU"/>
-        <segue reference="ecx-lG-qPa"/>
-        <segue reference="bc7-so-Tnw"/>
-        <segue reference="7l2-k5-pHQ"/>
         <segue reference="c6M-82-Pnp"/>
         <segue reference="Wgm-iJ-ADQ"/>
-        <segue reference="Gwl-Cd-vyB"/>
-        <segue reference="lQn-ic-ohV"/>
-        <segue reference="NSy-Xb-H1O"/>
-        <segue reference="PMB-JP-q3M"/>
-        <segue reference="e8B-qp-59Q"/>
-        <segue reference="QYo-sm-NOh"/>
         <segue reference="Bj7-0B-AKW"/>
+        <segue reference="QYo-sm-NOh"/>
     </inferredMetricsTieBreakers>
 </document>

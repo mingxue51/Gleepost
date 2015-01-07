@@ -5,10 +5,13 @@
 //  Created by Silouanos on 23/12/14.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
+//  The methods that have to do with subscription and unsubscription (communication with web socket)
+//  are used for tracking the views. 
 
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPPost.h"
 #import "WebClientJSON.h"
+#import "GLPWebSocketClient.h"
 
 @interface GLPTrackViewsCountProcessor ()
 
@@ -44,11 +47,16 @@
 
         if(![self isPostInArray:p])
         {
-            
             [NSTimer scheduledTimerWithTimeInterval:_visibilityTime target:self selector:@selector(trackPost:) userInfo:p repeats:NO];
         }
     }
+    
+//    if(_currentPosts.count > 0)
+//    {
+//        [self unsubscribePosts:[self findPostsNeedUnsubscribeWithVisiblePosts:visiblePosts]];
+//    }
     _currentPosts = visiblePosts.mutableCopy;
+    [self subscribePosts:visiblePosts];
 }
 
 - (void)resetVisibleCells
@@ -94,18 +102,112 @@
         
         if(success)
         {
-            //Send notification to cells.
-            [[NSNotificationCenter defaultCenter] postNotificationName:[self generateNotificationForPost:post] object:self];
+            //We should not do anything!
         }
     }];
 }
 
-- (NSString *)generateNotificationForPost:(GLPPost *)post
++ (void)updateViewsCounterOnPost:(GLPPost *)post
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:[GLPTrackViewsCountProcessor generateNotificationForPost:post] object:self];
+}
+
++ (NSString *)generateNotificationForPost:(GLPPost *)post
 {
     return [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE, (long)post.remoteKey];
 }
 
+- (void)subscribePost:(GLPPost *)post
+{
+    NSMutableDictionary *d = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"SUBSCRIBE", @"action", @[@2091], @"posts", nil];
+    
+    DDLogDebug(@"subscribePost %@", d);
+    
+    
+    NSData *data = [NSJSONSerialization dataWithJSONObject:d options:NSJSONWritingPrettyPrinted error:nil];
+    
+    DDLogDebug(@"subscribePost data %@", data);
+
+    [[GLPWebSocketClient sharedInstance] sendMessageWithJson:data];
+}
+
+/**
+ This method unsubscribes the subscribed posts. Should be called before reassigning the current posts
+ array.
+ */
+- (void)unsubscribePosts:(NSArray *)newVisiblePosts
+{
+    NSData *data = [self generatePostsDataWithSubscribe:NO];
+    [[GLPWebSocketClient sharedInstance] sendMessageWithJson:data];
+}
+
+/**
+ This method subscribes posts. Should be called after reassigning the current posts array.
+ */
+- (void)subscribePosts:(NSArray *)newVisiblePosts
+{
+    NSData *data = [self generatePostsDataWithSubscribe:YES];
+    [[GLPWebSocketClient sharedInstance] sendMessageWithJson:data];
+    
+}
+
 #pragma mark - Helpers
+
+/**
+ Generates the data to be sent through the web socket, subscribe or unsubscribe.
+ 
+ @param subscribe if YES then generates data for subcription posts if NO to unsubscribe posts.
+ 
+ @return the data to be sent through the web socket.
+ 
+ */
+- (NSData *)generatePostsDataWithSubscribe:(BOOL)subscribe
+{
+    //{"action":"SUBSCRIBE", "posts":[123,456,789]}
+    
+    NSMutableArray *postsRemoteKeys = [[NSMutableArray alloc] init];
+    
+    for(GLPPost *p in _currentPosts)
+    {
+        [postsRemoteKeys addObject:@(p.remoteKey)];
+    }
+    
+    NSMutableDictionary *dataDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:(subscribe) ? @"SUBSCRIBE" : @"UNSUBSCRIBE", @"action", postsRemoteKeys, @"posts", nil];
+
+    DDLogDebug(@"GLPTrackViewsCountProcessor : generatePostsDataWithSubscribe %@", dataDictionary);
+    
+    
+    return [NSJSONSerialization dataWithJSONObject:dataDictionary options:NSJSONWritingPrettyPrinted error:nil];
+}
+
+- (NSArray *)findPostsNeedUnsubscribeWithVisiblePosts:(NSArray *)visiblePosts
+{
+    NSMutableArray *postsToBeUnsubscribed = [[NSMutableArray alloc] init];
+    
+    for(GLPPost *cP in _currentPosts)
+    {
+        for(GLPPost *vP in visiblePosts)
+        {
+            if(cP.remoteKey == vP.remoteKey)
+            {
+                continue;
+            }
+        }
+        
+        [postsToBeUnsubscribed addObject:cP];
+    }
+    
+    DDLogDebug(@"postsToBeUnsubscribed %@", postsToBeUnsubscribed);
+    
+    return postsToBeUnsubscribed;
+    
+    
+}
+
+- (NSArray *)findPostsNeedSubscribeWithVisiblePosts:(NSArray *)visiblePosts
+{
+    
+}
 
 -(BOOL)isPostInArray:(GLPPost *)post
 {
