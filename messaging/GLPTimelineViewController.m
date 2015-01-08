@@ -74,6 +74,7 @@
 #import "GLPPendingCell.h"
 #import "GLPCategoryTitleCell.h"
 #import "GLPTrackViewsCountProcessor.h"
+#import "GLPCampusWallAsyncProcessor.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -138,6 +139,7 @@
 /** Captures the visibility of current cells. */
 @property (strong, nonatomic) GLPFlurryVisibleCellProcessor *flurryVisibleProcessor;
 @property (strong, nonatomic) GLPTrackViewsCountProcessor *trackViewsCountProcessor;
+@property (strong, nonatomic) GLPCampusWallAsyncProcessor *campusWallAsyncProcessor;
 
 @property (strong ,nonatomic ) EmptyMessage *emptyGroupPostsMessage;
 
@@ -318,6 +320,7 @@ const float TOP_OFFSET = 180.0f;
     
     _flurryVisibleProcessor = [[GLPFlurryVisibleCellProcessor alloc] init];
     _trackViewsCountProcessor = [[GLPTrackViewsCountProcessor alloc] init];
+    _campusWallAsyncProcessor = [[GLPCampusWallAsyncProcessor alloc] init];
     _emptyGroupPostsMessage = [[EmptyMessage alloc] initWithText:@"No more group posts." withPosition:EmptyMessagePositionFurtherBottom andTableView:self.tableView];
     
 //    _emptyCategoryPostsMessage = [[EmptyMessage alloc] initWithText:@"No posts yet" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
@@ -359,6 +362,7 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
 }
 
 - (void)showNetworkErrorViewIfNeeded
@@ -470,6 +474,33 @@ const float TOP_OFFSET = 180.0f;
         }
         
     });
+}
+
+/**
+ This method is called when there is an update in views count.
+ 
+ @param notification the notification contains post remote key and the updated
+        number of views.
+ */
+- (void)updateViewsCounter:(NSNotification *)notification
+{
+    DDLogDebug(@"GLPTimelineViewController : notification %@", notification.userInfo);
+    
+    NSInteger postRemoteKey = [notification.userInfo[@"PostRemoteKey"] integerValue];
+    NSInteger viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
+    
+    [_campusWallAsyncProcessor parseAndUpdatedViewsCountPostWithPostRemoteKey:postRemoteKey andPosts:_posts withCallbackBlock:^(NSInteger index) {
+        
+        DDLogDebug(@"updateViewsCounter index %ld", (long)index);
+        
+        GLPPost *post = [self.posts objectAtIndex:index];
+        
+        post.viewsCount = viewsCount;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self refreshCellViewWithIndex:index];
+        });
+    }];
 }
 
 /**
@@ -693,6 +724,8 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPendingPostCell) name:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
 }
 
 /** This notification called when user presses the going button on post. */

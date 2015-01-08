@@ -227,11 +227,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 - (void)configureNotifications
 {
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE, (long)_post.remoteKey];
-//    
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
-//
-//    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(increaseViewsCount) name:notificationName object:nil];
+   
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(increaseViewsCount:) name:notificationName object:nil];
     
     
     DDLogDebug(@"MainPostView : configureNotifications %ld", (long)_post.remoteKey);
@@ -247,10 +244,10 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 }
 
-- (void)increaseViewsCount
+- (void)increaseViewsCount:(NSNotification *)notification
 {
-    DDLogDebug(@"MainPostView : increaseViewsCount new count %d", _post.viewsCount + 1);
-    ++_post.viewsCount;
+    DDLogDebug(@"MainPostView : increaseViewsCount notification %@", notification.userInfo);
+    _post.viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
     [self configureCountViewsLabel];
 }
 
@@ -746,6 +743,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     else
     {
         [_viewsCountLabel setHidden:NO];
+        DDLogDebug(@"configureCountViewsLabel %@", [NSString stringWithFormat:@"%@ Views", @(_post.viewsCount)]);
+        
         [_viewsCountLabel setText:[NSString stringWithFormat:@"%@ Views", @(_post.viewsCount)]];
     }
 }

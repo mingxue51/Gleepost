@@ -376,6 +376,7 @@
 		586B1D2419E8D94400E35A43 /* GLPGroupImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 586B1D2319E8D94400E35A43 /* GLPGroupImageLoader.m */; };
 		586B1D2719E8D9D200E35A43 /* GLPImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 586B1D2619E8D9D200E35A43 /* GLPImageLoader.m */; };
 		586CDFEA185244BD00902F68 /* user-added.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFE6185244BD00902F68 /* user-added.png */; };
+		586D5AEF1A5E9A0400FB0342 /* GLPCampusWallAsyncProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 586D5AEE1A5E9A0400FB0342 /* GLPCampusWallAsyncProcessor.m */; };
 		586E2236180FE58900C0FA03 /* password2.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2235180FE58900C0FA03 /* password2.png */; };
 		586E2238180FE61700C0FA03 /* background_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2237180FE61600C0FA03 /* background_field.png */; };
 		586F6EF9191BAE4A00BDF558 /* GLPFBInvitationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 586F6EF8191BAE4A00BDF558 /* GLPFBInvitationsViewController.m */; };
@@ -1473,6 +1474,8 @@
 		586B1D2619E8D9D200E35A43 /* GLPImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageLoader.m; sourceTree = "<group>"; };
 		586C7E3919BE5342002E0329 /* ViewImageDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewImageDelegate.h; sourceTree = "<group>"; };
 		586CDFE6185244BD00902F68 /* user-added.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "user-added.png"; sourceTree = "<group>"; };
+		586D5AED1A5E9A0400FB0342 /* GLPCampusWallAsyncProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCampusWallAsyncProcessor.h; sourceTree = "<group>"; };
+		586D5AEE1A5E9A0400FB0342 /* GLPCampusWallAsyncProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCampusWallAsyncProcessor.m; sourceTree = "<group>"; };
 		586E2235180FE58900C0FA03 /* password2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = password2.png; sourceTree = "<group>"; };
 		586E2237180FE61600C0FA03 /* background_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_field.png; sourceTree = "<group>"; };
 		586F6EF7191BAE4A00BDF558 /* GLPFBInvitationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPFBInvitationsViewController.h; sourceTree = "<group>"; };
@@ -2894,6 +2897,8 @@
 				58BF03E818F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.m */,
 				58498FD01A49879A00F1720F /* GLPTrackViewsCountProcessor.h */,
 				58498FD11A49879A00F1720F /* GLPTrackViewsCountProcessor.m */,
+				586D5AED1A5E9A0400FB0342 /* GLPCampusWallAsyncProcessor.h */,
+				586D5AEE1A5E9A0400FB0342 /* GLPCampusWallAsyncProcessor.m */,
 			);
 			name = "Campus Wall";
 			sourceTree = "<group>";
@@ -6047,6 +6052,7 @@
 				805358C9182EF1CC00579079 /* GLPPostManager.m in Sources */,
 				5851112A19A7E31000488E79 /* GLPVideoPostCWProgressManager.m in Sources */,
 				58FB7CB11856548A002C6A00 /* ProfileButtonsTableViewCell.m in Sources */,
+				586D5AEF1A5E9A0400FB0342 /* GLPCampusWallAsyncProcessor.m in Sources */,
 				584FA5FA19B519FD00FBA61F /* GLPCustomProgressView.m in Sources */,
 				58299B7919FA166A00702381 /* GLPMessengerEmptyView.m in Sources */,
 				80C8BA6C18104400004F70DB /* GLPConversationDaoParser.m in Sources */,

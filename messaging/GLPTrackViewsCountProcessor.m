@@ -107,9 +107,12 @@
     }];
 }
 
-+ (void)updateViewsCounterOnPost:(GLPPost *)post
++ (void)updateViewsCounter:(NSInteger)updatedViewsCount onPost:(GLPPost *)post
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:[GLPTrackViewsCountProcessor generateNotificationForPost:post] object:self];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:[GLPTrackViewsCountProcessor generateNotificationForPost:post] object:self userInfo:@{@"UpdatedViewsCount": @(updatedViewsCount) @"PostRemoteKey" : @(post.remoteKey)}];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:self userInfo:@{@"UpdatedViewsCount": @(updatedViewsCount), @"PostRemoteKey" : @(post.remoteKey)}];
+
 }
 
 + (NSString *)generateNotificationForPost:(GLPPost *)post
