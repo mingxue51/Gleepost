@@ -13,7 +13,6 @@
 
 - (void)trackVisiblePosts:(NSArray *)visiblePosts;
 - (void)resetVisibleCells;
-- (void)subscribePost:(GLPPost *)post;
 + (void)updateViewsCounter:(NSInteger)updatedViewsCount onPost:(GLPPost *)post;
 
 @end

@@ -51,12 +51,25 @@
         }
     }
     
-//    if(_currentPosts.count > 0)
-//    {
-//        [self unsubscribePosts:[self findPostsNeedUnsubscribeWithVisiblePosts:visiblePosts]];
-//    }
+    if(_currentPosts.count > 0)
+    {
+        NSMutableArray *unsubscribeArray = _currentPosts.copy;
+        
+        [unsubscribeArray.mutableCopy removeObjectsInArray:visiblePosts];
+        
+//        DDLogDebug(@"Current posts %@, Visible %@ UNSUBSCRIBE %@", unsubscribeArray, visiblePosts, unsubscribeArray);
+        
+//        [self unsubscribePosts:unsubscribeArray];
+        
+        
+//        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(unsubscribePosts:) userInfo:unsubscribeArray repeats:NO];
+
+    }
     _currentPosts = visiblePosts.mutableCopy;
-    [self subscribePosts:visiblePosts];
+    
+    [NSTimer scheduledTimerWithTimeInterval:0.0 target:self selector:@selector(subscribePosts:) userInfo:visiblePosts repeats:NO];
+
+//    [self subscribePosts:visiblePosts];
 }
 
 - (void)resetVisibleCells
@@ -109,49 +122,30 @@
 
 + (void)updateViewsCounter:(NSInteger)updatedViewsCount onPost:(GLPPost *)post
 {
-//    [[NSNotificationCenter defaultCenter] postNotificationName:[GLPTrackViewsCountProcessor generateNotificationForPost:post] object:self userInfo:@{@"UpdatedViewsCount": @(updatedViewsCount) @"PostRemoteKey" : @(post.remoteKey)}];
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:self userInfo:@{@"UpdatedViewsCount": @(updatedViewsCount), @"PostRemoteKey" : @(post.remoteKey)}];
-
-}
-
-+ (NSString *)generateNotificationForPost:(GLPPost *)post
-{
-    return [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE, (long)post.remoteKey];
-}
-
-- (void)subscribePost:(GLPPost *)post
-{
-    NSMutableDictionary *d = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"SUBSCRIBE", @"action", @[@2091], @"posts", nil];
-    
-    DDLogDebug(@"subscribePost %@", d);
-    
-    
-    NSData *data = [NSJSONSerialization dataWithJSONObject:d options:NSJSONWritingPrettyPrinted error:nil];
-    
-    DDLogDebug(@"subscribePost data %@", data);
-
-    [[GLPWebSocketClient sharedInstance] sendMessageWithJson:data];
 }
 
 /**
  This method unsubscribes the subscribed posts. Should be called before reassigning the current posts
  array.
  */
-- (void)unsubscribePosts:(NSArray *)newVisiblePosts
+- (void)unsubscribePosts:(NSArray *)unsbuscribePosts
 {
-    NSData *data = [self generatePostsDataWithSubscribe:NO];
+//    NSArray *newVisiblePosts = timer.userInfo;
+    
+    NSData *data = [self generatePostsData:unsbuscribePosts withSubscribe:NO];
     [[GLPWebSocketClient sharedInstance] sendMessageWithJson:data];
 }
 
 /**
  This method subscribes posts. Should be called after reassigning the current posts array.
  */
-- (void)subscribePosts:(NSArray *)newVisiblePosts
+- (void)subscribePosts:(NSTimer *)timer
 {
-    NSData *data = [self generatePostsDataWithSubscribe:YES];
+    NSArray *newVisiblePosts = timer.userInfo;
+
+    NSData *data = [self generatePostsData:newVisiblePosts withSubscribe:YES];
     [[GLPWebSocketClient sharedInstance] sendMessageWithJson:data];
-    
 }
 
 #pragma mark - Helpers
@@ -164,13 +158,13 @@
  @return the data to be sent through the web socket.
  
  */
-- (NSData *)generatePostsDataWithSubscribe:(BOOL)subscribe
+- (NSData *)generatePostsData:(NSArray *)posts withSubscribe:(BOOL)subscribe
 {
     //{"action":"SUBSCRIBE", "posts":[123,456,789]}
     
     NSMutableArray *postsRemoteKeys = [[NSMutableArray alloc] init];
     
-    for(GLPPost *p in _currentPosts)
+    for(GLPPost *p in posts)
     {
         [postsRemoteKeys addObject:@(p.remoteKey)];
     }
@@ -204,11 +198,6 @@
     
     return postsToBeUnsubscribed;
     
-    
-}
-
-- (NSArray *)findPostsNeedSubscribeWithVisiblePosts:(NSArray *)visiblePosts
-{
     
 }
 

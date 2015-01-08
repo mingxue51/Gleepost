@@ -493,13 +493,17 @@ const float TOP_OFFSET = 180.0f;
         
         DDLogDebug(@"updateViewsCounter index %ld", (long)index);
         
-        GLPPost *post = [self.posts objectAtIndex:index];
+        if(index != -1)
+        {
+            GLPPost *post = [self.posts objectAtIndex:index];
+            
+            post.viewsCount = viewsCount;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self refreshCellViewWithIndex:index];
+            });
+        }
         
-        post.viewsCount = viewsCount;
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self refreshCellViewWithIndex:index];
-        });
     }];
 }
 

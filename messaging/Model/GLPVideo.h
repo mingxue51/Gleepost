@@ -18,5 +18,6 @@
 - (id)initWithPendingKey:(NSNumber *)pendingKey;
 - (id)initWithPath:(NSString *)path;
 - (id)initWithUrl:(NSString *)url andThumbnailUrl:(NSString *)thumbnailUrl;
+- (id)copyWithZone:(NSZone *)zone;
 
 @end
