@@ -12,14 +12,18 @@
 #import "GLPPost.h"
 #import "WebClientJSON.h"
 #import "GLPWebSocketClient.h"
+#import "GLPTriggeredLabelTrackViewsConnector.h"
 
 @interface GLPTrackViewsCountProcessor ()
 
 /** Holds the last recorded posts */
 @property (strong, nonatomic) NSMutableArray *currentPosts;
 
-/** Holds the last recorded posts before user scrolls again */
+/** Holds the last recorded posts before user scrolls again. */
 @property (strong, nonatomic) NSMutableDictionary *currentPostsDictionary;
+
+/** Holds all the tracked posts (sent to the server). Cleared when the CampusWall view disappear. */
+@property (strong, nonatomic) NSMutableSet *sentPosts;
 
 @property (assign, nonatomic) float visibilityTime;
 
@@ -34,6 +38,7 @@
     {
         _currentPosts = [[NSMutableArray alloc] init];
         _currentPostsDictionary = [[NSMutableDictionary alloc] init];
+        _sentPosts = [[NSMutableSet alloc] init];
         _visibilityTime = 2.0;
     }
     return self;
@@ -41,11 +46,22 @@
 
 - (void)trackVisiblePosts:(NSArray *)visiblePosts
 {
+    
+    if([visiblePosts isEqualToArray:_currentPosts])
+    {
+        DDLogDebug(@"Array duplication ABORT!");
+        
+        return;
+    }
+    
     for(GLPPost *p in visiblePosts)
     {
         [_currentPostsDictionary setObject:p forKey:@(p.remoteKey)];
 
-        if(![self isPostInArray:p])
+//        DDLogDebug(@"trackVisiblePosts tracked post %ld", (long)[[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey]);
+//        if(![self isPostInArray:p] && p.remoteKey == [[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey])
+
+        if(![_sentPosts containsObject:@(p.remoteKey)] && p.remoteKey == [[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey])
         {
             [NSTimer scheduledTimerWithTimeInterval:_visibilityTime target:self selector:@selector(trackPost:) userInfo:p repeats:NO];
         }
@@ -57,20 +73,25 @@
         
         [unsubscribeArray.mutableCopy removeObjectsInArray:visiblePosts];
         
-//        DDLogDebug(@"Current posts %@, Visible %@ UNSUBSCRIBE %@", unsubscribeArray, visiblePosts, unsubscribeArray);
-        
-//        [self unsubscribePosts:unsubscribeArray];
-        
-        
-//        [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(unsubscribePosts:) userInfo:unsubscribeArray repeats:NO];
-
+        [self unsubscribePosts:unsubscribeArray];
     }
     _currentPosts = visiblePosts.mutableCopy;
     
-    [NSTimer scheduledTimerWithTimeInterval:0.0 target:self selector:@selector(subscribePosts:) userInfo:visiblePosts repeats:NO];
-
-//    [self subscribePosts:visiblePosts];
+    [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(subscribePosts:) userInfo:visiblePosts repeats:NO];
 }
+
+- (void)trackPost:(NSTimer *)timer
+{
+    GLPPost *post = timer.userInfo;
+    
+    if([self isPostInArray:post])
+    {
+        DDLogDebug(@"GLPTrackViewsCountProcessor : track posts");
+        [self increaseViewsCountWithPost:post];
+    }
+}
+
+#pragma mark - Mofifiers
 
 - (void)resetVisibleCells
 {
@@ -83,15 +104,11 @@
     }
 }
 
-- (void)trackPost:(NSTimer *)timer
+- (void)resetSentPostsSet
 {
-    GLPPost *post = timer.userInfo;
+    DDLogDebug(@"Reset sent SET %@", _sentPosts);
     
-    if([self isPostInArray:post])
-    {
-        DDLogDebug(@"GLPTrackViewsCountProcessor : track posts");
-        [self increaseViewsCountWithPost:post];
-    }
+    [_sentPosts removeAllObjects];
 }
 
 #pragma mark - Client
@@ -115,7 +132,8 @@
         
         if(success)
         {
-            //We should not do anything!
+            //Add sent post to the NSMutableSet.
+            [_sentPosts addObject:@(post.remoteKey)];
         }
     }];
 }
@@ -131,8 +149,6 @@
  */
 - (void)unsubscribePosts:(NSArray *)unsbuscribePosts
 {
-//    NSArray *newVisiblePosts = timer.userInfo;
-    
     NSData *data = [self generatePostsData:unsbuscribePosts withSubscribe:NO];
     [[GLPWebSocketClient sharedInstance] sendMessageWithJson:data];
 }
@@ -172,7 +188,6 @@
     NSMutableDictionary *dataDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:(subscribe) ? @"SUBSCRIBE" : @"UNSUBSCRIBE", @"action", postsRemoteKeys, @"posts", nil];
 
     DDLogDebug(@"GLPTrackViewsCountProcessor : generatePostsDataWithSubscribe %@", dataDictionary);
-    
     
     return [NSJSONSerialization dataWithJSONObject:dataDictionary options:NSJSONWritingPrettyPrinted error:nil];
 }

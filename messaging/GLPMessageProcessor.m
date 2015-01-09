@@ -72,7 +72,7 @@ static GLPMessageProcessor *instance = nil;
                 
         if([RemoteParser isCountViewsPostEventWithJson:json])
         {
-            //{"post":123, "views":355}
+            //Expected format {"post":123, "views":355}
             
             NSInteger remoteKey = [json[@"post"] integerValue];
             NSInteger viewsCount = [json[@"views"] integerValue];

@@ -130,7 +130,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         
         post.reviewHistory = [RemoteParser parseReviewHistories:postJson[@"review_history"]];
         
-        post.pending = YES;
+        post.pendingInEditMode = YES;
         
         post.sendStatus = kSendStatusSent;
         

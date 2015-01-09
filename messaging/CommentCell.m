@@ -66,7 +66,6 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
     //Set comment's content.
     [self.contentLabel setText:comment.content];
     
-    
     [_userImageView setImageUrl:comment.author.profileImageUrl withPlaceholderImage:[GLPImageHelper placeholderUserImagePath]];
     [_userImageView setTag:comment.author.remoteKey];
     [_userImageView setViewControllerDelegate:_delegate];

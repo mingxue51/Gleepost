@@ -31,6 +31,7 @@
 @property (assign, nonatomic, getter = isGroupPost) BOOL groupPost;
 @property (assign, nonatomic, getter=isEditMode) BOOL editMode;
 @property (strong, nonatomic) GLPGroup *group;
+@property (assign, nonatomic, getter = doesPostNeedsApprove) BOOL postToBePostedPendingApprove;
 
 @end
 
@@ -57,6 +58,7 @@ static PendingPostManager *instance = nil;
         _categories = [[NSMutableArray alloc] init];
         _pendingData = NO;
         _editMode = NO;
+        _postToBePostedPendingApprove = NO;
         _eventDescription = @"";
         _eventTitle = @"";
     }
@@ -119,7 +121,7 @@ static PendingPostManager *instance = nil;
 - (void)setPendingPost:(GLPPost *)pendingPost
 {
     _editMode = YES;
-    
+    _postToBePostedPendingApprove = YES;
     [self findKindOfPendingPost:pendingPost];
     
     _eventTitle = pendingPost.eventTitle;
@@ -155,6 +157,11 @@ static PendingPostManager *instance = nil;
     {
         _kindOfPost = kGeneralPost;
     }
+}
+
+- (void)postNeedsApprove
+{
+    _postToBePostedPendingApprove = YES;
 }
 
 - (void)reset

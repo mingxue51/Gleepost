@@ -269,9 +269,6 @@
     
     for(GLPPost *p in posts)
     {
-        
-        DDLogDebug(@"Post rKey: %ld", (long)p.remoteKey);
-        
         if(p.remoteKey == remoteKey)
         {
             return index;

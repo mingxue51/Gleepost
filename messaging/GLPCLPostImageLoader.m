@@ -148,7 +148,7 @@ static GLPCLPostImageLoader *instance = nil;
 - (void)operationFinishedWithImage:(UIImage *)image andRemoteKey:(NSInteger)remoteKey
 {
     [_pendingOperations removeObjectForKey:@(remoteKey)];
-    DDLogDebug(@"Current operations %@ count %lu", _operationQueue.operations, (unsigned long)_operationQueue.operationCount);
+//    DDLogDebug(@"Current operations %@ count %lu", _operationQueue.operations, (unsigned long)_operationQueue.operationCount);
     [self notifyCampusLiveWithImage:image andPostRemoteKey:remoteKey];
 
 }

@@ -602,7 +602,7 @@ static WebClient *instance = nil;
     [self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         GLPPost *newEditedPost = [RemoteParser parsePostFromJson:responseObject];
-        newEditedPost.pending = YES;
+        newEditedPost.pendingInEditMode = YES;
         
         DDLogDebug(@"WebClient : after edit post %@, actual post %@", responseObject, newEditedPost);
                 

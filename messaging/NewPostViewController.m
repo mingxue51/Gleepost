@@ -73,7 +73,6 @@
 @property (assign, nonatomic) NSInteger descriptionRemainingNoOfCharacters;
 @property (assign, nonatomic) NSInteger titleRemainingNoOfCharacters;
 
-
 @end
 
 @implementation NewPostViewController
@@ -125,15 +124,15 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     
     DDLogDebug(@"Categories %@", [[PendingPostManager sharedInstance] categories]);
     
-    if([self shouldPostPresentedInWall])
+    if(![[PendingPostManager sharedInstance] isEditMode])
     {
-        DDLogDebug(@"Post should be presented in the wall");
+        if(![self shouldPostPresentedInWall])
+        {
+            [[PendingPostManager sharedInstance] postNeedsApprove];
+            DDLogDebug(@"Post should not be presented in the wall");
+            
+        }
     }
-    else
-    {
-        DDLogDebug(@"Post should not be presented in the wall");
-    }
-
 }
 
 
@@ -400,26 +399,31 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
             inPost = [self createRegularPost];
         }
         
-        if([self shouldPostPresentedInWall] && ![[PendingPostManager sharedInstance] isEditMode])
+        if(![[PendingPostManager sharedInstance] isEditMode] && [self shouldPostPresentedInWall])
         {
             [self informParentVCForNewPost:inPost];
+            
+        }
+        
+        if([[PendingPostManager sharedInstance] isEditMode])
+        {
+            [self postIsPending:inPost];
+            [self.navigationController popViewControllerAnimated:YES];
         }
         else
         {
-            [self postIsPending:inPost];
+            //We are doing that because in iOS 8 there is a weird issue with keyboard.
+            double delayInSeconds = 0.5;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+            
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                
+                //Dismiss view controller and show immediately the post in the Campus Wall.
+                [self dismissViewControllerAnimated:YES completion:nil];
+            });
         }
         
         [[PendingPostManager sharedInstance] reset];
-        
-        //We are doing that because in iOS 8 there is a weird issue with keyboard.
-        double delayInSeconds = 0.5;
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            
-            //Dismiss view controller and show immediately the post in the Campus Wall.
-            [self dismissViewControllerAnimated:YES completion:nil];
-        });
     }
 }
 
@@ -529,7 +533,9 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text andLocation:_selectedLocation];
     }
     
-    
+    //    if([inPost isVideoPost] && [[PendingPostManager sharedInstance] doesPostNeedsApprove])
+
+    DDLogDebug(@"NewPostViewController : pending approve %d", [inPost isPendingInEditMode]);
     if([inPost isVideoPost] && [[PendingPostManager sharedInstance] isEditMode])
     {
         [[GLPPendingPostsManager sharedInstance] postButtonClicked];
@@ -552,7 +558,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
  */
 - (void)postIsPending:(GLPPost *)post
 {
-    post.pending = YES;
+    post.pendingInEditMode = YES;
     [[GLPPendingPostsManager sharedInstance] addNewPendingPost:post];
     
     //Reload data in campus wall to let the pending cell appear.

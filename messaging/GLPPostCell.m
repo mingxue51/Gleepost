@@ -226,9 +226,21 @@ const float ONE_LINE_LIMIT = 18.0;
 
 -(void)navigateToProfile:(id)sender
 {
-    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+    NSInteger userRemoteKey = 0;
 
-    NSInteger userRemoteKey = incomingImage.view.tag;
+    if([sender isKindOfClass:[UIView class]])
+    {
+        UIView *incomingView = (UIView *)sender;
+        
+        userRemoteKey = incomingView.tag;
+        
+    }
+    else
+    {
+        UITapGestureRecognizer *incomingView = (UITapGestureRecognizer*) sender;
+        
+        userRemoteKey = incomingView.view.tag;
+    }
     
     [self.delegate elementTouchedWithRemoteKey:userRemoteKey];
 }

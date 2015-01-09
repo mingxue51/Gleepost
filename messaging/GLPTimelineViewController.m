@@ -75,6 +75,7 @@
 #import "GLPCategoryTitleCell.h"
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPCampusWallAsyncProcessor.h"
+#import "GLPVisibleViewControllersManager.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -241,6 +242,7 @@ const float TOP_OFFSET = 180.0f;
     
 //    [self reloadVisibleCells];
 
+    [[GLPVisibleViewControllersManager sharedInstance] campusWallVisible:YES];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
@@ -258,6 +260,8 @@ const float TOP_OFFSET = 180.0f;
     // hide new element visual indicator if needed
     [self hideNewElementsIndicatorView];
     
+    [[GLPVisibleViewControllersManager sharedInstance] campusWallVisible:NO];
+
     
     [[GLPVideoLoaderManager sharedInstance] enableTimelineJustFetched];
     
@@ -272,6 +276,8 @@ const float TOP_OFFSET = 180.0f;
     [self stopReloadingCron];
     
     [self removeGoingButtonNotification];
+    
+    [_trackViewsCountProcessor resetSentPostsSet];
     
     [super viewDidDisappear:animated];
 }

@@ -559,7 +559,7 @@
                      entity.location.name,
                      entity.location.address,
                      groupRemoteKey,
-                     entity.pending];
+                     entity.pendingInEditMode];
     } else {
         postSaved = [db executeUpdateWithFormat:@"insert into posts (remoteKey, content, date, likes, dislikes, comments, sendStatus, author_key, liked, attending, event_title, event_date, location_lat, location_lon, location_name, location_address, group_remote_key, pending) values(%d, %@, %d, %d, %d, %d, %d, %d, %d, %d, %@, %d, %f, %f, %@, %@, %d, %d)",
                      entity.remoteKey,
@@ -579,7 +579,7 @@
                      entity.location.name,
                      entity.location.address,
                      groupRemoteKey,
-                     entity.pending];
+                     entity.pendingInEditMode];
     }
     
     
@@ -751,7 +751,7 @@
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
 
         BOOL pendingPostUpdated = [db executeUpdateWithFormat:@"update posts set pending=%d where key=%d",
-         [entity isPending],
+         [entity isPendingInEditMode],
          entity.key];
         
         NSAssert(pendingPostUpdated, @"Pending post should exist in database before, in order to be updated.");
@@ -816,7 +816,7 @@
      entity.attended,
      entity.eventTitle,
      eventDate,
-     entity.pending,
+     entity.pendingInEditMode,
      entity.remoteKey];
     
     if([entity imagePost])

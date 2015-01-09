@@ -47,7 +47,8 @@ typedef NS_ENUM(NSUInteger, KindOfPost) {
 - (BOOL)isEventParty;
 - (BOOL)isPostEvent;
 - (BOOL)isEditMode;
-
+- (BOOL)doesPostNeedsApprove;
+- (void)postNeedsApprove;
 - (BOOL)arePendingData;
 - (GLPGroup *)group;
 //- (void)setPendingData:(BOOL)pendingData;

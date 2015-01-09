@@ -10,10 +10,14 @@
 #import <Foundation/Foundation.h>
 #import "GLPApproveLevel.h"
 
+@class GLPPost;
+
 @interface GLPApprovalManager : NSObject
 
 + (GLPApprovalManager *)sharedInstance;
 - (void)reloadApprovalLevel;
 - (ApproveLevel)currentApprovalLevel;
+- (BOOL)shouldPostBeVisible:(GLPPost *)post;
+
 
 @end

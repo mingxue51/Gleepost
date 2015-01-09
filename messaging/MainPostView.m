@@ -38,7 +38,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *timePostLbl;
 
-@property (weak, nonatomic) IBOutlet UILabel *nameLbl;
+@property (weak, nonatomic) IBOutlet GLPTriggeredLabel *nameLbl;
 
 @property (weak, nonatomic) IBOutlet UILabel *contentLbl;
 
@@ -172,6 +172,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [_nameLbl setText:post.author.name];
     [_nameLbl setTextColor:[[GLPThemeManager sharedInstance] nameTintColour]];
     _nameLbl.tag = _post.author.remoteKey;
+    _nameLbl.postRemoteKey = _post.remoteKey;
+    
+    if([self isViewPost])
+    {
+        [_nameLbl removeAsSuperviewObserver];
+    }
     
     [self configureCountViewsLabel];
     
@@ -873,9 +879,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [tap setNumberOfTapsRequired:1];
     [_commentsLbl addGestureRecognizer:tap];
     
-    tap = [[UITapGestureRecognizer alloc] initWithTarget:_delegate action:@selector(navigateToProfile:)];
-    [tap setNumberOfTapsRequired:1];
-    [_nameLbl addGestureRecognizer:tap];
+    [_nameLbl setDelegate:self];
 }
 
 -(void)addGestureToPostImage
@@ -1162,6 +1166,13 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         }
         
     }];
+}
+
+#pragma mark - GLPLabelDelegate
+
+- (void)labelTouchedWithTag:(NSInteger)tag
+{
+    [_delegate navigateToProfile:_nameLbl];
 }
 
 #pragma mark - Action Sheet delegate

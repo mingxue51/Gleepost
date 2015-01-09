@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPPost.h"
+#import "GLPTriggeredLabel.h"
 
 @protocol MainPostViewDelegate <NSObject>
 
@@ -22,7 +23,7 @@
 
 @end
 
-@interface MainPostView : UIView <UIActionSheetDelegate>
+@interface MainPostView : UIView <UIActionSheetDelegate, GLPLabelDelegate>
 
 @property (assign, nonatomic) UITableViewCell <MainPostViewDelegate> *delegate;
 

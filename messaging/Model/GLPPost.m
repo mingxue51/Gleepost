@@ -11,6 +11,7 @@
 #import "DateFormatterHelper.h"
 #import "GLPLocation.h"
 #import "GLPReviewHistory.h"
+#import "GLPCategory.h"
 
 @implementation GLPPost
 
@@ -32,7 +33,7 @@
     }
     
     _sendStatus = kSendStatusLocal;
-    _pending = NO;
+    _pendingInEditMode = NO;
     _viewsCount = 0;
     return self;
 }
@@ -44,7 +45,7 @@
     if(self)
     {
         self.remoteKey = remoteKey;
-        _pending = NO;
+        _pendingInEditMode = NO;
         _viewsCount = 0;
     }
     
@@ -95,6 +96,23 @@
     }
     
     return NO;
+}
+
+- (BOOL)isParty
+{
+    for(GLPCategory *c in self.categories)
+    {
+        if([c.tag isEqualToString:@"party"])
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (BOOL)isEvent
+{
+    return self.eventTitle != nil;
 }
 
 - (Action)pendingPostStatus
@@ -198,7 +216,7 @@
     post.attendees = self.attendees;
     post.attended = self.attended;
     post.viewsCount = self.viewsCount;
-    post.pending = self.pending;
+    post.pendingInEditMode = self.pendingInEditMode;
     
     return post;
 }

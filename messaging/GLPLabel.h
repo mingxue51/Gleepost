@@ -11,6 +11,11 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ The labelTouchedWithTag: method is called once the label touched.
+ The labelViewed: method is called once the label reaches a specific height of the screen. This method
+ should be called only from the GLPTriggeredLabel subclass.
+ */
 @protocol GLPLabelDelegate <NSObject>
 
 @required
@@ -20,6 +25,6 @@
 
 @interface GLPLabel : UILabel
 
-@property (weak, nonatomic) UIViewController <GLPLabelDelegate> *delegate;
+@property (weak, nonatomic) id<GLPLabelDelegate> delegate;
 
 @end

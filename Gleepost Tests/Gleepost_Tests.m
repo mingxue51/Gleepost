@@ -102,7 +102,6 @@
     
     [GLPReviewHistoryDao removeReviewHistoryWithPost:post];
     
-    post.pending = YES;
     
     [GLPPostManager updatePostPending:post];
     

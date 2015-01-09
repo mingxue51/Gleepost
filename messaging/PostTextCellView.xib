@@ -111,7 +111,7 @@
                     <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lnW-OL-CTy" customClass="MainPostView">
                         <rect key="frame" x="10" y="85" width="300" height="160"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="UserNameg" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yxh-pG-jkv">
+                            <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="UserNameg" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yxh-pG-jkv" customClass="GLPTriggeredLabel">
                                 <rect key="frame" x="54" y="7" width="140" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="140" id="R6e-T0-xsd"/>

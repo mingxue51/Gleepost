@@ -76,7 +76,7 @@ static GLPPendingPostsManager *instance = nil;
  */
 - (void)addNewPendingPost:(GLPPost *)pendingPost
 {
-    NSAssert([pendingPost isPending], @"Pending post's variable should be true");
+    NSAssert([pendingPost isPendingInEditMode], @"Pending post's variable should be true");
     
     [self.pendingPosts insertObject:pendingPost atIndex:0];
     
