@@ -35,9 +35,7 @@ static GLPTriggeredLabelTrackViewsConnector *instance = nil;
     {
         return;
     }
-    
-    DDLogDebug(@"trackPost triggered %ld", (long)postRemoteKey);
-    
+        
     _postRemoteKey = postRemoteKey;
 }
 

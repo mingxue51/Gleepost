@@ -47,21 +47,22 @@
 - (void)trackVisiblePosts:(NSArray *)visiblePosts
 {
     
-    if([visiblePosts isEqualToArray:_currentPosts])
-    {
-        DDLogDebug(@"Array duplication ABORT!");
-        
-        return;
-    }
+//    if([visiblePosts isEqualToArray:_currentPosts])
+//    {
+//        DDLogDebug(@"Array duplication ABORT!");
+//        
+//        return;
+//    }
     
     for(GLPPost *p in visiblePosts)
     {
         [_currentPostsDictionary setObject:p forKey:@(p.remoteKey)];
 
-//        DDLogDebug(@"trackVisiblePosts tracked post %ld", (long)[[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey]);
-//        if(![self isPostInArray:p] && p.remoteKey == [[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey])
-
-        if(![_sentPosts containsObject:@(p.remoteKey)] && p.remoteKey == [[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey])
+//        if(![_sentPosts containsObject:@(p.remoteKey)] && p.remoteKey == [[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey])
+        
+        DDLogDebug(@"trackVisiblePosts post %ld - %ld", (long)[[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey], (long)p.remoteKey);
+        
+        if([[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey] == p.remoteKey)
         {
             [NSTimer scheduledTimerWithTimeInterval:_visibilityTime target:self selector:@selector(trackPost:) userInfo:p repeats:NO];
         }
