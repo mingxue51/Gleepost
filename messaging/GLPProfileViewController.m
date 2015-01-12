@@ -318,8 +318,6 @@
             
             post.viewsCount = viewsCount;
             
-            DDLogDebug(@"Post to be refreshed %@", post);
-            
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self refreshCellViewWithIndex:index+1];
             });

@@ -20,7 +20,6 @@
 @property (assign, nonatomic) BOOL showComment;
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab;
--(void)showFullProfileImage:(id)sender;
 -(void)unlockProfile;
 -(void)viewConversation:(GLPConversation*)conversation;
 

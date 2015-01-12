@@ -37,6 +37,9 @@
 #import "GLPShowUsersViewController.h"
 #import "GLPShowUsersGroupsViewController.h"
 #import "GLPAttendingPostsViewController.h"
+#import "GLPTrackViewsCountProcessor.h"
+#import "GLPCampusWallAsyncProcessor.h"
+#import "GLPVisibleViewControllersManager.h"
 
 @interface GLPPrivateProfileViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -71,6 +74,10 @@
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
+
+/** Captures the visibility of current cells. */
+@property (strong, nonatomic) GLPTrackViewsCountProcessor *trackViewsCountProcessor;
+@property (strong, nonatomic) GLPCampusWallAsyncProcessor *campusWallAsyncProcessor;
 
 @end
 
@@ -131,6 +138,7 @@
     [self loadUsersInformation];
 
     
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -158,11 +166,16 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
     [self setTitle];
-    
+    [[GLPVisibleViewControllersManager sharedInstance] anyWallIsVisible:YES];
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [_trackViewsCountProcessor resetSentPostsSet];
+    [super viewDidDisappear:animated];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -175,6 +188,7 @@
 //        [self.navigationController setNavigationBarHidden:YES animated:YES];
 //    }
     
+    [[GLPVisibleViewControllersManager sharedInstance] anyWallIsVisible:NO];
     [super viewWillDisappear:animated];
 }
 
@@ -190,37 +204,28 @@
 {
     //Initialise rows with 3 because About cell is presented first.
     self.numberOfRows = 1;
-    
-    
     self.profileImage = nil;
-    
-
-    
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
-    
-    //[[ContactsManager sharedInstance] loadContactsFromDatabase];
-    
     self.posts = [[NSArray alloc] init];
-
     _emptyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
-    
     _selectedLocation = nil;
-    
     _transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
-
+    _trackViewsCountProcessor = [[GLPTrackViewsCountProcessor alloc] init];
+    _campusWallAsyncProcessor = [[GLPCampusWallAsyncProcessor alloc] init];
 }
 
 - (void)configureNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goingButtonTouchedWithNotification:) name:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:nil];
-}
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+ }
 
 - (void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
 }
 
 
@@ -818,23 +823,110 @@
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab
 {
     self.selectedTabStatus = selectedTab;
+    [self.tableView reloadData];
+}
+
+#pragma mark - Scroll view
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_trackViewsCountProcessor resetVisibleCells];
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if(self.posts.count == 0)
+    {
+        return;
+    }
+    
+    //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
+    
+    NSArray *visiblePosts = [self snapshotVisibleCells];
+    
+    DDLogDebug(@"Profile scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
+    
+    [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
+    
+//    [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
     
     
-//    if (self.selectedTabStatus == kGLPMutual) { // overridden to add friend
-//        NSLog(@"Add friend");
-//        ProfileButtonsTableViewCell *buttonsView = [self.tableView dequeueReusableCellWithIdentifier:@"ButtonsCell" forIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-//        [buttonsView addUser:nil];
-//
-//        
-//    }else if (self.selectedTabStatus == kGLPAbout) { // overridden to message
-//        NSLog(@"About");
-//
-//        ProfileButtonsTableViewCell *buttonsView =     (ProfileButtonsTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-//        [buttonsView sendMessage:nil];
-//        
-//    }else {
-        [self.tableView reloadData];
-//    }
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(decelerate == 0)
+    {
+        NSArray *visiblePosts = [self snapshotVisibleCells];
+        
+        DDLogDebug(@"Profile scrollViewDidEndDragging2 posts: %@", visiblePosts);
+        
+        [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
+        
+//        [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
+    }
+}
+
+/**
+ This method is used to take a snapshot of the current visible posts cells.
+ 
+ @return The visible posts.
+ 
+ */
+-(NSArray *)snapshotVisibleCells
+{
+    NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
+    
+    NSArray *paths = [self.tableView indexPathsForVisibleRows];
+    
+    for (NSIndexPath *path in paths)
+    {
+        if(path.row == 0)
+        {
+            continue;
+        }
+        
+        //Avoid any out of bounds access in array
+        
+        if(path.row < self.posts.count)
+        {
+            [visiblePosts addObject:[self.posts objectAtIndex:path.row - 1]];
+        }
+    }
+    return visiblePosts;
+}
+
+#pragma mark - Notification methods
+
+/**
+ This method is called when there is an update in views count.
+ 
+ @param notification the notification contains post remote key and the updated
+ number of views.
+ */
+- (void)updateViewsCounter:(NSNotification *)notification
+{
+    NSInteger postRemoteKey = [notification.userInfo[@"PostRemoteKey"] integerValue];
+    NSInteger viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
+    
+    [_campusWallAsyncProcessor parseAndUpdatedViewsCountPostWithPostRemoteKey:postRemoteKey andPosts:_posts withCallbackBlock:^(NSInteger index) {
+        
+        DDLogDebug(@"updateViewsCounter index %ld", (long)index);
+        
+        if(index != -1)
+        {
+            GLPPost *post = [self.posts objectAtIndex:index];
+            
+            post.viewsCount = viewsCount;
+            
+            DDLogDebug(@"Post to be refreshed %@", post);
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self refreshCellViewWithIndex:index+1];
+            });
+        }
+        
+    }];
 }
 
 #pragma mark - View image delegate
