@@ -12,7 +12,7 @@
 
 @interface GLPVisibleViewControllersManager ()
 
-@property (assign, nonatomic, getter=isCampusWallVisible) BOOL campusWallVisible;
+@property (assign, nonatomic, getter=isAnyWallIsVisible) BOOL anyWallIsVisible;
 
 @end
 
@@ -30,9 +30,15 @@ static GLPVisibleViewControllersManager *instance = nil;
     return instance;
 }
 
-- (void)campusWallVisible:(BOOL)visible
+/**
+ Set YES only if a view controller that is tracking views count is visible.
+ 
+ @param visible view controller is visible.
+ 
+ */
+- (void)anyWallIsVisible:(BOOL)visible
 {
-    _campusWallVisible = visible;
+    _anyWallIsVisible = visible;
 }
 
 

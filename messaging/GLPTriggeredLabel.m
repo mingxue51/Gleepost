@@ -35,7 +35,7 @@
 
 - (void)observeSuperviewsOnOffsetChange
 {
-    if(![[GLPVisibleViewControllersManager sharedInstance] isCampusWallVisible])
+    if(![[GLPVisibleViewControllersManager sharedInstance] isAnyWallIsVisible])
     {
         return;
     }
@@ -51,7 +51,7 @@
 
 - (void)removeAsSuperviewObserver
 {
-    if(![[GLPVisibleViewControllersManager sharedInstance] isCampusWallVisible])
+    if(![[GLPVisibleViewControllersManager sharedInstance] isAnyWallIsVisible])
     {
         return;
     }
@@ -92,7 +92,7 @@
     
     if(myFrameToWindow.origin.y < 500.0 && myFrameToWindow.origin.y > 200.0)
     {
-        DDLogDebug(@"Label visible with tag %ld", (long)self.postRemoteKey);
+        DDLogDebug(@"Label visible with remote key %ld - %f", (long)self.postRemoteKey, myFrameToWindow.origin.y);
         [[GLPTriggeredLabelTrackViewsConnector sharedInstance] trackPost:_postRemoteKey];
     
     }

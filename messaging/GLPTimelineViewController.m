@@ -242,7 +242,7 @@ const float TOP_OFFSET = 180.0f;
     
 //    [self reloadVisibleCells];
 
-    [[GLPVisibleViewControllersManager sharedInstance] campusWallVisible:YES];
+    [[GLPVisibleViewControllersManager sharedInstance] anyWallIsVisible:YES];
     
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
@@ -260,7 +260,7 @@ const float TOP_OFFSET = 180.0f;
     // hide new element visual indicator if needed
     [self hideNewElementsIndicatorView];
     
-    [[GLPVisibleViewControllersManager sharedInstance] campusWallVisible:NO];
+    [[GLPVisibleViewControllersManager sharedInstance] anyWallIsVisible:NO];
 
     
     [[GLPVideoLoaderManager sharedInstance] enableTimelineJustFetched];

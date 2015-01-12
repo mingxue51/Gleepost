@@ -56,4 +56,9 @@ static GLPTriggeredLabelTrackViewsConnector *instance = nil;
     return YES;
 }
 
+- (void)reset
+{
+    _postRemoteKey = 0;
+}
+
 @end

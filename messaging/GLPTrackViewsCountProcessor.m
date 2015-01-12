@@ -108,7 +108,11 @@
 {
     DDLogDebug(@"Reset sent SET %@", _sentPosts);
     
+    [self unsubscribePosts:_sentPosts];
+    
     [_sentPosts removeAllObjects];
+    
+    [[GLPTriggeredLabelTrackViewsConnector sharedInstance] reset];
 }
 
 #pragma mark - Client
@@ -147,7 +151,7 @@
  This method unsubscribes the subscribed posts. Should be called before reassigning the current posts
  array.
  */
-- (void)unsubscribePosts:(NSArray *)unsbuscribePosts
+- (void)unsubscribePosts:(id)unsbuscribePosts
 {
     NSData *data = [self generatePostsData:unsbuscribePosts withSubscribe:NO];
     [[GLPWebSocketClient sharedInstance] sendMessageWithJson:data];
@@ -174,16 +178,25 @@
  @return the data to be sent through the web socket.
  
  */
-- (NSData *)generatePostsData:(NSArray *)posts withSubscribe:(BOOL)subscribe
+- (NSData *)generatePostsData:(id)posts withSubscribe:(BOOL)subscribe
 {
     //{"action":"SUBSCRIBE", "posts":[123,456,789]}
     
     NSMutableArray *postsRemoteKeys = [[NSMutableArray alloc] init];
     
-    for(GLPPost *p in posts)
+    if([posts isKindOfClass:[NSArray class]])
     {
-        [postsRemoteKeys addObject:@(p.remoteKey)];
+        for(GLPPost *p in posts)
+        {
+            [postsRemoteKeys addObject:@(p.remoteKey)];
+        }
     }
+    else if ([posts isKindOfClass:[NSSet class]])
+    {
+        postsRemoteKeys = [(NSSet *)[posts allObjects] mutableCopy];
+    }
+    
+
     
     NSMutableDictionary *dataDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:(subscribe) ? @"SUBSCRIBE" : @"UNSUBSCRIBE", @"action", postsRemoteKeys, @"posts", nil];
 

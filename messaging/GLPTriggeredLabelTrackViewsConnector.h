@@ -14,5 +14,6 @@
 - (void)trackPost:(NSInteger)postRemoteKey;
 - (NSInteger)currentPostRemoteKey;
 - (BOOL)needsToAddRemoteKey:(NSInteger)postRemoteKey;
+- (void)reset;
 
 @end

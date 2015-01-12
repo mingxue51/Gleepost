@@ -11,7 +11,7 @@
 @interface GLPVisibleViewControllersManager : NSObject
 
 + (GLPVisibleViewControllersManager *)sharedInstance;
-- (BOOL)isCampusWallVisible;
-- (void)campusWallVisible:(BOOL)visible;
+- (BOOL)isAnyWallIsVisible;
+- (void)anyWallIsVisible:(BOOL)visible;
 
 @end
