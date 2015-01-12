@@ -60,8 +60,6 @@
 
 //        if(![_sentPosts containsObject:@(p.remoteKey)] && p.remoteKey == [[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey])
         
-        DDLogDebug(@"trackVisiblePosts post %ld - %ld", (long)[[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey], (long)p.remoteKey);
-        
         if([[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey] == p.remoteKey)
         {
             [NSTimer scheduledTimerWithTimeInterval:_visibilityTime target:self selector:@selector(trackPost:) userInfo:p repeats:NO];
@@ -87,7 +85,6 @@
     
     if([self isPostInArray:post])
     {
-        DDLogDebug(@"GLPTrackViewsCountProcessor : track posts");
         [self increaseViewsCountWithPost:post];
     }
 }
@@ -206,6 +203,7 @@
     return [NSJSONSerialization dataWithJSONObject:dataDictionary options:NSJSONWritingPrettyPrinted error:nil];
 }
 
+//TODO: Not used.
 - (NSArray *)findPostsNeedUnsubscribeWithVisiblePosts:(NSArray *)visiblePosts
 {
     NSMutableArray *postsToBeUnsubscribed = [[NSMutableArray alloc] init];

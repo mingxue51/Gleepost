@@ -197,15 +197,15 @@
        
         if(success)
         {
-            [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
-               
+//            [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
+            
                 BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
                 
                 [GLPPostDao saveGroupPosts:posts withGroupRemoteKey:groupId];
                 
                 remoteCallback(YES, remains, posts);
                 
-            }];
+//            }];
         }
         else
         {

@@ -793,22 +793,6 @@ static WebClient *instance = nil;
 
 #pragma mark - Campus Live
 
--(void)userAttendingLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *postsIds))callbackBlock
-{
-    NSString *path = @"profile/attending";
-    
-    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSArray *posts = [RemoteParser parseLivePostsIds:responseObject];
-        callbackBlock(YES, posts);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        callbackBlock(NO, nil);
-        
-    }];
-}
-
 -(void)attendEvent:(BOOL)attend withPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success, NSInteger popularity))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"posts/%d/attendees", postRemoteKey];

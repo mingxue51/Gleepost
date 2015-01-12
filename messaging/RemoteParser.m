@@ -576,12 +576,9 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     post.video = [RemoteParser parseVideosData:json[@"videos"]];
     
-    
     //Parse categories.
     post.categories = [self parseCategoriesFromJson:json[@"categories"] forPost:post];
-    
-    
-    
+
     //Parse users' likes of the post and find if the post is liked by logged in user.
     NSArray *usersLiked = json[@"likes"];
     
@@ -613,6 +610,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     {
         post.reviewHistory = [RemoteParser parseReviewHistories:json[@"review_history"]];
     }
+    
+    post.attended = [json[@"attending"] boolValue];
     
     return post;
 }
@@ -836,20 +835,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     return delimitedCommaTags;
     
-}
-
-+(NSArray *)parseLivePostsIds:(NSArray *)jsonIds
-{
-    NSMutableArray *array = [[NSMutableArray alloc] init];
-    
-    for(id remoteKey in jsonIds)
-    {
-        [array addObject:[NSNumber numberWithInteger:[remoteKey integerValue]]];
-
-//        [array addObject:[NSNumber numberWithInteger:[remoteKey integerValue]]];
-    }
-    
-    return array;
 }
 
 #pragma mark - Attendees

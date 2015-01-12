@@ -29,34 +29,14 @@ static CampusLiveManager *instance = nil;
 
 -(void)loadCurrentLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
 {
-    
     [[WebClient sharedInstance] getEventPostsAfterDate:[self currentTime] withCallbackBlock:^(BOOL success, NSArray *posts) {
         
         //TODO: remove that when is supported by the server.
         posts = [self filterPosts:posts];
         
-        
         if(success)
         {
-            [[WebClient sharedInstance] userAttendingLivePostsWithCallbackBlock:^(BOOL success, NSArray *postsIds) {
-               
-                
-                if(success)
-                {
-                    [self formatLivePosts:posts withPostIds:postsIds];
-                    
-                    callbackBlock(YES, posts);
-                }
-                else
-                {
-                    callbackBlock(NO,nil);
-                }
-                
-
-                
-            }];
-            
-            
+            callbackBlock(YES, posts);
         }
         else
         {
@@ -144,11 +124,6 @@ static CampusLiveManager *instance = nil;
     }
     
     return minIndex;
-    
-}
-
--(void)attendToAPostWithRemoteKey:(int)remoteKey
-{
     
 }
 

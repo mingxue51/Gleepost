@@ -10,7 +10,7 @@
 
 @interface CampusLiveManager : NSObject
 
-+(CampusLiveManager*)sharedInstance;
++ (CampusLiveManager *)sharedInstance;
 
 -(void)loadCurrentLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock;
 

@@ -74,10 +74,7 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock;
 - (void)createComment:(GLPComment *)comment callbackBlock:(void (^)(BOOL success))callbackBlock;
 
--(void)userAttendingLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *postsIds))callbackBlock;
 -(void)attendEvent:(BOOL)attend withPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success, NSInteger popularity))callbackBlock;
-
-
 
 - (void)getConversationsFilterByLive:(BOOL)live withCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock;
 - (void)getConversationForRemoteKey:(NSInteger)remoteKey withCallback:(void (^)(BOOL success, GLPConversation *conversation))callback;
