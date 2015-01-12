@@ -642,9 +642,7 @@
 - (void)loadPosts
 {
     [self startLoading];
-    
-    DDLogDebug(@"Load posts.");
-    
+        
     [GLPPostManager loadPostsWithRemoteKey:_user.remoteKey localCallback:^(NSArray *posts) {
         
         [self refreshNewPosts:posts];
@@ -655,33 +653,22 @@
         
         if(success)
         {
-
-            DDLogDebug(@"Remote");
             [self refreshNewPosts:posts];
-            
         }
         
     }];
-    
-//    [GLPPostManager loadRemotePostsForUserRemoteKey:self.user.remoteKey callback:^(BOOL success, NSArray *posts) {
-//        
-//
-//        
-//        
-//    }];
 }
 
 - (void)refreshNewPosts:(NSArray *)posts
 {
-//    DDLogDebug(@"Current posts %@ incoming posts %@", self.posts, posts);
-    
-    if(posts.count > 0 && self.posts.count > 0)
-    {
-        if(((GLPPost *)[posts objectAtIndex:0]).remoteKey == ((GLPPost *)[self.posts objectAtIndex:0]).remoteKey)
-        {
-            return;
-        }
-    }
+    //This method is removed because we need to have updates (views count) each time user views the profile view.
+//    if(posts.count > 0 && self.posts.count > 0)
+//    {
+//        if(((GLPPost *)[posts objectAtIndex:0]).remoteKey == ((GLPPost *)[self.posts objectAtIndex:0]).remoteKey)
+//        {
+//            return;
+//        }
+//    }
     
     if(posts.count == 0)
     {
