@@ -60,7 +60,7 @@
 
 //        if(![_sentPosts containsObject:@(p.remoteKey)] && p.remoteKey == [[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey])
         
-        DDLogDebug(@"triggeredlabel remote key %d", [[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey]);
+//        DDLogDebug(@"triggeredlabel remote key %d", [[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey]);
         
         if([[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey] == p.remoteKey)
         {

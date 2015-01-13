@@ -1293,9 +1293,11 @@
             if(notification.notificationType == kGLPNotificationTypeLiked || notification.notificationType == kGLPNotificationTypeCommented)
             {
                 self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
+//                
+//                
+//                self.selectedPost.content = @"Loading...";
                 
-                
-                self.selectedPost.content = @"Loading...";
+//                self.selectedPost = nil;
                 self.isPostFromNotifications = YES;
                 
                 if(notification.notificationType == kGLPNotificationTypeCommented)

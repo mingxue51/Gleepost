@@ -39,6 +39,7 @@
 #import "GLPAttendingPopUpViewController.h"
 #import "GLPCalendarManager.h"
 #import "GLPShowUsersViewController.h"
+#import "GLPTableActivityIndicator.h"
 
 @interface ViewPostViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -54,7 +55,10 @@
 
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 
+@property (assign, nonatomic) BOOL postReadyToBeShown;
+
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 @end
 
@@ -101,7 +105,7 @@ static BOOL likePushed;
        //Scroll to the bottom only when new comment posted.
         [self scrollToTheEndAnimated:YES];
     }
-    else if(self.commentNotificationDate)
+    else if(self.commentNotificationDate && _postReadyToBeShown)
     {
         int commentIndex = [self findIndexOfComment];
         
@@ -210,6 +214,7 @@ static BOOL likePushed;
 {
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     self.transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
+    _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorCenter withView:self.tableView];
     
     self.keyboardAppearanceSpaceY = 0;
     
@@ -222,7 +227,15 @@ static BOOL likePushed;
     self.comments = [[NSMutableArray alloc] init];
     
     _selectedLocation = nil;
-
+    
+    if(_post.content)
+    {
+        self.postReadyToBeShown = YES;
+    }
+    else
+    {
+        self.postReadyToBeShown = NO;
+    }
 }
 
 -(void)registerCells
@@ -334,7 +347,11 @@ static BOOL likePushed;
         
         self.title = @"Loading...";
         
+        [_tableActivityIndicator startActivityIndicator];
+        
         [GLPPostManager loadPostWithRemoteKey:_post.remoteKey callback:^(BOOL success, GLPPost *post) {
+            
+            [_tableActivityIndicator stopActivityIndicator];
             
             self.title = @"VIEW POST";
             
@@ -345,18 +362,14 @@ static BOOL likePushed;
                 _post = [GLPPostManager setFakeKeyToPost:_post];
                 
                 [self loadComments];
-                
+                _postReadyToBeShown = YES;
                 [self.tableView reloadData];
             }
             else
             {
-                //[WebClientHelper showStandardError];
-                
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Post may not exist anymore." delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
                 
                 [alertView show];
-                
-//                [self.navigationController popViewControllerAnimated:YES];
             }
             
         }];
@@ -814,8 +827,14 @@ static bool firstTime = YES;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //Add 1 in order to create another cell for post.
-    return self.comments.count+2;
+    if(_postReadyToBeShown)
+    {
+        //Add 1 in order to create another cell for post.
+        return self.comments.count+2;
+    }
+    
+    return 0;
+
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
