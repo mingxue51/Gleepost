@@ -278,7 +278,6 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
             if(![pushNotification.version isEqualToString:actualVersion])
             {
                 [self navigateToGleepostApp];
-                
             }
         }
             break;

@@ -60,6 +60,8 @@
 
 //        if(![_sentPosts containsObject:@(p.remoteKey)] && p.remoteKey == [[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey])
         
+        DDLogDebug(@"triggeredlabel remote key %d", [[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey]);
+        
         if([[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey] == p.remoteKey)
         {
             [NSTimer scheduledTimerWithTimeInterval:_visibilityTime target:self selector:@selector(trackPost:) userInfo:p repeats:NO];
@@ -152,6 +154,12 @@
 - (void)unsubscribePosts:(id)unsbuscribePosts
 {
     NSData *data = [self generatePostsData:unsbuscribePosts withSubscribe:NO];
+    
+    if(!data)
+    {
+        return;
+    }
+    
     [[GLPWebSocketClient sharedInstance] sendMessageWithJson:data];
 }
 
@@ -194,6 +202,11 @@
         postsRemoteKeys = [(NSSet *)[posts allObjects] mutableCopy];
     }
     
+    
+    if(postsRemoteKeys.count == 0)
+    {
+        return nil;
+    }
 
     
     NSMutableDictionary *dataDictionary = [[NSMutableDictionary alloc] initWithObjectsAndKeys:(subscribe) ? @"SUBSCRIBE" : @"UNSUBSCRIBE", @"action", postsRemoteKeys, @"posts", nil];

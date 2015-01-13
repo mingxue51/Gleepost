@@ -1687,8 +1687,6 @@
     
     NSArray *visiblePosts = [self snapshotVisibleCells];
     
-    DDLogDebug(@"Profile scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
-    
     [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
 
     [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
@@ -1701,8 +1699,6 @@
     if(decelerate == 0)
     {
         NSArray *visiblePosts = [self snapshotVisibleCells];
-        
-        DDLogDebug(@"Profile scrollViewDidEndDragging2 posts: %@", visiblePosts);
         
         [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
 

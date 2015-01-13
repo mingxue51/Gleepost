@@ -51,6 +51,10 @@
 #import "GLPInviteUsersViewController.h"
 #import "GLPTableActivityIndicator.h"
 
+#import "GLPTrackViewsCountProcessor.h"
+#import "GLPCampusWallAsyncProcessor.h"
+#import "GLPVisibleViewControllersManager.h"
+
 @interface GroupViewController () <GLPAttendingPopUpViewControllerDelegate, GLPGroupSettingsViewControllerDelegate, GLPPublicGroupPopUpViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *posts;
@@ -97,6 +101,10 @@
 
 @property (assign, nonatomic) BOOL showComment;
 
+/** Captures the visibility of current cells. */
+@property (strong, nonatomic) GLPTrackViewsCountProcessor *trackViewsCountProcessor;
+@property (strong, nonatomic) GLPCampusWallAsyncProcessor *campusWallAsyncProcessor;
+
 @end
 
 @implementation GroupViewController
@@ -136,26 +144,9 @@ const float TOP_OFF_SET = -64.0;
     
     [self configureNavigationItems];
     
-    
-//    if(_fromPushNotification)
-//    {
-//        [self loadGroupData];
-//    }
-    
-//    [self loadMembers];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewMediaPostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
-
-    
     [[GLPLiveGroupManager sharedInstance] postGroupReadWithRemoteKey:_group.remoteKey];
 }
-
-//- (void)viewDidLayoutSubviews
-//{
-//    self.pongRefreshControl = [BOZPongRefreshControl attachToTableView:self.tableView
-//                                                     withRefreshTarget:self
-//                                                      andRefreshAction:@selector(loadEarlierPostsFromPullToRefresh)];
-//}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -172,17 +163,27 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-//    if([self isFakeNavigationBarVisible])
-//    {
-//        [_fakeNavigationBar showNavigationBar];
-//    }
     [self removeNotifications];
     
     [self removeGoingButtonNotification];
+    
+    [[GLPVisibleViewControllersManager sharedInstance] anyWallIsVisible:NO];
 
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     
     [super viewWillDisappear:animated];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [_trackViewsCountProcessor resetSentPostsSet];
+    [super viewDidDisappear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [[GLPVisibleViewControllersManager sharedInstance] anyWallIsVisible:YES];
 }
 
 
@@ -206,8 +207,6 @@ const float TOP_OFF_SET = -64.0;
     
     progressView.tag = _group.remoteKey;
     
-//    DDLogDebug(@"getImageProgressViewAndAddIt: %d : %@", _group.remoteKey, progressView);
-    
     [self.tableView addSubview:progressView];
 }
 
@@ -230,12 +229,6 @@ const float TOP_OFF_SET = -64.0;
 {
     //Register nib files in table view.
     
-//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTableViewCell" bundle:nil] forCellReuseIdentifier:@"ProfileCell"];
-    
-    
-
-//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTwoButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"TwoButtonsCell"];
-    
     [self.tableView registerNib:[UINib nibWithNibName:@"DescriptionSegmentGroupCell" bundle:nil] forCellReuseIdentifier:@"DescriptionSegmentGroupCell"];
     
     //Register posts.
@@ -245,46 +238,11 @@ const float TOP_OFF_SET = -64.0;
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
-    //Register contacts' cells.
-    
-//    [self.tableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
-    
-    
-    
-//    [self.tableView registerNib:[UINib nibWithNibName:@"GLPLoadingCell" bundle:nil] forCellReuseIdentifier:@"LoadingCell"];
-
 
 }
 
 -(void)configureTableView
 {
-    // refresh control
-//    _refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectMake(50, 150, 320, 60)];
-//    [_refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
-
-    
-
-//    self.refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0, 300, 320, 70)];
-//    [self.refreshControl setTintColor:[UIColor blackColor]];
-//    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
-//    [_tableView addSubview: self.refreshControl];
-//    
-//    [_tableView bringSubviewToFront:self.refreshControl];
-    
-    
-//    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-//        self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, 0, 0); // This is the default and might not be necessary
-    
-//        self.headerContainerViewConstraint.constant = -self.topLayoutGuide.length;
-    
-//        self.tableView.tableHeaderView.frame = CGRectMake(self.tableView.tableHeaderView.frame.origin.x, self.tableView.tableHeaderView.frame.origin.y, self.tableView.tableHeaderView.frame.size.width, self.tableView.tableHeaderView.frame.size.height - self.topLayoutGuide.length);
- //   }
-    
-//    [_activityIndicator setFrame:CGRectMake(50, 100, 320, 70)];
-    
-    
-
-    
     if([GLPiOSSupportHelper isIOS6])
     {
         [GLPiOSSupportHelper setBackgroundImageToTableView:self.tableView];
@@ -371,6 +329,8 @@ const float TOP_OFF_SET = -64.0;
     _showComment = NO;
     
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.view];
+    _trackViewsCountProcessor = [[GLPTrackViewsCountProcessor alloc] init];
+    _campusWallAsyncProcessor = [[GLPCampusWallAsyncProcessor alloc] init];
 }
 
 - (void)configureNavigationItems
@@ -453,6 +413,8 @@ const float TOP_OFF_SET = -64.0;
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_GROUP_VIDEO_POST_READY, (long)_group.remoteKey];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:notificationName object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
 
 }
 
@@ -467,7 +429,7 @@ const float TOP_OFF_SET = -64.0;
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_GROUP_VIDEO_POST_READY, (long)_group.remoteKey];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
 }
 
 - (void)setUpGoingButtonNotification
@@ -572,10 +534,36 @@ const float TOP_OFF_SET = -64.0;
     }
     
     [[GLPLiveGroupPostManager sharedInstance] removePost:uploadedPost fromGroupWithRemoteKey:_group.remoteKey];
-
-    
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+/**
+ This method is called when there is an update in views count.
+ 
+ @param notification the notification contains post remote key and the updated
+ number of views.
+ */
+- (void)updateViewsCounter:(NSNotification *)notification
+{
+    NSInteger postRemoteKey = [notification.userInfo[@"PostRemoteKey"] integerValue];
+    NSInteger viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
     
+    [_campusWallAsyncProcessor parseAndUpdatedViewsCountPostWithPostRemoteKey:postRemoteKey andPosts:_posts withCallbackBlock:^(NSInteger index) {
+        
+        DDLogDebug(@"updateViewsCounter index %ld", (long)index);
+        
+        if(index != -1)
+        {
+            GLPPost *post = [self.posts objectAtIndex:index];
+            
+            post.viewsCount = viewsCount;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self refreshCellViewWithIndex:index+1];
+            });
+        }
+        
+    }];
 }
 
 
@@ -918,6 +906,8 @@ const float TOP_OFF_SET = -64.0;
     [self makeVisibleOrInvisibleActivityIndicatorWithOffset:yOffset];
     
     [self makeVisibleOrInvisibleNavigationBarWithOffset:yOffset];
+    
+    [_trackViewsCountProcessor resetVisibleCells];
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
@@ -930,6 +920,65 @@ const float TOP_OFF_SET = -64.0;
     {
         [self loadEarlierPostsFromPullToRefresh];
     }
+}
+
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if(self.posts.count == 0)
+    {
+        return;
+    }
+    
+    //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
+    
+    NSArray *visiblePosts = [self snapshotVisibleCells];
+    
+    DDLogDebug(@"GroupVC scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
+    
+    [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(decelerate == 0)
+    {
+        NSArray *visiblePosts = [self snapshotVisibleCells];
+        
+        DDLogDebug(@"GroupVC scrollViewDidEndDragging2 posts: %@", visiblePosts);
+        
+        [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
+    }
+}
+
+/**
+ This method is used to take a snapshot of the current visible posts cells.
+ 
+ @return The visible posts.
+ 
+ */
+-(NSArray *)snapshotVisibleCells
+{
+    NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
+    
+    NSArray *paths = [self.tableView indexPathsForVisibleRows];
+    
+    for (NSIndexPath *path in paths)
+    {
+        if(path.row == 0)
+        {
+            continue;
+        }
+        
+        //Avoid any out of bounds access in array
+        
+        if(path.row < self.posts.count)
+        {
+            [visiblePosts addObject:[self.posts objectAtIndex:path.row - 1]];
+        }
+    }
+    
+    return visiblePosts;
 }
 
 - (void)configureStrechedImageViewWithOffset:(float)offset
