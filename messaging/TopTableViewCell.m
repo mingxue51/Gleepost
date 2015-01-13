@@ -16,6 +16,7 @@
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ShapeFormatterHelper.h"
+#import "GLPImageHelper.h"
 
 @interface TopTableViewCell ()
 
@@ -62,16 +63,17 @@
 
 - (void)setImageWithUrl:(NSString *)url
 {
+    DDLogDebug(@"TopTableViewCell : Url %@", url);
+    
     if([url isEqualToString:@""])
     {
         //Set default image.
-        [_mainImageView setImage:[UIImage imageNamed:@"default_user_image2"]];
+        [_mainImageView setImage:[GLPImageHelper placeholderUserImage]];
     }
     else
     {
-        
         //Fetch the image from the server and add it to the image view.
-        [_mainImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [_mainImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[GLPImageHelper placeholderUserImage] options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
 }
 
