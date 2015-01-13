@@ -670,6 +670,28 @@ static WebClient *instance = nil;
     }];
 }
 
+- (void)getAttendingEventsAfter:(GLPPost *)post withUserRemoteKey:(NSInteger)userRemoteKey callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
+{
+    NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
+    
+    if(post)
+    {
+        params[@"before"] = [NSNumber numberWithInt:post.remoteKey];
+    }
+    
+    NSString *path = [NSString stringWithFormat:@"user/%d/attending", userRemoteKey];
+    
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *attendingPosts = [RemoteParser parsePostsFromJson:responseObject];
+        callbackBlock(YES, attendingPosts);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+    }];
+}
+
 - (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"posts/%d/comments", post.remoteKey];

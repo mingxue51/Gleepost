@@ -128,9 +128,9 @@
     
     for(NSString *key in headerPosts)
     {
-        NSArray *notifications = [headerPosts objectForKey:key];
+        NSArray *posts = [headerPosts objectForKey:key];
         
-        return notifications;
+        return posts;
     }
     
     return nil;
@@ -147,9 +147,9 @@
     
     for(NSString *key in headerPosts)
     {
-        NSArray *notifications = [headerPosts objectForKey:key];
+        NSArray *posts = [headerPosts objectForKey:key];
         
-        return [notifications objectAtIndex:postIndex];
+        return [posts objectAtIndex:postIndex];
     }
     
     return nil;
@@ -193,9 +193,15 @@
     [_sections setObject:section atIndexedSubscript:indexPath.section];
     
     DDLogDebug(@"Post removed. New sections %@", _sections);
-    
-    
     return indexPath;
+}
+
+- (GLPPost *)lastPost
+{
+    NSString *lastHeader = [self headerInSection:[self lastSection]-1];
+    NSDictionary *dictionary = [self containsDictionaryWithHeader:lastHeader];
+    NSArray *postsSection = [dictionary objectForKey:[[dictionary allKeys] objectAtIndex:0]];
+    return [postsSection lastObject];
 }
 
 

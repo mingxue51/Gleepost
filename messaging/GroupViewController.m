@@ -134,7 +134,6 @@ const float TOP_OFF_SET = -64.0;
         [self loadPosts];
         [self loadPendingImageIfExistAndSetIt];
     }
-    
 
     //Get the video progress view and add it as subview.
     [self getProgressViewAndAddIt];

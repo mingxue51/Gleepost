@@ -63,6 +63,7 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)getPostsAfter:(GLPPost *)post withCategoryTag:(NSString*)tag callback:(void (^)(BOOL success, NSArray *posts))callbackBlock;
 -(void)getEventPostsAfterDate:(NSDate*)date withCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock;
 - (void)getAttendingEventsForUserWithRemoteKey:(NSInteger)userRemoteKey callback:(void (^) (BOOL success, NSArray *posts))callback;
+- (void)getAttendingEventsAfter:(GLPPost *)post withUserRemoteKey:(NSInteger)userRemoteKey callback:(void (^)(BOOL success, NSArray *posts))callbackBlock;
 - (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock;
 - (void)editPost:(GLPPost *)editedPost callbackBlock:(void (^)(BOOL success, GLPPost *updatedPost))callbackBlock;
 -(void)getPostWithRemoteKey:(NSInteger)remoteKey withCallbackBlock:(void (^) (BOOL success, GLPPost *post))callbackBlock;

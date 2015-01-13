@@ -20,5 +20,6 @@
 - (void)resetData;
 - (NSIndexPath *)indexPathWithPost:(GLPPost *)post;
 - (NSIndexPath *)removePost:(GLPPost *)post;
+- (GLPPost *)lastPost;
 
 @end

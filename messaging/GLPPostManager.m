@@ -357,6 +357,30 @@
     }];
 }
 
++ (void)getAttendingEventsAfter:(GLPPost *)post withUserRemoteKey:(NSInteger)userRemoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callbackBlock
+{
+    [[WebClient sharedInstance] getAttendingEventsAfter:post withUserRemoteKey:userRemoteKey callback:^(BOOL success, NSArray *posts) {
+       
+        if(!success) {
+            callbackBlock(NO, NO, nil);
+            return;
+        }
+        
+        
+        DDLogInfo(@"attending events after %d", posts.count);
+        
+        if(!posts || posts.count == 0) {
+            callbackBlock(YES, NO, nil);
+            return;
+        }
+        
+        BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+        
+        callbackBlock(YES, remains, posts);
+    }];
+}
+
+
 +(void)loadPostWithRemoteKey:(NSInteger)remoteKey callback:(void (^)(BOOL sucess, GLPPost* post))callback
 {
     [[WebClient sharedInstance] getPostWithRemoteKey:remoteKey withCallbackBlock:^(BOOL success, GLPPost *post) {
