@@ -351,6 +351,8 @@ static GLPVideoLoaderManager *instance = nil;
     
     NSDictionary *videoViewData = [[NSDictionary alloc] initWithObjectsAndKeys:videoVC, @(remoteKey), nil];
     
+    FLog(@"GLPVideoLoaderManager : postNotificationWithVideoVC notifications name %@", notificationName);
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:videoViewData];
 }
 

@@ -170,6 +170,11 @@
 {
     NSArray *newVisiblePosts = timer.userInfo;
 
+    if(!newVisiblePosts)
+    {
+        return;
+    }
+    
     NSData *data = [self generatePostsData:newVisiblePosts withSubscribe:YES];
     [[GLPWebSocketClient sharedInstance] sendMessageWithJson:data];
 }

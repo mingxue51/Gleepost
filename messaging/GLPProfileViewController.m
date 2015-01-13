@@ -312,7 +312,7 @@
         
         DDLogDebug(@"updateViewsCounter index %ld", (long)index);
         
-        if(index != -1)
+        if(index != -1 && _selectedTab == kLeft)
         {
             GLPPost *post = [self.posts objectAtIndex:index];
             
@@ -1675,11 +1675,23 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if(_selectedTab == kButtonRight)
+    {
+        return;
+    }
+    
+    
     [_trackViewsCountProcessor resetVisibleCells];
 }
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    
+    if(_selectedTab == kButtonRight)
+    {
+        return;
+    }
+    
     if(self.posts.count == 0)
     {
         return;
@@ -1698,6 +1710,11 @@
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    if(_selectedTab == kButtonRight)
+    {
+        return;
+    }
+    
     if(decelerate == 0)
     {
         NSArray *visiblePosts = [self snapshotVisibleCells];

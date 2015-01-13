@@ -77,6 +77,8 @@
         
         [self loadThumbnail];
         
+        [self deregisterNotifications];
+        
         [self registerNotifications];
         
         [self showLoadingElements];

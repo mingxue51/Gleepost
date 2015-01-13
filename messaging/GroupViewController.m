@@ -166,6 +166,8 @@ const float TOP_OFF_SET = -64.0;
     
     [self removeGoingButtonNotification];
     
+    [_trackViewsCountProcessor resetSentPostsSet];
+
     [[GLPVisibleViewControllersManager sharedInstance] anyWallIsVisible:NO];
 
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
@@ -175,7 +177,7 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)viewDidDisappear:(BOOL)animated
 {
-    [_trackViewsCountProcessor resetSentPostsSet];
+//    [_trackViewsCountProcessor resetSentPostsSet];
     [super viewDidDisappear:animated];
 }
 
