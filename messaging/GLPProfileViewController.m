@@ -1292,19 +1292,13 @@
     if (indexPath.section > 0)
     {
         if(_selectedTab == kButtonRight)
-        {
-//            GLPNotification *notification = _notifications[indexPath.row - 1];
-            
+        {            
             GLPNotification *notification = [_notificationsOrganiser notificationWithIndex:indexPath.row andSectionIndex:indexPath.section - 1];
             
             // navigate to post.
             if(notification.notificationType == kGLPNotificationTypeLiked || notification.notificationType == kGLPNotificationTypeCommented)
             {
                 self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
-//                
-//                
-//                self.selectedPost.content = @"Loading...";
-                
 //                self.selectedPost = nil;
                 self.isPostFromNotifications = YES;
                 
@@ -1343,21 +1337,14 @@
             else if(notification.notificationType == kGLPNotificationTypePostApproved)
             {
                 self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
-                
-                self.selectedPost.content = @"Loading...";
                 self.isPostFromNotifications = YES;
-                
                 self.commentNotificationDate = nil;
-                
                 [self performSegueWithIdentifier:@"view post" sender:self];
             }
             else if(notification.notificationType == kGLPNotificationTypePostRejected)
             {
                 self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
-                
-//                self.selectedPost.content = @"Loading...";
                 self.isPostFromNotifications = YES;
-                
                 [self performSegueWithIdentifier:@"view pending post" sender:self];
             }
         }
