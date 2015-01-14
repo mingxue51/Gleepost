@@ -15,6 +15,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "ImageFormatterHelper.h"
 #import "WebClientHelper.h"
+#import "NSNotificationCenter+Utils.h"
 
 /**
  Inner class. Check if this methodology is the most appropriate.
@@ -115,9 +116,17 @@ static GLPProfileLoader *instance = nil;
             NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^{
                 
                 //Load user's image remotely.
-                _userImage = [self loadImageWithUrl:profileImageUrl];
+                UIImage *downloadedImage = [self loadImageWithUrl:profileImageUrl];
                 
-                [[SDImageCache sharedImageCache] storeImage:_userImage forKey:profileImageUrl];
+                _userImage = downloadedImage;
+                
+                [[SDImageCache sharedImageCache] storeImage:downloadedImage forKey:profileImageUrl];
+                
+                DDLogDebug(@"GLPProfileLoader : Profile image loaded!");
+                
+                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_REFRESH_PROFILE_CELL object:self];
+                
+//                [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_REFRESH_PROFILE_CELL object:self];
                 
             }];
             
@@ -196,12 +205,9 @@ static GLPProfileLoader *instance = nil;
 
 - (UIImage*)loadImageWithUrl:(NSString*)url
 {
-    
     NSURL *imageUrl = [NSURL URLWithString:url];
-    
     NSData *data = [NSData dataWithContentsOfURL:imageUrl];
     UIImage *img = [[UIImage alloc] initWithData:data];
-    
     
     return img;
 }
@@ -407,7 +413,7 @@ static GLPProfileLoader *instance = nil;
 {
     _contactsImages = [[NSMutableDictionary alloc] init];
     _userDetails = [[GLPUser alloc] init];
-    _userImage = [[UIImage alloc] init];
+    _userImage = nil;
     self.loadingImagesExecuting = NO;
 }
 

@@ -80,6 +80,8 @@
 #define GLPNOTIFICATION_SHOW_MORE_OPTIONS               @"GLPShowMoreOptions"
 #define GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE          @"GLPPostCellViewsUpdate"
 
+#define GLPNOTIFICATION_REFRESH_PROFILE_CELL            @"GLPRefreshProfileCell"
+
 #define GLPNOTIFICATION_CHANGE_IMAGE_PROGRESS           @"GLPChangeImageProgress"
 #define GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS     @"GLPChangeGroupImageProgress"
 

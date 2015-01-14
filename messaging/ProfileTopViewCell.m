@@ -24,6 +24,14 @@
 
 const float PROFILE_TOP_VIEW_HEIGHT = 238;
 
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        
+    }
+    return self;
+}
 
 - (void)setUserData:(GLPUser *)userData
 {
@@ -66,9 +74,6 @@ const float PROFILE_TOP_VIEW_HEIGHT = 238;
     
     [_notificationLabel setHidden:YES];
     [_notificationImageView setHidden:YES];
-    
-
-    
 }
 
 #pragma mark - Configuration

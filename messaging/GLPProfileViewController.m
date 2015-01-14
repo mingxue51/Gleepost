@@ -224,6 +224,9 @@
 - (void)configureNSNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchUserData) name:GLPNOTIFICATION_REFRESH_PROFILE_CELL object:nil];
+    
 }
 
 -(void)dealloc
@@ -233,6 +236,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPNewPostByUser" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_REFRESH_PROFILE_CELL object:nil];
+
 }
 
 - (void)setUpGoingButtonNotification
@@ -423,6 +428,7 @@
     
     _trackViewsCountProcessor = [[GLPTrackViewsCountProcessor alloc] init];
     _campusWallAsyncProcessor = [[GLPCampusWallAsyncProcessor alloc] init];
+    _user = nil;
     
 }
 
@@ -990,6 +996,7 @@
         if(user)
         {
             _user = user;
+//            _user.profileImage = nil;
             
             DDLogDebug(@"Data needs to be updated locally: %@", user);
             [self refreshCellViewWithIndex:0];
@@ -1003,6 +1010,7 @@
         {
             DDLogDebug(@"Data needs to be updated remotely: %@", user);
             _user = user;
+//            _user.profileImage = nil;
             [self refreshCellViewWithIndex:0];
 //            [self fetchUsersPostsIfNeeded];
         }

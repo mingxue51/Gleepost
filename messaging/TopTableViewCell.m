@@ -62,9 +62,7 @@
 #pragma mark - Modifiers
 
 - (void)setImageWithUrl:(NSString *)url
-{
-    DDLogDebug(@"TopTableViewCell : Url %@", url);
-    
+{    
     if([url isEqualToString:@""])
     {
         //Set default image.
@@ -73,7 +71,7 @@
     else
     {
         //Fetch the image from the server and add it to the image view.
-        [_mainImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:[GLPImageHelper placeholderUserImage] options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [_mainImageView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:[GLPImageHelper placeholderUserImage]];
     }
 }
 
