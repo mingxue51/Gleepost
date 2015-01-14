@@ -1722,11 +1722,13 @@ const float TOP_OFFSET = 180.0f;
     
     //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
     
-    NSArray *visiblePosts = [self getVisiblePostsInTableView];
+    NSMutableArray *postsYValues = nil;
+    
+    NSArray *visiblePosts = [self getVisiblePostsInTableViewWithYValues:&postsYValues];
     
     [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
     
-    [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
+    [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
     
     DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
     
@@ -1749,11 +1751,13 @@ const float TOP_OFFSET = 180.0f;
             return;
         }
         
-        NSArray *visiblePosts = [self getVisiblePostsInTableView];
+        NSMutableArray *postsYValues = nil;
+        
+        NSArray *visiblePosts = [self getVisiblePostsInTableViewWithYValues:&postsYValues];
         
         [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
         
-        [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
+        [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
         
         DDLogDebug(@"scrollViewDidEndDragging2 posts %lu", (unsigned long)visiblePosts.count);
         
@@ -2305,9 +2309,11 @@ const float TOP_OFFSET = 180.0f;
  @return The visible posts.
  
  */
--(NSArray *)getVisiblePostsInTableView
+-(NSArray *)getVisiblePostsInTableViewWithYValues:(NSMutableArray **)postsYValues
 {
     NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
+    
+    *postsYValues = [[NSMutableArray alloc] init];
     
     NSArray *paths = [self.tableView indexPathsForVisibleRows];
     
@@ -2319,9 +2325,22 @@ const float TOP_OFFSET = 180.0f;
         
         if(row < self.posts.count)
         {
-            [visiblePosts addObject:[self.posts objectAtIndex:row]];
+            GLPPost *post = [self.posts objectAtIndex:row];
+            [visiblePosts addObject:post];
+            
+            CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:path];
+            CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
+            
+            [*postsYValues addObject:@(rectInSuperview.origin.y)];
+            
+            DDLogDebug(@"-> Post: %@, Y: %f", post, rectInSuperview.origin.y);
+        }
+        else
+        {
+            DDLogDebug(@"Post not in visible %lu", (unsigned long)row);
         }
     }
+    
     return visiblePosts;
 }
 

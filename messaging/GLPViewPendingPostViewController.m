@@ -240,7 +240,7 @@
     if([self comesFromNotifications])
     {
         [_tableActivityIndicator startActivityIndicator];
-
+        self.title = @"Loading...";
         [GLPPostManager loadPostWithRemoteKey:self.pendingPost.remoteKey callback:^(BOOL success, GLPPost *post) {
             
             [_tableActivityIndicator stopActivityIndicator];

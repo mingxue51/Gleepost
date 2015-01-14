@@ -22,15 +22,15 @@
 
 - (void)didMoveToWindow
 {
-    if(self.window != nil)
-    {
-        [self observeSuperviewsOnOffsetChange];
-    }
+//    if(self.window != nil)
+//    {
+//        [self observeSuperviewsOnOffsetChange];
+//    }
 }
 
 - (void)dealloc
 {
-    [self removeAsSuperviewObserver];
+//    [self removeAsSuperviewObserver];
 }
 
 - (void)observeSuperviewsOnOffsetChange
