@@ -1292,7 +1292,7 @@
     if (indexPath.section > 0)
     {
         if(_selectedTab == kButtonRight)
-        {            
+        {
             GLPNotification *notification = [_notificationsOrganiser notificationWithIndex:indexPath.row andSectionIndex:indexPath.section - 1];
             
             // navigate to post.
@@ -1344,6 +1344,7 @@
             else if(notification.notificationType == kGLPNotificationTypePostRejected)
             {
                 self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
+                self.commentNotificationDate = nil;
                 self.isPostFromNotifications = YES;
                 [self performSegueWithIdentifier:@"view pending post" sender:self];
             }
