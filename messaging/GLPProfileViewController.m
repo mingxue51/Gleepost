@@ -177,6 +177,8 @@
 
     if(_fromPushNotification)
     {
+        DDLogDebug(@"GLPProfileViewController : fromPushNotifications");
+        
         _selectedTab = kButtonRight;
     }
 
@@ -1757,6 +1759,8 @@
     if(!_tabButtonEnabled) {
         return;
     }
+    
+    DDLogDebug(@"GLPProfileViewController : Segment switched");
     
     _selectedTab = buttonType;
     

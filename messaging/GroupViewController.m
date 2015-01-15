@@ -1009,9 +1009,7 @@ const float TOP_OFF_SET = -64.0;
 }
 
 - (void)makeVisibleOrInvisibleNavigationBarWithOffset:(float)offset
-{
-//    DDLogDebug(@"Offset: %f, top off set: %f", offset, TOP_OFF_SET);
-    
+{    
     if(offset >= TOP_OFF_SET)
     {
         if([self isFakeNavigationBarVisible])
@@ -1405,6 +1403,9 @@ const float TOP_OFF_SET = -64.0;
 {
     self.isLoading = YES;
     
+    DDLogDebug(@"GroupViewController : show indicator startLoading");
+
+    
     [_activityIndicator startAnimating];
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
@@ -1413,6 +1414,9 @@ const float TOP_OFF_SET = -64.0;
 - (void)stopLoading
 {
     self.isLoading = NO;
+    
+    DDLogDebug(@"GroupViewController : show indicator stopLoading");
+
     
     [_activityIndicator stopAnimating];
     
@@ -1470,7 +1474,7 @@ const float TOP_OFF_SET = -64.0;
     //Add the pending new image post to the GLPLiveGroupPostManager.
     [[GLPLiveGroupPostManager sharedInstance] addImagePost:inPost withGroupRemoteKey:_group.remoteKey];
     
-//    self.isLoading = NO;
+    self.isLoading = NO;
     
     //Bring the fake navigation bar to from because is hidden by new cell.
     //    [self.tableView bringSubviewToFront:self.reNavBar];

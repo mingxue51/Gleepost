@@ -222,9 +222,7 @@ static GLPProfileLoader *instance = nil;
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
         databaseUser = [GLPUserDao findByRemoteKey:_userDetails.remoteKey db:db];
-        
-        DDLogDebug(@"User data from database: %@", databaseUser);
-        
+                
         if(_userImage)
         {
             databaseUser.profileImage = _userImage;
@@ -246,11 +244,6 @@ static GLPProfileLoader *instance = nil;
         }
         
         updatedData = [self dataNeedsUpdateWithCurrentUserData:_userDetails andRemoteUserData:remoteUser];
-        
-        
-        
-        DDLogDebug(@"GLPProfileLoader : user data from server %@.\n Current data: %@", remoteUser, _userDetails);
-
         
         if(updatedData)
         {
