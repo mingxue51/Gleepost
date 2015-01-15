@@ -114,7 +114,10 @@ static GLPLiveGroupPostManager *instance = nil;
 
 - (void)addImagePost:(GLPPost *)post withGroupRemoteKey:(NSInteger)groupRemoteKey
 {
-    DDLogDebug(@"Added image post %@ to GLPLiveGroupPostManager.", post);
+    if(![post imagePost])
+    {
+        return;
+    }
     
     NSMutableArray *pendingImagePostsArray = [_pendingImagePosts objectForKey:@(groupRemoteKey)];
     
@@ -135,7 +138,6 @@ static GLPLiveGroupPostManager *instance = nil;
 
 - (void)removePost:(GLPPost *)post fromGroupWithRemoteKey:(NSInteger)groupRemoteKey
 {
-    
     DDLogDebug(@"Removed image post %@ from GLPLiveGroupPostManager.", post);
 
     NSMutableArray *pendingImagePostsArray = [_pendingImagePosts objectForKey:@(groupRemoteKey)];
@@ -170,9 +172,13 @@ static GLPLiveGroupPostManager *instance = nil;
 
 - (void)removeAnyUploadedImagePostWithPosts:(NSArray *)posts inGroupRemoteKey:(NSInteger)groupRemoteKey
 {
+    FLog(@"GLPLiveGroupPostManager : removeAnyUploadedImagePostWithPosts");
+    
     NSMutableArray *pendingImagePostsArray = [_pendingImagePosts objectForKey:@(groupRemoteKey)];
     
-    for(GLPPost *pendingPost in pendingImagePostsArray)
+    //We are calling the copy method because the _pendingImagePosts might be accessed by other thread.
+    
+    for(GLPPost *pendingPost in [pendingImagePostsArray copy])
     {
         for (GLPPost *livePost in posts)
         {

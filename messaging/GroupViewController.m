@@ -416,7 +416,6 @@ const float TOP_OFF_SET = -64.0;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:notificationName object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
-
 }
 
 -(void)removeNotifications
@@ -1492,6 +1491,7 @@ const float TOP_OFF_SET = -64.0;
     
     [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
     
+    [self showOrHidePostsEmptyView];
     
     self.isLoading = NO;
 }

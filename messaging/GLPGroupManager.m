@@ -187,7 +187,7 @@
         localEntities = [GLPPostDao findPostsInGroupWithRemoteKey:groupId inDb:db];
     }];
     
-    DDLogInfo(@"local group posts %d", localEntities.count);
+    DDLogInfo(@"local group posts %lu", (unsigned long)localEntities.count);
     
     if(localEntities.count > 0) {
         localCallback(localEntities);
@@ -197,15 +197,11 @@
        
         if(success)
         {
-//            [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
+            BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
             
-                BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
-                
-                [GLPPostDao saveGroupPosts:posts withGroupRemoteKey:groupId];
-                
-                remoteCallback(YES, remains, posts);
-                
-//            }];
+            [GLPPostDao saveUpdateOrRemovePosts:posts withGroupRemoteKey:groupId];
+            
+            remoteCallback(YES, remains, posts);
         }
         else
         {

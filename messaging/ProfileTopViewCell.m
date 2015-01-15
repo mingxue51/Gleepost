@@ -36,10 +36,7 @@ const float PROFILE_TOP_VIEW_HEIGHT = 238;
 - (void)setUserData:(GLPUser *)userData
 {
     _userData = userData;
-    
-    //TODO: Fix that in the future.
-    DDLogDebug(@"ProfileTopViewCell : real profile image %@", _userData.profileImage);
-    
+
     if(_userData.profileImage)
     {
         [super setDownloadedImage:_userData.profileImage];

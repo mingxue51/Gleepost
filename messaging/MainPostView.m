@@ -609,6 +609,13 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)showVideoView
 {
+//    if([_videoView isVideoLoading])
+//    {
+//        DDLogDebug(@"MainPostView : Video is loading");
+//        
+//        return;
+//    }
+    
     [_activityIndicator stopAnimating];
     [_videoView setHidden:NO];
     [_postImageView setHidden:YES];

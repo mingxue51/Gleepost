@@ -71,6 +71,8 @@
 {
     if(ON_DEVICE)
     {
+        DDLogDebug(@"VideoView : setUpVideoViewWithPost %ld", (long)_remoteKey);
+        
         _remoteKey = post.remoteKey;
         
         _post = post;
@@ -136,6 +138,13 @@
         
         [self configurePlaybackElementsWithPreviewVC:_previewVC];
     }
+}
+
+#pragma mark - Accessors
+
+- (BOOL)isVideoLoading
+{
+    return (_remoteKey != 0);
 }
 
 #pragma mark - Nofications

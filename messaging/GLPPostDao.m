@@ -472,6 +472,44 @@
     return deletedPosts;
 }
 
++ (void)saveUpdateOrRemovePosts:(NSArray *)posts withGroupRemoteKey:(NSInteger)groupRemoteKey
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        NSArray *groupPosts = [GLPPostDao findPostsInGroupWithRemoteKey:groupRemoteKey inDb:db];
+        
+        DDLogDebug(@"GLPPostDao : Group posts %@", groupPosts);
+        
+        NSArray *postsToDelete = [GLPPostDao subtractRemotePosts:posts withLocalPosts:groupPosts.mutableCopy];
+        
+        DDLogDebug(@"GLPPostDao : Group Posts to delete %@", postsToDelete);
+        
+        if(postsToDelete)
+        {
+            [GLPPostDao removePostsFromDatabase:postsToDelete withDb:db];
+        }
+        
+        for(GLPPost *p in posts)
+        {
+            if(p.group == nil)
+            {
+                FLog(@"Post should have a group before save to local database %@", p.group);
+                p.group = [[GLPGroup alloc] init];
+                p.group.remoteKey = groupRemoteKey;
+            }
+            
+            if(p.group.remoteKey == 0)
+            {
+                FLog(@"Group post group attribute should not be 0");
+                p.group.remoteKey = groupRemoteKey;
+            }
+            
+            p.sendStatus = kSendStatusSent;
+            [GLPPostDao save:p inDb:db];
+        }
+    }];
+}
+
 + (NSArray *)subtractRemotePosts:(NSArray *)remotePosts withLocalPosts:(NSMutableArray *)localPosts
 {
     [localPosts removeObjectsInArray:remotePosts];
@@ -641,8 +679,6 @@
 
 + (void)insertVideoWithEntity:(GLPPost *)entity andDb:(FMDatabase *)db
 {
-//    if(entity.remoteKey == 0)
-//    {
         if(!entity.video.pendingKey)
         {
             return;
@@ -652,58 +688,7 @@
               [entity.video.pendingKey intValue],
               entity.key];
     
-//        BOOL s = [db executeUpdateWithFormat:@"insert into post_videos (post_remote_key, post_key, video_url, video_thumbnail_url, video_temp_key) values(%d, %d, %@, %@, %d)",
-//                  entity.remoteKey,
-//                  entity.key,
-//                  entity.video.url,
-//                  entity.video.thumbnailUrl,
-//                  [entity.video.pendingKey intValue]];
-    
         DDLogDebug(@"Video data inserted (status local): %d : %@, post key: %ld", s, entity.video, (long)entity.key);
-//    }
-//    else
-//    {
-
-
-//    }
-    
-
-    
-//    for(NSString* videoUrl in entity.videosUrls)
-//    {
-//        [db executeUpdateWithFormat:@"insert into post_videos (post_remote_key, video_url) values(%d, %@)",
-//         entity.remoteKey,
-//         videoUrl];
-//    }
-}
-
-//TODO: Delete the second attribute and put NSSAssert in the implementation.
-+ (void)saveGroupPosts:(NSArray *)groupPosts withGroupRemoteKey:(NSInteger)groupRemoteKey
-{
-    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        
-        DDLogDebug(@"Save group posts in database");
-        
-        for(GLPPost *post in groupPosts)
-        {
-            if(post.group == nil)
-            {
-                FLog(@"Post should have a group before save to local database %@", post.group);
-                post.group = [[GLPGroup alloc] init];
-                post.group.remoteKey = groupRemoteKey;
-            }
-            
-            if(post.group.remoteKey == 0)
-            {
-                FLog(@"Group post group attribute should not be 0");
-                post.group.remoteKey = groupRemoteKey;
-
-            }
-
-            post.sendStatus = kSendStatusSent;
-            [GLPPostDao save:post inDb:db];
-        }
-    }];
 }
 
 + (void)updateVideosWithEntity:(GLPPost *)entity andDb:(FMDatabase *)db
@@ -856,7 +841,7 @@
 
 +(void)deletePostWithPost:(GLPPost *)entity db:(FMDatabase *)db
 {
-    [db executeUpdateWithFormat:@"delete from posts where remoteKey=%d",
+    BOOL b = [db executeUpdateWithFormat:@"delete from posts where remoteKey=%d",
      entity.remoteKey];
     
     [db executeUpdateWithFormat:@"delete from post_images where post_remote_key=%d",
@@ -867,6 +852,8 @@
     
     [db executeUpdateWithFormat:@"delete from review_history where post_remote_key=%d",
      entity.remoteKey];
+    
+    DDLogDebug(@"GLPPostDao : deletePostWithPost %@ %ld - %d", entity.content, (long)entity.group.remoteKey, b);
 }
 
 + (void)deletePostsWithGroupRemoteKey:(NSInteger)groupRemoteKey db:(FMDatabase *)db

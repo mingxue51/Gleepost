@@ -970,7 +970,7 @@
 
 -(void)receiveInternalNotificationNotification:(NSNotification *)notification
 {
-    DDLogInfo(@"Receive internal notifications");
+    DDLogInfo(@"Receive internal notifications %@", notification.userInfo);
     
     if(_selectedTab == kButtonRight) {
         [self loadUnreadInternalNotifications];
@@ -982,8 +982,6 @@
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
-
-
 
 
 /**

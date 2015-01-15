@@ -10,12 +10,15 @@
 
 @class GLPGroup;
 @class ChangeGroupImageProgressView;
+@class GLPNotification;
 
 @interface GLPLiveGroupManager : NSObject
 
 + (GLPLiveGroupManager *)sharedInstance;
 
 - (void)loadGroups;
+
+- (void)loadGroupsIfNeededWithNewNotification:(GLPNotification *)notification;
 
 - (void)loadGroupsWithPendingGroups:(NSArray *)pending withLiveCallback:(void (^) (NSArray* groups))local remoteCallback:(void (^) (BOOL success, NSArray *remoteGroups))remote;
 

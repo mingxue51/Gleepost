@@ -12,6 +12,7 @@
 #import "SessionManager.h"
 #import "WebClient.h"
 #import "NSNotificationCenter+Utils.h"
+#import "GLPLiveGroupManager.h"
 
 @implementation GLPNotificationManager
 
@@ -249,6 +250,8 @@
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         [GLPNotificationDao save:notification inDb:db];
     }];
+    
+    [[GLPLiveGroupManager sharedInstance] loadGroupsIfNeededWithNewNotification:notification];
     
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_NOTIFICATION object:self userInfo:@{@"new_notification": notification}];
 }

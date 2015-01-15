@@ -93,6 +93,27 @@ static GLPLiveGroupManager *instance = nil;
     }];
 }
 
+/**
+ Reloads the groups in case the notification has to do with groups.
+ NOTE: This method should be called only from web socket event.
+ 
+ @param notification the new notification.
+ 
+ */
+- (void)loadGroupsIfNeededWithNewNotification:(GLPNotification *)notification
+{
+    switch (notification.notificationType)
+    {
+        case kGLPNotificationTypeCreatedPostGroup:
+        case kGLPNotificationTypeInvitedYouToGroup:
+            [self loadGroups];
+            break;
+            
+        default:
+            break;
+    }
+}
+
 - (void)loadGroupsWithPendingGroups:(NSArray *)pending withLiveCallback:(void (^) (NSArray* groups))local remoteCallback:(void (^) (BOOL success, NSArray *remoteGroups))remote
 {
     
