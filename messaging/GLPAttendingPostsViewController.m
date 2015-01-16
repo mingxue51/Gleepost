@@ -24,6 +24,7 @@
 #import "GLPTableActivityIndicator.h"
 #import "GLPNewElementsIndicatorView.h"
 #import "GLPLoadingCell.h"
+#import "GLPTrackViewsCountProcessor.h"
 
 @interface GLPAttendingPostsViewController () <RemovePostCellDelegate, NewCommentDelegate, ViewImageDelegate, GLPPostCellDelegate>
 
@@ -43,6 +44,8 @@
 
 @property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
+/** Captures the visibility of current cells. */
+@property (strong, nonatomic) GLPTrackViewsCountProcessor *trackViewsCountProcessor;
 
 //Properties for refresh loader.
 @property (assign, nonatomic) BOOL isLoading;
@@ -116,16 +119,20 @@
     _showComment = NO;
 
     self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+    
+    _trackViewsCountProcessor = [[GLPTrackViewsCountProcessor alloc] init];
 }
 
 - (void)configureNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
 }
 
 - (void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
 }
 
 #pragma mark - Table view data source
@@ -253,6 +260,75 @@
     cell.backgroundColor = [UIColor clearColor];
     cell.userInteractionEnabled = NO;
     return cell;
+}
+
+#pragma mark - Scroll view
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_trackViewsCountProcessor resetVisibleCells];
+}
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
+    
+    NSMutableArray *postsYValues = nil;
+    
+    NSArray *visiblePosts = [self getVisiblePostsInTableViewWithYValues:&postsYValues];
+    
+    [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
+    
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(decelerate == 0)
+    {
+        NSMutableArray *postsYValues = nil;
+        
+        NSArray *visiblePosts = [self getVisiblePostsInTableViewWithYValues:&postsYValues];
+        
+        [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
+    }
+}
+
+/**
+ This method is used to take a snapshot of the current visible posts cells.
+ 
+ @param postsYValues this parameter is passed in order to be returned with the current
+ Y values of each respect visible post.
+ 
+ @return The visible posts.
+ 
+ */
+-(NSArray *)getVisiblePostsInTableViewWithYValues:(NSMutableArray **)postsYValues
+{
+    NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
+    
+    *postsYValues = [[NSMutableArray alloc] init];
+    
+    NSArray *paths = [self.tableView indexPathsForVisibleRows];
+    
+    for (NSIndexPath *path in paths)
+    {
+        if(path.row == 0)
+        {
+            continue;
+        }
+        
+        //Avoid any out of bounds access in array
+        
+//        if(path.row < self.posts.count)
+//        {
+            [visiblePosts addObject:[_attendingPostsOrganiserHelper postWithIndex:path.row andSectionIndex:path.section]];
+            CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:path];
+            CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
+            [*postsYValues addObject:@(rectInSuperview.origin.y)];
+//        }
+    }
+    
+    return visiblePosts;
 }
 
 
@@ -440,12 +516,55 @@
     }
 }
 
+/**
+ This method is called when there is an update in views count.
+ 
+ @param notification the notification contains post remote key and the updated
+ number of views.
+ */
+- (void)updateViewsCounter:(NSNotification *)notification
+{
+    NSInteger postRemoteKey = [notification.userInfo[@"PostRemoteKey"] integerValue];
+    NSInteger viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
+    
+    NSIndexPath *postIndexPath = [_attendingPostsOrganiserHelper updatePostWithRemoteKey:postRemoteKey andViewsCount:viewsCount];
+    
+    DDLogDebug(@"updateViewsCounter %d %d", postIndexPath.row, postIndexPath.section);
+    
+    if(!postIndexPath)
+    {
+        return;
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+
+        [self refreshCellViewWithIndexPath:postIndexPath];
+    });
+    
+//    [_campusWallAsyncProcessor parseAndUpdatedViewsCountPostWithPostRemoteKey:postRemoteKey andPosts:_posts withCallbackBlock:^(NSInteger index) {
+//        
+//        DDLogDebug(@"updateViewsCounter index %ld", (long)index);
+//        
+//        if(index != -1 && _selectedTab == kLeft)
+//        {
+//            GLPPost *post = [self.posts objectAtIndex:index];
+//            
+//            post.viewsCount = viewsCount;
+//            
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [self refreshCellViewWithIndex:index+1];
+//            });
+//        }
+//        
+//    }];
+}
+
 #pragma mark - Table view refresh methods
 
 -(void)refreshCellViewWithIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
     [self.tableView endUpdates];
 }
 

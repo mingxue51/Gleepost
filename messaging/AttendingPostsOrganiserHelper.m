@@ -157,6 +157,11 @@
 
 - (NSIndexPath *)indexPathWithPost:(GLPPost *)post
 {
+    return [self indexPathWithPostRemoteKey:post.remoteKey];
+}
+
+- (NSIndexPath *)indexPathWithPostRemoteKey:(NSInteger)postRemoteKey
+{
     NSInteger row = 0;
     NSInteger section = 0;
     
@@ -166,8 +171,34 @@
         
         for(GLPPost *p in postsSection)
         {
-            if(p.remoteKey == post.remoteKey)
+            if(p.remoteKey == postRemoteKey)
             {
+                return [NSIndexPath indexPathForItem:row inSection:section];
+            }
+            ++row;
+        }
+        row = 0;
+        
+        ++section;
+    }
+    
+    return nil;
+}
+
+- (NSIndexPath *)updatePostWithRemoteKey:(NSInteger)postRemoteKey andViewsCount:(NSInteger)viewsCount
+{
+    NSInteger row = 0;
+    NSInteger section = 0;
+    
+    for(NSDictionary *sectionDict in _sections)
+    {
+        NSArray *postsSection = [sectionDict objectForKey:[[sectionDict allKeys] objectAtIndex:0]];
+        
+        for(GLPPost *p in postsSection)
+        {
+            if(p.remoteKey == postRemoteKey)
+            {
+                p.viewsCount = viewsCount;
                 return [NSIndexPath indexPathForItem:row inSection:section];
             }
             ++row;

@@ -2306,6 +2306,9 @@ const float TOP_OFFSET = 180.0f;
 /**
  This method is used to take a snapshot of the current visible posts cells.
  
+ @param postsYValues this parameter is passed in order to be returned with the current
+        Y values of each respect visible post.
+ 
  @return The visible posts.
  
  */
@@ -2334,10 +2337,6 @@ const float TOP_OFFSET = 180.0f;
             [*postsYValues addObject:@(rectInSuperview.origin.y)];
             
             DDLogDebug(@"-> Post: %@, Y: %f", post, rectInSuperview.origin.y);
-        }
-        else
-        {
-            DDLogDebug(@"Post not in visible %lu", (unsigned long)row);
         }
     }
     

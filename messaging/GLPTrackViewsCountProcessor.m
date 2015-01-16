@@ -107,9 +107,11 @@
  */
 - (BOOL)post:(GLPPost *)post withYValue:(float)yValue
 {
+    DDLogDebug(@"GLPTrackViewsCountProcessor : post %@ y value %f", post.content, yValue);
+    
     if([post isVideoPost])
     {
-        if(yValue >= 35.0 && yValue <= 115.0)
+        if(yValue >= 0.0 && yValue <= 80.0)
         {
             DDLogDebug(@"Track video post %@", post.content);
             return YES;
@@ -226,6 +228,12 @@
     }
     
     NSData *data = [self generatePostsData:newVisiblePosts withSubscribe:YES];
+    
+    if(!data)
+    {
+        return;
+    }
+    
     [[GLPWebSocketClient sharedInstance] sendMessageWithJson:data];
 }
 

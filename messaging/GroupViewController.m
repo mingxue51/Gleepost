@@ -603,7 +603,7 @@ const float TOP_OFF_SET = -64.0;
 -(void)refreshCellViewWithIndex:(NSInteger)index
 {
     [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView endUpdates];
 }
 
@@ -932,35 +932,42 @@ const float TOP_OFF_SET = -64.0;
     
     //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
     
-    NSArray *visiblePosts = [self snapshotVisibleCells];
+    NSMutableArray *postsYValues = nil;
+
+    NSArray *visiblePosts = [self getVisiblePostsInTableViewWithYValues:&postsYValues];
     
     DDLogDebug(@"GroupVC scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
     
-    [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
+    [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
 }
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if(decelerate == 0)
     {
-        NSArray *visiblePosts = [self snapshotVisibleCells];
+        NSMutableArray *postsYValues = nil;
+
+        NSArray *visiblePosts = [self getVisiblePostsInTableViewWithYValues:&postsYValues];
         
         DDLogDebug(@"GroupVC scrollViewDidEndDragging2 posts: %@", visiblePosts);
         
-        [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
+        [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
     }
 }
 
 /**
  This method is used to take a snapshot of the current visible posts cells.
  
+ @param postsYValues this parameter is passed in order to be returned with the current
+ Y values of each respect visible post.
+ 
  @return The visible posts.
  
  */
--(NSArray *)snapshotVisibleCells
+-(NSArray *)getVisiblePostsInTableViewWithYValues:(NSMutableArray **)postsYValues
 {
     NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
-    
+    *postsYValues = [[NSMutableArray alloc] init];
     NSArray *paths = [self.tableView indexPathsForVisibleRows];
     
     for (NSIndexPath *path in paths)
@@ -975,6 +982,9 @@ const float TOP_OFF_SET = -64.0;
         if(path.row < self.posts.count)
         {
             [visiblePosts addObject:[self.posts objectAtIndex:path.row - 1]];
+            CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:path];
+            CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
+            [*postsYValues addObject:@(rectInSuperview.origin.y)];
         }
     }
     

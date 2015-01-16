@@ -149,18 +149,9 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self configureNavigationBar];
-
     [self hideNetworkErrorViewIfNeeded];
-    
-//    [self.navigationController setNavigationBarHidden:NO
-//                                             animated:YES];
-    
-    
-    
     [self configureNotifications];
-
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -296,28 +287,6 @@
 
 -(void)configureNavigationBar
 {
-//    [self setNeedsStatusBarAppearanceUpdate];
-
-    //Change the format of the navigation bar.
-//    [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:nil forBarMetrics:UIBarMetricsDefault];
-    
-    //    [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor whiteColor], UITextAttributeTextColor, nil]];
-    
-    
-    
-//    [AppearanceHelper setNavigationBarColour:self];
-    
-//    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-//    
-//    [AppearanceHelper setNavigationBarFontFor:self];
-//    
-//    [self.navigationController.navigationBar setTranslucent:NO];
-//    
-//    [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
-    
-    
-
-    
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
@@ -392,32 +361,6 @@
     }];
     
     [self loadPosts];
-    
-//    [[WebClient sharedInstance] getUserWithKey:self.selectedUserId callbackBlock:^(BOOL success, GLPUser *user) {
-//        
-//        if(success)
-//        {
-//            self.profileUser = user;
-//            
-//            self.navigationItem.title = self.profileUser.name;
-//
-////            if(!self.contact)
-////            {
-////
-////                [self loadPosts];
-////            }
-//            
-//            [self loadPosts];
-//
-//            
-//            [self refreshFirstCell];
-//
-//        }
-//        else
-//        {
-//            [WebClientHelper showStandardError];
-//        }
-//    }];
 }
 
 -(void)loadAndSetContactDetails
@@ -444,25 +387,6 @@
 
 - (void)loadPosts
 {
-//    [GLPPostManager loadRemotePostsForUserRemoteKey:self.profileUser.remoteKey callback:^(BOOL success, NSArray *posts) {
-//        
-//        if(success)
-//        {
-//            self.posts = [posts mutableCopy];
-//            
-//            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
-//
-//            //TODO: Removed.
-//            [self.tableView reloadData];
-//        }
-//        else
-//        {
-//            [WebClientHelper showStandardErrorWithTitle:@"Error loading posts" andContent:@"Please ensure that you are connected to the internet"];
-//        }
-//
-//        
-//    }];
-    
     [GLPPostManager loadPostsWithRemoteKey:self.profileUser.remoteKey localCallback:^(NSArray *posts) {
         
         
@@ -486,20 +410,12 @@
         }
         
     }];
-    
-//    [GLPPostManager loadRemotePostsForUserRemoteKey:self.profileUser.remoteKey callback:^(BOOL success, NSArray *posts) {
-//        
-//
-//
-//        
-//    }];
 }
 
 #pragma mark - UI methods
 
 -(void)updateRealImage:(NSNotification*)notification
 {
-    
     NSInteger index = [GLPPostNotificationHelper parseRefreshCellNotification:notification withPostsArray:self.posts];
     
     if(index != -1)
@@ -727,19 +643,8 @@
     {
         return PRIVATE_PROFILE_TOP_VIEW_HEIGHT;
     }
-//    else if(indexPath.row == 1)
-//    {
-//        return BUTTONS_CELL_HEIGHT;
-//    }
     else if(indexPath.row >= 1)
     {
-//        if(self.selectedTabStatus == kGLPAbout)
-//        {
-//            return 150.0f;
-//        }
-//        else if (self.selectedTabStatus == kGLPPosts)
-//        {
-        
         if(self.posts.count != 0 && self.posts)
         {
             GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-1];
@@ -757,12 +662,6 @@
                 return [GLPPostCell getCellHeightWithContent:currentPost cellType:kTextCell isViewPost:NO];
             }
         }
-
-//        }
-//        else
-//        {
-//            return 70.0f;
-//        }
     }
     
     return 70.0f;
@@ -771,33 +670,8 @@
 - (PrivateProfileTopViewCell *)configureProfileViewCell:(PrivateProfileTopViewCell *)cell
 {
     [cell setDelegate:self];
-    
     [cell setUserData:_profileUser];
-
-    //TODO: If image is pre-fetched, then call other method.
-    
-//    if(self.profileImage && self.profileUser)
-//    {
-//        DDLogDebug(@"Private profile: Image / user ready.");
-//        
-//        [cell setUserData:_profileUser];
-//    }
-//    else if(self.profileImage && !self.profileUser)
-//    {
-//        DDLogDebug(@"Private profile: Image ready not user.");
-//        
-//        [cell initialiseProfileImage:self.profileImage];
-//    }
-//    else if((!self.profileImage && self.profileUser) || (!self.profileImage && !self.profileUser))
-//    {
-//        DDLogDebug(@"Private profile: Last choise. %@ : %@", self.profileImage, self.profileUser);
-//        
-//        [cell initialiseElementsWithUserDetails:self.profileUser];
-//    }
-    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    
     return cell;
 }
 
@@ -806,7 +680,7 @@
 -(void)refreshCellViewWithIndex:(const NSUInteger)index
 {
     [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView endUpdates];
 }
 
@@ -842,11 +716,13 @@
     
     //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
     
-    NSArray *visiblePosts = [self snapshotVisibleCells];
+    NSMutableArray *postsYValues = nil;
+    
+    NSArray *visiblePosts = [self getVisiblePostsInTableViewWithYValues:&postsYValues];
     
     DDLogDebug(@"Profile scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
     
-    [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
+    [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
     
 //    [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
     
@@ -857,11 +733,13 @@
 {
     if(decelerate == 0)
     {
-        NSArray *visiblePosts = [self snapshotVisibleCells];
+        NSMutableArray *postsYValues = nil;
+        
+        NSArray *visiblePosts = [self getVisiblePostsInTableViewWithYValues:&postsYValues];
         
         DDLogDebug(@"Profile scrollViewDidEndDragging2 posts: %@", visiblePosts);
         
-        [_trackViewsCountProcessor trackVisiblePosts:visiblePosts];
+        [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
         
 //        [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
     }
@@ -870,13 +748,16 @@
 /**
  This method is used to take a snapshot of the current visible posts cells.
  
+ @param postsYValues this parameter is passed in order to be returned with the current
+ Y values of each respect visible post.
+ 
  @return The visible posts.
  
  */
--(NSArray *)snapshotVisibleCells
+-(NSArray *)getVisiblePostsInTableViewWithYValues:(NSMutableArray **)postsYValues
 {
     NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
-    
+    *postsYValues = [[NSMutableArray alloc] init];
     NSArray *paths = [self.tableView indexPathsForVisibleRows];
     
     for (NSIndexPath *path in paths)
@@ -891,6 +772,9 @@
         if(path.row < self.posts.count)
         {
             [visiblePosts addObject:[self.posts objectAtIndex:path.row - 1]];
+            CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:path];
+            CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
+            [*postsYValues addObject:@(rectInSuperview.origin.y)];
         }
     }
     return visiblePosts;
