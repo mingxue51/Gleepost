@@ -38,7 +38,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *timePostLbl;
 
-@property (weak, nonatomic) IBOutlet GLPTriggeredLabel *nameLbl;
+@property (weak, nonatomic) IBOutlet GLPLabel *nameLbl;
 
 @property (weak, nonatomic) IBOutlet UILabel *contentLbl;
 
@@ -172,12 +172,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [_nameLbl setText:post.author.name];
     [_nameLbl setTextColor:[[GLPThemeManager sharedInstance] nameTintColour]];
     _nameLbl.tag = _post.author.remoteKey;
-    _nameLbl.postRemoteKey = _post.remoteKey;
-    
-    if([self isViewPost])
-    {
-        [_nameLbl removeAsSuperviewObserver];
-    }
     
     [self configureCountViewsLabel];
     

@@ -53,7 +53,6 @@
 
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPCampusWallAsyncProcessor.h"
-#import "GLPVisibleViewControllersManager.h"
 
 @interface GroupViewController () <GLPAttendingPopUpViewControllerDelegate, GLPGroupSettingsViewControllerDelegate, GLPPublicGroupPopUpViewControllerDelegate>
 
@@ -168,8 +167,6 @@ const float TOP_OFF_SET = -64.0;
     
     [_trackViewsCountProcessor resetSentPostsSet];
 
-    [[GLPVisibleViewControllersManager sharedInstance] anyWallIsVisible:NO];
-
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     
     [super viewWillDisappear:animated];
@@ -184,7 +181,6 @@ const float TOP_OFF_SET = -64.0;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [[GLPVisibleViewControllersManager sharedInstance] anyWallIsVisible:YES];
 }
 
 

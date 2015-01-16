@@ -378,7 +378,6 @@
 		586CDFEA185244BD00902F68 /* user-added.png in Resources */ = {isa = PBXBuildFile; fileRef = 586CDFE6185244BD00902F68 /* user-added.png */; };
 		586D5AEF1A5E9A0400FB0342 /* GLPCampusWallAsyncProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 586D5AEE1A5E9A0400FB0342 /* GLPCampusWallAsyncProcessor.m */; };
 		586D5AF21A5EE8DC00FB0342 /* UIView+Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 586D5AF11A5EE8DC00FB0342 /* UIView+Utils.m */; };
-		586D5AF51A5F322F00FB0342 /* GLPTriggeredLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 586D5AF41A5F322F00FB0342 /* GLPTriggeredLabel.m */; };
 		586E2236180FE58900C0FA03 /* password2.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2235180FE58900C0FA03 /* password2.png */; };
 		586E2238180FE61700C0FA03 /* background_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 586E2237180FE61600C0FA03 /* background_field.png */; };
 		586F6EF9191BAE4A00BDF558 /* GLPFBInvitationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 586F6EF8191BAE4A00BDF558 /* GLPFBInvitationsViewController.m */; };
@@ -432,7 +431,6 @@
 		58808EFD1807070D00E415C1 /* FadeInCustomSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 58808EFC1807070D00E415C1 /* FadeInCustomSegue.m */; };
 		588215A419F2185C00030CB2 /* GLPGroupSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 588215A319F2185C00030CB2 /* GLPGroupSearchViewController.m */; };
 		5882C3F51A5FE0EA00430D49 /* GLPTriggeredLabelTrackViewsConnector.m in Sources */ = {isa = PBXBuildFile; fileRef = 5882C3F41A5FE0EA00430D49 /* GLPTriggeredLabelTrackViewsConnector.m */; };
-		5882C3F81A6032E900430D49 /* GLPVisibleViewControllersManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5882C3F71A6032E900430D49 /* GLPVisibleViewControllersManager.m */; };
 		58837D2D18CDE70400EB3435 /* group_posts_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 58837D2C18CDE70400EB3435 /* group_posts_selected.png */; };
 		58837D2F18CDEA5D00EB3435 /* contacts_background_main_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 58837D2E18CDEA5D00EB3435 /* contacts_background_main_2.png */; };
 		58852C111A2E54D50063079C /* edit_location_button_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 58852C101A2E54D50063079C /* edit_location_button_image.png */; };
@@ -1482,8 +1480,6 @@
 		586D5AEE1A5E9A0400FB0342 /* GLPCampusWallAsyncProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCampusWallAsyncProcessor.m; sourceTree = "<group>"; };
 		586D5AF01A5EE8DC00FB0342 /* UIView+Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Utils.h"; sourceTree = "<group>"; };
 		586D5AF11A5EE8DC00FB0342 /* UIView+Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Utils.m"; sourceTree = "<group>"; };
-		586D5AF31A5F322F00FB0342 /* GLPTriggeredLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTriggeredLabel.h; sourceTree = "<group>"; };
-		586D5AF41A5F322F00FB0342 /* GLPTriggeredLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTriggeredLabel.m; sourceTree = "<group>"; };
 		586E2235180FE58900C0FA03 /* password2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = password2.png; sourceTree = "<group>"; };
 		586E2237180FE61600C0FA03 /* background_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_field.png; sourceTree = "<group>"; };
 		586F6EF7191BAE4A00BDF558 /* GLPFBInvitationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPFBInvitationsViewController.h; sourceTree = "<group>"; };
@@ -1563,8 +1559,6 @@
 		588215A319F2185C00030CB2 /* GLPGroupSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPGroupSearchViewController.m; sourceTree = "<group>"; };
 		5882C3F31A5FE0EA00430D49 /* GLPTriggeredLabelTrackViewsConnector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTriggeredLabelTrackViewsConnector.h; sourceTree = "<group>"; };
 		5882C3F41A5FE0EA00430D49 /* GLPTriggeredLabelTrackViewsConnector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTriggeredLabelTrackViewsConnector.m; sourceTree = "<group>"; };
-		5882C3F61A6032E900430D49 /* GLPVisibleViewControllersManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVisibleViewControllersManager.h; sourceTree = "<group>"; };
-		5882C3F71A6032E900430D49 /* GLPVisibleViewControllersManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVisibleViewControllersManager.m; sourceTree = "<group>"; };
 		58837D2C18CDE70400EB3435 /* group_posts_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group_posts_selected.png; sourceTree = "<group>"; };
 		58837D2E18CDEA5D00EB3435 /* contacts_background_main_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = contacts_background_main_2.png; sourceTree = "<group>"; };
 		58852C101A2E54D50063079C /* edit_location_button_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit_location_button_image.png; sourceTree = "<group>"; };
@@ -3777,8 +3771,6 @@
 			children = (
 				58A1D071199BF91200BA7980 /* GLPLabel.h */,
 				58A1D072199BF91200BA7980 /* GLPLabel.m */,
-				586D5AF31A5F322F00FB0342 /* GLPTriggeredLabel.h */,
-				586D5AF41A5F322F00FB0342 /* GLPTriggeredLabel.m */,
 			);
 			name = Labels;
 			sourceTree = "<group>";
@@ -5041,8 +5033,6 @@
 				582E44D8197E1E7F000BE3EC /* GLPServerPathManager.m */,
 				588F1DCC19EDF32E00DB6D23 /* GLPCalendarManager.h */,
 				588F1DCD19EDF32E00DB6D23 /* GLPCalendarManager.m */,
-				5882C3F61A6032E900430D49 /* GLPVisibleViewControllersManager.h */,
-				5882C3F71A6032E900430D49 /* GLPVisibleViewControllersManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -6192,7 +6182,6 @@
 				806E3D871832B1960063AACE /* TSBlurView.m in Sources */,
 				5879235019E7926E007F3C20 /* GLPMember.m in Sources */,
 				58615758193CAB13009BAD33 /* GLPWalkthoughDataViewController.m in Sources */,
-				586D5AF51A5F322F00FB0342 /* GLPTriggeredLabel.m in Sources */,
 				584FA60419B51B2B00FBA61F /* GLPVideoLoaderManager.m in Sources */,
 				58808EF61806F58400E415C1 /* PopUpMessage.m in Sources */,
 				589EAD1118A40416005B2F4C /* SignUpThreeView.m in Sources */,
@@ -6443,7 +6432,6 @@
 				58272F801896807900CD7522 /* FakeNavigationBar.m in Sources */,
 				58350A6E198AF9C2000BB1CA /* GLPNetworkErrorView.m in Sources */,
 				58C9E15719EC6A88008CB14A /* GLPConversationRead.m in Sources */,
-				5882C3F81A6032E900430D49 /* GLPVisibleViewControllersManager.m in Sources */,
 				80B2A421183380CF002AB1F0 /* GLPNotificationDaoParser.m in Sources */,
 				58F9C64218C5306D004A237E /* GLPGroupManager.m in Sources */,
 				80DDDF33180FD159009E17BD /* DatabaseManager.m in Sources */,

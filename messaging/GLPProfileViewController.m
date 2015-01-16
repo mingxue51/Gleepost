@@ -60,7 +60,6 @@
 #import "GLPViewPendingPostViewController.h"
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPCampusWallAsyncProcessor.h"
-#import "GLPVisibleViewControllersManager.h"
 
 @interface GLPProfileViewController () <MFMessageComposeViewControllerDelegate, UIActionSheetDelegate, GLPAttendingPopUpViewControllerDelegate>
 
@@ -199,26 +198,16 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
-    
     [self removeGoingButtonNotification];
-    
-    [[GLPVisibleViewControllersManager sharedInstance] anyWallIsVisible:NO];
-    
     [super viewWillDisappear:animated];
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
     [self setTitle];
-    
     [self configureRefreshControl];
-    
     [self setUpGoingButtonNotification];
-    
-    [[GLPVisibleViewControllersManager sharedInstance] anyWallIsVisible:YES];
-
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }

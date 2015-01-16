@@ -39,7 +39,6 @@
 #import "GLPAttendingPostsViewController.h"
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPCampusWallAsyncProcessor.h"
-#import "GLPVisibleViewControllersManager.h"
 
 @interface GLPPrivateProfileViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -158,7 +157,6 @@
 {
     [super viewDidAppear:animated];
     [self setTitle];
-    [[GLPVisibleViewControllersManager sharedInstance] anyWallIsVisible:YES];
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
@@ -179,7 +177,6 @@
 //        [self.navigationController setNavigationBarHidden:YES animated:YES];
 //    }
     
-    [[GLPVisibleViewControllersManager sharedInstance] anyWallIsVisible:NO];
     [super viewWillDisappear:animated];
 }
 

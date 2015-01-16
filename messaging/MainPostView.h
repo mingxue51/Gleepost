@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPPost.h"
-#import "GLPTriggeredLabel.h"
+#import "GLPLabel.h"
 
 @protocol MainPostViewDelegate <NSObject>
 
