@@ -35,6 +35,9 @@
 
 + (void)failedToLoadPost;
 
++ (void)showLocationRestrictionError;
++ (UIAlertController *)generateAlertViewForLocationError;
+
 + (void)accountVerificationError;
 + (void)accountLoginError;
 + (void)loadingPostsError;

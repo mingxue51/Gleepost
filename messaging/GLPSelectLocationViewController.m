@@ -16,6 +16,7 @@
 #import "GLPLocation.h"
 #import <CoreLocation/CoreLocation.h>
 #import "GLPiOSSupportHelper.h"
+#import "WebClientHelper.h"
 
 @interface GLPSelectLocationViewController ()
 
@@ -266,8 +267,6 @@
     DDLogDebug(@"Done picking location");
     
     [self snapShotMapAndReturnDataToPreviousVC];
-    
-
 }
 
 - (void)snapShotMapAndReturnDataToPreviousVC
@@ -306,6 +305,12 @@
 
 - (void)zoomAndLocateToUsersLocation
 {
+    if(![self isTheAppAuthorisedToAccessLocation])
+    {
+        [self showLocationErrorMessage];
+        return;
+    }
+    
     MKCoordinateRegion region;
     _coordinates = region.center = _mapView.userLocation.coordinate;
     
@@ -334,6 +339,32 @@
     region.span = span;
     
     [self.mapView setRegion:region animated:YES];
+}
+
+- (BOOL)isTheAppAuthorisedToAccessLocation
+{
+    switch ([CLLocationManager authorizationStatus]) {
+        case kCLAuthorizationStatusRestricted:
+        case kCLAuthorizationStatusDenied:
+            return NO;
+            break;
+        default:
+            return YES;
+            break;
+    }
+}
+
+- (void)showLocationErrorMessage
+{
+    if([GLPiOSSupportHelper isIOS7])
+    {
+        [WebClientHelper showLocationRestrictionError];
+    }
+    else
+    {
+        UIAlertController *alert = [WebClientHelper generateAlertViewForLocationError];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 - (UIView *)generateHeaderViewWithTitle:(NSString *)title
