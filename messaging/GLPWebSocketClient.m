@@ -88,6 +88,7 @@ static GLPWebSocketClient *instance = nil;
 
 - (void)sendMessageWithJson:(NSData *)data
 {
+    //TODO: Check if the connection is open.
     [_webSocket send:data];
 }
 

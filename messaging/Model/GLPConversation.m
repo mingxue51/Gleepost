@@ -122,6 +122,34 @@
     _lastUpdate = message.date;
 }
 
+/**
+ Checks and sets the conversation as unread if the updated conversation's last
+ message is not the same with the current's.
+ 
+ @param updatedConversation
+ 
+ @return YES if there is an unread message, otherwise NO.
+ 
+ */
+- (BOOL)setUnreadMessageWithUpdatedConversation:(GLPConversation *)updatedConversation
+{
+    if(self.lastMessage == nil || updatedConversation.lastMessage == nil)
+    {
+        return NO;
+    }
+    
+    if(![self.lastMessage isEqualToString:updatedConversation.lastMessage])
+    {
+        DDLogDebug(@"setUnreadMessageWithUpdatedConversation %@ : %@", self.lastMessage, updatedConversation.lastMessage);
+        
+        self.hasUnreadMessages = YES;
+        
+        return YES;
+    }
+    
+    return NO;
+}
+
 # pragma mark - Copy
 
 -(id)copyWithZone:(NSZone *)zone

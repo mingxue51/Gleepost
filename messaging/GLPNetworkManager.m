@@ -130,7 +130,6 @@ static GLPNetworkManager *instance = nil;
 
     
     // get notifications
-    __block BOOL requestsSuccess = YES;
     __block int conversationsNumber = 0;
     
     UIApplication *application = [UIApplication sharedApplication];
@@ -146,12 +145,13 @@ static GLPNetworkManager *instance = nil;
                 //Subtract the number of application badge number with number of notifications.
                 conversationsNumber = application.applicationIconBadgeNumber - notificationsNumber;
                 
-                
-                NSDictionary *args = @{@"conversationsCount":[NSNumber numberWithInt:conversationsNumber]};
+//                NSDictionary *args = @{@"conversationsCount":[NSNumber numberWithInt:conversationsNumber]};
                 
                 //Set the number of conversations in tab bar.
-                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATION_COUNT object:nil userInfo:args];
+//                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATION_COUNT object:nil userInfo:args];
                 
+                application.applicationIconBadgeNumber = 0;
+                DDLogInfo(@"Reset application icon badge number to 0");
             }
         }];
     }
@@ -162,10 +162,7 @@ static GLPNetworkManager *instance = nil;
 //        requestsSuccess = success;
 //    }];
     
-    if(requestsSuccess) {
-        application.applicationIconBadgeNumber = 0;
-        DDLogInfo(@"Reset application icon badge number to 0");
-    }
+
 }
 
 - (void)webSocketDidFailOrClose

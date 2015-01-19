@@ -93,6 +93,8 @@ static GLPLiveConversationsManager *instance = nil;
         
         if(success)
         {
+            [self setUnreadMessageInConversationIfExist:conversations];
+            
             //Save in local database.
             [ConversationManager initialSaveConversationsToDatabase:conversations];
         }
@@ -119,6 +121,37 @@ static GLPLiveConversationsManager *instance = nil;
             [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
         });
     }];
+}
+
+/**
+ If there is a new message sets unread messages in conversations and sends an NSNotification
+ to update the messenger tab bar badge.
+ 
+ @param updatedConversations
+ */
+- (void)setUnreadMessageInConversationIfExist:(NSArray *)updatedConversations
+{
+    NSInteger newConversationsCount = 0;
+    
+    for(GLPConversation *conversation in updatedConversations)
+    {
+        NSNumber *index = [NSNumber numberWithInteger:conversation.remoteKey];
+        
+        // do not add twice the same conversation
+        if(_conversations[index])
+        {
+            GLPConversation *existedConversation = _conversations[index];
+            
+            if([existedConversation setUnreadMessageWithUpdatedConversation:conversation])
+            {
+                ++newConversationsCount;
+            }
+        }
+    }
+    
+    NSDictionary *args = @{@"conversationsCount":@(newConversationsCount)};
+    //Set the number of conversations in tab bar.
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATION_COUNT object:nil userInfo:args];
 }
 
 - (void)createRandomConversation:(void (^)(GLPConversation *conversation))callback
@@ -867,7 +900,7 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (void)loadConversationsFromDatabase
 {
-    DDLogInfo(@"Load local conversations");
+    DDLogInfo(@"");
     
     NSArray *localConversations = [ConversationManager loadLocalRegularConversations];
     

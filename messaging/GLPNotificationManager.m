@@ -288,8 +288,8 @@
         if(success) {
             NSLog(@"New notifications from get notifications request: %d", notifications.count);
             
-            if(notifications.count > 0) {
-                
+            if(notifications.count > 0)
+            {
                 //Check if the same notification exist in database and if it is unread. If yes the don't call GLPNewNotifications.
                 NSArray* finalNotifications = [GLPNotificationManager cleanNotificationsArray:notifications];
                 
@@ -307,8 +307,12 @@
             }
             else
             {
-                callback(NO, nil);
+                callback(YES, [[NSArray alloc] init]);
             }
+        }
+        else
+        {
+            callback(NO, nil);
         }
     }];
     

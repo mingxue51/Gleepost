@@ -230,7 +230,7 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     DDLogInfo(@"Receive remote notification, current app state: %@", [GLPApplicationHelper applicationStateToString:application.applicationState]);
-    
+        
 //    pnTestVariable++;
 //    
 //

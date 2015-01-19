@@ -122,7 +122,7 @@
 
 - (void)loadAttendeesIfNeeded
 {
-    if(self.postRemoteKey == -1)
+    if(self.postRemoteKey == 0)
     {
         return;
     }

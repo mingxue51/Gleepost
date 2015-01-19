@@ -42,5 +42,6 @@
 - (NSString *)getLastMessageOrDefault;
 - (NSString *)getLastUpdateOrDefault;
 - (void)updateWithNewMessage:(GLPMessage *)message;
+- (BOOL)setUnreadMessageWithUpdatedConversation:(GLPConversation *)updatedConversation;
 
 @end
