@@ -480,7 +480,7 @@ int const NumberMaxOfMessagesLoaded = 20;
     DDLogInfo(@"Create message with content %@", content);
     
     __block GLPMessage *message = [[GLPMessage alloc] init];
-    message.content = content;
+    message.content = [ConversationManager removeLastNewLinesFromContent:content];
     message.conversation = conversation;
     message.date = [NSDate dateInUTC];
     message.author = [SessionManager sharedInstance].user;
@@ -502,9 +502,11 @@ int const NumberMaxOfMessagesLoaded = 20;
 //            [GLPConversationDao updateConversationLastUpdateAndLastMessage:conversation db:db];
 //        }];
 //    }
+}
 
-    
-
++ (NSString *)removeLastNewLinesFromContent:(NSString *)content
+{
+    return [content stringByTrimmingCharactersInSet: [NSCharacterSet newlineCharacterSet]];
 }
 
 //+ (void)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation localCallback:(void (^)(GLPMessage *localMessage))localCallback

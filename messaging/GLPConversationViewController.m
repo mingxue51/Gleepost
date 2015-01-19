@@ -464,7 +464,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 }
 
 - (void)createMessageFromForm
-{
+{   
     [ConversationManager createMessageWithContent:self.formTextView.text toConversation:self.conversation];
     
     self.formTextView.text = @"";
