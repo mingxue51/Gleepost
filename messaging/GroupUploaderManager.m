@@ -92,11 +92,9 @@
     }];
 }
 
--(void)uploadGroupWithTimestamp:(NSDate*)timestamp andImageUrl:(NSString*)url
+- (void)uploadGroupWithTimestamp:(NSDate *)timestamp andImageUrl:(NSString *)url
 {
     //Group ready to be uploaded.
-    
-    void (^_uploadImageContentBlock)(GLPGroup*);
     
     GLPGroup *group = nil;
     
@@ -104,18 +102,6 @@
     {
         group = [_readyGroups objectForKey:timestamp];
         group.groupImageUrl = url;
-        
-        _uploadImageContentBlock = ^(GLPGroup* group){
-            
-            
-        //Notify ContactsViewController after finish.
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
-                                                                        object:nil
-                                                                        userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
-                                                                                    @"imageUrl":group.groupImageUrl,
-                                                                                    @"key":[NSNumber numberWithInt:group.key]}];
-            
-        };
     }
     
     DDLogInfo(@"Group uploading task started with group title: %@ and image url: %@.",group.name, group.groupImageUrl);
@@ -125,7 +111,6 @@
     
     
     [[WebClient sharedInstance] createGroupWithGroup:group callback:^(BOOL success, GLPGroup *remoteGroup) {
-       
         
         group.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
         
@@ -137,8 +122,7 @@
         
         if(success)
         {
-            _uploadImageContentBlock(group);
-        
+            [self notifyControllerWithGroup:group];
             
             //Remove post from the NSDictionary.
             [self removeGroupWithTimestamp:timestamp];
@@ -188,7 +172,7 @@
             {
                 [self updateDatabaseWithGroup:group andUrl:imageUrl];
                 
-                //Send notification to contacts view controller.
+                //Send notification to groups view controller.
                 [self notifyControllerWithGroup:group];
                 
                 [self setNewUrlToGroup:group withUrl:imageUrl];
@@ -250,7 +234,7 @@
     if(group.groupImageUrl)
     {
         [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
-                                                                        object:nil
+                                                                        object:self
                                                                       userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
                                                                                  @"imageUrl": group.groupImageUrl,
                                                                                  @"key":[NSNumber numberWithInt:group.key]}];
@@ -258,7 +242,7 @@
     else
     {
         [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
-                                                                        object:nil
+                                                                        object:self
                                                                       userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
                                                                                  @"key":[NSNumber numberWithInt:group.key]}];
     }

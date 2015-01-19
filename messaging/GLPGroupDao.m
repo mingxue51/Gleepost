@@ -113,15 +113,6 @@
     return group.key;
 }
 
-+(void)save:(GLPGroup *)group
-{
-    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        
-        [GLPGroupDao save:group inDb:db];
-        
-    }];
-}
-
 + (void)save:(GLPGroup *)entity inDb:(FMDatabase *)db
 {
     if(entity.remoteKey == 0)
@@ -235,13 +226,12 @@
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
-        [self cleanTable:db];
+//        [self cleanTable:db];
         
         for(GLPGroup *group in groups)
         {
             group.sendStatus = kSendStatusSent;
-            
-            [GLPGroupDao save:group inDb:db];
+            [GLPGroupDao saveIfNotExist:group db:db];
         }
         
     }];

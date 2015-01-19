@@ -15,7 +15,7 @@
 
 
 +(void)saveGroups:(NSArray *)groups;
-+(void)save:(GLPGroup *)group;
++(void)saveIfNotExist:(GLPGroup *)group;
 +(void)remove:(GLPGroup *)group;
 +(NSArray *)findGroups;
 +(NSArray *)findRemoteGroups;

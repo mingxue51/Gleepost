@@ -252,22 +252,20 @@
 
 #pragma mark - Selectors
 
-- (IBAction)dismissModalView:(id)sender
+- (void)dismissModalView:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)createNewGroup:(id)sender
+- (void)createNewGroup:(id)sender
 {
     GLPGroup *group = [[GLPGroup alloc] init];
-    
     
     if(![self isInformationInBounds])
     {
         [WebClientHelper showOutOfBoundsError];
         return;
     }
-    
     
     if ([self isInformationValid])
     {
@@ -278,16 +276,15 @@
             group.groupDescription = _groupDescriptionTextView.text;
         }
         
-        DDLogDebug(@"FINAL Group type: %d", _groupType);
-        
         group.privacy = _groupType;
         
         [[GroupOperationManager sharedInstance] setGroup:group withTimestamp:_timestamp];
         
         group.pendingImage = _groupImage;
         
-        [_delegate groupCreatedWithData:group];
+        DDLogDebug(@"FINAL Group type: %d and key %ld", _groupType, (long)group.key);
 
+        [_delegate groupCreatedWithData:group];
     }
     else
     {

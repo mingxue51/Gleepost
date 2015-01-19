@@ -88,7 +88,12 @@ static GLPWebSocketClient *instance = nil;
 
 - (void)sendMessageWithJson:(NSData *)data
 {
-    //TODO: Check if the connection is open.
+    if(_webSocket.readyState == SR_CLOSING || _webSocket.readyState == SR_CLOSED)
+    {
+        DDLogInfo(@"Send message via web socket cannot be completed because the web socket is in closing state or closed, abort");
+        return;
+    }
+    
     [_webSocket send:data];
 }
 

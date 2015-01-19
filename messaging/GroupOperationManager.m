@@ -94,10 +94,10 @@ static GroupOperationManager *instance = nil;
 
 -(void)setGroup:(GLPGroup *)group withTimestamp:(NSDate *)timestamp
 {
+    
     //Save to group local database.
     group.sendStatus = kSendStatusLocal;
-    [GLPGroupDao save:group];
-    
+    [GLPGroupDao saveIfNotExist:group];
     [_groupUploader addGroup:group withTimestamp:timestamp];
 }
 

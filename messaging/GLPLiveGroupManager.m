@@ -69,8 +69,7 @@ static GLPLiveGroupManager *instance = nil;
 }
 
 /**
- This method should be called ONLY when the app is launced.
- 
+ This method should be called ONLY when the app is launced and from the current singleton class.
  */
 - (void)loadGroups
 {
@@ -125,9 +124,9 @@ static GLPLiveGroupManager *instance = nil;
     {
         NSMutableArray *localEntities = [[GLPGroupDao findRemoteGroups] mutableCopy];
         
-        [localEntities addObjectsFromArray:pendingGroups];
-        
         _groups = localEntities;
+
+        [self addPendingGroupsIfNeededToLocalGroups:pendingGroups];
     }
     
     local(_groups);
@@ -145,14 +144,33 @@ static GLPLiveGroupManager *instance = nil;
         
         _groups = [serverGroups mutableCopy];
         
-        [[GLPGroupImageLoader sharedInstance] addGroupsImages:_groups];
+        [self addPendingGroupsIfNeededToLocalGroups:pendingGroups];
         
-        [_groups addObjectsFromArray:pendingGroups];
-
+        [[GLPGroupImageLoader sharedInstance] addGroupsImages:_groups];
         
         remote(YES, _groups);
     }];
 }
+
+- (void)addPendingGroupsIfNeededToLocalGroups:(NSMutableArray *)pendingGroups
+{
+    NSMutableArray *notPendingGroups = [[NSMutableArray alloc] init];
+    
+    for(GLPGroup *pGroup in pendingGroups)
+    {
+        NSArray *groupsFound = [_groups filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"key == %d", pGroup.key]];
+        [notPendingGroups addObjectsFromArray:groupsFound];
+    }
+    
+    [pendingGroups removeObjectsInArray:notPendingGroups];
+    
+    [_groups addObjectsFromArray:pendingGroups];
+}
+
+//- (NSMutableArray *)addPendingGroupsIfNeededToRemoteGroups:(NSMutableArray *)pendingGroups
+//{
+//    
+//}
 
 - (GLPGroup *)groupWithRemoteKey:(NSInteger)groupRemoteKey
 {
@@ -246,6 +264,8 @@ static GLPLiveGroupManager *instance = nil;
     DDLogDebug(@"GROUP REMOVED: %@", _unreadPostGroups);
 }
 
+#pragma mark - Helpers
+
 - (NSInteger)numberOfUnseenPostsWithGroup:(GLPGroup *)group
 {
     GLPGroup *g = [_unreadPostGroups objectForKey:@(group.remoteKey)];
@@ -260,19 +280,17 @@ static GLPLiveGroupManager *instance = nil;
 
 - (GLPGroup *)findGroupWithRemoteKey:(NSInteger)remoteKey
 {
-    for(GLPGroup *g in _groups)
+    NSArray *groupsFound = [_groups filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey == %d", remoteKey]];
+
+    if(groupsFound.count > 0)
     {
-        if(remoteKey == g.remoteKey)
-        {
-            return g;
-        }
+        DDLogDebug(@"GLPLiveGroupManager : groups found %@", groupsFound);
+        
+        return [groupsFound firstObject];
     }
     
     return nil;
-        
 }
-
-
 
 - (NSArray *)liveGroups
 {

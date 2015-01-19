@@ -80,6 +80,21 @@
     }
 }
 
+- (BOOL)isEqual:(id)other
+{
+    if(self.key == 0 || [(GLPGroup *)other key] == 0)
+    {
+        return NO;
+    }
+    
+    return [(GLPGroup *)other remoteKey] == self.remoteKey || [(GLPGroup *)other key] == self.key;
+}
+
+- (NSUInteger)hash
+{
+    return self.remoteKey;
+}
+
 -(NSString *)description
 {
     return [NSString stringWithFormat:@"Name: %@, Key: %d, Remote key: %d, Url: %@, Description: %@, Privacy: %@", _name, _key, _remoteKey, _groupImageUrl, _groupDescription, [self privacyToString]];

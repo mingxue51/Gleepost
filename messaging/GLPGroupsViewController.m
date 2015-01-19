@@ -215,25 +215,25 @@
 
 -(void)updateGroupRemoteKeyAndImage:(NSNotification *)notification
 {
-    int remoteKey = [GLPGroupManager parseNotification:notification withGroupsArray:_groups];
+    DDLogDebug(@"updateGroupRemoteKeyAndImage");
     
-    if(remoteKey == -1)
-    {
-        return;
-    }
-    
-//    [self.collectionView reloadData];
-    
-    NSIndexPath *indexPath = [GLPGroupManager findIndexPathForGroupRemoteKey:remoteKey inGroups:_groups];
-    
-    DDLogDebug(@"Reload with index path: %d", indexPath.row);
+    [self loadGroupsWithGroup:nil];
     
     
-    //TODO: Reload specific rows in the collection view.
-    
-//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
-    
-    [_collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject: indexPath]];
+//    int remoteKey = [GLPGroupManager parseNotification:notification withGroupsArray:_groups];
+//    
+//    if(remoteKey == -1)
+//    {
+//        return;
+//    }
+//    
+////    [self.collectionView reloadData];
+//    
+//    NSIndexPath *indexPath = [GLPGroupManager findIndexPathForGroupRemoteKey:remoteKey inGroups:_groups];
+//    
+//    DDLogDebug(@"Reload with index path: %d", indexPath.row);
+//    
+//    [_collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject: indexPath]];
 }
 
 - (void)groupImageLoaded:(NSNotification *)notification
@@ -418,8 +418,9 @@
     
     GLPGroup *group = [dictionary objectForKey:@"new group"];
     
+    NSAssert(group.key != 0, @"Group needs to have key");
     
-    [self reloadNewGroupWithGroup:group];
+    [self loadGroupsWithGroup:group];
     
     //    [self createNewGroupWithGroup:group];
 }
@@ -434,7 +435,7 @@
     
     //[self removeGroupFromCollectionViewWithRemoteKey:group.remoteKey];
     
-    [self reloadNewGroupWithGroup:nil];
+    [self loadGroupsWithGroup:nil];
 }
 
 -(void)showViewOptionsWithActionSheer:(UIActionSheet *)actionSheet
@@ -459,7 +460,7 @@
         [_groups addObject:createdGroup];
         [_filteredGroups addObject:createdGroup];
         
-        DDLogInfo(@"Load groups with pending group: %@", createdGroup);
+        DDLogInfo(@"Load groups with pending group: %@ key %ld", createdGroup, (long)createdGroup.key);
     }
     
 
@@ -480,11 +481,6 @@
         }
         
     }];
-    
-    
-    
-    
-    
     
     
 //        [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
@@ -554,12 +550,6 @@
     }
 
     [_collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-}
-
-
--(void)reloadNewGroupWithGroup:(GLPGroup *)group
-{
-    [self loadGroupsWithGroup:group];
 }
 
 - (void)showOrHideEmptyView
