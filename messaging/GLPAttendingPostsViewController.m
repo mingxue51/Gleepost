@@ -273,6 +273,11 @@
 {
     //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
     
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading)
+    {
+        return;
+    }
+    
     NSMutableArray *postsYValues = nil;
     
     NSArray *visiblePosts = [self getVisiblePostsInTableViewWithYValues:&postsYValues];
@@ -283,6 +288,11 @@
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading)
+    {
+        return;
+    }
+    
     if(decelerate == 0)
     {
         NSMutableArray *postsYValues = nil;
@@ -312,20 +322,10 @@
     
     for (NSIndexPath *path in paths)
     {
-        if(path.row == 0)
-        {
-            continue;
-        }
-        
-        //Avoid any out of bounds access in array
-        
-//        if(path.row < self.posts.count)
-//        {
-            [visiblePosts addObject:[_attendingPostsOrganiserHelper postWithIndex:path.row andSectionIndex:path.section]];
-            CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:path];
-            CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
-            [*postsYValues addObject:@(rectInSuperview.origin.y)];
-//        }
+        [visiblePosts addObject:[_attendingPostsOrganiserHelper postWithIndex:path.row andSectionIndex:path.section]];
+        CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:path];
+        CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
+        [*postsYValues addObject:@(rectInTableView.size.height/2.0 + rectInSuperview.origin.y)];
     }
     
     return visiblePosts;
@@ -529,7 +529,7 @@
     
     NSIndexPath *postIndexPath = [_attendingPostsOrganiserHelper updatePostWithRemoteKey:postRemoteKey andViewsCount:viewsCount];
     
-    DDLogDebug(@"updateViewsCounter %d %d", postIndexPath.row, postIndexPath.section);
+    DDLogDebug(@"updateViewsCounter %ld %ld", (long)postIndexPath.row, (long)postIndexPath.section);
     
     if(!postIndexPath)
     {
@@ -537,26 +537,8 @@
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-
         [self refreshCellViewWithIndexPath:postIndexPath];
     });
-    
-//    [_campusWallAsyncProcessor parseAndUpdatedViewsCountPostWithPostRemoteKey:postRemoteKey andPosts:_posts withCallbackBlock:^(NSInteger index) {
-//        
-//        DDLogDebug(@"updateViewsCounter index %ld", (long)index);
-//        
-//        if(index != -1 && _selectedTab == kLeft)
-//        {
-//            GLPPost *post = [self.posts objectAtIndex:index];
-//            
-//            post.viewsCount = viewsCount;
-//            
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self refreshCellViewWithIndex:index+1];
-//            });
-//        }
-//        
-//    }];
 }
 
 #pragma mark - Table view refresh methods

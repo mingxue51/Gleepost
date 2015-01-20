@@ -551,11 +551,13 @@ const float TOP_OFF_SET = -64.0;
         if(index != -1)
         {
             GLPPost *post = [self.posts objectAtIndex:index];
-            
             post.viewsCount = viewsCount;
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self refreshCellViewWithIndex:index+1];
+                if(![post isVideoPost])
+                {
+                    [self refreshCellViewWithIndex:index+1];
+                }
             });
         }
         
@@ -785,6 +787,7 @@ const float TOP_OFF_SET = -64.0;
     cell.textLabel.font = [UIFont fontWithName:GLP_APP_FONT size:12.0f];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.textColor = [UIColor grayColor];
+    cell.backgroundColor = [UIColor clearColor];
     cell.userInteractionEnabled = NO;
     return cell;
 }
@@ -926,6 +929,11 @@ const float TOP_OFF_SET = -64.0;
         return;
     }
     
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading)
+    {
+        return;
+    }
+    
     //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
     
     NSMutableArray *postsYValues = nil;
@@ -939,6 +947,11 @@ const float TOP_OFF_SET = -64.0;
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading)
+    {
+        return;
+    }
+    
     if(decelerate == 0)
     {
         NSMutableArray *postsYValues = nil;
@@ -980,7 +993,7 @@ const float TOP_OFF_SET = -64.0;
             [visiblePosts addObject:[self.posts objectAtIndex:path.row - 1]];
             CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:path];
             CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
-            [*postsYValues addObject:@(rectInSuperview.origin.y)];
+            [*postsYValues addObject:@(rectInTableView.size.height/2.0 + rectInSuperview.origin.y)];
         }
     }
     
@@ -1311,11 +1324,7 @@ const float TOP_OFF_SET = -64.0;
         } else {
             [self reloadLoadingCell];
         }
-        
-        
     }];
-    
-    
 }
 
 - (void)reloadLoadingCell

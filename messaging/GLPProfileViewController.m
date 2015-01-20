@@ -311,11 +311,13 @@
         if(index != -1 && _selectedTab == kLeft)
         {
             GLPPost *post = [self.posts objectAtIndex:index];
-            
             post.viewsCount = viewsCount;
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self refreshCellViewWithIndex:index+1];
+                if(![post isVideoPost])
+                {
+                    [self refreshCellViewWithIndex:index+1];
+                }
             });
         }
         
@@ -1743,7 +1745,7 @@
             [visiblePosts addObject:[self.posts objectAtIndex:path.row - 1]];
             CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:path];
             CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
-            [*postsYValues addObject:@(rectInSuperview.origin.y)];
+            [*postsYValues addObject:@(rectInTableView.size.height/2.0 + rectInSuperview.origin.y)];
         }
     }
     

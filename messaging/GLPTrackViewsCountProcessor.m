@@ -12,7 +12,6 @@
 #import "GLPPost.h"
 #import "WebClientJSON.h"
 #import "GLPWebSocketClient.h"
-#import "GLPTriggeredLabelTrackViewsConnector.h"
 
 @interface GLPTrackViewsCountProcessor ()
 
@@ -138,8 +137,6 @@
     [self unsubscribePosts:_sentPosts];
     
     [_sentPosts removeAllObjects];
-    
-    [[GLPTriggeredLabelTrackViewsConnector sharedInstance] reset];
 }
 
 #pragma mark - Client

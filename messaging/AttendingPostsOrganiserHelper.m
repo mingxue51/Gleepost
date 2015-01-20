@@ -185,6 +185,14 @@
     return nil;
 }
 
+/**
+ Updates the post with remote key and the updated views count and returns the index path
+ of the found post.
+ 
+ @param postRemoteKey the post's remote key.
+ @param viewsCount the updated views count of the post.
+ @return the index path of the post or nil if post not found or post is video post.
+ */
 - (NSIndexPath *)updatePostWithRemoteKey:(NSInteger)postRemoteKey andViewsCount:(NSInteger)viewsCount
 {
     NSInteger row = 0;
@@ -199,6 +207,12 @@
             if(p.remoteKey == postRemoteKey)
             {
                 p.viewsCount = viewsCount;
+                
+                if([p isVideoPost])
+                {                    
+                    return nil;
+                }
+                
                 return [NSIndexPath indexPathForItem:row inSection:section];
             }
             ++row;

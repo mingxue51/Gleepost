@@ -765,13 +765,12 @@
         }
         
         //Avoid any out of bounds access in array
-        
         if(path.row < self.posts.count)
         {
             [visiblePosts addObject:[self.posts objectAtIndex:path.row - 1]];
             CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:path];
             CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
-            [*postsYValues addObject:@(rectInSuperview.origin.y)];
+            [*postsYValues addObject:@(rectInTableView.size.height/2.0 + rectInSuperview.origin.y)];
         }
     }
     return visiblePosts;
@@ -797,13 +796,14 @@
         if(index != -1)
         {
             GLPPost *post = [self.posts objectAtIndex:index];
-            
             post.viewsCount = viewsCount;
             
-            DDLogDebug(@"Post to be refreshed %@", post);
-            
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self refreshCellViewWithIndex:index+1];
+                
+                if(![post isVideoPost])
+                {
+                    [self refreshCellViewWithIndex:index+1];
+                }
             });
         }
         
