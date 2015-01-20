@@ -2329,9 +2329,9 @@ const float TOP_OFFSET = 180.0f;
             CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:path];
             CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
             
-            [*postsYValues addObject:@(rectInSuperview.origin.y)];
+            [*postsYValues addObject:@(rectInTableView.size.height/2.0 + rectInSuperview.origin.y)];
             
-            DDLogDebug(@"-> Post: %@, Y: %f", post, rectInSuperview.origin.y);
+            DDLogDebug(@"-> Post: %@, Y: %f %f result %f", post, rectInSuperview.origin.y, rectInTableView.size.height, rectInTableView.size.height/2.0 + rectInSuperview.origin.y);
         }
     }
     

@@ -55,17 +55,14 @@
 
 - (void)trackVisiblePosts:(NSArray *)visiblePosts withPostsYValues:(NSArray *)visiblePostsYValues
 {
+    //This line of code avoids duplications of tracking posts.
+    //We have some duplications because the trackVisiblePosts:withPostsYValues: method might be called twice (at the same time)
+    //by the 2 different methods in the ViewController.
     
-//    if([visiblePosts isEqualToArray:_currentPosts])
-//    {
-//        DDLogDebug(@"Array duplication ABORT!");
-//        
-//        return;
-//    }
-    //        if(![_sentPosts containsObject:@(p.remoteKey)] && p.remoteKey == [[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey])
-
-    //        if([[GLPTriggeredLabelTrackViewsConnector sharedInstance] currentPostRemoteKey] == p.remoteKey)
-
+    if([_currentPosts isEqualToArray:visiblePosts])
+    {
+        return;
+    }
     
     for(int i = 0; i < visiblePosts.count; ++i)
     {
@@ -95,9 +92,10 @@
 
 /**
  Decides if the input post (passed as a parameter) should be tracked depending on
- the kind of post and on its Y value on the table view.
- For example, a text post should be marked as "read", from user, in wider range
- from video post that is bigger cell.
+ the value that is calculated in the ViewController (while capturing the posts cells).
+ 
+ The calculation is the exact Y of the center of the cell depending on the top of the screen.
+ (Not the Y depending on the actula cell dimensions).
  
  @param post the under consideration post.
  @param yValue the Y value of actual cell on the table view.
@@ -108,34 +106,42 @@
 - (BOOL)post:(GLPPost *)post withYValue:(float)yValue
 {
     DDLogDebug(@"GLPTrackViewsCountProcessor : post %@ y value %f", post.content, yValue);
-    
-    if([post isVideoPost])
+   
+    if(yValue >= 0.0 && yValue <= 500.0)
     {
-        if(yValue >= 0.0 && yValue <= 80.0)
-        {
-            DDLogDebug(@"Track video post %@", post.content);
-            return YES;
-        }
-    }
-    else if([post imagePost])
-    {
-        if(yValue >= 40.0 && yValue <= 160.0)
-        {
-            DDLogDebug(@"Track image post %@", post.content);
-            return YES;
-        }
-    }
-    else
-    {
-        if(yValue >= 50.0 && yValue <= 320)
-        {
-            DDLogDebug(@"Track text post %@", post.content);
-            return YES;
-        }
-        //50 - 320
+        return YES;
     }
     
     return NO;
+    
+    
+//    if([post isVideoPost])
+//    {
+//        if(yValue >= 0.0 && yValue <= 80.0)
+//        {
+//            DDLogDebug(@"Track video post %@", post.content);
+//            return YES;
+//        }
+//    }
+//    else if([post imagePost])
+//    {
+//        if(yValue >= 40.0 && yValue <= 160.0)
+//        {
+//            DDLogDebug(@"Track image post %@", post.content);
+//            return YES;
+//        }
+//    }
+//    else
+//    {
+//        if(yValue >= 50.0 && yValue <= 320)
+//        {
+//            DDLogDebug(@"Track text post %@", post.content);
+//            return YES;
+//        }
+//        //50 - 320
+//    }
+//    
+//    return NO;
 }
 
 - (void)trackPost:(NSTimer *)timer
