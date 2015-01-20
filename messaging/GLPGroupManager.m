@@ -698,7 +698,7 @@
         
         if(success)
         {
-            [GLPMemberDao saveMembers:members];
+            [GLPMemberDao saveMembers:members withGroupRemoteKey:groupRemoteKey];
             
             members = [GLPGroupManager orderMembersByNameWithMembers:members];
             

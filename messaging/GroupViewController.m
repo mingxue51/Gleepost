@@ -1067,6 +1067,9 @@ const float TOP_OFF_SET = -64.0;
         
         if(success)
         {
+            self.navigationItem.rightBarButtonItems = nil;
+            
+            [self configureNavigationItems];
             [self showAfterJoiningPopUpView];
 //            [self switchUserAsMemberOfGroup];
 //            [self configureNavigationItems];

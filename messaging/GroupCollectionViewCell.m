@@ -15,6 +15,7 @@
 #import "UIView+GLPDesign.h"
 #import "GLPLiveGroupManager.h"
 #import "GLPImageHelper.h"
+#import "GLPMemberDao.h"
 
 @interface GroupCollectionViewCell ()
 
@@ -266,6 +267,7 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
         if(success)
         {
             DDLogInfo(@"User not in group: %@ anymore", _groupName.text);
+            [GLPMemberDao removeMember:_groupData.loggedInUser withGroupRemoteKey:_groupData.remoteKey];
             [_delegate groupDeletedWithData:_groupData];
         }
         else

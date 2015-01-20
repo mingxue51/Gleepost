@@ -1080,6 +1080,8 @@ static WebClient *instance = nil;
     NSString *path = [NSString stringWithFormat:@"networks/%d/users", group.remoteKey];
     
     [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        DDLogDebug(@"Webclient : addUsers %@", responseObject);
         callback(YES);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         callback(NO);

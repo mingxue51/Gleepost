@@ -13,10 +13,11 @@
 
 @interface GLPMemberDao : NSObject
 
-+(NSArray *)findMembersWithGroupRemoteKey:(int)groupRemoteKey;
++ (NSArray *)findMembersWithGroupRemoteKey:(int)groupRemoteKey;
 + (GLPMember *)findMemberWithRemoteKey:(NSInteger)memberRemoteKey withGroupRemoteKey:(NSInteger)groupRemoteKey andDb:(FMDatabase *)db;
 + (void)addMemberAsAdministrator:(GLPMember *)member;
 + (void)removeMemberFromAdministrator:(GLPMember *)member;
-+(void)saveMembers:(NSArray *)members;
++ (void)removeMember:(GLPMember *)member withGroupRemoteKey:(NSInteger)groupRemoteKey;
++ (void)saveMembers:(NSArray *)members withGroupRemoteKey:(NSInteger)groupRemoteKey;
 
 @end
