@@ -48,11 +48,6 @@
     return self;
 }
 
-- (void)trackVisiblePosts:(NSArray *)visiblePosts
-{
-    
-}
-
 - (void)trackVisiblePosts:(NSArray *)visiblePosts withPostsYValues:(NSArray *)visiblePostsYValues
 {
     //This line of code avoids duplications of tracking posts.
@@ -113,35 +108,6 @@
     }
     
     return NO;
-    
-    
-//    if([post isVideoPost])
-//    {
-//        if(yValue >= 0.0 && yValue <= 80.0)
-//        {
-//            DDLogDebug(@"Track video post %@", post.content);
-//            return YES;
-//        }
-//    }
-//    else if([post imagePost])
-//    {
-//        if(yValue >= 40.0 && yValue <= 160.0)
-//        {
-//            DDLogDebug(@"Track image post %@", post.content);
-//            return YES;
-//        }
-//    }
-//    else
-//    {
-//        if(yValue >= 50.0 && yValue <= 320)
-//        {
-//            DDLogDebug(@"Track text post %@", post.content);
-//            return YES;
-//        }
-//        //50 - 320
-//    }
-//    
-//    return NO;
 }
 
 - (void)trackPost:(NSTimer *)timer
@@ -169,8 +135,6 @@
 
 - (void)resetSentPostsSet
 {
-    DDLogDebug(@"Reset sent SET %@", _sentPosts);
-    
     [self unsubscribePosts:_sentPosts];
     
     [_sentPosts removeAllObjects];
@@ -187,8 +151,6 @@
         DDLogDebug(@"GLPTrackViewsCountProcessor : Post not in! %@", post.content);
         return;
     }
-    
-    DDLogInfo(@"GLPTrackViewsCountProcessor : post viewed %@", post.content);
     
     [[WebClientJSON sharedInstance] visibleViewsWithPosts:@[post] withCallbackBlock:^(BOOL success) {
         

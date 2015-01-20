@@ -12,7 +12,6 @@
 @interface GLPTrackViewsCountProcessor : NSObject
 
 - (void)trackVisiblePosts:(NSArray *)visiblePosts withPostsYValues:(NSArray *)visiblePostsYValues;
-- (void)trackVisiblePosts:(NSArray *)visiblePosts;
 - (void)resetVisibleCells;
 - (void)resetSentPostsSet;
 + (void)updateViewsCounter:(NSInteger)updatedViewsCount onPost:(GLPPost *)post;

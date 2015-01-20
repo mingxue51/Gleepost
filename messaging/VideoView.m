@@ -308,10 +308,7 @@
     
     
     [_thumbnailImageView sd_setImageWithURL:[NSURL URLWithString: _post.video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"default_thumbnail"] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
         DDLogDebug(@"Video image loaded with post %@ : %@ Cache type: %d", _post.content, image, cacheType);
-
-        
     }];
 }
 

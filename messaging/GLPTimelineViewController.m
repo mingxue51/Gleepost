@@ -497,11 +497,15 @@ const float TOP_OFFSET = 180.0f;
         if(index != -1)
         {
             GLPPost *post = [self.posts objectAtIndex:index];
-            
+
             post.viewsCount = viewsCount;
             
             dispatch_async(dispatch_get_main_queue(), ^{
-                [self refreshCellViewWithIndex:index];
+                
+                if(![post isVideoPost])
+                {
+                    [self refreshCellViewWithIndex:index];
+                }
             });
         }
         
@@ -2469,7 +2473,7 @@ const float TOP_OFFSET = 180.0f;
     [self scrollToTheTop];
 }
 
-#pragma mark GLPPostCellDelegate
+#pragma mark - GLPPostCellDelegate
 
 -(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
 {

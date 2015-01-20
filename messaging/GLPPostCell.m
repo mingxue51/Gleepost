@@ -79,6 +79,8 @@ const float ONE_LINE_LIMIT = 18.0;
 
 -(void)setPost:(GLPPost *)post withPostIndexPath:(NSIndexPath *)indexPath
 {
+    DDLogDebug(@"GLPPostCell : current views %ld new views %ld media reload %d", (long)post.viewsCount, (long)_post.viewsCount, _mediaNeedsToReload);
+    
     _post = post;
     _postIndexPath = indexPath;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -111,6 +113,11 @@ const float ONE_LINE_LIMIT = 18.0;
 //    [ShapeFormatterHelper setBorderToView:_mainView withColour:[UIColor redColor]];
 //    [ShapeFormatterHelper setBorderToView:_topView withColour:[UIColor blackColor]];
 }
+
+//- (void)setNewCountViews:(NSInteger)viewsCount
+//{
+//    [_mainView setNewViewsCount:viewsCount];
+//}
 
 - (void)deregisterNotificationsInVideoView
 {

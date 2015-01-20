@@ -204,8 +204,13 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [self addGesturesToElements];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
     
+    
+    if([_post isVideoPost])
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setNewViewsCount:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    }
     
 //    [ShapeFormatterHelper setBorderToView:_wideCommentBtn withColour:[UIColor redColor]];
     
@@ -218,8 +223,28 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 //    [ShapeFormatterHelper setBorderToView:_wideCommentBtn withColour:[UIColor blackColor]];
 //    
 //    [ShapeFormatterHelper setBorderToView:_shareBtn withColour:[UIColor greenColor]];
+}
+
+- (void)setNewViewsCount:(NSNotification *)viewsCountNotification
+{
+    NSInteger postRemoteKey = [viewsCountNotification.userInfo[@"PostRemoteKey"] integerValue];
+    NSInteger viewsCount = [viewsCountNotification.userInfo[@"UpdatedViewsCount"] integerValue];
     
+    if(postRemoteKey != self.post.remoteKey)
+    {
+        return;
+    }
     
+    FLog(@"MainPostView : setNewViewsCount %@", viewsCountNotification);
+
+    _post.viewsCount = viewsCount;
+    [self configureCountViewsLabel];
+}
+
+- (void)dealloc
+{
+    FLog(@"MainView : DEALLOC");
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
 }
 
 
@@ -721,7 +746,9 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     else
     {
         [_viewsCountLabel setHidden:NO];
-        [_viewsCountLabel setText:[NSString stringWithFormat:@"%@ Views", @(_post.viewsCount)]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_viewsCountLabel setText:[NSString stringWithFormat:@"%@ Views", @(_post.viewsCount)]];
+        });
     }
 }
 
