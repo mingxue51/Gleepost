@@ -125,6 +125,12 @@ static GLPLiveGroupManager *instance = nil;
         NSMutableArray *localEntities = [[GLPGroupDao findRemoteGroups] mutableCopy];
         
         _groups = localEntities;
+        
+        for(GLPGroup *group in _groups)
+        {
+            DDLogDebug(@"Local group %d", group.remoteKey);
+        }
+        
 
         [self addPendingGroupsIfNeededToLocalGroups:pendingGroups];
     }
@@ -147,6 +153,12 @@ static GLPLiveGroupManager *instance = nil;
         [self addPendingGroupsIfNeededToLocalGroups:pendingGroups];
         
         [[GLPGroupImageLoader sharedInstance] addGroupsImages:_groups];
+        
+        for(GLPGroup *group in _groups)
+        {
+            DDLogDebug(@"Remote group %d", group.remoteKey);
+        }
+        
         
         remote(YES, _groups);
     }];

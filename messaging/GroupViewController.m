@@ -1474,7 +1474,12 @@ const float TOP_OFF_SET = -64.0;
     self.isLoading = YES;
     
     //    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
-        
+    
+    if(self.posts == nil)
+    {
+        self.posts = [[NSMutableArray alloc] init];
+    }
+    
     NSArray *posts = [[NSArray alloc] initWithObjects:inPost, nil];
     
     [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
@@ -1501,6 +1506,11 @@ const float TOP_OFF_SET = -64.0;
     self.isLoading = YES;
     
     //    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
+    
+    if(self.posts == nil)
+    {
+        self.posts = [[NSMutableArray alloc] init];
+    }
     
     NSArray *posts = [[NSArray alloc] initWithObjects:post, nil];
     

@@ -50,7 +50,7 @@
 {
     NSMutableArray *groups = [[NSMutableArray alloc] init];
     
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from groups where send_status = %d", kSendStatusSent];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from groups where send_status = %d order by remoteKey asc", kSendStatusSent];
     
     while ([resultSet next])
     {
@@ -59,7 +59,6 @@
         [groups addObject: currentGroup];
         
     }
-    
     return groups;
 }
 
