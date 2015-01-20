@@ -1072,7 +1072,7 @@ static WebClient *instance = nil;
     }];
 }
 
-- (void)addUsers:(NSArray *)users toGroup:(GLPGroup *)group callback:(void (^)(BOOL success))callback
+- (void)addUsers:(NSArray *)users toGroup:(GLPGroup *)group callback:(void (^)(BOOL success, GLPGroup *updatedGroup))callback
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
     params[@"users"] = [users componentsJoinedByString:@","];
@@ -1080,15 +1080,16 @@ static WebClient *instance = nil;
     NSString *path = [NSString stringWithFormat:@"networks/%d/users", group.remoteKey];
     
     [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
         DDLogDebug(@"Webclient : addUsers %@", responseObject);
-        callback(YES);
+        
+        GLPGroup *updatedGroup = [RemoteParser parseGroupFromJson:responseObject];
+        callback(YES, updatedGroup);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callback(NO);
+        callback(NO, nil);
     }];
 }
 
-- (void)joinPublicGroup:(GLPGroup *)group callback:(void (^) (BOOL success))callback
+- (void)joinPublicGroup:(GLPGroup *)group callback:(void (^) (BOOL success, GLPGroup *updatedGroup))callback
 {
 //    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
 

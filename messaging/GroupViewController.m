@@ -1063,11 +1063,15 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)joinGroupTouched
 {
-    [[WebClient sharedInstance] joinPublicGroup:_group callback:^(BOOL success) {
+    [[WebClient sharedInstance] joinPublicGroup:_group callback:^(BOOL success, GLPGroup *updatedGroup) {
         
         if(success)
         {
+            //TODO: The updatedGroup now is nil because server is not sending the updated group after the joining.
+            
             self.navigationItem.rightBarButtonItems = nil;
+//            _group = updatedGroup;
+            [_group.loggedInUser setRoleKey:1];
             
             [self configureNavigationItems];
             [self showAfterJoiningPopUpView];

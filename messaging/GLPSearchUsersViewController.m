@@ -394,7 +394,7 @@ static NSString *const SEARCH_USERS_STR = @"SEARCH";
         }
     }
     
-    [[WebClient sharedInstance] addUsers:userKeys toGroup:_group callback:^(BOOL success) {
+    [[WebClient sharedInstance] addUsers:userKeys toGroup:_group callback:^(BOOL success, GLPGroup *updatedGroup) {
         
         [WebClientHelper hideStandardLoaderForView:view];
         

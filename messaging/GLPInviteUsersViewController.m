@@ -285,7 +285,7 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     
     NSArray *userKeys = [super getCheckedUsersRemoteKeys];
     
-    [[WebClient sharedInstance] addUsers:userKeys toGroup:_group callback:^(BOOL success) {
+    [[WebClient sharedInstance] addUsers:userKeys toGroup:_group callback:^(BOOL success, GLPGroup *updatedGroup) {
         
         [WebClientHelper hideStandardLoaderForView:self.view];
         
