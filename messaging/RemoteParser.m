@@ -1076,8 +1076,13 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 }
 
 
-+(NSString*)parseLoginErrorMessage:(NSString*)error
++(NSString *)parseLoginErrorMessage:(NSString *)error
 {
+    if(!error)
+    {
+        return @"Please check your internet connection and try again.";
+    }
+    
     if([error rangeOfString:@"unverified"].location != NSNotFound)
     {
         return @"Your email remains unverified. Please verify your email and try again.";

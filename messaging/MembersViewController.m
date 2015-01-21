@@ -259,9 +259,7 @@
     [GLPGroupManager loadMembersWithGroupRemoteKey:self.group.remoteKey withLocalCallback:^(NSArray *members) {
         
         self.members = members.mutableCopy;
-        
         [self findRoleOfLoggedInUser];
-        
         [self.tableView reloadData];
         
     } remoteCallback:^(BOOL success, NSArray *members) {
@@ -269,24 +267,10 @@
         if(success)
         {
             self.members = members.mutableCopy;
-            
             [self findRoleOfLoggedInUser];
-
             [self.tableView reloadData];
-            
         }
     }];
-    
-//    [[WebClient sharedInstance] getMembersWithGroupRemoteKey:self.group.remoteKey withCallbackBlock:^(BOOL success, NSArray *members) {
-//        
-//        if(success)
-//        {
-//            self.members = members;
-//            
-//            [self.tableView reloadData];
-//        }
-//        
-//    }];
 }
 
 - (void)setMemberAsAdministrator:(GLPMember *)member
@@ -295,12 +279,9 @@
         
         if(success)
         {
-            
             DDLogDebug(@"Member just become admin %@", member.roleName);
             [self updateMemberWithMember:member];
-            
             [self.tableView reloadData];
-
         }
     }];
 }
