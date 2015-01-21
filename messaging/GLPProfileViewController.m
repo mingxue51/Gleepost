@@ -96,7 +96,7 @@
 @property (assign, nonatomic) BOOL tabButtonEnabled;
 
 @property (strong, nonatomic) GLPGroup *groupToNavigate;
-@property (strong, nonatomic) GLPUser *userCreatedTheGroupPost;
+@property (assign, nonatomic) NSInteger groupPostCreatedRemoteKey;
 
 @property (strong, nonatomic) EmptyMessage *emptyNotificationsMessage;
 
@@ -305,9 +305,7 @@
     NSInteger viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
     
     [_campusWallAsyncProcessor parseAndUpdatedViewsCountPostWithPostRemoteKey:postRemoteKey andPosts:_posts withCallbackBlock:^(NSInteger index) {
-        
-        DDLogDebug(@"updateViewsCounter index %ld", (long)index);
-        
+                
         if(index != -1 && _selectedTab == kLeft)
         {
             GLPPost *post = [self.posts objectAtIndex:index];
@@ -1318,11 +1316,9 @@
                 if(!_groupToNavigate)
                 {
                     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-
                     return;
                 }
-                
-                _userCreatedTheGroupPost = notification.user;
+                _groupPostCreatedRemoteKey = notification.postRemoteKey;
                 [self performSegueWithIdentifier:@"view group" sender:self];
             }
             else if(notification.notificationType == kGLPNotificationTypePostApproved)
@@ -1869,7 +1865,7 @@
         GroupViewController *groupVC = segue.destinationViewController;
         
         groupVC.group = _groupToNavigate;
-        groupVC.userCreatedPost = _userCreatedTheGroupPost;
+        groupVC.postCreatedRemoteKey = _groupPostCreatedRemoteKey;
     }
     else if ([segue.identifier isEqualToString:@"view badges"])
     {

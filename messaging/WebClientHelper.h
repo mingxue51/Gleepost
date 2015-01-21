@@ -10,8 +10,8 @@
 
 @interface WebClientHelper : NSObject
 
-+(void) showStandardLoaderWithTitle:(NSString *)title forView:(UIView *)view;
-+ (void) showStandardLoaderWithoutSpinningAndWithTitle:(NSString*) title forView:(UIView *)view;
++(void)showStandardLoaderWithTitle:(NSString *)title forView:(UIView *)view;
++ (void)showStandardLoaderWithoutSpinningAndWithTitle:(NSString*) title forView:(UIView *)view;
 +(void) hideStandardLoaderForView:(UIView *)view;
 +(void)showInternetConnectionErrorWithTitle:(NSString*)title;
 +(void)showStandardEmailError;
@@ -73,5 +73,7 @@
 
 + (void)showReportedDone;
 + (void)showFailedToReport;
+
++ (void)showFailedToDeleteConversationError;
 
 @end

@@ -29,6 +29,6 @@
 
 /** This is used only when the group is navigated from notifications
  in order to focus on the latest user's post.*/
-@property (strong, nonatomic) GLPUser *userCreatedPost;
+@property (assign, nonatomic) NSInteger postCreatedRemoteKey;
 @property (assign, nonatomic) BOOL fromPushNotification;
 @end

@@ -545,9 +545,7 @@ const float TOP_OFF_SET = -64.0;
     NSInteger viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
     
     [_campusWallAsyncProcessor parseAndUpdatedViewsCountPostWithPostRemoteKey:postRemoteKey andPosts:_posts withCallbackBlock:^(NSInteger index) {
-        
-        DDLogDebug(@"updateViewsCounter index %ld", (long)index);
-        
+                
         if(index != -1)
         {
             GLPPost *post = [self.posts objectAtIndex:index];
@@ -1171,14 +1169,14 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)focusOnTheLatestUsersPostIfNeeded
 {
-    if(_userCreatedPost)
+    if(self.postCreatedRemoteKey != 0)
     {
         GLPPost *usersPost = nil;
         int index = 0;
         
         for(GLPPost *p in _posts)
         {
-            if(p.author.remoteKey == _userCreatedPost.remoteKey)
+            if(p.remoteKey == self.postCreatedRemoteKey)
             {
                 usersPost = p;
                 break;
@@ -1188,15 +1186,12 @@ const float TOP_OFF_SET = -64.0;
         
         if(usersPost)
         {
-            
             if(index == _posts.count)
             {
                 DDLogError(@"Index to scroll should be less than the number of posts. Abort scrolling");
-                
                 return;
             }
             
-            DDLogDebug(@"Post index: %d", index);
             //Scroll to index.
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index + 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         }

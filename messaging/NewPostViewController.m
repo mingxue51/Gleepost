@@ -81,7 +81,7 @@
 
 @implementation NewPostViewController
 
-const NSInteger MAX_DESCRIPTION_CHARACTERS = 210;
+const NSInteger MAX_DESCRIPTION_CHARACTERS = 1001;
 const NSInteger MAX_TITLE_CHARACTERS = 60;
 const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
@@ -386,15 +386,15 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)postButtonClick:(id)sender
 {
-    if([self isPostButtonClicked])
-    {
-        return;
-    }
-    
-    _postButttonClicked = YES;
-    
     if ([self isInformationValidInElements])
     {
+        if([self isPostButtonClicked])
+        {
+            return;
+        }
+        
+        _postButttonClicked = YES;
+        
         [self.view endEditing:YES];
         
         [[PendingPostManager sharedInstance] readyToSend];

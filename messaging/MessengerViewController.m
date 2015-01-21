@@ -20,6 +20,7 @@
 #import "NewGroupMessageViewController.h"
 #import "GLPEmptyViewManager.h"
 #import "GLPThemeManager.h"
+#import "WebClientHelper.h"
 
 @interface MessengerViewController ()
 
@@ -102,7 +103,6 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
@@ -111,7 +111,6 @@
 {
     // reload the local conversations next time the VC appears
     self.needsReloadConversations = YES;
-    
     [super viewDidDisappear:animated];
 }
 
@@ -119,9 +118,7 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
-    
     [AppearanceHelper setUnselectedColourForTabbarItem:self.messagesTabbarItem];
-    
     [super viewWillDisappear:animated];
 }
 
@@ -275,12 +272,14 @@
         FLog(@"Delete conversation with index path: %d", indexPath.row);
         
         GLPConversation *conversationToBeDeleted = _conversations[indexPath.row];
-        
+        [self deleteConversationFromTableViewWithIndexPath:indexPath];
+
         [[GLPLiveConversationsManager sharedInstance] deleteConversation:conversationToBeDeleted withCallbackBlock:^(BOOL success) {
             
-            if(success)
+            if(!success)
             {
-                [self deleteConversationFromTableViewWithIndexPath:indexPath];
+                [WebClientHelper showFailedToDeleteConversationError];
+                [self reloadConversations];
             }
         }];
     }
@@ -529,8 +528,7 @@
 
 - (void)removeCellWithIndexPath:(NSIndexPath *)indexPathRow
 {
-        [self.tableView deleteRowsAtIndexPaths:@[indexPathRow] withRowAnimation:UITableViewRowAnimationLeft];
-
+    [self.tableView deleteRowsAtIndexPaths:@[indexPathRow] withRowAnimation:UITableViewRowAnimationLeft];
 }
 
 - (void)deleteConversationFromTableViewWithIndexPath:(NSIndexPath *)indexPath

@@ -312,6 +312,13 @@
     return alert;
 }
 
+#pragma mark - Conversations
+
++ (void)showFailedToDeleteConversationError
+{
+    [self showAlertWithTitle:@"Oops!" andMessage:@"There was a problem deleting the conversation. Please check your connection and try again"];
+}
+
 #pragma mark - Media
 
 + (void)showSaveImageMessage

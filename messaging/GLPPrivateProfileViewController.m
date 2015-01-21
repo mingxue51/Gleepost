@@ -791,7 +791,7 @@
     
     [_campusWallAsyncProcessor parseAndUpdatedViewsCountPostWithPostRemoteKey:postRemoteKey andPosts:_posts withCallbackBlock:^(NSInteger index) {
         
-        DDLogDebug(@"updateViewsCounter index %ld", (long)index);
+        DDLogDebug(@"GLPPrivateProfileViewController : updateViewsCounter index %ld", (long)index);
         
         if(index != -1)
         {

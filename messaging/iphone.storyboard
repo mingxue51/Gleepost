@@ -759,7 +759,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </textView>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="1aL-CF-A6K">
-                                        <rect key="frame" x="264" y="155" width="28" height="20"/>
+                                        <rect key="frame" x="255" y="155" width="37" height="20"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
                                         <color key="textColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="1" colorSpace="calibratedRGB"/>
@@ -1662,11 +1662,11 @@
             <objects>
                 <viewController id="YKI-NX-LaO" customClass="ImageSelectorViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="huw-Qa-xzO">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="SoY-OL-TmF">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mH5-mu-lir">
@@ -5148,23 +5148,23 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="fah-A8-Ky9"/>
+        <segue reference="2ju-Ui-QdM"/>
         <segue reference="J6b-Ty-4qO"/>
         <segue reference="lQn-ic-ohV"/>
         <segue reference="WK7-hw-eyD"/>
-        <segue reference="NSy-Xb-H1O"/>
         <segue reference="PMB-JP-q3M"/>
+        <segue reference="NSy-Xb-H1O"/>
         <segue reference="NkQ-j5-6rL"/>
         <segue reference="Ji2-Jv-WyQ"/>
-        <segue reference="2ju-Ui-QdM"/>
-        <segue reference="bc7-so-Tnw"/>
         <segue reference="7l2-k5-pHQ"/>
-        <segue reference="fah-A8-Ky9"/>
+        <segue reference="c6M-82-Pnp"/>
+        <segue reference="Wgm-iJ-ADQ"/>
         <segue reference="rdb-8v-KiD"/>
         <segue reference="HwX-gN-njw"/>
         <segue reference="8oh-gD-Cs7"/>
         <segue reference="b0z-f7-UHU"/>
-        <segue reference="c6M-82-Pnp"/>
-        <segue reference="Wgm-iJ-ADQ"/>
+        <segue reference="Af2-b2-Cbn"/>
         <segue reference="Bj7-0B-AKW"/>
         <segue reference="QYo-sm-NOh"/>
     </inferredMetricsTieBreakers>

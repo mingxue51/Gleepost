@@ -491,9 +491,7 @@ const float TOP_OFFSET = 180.0f;
     NSInteger viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
     
     [_campusWallAsyncProcessor parseAndUpdatedViewsCountPostWithPostRemoteKey:postRemoteKey andPosts:_posts withCallbackBlock:^(NSInteger index) {
-        
-        DDLogDebug(@"updateViewsCounter index %ld", (long)index);
-        
+            
         if(index != -1)
         {
             GLPPost *post = [self.posts objectAtIndex:index];
