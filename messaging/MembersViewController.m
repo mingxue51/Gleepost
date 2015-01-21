@@ -39,9 +39,22 @@
 /** This object is used when for adding or removing member as admin. */
 @property (strong, nonatomic) GLPMember *selectedMember;
 
+@property (strong, nonatomic) NSString *addUserAsAdminText;
+@property (strong, nonatomic, readonly) NSString *removeUserFromAdminText;
+
 @end
 
 @implementation MembersViewController
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self)
+    {
+        [self configureConstantStrings];
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -98,6 +111,12 @@
     
     [_addNewMembersView addGestureRecognizer:tap];
     
+}
+
+- (void)configureConstantStrings
+{
+    _addUserAsAdminText = @"Add user as administrator";
+    _removeUserFromAdminText = @"Revoke Admin Permissions";
 }
 
 -(void)configurateTableView
@@ -202,15 +221,14 @@
     
     if(member.roleLevel == kAdministrator)
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Administrator options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Remove user from being administrator", nil];
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Administrator options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:_removeUserFromAdminText, nil];
     }
     else
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Administrator options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Add user as administrator", nil];
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Administrator options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:_addUserAsAdminText, nil];
     }
     
     _selectedMember = member;
-    
 
     [actionSheet showInView:[self.view window]];
 }
@@ -221,12 +239,12 @@
 {
     NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
 
-    if([selectedButtonTitle isEqualToString:@"Add user as administrator"])
+    if([selectedButtonTitle isEqualToString:_addUserAsAdminText])
     {
         //Add user as administrator.
         [self setMemberAsAdministrator:_selectedMember];
     }
-    else if([selectedButtonTitle isEqualToString:@"Remove user from being administrator"])
+    else if([selectedButtonTitle isEqualToString:_removeUserFromAdminText])
     {
         //Remove user from being administrator.
         [self removeMemberFromAdministrator:_selectedMember];
