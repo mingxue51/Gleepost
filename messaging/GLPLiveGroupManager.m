@@ -154,12 +154,6 @@ static GLPLiveGroupManager *instance = nil;
         
         [[GLPGroupImageLoader sharedInstance] addGroupsImages:_groups];
         
-        for(GLPGroup *group in _groups)
-        {
-            DDLogDebug(@"Remote group %d", group.remoteKey);
-        }
-        
-        
         remote(YES, _groups);
     }];
 }

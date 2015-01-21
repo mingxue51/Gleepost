@@ -23,19 +23,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     [self locateMapToLocation:_location];
-    
-    [self configureNavigationBar];
-    
     [self configureAndAddAnnotation];
-    
     DDLogDebug(@"LOCATION: %@", _location);
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self configureNavigationBar];
 }
 
 - (void)configureNavigationBar
 {
-    self.title = @"EVENT LOCATION";
+    self.navigationItem.title = @"SHOW LOCATION";
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];

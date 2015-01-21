@@ -74,7 +74,7 @@ static BOOL likePushed;
     
     [self initialiseElements];
     
-    [self configureNavigationBar];
+//    [self configureNavigationBar];
     
     [self registerCells];
     
@@ -83,6 +83,8 @@ static BOOL likePushed;
     [self fillPostWithKey];
     
     [self selfLoadPost];
+    
+    [self configureNavigationItems];
     
    // [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     
@@ -131,6 +133,8 @@ static BOOL likePushed;
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self configureNavigationBar];
     
     [self registerNotifications];
     
@@ -301,6 +305,11 @@ static BOOL likePushed;
 
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
+- (void)configureNavigationItems
+{
     if(_post.eventTitle)
     {
         [self.navigationController.navigationBar setButton:kRight withImageName:@"pad_icon" withButtonSize:CGSizeMake(25.0, 25.0) withSelector:@selector(showAttendees) andTarget:self];
@@ -310,8 +319,6 @@ static BOOL likePushed;
     {
         [self addCustomBackButton];
     }
-    
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 -(void)addCustomBackButton
