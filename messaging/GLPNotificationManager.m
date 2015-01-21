@@ -269,7 +269,7 @@
         for(GLPNotification *notification in notifications)
         {
             [GLPNotificationDao save:notification inDb:db];
-            DDLogInfo(@"New notifications after become active.");
+            DDLogInfo(@"New notifications after become active. %@", notification);
             [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_NOTIFICATION object:nil userInfo:nil];
         }
     }];
