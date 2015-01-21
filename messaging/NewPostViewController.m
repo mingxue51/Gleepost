@@ -73,6 +73,10 @@
 @property (assign, nonatomic) NSInteger descriptionRemainingNoOfCharacters;
 @property (assign, nonatomic) NSInteger titleRemainingNoOfCharacters;
 
+/** Avoids the ability of the user to touch multible times the post button and thus create
+ miltible same posts*/
+@property (assign, nonatomic, getter=isPostButtonClicked) BOOL postButttonClicked;
+
 @end
 
 @implementation NewPostViewController
@@ -232,6 +236,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     _titleRemainingNoOfCharacters = MAX_TITLE_CHARACTERS;
     _selectedLocation = nil;
     _inSelectLocation = NO;
+    _postButttonClicked = NO;
 }
 
 /**
@@ -381,6 +386,13 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)postButtonClick:(id)sender
 {
+    if([self isPostButtonClicked])
+    {
+        return;
+    }
+    
+    _postButttonClicked = YES;
+    
     if ([self isInformationValidInElements])
     {
         [self.view endEditing:YES];
