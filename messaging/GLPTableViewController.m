@@ -329,6 +329,17 @@
     }
 }
 
+- (void)scrollToTheEndWithDelay
+{
+    [self scrollToTheEndAnimated:NO];
+
+    double delayInSeconds = 0.01;
+    //We are doing that because there was a problem with scrolling to the last cell.
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self scrollToTheEndAnimated:NO];
+    });
+}
 
 #pragma mark - Abstracts
 

@@ -368,8 +368,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 - (void)loadInitialMessages
 {
     [self loadNewMessages];
-    [self scrollToTheEndAnimated:NO];
-    
+    [self scrollToTheEndWithDelay];
     [self syncConversation];
 }
 
