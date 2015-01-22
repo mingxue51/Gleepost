@@ -19,7 +19,6 @@ static GLPGroupImageLoader *instance = nil;
 + (GLPGroupImageLoader *)sharedInstance
 {
     static dispatch_once_t onceToken;
-    //    once_token = &onceToken;
     
     dispatch_once(&onceToken, ^{
         instance = [[GLPGroupImageLoader alloc] init];

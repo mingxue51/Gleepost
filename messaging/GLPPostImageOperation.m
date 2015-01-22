@@ -6,17 +6,17 @@
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
 
-#import "GLPCampusLiveImageOperation.h"
+#import "GLPPostImageOperation.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
-@interface GLPCampusLiveImageOperation ()
+@interface GLPPostImageOperation ()
 
 @property (strong, nonatomic) NSString *imageUrl;
 @property (assign, nonatomic) NSInteger remoteKey;
 
 @end
 
-@implementation GLPCampusLiveImageOperation
+@implementation GLPPostImageOperation
 
 - (id)initWithImageUrl:(NSString *)imageUrl andRemoteKey:(NSInteger)remoteKey
 {

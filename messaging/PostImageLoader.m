@@ -1,39 +1,45 @@
 //
-//  GLPCLPostImageLoader.m
+//  PostImageLoader.m
 //  Gleepost
 //
-//  Created by Silouanos on 16/12/14.
-//  Copyright (c) 2014 Gleepost. All rights reserved.
+//  Created by Silouanos on 22/01/15.
+//  Copyright (c) 2015 Gleepost. All rights reserved.
 //
+//  Parent class that should be subclassed by singletons in order to fetch
+//  images posts' view in a good way using specific approach.
 
-#import "GLPCLPostImageLoader.h"
-#import "GLPPost.h"
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "PostImageLoader.h"
 #import "GLPiOSSupportHelper.h"
 #import "GLPPostImageOperation.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 #import "NSNotificationCenter+Utils.h"
 
-@interface GLPCLPostImageLoader () <GLPPostImageOperationDelegate>
+
+@implementation ImageObject
+
+- (id)initWithRemoteKey:(NSInteger)remoteKey andImageUrl:(NSString *)imageUrl
+{
+    self = [super init];
+    
+    if(self)
+    {
+        _remoteKey = remoteKey;
+        _imageUrl = imageUrl;
+    }
+    
+    return self;
+}
+
+@end
+
+@interface PostImageLoader () <GLPPostImageOperationDelegate>
 
 @property (strong, nonatomic) NSOperationQueue *operationQueue;
 @property (strong, nonatomic) NSMutableDictionary *pendingOperations;
 
 @end
 
-@implementation GLPCLPostImageLoader
-
-static GLPCLPostImageLoader *instance = nil;
-
-+ (GLPCLPostImageLoader *)sharedInstance
-{
-    static dispatch_once_t onceToken;
-    
-    dispatch_once(&onceToken, ^{
-        instance = [[GLPCLPostImageLoader alloc] init];
-    });
-    
-    return instance;
-}
+@implementation PostImageLoader
 
 - (id)init
 {
@@ -43,7 +49,7 @@ static GLPCLPostImageLoader *instance = nil;
     {
         _operationQueue = [[NSOperationQueue alloc] init];
         _pendingOperations = [[NSMutableDictionary alloc] init];
-                
+        
         if(![GLPiOSSupportHelper isIOS7])
         {
             _operationQueue.qualityOfService =  NSQualityOfServiceUtility;
@@ -58,34 +64,29 @@ static GLPCLPostImageLoader *instance = nil;
 - (void)updateNetworkStatus:(NSNotification *)notification
 {
     BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
-    DDLogInfo(@"GLPCLPostImageLoader network status: %d", isNetwork);
+    DDLogInfo(@"PostImageLoader network status: %d", isNetwork);
     
-    DDLogDebug(@"GLPCLPostImageLoader operation queue count %d %d", _operationQueue.operationCount, _pendingOperations.count);
-
+    DDLogDebug(@"PostImageLoader operation queue count %d %d", _operationQueue.operationCount, _pendingOperations.count);
+    
     if(isNetwork)
     {
         [self retryLoadImagesAfterLostConnection];
     }
-    else
-    {
-        
-    }
 }
 
+#pragma mark - Accessors
 
-- (void)addPosts:(NSArray *)posts
+- (void)addImageObjects:(NSArray *)imageObjects
 {
-    NSArray *imagePosts = [self imagePosts:posts];
-    
-    for(GLPPost *p in imagePosts)
+    for(ImageObject *p in imageObjects)
     {
-        NSString *profileImageUrl = p.imagesUrls[0];
+        NSString *profileImageUrl = p.imageUrl;
         
         [[SDImageCache sharedImageCache] queryDiskCacheForKey:profileImageUrl done:^(UIImage *image, SDImageCacheType cacheType) {
             
             if(image)
             {
-                [self notifyCampusLiveWithImage:image andPostRemoteKey:p.remoteKey];
+//                [self notifyCampusLiveWithImage:image andPostRemoteKey:p.remoteKey];
             }
             else
             {
@@ -95,19 +96,37 @@ static GLPCLPostImageLoader *instance = nil;
     }
 }
 
+- (void)findImageWithUrl:(NSURL *)url callback:(void (^) (UIImage* image, BOOL found))callback
+{
+    [[SDImageCache sharedImageCache] queryDiskCacheForKey:[url absoluteString] done:^(UIImage *image, SDImageCacheType cacheType) {
+        
+        if(image)
+        {
+            callback(image, YES);
+        }
+        else
+        {
+            callback(nil, NO);
+        }
+        
+    }];
+}
+
+#pragma mark - Internal Operations
+
 - (void)startLoadingImageIfNeededWithPostRemoteKey:(NSInteger)remoteKey andImageUrl:(NSString *)imageUrl
 {
     if(![_pendingOperations objectForKey:@(remoteKey)])
     {
         [_pendingOperations setObject:imageUrl forKey:@(remoteKey)];
-
+        
         [self loadImageWithRemoteKey:remoteKey andImageUrl:imageUrl];
     }
 }
 
 - (void)loadImageWithRemoteKey:(NSInteger)remoteKey andImageUrl:(NSString *)imageUrl
-{    
-    DDLogDebug(@"GLPCLPostImageLoader : image added %ld - %@", (long)remoteKey, imageUrl);
+{
+    DDLogDebug(@"PostImageLoader : image added %ld - %@", (long)remoteKey, imageUrl);
     
     GLPPostImageOperation *operation = [[GLPPostImageOperation alloc] initWithImageUrl:imageUrl andRemoteKey:remoteKey];
     
@@ -118,14 +137,9 @@ static GLPCLPostImageLoader *instance = nil;
 
 - (void)notifyCampusLiveWithImage:(UIImage *)image andPostRemoteKey:(NSInteger)remoteKey
 {
-    DDLogDebug(@"GLPCLPostImageLoader : notifyCampusLiveWithImage %ld image %@", (long)remoteKey, image);
+    DDLogDebug(@"PostImageLoader : notifyCampusLiveWithImage %ld image %@", (long)remoteKey, image);
     
-    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:[self generateNotificationWithRemoteKey:remoteKey] object:self userInfo:@{@"image_loaded" : image, @"remote_key" : @(remoteKey)}];
-}
-
-- (NSString *)generateNotificationWithRemoteKey:(NSInteger)remoteKey
-{
-    return [NSString stringWithFormat:@"%@_%@", GLPNOTIFICATION_CAMPUS_LIVE_IMAGE_LOADED, @(remoteKey)];
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:self.nsNotificationName object:self userInfo:@{@"image_loaded" : image, @"remote_key" : @(remoteKey)}];
 }
 
 #pragma mark - Error methods
@@ -148,29 +162,9 @@ static GLPCLPostImageLoader *instance = nil;
 - (void)operationFinishedWithImage:(UIImage *)image andRemoteKey:(NSInteger)remoteKey
 {
     [_pendingOperations removeObjectForKey:@(remoteKey)];
-//    DDLogDebug(@"Current operations %@ count %lu", _operationQueue.operations, (unsigned long)_operationQueue.operationCount);
+    //    DDLogDebug(@"Current operations %@ count %lu", _operationQueue.operations, (unsigned long)_operationQueue.operationCount);
     [self notifyCampusLiveWithImage:image andPostRemoteKey:remoteKey];
-
-}
-
-#pragma mark - Helpers
-
-- (NSArray *)imagePosts:(NSArray *)posts
-{
-    NSPredicate *imagePosts = [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-        GLPPost *evPost = (GLPPost *)evaluatedObject;
-        if([evPost imagePost])
-        {
-            return YES;
-        }
-        else
-        {
-            return NO;
-        }
-    }];
     
-    
-    return [posts filteredArrayUsingPredicate:imagePosts];
 }
 
 @end

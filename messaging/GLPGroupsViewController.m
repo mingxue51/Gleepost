@@ -70,24 +70,6 @@
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     [AppearanceHelper setSelectedColourForTabbarItem:_groupTabbarItem withColour:[AppearanceHelper redGleepostColour]];
-    
-//    for (UIView *subView in self.searchBar.subviews)
-//    {
-//        for (UIView *secondLevelSubview in subView.subviews){
-//            if ([secondLevelSubview isKindOfClass:[UITextField class]])
-//            {
-//                UITextField *searchBarTextField = (UITextField *)secondLevelSubview;
-//                
-//                //set font color here
-//                [searchBarTextField setBackgroundColor:[UIColor redColor]];
-//                
-//                break;
-//            }
-//        }
-//    }
-    
-//    [_searchBar setSearchFieldBackgroundImage:[ImageFormatterHelper generateImageWithColour:[UIColor blackColor]] forState:UIControlStateNormal];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -116,7 +98,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SEARCH_FOR_GROUPS object:nil];
-
 }
 
 #pragma mark - Configuration
@@ -381,36 +362,7 @@
     }
 }
 
-//- (BOOL)isSearchBarFirstResponder
-//{
-//    GLPSearchBar *view = nil;
-//    
-//    for(UIView *v in _searchBarView.subviews)
-//    {
-//        if(v.tag == 101)
-//        {
-//            view = (GLPSearchBar *)v;
-//        }
-//    }
-//    
-//    return [view isTextFieldFirstResponder];
-//}
-//
-//- (void)resignFirstResponder
-//{
-//    
-//}
-
 #pragma mark - Group Created Delegate
-
-//TODO: Make those methods more efficient.
-
-//-(void)groupCreatedWithData:(GLPGroup *)group
-//{
-//    [self reloadNewGroupWithGroup:group];
-//    
-//    //    [self createNewGroupWithGroup:group];
-//}
 
 -(void)groupCreatedWithNotification:(NSNotification *)notification
 {
@@ -421,8 +373,6 @@
     NSAssert(group.key != 0, @"Group needs to have key");
     
     [self loadGroupsWithGroup:group];
-    
-    //    [self createNewGroupWithGroup:group];
 }
 
 #pragma mark - GroupCollectionViewCellDelegate
@@ -481,58 +431,9 @@
         }
         
     }];
-    
-    
-//        [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
-//            
-//            _groups = groups.mutableCopy;
-//            _filteredGroups = groups.mutableCopy;
-//            
-//            [_collectionView reloadData];
-//            
-//            
-//            
-//        } remoteCallback:^(BOOL success, NSArray *groups) {
-//            
-//            if(!success)
-//            {
-//                return;
-//            }
-//            
-//            _groups = groups.mutableCopy;
-//            _filteredGroups = groups.mutableCopy;
-//            
-//            [_collectionView reloadData];
-//            
-//        }];
-//    }
-//    else
-//    {
-
-//    }
-
-
 }
 
 #pragma mark - UI loaders
-
-//-(void)showGroups
-//{
-//    if(self.groups.count > 0)
-//    {
-//        NSDictionary *result = [GLPGroupManager processGroups:_groups];
-//        
-//        _groupsStr = [result objectForKey:@"GroupNames"];
-//        _categorisedGroups = [result objectForKey:@"CategorisedGroups"];
-//        _groupSections = [result objectForKey:@"Sections"];
-//    }
-//    else
-//    {
-//        _groupsStr = [[NSMutableArray alloc] init];
-//        _categorisedGroups = [[NSMutableDictionary alloc] init];
-//        _groupSections = [[NSMutableArray alloc] init];
-//    }
-//}
 
 - (void)removeGroupFromCollectionViewWithRemoteKey:(NSInteger)groupRemoteKey
 {

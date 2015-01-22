@@ -1248,17 +1248,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return event;
 }
 
-//TODO: For now implement that like this.
-+ (BOOL)isCountViewsPostEventWithJson:(NSDictionary *)json
-{
-    if(json[@"type"])
-    {
-        return NO;
-    }
-    
-    return YES;
-}
-
 #pragma mark - Busy status
 
 +(BOOL)parseBusyStatus:(NSDictionary*)json

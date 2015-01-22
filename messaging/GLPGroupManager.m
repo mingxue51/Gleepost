@@ -590,8 +590,8 @@
 + (NSIndexPath *)parseGroup:(GLPGroup **)group imageNotification:(NSNotification *)notification withGroupsArray:(NSArray *)groups
 {
     NSDictionary *dict = [notification userInfo];
-    NSNumber *remoteKey = [dict objectForKey:@"RemoteKey"];
-    UIImage *finalImage = [dict objectForKey:@"FinalImage"];
+    NSNumber *remoteKey = [dict objectForKey:@"remote_key"];
+    UIImage *finalImage = [dict objectForKey:@"image_loaded"];
     
     GLPGroup *currentGroup = nil;
     
@@ -609,17 +609,6 @@
         
         *group = currentGroup;
     }
-    
-//    if(!currentPost)
-//    {
-//        post = nil;
-//        return postIndex;
-//    }
-//    else
-//    {
-//        currentPost.finalImage = finalImage;
-//        *post = currentPost;
-//    }
     
     return groupIndexPath;
 }

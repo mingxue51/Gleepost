@@ -16,6 +16,7 @@
 #import "GLPLiveGroupManager.h"
 #import "GLPImageHelper.h"
 #import "GLPMemberDao.h"
+#import "GLPGPPostImageLoader.h"
 
 @interface GroupCollectionViewCell ()
 
@@ -121,6 +122,21 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
     else
     {
         [_groupImage sd_setImageWithURL:[NSURL URLWithString:_groupData.groupImageUrl] placeholderImage:[GLPImageHelper placeholderGroupImage] options:SDWebImageRetryFailed];
+//        [_groupImage setImage:[GLPImageHelper placeholderGroupImage]];
+//        
+//        [[GLPGPPostImageLoader sharedInstance] findImageWithUrl:[NSURL URLWithString:_groupData.groupImageUrl] callback:^(UIImage *image, BOOL found) {
+//           
+//            if(found)
+//            {
+//                [_groupImage setImage:image];
+//            }
+//            else
+//            {
+//                [_groupImage setImage:[GLPImageHelper placeholderGroupImage]];
+//            }
+//            
+//        }];
+        
     }
 }
 

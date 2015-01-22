@@ -69,17 +69,7 @@ static GLPMessageProcessor *instance = nil;
         }
         
         NSDictionary *json = [NSJSONSerialization JSONObjectWithData:[webSocketMessage dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
-                
-        if([RemoteParser isCountViewsPostEventWithJson:json])
-        {
-            //Expected format {"post":123, "views":355}
-            
-            NSInteger remoteKey = [json[@"post"] integerValue];
-            NSInteger viewsCount = [json[@"views"] integerValue];
-            [GLPTrackViewsCountProcessor updateViewsCounter:viewsCount onPost:[[GLPPost alloc] initWithRemoteKey:remoteKey]];
-            return;
-        }
-        
+
         GLPWebSocketEvent *event = [RemoteParser parseWebSocketEventFromJson:json];
         
         switch (event.type) {
@@ -119,7 +109,11 @@ static GLPMessageProcessor *instance = nil;
                 
             case kGLPWebSocketEventTypeVideoReady:{
                 [[GLPVideoUploadManager sharedInstance] refreshVideoPostInCampusWallWithData:event.data];
+                break;
+            }
                 
+            case kGLPWebSocketEventTypeViews: {
+                [GLPTrackViewsCountProcessor updateViewsCounter:[event.data[@"views"] integerValue] onPost:[event.data[@"post"] integerValue]];
                 break;
             }
            

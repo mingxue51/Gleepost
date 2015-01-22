@@ -15,7 +15,8 @@
 #import "WebClient.h"
 #import "GLPGroupDao.h"
 #import "ChangeGroupImageProgressView.h"
-#import "GLPGroupImageLoader.h"
+//#import "GLPGroupImageLoader.h"
+#import "GLPGPPostImageLoader.h"
 
 @interface GLPLiveGroupManager ()
 
@@ -76,18 +77,15 @@ static GLPLiveGroupManager *instance = nil;
     DDLogInfo(@"Load groups");
     
     [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
-        
+    
         _groups = groups.mutableCopy;
-        
-        [[GLPGroupImageLoader sharedInstance] addGroupsImages:_groups];
-
-        
+//        [[GLPGroupImageLoader sharedInstance] addGroupsImages:_groups];
+            [[GLPGPPostImageLoader sharedInstance] addGroups:_groups];
     } remoteCallback:^(BOOL success, NSArray *groups) {
         
         _groups = groups.mutableCopy;
-        
-        [[GLPGroupImageLoader sharedInstance] addGroupsImages:_groups];
-
+//        [[GLPGroupImageLoader sharedInstance] addGroupsImages:_groups];
+                [[GLPGPPostImageLoader sharedInstance] addGroups:_groups];
         
     }];
 }
@@ -152,7 +150,8 @@ static GLPLiveGroupManager *instance = nil;
         
         [self addPendingGroupsIfNeededToLocalGroups:pendingGroups];
         
-        [[GLPGroupImageLoader sharedInstance] addGroupsImages:_groups];
+//        [[GLPGroupImageLoader sharedInstance] addGroupsImages:_groups];
+        [[GLPGPPostImageLoader sharedInstance] addGroups:_groups];
         
         remote(YES, _groups);
     }];

@@ -14,6 +14,6 @@
 - (void)trackVisiblePosts:(NSArray *)visiblePosts withPostsYValues:(NSArray *)visiblePostsYValues;
 - (void)resetVisibleCells;
 - (void)resetSentPostsSet;
-+ (void)updateViewsCounter:(NSInteger)updatedViewsCount onPost:(GLPPost *)post;
++ (void)updateViewsCounter:(NSInteger)updatedViewsCount onPost:(NSInteger)postRemoteKey;
 
 @end

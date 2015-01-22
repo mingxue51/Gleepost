@@ -8,16 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol GLPCampusLiveImageOperationDelegate <NSObject>
+@protocol GLPPostImageOperationDelegate <NSObject>
 
 - (void)operationFinishedWithImage:(UIImage *)image andRemoteKey:(NSInteger)remoteKey;
 
 @end
 
-@interface GLPCampusLiveImageOperation : NSOperation
+@interface GLPPostImageOperation : NSOperation
 
 - (id)initWithImageUrl:(NSString *)imageUrl andRemoteKey:(NSInteger)remoteKey;
 
-@property (assign, nonatomic) NSObject<GLPCampusLiveImageOperationDelegate> *delegate;
+@property (assign, nonatomic) NSObject<GLPPostImageOperationDelegate> *delegate;
 
 @end

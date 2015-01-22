@@ -32,7 +32,7 @@
 		5806C75D191BF603005C907E /* notification_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C75B191BF603005C907E /* notification_btn_selected.png */; };
 		5806C761191BFA5D005C907E /* fb_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C760191BFA5D005C907E /* fb_login.png */; };
 		5809FF0A1A40376400AF7912 /* GLPCLPostImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5809FF091A40376400AF7912 /* GLPCLPostImageLoader.m */; };
-		5809FF0D1A403F7000AF7912 /* GLPCampusLiveImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5809FF0C1A403F7000AF7912 /* GLPCampusLiveImageOperation.m */; };
+		5809FF0D1A403F7000AF7912 /* GLPPostImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5809FF0C1A403F7000AF7912 /* GLPPostImageOperation.m */; };
 		580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */; };
 		580B8D3318577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D3218577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m */; };
 		580B8D3518577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580B8D3418577E8600A84E0E /* ProfileViewTwoButtonsTableViewCell.xib */; };
@@ -733,6 +733,8 @@
 		58F0F0C21934F91E0032450F /* categories_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0C11934F91E0032450F /* categories_image.png */; };
 		58F0F0C41934F9320032450F /* right_arrow_navigation.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0C31934F9320032450F /* right_arrow_navigation.png */; };
 		58F0F0C7193507D40032450F /* GLPSelectCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F0F0C6193507D40032450F /* GLPSelectCategoryViewController.m */; };
+		58F284DC1A71514D0018ADAB /* PostImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F284DB1A71514D0018ADAB /* PostImageLoader.m */; };
+		58F284DF1A7154950018ADAB /* GLPGPPostImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F284DE1A7154950018ADAB /* GLPGPPostImageLoader.m */; };
 		58F2950119353C9300A638BA /* NewPostCategoriesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F2950019353C9300A638BA /* NewPostCategoriesView.m */; };
 		58F2950519355A1600A638BA /* ATNavigationCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F2950419355A1600A638BA /* ATNavigationCategories.m */; };
 		58F2950819355A2F00A638BA /* TDNavigationCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F2950719355A2F00A638BA /* TDNavigationCategories.m */; };
@@ -974,8 +976,8 @@
 		5806C760191BFA5D005C907E /* fb_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fb_login.png; sourceTree = "<group>"; };
 		5809FF081A40376400AF7912 /* GLPCLPostImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCLPostImageLoader.h; sourceTree = "<group>"; };
 		5809FF091A40376400AF7912 /* GLPCLPostImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCLPostImageLoader.m; sourceTree = "<group>"; };
-		5809FF0B1A403F7000AF7912 /* GLPCampusLiveImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCampusLiveImageOperation.h; sourceTree = "<group>"; };
-		5809FF0C1A403F7000AF7912 /* GLPCampusLiveImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCampusLiveImageOperation.m; sourceTree = "<group>"; };
+		5809FF0B1A403F7000AF7912 /* GLPPostImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostImageOperation.h; sourceTree = "<group>"; };
+		5809FF0C1A403F7000AF7912 /* GLPPostImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostImageOperation.m; sourceTree = "<group>"; };
 		580B8D2918577A0E00A84E0E /* GLPProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileViewController.h; sourceTree = "<group>"; };
 		580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPProfileViewController.m; sourceTree = "<group>"; };
 		580B8D3118577E5500A84E0E /* ProfileTwoButtonsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileTwoButtonsTableViewCell.h; sourceTree = "<group>"; };
@@ -1965,6 +1967,10 @@
 		58F0F0C31934F9320032450F /* right_arrow_navigation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right_arrow_navigation.png; sourceTree = "<group>"; };
 		58F0F0C5193507D40032450F /* GLPSelectCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSelectCategoryViewController.h; sourceTree = "<group>"; };
 		58F0F0C6193507D40032450F /* GLPSelectCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSelectCategoryViewController.m; sourceTree = "<group>"; };
+		58F284DA1A71514D0018ADAB /* PostImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostImageLoader.h; sourceTree = "<group>"; };
+		58F284DB1A71514D0018ADAB /* PostImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostImageLoader.m; sourceTree = "<group>"; };
+		58F284DD1A7154950018ADAB /* GLPGPPostImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGPPostImageLoader.h; sourceTree = "<group>"; };
+		58F284DE1A7154950018ADAB /* GLPGPPostImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPGPPostImageLoader.m; sourceTree = "<group>"; };
 		58F294FF19353C9300A638BA /* NewPostCategoriesView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPostCategoriesView.h; sourceTree = "<group>"; };
 		58F2950019353C9300A638BA /* NewPostCategoriesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPostCategoriesView.m; sourceTree = "<group>"; };
 		58F2950319355A1600A638BA /* ATNavigationCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATNavigationCategories.h; sourceTree = "<group>"; };
@@ -2374,8 +2380,8 @@
 			children = (
 				5809FF081A40376400AF7912 /* GLPCLPostImageLoader.h */,
 				5809FF091A40376400AF7912 /* GLPCLPostImageLoader.m */,
-				5809FF0B1A403F7000AF7912 /* GLPCampusLiveImageOperation.h */,
-				5809FF0C1A403F7000AF7912 /* GLPCampusLiveImageOperation.m */,
+				5809FF0B1A403F7000AF7912 /* GLPPostImageOperation.h */,
+				5809FF0C1A403F7000AF7912 /* GLPPostImageOperation.m */,
 			);
 			name = "Campus Live";
 			sourceTree = "<group>";
@@ -4297,6 +4303,17 @@
 			name = Approval;
 			sourceTree = "<group>";
 		};
+		58F284D91A7150960018ADAB /* Groups */ = {
+			isa = PBXGroup;
+			children = (
+				58F284DA1A71514D0018ADAB /* PostImageLoader.h */,
+				58F284DB1A71514D0018ADAB /* PostImageLoader.m */,
+				58F284DD1A7154950018ADAB /* GLPGPPostImageLoader.h */,
+				58F284DE1A7154950018ADAB /* GLPGPPostImageLoader.m */,
+			);
+			name = Groups;
+			sourceTree = "<group>";
+		};
 		58F294FB19353C0700A638BA /* New post */ = {
 			isa = PBXGroup;
 			children = (
@@ -4521,6 +4538,7 @@
 		8057E33A1834C1040089F4D9 /* Processors */ = {
 			isa = PBXGroup;
 			children = (
+				58F284D91A7150960018ADAB /* Groups */,
 				58498FCF1A49874100F1720F /* Campus Wall */,
 				5809FF071A40374600AF7912 /* Campus Live */,
 				C02120411850AA1200831872 /* GLPPostUploader.h */,
@@ -6031,6 +6049,7 @@
 				5832C4C918998563004FC4F6 /* UIImage+StackBlur.m in Sources */,
 				58065F8C19BFE4BC00892B6B /* GLPViewImageScrollView.m in Sources */,
 				585106C8199D85DB000F06BB /* IntroKindOfNewPostViewController.m in Sources */,
+				58F284DC1A71514D0018ADAB /* PostImageLoader.m in Sources */,
 				58EA127019FA1079003D264E /* GLPEmptyViewManager.m in Sources */,
 				58FB7CBB18565640002C6A00 /* ProfileAboutTableViewCell.m in Sources */,
 				805358C9182EF1CC00579079 /* GLPPostManager.m in Sources */,
@@ -6103,7 +6122,7 @@
 				580B8D3318577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m in Sources */,
 				5819E64E18C79F2C003361B3 /* SearchGroupCell.m in Sources */,
 				58D113D618857D3A00C6B953 /* GLPPostImageLoader.m in Sources */,
-				5809FF0D1A403F7000AF7912 /* GLPCampusLiveImageOperation.m in Sources */,
+				5809FF0D1A403F7000AF7912 /* GLPPostImageOperation.m in Sources */,
 				585106E3199D9E64000F06BB /* PendingPostManager.m in Sources */,
 				C0090C2018A8BC2800153878 /* GLPLoadMoreCell.m in Sources */,
 				807C4D11180AF0F6003D67E6 /* _Conversation.m in Sources */,
@@ -6376,6 +6395,7 @@
 				58973519193F82CD0048BA85 /* RegisterAnimationsView.m in Sources */,
 				807D5EBD188DEE8700673F01 /* GLPWebSocketClient.m in Sources */,
 				1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */,
+				58F284DF1A7154950018ADAB /* GLPGPPostImageLoader.m in Sources */,
 				5819E66118C7E58E003361B3 /* GLPGroupDao.m in Sources */,
 				802DCE5018AB037100A23511 /* GLPApplicationHelper.m in Sources */,
 				80C8BA56181033CA004F70DB /* GLPComment.m in Sources */,

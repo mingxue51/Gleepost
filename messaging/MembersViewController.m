@@ -39,7 +39,7 @@
 /** This object is used when for adding or removing member as admin. */
 @property (strong, nonatomic) GLPMember *selectedMember;
 
-@property (strong, nonatomic) NSString *addUserAsAdminText;
+@property (strong, nonatomic, readonly) NSString *addUserAsAdminText;
 @property (strong, nonatomic, readonly) NSString *removeUserFromAdminText;
 
 @end
@@ -125,7 +125,6 @@
     
     //Remove empty cells.
     [self.tableView setTableFooterView:[[UIView alloc] init]];
-
 }
 
 - (void)configureTitleNavigationBar
