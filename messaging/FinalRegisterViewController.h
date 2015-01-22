@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FDTakeController.h"
 
-@interface FinalRegisterViewController : UIViewController  <UINavigationControllerDelegate, FDTakeDelegate>
+@interface FinalRegisterViewController : UIViewController  <UINavigationControllerDelegate>
 @property (strong, nonatomic) IBOutlet UIImageView *addImageView;
 @property (strong, nonatomic) NSArray *eMailPass;
 @property (strong, nonatomic) NSArray *firstLastName;

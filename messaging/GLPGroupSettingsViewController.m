@@ -204,7 +204,6 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
     if([segue.identifier isEqualToString:@"pick image"])
     {
         ImageSelectorViewController *imgSelectorVC = segue.destinationViewController;
-        
         imgSelectorVC.fromGroupViewController = NO;
         [imgSelectorVC setDelegate:self];
     }

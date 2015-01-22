@@ -34,7 +34,6 @@
 @property (weak, nonatomic) IBOutlet UITextField *genderTextField;
 
 
-@property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (strong, nonatomic) UIImage *profileImage;
 
 - (IBAction)pickAnImage:(id)sender;
@@ -59,14 +58,6 @@
     [self formatElements];
     
     self.profileImage = nil;
-    
-    self.fdTakeController = [[FDTakeController alloc] init];
-    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
-    self.fdTakeController.delegate = self;
-    
-    
-
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -379,7 +370,6 @@
 
 - (IBAction)pickAnImage:(id)sender
 {
-    [self.fdTakeController takePhotoOrChooseFromLibrary];
     
 //    UIImagePickerController * picker = [[UIImagePickerController alloc] init];
 //	picker.delegate = self;
@@ -405,15 +395,6 @@
     verificationController.eMailPass = self.eMailPass;
     
     verificationController.profileImage = self.profileImage;
-    
-}
-
-#pragma mark - FDTakeController delegate
-
-- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
-{
-    self.profileImage = photo;
-    [self.addImageView setImage:photo];
     
 }
 

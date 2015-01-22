@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FDTakeController.h"
 #import "ImageSelectorViewController.h"
 
 #import "GLPGroup.h"
@@ -20,7 +19,7 @@
 
 @end
 
-@interface NewGroupViewController : UIViewController <FDTakeDelegate, ImageSelectorViewControllerDelegate>
+@interface NewGroupViewController : UIViewController <ImageSelectorViewControllerDelegate>
 
 @property (assign, nonatomic) GroupPrivacy groupType;
 

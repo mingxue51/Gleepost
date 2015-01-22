@@ -167,9 +167,6 @@
 		5832C4C918998563004FC4F6 /* UIImage+StackBlur.m in Sources */ = {isa = PBXBuildFile; fileRef = 5832C4C818998563004FC4F6 /* UIImage+StackBlur.m */; };
 		5832C4CD1899B8E7004FC4F6 /* ChatViewAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5832C4CC1899B8E7004FC4F6 /* ChatViewAnimationController.m */; };
 		5834382218E643BA00DDAFB3 /* going_pressed_new.png in Resources */ = {isa = PBXBuildFile; fileRef = 5834382118E643B900DDAFB3 /* going_pressed_new.png */; };
-		5834903A18BF80670087CC3A /* FDTake.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5834902718BF80670087CC3A /* FDTake.strings */; };
-		5834903B18BF80670087CC3A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5834902B18BF80670087CC3A /* InfoPlist.strings */; };
-		5834903E18BF80670087CC3A /* FDTakeController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5834903218BF80670087CC3A /* FDTakeController.m */; };
 		583491F71933FFE900E44B4A /* GLPWalkthroughViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 583491F61933FFE900E44B4A /* GLPWalkthroughViewController.m */; };
 		5834FF4418B502D20092C52D /* profile_background_main.png in Resources */ = {isa = PBXBuildFile; fileRef = 5834FF4318B502D20092C52D /* profile_background_main.png */; };
 		58350A67198ACB3F000BB1CA /* new_posts_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 58350A66198ACB3F000BB1CA /* new_posts_bg.png */; };
@@ -1181,10 +1178,6 @@
 		5832C4CB1899B8E7004FC4F6 /* ChatViewAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewAnimationController.h; sourceTree = "<group>"; };
 		5832C4CC1899B8E7004FC4F6 /* ChatViewAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimationController.m; sourceTree = "<group>"; };
 		5834382118E643B900DDAFB3 /* going_pressed_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = going_pressed_new.png; sourceTree = "<group>"; };
-		5834902A18BF80670087CC3A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/FDTake.strings; sourceTree = "<group>"; };
-		5834902C18BF80670087CC3A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5834903118BF80670087CC3A /* FDTakeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDTakeController.h; sourceTree = "<group>"; };
-		5834903218BF80670087CC3A /* FDTakeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDTakeController.m; sourceTree = "<group>"; };
 		583491F51933FFE900E44B4A /* GLPWalkthroughViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPWalkthroughViewController.h; sourceTree = "<group>"; };
 		583491F61933FFE900E44B4A /* GLPWalkthroughViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPWalkthroughViewController.m; sourceTree = "<group>"; };
 		5834FF4318B502D20092C52D /* profile_background_main.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_background_main.png; sourceTree = "<group>"; };
@@ -2621,17 +2614,6 @@
 				5832C4C818998563004FC4F6 /* UIImage+StackBlur.m */,
 			);
 			name = Blur;
-			sourceTree = "<group>";
-		};
-		5834902618BF80670087CC3A /* FDTakeViewControllerImagePicker */ = {
-			isa = PBXGroup;
-			children = (
-				5834902718BF80670087CC3A /* FDTake.strings */,
-				5834902B18BF80670087CC3A /* InfoPlist.strings */,
-				5834903118BF80670087CC3A /* FDTakeController.h */,
-				5834903218BF80670087CC3A /* FDTakeController.m */,
-			);
-			path = FDTakeViewControllerImagePicker;
 			sourceTree = "<group>";
 		};
 		583491F41933FC3D00E44B4A /* Walkthrough */ = {
@@ -4600,7 +4582,6 @@
 				58AE5FB21923820A00C4D59D /* PBJVideoPlayer */,
 				587805A51920E2CE0002472B /* VideoRecorder */,
 				58ACD1C618F599AC00BD576B /* DCIntrospect */,
-				5834902618BF80670087CC3A /* FDTakeViewControllerImagePicker */,
 				5867FF5618B64D180080AD9D /* Copy Label */,
 				580FF15018AA6D810026B65B /* Time formatter */,
 				5832C4C618998554004FC4F6 /* Blur */,
@@ -5632,7 +5613,6 @@
 				58837D2D18CDE70400EB3435 /* group_posts_selected.png in Resources */,
 				5890D225184790BA00E293DD /* chat_background_default.png in Resources */,
 				58289EF118D7511B00228EFF /* icon_comment_old.png in Resources */,
-				5834903B18BF80670087CC3A /* InfoPlist.strings in Resources */,
 				5823932318CB6719001BC88C /* members.png in Resources */,
 				5879AC8C19643CEA0053262A /* user_selected.png in Resources */,
 				58CE8EA019D9B8010028DEB7 /* kind_of_event_no.png in Resources */,
@@ -5836,7 +5816,6 @@
 				58DB02C218107CC8001C021A /* whiteholder2.png in Resources */,
 				58350A69198ACB51000BB1CA /* new_posts_arrow.png in Resources */,
 				58451BFE199B3CD1003B94D2 /* logout_button.png in Resources */,
-				5834903A18BF80670087CC3A /* FDTake.strings in Resources */,
 				589CE50B18D227910046DAD2 /* the_bar1.png in Resources */,
 				5840285F18D2605D00753A5F /* show_categories_old.png in Resources */,
 				80595E1318B1B02900D99E41 /* Localizable.strings in Resources */,
@@ -6267,7 +6246,6 @@
 				58119CC51947992700C2687B /* InfiniteScrollViewPicker.m in Sources */,
 				803B6085181FFE8A00A178EB /* GLPLoadingCell.m in Sources */,
 				58B90F1F18C8216300FA0955 /* GroupUploaderManager.m in Sources */,
-				5834903E18BF80670087CC3A /* FDTakeController.m in Sources */,
 				11707586186C6DC000F68607 /* NSUserDefaults+GLPAdditions.m in Sources */,
 				584C1EEA181AC53600862E81 /* GLPContact.m in Sources */,
 				5827B8911945C85F00DFC76E /* GBInfiniteScrollViewPage.m in Sources */,
@@ -6464,22 +6442,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		5834902718BF80670087CC3A /* FDTake.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5834902A18BF80670087CC3A /* en */,
-			);
-			name = FDTake.strings;
-			sourceTree = "<group>";
-		};
-		5834902B18BF80670087CC3A /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5834902C18BF80670087CC3A /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		80AB892517C267F50053E784 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

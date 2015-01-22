@@ -80,7 +80,6 @@
 @property (assign, nonatomic) int postIndexToReload;
 
 @property (strong, nonatomic) UIImage *groupImage;
-@property (strong, nonatomic) FDTakeController *fdTakeController;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -308,10 +307,6 @@ const float TOP_OFF_SET = -64.0;
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
     self.transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
-    
-    self.fdTakeController = [[FDTakeController alloc] init];
-    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
-    self.fdTakeController.delegate = self;
     
     _fakeNavigationBar = [[FakeNavigationBarView alloc] initWithTitle:_group.name];
     
@@ -1551,27 +1546,6 @@ const float TOP_OFF_SET = -64.0;
     [self removeTableViewPostWithIndex:index];
     
     [self showOrHidePostsEmptyView];
-    
-}
-
-#pragma mark - FDTakeController delegate
-
-- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)dictionary
-{
-    _groupImage = photo;
-    
-    //Set directly the new user's profile image.
-//    self.userImage = photo;
-//    
-    [self refreshCellViewWithIndex:0];
-    
-    
-    //Communicate with server to change the image.
-//    GroupUploaderManager *uploader = [[GroupUploaderManager alloc] init];
-//    
-//    [uploader changeGroupImageWithImage:_groupImage withGroup:_group];
-    
-    [[GroupOperationManager sharedInstance] changeGroupImageWithImage:_groupImage withGroup:_group];
     
 }
 

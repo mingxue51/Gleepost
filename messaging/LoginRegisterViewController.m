@@ -52,8 +52,6 @@
 
 @property (strong, nonatomic) NSArray *emailPass;
 
-@property (strong, nonatomic) FDTakeController *fdTakeController;
-
 
 @end
 
@@ -82,14 +80,8 @@ static NSString * const kOkButtonTitle       = @"Ok";
     _transitionViewLoginController = [[CustomPushTransitioningDelegate alloc] initWithFirstController:self andDestinationController:_destinationViewController];
     
     [self setBackground];
-    
-    
     [self initialiseViews];
-    
     [self initialiseObjects];
-    
-    
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -134,14 +126,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
 {
     _mainViewFrame = _mainView.frame;
     _mainViewFrameInit = _mainView.frame;
-    
     _ANIMATION_DURATION = 0.25;
-
-    
-    _fdTakeController = [[FDTakeController alloc] init];
-    _fdTakeController.viewControllerForPresentingImagePickerController = self;
-    _fdTakeController.delegate = self;
-    
 }
 
 -(void)initialiseViews
@@ -151,9 +136,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
     _currentViewId = 0;
     
     //Fetch all the views and add them to the dictonary in order.
-   
     [self loadRegisterViews];
-
 }
 
 
@@ -354,30 +337,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
     _emailPass = emailPass;
 }
 
--(void)pickImage:(id)sender
-{
-    [self.fdTakeController takePhotoOrChooseFromLibrary];
-
-}
-
-
-#pragma mark - FDTakeController delegate
-
-- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)dict
-{
-//    self.profileImage = photo;
-//    [self.addImageView setImage:photo];
-    
-    //TODO: This is not working good. Facing issues with views.
-    
-    SignUpFourView *s = (SignUpFourView*)_currentView;
-    
-    [s setImage:photo];
-    
-}
-
 #pragma mark - Animations
-
 
 -(void)continueToLoginSignUpAnimationWithCallbackBlock:(void (^) (BOOL finished))callbackBlock
 {

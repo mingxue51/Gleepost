@@ -1662,11 +1662,11 @@
             <objects>
                 <viewController id="YKI-NX-LaO" customClass="ImageSelectorViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="huw-Qa-xzO">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" id="SoY-OL-TmF">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mH5-mu-lir">
@@ -2931,7 +2931,7 @@
         <!--Sign Up View Controller-->
         <scene sceneID="092-9N-vG8">
             <objects>
-                <viewController id="y37-Te-OgN" customClass="GLPSignUpViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GLPSignUpViewController" id="y37-Te-OgN" customClass="GLPSignUpViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="RO2-Um-1MZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -3000,7 +3000,7 @@
                                 <rect key="frame" x="10" y="82" width="300" height="284"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Krc-kZ-TEX">
+                                    <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Krc-kZ-TEX">
                                         <rect key="frame" x="7" y="74" width="72" height="72"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3106,6 +3106,7 @@
                         <outlet property="verifyView" destination="4jV-fi-i4R" id="SI1-2z-dNe"/>
                         <outlet property="wrongEmailFbLogin" destination="1jx-oN-V8X" id="oSJ-rT-vLU"/>
                         <segue destination="WY8-qT-L1O" kind="modal" identifier="start" modalTransitionStyle="flipHorizontal" id="GTC-XV-iI1"/>
+                        <segue destination="YKI-NX-LaO" kind="push" identifier="pick image" id="mMc-o6-aUd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8OK-kM-a5m" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5148,24 +5149,24 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="fah-A8-Ky9"/>
+        <segue reference="b0z-f7-UHU"/>
+        <segue reference="8oh-gD-Cs7"/>
+        <segue reference="GTC-XV-iI1"/>
         <segue reference="2ju-Ui-QdM"/>
         <segue reference="J6b-Ty-4qO"/>
         <segue reference="lQn-ic-ohV"/>
         <segue reference="WK7-hw-eyD"/>
         <segue reference="PMB-JP-q3M"/>
         <segue reference="NSy-Xb-H1O"/>
-        <segue reference="NkQ-j5-6rL"/>
         <segue reference="Ji2-Jv-WyQ"/>
+        <segue reference="NkQ-j5-6rL"/>
         <segue reference="7l2-k5-pHQ"/>
         <segue reference="c6M-82-Pnp"/>
         <segue reference="Wgm-iJ-ADQ"/>
+        <segue reference="mMc-o6-aUd"/>
         <segue reference="rdb-8v-KiD"/>
         <segue reference="HwX-gN-njw"/>
-        <segue reference="8oh-gD-Cs7"/>
-        <segue reference="b0z-f7-UHU"/>
-        <segue reference="Af2-b2-Cbn"/>
-        <segue reference="Bj7-0B-AKW"/>
         <segue reference="QYo-sm-NOh"/>
+        <segue reference="Bj7-0B-AKW"/>
     </inferredMetricsTieBreakers>
 </document>

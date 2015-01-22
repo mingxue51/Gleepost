@@ -45,7 +45,6 @@
 
 @property (strong, nonatomic) UIImage *groupImage;
 @property (weak, nonatomic) IBOutlet UIButton *addImageBtn;
-@property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (strong, nonatomic) UIProgressView *progress;
 
 @property (strong, nonatomic) NSDate *timestamp;
@@ -65,8 +64,6 @@
     [super viewDidLoad];
     
     [self configureTextView];
-    
-    [self configureFDTakeController];
     
     [self configureGesturesOnViews];
     
@@ -139,12 +136,6 @@
     [ShapeFormatterHelper setTwoLeftCornerRadius:_selectedImageView withViewFrame:_selectedImageView.frame withValue:4];
 }
 
--(void)configureFDTakeController
-{
-    self.fdTakeController = [[FDTakeController alloc] init];
-    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
-    self.fdTakeController.delegate = self;
-}
 
 - (void)configureNotifications
 {
@@ -292,10 +283,6 @@
     }
     
 }
-- (IBAction)addImage:(id)sender
-{
-    [self.fdTakeController takePhotoOrChooseFromLibrary];
-}
 
 - (void)dropDownList
 {
@@ -391,30 +378,6 @@
         [_dropDownView setHidden:YES];
         
     }];
-}
-
-#pragma mark - FDTakeController delegate
-
-- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)inDict
-{
-    
-    [[self.addImageBtn imageView] setContentMode: UIViewContentModeScaleAspectFill];
-    
-    [self.addImageBtn setImage:photo forState:UIControlStateNormal];
-    
-//    _hasImage = YES;
-    
-    _groupImage = photo;
-    
-    
-    _timestamp = [NSDate date];
-    
-    //Add image to image uploader to start the uploading.
-    [[GroupOperationManager sharedInstance] uploadImage:_groupImage withTimestamp:_timestamp];
-    
-        
-//    [_postUploader uploadImageToQueue:self.imgToUpload];
-    //[_postUploader startUploadingImage:self.imgToUpload];
 }
 
 #pragma mark - ImageSelectorViewControllerDelegate

@@ -25,7 +25,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
 //@property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundProfileImage;
-@property (strong, nonatomic) FDTakeController *fdTakeController;
 
 @property (strong, nonatomic) UIImage *finalProfileImage;
 @property (weak, nonatomic) IBOutlet UIView *verifyView;
@@ -52,17 +51,17 @@
     if(!_facebookLoginInfo)
     {
         [self formatElements];
-        
     }
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
+    [self.navigationController.navigationBar setHidden:YES];
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
+                                                         forBarMetrics:UIBarMetricsDefault];
     [self configureViews];
-    
     
     if(![_nameTextField isFirstResponder] && !_facebookMode)
     {
@@ -73,8 +72,6 @@
         //        [_nameTextField resignFirstResponder];
         [[super emailTextField] resignFirstResponder];
     }
-    
-    
 }
 
 
@@ -150,12 +147,7 @@
 {
     _finalProfileImage = nil;
     
-    _fdTakeController = [[FDTakeController alloc] init];
-    _fdTakeController.viewControllerForPresentingImagePickerController = self;
-    _fdTakeController.delegate = self;
-    
     //Add gesture recogniser to profile image view.
-    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pickTheImage:)];
     [tap setNumberOfTapsRequired:1];
     [_profileImage addGestureRecognizer:tap];
@@ -180,22 +172,13 @@
     // Dispose of any resources that can be recreated.
 }
 
--(IBAction)pickTheImage:(id)sender
+#pragma mark - ImageSelectorViewControllerDelegate
+
+- (void)takeImage:(UIImage *)image
 {
-    [_fdTakeController takePhotoOrChooseFromLibrary];
-
-}
-
-#pragma mark - FDTakeController delegate
-
-- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)dict
-{
-    _finalProfileImage = photo;
+    _finalProfileImage = image;
     [self.profileImage setImage:nil];
-    [self.backgroundProfileImage setImage:photo];
-    
-//    [super uploadImageAndSetUserImage:photo];
-    
+    [self.backgroundProfileImage setImage:image];
 }
 
 #pragma mark - Client
@@ -337,6 +320,11 @@
 //    }];
 }
 
+- (void)pickTheImage:(id)sender
+{
+    [self performSegueWithIdentifier:@"pick image" sender:self];
+}
+
 -(void)loadDataAfterFacebookLoginWithServerResponse:(NSString *)response
 {
     //Load data if that's success.
@@ -385,11 +373,8 @@
  */
 - (IBAction)retypeEmailAndPass:(id)sender
 {
-    
     [self.parentVC askUserForEmailAddressAgain:NO];
-    
     [super dismissModalView];
-    
 }
 
 #pragma mark - Format
@@ -459,6 +444,21 @@
 -(BOOL)areTheDetailsValid
 {
     return (![_nameTextField.text isEqualToString:@""] && ![_surnameTextField.text isEqualToString:@""] && (_profileImage!=nil) && [super areEmailPassValid]);
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    
+    if([segue.identifier isEqualToString:@"pick image"])
+    {
+        ImageSelectorViewController *imgSelectorVC = segue.destinationViewController;
+        imgSelectorVC.fromGroupViewController = NO;
+        [imgSelectorVC setDelegate:self];
+    }
 }
 
 @end

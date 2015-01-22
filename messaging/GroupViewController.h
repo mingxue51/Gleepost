@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPGroup.h"
-#import "FDTakeController.h"
 #import "GLPPostCell.h"
 #import "NewPostViewController.h"
 #import "DescriptionSegmentGroupCell.h"
@@ -21,7 +20,7 @@
 
 @end
 
-@interface GroupViewController : UIViewController<ViewImageDelegate, UIActionSheetDelegate, DescriptionSegmentGroupCellDelegate, FDTakeDelegate, RemovePostCellDelegate, GLPPostCellDelegate, NewCommentDelegate, GLPImageViewDelegate, ImageSelectorViewControllerDelegate>
+@interface GroupViewController : UIViewController<ViewImageDelegate, UIActionSheetDelegate, DescriptionSegmentGroupCellDelegate, RemovePostCellDelegate, GLPPostCellDelegate, NewCommentDelegate, GLPImageViewDelegate, ImageSelectorViewControllerDelegate>
 
 @property (weak, nonatomic) UIViewController<GroupViewControllerDelegate> *delegate;
 

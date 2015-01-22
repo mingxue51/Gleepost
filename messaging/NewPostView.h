@@ -7,14 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FDTakeController.h"
 
-@interface NewPostView : UIView <UITextViewDelegate, FDTakeDelegate>
+@interface NewPostView : UIView <UITextViewDelegate>
 
 @property (strong, nonatomic) UITextView *commentTextView;
 @property (strong, nonatomic) UIButton *imageHolderButton;
 @property (strong, nonatomic) UIImageView *keyboardBackground;
-@property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (strong, nonatomic) UIImageView *uploadedImage;
 
 @property BOOL imagePosted;
