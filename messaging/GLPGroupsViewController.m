@@ -399,7 +399,7 @@
 //by introducing new approach of managing pending group etc.
 //See more: https://www.pivotaltracker.com/story/show/77912494
 
--(void)loadGroupsWithGroup:(GLPGroup *)createdGroup
+- (void)loadGroupsWithGroup:(GLPGroup *)createdGroup
 {
     if(createdGroup)
     {
@@ -413,22 +413,27 @@
         DDLogInfo(@"Load groups with pending group: %@ key %ld", createdGroup, (long)createdGroup.key);
     }
     
-
+    
     [[GLPLiveGroupManager sharedInstance] loadGroupsWithPendingGroups:_groups  withLiveCallback:^(NSArray *groups) {
-        _groups = groups.mutableCopy;
-        _filteredGroups = groups.mutableCopy;
         
-        [_collectionView reloadData];
+//        if(![groups isEqualToArray:_groups])
+//        {
+            DDLogInfo(@"GLPGroupsViewController : local updates");
+            _groups = groups.mutableCopy;
+            _filteredGroups = groups.mutableCopy;
+            [_collectionView reloadData];
+//        }
         
     } remoteCallback:^(BOOL success, NSArray *remoteGroups) {
         
-        if(success)
-        {
+//        if(success && ![remoteGroups isEqualToArray:_groups])
+//        {
+            DDLogInfo(@"GLPGroupsViewController : remote updates");
+
             _groups = remoteGroups.mutableCopy;
             _filteredGroups = remoteGroups.mutableCopy;
-                        
             [_collectionView reloadData];
-        }
+//        }
         
     }];
 }

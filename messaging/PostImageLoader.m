@@ -66,8 +66,6 @@
     BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
     DDLogInfo(@"PostImageLoader network status: %d", isNetwork);
     
-    DDLogDebug(@"PostImageLoader operation queue count %d %d", _operationQueue.operationCount, _pendingOperations.count);
-    
     if(isNetwork)
     {
         [self retryLoadImagesAfterLostConnection];
@@ -84,11 +82,7 @@
         
         [[SDImageCache sharedImageCache] queryDiskCacheForKey:profileImageUrl done:^(UIImage *image, SDImageCacheType cacheType) {
             
-            if(image)
-            {
-//                [self notifyCampusLiveWithImage:image andPostRemoteKey:p.remoteKey];
-            }
-            else
+            if(!image)
             {
                 [self startLoadingImageIfNeededWithPostRemoteKey:p.remoteKey andImageUrl:profileImageUrl];
             }
@@ -137,8 +131,6 @@
 
 - (void)notifyCampusLiveWithImage:(UIImage *)image andPostRemoteKey:(NSInteger)remoteKey
 {
-    DDLogDebug(@"PostImageLoader : notifyCampusLiveWithImage %ld image %@", (long)remoteKey, image);
-    
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:self.nsNotificationName object:self userInfo:@{@"image_loaded" : image, @"remote_key" : @(remoteKey)}];
 }
 

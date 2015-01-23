@@ -82,12 +82,16 @@
 
 - (BOOL)isEqual:(id)other
 {
-    if(self.key == 0 || [(GLPGroup *)other key] == 0)
-    {
-        return NO;
-    }
+//    if(self.key == 0 || [(GLPGroup *)other key] == 0)
+//    {
+//        return NO;
+//    }
     
-    return [(GLPGroup *)other remoteKey] == self.remoteKey || [(GLPGroup *)other key] == self.key;
+    //TODO: When change the name and the description are supported we should check the name and the description of the group.
+    
+    GLPGroup *otherGroup = (GLPGroup *)other;
+    
+    return ([otherGroup remoteKey] == self.remoteKey || [otherGroup key] == self.key);
 }
 
 - (NSUInteger)hash

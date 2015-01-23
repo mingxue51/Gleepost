@@ -121,21 +121,31 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
     }
     else
     {
-        [_groupImage sd_setImageWithURL:[NSURL URLWithString:_groupData.groupImageUrl] placeholderImage:[GLPImageHelper placeholderGroupImage] options:SDWebImageRetryFailed];
-//        [_groupImage setImage:[GLPImageHelper placeholderGroupImage]];
-//        
-//        [[GLPGPPostImageLoader sharedInstance] findImageWithUrl:[NSURL URLWithString:_groupData.groupImageUrl] callback:^(UIImage *image, BOOL found) {
-//           
-//            if(found)
-//            {
-//                [_groupImage setImage:image];
-//            }
-//            else
-//            {
-//                [_groupImage setImage:[GLPImageHelper placeholderGroupImage]];
-//            }
+        [_groupImage sd_setImageWithURL:[NSURL URLWithString:_groupData.groupImageUrl] placeholderImage:[GLPImageHelper placeholderGroupImage] options:SDWebImageLowPriority];
+        
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
 //            
-//        }];
+//            [_groupImage setImage:[GLPImageHelper placeholderGroupImage]];
+//            
+//            [[GLPGPPostImageLoader sharedInstance] findImageWithUrl:[NSURL URLWithString:_groupData.groupImageUrl] callback:^(UIImage *image, BOOL found) {
+//                
+//                if(found)
+//                {
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        [_groupImage setImage:image];
+//                        
+//                    });
+//                }
+//                else
+//                {
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        [_groupImage setImage:[GLPImageHelper placeholderGroupImage]];
+//                    });
+//                }
+//                
+//            }];
+//        });
+
         
     }
 }

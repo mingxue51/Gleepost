@@ -113,23 +113,13 @@ static GLPLiveGroupManager *instance = nil;
 
 - (void)loadGroupsWithPendingGroups:(NSArray *)pending withLiveCallback:(void (^) (NSArray* groups))local remoteCallback:(void (^) (BOOL success, NSArray *remoteGroups))remote
 {
-    
     //Find all the groups that contain real images and save them.
     NSMutableArray *pendingGroups = [[GLPGroupManager findGroupsWithRealImagesWithGroups:pending] mutableCopy];
     
-
     if(pendingGroups)
     {
         NSMutableArray *localEntities = [[GLPGroupDao findRemoteGroups] mutableCopy];
-        
         _groups = localEntities;
-        
-        for(GLPGroup *group in _groups)
-        {
-            DDLogDebug(@"Local group %d", group.remoteKey);
-        }
-        
-
         [self addPendingGroupsIfNeededToLocalGroups:pendingGroups];
     }
     
