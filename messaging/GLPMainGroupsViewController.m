@@ -15,6 +15,8 @@
 #import "UIViewController+Flurry.h"
 #import "UIViewController+GAI.h"
 #import "GLPLiveGroupManager.h"
+#import "IntroNewGroupViewController.h"
+#import "GLPGroupSearchViewController.h"
 
 @interface GLPMainGroupsViewController ()
 
@@ -75,18 +77,20 @@
 
 - (void)configureNavigationButtons
 {
-    [self.navigationController.navigationBar setButton:kRight specialButton:kNoSpecial withImage:@"new_group" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpIntroView:) withTarget:self andNavigationItem:self.navItem];
+    [self.navigationController.navigationBar setButton:kRight specialButton:kNoSpecial withImage:@"new_group" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpIntroView) withTarget:self andNavigationItem:self.navItem];
     [self.navigationController.navigationBar setButton:kLeft specialButton:kNoSpecial withImage:@"search_groups_magnify_glass" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpSearchGroupsView) withTarget:self andNavigationItem:self.navItem];
 }
 
 - (void)configureViewDidLoadNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupsLoaded:) name:GLPNOTIFICATION_GROUPS_LOADED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupImageLoaded:) name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
 }
 
 - (void)removeDeallocNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUPS_LOADED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
 }
 
 #pragma mark - Groups operations
@@ -105,6 +109,11 @@
     [super showOrHideEmptyView];
 }
 
+- (void)groupImageLoaded:(NSNotification *)notification
+{
+    [super groupImageLoadedWithNotification:notification];
+}
+
 
 
 - (void)didReceiveMemoryWarning {
@@ -112,14 +121,26 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)popUpIntroView
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    IntroNewGroupViewController *introNewGroupVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroNewGroupViewController"];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:introNewGroupVC];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
-*/
+
+- (void)popUpSearchGroupsView
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPGroupSearchViewController *searchGroupsVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPGroupSearchViewController"];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:searchGroupsVC];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
 
 @end

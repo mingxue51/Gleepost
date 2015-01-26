@@ -16,5 +16,6 @@
 - (void)reloadTableViewWithGroups:(NSArray *)groups;
 - (void)setNavigationBarTitle:(NSString *)title;
 - (void)showOrHideEmptyView;
+- (void)groupImageLoadedWithNotification:(NSNotification *)notification;
 
 @end

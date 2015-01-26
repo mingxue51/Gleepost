@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, GroupPrivacy) {
 @interface GLPGroup : GLPEntity
 
 @property (strong, nonatomic) NSString *name;
-@property (strong, nonatomic) NSString *groupDescription;
+@property (strong, nonatomic) NSString *groupDescription; 
 @property (strong, nonatomic) NSString *groupImageUrl;
 @property (assign, nonatomic) SendStatus sendStatus;
 @property (strong, nonatomic) UIImage *pendingImage;

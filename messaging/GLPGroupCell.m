@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIView *notificationsView;
 @property (weak, nonatomic) IBOutlet UILabel *notificationsLabel;
 @property (weak, nonatomic) IBOutlet UIView *mainView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *nameLabelHeight;
 
 @property (strong, nonatomic, readonly) NSString *membersString;
 
@@ -31,19 +32,11 @@
 
 @implementation GLPGroupCell
 
-- (instancetype)initWithCoder:(NSCoder *)coder
-{
-    self = [super initWithCoder:coder];
-    if (self) {
-    }
-    return self;
-}
-
 - (void)awakeFromNib
 {
     [self configureObjects];
     [self formatElements];
-
+    [self configureCell];
 }
 
 #pragma mark - Configuration
@@ -52,7 +45,6 @@
 {
     [ShapeFormatterHelper setCornerRadiusWithView:_groupImageView andValue:3];
     [ShapeFormatterHelper setCornerRadiusWithView:_groupOverlayImageView andValue:3];
-
 }
 
 - (void)configureObjects
@@ -60,19 +52,28 @@
     _membersString = @"MEMBERS";
 }
 
+- (void)configureCell
+{
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+}
+
 #pragma mark - Modifiers
 
 - (void)setGroupData:(GLPGroup *)groupData
 {
     _groupData = groupData;
-    [_groupNameLabel setText:groupData.name];
+    [self configureNameText];
     [self setGroupImage];
     [self configureUnreadPostsBadge];
     [_membersNumberLabel setText:[NSString stringWithFormat:@"xxxxx %@", _membersString]];
-    
-    self.selectionStyle = UITableViewCellSelectionStyleNone;
 
     //TODO: Probably we should configure kind of a group in terms of privacy (e.g. private etc).
+}
+
+- (void)configureNameText
+{
+    [_groupNameLabel setText:_groupData.name];
+    [_nameLabelHeight setConstant:[self getNametLabelHeight]];
 }
 
 - (void)setGroupImage
@@ -105,6 +106,26 @@
         [_notificationsView setHidden:YES];
     }
 }
+
+- (CGFloat)getNametLabelHeight
+{
+    if(!_groupData.name)
+    {
+        return 0.0;
+    }
+    
+    UIFont *font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:_groupData.name attributes:@{NSFontAttributeName: font}];
+    
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){230.0, 50.0}
+                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                               context:nil];
+    CGSize size = rect.size;
+    return size.height;
+}
+
+#pragma mark - Static
 
 + (CGFloat)height
 {

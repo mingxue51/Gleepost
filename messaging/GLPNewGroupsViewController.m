@@ -13,6 +13,7 @@
 #import "GroupViewController.h"
 #import "UINavigationBar+Format.h"
 #import "GLPEmptyViewManager.h"
+#import "GLPGroupManager.h"
 
 @interface GLPNewGroupsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -109,6 +110,17 @@
     {
         [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kGroupsEmptyView];
     }
+}
+
+- (void)groupImageLoadedWithNotification:(NSNotification *)notification
+{
+    GLPGroup *group = nil;
+    NSIndexPath *indexPath = [GLPGroupManager parseGroup:&group imageNotification:notification withGroupsArray:_groups];
+    if(!indexPath)
+    {
+        return;
+    }
+    [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)didReceiveMemoryWarning {

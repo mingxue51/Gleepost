@@ -17,37 +17,37 @@
                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PIb-i3-OFs">
                         <rect key="frame" x="10" y="6" width="300" height="125"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nrA-7n-vnt" userLabel="Group Image">
-                                <rect key="frame" x="0.0" y="0.0" width="300" height="125"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nrA-7n-vnt" userLabel="Group Image">
+                                <rect key="frame" x="0.0" y="1" width="300" height="125"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" alpha="0.29999999999999966" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bdw-WU-FLr" userLabel="Image View Overlay">
-                                <rect key="frame" x="0.0" y="0.0" width="300" height="124"/>
+                            <imageView userInteractionEnabled="NO" alpha="0.29999999999999966" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bdw-WU-FLr" userLabel="Image View Overlay">
+                                <rect key="frame" x="0.0" y="1" width="300" height="124"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="label labe label labe label labe label labe label labe label labe label labe label labe label labe label labe " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MXu-ex-fsn">
-                                <rect key="frame" x="15" y="15" width="182" height="47"/>
+                                <rect key="frame" x="15" y="17" width="230" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="182" id="2pw-Tj-4Hu"/>
-                                    <constraint firstAttribute="height" constant="47" id="PLG-U8-ECG"/>
+                                    <constraint firstAttribute="width" constant="230" id="2pw-Tj-4Hu"/>
+                                    <constraint firstAttribute="height" constant="50" id="PLG-U8-ECG"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="18"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="group_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="BUL-M4-501">
-                                <rect key="frame" x="266" y="51" width="34" height="23"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="group_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="BUL-M4-501">
+                                <rect key="frame" x="266" y="52" width="34" height="23"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="34" id="06Z-JE-fLL"/>
                                     <constraint firstAttribute="height" constant="23" id="P80-Ip-bLC"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="34 MEMBERS" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qNb-O8-nmO">
-                                <rect key="frame" x="15" y="94" width="267" height="16"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="34 MEMBERS" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qNb-O8-nmO">
+                                <rect key="frame" x="15" y="95" width="267" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="267" id="KQJ-lf-z4f"/>
                                     <constraint firstAttribute="height" constant="16" id="lCb-Ic-X7X"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="11"/>
+                                <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="12"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -62,7 +62,7 @@
                             <constraint firstItem="bdw-WU-FLr" firstAttribute="top" secondItem="PIb-i3-OFs" secondAttribute="top" id="T0H-ce-982"/>
                             <constraint firstItem="bdw-WU-FLr" firstAttribute="leading" secondItem="PIb-i3-OFs" secondAttribute="leading" id="Uc5-T1-HzI"/>
                             <constraint firstItem="BUL-M4-501" firstAttribute="top" secondItem="PIb-i3-OFs" secondAttribute="top" constant="51" id="aW4-vg-jlI"/>
-                            <constraint firstItem="MXu-ex-fsn" firstAttribute="top" secondItem="PIb-i3-OFs" secondAttribute="top" constant="15" id="api-Xn-Wwx"/>
+                            <constraint firstItem="MXu-ex-fsn" firstAttribute="top" secondItem="PIb-i3-OFs" secondAttribute="top" constant="17" id="api-Xn-Wwx"/>
                             <constraint firstItem="nrA-7n-vnt" firstAttribute="top" secondItem="PIb-i3-OFs" secondAttribute="top" id="lk2-jf-73b"/>
                             <constraint firstItem="qNb-O8-nmO" firstAttribute="leading" secondItem="PIb-i3-OFs" secondAttribute="leading" constant="15" id="qzE-Vv-vkN"/>
                             <constraint firstItem="MXu-ex-fsn" firstAttribute="leading" secondItem="PIb-i3-OFs" secondAttribute="leading" constant="15" id="t99-Gw-bzI"/>
@@ -100,10 +100,11 @@
                 <outlet property="groupOverlayImageView" destination="bdw-WU-FLr" id="ijx-e6-B3V"/>
                 <outlet property="mainView" destination="PIb-i3-OFs" id="WEn-XB-xSX"/>
                 <outlet property="membersNumberLabel" destination="qNb-O8-nmO" id="roR-lo-GXy"/>
+                <outlet property="nameLabelHeight" destination="PLG-U8-ECG" id="cls-Pf-vAF"/>
                 <outlet property="notificationsLabel" destination="Y3y-wI-lLj" id="tHc-L2-Rvb"/>
                 <outlet property="notificationsView" destination="ovK-8b-jTl" id="zmc-uh-eKT"/>
             </connections>
-            <point key="canvasLocation" x="62" y="119.5"/>
+            <point key="canvasLocation" x="62" y="117.5"/>
         </tableViewCell>
     </objects>
     <resources>
