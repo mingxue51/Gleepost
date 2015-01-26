@@ -86,6 +86,7 @@
 #define GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS     @"GLPChangeGroupImageProgress"
 
 #define GLPNOTIFICATION_GROUP_IMAGE_LOADED              @"GLPGroupImageLoaded"
+#define GLPNOTIFICATION_GROUPS_LOADED                   @"GLPGroupsLoaded"
 #define GLPNOTIFICATION_POST_IMAGE_LOADED               @"GLPPostImageLoaded"
 
 #define GLPNOTIFICATION_GOING_BUTTON_TOUCHED            @"GLPGoingButtonTouched"

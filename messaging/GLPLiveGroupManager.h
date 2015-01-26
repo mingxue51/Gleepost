@@ -16,7 +16,7 @@
 
 + (GLPLiveGroupManager *)sharedInstance;
 
-- (void)loadGroups;
+- (void)loadInitialGroups;
 
 - (void)loadGroupsIfNeededWithNewNotification:(GLPNotification *)notification;
 
@@ -30,7 +30,7 @@
 
 - (NSInteger)numberOfUnseenPostsWithGroup:(GLPGroup *)group;
 
-- (NSArray *)liveGroups;
+- (void)getGroups;
 
 - (ChangeGroupImageProgressView *)progressViewWithGroup:(GLPGroup *)group;
 

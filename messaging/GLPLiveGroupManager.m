@@ -72,7 +72,7 @@ static GLPLiveGroupManager *instance = nil;
 /**
  This method should be called ONLY when the app is launced and from the current singleton class.
  */
-- (void)loadGroups
+- (void)loadInitialGroups
 {
     DDLogInfo(@"Load groups");
     
@@ -103,12 +103,19 @@ static GLPLiveGroupManager *instance = nil;
     {
         case kGLPNotificationTypeCreatedPostGroup:
         case kGLPNotificationTypeInvitedYouToGroup:
-            [self loadGroups];
+            [self loadInitialGroups];
             break;
             
         default:
             break;
     }
+}
+
+- (void)getGroups
+{
+    dispatch_sync(_queue, ^{
+        [self notifyWithUpdatedGroups];
+    });
 }
 
 - (void)loadGroupsWithPendingGroups:(NSArray *)pending withLiveCallback:(void (^) (NSArray* groups))local remoteCallback:(void (^) (BOOL success, NSArray *remoteGroups))remote
@@ -259,6 +266,13 @@ static GLPLiveGroupManager *instance = nil;
     DDLogDebug(@"GROUP REMOVED: %@", _unreadPostGroups);
 }
 
+#pragma mark - NSNotifications
+
+- (void)notifyWithUpdatedGroups
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GROUPS_LOADED object:self userInfo:@{@"groups": _groups}];
+}
+
 #pragma mark - Helpers
 
 - (NSInteger)numberOfUnseenPostsWithGroup:(GLPGroup *)group
@@ -285,11 +299,6 @@ static GLPLiveGroupManager *instance = nil;
     }
     
     return nil;
-}
-
-- (NSArray *)liveGroups
-{
-    return _groups;
 }
 
 @end

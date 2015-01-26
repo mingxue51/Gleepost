@@ -123,7 +123,7 @@ static GLPNetworkManager *instance = nil;
     [[GLPLiveConversationsManager sharedInstance] loadConversations];
     
     // init the groups list.
-    [[GLPLiveGroupManager sharedInstance] loadGroups];
+    [[GLPLiveGroupManager sharedInstance] loadInitialGroups];
     
     // load user's data.
  //   [[GLPProfileLoader sharedInstance] loadUserData];
