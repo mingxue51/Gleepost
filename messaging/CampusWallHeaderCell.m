@@ -218,8 +218,6 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
             [_eventImage setImage:image];
             [_imageActivityIndicatior stopAnimating];
-                
-                DDLogDebug(@"Image loaded from cache %@", imgUrl);
         }
         else
         {

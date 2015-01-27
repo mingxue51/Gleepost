@@ -12,6 +12,7 @@
 #import "GLPImageHelper.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "GLPLiveGroupManager.h"
+#import "GLPCustomProgressView.h"
 
 @interface GLPGroupCell ()
 
@@ -22,7 +23,11 @@
 @property (weak, nonatomic) IBOutlet UIView *notificationsView;
 @property (weak, nonatomic) IBOutlet UILabel *notificationsLabel;
 @property (weak, nonatomic) IBOutlet UIView *mainView;
+@property (weak, nonatomic) IBOutlet UIImageView *arrowImageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nameLabelHeight;
+@property (weak, nonatomic) IBOutlet UIView *pendingView;
+@property (weak, nonatomic) IBOutlet UILabel *pendingGroupNameLabel;
+@property (weak, nonatomic) IBOutlet GLPCustomProgressView *uploadingImageProgressBar;
 
 @property (strong, nonatomic, readonly) NSString *membersString;
 
@@ -65,6 +70,8 @@
     [self configureNameText];
     [self setGroupImage];
     [self configureUnreadPostsBadge];
+    [self configureVisibilityOfPendingView];
+    [self configureNSNotification];
     [_membersNumberLabel setText:[NSString stringWithFormat:@"xxxxx %@", _membersString]];
 
     //TODO: Probably we should configure kind of a group in terms of privacy (e.g. private etc).
@@ -73,16 +80,32 @@
 - (void)configureNameText
 {
     [_groupNameLabel setText:_groupData.name];
+    [_pendingGroupNameLabel setText:_groupData.name];
     [_nameLabelHeight setConstant:[self getNametLabelHeight]];
 }
 
 - (void)setGroupImage
 {
-    if(_groupData.pendingImage)
+    if(_groupData.sendStatus == kSendStatusLocal)
     {
-        [_groupImageView setImage:_groupData.pendingImage];
+//        [_groupImageView setImage:_groupData.pendingImage];
+        
+        UIImage *image = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:[_groupData generatePendingIdentifier]];
+        
+        if(image)
+        {
+            [_groupImageView setImage: image];
+        }
+        else
+        {
+            [_groupImageView setImage:[GLPImageHelper placeholderGroupImage]];
+        }
+        
+        
+        return;
     }
-    else if([_groupData.groupImageUrl isEqualToString:@""] || !_groupData.groupImageUrl)
+    
+    if([_groupData.groupImageUrl isEqualToString:@""] || !_groupData.groupImageUrl)
     {
         [_groupImageView setImage:[GLPImageHelper placeholderGroupImage]];
     }
@@ -90,6 +113,49 @@
     {
         [_groupImageView sd_setImageWithURL:[NSURL URLWithString:_groupData.groupImageUrl] placeholderImage:[GLPImageHelper placeholderGroupImage] options:SDWebImageLowPriority];
     }
+}
+
+- (void)configureVisibilityOfPendingView
+{
+    if(_groupData.sendStatus == kSendStatusLocal)
+    {
+        [self showPendingView];
+    }
+    else
+    {
+        [self hidePendingView];
+    }
+}
+
+- (void)configureNSNotification
+{
+    if(_groupData.sendStatus == kSendStatusLocal)
+    {
+        [self registerProgressViewNotification];
+    }
+    else
+    {
+        [self removeProgressViewNotification];
+    }
+}
+
+- (void)showPendingView
+{
+    [_pendingView setHidden:NO];
+    [self setHiddenNormalView:YES];
+}
+
+- (void)hidePendingView
+{
+    [_pendingView setHidden:YES];
+    [self setHiddenNormalView:NO];
+}
+
+- (void)setHiddenNormalView:(BOOL)hidden
+{
+    [_groupNameLabel setHidden:hidden];
+    [_membersNumberLabel setHidden:hidden];
+    [_arrowImageView setHidden:hidden];
 }
 
 - (void)configureUnreadPostsBadge
@@ -113,16 +179,37 @@
     {
         return 0.0;
     }
-    
-    UIFont *font = [UIFont fontWithName:@"Avenir-Medium" size:18.0];
-    
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:_groupData.name attributes:@{NSFontAttributeName: font}];
-    
-    CGRect rect = [attributedText boundingRectWithSize:(CGSize){230.0, 50.0}
-                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
-                                               context:nil];
-    CGSize size = rect.size;
+
+    CGSize size = [_groupNameLabel sizeThatFits:(CGSize){230.0, 50.0}];
     return size.height;
+}
+
+#pragma mark - NSNotifications
+
+- (void)registerProgressViewNotification
+{
+    DDLogDebug(@"GLPGroupCell registerProgressViewNotification %@", [self generateNewGroupImageProgressNotification]);
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateProgressBar:) name:[self generateNewGroupImageProgressNotification] object:nil];
+}
+
+- (void)removeProgressViewNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:[self generateNewGroupImageProgressNotification]];
+}
+
+- (NSString *)generateNewGroupImageProgressNotification
+{
+    return [NSString stringWithFormat:@"%ld_%@", (long)_groupData.key, GLPNOTIFICATION_NEW_GROUP_IMAGE_PROGRESS];
+}
+
+#pragma mark - Progress bar
+
+- (void)updateProgressBar:(NSNotification *)notification
+{
+    DDLogDebug(@"GLPGroupCell : upldateProgressBar %@", notification.userInfo);
+    float uploadedProgress = [notification.userInfo[@"uploaded_progress"] floatValue];
+    [_uploadingImageProgressBar setProgress:uploadedProgress];
 }
 
 #pragma mark - Static

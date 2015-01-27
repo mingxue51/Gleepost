@@ -17,23 +17,13 @@
                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PIb-i3-OFs">
                         <rect key="frame" x="10" y="6" width="300" height="125"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nrA-7n-vnt" userLabel="Group Image">
-                                <rect key="frame" x="0.0" y="1" width="300" height="125"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nrA-7n-vnt" userLabel="Group Image">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="125"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" alpha="0.29999999999999966" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bdw-WU-FLr" userLabel="Image View Overlay">
-                                <rect key="frame" x="0.0" y="1" width="300" height="124"/>
+                            <imageView userInteractionEnabled="NO" alpha="0.29999999999999966" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bdw-WU-FLr" userLabel="Image View Overlay">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="125"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="label labe label labe label labe label labe label labe label labe label labe label labe label labe label labe " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MXu-ex-fsn">
-                                <rect key="frame" x="15" y="17" width="230" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="230" id="2pw-Tj-4Hu"/>
-                                    <constraint firstAttribute="height" constant="50" id="PLG-U8-ECG"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="18"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="group_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="BUL-M4-501">
                                 <rect key="frame" x="266" y="52" width="34" height="23"/>
                                 <constraints>
@@ -51,23 +41,63 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="label labe label labe label labe label labe label labe label labe label labe label labe label labe label labe " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MXu-ex-fsn">
+                                <rect key="frame" x="15" y="18" width="230" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="230" id="2pw-Tj-4Hu"/>
+                                    <constraint firstAttribute="height" constant="50" id="PLG-U8-ECG"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view hidden="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zEB-g8-RMv">
+                                <rect key="frame" x="0.0" y="1" width="300" height="125"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CREATING YOUR GROUP:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JTh-Cq-sM3">
+                                        <rect key="frame" x="64" y="17" width="173" height="21"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="12"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="W0I-1B-MPv" customClass="GLPCustomProgressView">
+                                        <rect key="frame" x="20" y="80" width="260" height="2"/>
+                                        <color key="progressTintColor" red="0.2470588235" green="0.85882352939999995" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </progressView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Group name Group name Group name " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xEp-pE-fMY">
+                                        <rect key="frame" x="20" y="40" width="260" height="21"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="16"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="progress_bar_border.png" translatesAutoresizingMaskIntoConstraints="NO" id="8ZO-mm-3H8">
+                                        <rect key="frame" x="20" y="80" width="260" height="7"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="qNb-O8-nmO" secondAttribute="bottom" constant="15" id="6MV-qf-Tg0"/>
+                            <constraint firstAttribute="trailing" secondItem="zEB-g8-RMv" secondAttribute="trailing" id="8L6-Ad-OwR"/>
                             <constraint firstItem="nrA-7n-vnt" firstAttribute="leading" secondItem="PIb-i3-OFs" secondAttribute="leading" id="9yu-DR-KVD"/>
                             <constraint firstAttribute="bottom" secondItem="nrA-7n-vnt" secondAttribute="bottom" id="Lh0-Zl-bwf"/>
                             <constraint firstAttribute="trailing" secondItem="BUL-M4-501" secondAttribute="trailing" id="OCB-mS-67d"/>
                             <constraint firstAttribute="trailing" secondItem="nrA-7n-vnt" secondAttribute="trailing" id="Obs-Yd-iSt"/>
+                            <constraint firstItem="zEB-g8-RMv" firstAttribute="top" secondItem="PIb-i3-OFs" secondAttribute="top" id="QDp-Mv-cKj"/>
                             <constraint firstItem="bdw-WU-FLr" firstAttribute="top" secondItem="PIb-i3-OFs" secondAttribute="top" id="T0H-ce-982"/>
                             <constraint firstItem="bdw-WU-FLr" firstAttribute="leading" secondItem="PIb-i3-OFs" secondAttribute="leading" id="Uc5-T1-HzI"/>
                             <constraint firstItem="BUL-M4-501" firstAttribute="top" secondItem="PIb-i3-OFs" secondAttribute="top" constant="51" id="aW4-vg-jlI"/>
                             <constraint firstItem="MXu-ex-fsn" firstAttribute="top" secondItem="PIb-i3-OFs" secondAttribute="top" constant="17" id="api-Xn-Wwx"/>
+                            <constraint firstItem="zEB-g8-RMv" firstAttribute="leading" secondItem="PIb-i3-OFs" secondAttribute="leading" id="ejd-FO-xWa"/>
+                            <constraint firstAttribute="bottom" secondItem="zEB-g8-RMv" secondAttribute="bottom" id="iCH-uH-86y"/>
                             <constraint firstItem="nrA-7n-vnt" firstAttribute="top" secondItem="PIb-i3-OFs" secondAttribute="top" id="lk2-jf-73b"/>
                             <constraint firstItem="qNb-O8-nmO" firstAttribute="leading" secondItem="PIb-i3-OFs" secondAttribute="leading" constant="15" id="qzE-Vv-vkN"/>
                             <constraint firstItem="MXu-ex-fsn" firstAttribute="leading" secondItem="PIb-i3-OFs" secondAttribute="leading" constant="15" id="t99-Gw-bzI"/>
                             <constraint firstAttribute="trailing" secondItem="bdw-WU-FLr" secondAttribute="trailing" id="vfN-zu-Fv3"/>
-                            <constraint firstAttribute="bottom" secondItem="bdw-WU-FLr" secondAttribute="bottom" constant="1" id="vgE-7b-vaR"/>
+                            <constraint firstAttribute="bottom" secondItem="bdw-WU-FLr" secondAttribute="bottom" id="vgE-7b-vaR"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ovK-8b-jTl">
@@ -95,6 +125,7 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
+                <outlet property="arrowImageView" destination="BUL-M4-501" id="QMf-bs-QdA"/>
                 <outlet property="groupImageView" destination="nrA-7n-vnt" id="L6Y-nW-iUh"/>
                 <outlet property="groupNameLabel" destination="MXu-ex-fsn" id="XxX-zW-k07"/>
                 <outlet property="groupOverlayImageView" destination="bdw-WU-FLr" id="ijx-e6-B3V"/>
@@ -103,12 +134,16 @@
                 <outlet property="nameLabelHeight" destination="PLG-U8-ECG" id="cls-Pf-vAF"/>
                 <outlet property="notificationsLabel" destination="Y3y-wI-lLj" id="tHc-L2-Rvb"/>
                 <outlet property="notificationsView" destination="ovK-8b-jTl" id="zmc-uh-eKT"/>
+                <outlet property="pendingGroupNameLabel" destination="xEp-pE-fMY" id="2Pt-OS-SeS"/>
+                <outlet property="pendingView" destination="zEB-g8-RMv" id="WRe-AJ-UA9"/>
+                <outlet property="uploadingImageProgressBar" destination="W0I-1B-MPv" id="YkP-aQ-Udo"/>
             </connections>
-            <point key="canvasLocation" x="62" y="117.5"/>
+            <point key="canvasLocation" x="-56" y="273.5"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="group_arrow.png" width="24" height="43"/>
         <image name="group_badge.png" width="56" height="56"/>
+        <image name="progress_bar_border.png" width="500" height="16"/>
     </resources>
 </document>

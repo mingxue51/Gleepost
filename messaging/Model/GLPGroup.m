@@ -80,6 +80,11 @@
     }
 }
 
+- (NSString *)generatePendingIdentifier
+{
+    return [NSString stringWithFormat:@"PENDING_%ld", (long)self.key];
+}
+
 - (BOOL)isEqual:(id)other
 {
 //    if(self.key == 0 || [(GLPGroup *)other key] == 0)
@@ -87,9 +92,14 @@
 //        return NO;
 //    }
     
-    //TODO: When change the name and the description are supported we should check the name and the description of the group.
-    
     GLPGroup *otherGroup = (GLPGroup *)other;
+    
+    if(self.remoteKey == 0 || otherGroup.remoteKey == 0)
+    {
+        DDLogDebug(@"GLPGroup : Remote Key equals zero");
+        
+        return [otherGroup key] == self.key;
+    }
     
     return ([otherGroup remoteKey] == self.remoteKey || [otherGroup key] == self.key);
 }
@@ -101,7 +111,7 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Name: %@, Key: %d, Remote key: %d, Url: %@, Description: %@, Privacy: %@", _name, _key, _remoteKey, _groupImageUrl, _groupDescription, [self privacyToString]];
+    return [NSString stringWithFormat:@"Name: %@, Key: %d, Remote key: %d Description: %@, Privacy: %@, Logged in user: %@, Owner: %@", _name, _key, _remoteKey, _groupDescription, [self privacyToString], _loggedInUser.name, _author.name];
 }
 
 @end

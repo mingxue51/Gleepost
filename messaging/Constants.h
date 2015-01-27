@@ -46,6 +46,8 @@
 #define GLPNOTIFICATION_RECEIVE_VIDEO_PATH              @"GLPReceiveVideoPath"
 
 #define GLPNOTIFICATION_NEW_GROUP_CREATED              @"GLPNewGroupCreated"
+#define GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED        @"GLPNewGroupToBeCreated"
+#define GLPNOTIFICATION_NEW_GROUP_IMAGE_PROGRESS       @"GLPNewGroupImageProgress"
 
 #define GLPNOTIFICATION_DISMISS_WALKTHROUGH             @"GLPDismissWalkthrough"
 

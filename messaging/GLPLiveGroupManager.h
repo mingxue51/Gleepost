@@ -23,6 +23,7 @@
 - (void)loadGroupsWithPendingGroups:(NSArray *)pending withLiveCallback:(void (^) (NSArray* groups))local remoteCallback:(void (^) (BOOL success, NSArray *remoteGroups))remote;
 
 - (GLPGroup *)groupWithRemoteKey:(NSInteger)groupRemoteKey;
+- (NSInteger)getPendingGroupKeyWithTimestamp:(NSDate *)timestamp;
 
 - (void)addUnreadPostWithGroupRemoteKey:(NSInteger)groupKey;
 
@@ -31,6 +32,9 @@
 - (NSInteger)numberOfUnseenPostsWithGroup:(GLPGroup *)group;
 
 - (void)getGroups;
+
+- (void)newGroupToBeCreated:(GLPGroup *)pendingGroup withTimestamp:(NSDate *)timestamp;
+- (void)updateGroupAfterCreated:(GLPGroup *)createdGroup;
 
 - (ChangeGroupImageProgressView *)progressViewWithGroup:(GLPGroup *)group;
 

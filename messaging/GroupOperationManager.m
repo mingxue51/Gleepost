@@ -10,12 +10,11 @@
 #import "GroupUploaderManager.h"
 #import "GLPGroupDao.h"
 #import "GLPiOSSupportHelper.h"
+#import "GLPLiveGroupManager.h"
 
 @interface GroupOperationManager ()
 
 @property (strong, nonatomic) GroupUploaderManager *groupUploader;
-
-
 
 @end
 
@@ -94,10 +93,8 @@ static GroupOperationManager *instance = nil;
 
 -(void)setGroup:(GLPGroup *)group withTimestamp:(NSDate *)timestamp
 {
-    
     //Save to group local database.
-    group.sendStatus = kSendStatusLocal;
-    [GLPGroupDao saveIfNotExist:group];
+    [[GLPLiveGroupManager sharedInstance] newGroupToBeCreated:group withTimestamp:timestamp];
     [_groupUploader addGroup:group withTimestamp:timestamp];
 }
 

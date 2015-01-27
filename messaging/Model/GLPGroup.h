@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, GroupPrivacy) {
 @interface GLPGroup : GLPEntity
 
 @property (strong, nonatomic) NSString *name;
-@property (strong, nonatomic) NSString *groupDescription; 
+@property (strong, nonatomic) NSString *groupDescription;
 @property (strong, nonatomic) NSString *groupImageUrl;
 @property (assign, nonatomic) SendStatus sendStatus;
 @property (strong, nonatomic) UIImage *pendingImage;
@@ -37,6 +37,7 @@ typedef NS_ENUM(NSUInteger, GroupPrivacy) {
 -(id)initWithName:(NSString *)name andRemoteKey:(int)remoteKey;
 - (id)initFromPushNotificationWithRemoteKey:(NSInteger)remoteKey;
 - (NSString *)privacyToString;
+- (NSString *)generatePendingIdentifier;
 - (void)setPrivacyWithString:(NSString *)privacy;
 
 @end

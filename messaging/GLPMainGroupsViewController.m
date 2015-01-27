@@ -32,6 +32,7 @@
     [self configTabbar];
     [self configureNavigationButtons];
     [self configureViewDidLoadNotifications];
+    [self showGroups];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -46,9 +47,7 @@
 {
     [super viewWillAppear:animated];
     [self configureNavigationBar];
-    [self showGroups];
 }
-
 
 -(void)dealloc
 {
@@ -85,13 +84,28 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupsLoaded:) name:GLPNOTIFICATION_GROUPS_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupImageLoaded:) name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupToBeCreated:) name:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newGroupCreated:) name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
 }
 
 - (void)removeDeallocNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUPS_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
 }
+
+#pragma mark - TableView
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        [super quitFromGroupWithIndexPath:indexPath];
+    }
+}
+
 
 #pragma mark - Groups operations
 
@@ -112,6 +126,24 @@
 - (void)groupImageLoaded:(NSNotification *)notification
 {
     [super groupImageLoadedWithNotification:notification];
+}
+
+- (void)groupToBeCreated:(NSNotification *)notification
+{
+    DDLogDebug(@"GLPMainGroupsViewController : groupToBeCreated %@", notification.userInfo);
+    
+    GLPGroup *newGroup = notification.userInfo[@"group"];
+    
+    [super insertToTableViewNewGroup:newGroup];
+}
+
+- (void)newGroupCreated:(NSNotification *)notification
+{
+    DDLogDebug(@"GLPMainGroupsViewController : newGroupCreated %@", notification.userInfo);
+
+    GLPGroup *newGroup = notification.userInfo[@"group"];
+    
+    [super reloadTableViewWithGroup:newGroup];
 }
 
 

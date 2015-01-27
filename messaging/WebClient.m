@@ -1971,6 +1971,40 @@ static WebClient *instance = nil;
     [self enqueueHTTPRequestOperation:operation];
 }
 
+- (void)uploadGroupImage:(NSData *)imageData withTimestamp:(NSDate *)timestamp callback:(void (^)(BOOL success, NSString *imageUrl))callback
+{
+    
+    NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"upload" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        
+        [formData appendPartWithFileData:imageData name:@"image" fileName:[NSString stringWithFormat:@"user_id_%d_image.png", self.sessionManager.user.remoteKey] mimeType:@"image/png"];
+    }];
+    
+    [request setTimeoutInterval:300];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        NSLog(@"Sentt %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+        NSInteger groupKey = [[GLPLiveGroupManager sharedInstance] getPendingGroupKeyWithTimestamp:timestamp];
+        NSString *notificationName = [NSString stringWithFormat:@"%ld_%@", (long)groupKey, GLPNOTIFICATION_NEW_GROUP_IMAGE_PROGRESS];
+        DDLogDebug(@"WebClient : notification name %@", notificationName);
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:@{@"uploaded_progress" : [NSNumber numberWithFloat:(float)totalBytesWritten/(float)totalBytesExpectedToWrite]}];
+        
+    }];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"upload image response %@", responseObject);
+        
+        NSString *response = [RemoteParser parseImageUrl:(NSDictionary*)operation.responseString];
+        callback(YES, response);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
+    
+    [self enqueueHTTPRequestOperation:operation];
+}
+
 
 -(void)uploadImage:(NSData*)image ForUserRemoteKey:(int)userRemoteKey callbackBlock: (void (^)(BOOL success, NSString *response)) callbackBlock
 {

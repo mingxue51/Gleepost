@@ -17,6 +17,7 @@
 #import "ChangeGroupImageProgressView.h"
 //#import "GLPGroupImageLoader.h"
 #import "GLPGPPostImageLoader.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface GLPLiveGroupManager ()
 
@@ -29,6 +30,9 @@
 @property (strong, nonatomic) NSMutableDictionary *pendingGroupImagesProgressViews;
 
 @property (strong, nonatomic) NSMutableDictionary *pendingGroupTimestamps;
+
+/** This dictionary contains the pending groups with key, value: (group key, group). */
+@property (strong, nonatomic) NSMutableDictionary *pendingGroups;
 
 //@property (strong, nonatomic) ChangeGroupImageProgressView *changeImageProgressView;
 
@@ -62,11 +66,25 @@ static GLPLiveGroupManager *instance = nil;
         _unreadPostGroups = [[NSMutableDictionary alloc] init];
         _pendingGroupImagesProgressViews = [[NSMutableDictionary alloc] init];
         _pendingGroupTimestamps = [[NSMutableDictionary alloc] init];
+        _pendingGroups = [[NSMutableDictionary alloc] init];
+        
+        [self configureObservers];
+        
 //        _changeImageProgressView = [[ChangeGroupImageProgressView alloc] init];
 
     }
     
     return self;
+}
+
+- (void)configureObservers
+{
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupAfterCreated:) name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
+}
+
+- (void)dealloc
+{
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
 }
 
 /**
@@ -77,16 +95,15 @@ static GLPLiveGroupManager *instance = nil;
     DDLogInfo(@"Load groups");
     
     [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
-    
         _groups = groups.mutableCopy;
-//        [[GLPGroupImageLoader sharedInstance] addGroupsImages:_groups];
-            [[GLPGPPostImageLoader sharedInstance] addGroups:_groups];
+        [[GLPGPPostImageLoader sharedInstance] addGroups:_groups];
     } remoteCallback:^(BOOL success, NSArray *groups) {
         
-        _groups = groups.mutableCopy;
-//        [[GLPGroupImageLoader sharedInstance] addGroupsImages:_groups];
-                [[GLPGPPostImageLoader sharedInstance] addGroups:_groups];
-        
+        if(success)
+        {
+            _groups = groups.mutableCopy;
+            [[GLPGPPostImageLoader sharedInstance] addGroups:_groups];
+        }
     }];
 }
 
@@ -116,6 +133,15 @@ static GLPLiveGroupManager *instance = nil;
     dispatch_sync(_queue, ^{
         [self notifyWithUpdatedGroups];
     });
+}
+
+- (NSInteger)getPendingGroupKeyWithTimestamp:(NSDate *)timestamp
+{
+    GLPGroup *pendingGroup = [_pendingGroups objectForKey:timestamp];
+    
+    DDLogDebug(@"GLPLiveGroupManager : pending group key %d", pendingGroup.key);
+    
+    return pendingGroup.key;
 }
 
 - (void)loadGroupsWithPendingGroups:(NSArray *)pending withLiveCallback:(void (^) (NSArray* groups))local remoteCallback:(void (^) (BOOL success, NSArray *remoteGroups))remote
@@ -231,6 +257,64 @@ static GLPLiveGroupManager *instance = nil;
     return [_pendingGroupTimestamps objectForKey:@(groupRemoteKey)];
 }
 
+#pragma mark - Create group operations
+
+- (void)newGroupToBeCreated:(GLPGroup *)pendingGroup withTimestamp:(NSDate *)timestamp
+{
+//    dispatch_async(_queue, ^{
+    
+    DDLogDebug(@"GLPLiveGroupManager : newGroupToBeCreated %@", pendingGroup);
+    
+    pendingGroup.sendStatus = kSendStatusLocal;
+    [GLPGroupDao saveIfNotExist:pendingGroup];
+    
+    //Add pending group to pending groups and to groups' list.
+    [_pendingGroups setObject:pendingGroup forKey:timestamp];
+    
+    [_groups setObject:pendingGroup atIndexedSubscript:0];
+    
+    
+    if(pendingGroup.pendingImage)
+    {
+        //Save pending image to cache.
+        [[SDImageCache sharedImageCache] storeImage:pendingGroup.pendingImage forKey:[pendingGroup generatePendingIdentifier]];
+    }
+    
+    [self notifyNewGroupToBeUploaded:pendingGroup];
+
+//    });
+}
+
+- (void)updateGroupAfterCreated:(GLPGroup *)createdGroup
+{
+    //TODO: TEMPORARY CODE.
+    [createdGroup.loggedInUser setRoleKey:9];
+    [createdGroup.author setRoleKey:9];
+    
+    dispatch_async(_queue, ^{
+        
+        DDLogDebug(@"GLPLiveGroupManager : updateGroupAfterCreated %@", createdGroup);
+        
+//        GLPGroup *uploadedGroup = uploadedGroupNotification.userInfo[@"group"];
+        
+        
+        [self removeGroupFromPendingDictionary:createdGroup];
+        [self replaceGroupWithUpdatedGroup:createdGroup];
+        
+        DDLogDebug(@"UIIMAGE %@", [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:[createdGroup generatePendingIdentifier]]);
+        
+        [[SDImageCache sharedImageCache] storeImage: [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:[createdGroup generatePendingIdentifier]] forKey:createdGroup.groupImageUrl];
+        
+        [[SDImageCache sharedImageCache] removeImageForKey:[createdGroup generatePendingIdentifier]];
+
+    });
+    
+
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_GROUP_CREATED object:self userInfo:@{@"group":createdGroup}];
+
+}
+
 #pragma mark - Updates
 
 - (void)addUnreadPostWithGroupRemoteKey:(NSInteger)groupKey
@@ -273,6 +357,11 @@ static GLPLiveGroupManager *instance = nil;
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GROUPS_LOADED object:self userInfo:@{@"groups": _groups}];
 }
 
+- (void)notifyNewGroupToBeUploaded:(GLPGroup *)newGroup
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED object:self userInfo:@{@"group": newGroup}];
+}
+
 #pragma mark - Helpers
 
 - (NSInteger)numberOfUnseenPostsWithGroup:(GLPGroup *)group
@@ -285,6 +374,32 @@ static GLPLiveGroupManager *instance = nil;
     }
     
     return 0;
+}
+
+- (void)removeGroupFromPendingDictionary:(GLPGroup *)group
+{
+    NSDate *timestampToBeDeleted = nil;
+    
+    for(NSDate *timestamp in _pendingGroups)
+    {
+        GLPGroup *g = [_pendingGroups objectForKey:timestamp];
+        
+        if(g.key == group.key)
+        {
+            timestampToBeDeleted = timestamp;
+            break;
+        }
+    }
+    
+    [_pendingGroups removeObjectForKey:timestampToBeDeleted];
+    
+    DDLogDebug(@"GLPLiveGroupManager : removePendingGroup %@", _pendingGroups);
+}
+
+- (void)replaceGroupWithUpdatedGroup:(GLPGroup *)updatedGroup
+{
+    NSUInteger groupIndex = [_groups indexOfObject:updatedGroup];
+    [_groups replaceObjectAtIndex:groupIndex withObject:updatedGroup];
 }
 
 - (GLPGroup *)findGroupWithRemoteKey:(NSInteger)remoteKey

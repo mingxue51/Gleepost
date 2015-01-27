@@ -117,9 +117,7 @@ static GLPCLPostImageLoader *instance = nil;
 }
 
 - (void)notifyCampusLiveWithImage:(UIImage *)image andPostRemoteKey:(NSInteger)remoteKey
-{
-    DDLogDebug(@"GLPCLPostImageLoader : notifyCampusLiveWithImage %ld image %@", (long)remoteKey, image);
-    
+{    
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:[self generateNotificationWithRemoteKey:remoteKey] object:self userInfo:@{@"image_loaded" : image, @"remote_key" : @(remoteKey)}];
 }
 

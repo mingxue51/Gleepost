@@ -258,7 +258,7 @@ const NSString *IMAGE_PENDING = @"PENDING";
     
     if (imageData)
     {
-        [[WebClient sharedInstance] uploadImage:imageData callback:^(BOOL success, NSString *imageUrl) {
+        [[WebClient sharedInstance] uploadGroupImage:imageData  withTimestamp:timestamp callback:^(BOOL success, NSString *imageUrl) {
             if (success) {
 
                 

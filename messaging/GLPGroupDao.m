@@ -88,16 +88,18 @@
     return groups;
 }
 
-+(void)saveIfNotExist:(GLPGroup *)entity
++ (NSInteger)saveIfNotExist:(GLPGroup *)entity
 {
+    __block NSInteger key = 0;
+    
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        
-        [GLPGroupDao saveIfNotExist:entity db:db];
-        
+        key = [GLPGroupDao saveIfNotExist:entity db:db];
     }];
+    
+    return key;
 }
 
-+(int)saveIfNotExist:(GLPGroup *)entity db:(FMDatabase *)db
++ (NSInteger)saveIfNotExist:(GLPGroup *)entity db:(FMDatabase *)db
 {
     GLPGroup *group = [GLPGroupDao findByRemoteKey:entity.remoteKey db:db];
     

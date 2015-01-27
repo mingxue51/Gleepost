@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@class GLPGroup;
 
 @interface GLPNewGroupsViewController : UIViewController
 
@@ -14,8 +15,10 @@
 
 - (void)configureNavigationBar;
 - (void)reloadTableViewWithGroups:(NSArray *)groups;
+- (void)insertToTableViewNewGroup:(GLPGroup *)newGroup;
+- (void)reloadTableViewWithGroup:(GLPGroup *)newGroup;
 - (void)setNavigationBarTitle:(NSString *)title;
 - (void)showOrHideEmptyView;
 - (void)groupImageLoadedWithNotification:(NSNotification *)notification;
-
+-(void)quitFromGroupWithIndexPath:(NSIndexPath *)indexPath;
 @end

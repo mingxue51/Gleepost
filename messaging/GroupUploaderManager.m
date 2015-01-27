@@ -76,18 +76,21 @@
     [[WebClient sharedInstance] createGroupWithGroup:group callback:^(BOOL success, GLPGroup *remoteGroup) {
         
         
-        group.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+        remoteGroup.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
         
-        group.remoteKey = success ? remoteGroup.remoteKey : 0;
+//        group.remoteKey = success ? remoteGroup.remoteKey : 0;
         
-        DDLogInfo(@"Group uploaded with success: %d and group remoteKey: %d", success, group.remoteKey);
+        DDLogInfo(@"Group uploaded with success: %d and group remoteKey: %d", success, remoteGroup.remoteKey);
         
-        [GLPGroupDao updateGroupSendingData:group];
+        remoteGroup.key = group.key;
+        
+        [GLPGroupDao updateGroupSendingData:remoteGroup];
         
         if(success)
         {
 //            _uploadImageContentBlock(group);
-            [self notifyControllerWithGroup:group];
+//            [self notifyAfterGroupUploaded:remoteGroup];
+            [[GLPLiveGroupManager sharedInstance] updateGroupAfterCreated:remoteGroup];
         }
     }];
 }
@@ -112,18 +115,21 @@
     
     [[WebClient sharedInstance] createGroupWithGroup:group callback:^(BOOL success, GLPGroup *remoteGroup) {
         
-        group.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+        remoteGroup.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
         
-        group.remoteKey = success ? remoteGroup.remoteKey : 0;
+//        group.remoteKey = success ? remoteGroup.remoteKey : 0;
         
-        DDLogInfo(@"Group uploaded with success: %d and group remoteKey: %d", success, group.remoteKey);
+        remoteGroup.key = group.key;
+        
+        DDLogInfo(@"Group uploaded with success: %d and group remoteKey: %ld", success, (long)group.remoteKey);
+        
+        [GLPGroupDao updateGroupSendingData:remoteGroup];
 
-        [GLPGroupDao updateGroupSendingData:group];
-        
         if(success)
         {
-            [self notifyControllerWithGroup:group];
-            
+//            [self notifyAfterGroupUploaded:remoteGroup];
+            [[GLPLiveGroupManager sharedInstance] updateGroupAfterCreated:remoteGroup];
+
             //Remove post from the NSDictionary.
             [self removeGroupWithTimestamp:timestamp];
 
@@ -228,12 +234,13 @@
 
 #pragma mark - Notifications
 
+//TODO: To be deleted.
 -(void)notifyControllerWithGroup:(GLPGroup *)group
 {
     
     if(group.groupImageUrl)
     {
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED
                                                                         object:self
                                                                       userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
                                                                                  @"imageUrl": group.groupImageUrl,
@@ -241,13 +248,18 @@
     }
     else
     {
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED
                                                                         object:self
                                                                       userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
                                                                                  @"key":[NSNumber numberWithInt:group.key]}];
     }
-    
+}
 
+- (void)notifyAfterGroupUploaded:(GLPGroup *)group
+{
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED
+                                                                    object:self
+                                                                  userInfo:@{@"group":group}];
 }
 
 

@@ -124,9 +124,7 @@
 - (void)groupCreatedWithData:(GLPGroup *)group
 {
     //Dismiss view controller and send notification to the preview view. (groups view)
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil userInfo:@{@"new group" : group}];
-    
+        
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

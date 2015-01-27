@@ -14,12 +14,14 @@
 #import "UINavigationBar+Format.h"
 #import "GLPEmptyViewManager.h"
 #import "GLPGroupManager.h"
+#import "WebClient.h"
+#import "GLPMemberDao.h"
 
 @interface GLPNewGroupsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-@property (strong, nonatomic) NSArray *groups;
+@property (strong, nonatomic) NSMutableArray *groups;
 @property (strong, nonatomic) GLPGroup *selectedGroup;
 
 @end
@@ -62,8 +64,68 @@
 
 - (void)reloadTableViewWithGroups:(NSArray *)groups
 {
-    _groups = groups;
+    _groups = groups.mutableCopy;
     [_tableView reloadData];
+}
+
+- (void)insertToTableViewNewGroup:(GLPGroup *)newGroup
+{
+    [_groups insertObject:newGroup atIndex:0];
+    [_tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+}
+
+- (void)reloadTableViewWithGroup:(GLPGroup *)newGroup
+{
+    NSInteger index = 0;
+    
+    for(GLPGroup *group in _groups)
+    {
+        if(group.key == newGroup.key)
+        {
+            break;
+        }
+        ++index;
+    }
+    
+    if(index >= _groups.count)
+    {
+        DDLogError(@"ERROR: Index out of array's bounds %ld, %ld", (long)index, (unsigned long)_groups.count);
+        
+        return;
+    }
+    
+    DDLogDebug(@"GLPNewGroupsViewController : reloadTableViewWithGroup %ld new group %@", (long)index, newGroup);
+    
+    [_groups replaceObjectAtIndex:index withObject:newGroup];
+
+    [_tableView reloadData];
+    
+    DDLogDebug(@"FINA GROUPS %@", _groups);
+    
+//    [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+#pragma mark - Temporary methods
+
+-(void)quitFromGroupWithIndexPath:(NSIndexPath *)indexPath
+{
+    GLPGroup *group = [_groups objectAtIndex:indexPath.row];
+    
+    [[WebClient sharedInstance] quitFromAGroupWithRemoteKey:group.remoteKey callback:^(BOOL success) {
+        
+        if(success)
+        {
+            [GLPMemberDao removeMember:group.loggedInUser withGroupRemoteKey:group.remoteKey];
+//            [_delegate groupDeletedWithData:_groupData];
+            [_groups removeObjectAtIndex:indexPath.row];
+            [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        }
+        else
+        {
+            DDLogError(@"Failed to quit user from group: %@", group);
+        }
+        
+    }];
 }
 
 #pragma mark - Table view data source

@@ -269,11 +269,12 @@
         
         group.privacy = _groupType;
         
-        [[GroupOperationManager sharedInstance] setGroup:group withTimestamp:_timestamp];
-        
         group.pendingImage = _groupImage;
         
-        DDLogDebug(@"FINAL Group type: %d and key %ld", _groupType, (long)group.key);
+        [[GroupOperationManager sharedInstance] setGroup:group withTimestamp:_timestamp];
+        
+        
+        DDLogDebug(@"FINAL Group type: %u and key %ld", _groupType, (long)group.key);
 
         [_delegate groupCreatedWithData:group];
     }
@@ -418,12 +419,8 @@
     
     float newHeightOfMainView = [self findNewHeightForTheCentralViewWithKeboardFrame:keyboardBounds];
     
-    DDLogDebug(@"Keyboard will show new %f, old %f", newHeightOfMainView, _mainView.frame.size.height);
-    
     float newYSelectImageView = [self findNewYOfSelectImageViewWithKeyboardFrame:keyboardBounds];
-    
-    DDLogDebug(@"Y select image view old %f, new %f", _selectImageView.frame.origin.y, newYSelectImageView);
-    
+        
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
         
         CGRectSetH(_mainView, newHeightOfMainView);
