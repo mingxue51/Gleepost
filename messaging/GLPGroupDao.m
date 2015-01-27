@@ -216,9 +216,7 @@
     NSAssert(entity.remoteKey != 0, @"Update group entity without remote key");
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-
         [self updateGroupWithRemoteKey:entity db:db];
-        
     }];
 
 }

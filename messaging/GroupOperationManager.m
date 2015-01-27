@@ -102,7 +102,6 @@ static GroupOperationManager *instance = nil;
 
 -(void)changeGroupImageWithImage:(UIImage *)image withGroup:(GLPGroup *)group
 {
-    
     [_groupUploader changeGroupImageWithImage:image withGroup:group];
 }
 
@@ -110,14 +109,5 @@ static GroupOperationManager *instance = nil;
 {
     return [_groupUploader pendingGroupImageWithRemoteKey:remoteKey];
 }
-
-/**
- -(void)uploadImage:(UIImage *)image withTimestamp:(NSDate *)timestamp
- {
- 
- }
- 
- */
-
 
 @end

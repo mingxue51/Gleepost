@@ -8,7 +8,6 @@
 //  This manager is a singleton and it works (in co-operation with GLPGroupManager) once the app launced.
 //  The aim of this manager is to pre-fetch all the groups before viewing the groups' tab
 //  and in general to handle all the group operations such changing image progress bar.
-//
 
 #import "GLPLiveGroupManager.h"
 #import "GLPGroupManager.h"
@@ -243,13 +242,22 @@ static GLPLiveGroupManager *instance = nil;
 
 - (void)finishUploadingNewImageToGroup:(GLPGroup *)group
 {
+
+    [self clearUploadingNewImageToGroup:group];
+    
+    DDLogDebug(@"Pending group images: %@", _pendingGroupImagesProgressViews);
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_FINISHED object:self userInfo:@{@"image_ready": group}];
+
+}
+
+- (void)clearUploadingNewImageToGroup:(GLPGroup *)group
+{
     DDLogDebug(@"Pending group images before finishing: %@", _pendingGroupImagesProgressViews);
     
     [_pendingGroupImagesProgressViews removeObjectForKey:@(group.remoteKey)];
     
     [_pendingGroupTimestamps removeObjectForKey:@(group.remoteKey)];
-    
-    DDLogDebug(@"Pending group images: %@", _pendingGroupImagesProgressViews);
 }
 
 - (NSDate *)timestampWithGroupRemoteKey:(NSInteger)groupRemoteKey

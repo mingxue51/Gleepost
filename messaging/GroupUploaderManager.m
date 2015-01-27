@@ -13,6 +13,7 @@
 #import "ImageFormatterHelper.h"
 #import "SessionManager.h"
 #import "GLPLiveGroupManager.h"
+#import "GLPImageCacheHelper.h"
 
 @interface GroupUploaderManager ()
 
@@ -75,10 +76,7 @@
     
     [[WebClient sharedInstance] createGroupWithGroup:group callback:^(BOOL success, GLPGroup *remoteGroup) {
         
-        
         remoteGroup.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-        
-//        group.remoteKey = success ? remoteGroup.remoteKey : 0;
         
         DDLogInfo(@"Group uploaded with success: %d and group remoteKey: %d", success, remoteGroup.remoteKey);
         
@@ -88,8 +86,6 @@
         
         if(success)
         {
-//            _uploadImageContentBlock(group);
-//            [self notifyAfterGroupUploaded:remoteGroup];
             [[GLPLiveGroupManager sharedInstance] updateGroupAfterCreated:remoteGroup];
         }
     }];
@@ -110,15 +106,10 @@
     DDLogInfo(@"Group uploading task started with group title: %@ and image url: %@.",group.name, group.groupImageUrl);
     
     
-    //    _incomingPost.imagesUrls = [[NSArray alloc] initWithObjects:[self.urls objectForKey:[NSNumber numberWithInt:1]], nil];
-    
     
     [[WebClient sharedInstance] createGroupWithGroup:group callback:^(BOOL success, GLPGroup *remoteGroup) {
         
         remoteGroup.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
-        
-//        group.remoteKey = success ? remoteGroup.remoteKey : 0;
-        
         remoteGroup.key = group.key;
         
         DDLogInfo(@"Group uploaded with success: %d and group remoteKey: %ld", success, (long)group.remoteKey);
@@ -127,7 +118,6 @@
 
         if(success)
         {
-//            [self notifyAfterGroupUploaded:remoteGroup];
             [[GLPLiveGroupManager sharedInstance] updateGroupAfterCreated:remoteGroup];
 
             //Remove post from the NSDictionary.
@@ -144,7 +134,6 @@
     //Remove if pending image exist.
     [self removeEntryFromPendingGroupImagesWithRemoteKey:group.remoteKey];
     
-//    [NSTimer scheduledTimerWithTimeInterval:3.0f target:self selector:@selector(test:) userInfo:nil repeats:YES];
     [_pendingGroupImages setObject:image forKey:[NSNumber numberWithInt:group.remoteKey]];
 
     NSData *imageData = [self convertImageToData:image];
@@ -155,11 +144,7 @@
 
 -(void)removeEntryFromPendingGroupImagesWithRemoteKey:(int)remoteKey
 {
-    DDLogDebug(@"Pending group images before: %@", _pendingGroupImages);
-
     [_pendingGroupImages removeObjectForKey:[NSNumber numberWithInt:remoteKey]];
-    
-    DDLogDebug(@"Pending group images: %@", _pendingGroupImages);
 }
 
 
@@ -169,21 +154,16 @@
        
         if(success)
         {
-            DDLogDebug(@"Image url: %@", imageUrl);
+            DDLogDebug(@"GroupUploadedManager : Updated image url %@", imageUrl);
             
-            [self removeEntryFromPendingGroupImagesWithRemoteKey:group.remoteKey];
-
             //If imageUrl is empty it means that the image canceled.
             if(![imageUrl isEqualToString:@""])
             {
-                [self updateDatabaseWithGroup:group andUrl:imageUrl];
-                
-                //Send notification to groups view controller.
-                [self notifyControllerWithGroup:group];
-                
+                [self updateDatabaseAndCacheWithGroup:group andUrl:imageUrl];
                 [self setNewUrlToGroup:group withUrl:imageUrl];
             }
-
+            
+            [self removeEntryFromPendingGroupImagesWithRemoteKey:group.remoteKey];
         }
         
     }];
@@ -195,10 +175,6 @@
        
         if(success)
         {
-//            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS object:self userInfo:@{@"image_ready": @""}];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS object:self userInfo:@{@"image_ready": @""}];
-            
             //Tell to GLPLiveGroupManager that the new image is uploaded and attached to group.
             [[GLPLiveGroupManager sharedInstance] finishUploadingNewImageToGroup:group];
         }
@@ -210,8 +186,10 @@
     }];
 }
 
--(void)updateDatabaseWithGroup:(GLPGroup *)group andUrl:(NSString *)url
+-(void)updateDatabaseAndCacheWithGroup:(GLPGroup *)group andUrl:(NSString *)url
 {
+    UIImage *pendingImage = [_pendingGroupImages objectForKey:@(group.remoteKey)];
+    [GLPImageCacheHelper replaceImage:pendingImage withImageUrl:url andOldImageUrl:group.groupImageUrl];
     group.groupImageUrl = url;
     [GLPGroupDao updateGroup:group];
 }
@@ -231,37 +209,5 @@
 {
     return [_pendingGroupImages objectForKey:[NSNumber numberWithInt:remoteKey]];
 }
-
-#pragma mark - Notifications
-
-//TODO: To be deleted.
--(void)notifyControllerWithGroup:(GLPGroup *)group
-{
-    
-    if(group.groupImageUrl)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED
-                                                                        object:self
-                                                                      userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
-                                                                                 @"imageUrl": group.groupImageUrl,
-                                                                                 @"key":[NSNumber numberWithInt:group.key]}];
-    }
-    else
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED
-                                                                        object:self
-                                                                      userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
-                                                                                 @"key":[NSNumber numberWithInt:group.key]}];
-    }
-}
-
-- (void)notifyAfterGroupUploaded:(GLPGroup *)group
-{
-    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED
-                                                                    object:self
-                                                                  userInfo:@{@"group":group}];
-}
-
-
 
 @end

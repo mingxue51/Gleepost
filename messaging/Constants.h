@@ -86,6 +86,7 @@
 
 #define GLPNOTIFICATION_CHANGE_IMAGE_PROGRESS           @"GLPChangeImageProgress"
 #define GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS     @"GLPChangeGroupImageProgress"
+#define GLPNOTIFICATION_CHANGE_GROUP_IMAGE_FINISHED     @"GLPChangeGroupImageFinished"
 
 #define GLPNOTIFICATION_GROUP_IMAGE_LOADED              @"GLPGroupImageLoaded"
 #define GLPNOTIFICATION_GROUPS_LOADED                   @"GLPGroupsLoaded"

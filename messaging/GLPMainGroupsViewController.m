@@ -86,6 +86,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupImageLoaded:) name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupToBeCreated:) name:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(newGroupCreated:) name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
+    
+    //This notification called when group image changed.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupImageChanged:) name:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_FINISHED object:nil];
+
 }
 
 - (void)removeDeallocNotifications
@@ -94,6 +98,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_FINISHED object:nil];
 }
 
 #pragma mark - TableView
@@ -139,13 +144,15 @@
 
 - (void)newGroupCreated:(NSNotification *)notification
 {
-    DDLogDebug(@"GLPMainGroupsViewController : newGroupCreated %@", notification.userInfo);
-
     GLPGroup *newGroup = notification.userInfo[@"group"];
-    
     [super reloadTableViewWithGroup:newGroup];
 }
 
+- (void)groupImageChanged:(NSNotification *)notification
+{
+    GLPGroup *updatedGroup = notification.userInfo[@"image_ready"];
+    [super reloadTableViewWithGroup:updatedGroup];
+}
 
 
 - (void)didReceiveMemoryWarning {

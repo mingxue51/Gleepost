@@ -1558,7 +1558,7 @@ const float TOP_OFF_SET = -64.0;
 {
     
     //If there is already an image uploading then remove it and continue with the rest of procedure.
-    [[GLPLiveGroupManager sharedInstance] finishUploadingNewImageToGroup:_group];
+    [[GLPLiveGroupManager sharedInstance] clearUploadingNewImageToGroup:_group];
     
     [self removeCurrentImageProgressView];
     

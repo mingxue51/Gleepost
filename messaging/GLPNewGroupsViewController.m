@@ -76,21 +76,22 @@
 
 - (void)reloadTableViewWithGroup:(GLPGroup *)newGroup
 {
-    NSInteger index = 0;
+    NSInteger index = -1;
     
-    for(GLPGroup *group in _groups)
+    
+    if(newGroup.key !=0)
     {
-        if(group.key == newGroup.key)
-        {
-            break;
-        }
-        ++index;
+        index = [self findGroupIndexWithKey:newGroup.key];
+    }
+    else if(newGroup.remoteKey != 0)
+    {
+        index = [self findGroupWithRemoteKey:newGroup.remoteKey];
     }
     
-    if(index >= _groups.count)
+    
+    if(index >= _groups.count || index == -1)
     {
         DDLogError(@"ERROR: Index out of array's bounds %ld, %ld", (long)index, (unsigned long)_groups.count);
-        
         return;
     }
     
@@ -99,10 +100,36 @@
     [_groups replaceObjectAtIndex:index withObject:newGroup];
 
     [_tableView reloadData];
+}
+
+- (NSInteger)findGroupWithRemoteKey:(NSInteger)remoteKey
+{
+    NSInteger index = 0;
     
-    DDLogDebug(@"FINA GROUPS %@", _groups);
+    for(GLPGroup *group in _groups)
+    {
+        if(group.remoteKey == remoteKey)
+        {
+            break;
+        }
+        ++index;
+    }
+    return index;
+}
+
+- (NSInteger)findGroupIndexWithKey:(NSInteger)key
+{
+    NSInteger index = 0;
     
-//    [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    for(GLPGroup *group in _groups)
+    {
+        if(group.key == key)
+        {
+            break;
+        }
+        ++index;
+    }
+    return index;
 }
 
 #pragma mark - Temporary methods
