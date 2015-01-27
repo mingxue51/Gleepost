@@ -179,7 +179,10 @@
     
     self.selectedGroup = [_groups objectAtIndex:indexPath.row];
     
-    [self performSegueWithIdentifier:@"view group" sender:self];
+    if(self.selectedGroup.sendStatus != kSendStatusLocal)
+    {
+        [self performSegueWithIdentifier:@"view group" sender:self];
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

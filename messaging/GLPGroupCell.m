@@ -110,7 +110,6 @@
             [_groupImageView setImage:[GLPImageHelper placeholderGroupImage]];
         }
         
-        
         return;
     }
     
@@ -120,7 +119,7 @@
     }
     else
     {
-        [_groupImageView sd_setImageWithURL:[NSURL URLWithString:_groupData.groupImageUrl] placeholderImage:[GLPImageHelper placeholderGroupImage] options:SDWebImageLowPriority];
+        [_groupImageView sd_setImageWithURL:[NSURL URLWithString:_groupData.groupImageUrl] placeholderImage:[GLPImageHelper placeholderGroupImage] options:SDWebImageContinueInBackground];
     }
 }
 

@@ -16,7 +16,7 @@
 #import "ChangeGroupImageProgressView.h"
 //#import "GLPGroupImageLoader.h"
 #import "GLPGPPostImageLoader.h"
-#import <SDWebImage/UIImageView+WebCache.h>
+#import "GLPImageCacheHelper.h"
 
 @interface GLPLiveGroupManager ()
 
@@ -103,6 +103,8 @@ static GLPLiveGroupManager *instance = nil;
             _groups = groups.mutableCopy;
             [[GLPGPPostImageLoader sharedInstance] addGroups:_groups];
         }
+        
+        [self notifyWithUpdatedGroups];
     }];
 }
 
@@ -289,7 +291,8 @@ static GLPLiveGroupManager *instance = nil;
     if(pendingGroup.pendingImage)
     {
         //Save pending image to cache.
-        [[SDImageCache sharedImageCache] storeImage:pendingGroup.pendingImage forKey:[pendingGroup generatePendingIdentifier]];
+//        [[SDImageCache sharedImageCache] storeImage:pendingGroup.pendingImage forKey:[pendingGroup generatePendingIdentifier]];
+        [GLPImageCacheHelper storeImage:pendingGroup.pendingImage withImageUrl:[pendingGroup generatePendingIdentifier]];
     }
     
     [self notifyNewGroupToBeUploaded:pendingGroup];
@@ -307,18 +310,11 @@ static GLPLiveGroupManager *instance = nil;
         
         DDLogDebug(@"GLPLiveGroupManager : updateGroupAfterCreated %@", createdGroup);
         
-//        GLPGroup *uploadedGroup = uploadedGroupNotification.userInfo[@"group"];
-        
-        
         [self removeGroupFromPendingDictionary:createdGroup];
         [self replaceGroupWithUpdatedGroup:createdGroup];
+    
+        [GLPImageCacheHelper replaceImage:[GLPImageCacheHelper imageWithUrl:[createdGroup generatePendingIdentifier]] withImageUrl:createdGroup.groupImageUrl andOldImageUrl:[createdGroup generatePendingIdentifier]];
         
-        DDLogDebug(@"UIIMAGE %@", [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:[createdGroup generatePendingIdentifier]]);
-        
-        [[SDImageCache sharedImageCache] storeImage: [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:[createdGroup generatePendingIdentifier]] forKey:createdGroup.groupImageUrl];
-        
-        [[SDImageCache sharedImageCache] removeImageForKey:[createdGroup generatePendingIdentifier]];
-
     });
     
 
@@ -358,6 +354,8 @@ static GLPLiveGroupManager *instance = nil;
 - (void)postGroupReadWithRemoteKey:(NSInteger)groupKey
 {
     [_unreadPostGroups removeObjectForKey:@(groupKey)];
+    
+    [self notifyWithUpdatedGroups];
     
     DDLogDebug(@"GROUP REMOVED: %@", _unreadPostGroups);
 }
