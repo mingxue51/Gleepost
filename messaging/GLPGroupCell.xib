@@ -31,7 +31,7 @@
                                     <constraint firstAttribute="height" constant="23" id="P80-Ip-bLC"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="34 MEMBERS" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qNb-O8-nmO">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="34 MEMBERS •" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qNb-O8-nmO">
                                 <rect key="frame" x="15" y="95" width="267" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="267" id="KQJ-lf-z4f"/>
@@ -129,8 +129,8 @@
                 <outlet property="groupImageView" destination="nrA-7n-vnt" id="L6Y-nW-iUh"/>
                 <outlet property="groupNameLabel" destination="MXu-ex-fsn" id="XxX-zW-k07"/>
                 <outlet property="groupOverlayImageView" destination="bdw-WU-FLr" id="ijx-e6-B3V"/>
+                <outlet property="informationLabel" destination="qNb-O8-nmO" id="tcU-Ix-H1V"/>
                 <outlet property="mainView" destination="PIb-i3-OFs" id="WEn-XB-xSX"/>
-                <outlet property="membersNumberLabel" destination="qNb-O8-nmO" id="roR-lo-GXy"/>
                 <outlet property="nameLabelHeight" destination="PLG-U8-ECG" id="cls-Pf-vAF"/>
                 <outlet property="notificationsLabel" destination="Y3y-wI-lLj" id="tHc-L2-Rvb"/>
                 <outlet property="notificationsView" destination="ovK-8b-jTl" id="zmc-uh-eKT"/>

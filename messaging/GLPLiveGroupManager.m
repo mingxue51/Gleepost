@@ -268,8 +268,12 @@ static GLPLiveGroupManager *instance = nil;
     pendingGroup.sendStatus = kSendStatusLocal;
     [GLPGroupDao saveIfNotExist:pendingGroup];
     
-    //Add pending group to pending groups and to groups' list.
-    [_pendingGroups setObject:pendingGroup forKey:timestamp];
+    if(timestamp)
+    {
+        //Add pending group to pending groups and to groups' list.
+        [_pendingGroups setObject:pendingGroup forKey:timestamp];
+    }
+
     
     [_groups setObject:pendingGroup atIndexedSubscript:0];
     
@@ -389,6 +393,11 @@ static GLPLiveGroupManager *instance = nil;
             timestampToBeDeleted = timestamp;
             break;
         }
+    }
+    
+    if(!timestampToBeDeleted)
+    {
+        return;
     }
     
     [_pendingGroups removeObjectForKey:timestampToBeDeleted];

@@ -19,7 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *groupNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *groupImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *groupOverlayImageView;
-@property (weak, nonatomic) IBOutlet UILabel *membersNumberLabel;
+@property (weak, nonatomic) IBOutlet UILabel *informationLabel;
 @property (weak, nonatomic) IBOutlet UIView *notificationsView;
 @property (weak, nonatomic) IBOutlet UILabel *notificationsLabel;
 @property (weak, nonatomic) IBOutlet UIView *mainView;
@@ -29,9 +29,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *pendingGroupNameLabel;
 @property (weak, nonatomic) IBOutlet GLPCustomProgressView *uploadingImageProgressBar;
 
+/** Constants strings. */
+
+@property (strong, nonatomic, readonly) NSString *groupString;
 @property (strong, nonatomic, readonly) NSString *membersString;
 
 @property (strong, nonatomic) GLPGroup *groupData;
+
+
 
 @end
 
@@ -55,6 +60,7 @@
 - (void)configureObjects
 {
     _membersString = @"MEMBERS";
+    _groupString = @"GROUP";
 }
 
 - (void)configureCell
@@ -72,9 +78,7 @@
     [self configureUnreadPostsBadge];
     [self configureVisibilityOfPendingView];
     [self configureNSNotification];
-    [_membersNumberLabel setText:[NSString stringWithFormat:@"xxxxx %@", _membersString]];
-
-    //TODO: Probably we should configure kind of a group in terms of privacy (e.g. private etc).
+    [self configureInformationLabel];
 }
 
 - (void)configureNameText
@@ -82,6 +86,11 @@
     [_groupNameLabel setText:_groupData.name];
     [_pendingGroupNameLabel setText:_groupData.name];
     [_nameLabelHeight setConstant:[self getNametLabelHeight]];
+}
+
+- (void)configureInformationLabel
+{
+    [_informationLabel setText:[NSString stringWithFormat:@"%@ %@ • %@ %@",[[_groupData privacyToString] uppercaseString], _groupString, @(12), _membersString]];
 }
 
 - (void)setGroupImage
@@ -154,7 +163,7 @@
 - (void)setHiddenNormalView:(BOOL)hidden
 {
     [_groupNameLabel setHidden:hidden];
-    [_membersNumberLabel setHidden:hidden];
+    [_informationLabel setHidden:hidden];
     [_arrowImageView setHidden:hidden];
 }
 

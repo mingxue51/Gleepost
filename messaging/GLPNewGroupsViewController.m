@@ -59,7 +59,7 @@
 
 - (void)configureTableView
 {
-    
+    self.tableView.contentInset = UIEdgeInsetsMake(5.0, 0, 5.0, 0);
 }
 
 - (void)reloadTableViewWithGroups:(NSArray *)groups
