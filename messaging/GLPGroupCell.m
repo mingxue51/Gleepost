@@ -13,6 +13,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "GLPLiveGroupManager.h"
 #import "GLPCustomProgressView.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPGroupCell ()
 
@@ -25,6 +26,7 @@
 @property (weak, nonatomic) IBOutlet UIView *mainView;
 @property (weak, nonatomic) IBOutlet UIImageView *arrowImageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nameLabelHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *progressViewTopDistance;
 @property (weak, nonatomic) IBOutlet UIView *pendingView;
 @property (weak, nonatomic) IBOutlet UILabel *pendingGroupNameLabel;
 @property (weak, nonatomic) IBOutlet GLPCustomProgressView *uploadingImageProgressBar;
@@ -33,6 +35,7 @@
 
 @property (strong, nonatomic, readonly) NSString *groupString;
 @property (strong, nonatomic, readonly) NSString *membersString;
+@property (strong, nonatomic, readonly) NSString *memberString;
 
 @property (strong, nonatomic) GLPGroup *groupData;
 
@@ -61,6 +64,7 @@
 {
     _membersString = @"MEMBERS";
     _groupString = @"GROUP";
+    _memberString = @"MEMBER";
 }
 
 - (void)configureCell
@@ -90,7 +94,7 @@
 
 - (void)configureInformationLabel
 {
-    [_informationLabel setText:[NSString stringWithFormat:@"%@ %@ • %@ %@",[[_groupData privacyToString] uppercaseString], _groupString, @(12), _membersString]];
+    [_informationLabel setText:[NSString stringWithFormat:@"%@ %@ • %d %@",[[_groupData privacyToString] uppercaseString], _groupString, _groupData.membersCount, (_groupData.membersCount == 1) ? _memberString : _membersString]];
 }
 
 - (void)setGroupImage
@@ -149,6 +153,12 @@
 
 - (void)showPendingView
 {
+    //Fixing an issue caused between iOS7 and iOS8 with positioning with progress view. (don't know why)
+    if(![GLPiOSSupportHelper isIOS7] && ![GLPiOSSupportHelper isIOS6])
+    {
+        [_progressViewTopDistance setConstant:20];
+    }
+    
     [_pendingView setHidden:NO];
     [self setHiddenNormalView:YES];
 }

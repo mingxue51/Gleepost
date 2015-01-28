@@ -51,31 +51,57 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view hidden="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zEB-g8-RMv">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zEB-g8-RMv">
                                 <rect key="frame" x="0.0" y="1" width="300" height="125"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CREATING YOUR GROUP:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JTh-Cq-sM3">
-                                        <rect key="frame" x="64" y="17" width="173" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CREATING YOUR GROUP:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JTh-Cq-sM3">
+                                        <rect key="frame" x="64" y="15" width="173" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="EqO-vJ-el4"/>
+                                            <constraint firstAttribute="width" constant="173" id="rWH-OM-M6L"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="12"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="W0I-1B-MPv" customClass="GLPCustomProgressView">
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="W0I-1B-MPv" customClass="GLPCustomProgressView">
                                         <rect key="frame" x="20" y="80" width="260" height="2"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="260" id="IVZ-vb-QNF"/>
+                                            <constraint firstAttribute="height" constant="2" id="hxj-mT-geK"/>
+                                        </constraints>
                                         <color key="progressTintColor" red="0.2470588235" green="0.85882352939999995" blue="0.81568627449999997" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </progressView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Group name Group name Group name " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xEp-pE-fMY">
-                                        <rect key="frame" x="20" y="40" width="260" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group name Group name Group name " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xEp-pE-fMY">
+                                        <rect key="frame" x="20" y="41" width="260" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="260" id="YLu-W7-Jw4"/>
+                                            <constraint firstAttribute="height" constant="21" id="eZf-2t-diK"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="16"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="progress_bar_border.png" translatesAutoresizingMaskIntoConstraints="NO" id="8ZO-mm-3H8">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="progress_bar_border.png" translatesAutoresizingMaskIntoConstraints="NO" id="8ZO-mm-3H8">
                                         <rect key="frame" x="20" y="80" width="260" height="7"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="7" id="Hql-FU-rxo"/>
+                                            <constraint firstAttribute="width" constant="260" id="vyu-B5-FZ2"/>
+                                        </constraints>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="xEp-pE-fMY" firstAttribute="top" secondItem="JTh-Cq-sM3" secondAttribute="bottom" constant="5" id="3EA-hU-vtS"/>
+                                    <constraint firstItem="8ZO-mm-3H8" firstAttribute="leading" secondItem="zEB-g8-RMv" secondAttribute="leading" constant="20" id="8Ua-di-eg7"/>
+                                    <constraint firstItem="W0I-1B-MPv" firstAttribute="leading" secondItem="zEB-g8-RMv" secondAttribute="leading" constant="20" id="Gg4-dj-X8w"/>
+                                    <constraint firstItem="xEp-pE-fMY" firstAttribute="leading" secondItem="zEB-g8-RMv" secondAttribute="leading" constant="20" id="UFD-hg-9yl"/>
+                                    <constraint firstItem="W0I-1B-MPv" firstAttribute="top" secondItem="xEp-pE-fMY" secondAttribute="bottom" constant="18" id="d8E-Vz-1VW"/>
+                                    <constraint firstItem="8ZO-mm-3H8" firstAttribute="top" secondItem="xEp-pE-fMY" secondAttribute="bottom" constant="18" id="hjb-ou-aWH"/>
+                                    <constraint firstItem="JTh-Cq-sM3" firstAttribute="leading" secondItem="zEB-g8-RMv" secondAttribute="leading" constant="64" id="lJI-7G-yrn"/>
+                                    <constraint firstItem="JTh-Cq-sM3" firstAttribute="top" secondItem="zEB-g8-RMv" secondAttribute="top" constant="15" id="se5-dd-7Ma"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -136,6 +162,7 @@
                 <outlet property="notificationsView" destination="ovK-8b-jTl" id="zmc-uh-eKT"/>
                 <outlet property="pendingGroupNameLabel" destination="xEp-pE-fMY" id="2Pt-OS-SeS"/>
                 <outlet property="pendingView" destination="zEB-g8-RMv" id="WRe-AJ-UA9"/>
+                <outlet property="progressViewTopDistance" destination="d8E-Vz-1VW" id="ubc-DR-R2W"/>
                 <outlet property="uploadingImageProgressBar" destination="W0I-1B-MPv" id="YkP-aQ-Udo"/>
             </connections>
             <point key="canvasLocation" x="-56" y="273.5"/>

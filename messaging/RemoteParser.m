@@ -886,6 +886,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     group.author = [RemoteParser parseMemberFromJson:json[@"creator"] withGroupRemoteKey:group.remoteKey];
     group.loggedInUser = [RemoteParser parseLoggedInUserRoleWithJson:json[@"role"]];
     
+    group.membersCount = [json[@"size"] integerValue];
 //    group.loggedInUser = [RemoteParser parseMemberFromJson:json[@"creator"] withGroupRemoteKey:group.remoteKey];
     
     [group setPrivacyWithString:json[@"privacy"]];

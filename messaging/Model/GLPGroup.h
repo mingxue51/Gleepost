@@ -27,6 +27,7 @@ typedef NS_ENUM(NSUInteger, GroupPrivacy) {
 @property (strong, nonatomic) UIImage *loadedImage;
 @property (assign, nonatomic) BOOL isFromPushNotification;
 @property (assign, nonatomic) NSInteger unreadNewPosts;
+@property (assign, nonatomic) NSInteger membersCount;
 @property (assign, nonatomic) GroupPrivacy privacy;
 
 //Not create in local database
