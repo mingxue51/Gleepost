@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (strong, nonatomic) NSMutableArray *groups;
 @property (strong, nonatomic) GLPGroup *selectedGroup;
+@property (assign, nonatomic) BOOL keyboardShouldShow;
 
 @end
 
@@ -34,6 +35,7 @@
     [self configureNavigationBar];
     [self registerTableViewCells];
     [self configureTableView];
+    [self initialiseObjects];
 }
 
 /**
@@ -61,6 +63,13 @@
 {
     self.tableView.contentInset = UIEdgeInsetsMake(5.0, 0, 5.0, 0);
 }
+
+- (void)initialiseObjects
+{
+    _keyboardShouldShow = YES;
+}
+
+#pragma mark - TableView Operations
 
 - (void)reloadTableViewWithGroups:(NSArray *)groups
 {
@@ -215,9 +224,60 @@
     [_tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
+#pragma mark - Accessors
+
+- (GLPGroup *)groupWithIndexPath:(NSIndexPath *)indexPath
+{
+    return _groups[indexPath.row];
+}
+
+- (void)navigateToGroup:(GLPGroup *)group
+{
+    self.selectedGroup = group;
+    [self performSegueWithIdentifier:@"view group" sender:self];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - form management
+
+- (void)keyboardWillShow:(NSNotification *)note{
+    
+    if(!_keyboardShouldShow)
+    {
+        return;
+    }
+    
+    _keyboardShouldShow = NO;
+    // get keyboard size and loctaion
+    CGRect keyboardBounds;
+    
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    
+    CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height -= keyboardBounds.size.height;
+    
+    DDLogDebug(@"Keyboard will show table view new height %f, keboard height %f", tableViewFrame.size.height, keyboardBounds.size.height);
+    
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+        
+        self.tableView.frame = tableViewFrame;
+        
+    } completion:^(BOOL finished) {
+        
+        [self.tableView setNeedsLayout];
+        
+    }];
 }
 
 #pragma mark - Navigation

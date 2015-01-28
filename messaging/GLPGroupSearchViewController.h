@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GLPNewGroupsViewController.h"
 
-@interface GLPGroupSearchViewController : UIViewController
+@interface GLPGroupSearchViewController : GLPNewGroupsViewController
 
 @end

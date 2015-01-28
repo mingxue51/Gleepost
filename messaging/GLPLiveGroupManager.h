@@ -25,6 +25,8 @@
 - (GLPGroup *)groupWithRemoteKey:(NSInteger)groupRemoteKey;
 - (NSInteger)getPendingGroupKeyWithTimestamp:(NSDate *)timestamp;
 
+- (void)userJoinedGroup;
+
 - (void)addUnreadPostWithGroupRemoteKey:(NSInteger)groupKey;
 
 - (void)postGroupReadWithRemoteKey:(NSInteger)groupKey;
@@ -42,6 +44,8 @@
 
 - (void)finishUploadingNewImageToGroup:(GLPGroup *)group;
 - (void)clearUploadingNewImageToGroup:(GLPGroup *)group;
+
+- (void)searchGroupsWithQuery:(NSString *)query;
 
 - (NSDate *)timestampWithGroupRemoteKey:(NSInteger)groupRemoteKey;
 

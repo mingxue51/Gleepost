@@ -17,6 +17,7 @@
 //#import "GLPGroupImageLoader.h"
 #import "GLPGPPostImageLoader.h"
 #import "GLPImageCacheHelper.h"
+#import "GLPSearchGroups.h"
 
 @interface GLPLiveGroupManager ()
 
@@ -32,6 +33,8 @@
 
 /** This dictionary contains the pending groups with key, value: (group key, group). */
 @property (strong, nonatomic) NSMutableDictionary *pendingGroups;
+
+@property (strong, nonatomic) GLPSearchGroups *searchGroupsHelper;
 
 //@property (strong, nonatomic) ChangeGroupImageProgressView *changeImageProgressView;
 
@@ -66,24 +69,13 @@ static GLPLiveGroupManager *instance = nil;
         _pendingGroupImagesProgressViews = [[NSMutableDictionary alloc] init];
         _pendingGroupTimestamps = [[NSMutableDictionary alloc] init];
         _pendingGroups = [[NSMutableDictionary alloc] init];
-        
-        [self configureObservers];
+        _searchGroupsHelper = [[GLPSearchGroups alloc] init];
         
 //        _changeImageProgressView = [[ChangeGroupImageProgressView alloc] init];
 
     }
     
     return self;
-}
-
-- (void)configureObservers
-{
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateGroupAfterCreated:) name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
-}
-
-- (void)dealloc
-{
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
 }
 
 /**
@@ -134,6 +126,11 @@ static GLPLiveGroupManager *instance = nil;
     dispatch_sync(_queue, ^{
         [self notifyWithUpdatedGroups];
     });
+}
+
+- (void)userJoinedGroup
+{
+    [self loadInitialGroups];
 }
 
 - (NSInteger)getPendingGroupKeyWithTimestamp:(NSDate *)timestamp
@@ -317,10 +314,14 @@ static GLPLiveGroupManager *instance = nil;
         
     });
     
-
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_GROUP_CREATED object:self userInfo:@{@"group":createdGroup}];
+}
 
+#pragma mark - Search groups
+
+- (void)searchGroupsWithQuery:(NSString *)query
+{
+    [_searchGroupsHelper searchGroupsWithQuery:query];
 }
 
 #pragma mark - Updates

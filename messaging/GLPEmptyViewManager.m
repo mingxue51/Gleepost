@@ -129,6 +129,8 @@ static GLPEmptyViewManager *instance = nil;
     
     _groupsEmptyView = [[[NSBundle mainBundle] loadNibNamed:@"GLPGroupsEmptyView" owner:view options:nil] objectAtIndex:0];
     
+    CGRectSetY(_groupsEmptyView, -5.0);
+    
     [view addSubview:_groupsEmptyView];
     
     return _groupsEmptyView;

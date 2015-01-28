@@ -1081,6 +1081,7 @@ const float TOP_OFF_SET = -64.0;
             
             [self configureNavigationItems];
             [self showAfterJoiningPopUpView];
+            [[GLPLiveGroupManager sharedInstance] userJoinedGroup];
 //            [self switchUserAsMemberOfGroup];
 //            [self configureNavigationItems];
         }

@@ -882,13 +882,9 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     group.groupDescription = json[@"description"];
     group.groupImageUrl = json[@"image"];
-    
     group.author = [RemoteParser parseMemberFromJson:json[@"creator"] withGroupRemoteKey:group.remoteKey];
     group.loggedInUser = [RemoteParser parseLoggedInUserRoleWithJson:json[@"role"]];
-    
     group.membersCount = [json[@"size"] integerValue];
-//    group.loggedInUser = [RemoteParser parseMemberFromJson:json[@"creator"] withGroupRemoteKey:group.remoteKey];
-    
     [group setPrivacyWithString:json[@"privacy"]];
         
     return group;
@@ -904,12 +900,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 + (GLPPost *)parsePostGroupFromJson:(NSDictionary *)json
 {
     GLPPost *groupPost = [RemoteParser parsePostFromJson:json];
-
     groupPost.group = [RemoteParser parseGroupFromJson:json[@"network"]];
-    
-    
     return groupPost;
-    
 }
 
 + (NSArray *)parsePostsGroupFromJson:(NSArray *)jsonPosts

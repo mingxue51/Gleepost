@@ -9,33 +9,22 @@
 #import "GLPGroupSearchViewController.h"
 #import "UINavigationBar+Format.h"
 #import "UINavigationBar+Utils.h"
-#import "SearchGroupCell.h"
 #import "GLPSearchBar.h"
 #import "WebClient.h"
 #import "GroupViewController.h"
 #import "GLPPrivateGroupPopUpViewController.h"
 #import "TDPopUpAfterGoingView.h"
 #import "GLPThemeManager.h"
+#import "GLPLiveGroupManager.h"
+#import "GLPGroupCell.h"
 
 @interface GLPGroupSearchViewController () <GLPSearchBarDelegate, GroupViewControllerDelegate>
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-
 @property (weak, nonatomic) IBOutlet UIView *searchBarView;
-
-@property (strong, nonatomic) NSArray *searchedGroups;
 
 @property (strong, nonatomic) GLPSearchBar *glpSearchBar;
 
-@property (strong, nonatomic) GLPGroup *selectedGroup;
-
-@property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
-
-@property (weak, nonatomic) IBOutlet UINavigationItem *navItem;
-
 @property (strong, nonatomic) TDPopUpAfterGoingView *privateGroupPopUp;
-
-@property (assign, nonatomic) BOOL keyboardShouldShow;
 
 @property (assign, nonatomic) BOOL readyToDismissViewController;
 
@@ -48,13 +37,7 @@
     [super viewDidLoad];
     
     [self initialiseObjects];
-    
-    [self configureNavigationBar];
-    
-    [self configureTableView];
-    
-    [self registerTableViewCells];
-    
+        
     [self configureSearchBar];
 
     [self configureNotifications];
@@ -86,38 +69,21 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)configureTableView
-{
-    [self.tableView setTableFooterView:[[UIView alloc] init]];
-    
-    [self registerTableViewCells];
-}
-
-- (void)registerTableViewCells
-{
-    [_tableView registerNib:[UINib nibWithNibName:@"SearchGroupCell" bundle:nil] forCellReuseIdentifier:@"SearchGroupCell"];
-}
+//- (void)configureTableView
+//{
+//    [self.tableView setTableFooterView:[[UIView alloc] init]];
+//    
+//}
 
 - (void)initialiseObjects
 {
     _privateGroupPopUp = [[TDPopUpAfterGoingView alloc] init];
-    _keyboardShouldShow = YES;
 }
 
 - (void)configureNavigationBar
 {
-    CGRectSetH(_navigationBar, 64.0);
-    
-    CGRectSetY(_navigationBar, 0.0);
-    
-    [_navigationBar whiteBackgroundFormatWithShadow:NO];
-    
-    [_navigationBar setFontFormatWithColour:kBlack];
-    
-    [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImage:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissModalView) withTarget:self andNavigationItem:_navItem];
-    
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-
+    [super configureNavigationBar];
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImage:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissModalView) withTarget:self andNavigationItem:self.navItem];
 }
 
 - (void)configureSearchBar
@@ -143,6 +109,16 @@
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(newGroupsFetched:)
+                                                 name:GLPNOTIFICATION_GROUPS_FECTHED_AFTER_QUERY
+                                               object:nil];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUPS_FECTHED_AFTER_QUERY object:nil];
 }
 
 #pragma mark - Selectors
@@ -182,52 +158,46 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return _searchedGroups.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"SearchGroupCell";
-    
-    SearchGroupCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    [cell setGroupData:_searchedGroups[indexPath.row]];
-    
-    return cell;
-}
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+//{
+//    return 1;
+//}
+//
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+//{
+//    return _searchedGroups.count;
+//}
+//
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    static NSString *CellIdentifier = @"SearchGroupCell";
+//    
+//    SearchGroupCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+//    
+//    [cell setGroupData:_searchedGroups[indexPath.row]];
+//    
+//    return cell;
+//}
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.selectedGroup = _searchedGroups[indexPath.row];
+    GLPGroup *selectedGroup = [super groupWithIndexPath:indexPath];
     
-    if(_selectedGroup.privacy == kPrivateGroup)
+    if(selectedGroup.privacy == kPrivateGroup)
     {
-        SearchGroupCell *cell = (SearchGroupCell *)[tableView cellForRowAtIndexPath:indexPath];
-
+        DDLogDebug(@"Group is private!");
+        
+        GLPGroupCell *cell = (GLPGroupCell *)[tableView cellForRowAtIndexPath:indexPath];
+        
         [self showPrivatePopUpViewWithGroupImage:[cell groupImage]];
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
     }
     
-    [self performSegueWithIdentifier:@"view group" sender:self];
-    
+    [super navigateToGroup:selectedGroup];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    GLPGroup *group = _searchedGroups[indexPath.row];
-    
-    return [SearchGroupCell getCellHeightWithGroup:group];
 }
 
 #pragma mark - Client
@@ -235,29 +205,34 @@
 - (void)searchForGroupWithName:(NSString *)groupName
 {
     [_glpSearchBar startActivityIndicator];
-    
-    [[WebClient sharedInstance] searchGroupsWithName:groupName callback:^(BOOL success, NSArray *groups) {
-      
-        [_glpSearchBar stopActivityIndicator];
-        
-        if(![self isSearchedTextSameAsSearchBar:groupName])
-        {
-            //Don't do anything, the result is invalid.
-            return;
-        }
+    [[GLPLiveGroupManager sharedInstance] searchGroupsWithQuery:groupName];
+}
 
-        if([self cleanTableViewIfNeeded])
-        {
-            return;
-        }
-        
-       if(success)
-       {
-           _searchedGroups = groups;
-           
-           [self.tableView reloadData];
-       }
-    }];
+#pragma mark - NSNotifications
+
+- (void)newGroupsFetched:(NSNotification *)notification
+{
+    [_glpSearchBar stopActivityIndicator];
+    
+    NSArray *groups = notification.userInfo[@"groups"];
+    BOOL success = [notification.userInfo[@"success"] boolValue];
+    NSString *query = notification.userInfo[@"query"];
+    
+    if(![self isSearchedTextSameAsSearchBar:query])
+    {
+        //Don't do anything, the result is invalid.
+        return;
+    }
+    
+    if([self cleanTableViewIfNeeded])
+    {
+        return;
+    }
+    
+    if(success)
+    {
+        [super reloadTableViewWithGroups:groups];
+    }
 }
 
 #pragma mark - Helpers
@@ -271,9 +246,7 @@
 {
     if([_glpSearchBar isTextFieldEmpty])
     {
-        _searchedGroups = [[NSArray alloc] init];
-        
-        [self.tableView reloadData];
+        [super reloadTableViewWithGroups:[[NSArray alloc] init]];
         
         return YES;
     }
@@ -305,44 +278,6 @@
     return NO;
 }
 
-#pragma mark - form management
-
-- (void)keyboardWillShow:(NSNotification *)note{
-    
-    if(!_keyboardShouldShow)
-    {
-        return;
-    }
-    
-    _keyboardShouldShow = NO;
-    // get keyboard size and loctaion
-    CGRect keyboardBounds;
-    
-    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
-    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    
-    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
-    UIViewAnimationCurve animationCurve = curve.intValue;
-    
-    // Need to translate the bounds to account for rotation.
-    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
-    
-    CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.size.height -= keyboardBounds.size.height;
-    
-    DDLogDebug(@"Keyboard will show table view new height %f, keboard height %f", tableViewFrame.size.height, keyboardBounds.size.height);
-    
-    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
-        
-        self.tableView.frame = tableViewFrame;
-        
-    } completion:^(BOOL finished) {
-        
-        [self.tableView setNeedsLayout];
-        
-    }];
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -365,19 +300,5 @@
     
     [self presentViewController:cvc animated:YES completion:nil];
 }
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if([segue.identifier isEqualToString:@"view group"])
-    {
-        GroupViewController *gvc = segue.destinationViewController;
-        
-        gvc.group = self.selectedGroup;
-        gvc.delegate = self;
-    }
-
-}
-
 
 @end

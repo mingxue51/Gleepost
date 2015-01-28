@@ -62,7 +62,6 @@
 		5817733318073C8C004ED744 /* GleepostS@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5817733218073C8C004ED744 /* GleepostS@2x.png */; };
 		5819E64718C799D4003361B3 /* background_main.png in Resources */ = {isa = PBXBuildFile; fileRef = 5819E64618C799D4003361B3 /* background_main.png */; };
 		5819E64B18C79E98003361B3 /* SearchGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5819E64A18C79E98003361B3 /* SearchGroupCell.xib */; };
-		5819E64E18C79F2C003361B3 /* SearchGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5819E64D18C79F2C003361B3 /* SearchGroupCell.m */; };
 		5819E65418C7AE14003361B3 /* selected_segment.png in Resources */ = {isa = PBXBuildFile; fileRef = 5819E65218C7AE14003361B3 /* selected_segment.png */; };
 		5819E65518C7AE14003361B3 /* uselected_segment.png in Resources */ = {isa = PBXBuildFile; fileRef = 5819E65318C7AE14003361B3 /* uselected_segment.png */; };
 		5819E65818C7C442003361B3 /* NewGroupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5819E65718C7C442003361B3 /* NewGroupViewController.m */; };
@@ -243,6 +242,8 @@
 		584906C517FDE8710045B65D /* GCPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906C417FDE8710045B65D /* GCPlaceholderTextView.m */; };
 		584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906C717FDEE4C0045B65D /* TypeTextView.m */; };
 		58498FD21A49879A00F1720F /* GLPTrackViewsCountProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 58498FD11A49879A00F1720F /* GLPTrackViewsCountProcessor.m */; };
+		584AC3C21A78FC3500590347 /* GLPSearchGroups.m in Sources */ = {isa = PBXBuildFile; fileRef = 584AC3C11A78FC3500590347 /* GLPSearchGroups.m */; };
+		584AC3C51A792EE000590347 /* SearchGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 584AC3C41A792EE000590347 /* SearchGroupCell.m */; };
 		584AD53018576C5A006589BF /* in-contacts.png in Resources */ = {isa = PBXBuildFile; fileRef = 584AD52F18576C5A006589BF /* in-contacts.png */; };
 		584BB7F5198B0E18000B08BC /* cancel_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 584BB7F4198B0E18000B08BC /* cancel_white.png */; };
 		584C1EEA181AC53600862E81 /* GLPContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 584C1EE9181AC53600862E81 /* GLPContact.m */; };
@@ -1021,8 +1022,6 @@
 		5817733218073C8C004ED744 /* GleepostS@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "GleepostS@2x.png"; sourceTree = "<group>"; };
 		5819E64618C799D4003361B3 /* background_main.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = background_main.png; sourceTree = "<group>"; };
 		5819E64A18C79E98003361B3 /* SearchGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchGroupCell.xib; sourceTree = "<group>"; };
-		5819E64C18C79F2C003361B3 /* SearchGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchGroupCell.h; sourceTree = "<group>"; };
-		5819E64D18C79F2C003361B3 /* SearchGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchGroupCell.m; sourceTree = "<group>"; };
 		5819E65218C7AE14003361B3 /* selected_segment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selected_segment.png; sourceTree = "<group>"; };
 		5819E65318C7AE14003361B3 /* uselected_segment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = uselected_segment.png; sourceTree = "<group>"; };
 		5819E65618C7C442003361B3 /* NewGroupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewGroupViewController.h; sourceTree = "<group>"; };
@@ -1292,6 +1291,10 @@
 		584906C717FDEE4C0045B65D /* TypeTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TypeTextView.m; sourceTree = "<group>"; };
 		58498FD01A49879A00F1720F /* GLPTrackViewsCountProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTrackViewsCountProcessor.h; sourceTree = "<group>"; };
 		58498FD11A49879A00F1720F /* GLPTrackViewsCountProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTrackViewsCountProcessor.m; sourceTree = "<group>"; };
+		584AC3C01A78FC3500590347 /* GLPSearchGroups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSearchGroups.h; sourceTree = "<group>"; };
+		584AC3C11A78FC3500590347 /* GLPSearchGroups.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSearchGroups.m; sourceTree = "<group>"; };
+		584AC3C31A792EE000590347 /* SearchGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchGroupCell.h; sourceTree = "<group>"; };
+		584AC3C41A792EE000590347 /* SearchGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchGroupCell.m; sourceTree = "<group>"; };
 		584AD52F18576C5A006589BF /* in-contacts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in-contacts.png"; sourceTree = "<group>"; };
 		584BB7F4198B0E18000B08BC /* cancel_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_white.png; sourceTree = "<group>"; };
 		584C1EE8181AC53600862E81 /* GLPContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPContact.h; sourceTree = "<group>"; };
@@ -2922,6 +2925,17 @@
 			name = "Campus Wall";
 			sourceTree = "<group>";
 		};
+		584AC3BF1A78FBA400590347 /* Live Group Manager */ = {
+			isa = PBXGroup;
+			children = (
+				586A6F9919B1485500664017 /* GLPLiveGroupManager.h */,
+				586A6F9A19B1485500664017 /* GLPLiveGroupManager.m */,
+				584AC3C01A78FC3500590347 /* GLPSearchGroups.h */,
+				584AC3C11A78FC3500590347 /* GLPSearchGroups.m */,
+			);
+			name = "Live Group Manager";
+			sourceTree = "<group>";
+		};
 		584CF672182303B500EFABB8 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -4043,6 +4057,7 @@
 		58CEA1E518C694E9009FDF2C /* Groups */ = {
 			isa = PBXGroup;
 			children = (
+				584AC3BF1A78FBA400590347 /* Live Group Manager */,
 				58F9C64018C5306D004A237E /* GLPGroupManager.h */,
 				58F9C64118C5306D004A237E /* GLPGroupManager.m */,
 				58CEA1E618C69560009FDF2C /* CampusWallGroupsPostsManager.h */,
@@ -4051,8 +4066,6 @@
 				58B90F1818C81B9300FA0955 /* GroupOperationManager.m */,
 				58B90F1D18C8216200FA0955 /* GroupUploaderManager.h */,
 				58B90F1E18C8216200FA0955 /* GroupUploaderManager.m */,
-				586A6F9919B1485500664017 /* GLPLiveGroupManager.h */,
-				586A6F9A19B1485500664017 /* GLPLiveGroupManager.m */,
 				585909A619D42E40006ACC64 /* GLPLiveGroupPostManager.h */,
 				585909A719D42E40006ACC64 /* GLPLiveGroupPostManager.m */,
 			);
@@ -4822,10 +4835,10 @@
 				58212794189165B200BF36E5 /* CampusWallHeaderCell.m */,
 				C0090C1E18A8BC2800153878 /* GLPLoadMoreCell.h */,
 				C0090C1F18A8BC2800153878 /* GLPLoadMoreCell.m */,
-				5819E64C18C79F2C003361B3 /* SearchGroupCell.h */,
-				5819E64D18C79F2C003361B3 /* SearchGroupCell.m */,
 				586F9C4E19881A2B0093A946 /* DescriptionSegmentGroupCell.h */,
 				586F9C4F19881A2B0093A946 /* DescriptionSegmentGroupCell.m */,
+				584AC3C31A792EE000590347 /* SearchGroupCell.h */,
+				584AC3C41A792EE000590347 /* SearchGroupCell.m */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -6138,7 +6151,6 @@
 				58273F1E1A26977D00425605 /* GLPPostsOrganiserHelper.m in Sources */,
 				8087E42D180EC02E00938264 /* _Comment.m in Sources */,
 				580B8D3318577E5500A84E0E /* ProfileTwoButtonsTableViewCell.m in Sources */,
-				5819E64E18C79F2C003361B3 /* SearchGroupCell.m in Sources */,
 				58D113D618857D3A00C6B953 /* GLPPostImageLoader.m in Sources */,
 				5809FF0D1A403F7000AF7912 /* GLPPostImageOperation.m in Sources */,
 				585106E3199D9E64000F06BB /* PendingPostManager.m in Sources */,
@@ -6310,6 +6322,7 @@
 				583491F71933FFE900E44B4A /* GLPWalkthroughViewController.m in Sources */,
 				583B567B194A40B900CC5D37 /* UINavigationBar+Utils.m in Sources */,
 				583CE33918A015FB00E78C08 /* FacebookLoginViewController.m in Sources */,
+				584AC3C51A792EE000590347 /* SearchGroupCell.m in Sources */,
 				58A75EBC1920EFA50082F316 /* GLPVideoViewController.m in Sources */,
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,
 				5879AC851964360E0053262A /* GLPNameCell.m in Sources */,
@@ -6460,6 +6473,7 @@
 				58B3A2FE1A254F180082AE81 /* GLPPendingCell.m in Sources */,
 				583192FC19B584E4000E86D7 /* GLPLocation.m in Sources */,
 				585106CB199D85FC000F06BB /* IntroKindOfEventViewController.m in Sources */,
+				584AC3C21A78FC3500590347 /* GLPSearchGroups.m in Sources */,
 				584FA60019B51A4C00FBA61F /* UploadingProgressView.m in Sources */,
 				58AD86C41892E0F200016C6D /* GLPIntroducedProfile.m in Sources */,
 				58451BFB199B2DCF003B94D2 /* SettingCell.m in Sources */,

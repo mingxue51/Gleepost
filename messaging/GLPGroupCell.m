@@ -72,6 +72,13 @@
     self.selectionStyle = UITableViewCellSelectionStyleNone;
 }
 
+#pragma mark - Accessors
+
+- (UIImage *)groupImage
+{
+    return _groupImageView.image;
+}
+
 #pragma mark - Modifiers
 
 - (void)setGroupData:(GLPGroup *)groupData

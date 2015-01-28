@@ -13,6 +13,7 @@
 @interface GLPGroupCell : UITableViewCell
 
 - (void)setGroupData:(GLPGroup *)groupData;
+- (UIImage *)groupImage;
 + (CGFloat)height;
 + (NSString *)cellIdentifier;
 
