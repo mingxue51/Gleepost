@@ -411,12 +411,19 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
             inPost = [self createRegularPost];
         }
         
+        
         if(![[PendingPostManager sharedInstance] isEditMode] && [self shouldPostPresentedInWall])
         {
             [self informParentVCForNewPost:inPost];
-            
         }
         
+        //New post that needs approve.
+        if(![[PendingPostManager sharedInstance] isEditMode] && ![self shouldPostPresentedInWall])
+        {
+            [self newPostNeedsApprove:inPost];
+        }
+        
+        //Old post that needs approve.
         if([[PendingPostManager sharedInstance] isEditMode])
         {
             [self postIsPending:inPost];
@@ -571,6 +578,14 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 - (void)postIsPending:(GLPPost *)post
 {
     post.pendingInEditMode = YES;
+    [[GLPPendingPostsManager sharedInstance] updateNewPendingPostInEditMode:post];
+    
+    //Reload data in campus wall to let the pending cell appear.
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
+}
+
+- (void)newPostNeedsApprove:(GLPPost *)post
+{
     [[GLPPendingPostsManager sharedInstance] addNewPendingPost:post];
     
     //Reload data in campus wall to let the pending cell appear.

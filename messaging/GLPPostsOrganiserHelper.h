@@ -27,5 +27,6 @@
 - (NSIndexPath *)indexPathWithPost:(GLPPost *)post;
 - (NSIndexPath *)indexPathWithPostRemoteKey:(NSInteger)postRemoteKey;
 - (NSIndexPath *)removePost:(GLPPost *)post;
+- (BOOL)isEmpty;
 
 @end
