@@ -25,7 +25,6 @@
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (strong, nonatomic) NSMutableArray *groups;
 @property (strong, nonatomic) GLPGroup *selectedGroup;
-@property (assign, nonatomic) BOOL keyboardShouldShow;
 
 @end
 
@@ -68,7 +67,6 @@
 
 - (void)initialiseObjects
 {
-    _keyboardShouldShow = YES;
     _groups = [[NSMutableArray alloc] init];
 }
 
@@ -247,14 +245,14 @@
 
 #pragma mark - form management
 
-- (void)keyboardWillShow:(NSNotification *)note{
-    
-    if(!_keyboardShouldShow)
-    {
-        return;
-    }
-    
-    _keyboardShouldShow = NO;
+- (void)keyboardWillShow:(NSNotification *)note
+{
+//    if(!_keyboardShouldShow)
+//    {
+//        return;
+//    }
+//    
+//    _keyboardShouldShow = NO;
     // get keyboard size and loctaion
     CGRect keyboardBounds;
     
@@ -280,6 +278,35 @@
         
         [self.tableView setNeedsLayout];
         
+    }];
+}
+
+
+- (void)keyboardWillHide:(NSNotification *)note{
+    
+    CGRect keyboardBounds;
+    
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    
+
+    // get a rect for the textView frame
+    CGRect tableViewFrame = self.tableView.frame;
+    tableViewFrame.size.height += keyboardBounds.size.height;
+    
+    DDLogDebug(@"keyboardWillHide table view height %f keboard height %f", self.tableView.frame.size.height, keyboardBounds.size.height);
+
+    
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+        self.tableView.frame = tableViewFrame;
+        
+    } completion:^(BOOL finished) {
+        [self.tableView setNeedsLayout];
     }];
 }
 

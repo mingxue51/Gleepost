@@ -4369,7 +4369,7 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="8qh-wC-sYy">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="8qh-wC-sYy">
                                 <rect key="frame" x="0.0" y="109" width="320" height="460"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -5201,24 +5201,24 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="Bj7-0B-AKW"/>
-        <segue reference="Ze9-pm-FNm"/>
+        <segue reference="IeZ-i8-4wD"/>
+        <segue reference="b0z-f7-UHU"/>
+        <segue reference="8oh-gD-Cs7"/>
+        <segue reference="GTC-XV-iI1"/>
+        <segue reference="2ju-Ui-QdM"/>
+        <segue reference="Vyz-Un-MGO"/>
+        <segue reference="bx4-ky-xRT"/>
         <segue reference="0WI-LJ-tnj"/>
         <segue reference="y0w-oH-XXi"/>
         <segue reference="XA6-SN-ZTj"/>
         <segue reference="cxq-Lw-xeo"/>
         <segue reference="voh-a1-0cl"/>
-        <segue reference="bx4-ky-xRT"/>
-        <segue reference="Vyz-Un-MGO"/>
         <segue reference="6aM-BE-RDh"/>
         <segue reference="0xq-5H-6eX"/>
-        <segue reference="2ju-Ui-QdM"/>
-        <segue reference="GTC-XV-iI1"/>
-        <segue reference="rdb-8v-KiD"/>
-        <segue reference="KgO-oz-Ivb"/>
-        <segue reference="8oh-gD-Cs7"/>
-        <segue reference="b0z-f7-UHU"/>
         <segue reference="PMB-JP-q3M"/>
         <segue reference="NSy-Xb-H1O"/>
+        <segue reference="rdb-8v-KiD"/>
+        <segue reference="KgO-oz-Ivb"/>
         <segue reference="QYo-sm-NOh"/>
     </inferredMetricsTieBreakers>
 </document>

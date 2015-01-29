@@ -111,6 +111,11 @@
                                                object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(newGroupsFetched:)
                                                  name:GLPNOTIFICATION_GROUPS_FECTHED_AFTER_QUERY
                                                object:nil];
@@ -156,29 +161,6 @@
     _readyToDismissViewController = YES;
 }
 
-#pragma mark - Table view data source
-
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-//{
-//    return 1;
-//}
-//
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-//{
-//    return _searchedGroups.count;
-//}
-//
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    static NSString *CellIdentifier = @"SearchGroupCell";
-//    
-//    SearchGroupCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-//    
-//    [cell setGroupData:_searchedGroups[indexPath.row]];
-//    
-//    return cell;
-//}
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -198,6 +180,15 @@
     
     [super navigateToGroup:selectedGroup];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - ScrollView delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    DDLogDebug(@"GLPGroupSearchViewController : scrollViewWillBeginDragging");
+    
+    [_glpSearchBar resignTextFieldFirstResponder];
 }
 
 #pragma mark - Client
