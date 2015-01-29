@@ -1019,7 +1019,7 @@ static WebClient *instance = nil;
     [self postPath:@"networks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         GLPGroup *group = [RemoteParser parseGroupFromJson:responseObject];
-        
+        group.membersCount = 1;
         callbackBlock(YES, group);
         
         

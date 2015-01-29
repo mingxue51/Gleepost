@@ -127,6 +127,9 @@
 - (void)groupsLoaded:(NSNotification *)notification
 {
     NSArray *groups = notification.userInfo[@"groups"];
+    
+    DDLogDebug(@"GLPMainGroupsViewController : groupsLoaded %@", groups);
+    
     [super reloadTableViewWithGroups:groups];
     [super showOrHideEmptyView];
 }
@@ -143,6 +146,8 @@
     GLPGroup *newGroup = notification.userInfo[@"group"];
     
     [super insertToTableViewNewGroup:newGroup];
+    [super showOrHideEmptyView];
+
 }
 
 - (void)newGroupCreated:(NSNotification *)notification

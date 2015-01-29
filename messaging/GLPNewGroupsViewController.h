@@ -20,7 +20,7 @@
 - (void)setNavigationBarTitle:(NSString *)title;
 - (void)showOrHideEmptyView;
 - (void)groupImageLoadedWithNotification:(NSNotification *)notification;
--(void)quitFromGroupWithIndexPath:(NSIndexPath *)indexPath;
+- (void)quitFromGroupWithIndexPath:(NSIndexPath *)indexPath;
 
 - (GLPGroup *)groupWithIndexPath:(NSIndexPath *)indexPath;
 - (void)navigateToGroup:(GLPGroup *)group;

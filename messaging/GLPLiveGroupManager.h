@@ -24,6 +24,7 @@
 
 - (GLPGroup *)groupWithRemoteKey:(NSInteger)groupRemoteKey;
 - (NSInteger)getPendingGroupKeyWithTimestamp:(NSDate *)timestamp;
+- (void)deleteGroup:(GLPGroup *)group;
 
 - (void)userJoinedGroup;
 

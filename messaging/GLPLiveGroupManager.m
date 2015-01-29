@@ -18,6 +18,7 @@
 #import "GLPGPPostImageLoader.h"
 #import "GLPImageCacheHelper.h"
 #import "GLPSearchGroups.h"
+#import "GLPMemberDao.h"
 
 @interface GLPLiveGroupManager ()
 
@@ -200,10 +201,7 @@ static GLPLiveGroupManager *instance = nil;
 
 - (GLPGroup *)groupWithRemoteKey:(NSInteger)groupRemoteKey
 {
-    DDLogDebug(@"GROUPS!!! : %@", _groups);
-    
     return [self findGroupWithRemoteKey:groupRemoteKey];
-    
 }
 
 #pragma mark - Image uploading progress
@@ -264,7 +262,7 @@ static GLPLiveGroupManager *instance = nil;
     return [_pendingGroupTimestamps objectForKey:@(groupRemoteKey)];
 }
 
-#pragma mark - Create group operations
+#pragma mark - Group operations
 
 - (void)newGroupToBeCreated:(GLPGroup *)pendingGroup withTimestamp:(NSDate *)timestamp
 {
@@ -282,8 +280,7 @@ static GLPLiveGroupManager *instance = nil;
     }
 
     
-    [_groups setObject:pendingGroup atIndexedSubscript:0];
-    
+    [_groups insertObject:pendingGroup atIndex:0];
     
     if(pendingGroup.pendingImage)
     {
@@ -315,6 +312,18 @@ static GLPLiveGroupManager *instance = nil;
     });
     
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_GROUP_CREATED object:self userInfo:@{@"group":createdGroup}];
+}
+
+- (void)deleteGroup:(GLPGroup *)group
+{
+    dispatch_async(_queue, ^{
+        
+        [_groups removeObject:group];
+        [GLPMemberDao removeMember:group.loggedInUser withGroupRemoteKey:group.remoteKey];
+    });
+    
+
+    [self loadInitialGroups];
 }
 
 #pragma mark - Search groups
@@ -414,8 +423,8 @@ static GLPLiveGroupManager *instance = nil;
 
 - (void)replaceGroupWithUpdatedGroup:(GLPGroup *)updatedGroup
 {
-    NSUInteger groupIndex = [_groups indexOfObject:updatedGroup];
-    [_groups replaceObjectAtIndex:groupIndex withObject:updatedGroup];
+    [_groups removeObject:updatedGroup];
+    [_groups addObject:updatedGroup];
 }
 
 - (GLPGroup *)findGroupWithRemoteKey:(NSInteger)remoteKey
@@ -424,8 +433,6 @@ static GLPLiveGroupManager *instance = nil;
 
     if(groupsFound.count > 0)
     {
-        DDLogDebug(@"GLPLiveGroupManager : groups found %@", groupsFound);
-        
         return [groupsFound firstObject];
     }
     

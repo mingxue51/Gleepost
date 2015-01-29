@@ -882,12 +882,6 @@ const float TOP_OFFSET = 180.0f;
         //            [self.tableView endUpdates];
 
     }
-    else
-    {
-        DDLogDebug(@"GLPTimelineViewController : no need to refresh cell with index %lu", (unsigned long)index);
-    }
-    
-
 }
 
 - (BOOL)cellNeedsReloadWithIndex:(NSInteger)index

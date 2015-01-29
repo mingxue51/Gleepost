@@ -16,6 +16,8 @@
 #import "GLPGroupManager.h"
 #import "WebClient.h"
 #import "GLPMemberDao.h"
+//TODO: Remove any access to GLPLiveGroupManager later.
+#import "GLPLiveGroupManager.h"
 
 @interface GLPNewGroupsViewController ()<UITableViewDataSource, UITableViewDelegate>
 
@@ -67,6 +69,7 @@
 - (void)initialiseObjects
 {
     _keyboardShouldShow = YES;
+    _groups = [[NSMutableArray alloc] init];
 }
 
 #pragma mark - TableView Operations
@@ -151,7 +154,7 @@
         
         if(success)
         {
-            [GLPMemberDao removeMember:group.loggedInUser withGroupRemoteKey:group.remoteKey];
+            [[GLPLiveGroupManager sharedInstance] deleteGroup:group];
 //            [_delegate groupDeletedWithData:_groupData];
             [_groups removeObjectAtIndex:indexPath.row];
             [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
