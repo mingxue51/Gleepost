@@ -73,18 +73,15 @@
     
     [self loadMembers];
     
-    [AppearanceHelper makeBackDefaultButton];
     
     [self configureNavigationBar];
-
+    [self configureTitleNavigationBar];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    [self configureTitleNavigationBar];
-    
+
 }
 
 #pragma mark - Configuration
@@ -129,10 +126,10 @@
 
 - (void)configureTitleNavigationBar
 {
-    self.navigationController.navigationBar.topItem.title = @"MEMBERS";
+    self.navigationItem.title = @"MEMBERS";
 
-    self.navigationController.navigationBar.shadowImage = [UIImage new];
-    self.navigationController.navigationBar.translucent = NO;
+//    self.navigationController.navigationBar.shadowImage = [UIImage new];
+//    self.navigationController.navigationBar.translucent = NO;
     
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     

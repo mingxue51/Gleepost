@@ -59,7 +59,11 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 
 - (void)configureNavigationBar
 {
+    
     [super configureNavigationBar];
+    
+    self.navigationItem.title = @"ADD GRPOUP MEMBERS";
+
     
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 }
@@ -175,6 +179,11 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if(indexPath.row >= self.searchedUsers.count)
+    {
+        return;
+    }
+    
     //Navigate to user's profile.
     
     GLPUser *seletedUser = nil;
