@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPUser.h"
+#import "GLPNewGroupsViewController.h"
 
-@interface GLPShowUsersGroupsViewController : UIViewController
+@interface GLPShowUsersGroupsViewController : GLPNewGroupsViewController
 
 @property (strong, nonatomic) GLPUser *user;
 

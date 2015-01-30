@@ -21,6 +21,23 @@
     }];
 }
 
+- (void)loadGroupWithUserRemoteKey:(NSInteger)userRemoteKey
+{
+    [[WebClient sharedInstance] searchGroupsWithUsersRemoteKey:userRemoteKey callback:^(BOOL success, NSArray *groups) {
+        [self notifyAfterUsersGroupsLoadedWithSuccess:success withGroups:groups];
+    }];
+}
+
+- (void)notifyAfterUsersGroupsLoadedWithSuccess:(BOOL)success withGroups:(NSArray *)groups
+{
+    if(!groups)
+    {
+        groups = [[NSArray alloc] init];
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_USER_GROUPS_LOADED object:self userInfo:@{@"groups": groups, @"success" : @(success)}];
+}
+
 /**
  Notifies GLPGroupSearchViewController after performed a search for groups operation.
  

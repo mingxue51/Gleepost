@@ -7,18 +7,14 @@
 //
 
 #import "GLPShowUsersGroupsViewController.h"
-#import "SearchGroupCell.h"
 #import "WebClient.h"
 #import "GroupViewController.h"
 #import "UINavigationBar+Format.h"
+#import "GLPLiveGroupManager.h"
 
 @class GLPGroup;
 
 @interface GLPShowUsersGroupsViewController ()
-
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-
-@property (strong, nonatomic) NSArray *usersGroups;
 
 @property (strong, nonatomic) GLPGroup *selectedGroup;
 
@@ -29,24 +25,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self registerTableViewCells];
-    
+    [self configureNotifications];
     [self loadGroups];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self configureTitle];
-    
     [self configureNavigationBar];
 }
 
-- (void)registerTableViewCells
+- (void)dealloc
 {
-    [_tableView registerNib:[UINib nibWithNibName:@"SearchGroupCell" bundle:nil] forCellReuseIdentifier:@"SearchGroupCell"];
+    [self removeNotifications];
 }
 
 - (void)configureNavigationBar
@@ -56,64 +48,38 @@
 
 - (void)configureTitle
 {
-    self.title = [NSString stringWithFormat:@"%@'s groups", _user.name];
+    self.title = [NSString stringWithFormat:@"%@'S GROUPS", _user.name.uppercaseString];
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (void)removeNotifications
 {
-    return 1;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_USER_GROUPS_LOADED object:nil];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (void)configureNotifications
 {
-    return _usersGroups.count;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupsLoaded:) name:GLPNOTIFICATION_USER_GROUPS_LOADED object:nil];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"SearchGroupCell";
-    
-    SearchGroupCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    [cell setGroupData:_usersGroups[indexPath.row]];
-    
-    return cell;
-}
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    self.selectedGroup = _usersGroups[indexPath.row];
-    
-    [self performSegueWithIdentifier:@"view group" sender:self];
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    GLPGroup *group = _usersGroups[indexPath.row];
-    
-    return [SearchGroupCell getCellHeightWithGroup:group];
-}
 
 #pragma mark - Client
 
 - (void)loadGroups
 {
-    [[WebClient sharedInstance] searchGroupsWithUsersRemoteKey:self.user.remoteKey callback:^(BOOL success, NSArray *groups) {
-       
-        if(success)
-        {
-            _usersGroups = groups;
-            
-            [_tableView reloadData];
-        }
-        
-    }];
+    [[GLPLiveGroupManager sharedInstance] loadUsersGroupsWithRemoteKey:self.user.remoteKey];
+}
+
+#pragma mark - NSNotifications
+
+- (void)groupsLoaded:(NSNotification *)notification
+{
+    BOOL success = [notification.userInfo[@"success"] boolValue];
+    NSArray *groups = notification.userInfo[@"groups"];
+    
+    if(success)
+    {
+        [self reloadTableViewWithGroups:groups];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -130,12 +96,8 @@
     if([segue.identifier isEqualToString:@"view group"])
     {
         GroupViewController *gvc = segue.destinationViewController;
-        
         gvc.group = self.selectedGroup;
     }
-    
-    
 }
-
 
 @end

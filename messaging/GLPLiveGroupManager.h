@@ -47,6 +47,7 @@
 - (void)clearUploadingNewImageToGroup:(GLPGroup *)group;
 
 - (void)searchGroupsWithQuery:(NSString *)query;
+- (void)loadUsersGroupsWithRemoteKey:(NSInteger)userRemoteKey;
 
 - (NSDate *)timestampWithGroupRemoteKey:(NSInteger)groupRemoteKey;
 

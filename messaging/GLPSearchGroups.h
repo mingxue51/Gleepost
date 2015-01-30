@@ -11,5 +11,6 @@
 @interface GLPSearchGroups : NSObject
 
 - (void)searchGroupsWithQuery:(NSString *)query;
+- (void)loadGroupWithUserRemoteKey:(NSInteger)userRemoteKey;
 
 @end

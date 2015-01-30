@@ -333,6 +333,13 @@ static GLPLiveGroupManager *instance = nil;
     [_searchGroupsHelper searchGroupsWithQuery:query];
 }
 
+#pragma mark - Load user's groups
+
+- (void)loadUsersGroupsWithRemoteKey:(NSInteger)userRemoteKey
+{
+    [_searchGroupsHelper loadGroupWithUserRemoteKey:userRemoteKey];
+}
+
 #pragma mark - Updates
 
 - (void)addUnreadPostWithGroupRemoteKey:(NSInteger)groupKey

@@ -35,7 +35,6 @@
 #import "NSNotificationCenter+Utils.h"
 #import "GLPPushManager.h"
 #import "GLPFacebookConnect.h"
-#import "GroupsViewController.h"
 #import "GroupViewController.h"
 #import "GLPPrivateProfileViewController.h"
 #import "GLPProfileViewController.h"

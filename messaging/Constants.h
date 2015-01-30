@@ -91,7 +91,10 @@
 #define GLPNOTIFICATION_GROUP_IMAGE_LOADED              @"GLPGroupImageLoaded"
 #define GLPNOTIFICATION_GROUPS_LOADED                   @"GLPGroupsLoaded"
 #define GLPNOTIFICATION_POST_IMAGE_LOADED               @"GLPPostImageLoaded"
+
+
 #define GLPNOTIFICATION_GROUPS_FECTHED_AFTER_QUERY      @"GLPGroupsFetchedAfterQuery"
+#define GLPNOTIFICATION_USER_GROUPS_LOADED              @"GLPUserGroupsLoaded"
 
 #define GLPNOTIFICATION_GOING_BUTTON_TOUCHED            @"GLPGoingButtonTouched"
 
