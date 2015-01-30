@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GLPTableActivityIndicator.h"
+
 @class GLPGroup;
 
 @interface GLPNewGroupsViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *navItem;
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 - (void)configureNavigationBar;
 - (void)reloadTableViewWithGroups:(NSArray *)groups;

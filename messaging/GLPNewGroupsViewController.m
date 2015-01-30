@@ -68,6 +68,7 @@
 - (void)initialiseObjects
 {
     _groups = [[NSMutableArray alloc] init];
+    self.tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorCenter withView:self.tableView];
 }
 
 #pragma mark - TableView Operations

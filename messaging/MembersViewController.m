@@ -19,6 +19,7 @@
 #import "AppearanceHelper.h"
 #import "UINavigationBar+Format.h"
 #import "SessionManager.h"
+#import "GLPTableActivityIndicator.h"
 
 @interface MembersViewController () <UIActionSheetDelegate, MemberCellDelegate>
 
@@ -41,6 +42,8 @@
 
 @property (strong, nonatomic, readonly) NSString *addUserAsAdminText;
 @property (strong, nonatomic, readonly) NSString *removeUserFromAdminText;
+
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 @end
 
@@ -72,7 +75,6 @@
     [self configureTopView];
     
     [self loadMembers];
-    
     
     [self configureNavigationBar];
     [self configureTitleNavigationBar];
@@ -152,8 +154,9 @@
 - (void)configureObjects
 {
     _loggedInUserMember = [[GLPMember alloc] initWithUser:[SessionManager sharedInstance].user];
-    
     _selectedMember = nil;
+    _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorTop withView:self.tableView];
+    [_tableActivityIndicator addY:150];
 }
 
 
@@ -251,8 +254,14 @@
 
 -(void)loadMembers
 {
+    [_tableActivityIndicator startActivityIndicator];
     
     [GLPGroupManager loadMembersWithGroupRemoteKey:self.group.remoteKey withLocalCallback:^(NSArray *members) {
+        
+        if(members.count > 0)
+        {
+            [_tableActivityIndicator stopActivityIndicator];
+        }
         
         self.members = members.mutableCopy;
         [self findRoleOfLoggedInUser];
@@ -266,6 +275,8 @@
             [self findRoleOfLoggedInUser];
             [self.tableView reloadData];
         }
+        
+        [_tableActivityIndicator stopActivityIndicator];
     }];
 }
 

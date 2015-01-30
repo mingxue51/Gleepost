@@ -60,6 +60,7 @@
 #import "GLPViewPendingPostViewController.h"
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPCampusWallAsyncProcessor.h"
+#import "GLPTableActivityIndicator.h"
 
 @interface GLPProfileViewController () <MFMessageComposeViewControllerDelegate, UIActionSheetDelegate, GLPAttendingPopUpViewControllerDelegate>
 
@@ -119,6 +120,10 @@
 /** Captures the visibility of current cells. */
 @property (strong, nonatomic) GLPTrackViewsCountProcessor *trackViewsCountProcessor;
 @property (strong, nonatomic) GLPCampusWallAsyncProcessor *campusWallAsyncProcessor;
+
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
+
+@property (assign, nonatomic) BOOL postsLoading;
 
 @end
 
@@ -421,6 +426,10 @@
     _campusWallAsyncProcessor = [[GLPCampusWallAsyncProcessor alloc] init];
     _user = nil;
     
+    _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.tableView];
+    
+    _postsLoading = NO;
+    
 }
 
 - (void)configureProgressView
@@ -683,11 +692,8 @@
         if(success)
         {
             [self notifyAppWithNewImage:url];
-            
             [self fetchUserData];
-            
             [self loadPosts];
-
         }
         
     }];
@@ -697,11 +703,22 @@
 {
     [self startLoading];
     
+    [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
+
+    _postsLoading = YES;
+    
     [GLPPostManager loadPostsWithRemoteKey:_user.remoteKey localCallback:^(NSArray *posts) {
         
         [self refreshNewPosts:posts];
         
+        if(_posts.count == 0)
+        {
+            [_tableActivityIndicator startActivityIndicator];
+        }
+        
     } remoteCallback:^(BOOL success, NSArray *posts) {
+        
+        [_tableActivityIndicator stopActivityIndicator];
         
         [self stopLoading];
         
@@ -710,6 +727,9 @@
             [self refreshNewPosts:posts];
         }
         
+        _postsLoading = NO;
+        
+        [self hideOrShowPostsEmptyView];
     }];
 }
 
@@ -1035,15 +1055,11 @@
     {
         [_emptyNotificationsMessage hideEmptyMessageView];
         
-        [self hideOrShowPostsEmptyView];
-        
         return self.numberOfRows + self.posts.count;
     }
     else
     {
         NSInteger extraRow = 0;
-        
-        [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
         
         if(_notifications.count == 0)
         {
@@ -1761,7 +1777,21 @@
     _selectedTab = buttonType;
     
     if(_selectedTab == kButtonRight) {
+        
+        [_tableActivityIndicator stopActivityIndicator];
+
         [self notificationsTabClick];
+    }
+    else
+    {
+        if(_postsLoading && _posts.count == 0)
+        {
+            [_tableActivityIndicator startActivityIndicator];
+        }
+        else
+        {
+            [self hideOrShowPostsEmptyView];
+        }
     }
     
     [self.tableView reloadData];

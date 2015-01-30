@@ -51,12 +51,12 @@
             yPosition = (_view.frame.size.height + _activityIndicator.frame.size.height) / 2;
             break;
             
-            case kActivityIndicatorCenter:
+        case kActivityIndicatorCenter:
             yPosition = ([[UIScreen mainScreen] bounds].size.height/2 - _activityIndicator.frame.size.height * 2);
             break;
             
         case kActivityIndicatorBottom:
-            yPosition = ([[UIScreen mainScreen] bounds].size.height/2 + _activityIndicator.frame.size.height * 4);
+            yPosition = ([[UIScreen mainScreen] bounds].size.height/2 + _activityIndicator.frame.size.height * 3);
             break;
             
         default:
@@ -77,6 +77,13 @@
 - (void)startActivityIndicator
 {
     [_activityIndicator startAnimating];
+}
+
+- (void)addY:(CGFloat)height
+{
+    CGRect activityIndicatorFrame = _activityIndicator.frame;
+    
+    [_activityIndicator setFrame: CGRectMake(activityIndicatorFrame.origin.x, activityIndicatorFrame.origin.y + height, activityIndicatorFrame.size.width, activityIndicatorFrame.size.height)];
 }
 
 @end
