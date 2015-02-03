@@ -12,31 +12,25 @@
 #import "GLPPostCell.h"
 #import "GLPPost.h"
 #import "AppearanceHelper.h"
-#import "GLPPostImageLoader.h"
-#import "GLPPostNotificationHelper.h"
 #import "GLPPostManager.h"
 #import "GLPViewImageViewController.h"
 #import "TransitionDelegateViewImage.h"
 #import "TableViewHelper.h"
-#import "AttendingPostsOrganiserHelper.h"
 #import "SessionManager.h"
 #import "GLPPrivateProfileViewController.h"
 #import "GLPTableActivityIndicator.h"
 #import "GLPNewElementsIndicatorView.h"
 #import "GLPLoadingCell.h"
 #import "GLPTrackViewsCountProcessor.h"
+#import "GLPAttendingPostsManager.h"
 
 @interface GLPAttendingPostsViewController () <RemovePostCellDelegate, NewCommentDelegate, ViewImageDelegate, GLPPostCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (strong, nonatomic) NSMutableArray *events;
-
 @property (strong, nonatomic) GLPPost *selectedPost;
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
-
-@property (strong, nonatomic) AttendingPostsOrganiserHelper *attendingPostsOrganiserHelper;
 
 @property (assign, nonatomic) NSInteger selectedUserId;
 
@@ -52,6 +46,8 @@
 @property (assign, nonatomic) int insertedNewRowsCount; // count of new rows inserted
 @property (strong, nonatomic) GLPNewElementsIndicatorView *elementsIndicatorView;
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
+
+@property (strong, nonatomic) GLPAttendingPostsManager *attendingPostsManager;
 
 @end
 
@@ -112,8 +108,6 @@
 {
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     
-    _attendingPostsOrganiserHelper = [[AttendingPostsOrganiserHelper alloc] init];
-    
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorCenter withView:self.tableView];
     
     _showComment = NO;
@@ -121,43 +115,52 @@
     self.loadingCellStatus = kGLPLoadingCellStatusFinished;
     
     _trackViewsCountProcessor = [[GLPTrackViewsCountProcessor alloc] init];
+    
+    _attendingPostsManager = [[GLPAttendingPostsManager alloc] initWithUserRemoteKey:_selectedUser.remoteKey];
 }
 
 - (void)configureNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventsFetched:) name:GLPNOTIFICATION_ATTENDING_POSTS_FETCHED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(previousEventsFetched:) name:GLPNOTIFICATION_ATTENDING_PREVIOUS_POSTS_FETCHED object:nil];
+
+
 }
 
 - (void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ATTENDING_POSTS_FETCHED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ATTENDING_PREVIOUS_POSTS_FETCHED object:nil];
+
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [_attendingPostsOrganiserHelper numberOfSections];
+    return [_attendingPostsManager numberOfSections];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if(section == [_attendingPostsOrganiserHelper numberOfSections]-1)
+    if(section == [_attendingPostsManager numberOfSections] - 1)
     {
-        return [_attendingPostsOrganiserHelper postsAtSectionIndex:section].count + 1;
+        return [_attendingPostsManager numberOfPostsAtSectionIndex:section] + 1;
     }
     
-    return [_attendingPostsOrganiserHelper postsAtSectionIndex:section].count;
-
-    
+    return [_attendingPostsManager numberOfPostsAtSectionIndex:section];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //Try to load previous posts.
-    if(indexPath.section == [_attendingPostsOrganiserHelper numberOfSections]-1 && indexPath.row == [_attendingPostsOrganiserHelper postsAtSectionIndex:indexPath.section].count)
+    if(indexPath.section == [_attendingPostsManager numberOfSections]-1 && indexPath.row == [_attendingPostsManager numberOfPostsAtSectionIndex:indexPath.section])
     {
         return [self cellWithMessage:@"Loading..."];
     }
@@ -168,7 +171,8 @@
     
     GLPPostCell *postViewCell;
     
-    GLPPost *post = [_attendingPostsOrganiserHelper postWithIndex:indexPath.row andSectionIndex:indexPath.section];
+    GLPPost *post = [_attendingPostsManager postWithSection:indexPath.section andIndex:indexPath.row];
+
     
     if([post imagePost])
     {
@@ -195,15 +199,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.section == [_attendingPostsOrganiserHelper numberOfSections]-1 && indexPath.row == [_attendingPostsOrganiserHelper postsAtSectionIndex:indexPath.section].count)
+    if(indexPath.section == [_attendingPostsManager numberOfSections]-1 && indexPath.row == [_attendingPostsManager numberOfPostsAtSectionIndex:indexPath.section])
     {
         return;
     }
     
-    self.selectedPost = [_attendingPostsOrganiserHelper postWithIndex:indexPath.row andSectionIndex:indexPath.section];
-
-//    self.postIndexToReload = indexPath.row-1;
-//    self.commentCreated = NO;
+    self.selectedPost = [_attendingPostsManager postWithSection:indexPath.section andIndex:indexPath.row];
+    
     [self performSegueWithIdentifier:@"view post" sender:self];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -211,12 +213,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.section == [_attendingPostsOrganiserHelper numberOfSections]-1 && indexPath.row == [_attendingPostsOrganiserHelper postsAtSectionIndex:indexPath.section].count)
+    if(indexPath.section == [_attendingPostsManager numberOfSections]-1 && indexPath.row == [_attendingPostsManager numberOfPostsAtSectionIndex:indexPath.section])
     {
         return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
     }
     
-    GLPPost *currentPost = [_attendingPostsOrganiserHelper postWithIndex:indexPath.row andSectionIndex:indexPath.section];
+//    GLPPost *currentPost = [_attendingPostsOrganiserHelper postWithIndex:indexPath.row andSectionIndex:indexPath.section];
+    
+    GLPPost *currentPost = [_attendingPostsManager postWithSection:indexPath.section andIndex:indexPath.row];
     
     if([currentPost imagePost])
     {
@@ -234,7 +238,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [TableViewHelper generateHeaderViewWithTitle:[_attendingPostsOrganiserHelper headerInSection:section] andBottomLine:NO];
+    return [TableViewHelper generateHeaderViewWithTitle:[_attendingPostsManager headerInSection:section] andBottomLine:NO];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -244,7 +248,7 @@
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.section == [_attendingPostsOrganiserHelper numberOfSections]-1 && indexPath.row == [_attendingPostsOrganiserHelper postsAtSectionIndex:indexPath.section].count && self.loadingCellStatus == kGLPLoadingCellStatusInit)
+    if(indexPath.section == [_attendingPostsManager numberOfSections]-1 && indexPath.row == [_attendingPostsManager numberOfPostsAtSectionIndex:indexPath.section] && self.loadingCellStatus == kGLPLoadingCellStatusInit)
     {
         DDLogInfo(@"GLPAttendingPostsViewController : Load previous posts cell activated");
         [self loadPreviousUserEvents];
@@ -322,7 +326,14 @@
     
     for (NSIndexPath *path in paths)
     {
-        [visiblePosts addObject:[_attendingPostsOrganiserHelper postWithIndex:path.row andSectionIndex:path.section]];
+        GLPPost *post = [_attendingPostsManager postWithSection:path.section andIndex:path.row];
+        
+        if(!post)
+        {
+            continue;
+        }
+        
+        [visiblePosts addObject:post];
         CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:path];
         CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
         [*postsYValues addObject:@(rectInTableView.size.height/2.0 + rectInSuperview.origin.y)];
@@ -331,38 +342,50 @@
     return visiblePosts;
 }
 
+- (void)eventsFetched:(NSNotification *)notification
+{
+    NSDictionary *notificationDict = notification.userInfo;
+    
+    self.isLoading = NO;
+    [_tableActivityIndicator stopActivityIndicator];
+    
+    BOOL success = [notificationDict[@"success"] boolValue];
+    
+    if(success)
+    {
+        BOOL remains = [_attendingPostsManager eventsCount] == kGLPNumberOfPosts ? YES : NO;
+        self.loadingCellStatus = remains ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+        [_tableView reloadData];
+    }
+}
+
+- (void)previousEventsFetched:(NSNotification *)notification
+{
+    NSDictionary *notificationDict = notification.userInfo;
+    BOOL success = [notificationDict[@"success"] boolValue];
+    NSInteger remain = [notificationDict[@"remain"] integerValue];
+    NSArray *previousPosts = notificationDict[@"posts"];
+    
+    [self stopLoading];
+
+    if(!success) {
+        self.loadingCellStatus = kGLPLoadingCellStatusError;
+        [self reloadLoadingCell];
+        return;
+    }
+    
+    self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+    
+    if(previousPosts.count > 0) {
+        
+        [_tableView reloadData];
+        
+    } else {
+        [self reloadLoadingCell];
+    }
+}
 
 #pragma mark - Client
-
-- (void)loadUsersEvents
-{
-    DDLogDebug(@"Selected user remote key %ld", (long)_selectedUser.remoteKey);
-    
-    [_tableActivityIndicator startActivityIndicator];
-    self.isLoading = YES;
-    [GLPPostManager getAttendingEventsWithUsersRemoteKey:_selectedUser.remoteKey callback:^(BOOL success, NSArray *posts) {
-        self.isLoading = NO;
-        [_tableActivityIndicator stopActivityIndicator];
-        
-        if(success)
-        {
-//            [_attendingPostsOrganiserHelper resetData];
-            [_attendingPostsOrganiserHelper organisePosts:posts];
-            
-            _events = posts.mutableCopy;
-            
-            BOOL remains = _events.count == kGLPNumberOfPosts ? YES : NO;
-            self.loadingCellStatus = remains ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
-
-            
-            [[GLPPostImageLoader sharedInstance] addPostsImages:_events];
-            
-            [_tableView reloadData];
-            
-//            [self loadPreviousUserEvents];
-        }
-    }];
-}
 
 - (void)loadPreviousUserEvents
 {
@@ -370,7 +393,7 @@
         return;
     }
     
-    if([_attendingPostsOrganiserHelper numberOfSections] == 0) {
+    if([_attendingPostsManager numberOfSections] == 0) {
         self.loadingCellStatus = kGLPLoadingCellStatusFinished;
         return;
     }
@@ -381,40 +404,21 @@
     
     [self startLoading];
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
-    
-    [GLPPostManager getAttendingEventsAfter:[_attendingPostsOrganiserHelper lastPost] withUserRemoteKey:_selectedUser.remoteKey callback:^(BOOL success, BOOL remain, NSArray *posts) {
-        
-        [self stopLoading];
-        
-        if(!success) {
-            self.loadingCellStatus = kGLPLoadingCellStatusError;
-            [self reloadLoadingCell];
-            return;
-        }
-        
-        self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
-        
-        if(posts.count > 0) {
-            
-            [_attendingPostsOrganiserHelper organisePosts:posts];
-            
-            _events = posts.mutableCopy;
-            
-            [_events insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(_events.count, posts.count)]];
-
-            [[GLPPostImageLoader sharedInstance] addPostsImages:_events];
-            
-            [_tableView reloadData];
-            
-        } else {
-            [self reloadLoadingCell];
-        }
-    }];
+    [_attendingPostsManager loadPreviousPosts];
 }
+
+- (void)loadUsersEvents
+{
+    DDLogDebug(@"Selected user remote key %ld", (long)_selectedUser.remoteKey);
+    [_tableActivityIndicator startActivityIndicator];
+    self.isLoading = YES;
+    [_attendingPostsManager getPosts];
+}
+
 
 - (void)reloadLoadingCell
 {
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:_events.count inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[_attendingPostsManager eventsCount] inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark - Request management
@@ -435,25 +439,8 @@
 
 -(void)removePostWithPost:(GLPPost *)post
 {
-    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
-    
-    NSIndexPath *postIndexPath = [_attendingPostsOrganiserHelper indexPathWithPost:post];
-    
-    [_attendingPostsOrganiserHelper removePost:post];
-
+    NSIndexPath *postIndexPath = [_attendingPostsManager removePostWithPost:post];
     [self removeTableViewPostWithIndexPath:postIndexPath];
-
-    for(int index = 0; index < _events.count; ++index)
-    {
-        GLPPost *p = [_events objectAtIndex:index];
-        
-        if(p.remoteKey == post.remoteKey)
-        {
-            [_events removeObject:p];
-            
-            return;
-        }
-    }
 }
 
 #pragma mark - GLPPostCellDelegate
@@ -478,7 +465,9 @@
 - (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
 {
     _showComment = YES;
-    self.selectedPost = [_attendingPostsOrganiserHelper postWithIndex:postIndexPath.row andSectionIndex:postIndexPath.section];
+    self.selectedPost = [_attendingPostsManager postWithSection:postIndexPath.section andIndex:postIndexPath.row];
+
+    
 //    self.selectedIndex = postIndex;
 //    self.postIndexToReload = postIndex;
 //    self.commentCreated = NO;
@@ -507,9 +496,9 @@
 - (void)updateRealImage:(NSNotification *)notification
 {
     GLPPost *currentPost = nil;
-        
-    NSIndexPath *postIndexPath = [_attendingPostsOrganiserHelper indexPathWithPost:currentPost];
-        
+    
+    NSIndexPath *postIndexPath = [_attendingPostsManager indexPathWithPost:&currentPost];
+    
     if(currentPost)
     {
         [self refreshCellViewWithIndexPath:postIndexPath];
@@ -527,7 +516,7 @@
     NSInteger postRemoteKey = [notification.userInfo[@"PostRemoteKey"] integerValue];
     NSInteger viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
     
-    NSIndexPath *postIndexPath = [_attendingPostsOrganiserHelper updatePostWithRemoteKey:postRemoteKey andViewsCount:viewsCount];
+    NSIndexPath *postIndexPath = [_attendingPostsManager updatePostWithRemoteKey:postRemoteKey andViewsCount:viewsCount];
     
     DDLogDebug(@"updateViewsCounter %ld %ld", (long)postIndexPath.row, (long)postIndexPath.section);
     
@@ -603,6 +592,5 @@
         privateProfileViewController.selectedUserId = self.selectedUserId;
     }
 }
-
 
 @end

@@ -100,6 +100,9 @@
 
 #define GLPNOTIFICATION_SEARCH_FOR_GROUPS               @"GLPSearchForGroups"
 
+//GLPAttendingPostsManager
+#define GLPNOTIFICATION_ATTENDING_POSTS_FETCHED         @"GLPAttendingPostsFetched"
+#define GLPNOTIFICATION_ATTENDING_PREVIOUS_POSTS_FETCHED    @"GLPAttendingPreviousPostsFecthed"
 
 
 #define GLP_WEBSERVICE_VERSION                      @"1"

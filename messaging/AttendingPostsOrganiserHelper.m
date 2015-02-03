@@ -61,7 +61,28 @@
         }
     }
     
+    [self fixPositionsHeadersInSectionArrayIfNeeded];
+    
     DDLogDebug(@"Final event posts %@", _sections);
+}
+
+- (void)fixPositionsHeadersInSectionArrayIfNeeded
+{
+    
+    if(self.sections.count <= 1)
+    {
+        return;
+    }
+    
+    NSDictionary *firstPosts = self.sections[0];
+    
+    if(![firstPosts objectForKey:_recentHeader])
+    {
+        NSDictionary *d1 = self.sections[0];
+        self.sections[0] = self.sections[1];
+        self.sections[1] = d1;
+    }
+    
 }
 
 #pragma mark - Operations
@@ -148,6 +169,11 @@
     for(NSString *key in headerPosts)
     {
         NSArray *posts = [headerPosts objectForKey:key];
+        
+        if(postIndex >= posts.count)
+        {
+            return nil;
+        }
         
         return [posts objectAtIndex:postIndex];
     }
