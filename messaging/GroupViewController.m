@@ -350,6 +350,11 @@ const float TOP_OFF_SET = -64.0;
     {
         [self.navigationController.navigationBar setButton:kRight withImageName:@"join_group" withButtonSize:CGSizeMake(37.0, 30.0) withSelector:@selector(joinGroupTouched) andTarget:self];
     }
+    else if([_group.loggedInUser isMemberOfGroup] && ![_group.loggedInUser isAuthenticatedForChanges])
+    {
+        [self.navigationController.navigationBar setButton:kRight specialButton:kQuit withImageName:@"more_group" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
+
+    }
     
     DDLogDebug(@"Group type %d", _group.privacy);
 }

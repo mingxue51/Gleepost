@@ -72,13 +72,27 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
 {
     NSMutableArray *array = [[NSMutableArray alloc] init];
     
-    [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Group image", [NSNumber numberWithInteger:kImageSetting], nil]];
+    NSInteger index = 0;
+    
+    if([_group.loggedInUser isAuthenticatedForChanges])
+    {
+        NSArray *object = @[@"Group image", @(kImageSetting)];
+        [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:object, @(index), nil]];
+        
+        ++index;
+    }
+    
+    {
+        NSArray *object = @[@"Group members", @(kGroupMembersSetting)];
+        [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:object, @(index), nil]];
+        ++index;
+    }
+
     
 //    [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Group description", [NSNumber numberWithInteger:kDescriptionSetting], nil]];
     
 //    [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Request to be verified", [NSNumber numberWithInteger:kRequestToVerifiedSetting], nil]];
 
-    [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Group members", [NSNumber numberWithInteger:kGroupMembersSetting], nil]];
 
 //    [array addObject:[[NSDictionary alloc] initWithObjectsAndKeys:@"Change group privacy", [NSNumber numberWithInteger:kChangeGroupPrivacySetting], nil]];
 
@@ -121,7 +135,9 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
     
     NSDictionary *dictionary = [_settingsItems objectAtIndex:indexPath.row];
     
-    NSString *title = [dictionary objectForKey:[NSNumber numberWithInt:indexPath.row]];
+    NSArray *object = [dictionary objectForKey:[NSNumber numberWithInt:indexPath.row]];
+    
+    NSString *title = object[0];
     
     SettingCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
@@ -172,12 +188,17 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
 
 - (void)navigateToViewControllerWithIndex:(NSInteger)index
 {
-    switch (index) {
-        case 0:
+    NSDictionary *selectedCell = [_settingsItems objectAtIndex:index];
+    NSArray *object = [selectedCell objectForKey:@(index)];
+    
+    SettingsItem settingsItem = [object[1] integerValue];
+    
+    switch (settingsItem) {
+        case kImageSetting:
             [self performSegueWithIdentifier:@"pick image" sender:self];
             break;
             
-        case 1:
+        case kGroupMembersSetting:
             [self performSegueWithIdentifier:@"view members" sender:self];
             break;
             
