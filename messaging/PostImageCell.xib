@@ -229,7 +229,7 @@
                                             <constraint firstAttribute="width" constant="54" id="4aL-IS-S4l"/>
                                             <constraint firstAttribute="height" constant="45" id="PHg-V8-diy"/>
                                         </constraints>
-                                        <inset key="contentEdgeInsets" minX="18" minY="15" maxX="18" maxY="15"/>
+                                        <inset key="imageEdgeInsets" minX="18" minY="15" maxX="18" maxY="15"/>
                                         <state key="normal" image="icon_like.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -399,7 +399,7 @@
                 <outlet property="mainView" destination="jCQ-SX-55v" id="Zfm-mE-R6p"/>
                 <outlet property="topView" destination="gZY-ao-KSb" id="okb-cU-28U"/>
             </connections>
-            <point key="canvasLocation" x="370" y="268"/>
+            <point key="canvasLocation" x="-147" y="40"/>
         </tableViewCell>
     </objects>
     <resources>

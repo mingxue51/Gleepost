@@ -113,10 +113,10 @@
 @implementation MainPostView
 
 const float FIXED_TOP_TEXT_BACKGROUND_HEIGHT = 70;
-const float FIXED_BOTTOM_TEXT_VIEW_HEIGHT = 100;
+const float FIXED_BOTTOM_TEXT_VIEW_HEIGHT = 120; //100
 
 const float FIXED_TOP_MEDIA_BACKGROUND_HEIGHT = 250;
-const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
+const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
 
 
 
@@ -216,7 +216,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
 //    [ShapeFormatterHelper setBorderToView:_socialView withColour:[UIColor blueColor]];
     
-//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blueColor]];
+//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blueColor] andWidth:1.0];
     
 //    [ShapeFormatterHelper setBorderToView:_commentBtn withColour:[UIColor redColor]];
 //    
@@ -434,7 +434,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)setPositionsForVideoWithHeight:(float)height
 {
-    float fixedBottomViewHeight = 412.0f;
+    float fixedBottomViewHeight = 432.0f;
     float backgroundImageViewHeight = 512.0f + height;
     float distanceFromTop = 0.0f;
     
@@ -721,7 +721,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:5];
     
-    
     [ShapeFormatterHelper setBorderToView:_backgroundImageView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0f];
     
     [ShapeFormatterHelper setCornerRadiusWithView:_loadingView andValue:5];
@@ -767,18 +766,14 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     if(_post.liked)
     {
         [_likeBtn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
-        
         //Add the thumbs up selected version of image.
         [_likeBtn setImage:[UIImage imageNamed:@"icon_like_pushed"] forState:UIControlStateNormal];
-        
     }
     else
     {
         [_likeBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        
         //Add the thumbs up selected version of i   age.
         [_likeBtn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
-        
     }
 }
 

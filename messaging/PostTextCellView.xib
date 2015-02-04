@@ -340,7 +340,7 @@
                 <outlet property="mainView" destination="lnW-OL-CTy" id="egu-bS-8tj"/>
                 <outlet property="topView" destination="eJM-2L-W3q" id="GhG-b0-2hb"/>
             </connections>
-            <point key="canvasLocation" x="366" y="268.5"/>
+            <point key="canvasLocation" x="-121" y="95.5"/>
         </tableViewCell>
     </objects>
     <resources>
