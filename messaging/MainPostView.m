@@ -247,86 +247,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
 }
 
-
--(void)setNewHeightDependingOnLabelHeight:(float)height andIsViewPost:(BOOL)isViewPost
-{
-    
-//    if([_post isVideoPost] && !isViewPost)
-//    {
-//        [self setPositionsOfVideo];
-//        
-//        return;
-//    }
-    
-    float fixedTopBackgroundHeight = 0.0f;
-    float fixedBottomViewHeight = 0.0f;
-    float backgroundImageViewHeight = 0.0f;
-
-    
-    if([_post imagePost])
-    {
-        fixedTopBackgroundHeight = FIXED_TOP_MEDIA_BACKGROUND_HEIGHT;
-        fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
-        backgroundImageViewHeight = 390.0f + height;
-    }
-    else if ([_post isVideoPost])
-    {
-        backgroundImageViewHeight = 510.0f;
-//        [_backgroundImageHeight setConstant:backgroundImageViewHeight];
-        
-    }
-    else
-    {
-        fixedTopBackgroundHeight = FIXED_TOP_TEXT_BACKGROUND_HEIGHT;
-        fixedBottomViewHeight = FIXED_BOTTOM_TEXT_VIEW_HEIGHT;
-        backgroundImageViewHeight = 190.0f + height;
-    }
-    
-    if([self isCurrentPostEvent])
-    {
-        [_backgroundImageHeight setConstant:backgroundImageViewHeight];
-        
-        [_postImageDistanceFromTopConstrain setConstant:7];
-//        [_postImageDistanceFromLeftConstrain setConstant:0];
-        
-//        [_postImageWidthConstrain setConstant:300];
-
-    }
-    else if(![self isCurrentPostEvent])
-    {
-        [_backgroundImageHeight setConstant:backgroundImageViewHeight - 85.0f];
-
-        
-        [_postImageDistanceFromTopConstrain setConstant:10];
-
-//        [_postImageDistanceFromLeftConstrain setConstant:0];
-        
-//        [_postImageWidthConstrain setConstant:280];
-    }
-    
-    [_contentLabelHeightConstrain setConstant:height];
-    
-//    [_topBackgroundHeightConstrain setConstant:height+ (_mediaAvailable) ? FIXED_TOP_MEDIA_BACKGROUND_HEIGHT : FIXED_TOP_TEXT_BACKGROUND_HEIGHT];
-    
-
-//    [_topBackgroundHeightConstrain setConstant:height + fixedTopBackgroundHeight];
-
-    
-//    [_distanceFromTopView setConstant:16];
-
-    if([self isCurrentPostEvent])
-    {
-        [self.distanceFromTop setConstant:85]; //81
-    }
-    else
-    {
-        [self.distanceFromTop setConstant:25];
-    }
-
-    [self.mainViewHeight setConstant:height + fixedBottomViewHeight];
-
-}
-
 -(void)setHeightDependingOnLabelHeight:(float)height andIsViewPost:(BOOL)isViewPost
 {
     if([_post imagePost])
@@ -347,10 +267,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
 {
     float distanceFromTop = 0.0f;
     float fixedBottomViewHeight = FIXED_BOTTOM_TEXT_VIEW_HEIGHT;
-    float backgroundImageViewHeight = 0.0f;
-
-    backgroundImageViewHeight = 210.0f + height; //190
-
+    float backgroundImageViewHeight = 213.0f + height;
     
     if([self isCurrentPostEvent])
     {
