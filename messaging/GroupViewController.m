@@ -1663,7 +1663,9 @@ const float TOP_OFF_SET = -64.0;
     if(buttonType == kButtonRight)
     {
         //Navigate to members view controller.
-        [self performSegueWithIdentifier:@"view members" sender:self];
+//        [self performSegueWithIdentifier:@"view members" sender:self];
+
+        DDLogDebug(@"GroupViewController : Navigate to messenger");
         
     }
     else if(buttonType == kButtonLeft)

@@ -85,7 +85,7 @@ const float DESCR_LBL_WIDTH = 290;
     GLPSegmentView *view = [array lastObject];
     view.tag = 100;
     [view setDelegate:self];
-    [view setRightButtonTitle:@"Members" andLeftButtonTitle:@"Posts"];
+    [view setRightButtonTitle:@"Messenger" andLeftButtonTitle:@"Newsfeed"];
     [view setSlideAnimationEnabled:NO];
 
     [_segmentView addSubview:view];
