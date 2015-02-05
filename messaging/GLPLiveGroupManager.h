@@ -38,6 +38,7 @@
 
 - (void)newGroupToBeCreated:(GLPGroup *)pendingGroup withTimestamp:(NSDate *)timestamp;
 - (void)updateGroupAfterCreated:(GLPGroup *)createdGroup;
+- (void)clearData;
 
 - (ChangeGroupImageProgressView *)progressViewWithGroup:(GLPGroup *)group;
 

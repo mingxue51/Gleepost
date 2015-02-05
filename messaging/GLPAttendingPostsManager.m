@@ -100,16 +100,15 @@
  post.
  
  @param post the post to be deleted.
- @return post's index path.
+ 
+ @return a dictionary contains post's index path with key: index_path and a boolean variable that 
+        indicates if a sections needs to be deleted with key: delete_section.
  */
-- (NSIndexPath *)removePostWithPost:(GLPPost *)post
+- (NSDictionary *)removePostWithPost:(GLPPost *)post
 {
     [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
-    
-    NSIndexPath *postIndexPath = [_attendingPostsOrganiserHelper indexPathWithPost:post];
-    
-    [_attendingPostsOrganiserHelper removePost:post];
-    
+    NSDictionary *indexPathDeletedSection = [_attendingPostsOrganiserHelper removePost:post];
+
     for(int index = 0; index < _events.count; ++index)
     {
         GLPPost *p = [_events objectAtIndex:index];
@@ -118,11 +117,11 @@
         {
             [_events removeObject:p];
             
-            return postIndexPath;
+            return indexPathDeletedSection;
         }
     }
     
-    return postIndexPath;
+    return indexPathDeletedSection;
 }
 
 - (NSIndexPath *)updatePostWithRemoteKey:(NSInteger)postRemoteKey andViewsCount:(NSInteger)viewsCount

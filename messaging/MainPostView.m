@@ -968,9 +968,13 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
 {
     if(_goingBtn.tag == 1)
     {
+        DDLogDebug(@"MainPostView : goingToEvent");
+
         //Not attend.
         [self notAttendingToEvent];
         [self makeButtonUnselected];
+        [self sendNotificationGoingUnpressed];
+        
     }
     else if(_goingBtn.tag == 2)
     {
@@ -1021,7 +1025,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
         _post.finalImage = _postImageView.image;
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post":_post}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post" : _post}];
+}
+
+- (void)sendNotificationGoingUnpressed
+{    
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_UNTOUCHED object:self userInfo:@{@"post" : _post}];
 }
 
 - (void)notifyToRefreshThePostInCampusWall

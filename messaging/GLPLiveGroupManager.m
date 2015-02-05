@@ -64,19 +64,21 @@ static GLPLiveGroupManager *instance = nil;
     
     if(self)
     {
-        _groups = [[NSMutableArray alloc] init];
-        _queue = dispatch_queue_create("com.gleepost.queue.livegroups", DISPATCH_QUEUE_SERIAL);
-        _unreadPostGroups = [[NSMutableDictionary alloc] init];
-        _pendingGroupImagesProgressViews = [[NSMutableDictionary alloc] init];
-        _pendingGroupTimestamps = [[NSMutableDictionary alloc] init];
-        _pendingGroups = [[NSMutableDictionary alloc] init];
-        _searchGroupsHelper = [[GLPSearchGroups alloc] init];
-        
-//        _changeImageProgressView = [[ChangeGroupImageProgressView alloc] init];
-
+        [self initialiseObjects];
     }
     
     return self;
+}
+
+- (void)initialiseObjects
+{
+    _groups = [[NSMutableArray alloc] init];
+    _queue = dispatch_queue_create("com.gleepost.queue.livegroups", DISPATCH_QUEUE_SERIAL);
+    _unreadPostGroups = [[NSMutableDictionary alloc] init];
+    _pendingGroupImagesProgressViews = [[NSMutableDictionary alloc] init];
+    _pendingGroupTimestamps = [[NSMutableDictionary alloc] init];
+    _pendingGroups = [[NSMutableDictionary alloc] init];
+    _searchGroupsHelper = [[GLPSearchGroups alloc] init];
 }
 
 /**
@@ -324,6 +326,11 @@ static GLPLiveGroupManager *instance = nil;
     
 
     [self loadInitialGroups];
+}
+
+- (void)clearData
+{
+    [self initialiseObjects];
 }
 
 #pragma mark - Search groups

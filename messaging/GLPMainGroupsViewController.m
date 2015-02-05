@@ -91,6 +91,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupImageChanged:) name:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_FINISHED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(popUpSearchGroupsView) name:GLPNOTIFICATION_SEARCH_FOR_GROUPS object:nil];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeDeallocNotifications) name:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:nil];
 
 }
 
@@ -102,6 +103,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_FINISHED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SEARCH_FOR_GROUPS object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:nil];
 }
 
 #pragma mark - TableView

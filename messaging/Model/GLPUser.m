@@ -1,5 +1,7 @@
 #import "GLPUser.h"
 
+#import "SessionManager.h"
+
 @implementation GLPUser
 
 @synthesize name=_name;
@@ -65,6 +67,11 @@
 - (BOOL)hasProfilePicture
 {
     return _profileImageUrl && ![_profileImageUrl isEqualToString:@""];
+}
+
+- (BOOL)isLoggedInUser
+{
+    return [[SessionManager sharedInstance] user].remoteKey == self.remoteKey;
 }
 
 /**

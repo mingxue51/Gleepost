@@ -1298,7 +1298,7 @@
             <objects>
                 <viewController id="ehh-13-xca" customClass="ChangePasswordViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2UA-ko-R9F">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Existing password" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" id="V4I-Og-G0a">
@@ -1335,7 +1335,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="QOM-R0-AGN">
-                                <rect key="frame" x="10" y="274" width="300" height="50"/>
+                                <rect key="frame" x="10" y="225" width="300" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="19"/>
                                 <state key="normal" title="CHANGE PASSWORD" backgroundImage="change_pass_name.png">
@@ -5108,7 +5108,7 @@
         <image name="add_to_calendar_button_background.png" width="520" height="100"/>
         <image name="back.png" width="23" height="37"/>
         <image name="back_black.png" width="23" height="37"/>
-        <image name="back_final.png" width="25" height="25"/>
+        <image name="back_final.png" width="25" height="20"/>
         <image name="bird-house-7.png" width="25" height="23"/>
         <image name="camera_front_back.png" width="74" height="58"/>
         <image name="camera_top_button.png" width="190" height="95"/>
@@ -5200,25 +5200,25 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="rCT-Ex-vO8"/>
         <segue reference="GTC-XV-iI1"/>
-        <segue reference="2ju-Ui-QdM"/>
+        <segue reference="sMz-ia-ebt"/>
         <segue reference="uet-Cl-mZq"/>
+        <segue reference="hfC-fm-BOR"/>
         <segue reference="KgO-oz-Ivb"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="j6r-TK-6Al"/>
-        <segue reference="HwX-gN-njw"/>
         <segue reference="C5K-bl-yN1"/>
+        <segue reference="rCT-Ex-vO8"/>
+        <segue reference="HwX-gN-njw"/>
+        <segue reference="j6r-TK-6Al"/>
+        <segue reference="XMX-SH-Gag"/>
         <segue reference="2GR-ci-jSQ"/>
+        <segue reference="PMB-JP-q3M"/>
+        <segue reference="NSy-Xb-H1O"/>
+        <segue reference="Nh6-Tl-qmR"/>
+        <segue reference="Q9z-xI-t0V"/>
+        <segue reference="TeO-Fd-Ort"/>
+        <segue reference="Wgm-iJ-ADQ"/>
+        <segue reference="6aM-BE-RDh"/>
         <segue reference="8oh-gD-Cs7"/>
         <segue reference="b0z-f7-UHU"/>
-        <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="NSy-Xb-H1O"/>
-        <segue reference="PMB-JP-q3M"/>
-        <segue reference="Q9z-xI-t0V"/>
-        <segue reference="cxq-Lw-xeo"/>
-        <segue reference="bx4-ky-xRT"/>
-        <segue reference="6aM-BE-RDh"/>
-        <segue reference="Bj7-0B-AKW"/>
     </inferredMetricsTieBreakers>
 </document>

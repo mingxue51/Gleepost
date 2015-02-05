@@ -26,6 +26,7 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "GLPPendingPostsManager.h"
 #import "CategoryManager.h"
+#import "GLPLiveGroupManager.h"
 
 @implementation GLPLoginManager
 
@@ -235,6 +236,10 @@
     [[SDImageCache sharedImageCache] clearDisk];
 
     [[GLPPendingPostsManager sharedInstance] clean];
+    
+    [[GLPLiveGroupManager sharedInstance] clearData];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:self];
     
     [[GLPPushManager sharedInstance] unregisterPushTokenWithAuthParams:authParams];
 }
