@@ -321,13 +321,13 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 	self.formTextView.delegate = self;
     self.formTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     
-    self.formTextView.backgroundColor = [AppearanceHelper borderMessengerGleepostColour];
+    self.formTextView.backgroundColor = [AppearanceHelper lightGrayGleepostColour];
+    [ShapeFormatterHelper setBorderToView:self.formTextView withColour:[AppearanceHelper borderMessengerGleepostColour] andWidth:0.5];
     self.formTextView.placeholder = @"Type a message...";
     
     self.formTextView.tag = 100;
     
     self.formTextView.layer.cornerRadius = 3;
-    
     [self.formView setGleepostStyleTopBorder];
 }
 

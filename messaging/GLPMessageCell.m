@@ -49,6 +49,8 @@ static const CGFloat kSideMarginIncludingProfileImage = kProfileImageViewSideMar
 static const CGFloat kTopMargin = 0;
 static const CGFloat kBottomMargin = 2; //7
 
+static const CGFloat kTextSize = 15;
+
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -114,7 +116,7 @@ static const CGFloat kBottomMargin = 2; //7
 //        imageView.layer.borderWidth = 2;
         
         UILabel *label = [UILabel new];
-        label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:17]; //16
+        label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize]; //16
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByWordWrapping;
         
@@ -294,7 +296,7 @@ static const CGFloat kBottomMargin = 2; //7
 
 + (CGSize)contentLabelSizeForMessage:(GLPMessage *)message
 {
-    UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:17];
+    UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:message.content attributes:@{NSFontAttributeName: font}];
     
