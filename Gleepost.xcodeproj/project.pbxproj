@@ -659,7 +659,8 @@
 		58D3D738182ADB4200DE2925 /* TransitionDelegateViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */; };
 		58D4FF3219A53093006E7AC8 /* GLPVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D4FF3119A53093006E7AC8 /* GLPVideo.m */; };
 		58D612B4184E63C100915B51 /* mascot_stanford.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D612B3184E63C100915B51 /* mascot_stanford.png */; };
-		58D70D501A83C9C70023B478 /* back_final@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D70D4F1A83C9C70023B478 /* back_final@2x.png */; };
+		58D70D501A83C9C70023B478 /* back_final_new_old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D70D4F1A83C9C70023B478 /* back_final_new_old@2x.png */; };
+		58D70D541A84C6D40023B478 /* back_final@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D70D531A84C6D40023B478 /* back_final@2x.png */; };
 		58D7B09E1A004DE300A9A48C /* gleepost_login_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7B09D1A004DE300A9A48C /* gleepost_login_logo.png */; };
 		58D7F76519A2A98F00C39A4C /* location_top_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7F76419A2A98F00C39A4C /* location_top_button.png */; };
 		58D7F76719A2A9B500C39A4C /* camera_top_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7F76619A2A9B500C39A4C /* camera_top_button.png */; };
@@ -1873,7 +1874,8 @@
 		58D4FF3019A53093006E7AC8 /* GLPVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideo.h; sourceTree = "<group>"; };
 		58D4FF3119A53093006E7AC8 /* GLPVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideo.m; sourceTree = "<group>"; };
 		58D612B3184E63C100915B51 /* mascot_stanford.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mascot_stanford.png; sourceTree = "<group>"; };
-		58D70D4F1A83C9C70023B478 /* back_final@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_final@2x.png"; sourceTree = "<group>"; };
+		58D70D4F1A83C9C70023B478 /* back_final_new_old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_final_new_old@2x.png"; sourceTree = "<group>"; };
+		58D70D531A84C6D40023B478 /* back_final@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_final@2x.png"; sourceTree = "<group>"; };
 		58D7B09D1A004DE300A9A48C /* gleepost_login_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gleepost_login_logo.png; sourceTree = "<group>"; };
 		58D7F76419A2A98F00C39A4C /* location_top_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_top_button.png; sourceTree = "<group>"; };
 		58D7F76619A2A9B500C39A4C /* camera_top_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_top_button.png; sourceTree = "<group>"; };
@@ -3309,7 +3311,8 @@
 		58729ACB189BFDFE0041022C /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
-				58D70D4F1A83C9C70023B478 /* back_final@2x.png */,
+				58D70D531A84C6D40023B478 /* back_final@2x.png */,
+				58D70D4F1A83C9C70023B478 /* back_final_new_old@2x.png */,
 				58D301D51989BC37003EC08B /* back_final_glow@2x.png */,
 				5890248C195DC78F00084E2F /* back_final_old@2x.png */,
 				58902486195D9D6400084E2F /* back_final1@2x.png */,
@@ -5841,6 +5844,7 @@
 				5806C75D191BF603005C907E /* notification_btn_selected.png in Resources */,
 				58902495195DCA0A00084E2F /* no_category.png in Resources */,
 				582A664018AB9BC400006419 /* bar2.png in Resources */,
+				58D70D541A84C6D40023B478 /* back_final@2x.png in Resources */,
 				589024A0195DF1ED00084E2F /* message_button_old.png in Resources */,
 				58299B8119FA170000702381 /* empty_messenger.png in Resources */,
 				588F1DC919EDD21C00DB6D23 /* add_to_calendar_button_background.png in Resources */,
@@ -5972,7 +5976,7 @@
 				58FB7CA5185649D3002C6A00 /* accept.png in Resources */,
 				583D582719290A36003FAEC7 /* separator_line.png in Resources */,
 				587F2E0219436773001F0931 /* verification_minimize.png in Resources */,
-				58D70D501A83C9C70023B478 /* back_final@2x.png in Resources */,
+				58D70D501A83C9C70023B478 /* back_final_new_old@2x.png in Resources */,
 				58E3DAC11884059100B9B048 /* cloud3.png in Resources */,
 				58289EED18D7503100228EFF /* post_bg.png in Resources */,
 				5843328B180F069800BD9F74 /* Gleepost_main.png in Resources */,

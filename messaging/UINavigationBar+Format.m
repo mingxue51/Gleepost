@@ -125,6 +125,8 @@
 //    self.backgroundColor = [UIColor clearColor];
     self.topItem.titleView = nil;
     self.topItem.title = @"";
+    [self setTintColor:[AppearanceHelper blueGleepostColour]];
+
 }
 
 - (void)makeVisibleWithTitle:(NSString *)title
