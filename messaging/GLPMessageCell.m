@@ -108,7 +108,6 @@ static const CGFloat kBottomMargin = 2; //7
         imageView.layer.masksToBounds = YES;
 //        imageView.layer.cornerRadius = 12.0;
         [ShapeFormatterHelper setCornerRadiusWithView:imageView andValue:4];
-        [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderMessengerGleepostColour] andWidth:0.5];
         
         
 //        imageView.layer.borderColor = [[UIColor colorWithRed:3.0/255.0 green:215.0/255.0 blue:215.0/255.0 alpha:1.0] CGColor];
@@ -247,6 +246,8 @@ static const CGFloat kBottomMargin = 2; //7
         imageView.hidden = YES;
         label.textColor = [UIColor blackColor];
         label.backgroundColor = [UIColor clearColor];
+        [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderMessengerGleepostColour] andWidth:0.5];
+
     } else {
 //        view.backgroundColor = [UIColor clearColor];
         imageView.hidden = YES;
@@ -254,6 +255,11 @@ static const CGFloat kBottomMargin = 2; //7
 //        label.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor];
+        
+        UIColor *c = [AppearanceHelper borderBlueMessengerGleepostColour];
+        
+        [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderBlueMessengerGleepostColour] andWidth:0.5];
+
     }
     
     
