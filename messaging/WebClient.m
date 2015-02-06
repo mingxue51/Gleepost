@@ -742,12 +742,19 @@ static WebClient *instance = nil;
     }];
 }
 
--(void)userPostsWithRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
+-(void)loadUserPostsAfter:(GLPPost *)post withRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
 {
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:self.sessionManager.authParameters];
+    
+    if(post)
+    {
+        [params setObject:@(post.remoteKey) forKey:@"after"];
+    }
+    
     
     NSString *path = [NSString stringWithFormat:@"user/%d/posts",remoteKey];
     
-    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
         callbackBlock(YES, posts);

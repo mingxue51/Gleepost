@@ -661,6 +661,9 @@
 		58D612B4184E63C100915B51 /* mascot_stanford.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D612B3184E63C100915B51 /* mascot_stanford.png */; };
 		58D70D501A83C9C70023B478 /* back_final_new_old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D70D4F1A83C9C70023B478 /* back_final_new_old@2x.png */; };
 		58D70D541A84C6D40023B478 /* back_final@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D70D531A84C6D40023B478 /* back_final@2x.png */; };
+		58D70D581A8513400023B478 /* ProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D70D571A8513400023B478 /* ProfileManager.m */; };
+		58D70D5B1A8525BD0023B478 /* LoggedInUserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D70D5A1A8525BD0023B478 /* LoggedInUserProfileManager.m */; };
+		58D70D5E1A8525C90023B478 /* UserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D70D5D1A8525C90023B478 /* UserProfileManager.m */; };
 		58D7B09E1A004DE300A9A48C /* gleepost_login_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7B09D1A004DE300A9A48C /* gleepost_login_logo.png */; };
 		58D7F76519A2A98F00C39A4C /* location_top_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7F76419A2A98F00C39A4C /* location_top_button.png */; };
 		58D7F76719A2A9B500C39A4C /* camera_top_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7F76619A2A9B500C39A4C /* camera_top_button.png */; };
@@ -1876,6 +1879,12 @@
 		58D612B3184E63C100915B51 /* mascot_stanford.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mascot_stanford.png; sourceTree = "<group>"; };
 		58D70D4F1A83C9C70023B478 /* back_final_new_old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_final_new_old@2x.png"; sourceTree = "<group>"; };
 		58D70D531A84C6D40023B478 /* back_final@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_final@2x.png"; sourceTree = "<group>"; };
+		58D70D561A8513400023B478 /* ProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileManager.h; sourceTree = "<group>"; };
+		58D70D571A8513400023B478 /* ProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileManager.m; sourceTree = "<group>"; };
+		58D70D591A8525BD0023B478 /* LoggedInUserProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoggedInUserProfileManager.h; sourceTree = "<group>"; };
+		58D70D5A1A8525BD0023B478 /* LoggedInUserProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoggedInUserProfileManager.m; sourceTree = "<group>"; };
+		58D70D5C1A8525C90023B478 /* UserProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileManager.h; sourceTree = "<group>"; };
+		58D70D5D1A8525C90023B478 /* UserProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileManager.m; sourceTree = "<group>"; };
 		58D7B09D1A004DE300A9A48C /* gleepost_login_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gleepost_login_logo.png; sourceTree = "<group>"; };
 		58D7F76419A2A98F00C39A4C /* location_top_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_top_button.png; sourceTree = "<group>"; };
 		58D7F76619A2A9B500C39A4C /* camera_top_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_top_button.png; sourceTree = "<group>"; };
@@ -4128,6 +4137,19 @@
 			name = "Transition Delegate View Image Post";
 			sourceTree = "<group>";
 		};
+		58D70D551A85132C0023B478 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				58D70D561A8513400023B478 /* ProfileManager.h */,
+				58D70D571A8513400023B478 /* ProfileManager.m */,
+				58D70D591A8525BD0023B478 /* LoggedInUserProfileManager.h */,
+				58D70D5A1A8525BD0023B478 /* LoggedInUserProfileManager.m */,
+				58D70D5C1A8525C90023B478 /* UserProfileManager.h */,
+				58D70D5D1A8525C90023B478 /* UserProfileManager.m */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
 		58DC02381804377D0008993A /* New Chat Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -5020,6 +5042,7 @@
 		80AB894A17C26EC10053E784 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				58D70D551A85132C0023B478 /* Profile */,
 				58E97CF71A8111CA0076F990 /* Attending */,
 				58ECE0D31A241DCD00B38FBA /* Approval */,
 				5851112719A7E2FF00488E79 /* Progress */,
@@ -6104,6 +6127,7 @@
 				58D3D738182ADB4200DE2925 /* TransitionDelegateViewImage.m in Sources */,
 				80AB893617C267F50053E784 /* messaging.xcdatamodeld in Sources */,
 				581C311A188EFE0400BAA082 /* GLPCategoryDaoParser.m in Sources */,
+				58D70D5E1A8525C90023B478 /* UserProfileManager.m in Sources */,
 				58DB02871810391F001C021A /* NSMutableArray+QueueAdditions.m in Sources */,
 				5841315C17FEE97D00A3278D /* NewCommentView.m in Sources */,
 				58273F1A1A26895C00425605 /* GLPPendingPostsViewController.m in Sources */,
@@ -6177,6 +6201,7 @@
 				5863179D19872E96006D79E2 /* GLPStretchedImageView.m in Sources */,
 				582127901891627D00BF36E5 /* VSScrollViewCell.m in Sources */,
 				5885A66719190A18009FEAD4 /* EmptyMessage.m in Sources */,
+				58D70D5B1A8525BD0023B478 /* LoggedInUserProfileManager.m in Sources */,
 				588DE5DA18A96552001D344D /* PickDateEventViewController.m in Sources */,
 				58808EFD1807070D00E415C1 /* FadeInCustomSegue.m in Sources */,
 				80AB894917C26EB50053E784 /* WebClient.m in Sources */,
@@ -6479,6 +6504,7 @@
 				58A855C11949BA8C0059CF57 /* GLPButton.m in Sources */,
 				8087E42F180EC02E00938264 /* Comment.m in Sources */,
 				5887C7E119FDA52A004441B9 /* AttendingPostsOrganiserHelper.m in Sources */,
+				58D70D581A8513400023B478 /* ProfileManager.m in Sources */,
 				589EFD9F182D38CA00EBEB2E /* GLPLiveUserDao.m in Sources */,
 				58B3A2FE1A254F180082AE81 /* GLPPendingCell.m in Sources */,
 				583192FC19B584E4000E86D7 /* GLPLocation.m in Sources */,

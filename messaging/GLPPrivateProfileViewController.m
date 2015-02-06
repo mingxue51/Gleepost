@@ -39,6 +39,7 @@
 #import "GLPAttendingPostsViewController.h"
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPCampusWallAsyncProcessor.h"
+#import "UserProfileManager.h"
 
 @interface GLPPrivateProfileViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -52,11 +53,9 @@
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
-@property (strong, nonatomic) NSArray *posts;
+//@property (strong, nonatomic) NSArray *posts;
 
 @property (assign, nonatomic) GLPSelectedTab selectedTabStatus;
-
-@property (assign, nonatomic) BOOL contact;
 
 //Used when there is new comment.
 @property (assign, nonatomic) BOOL commentCreated;
@@ -78,6 +77,8 @@
 @property (strong, nonatomic) GLPTrackViewsCountProcessor *trackViewsCountProcessor;
 @property (strong, nonatomic) GLPCampusWallAsyncProcessor *campusWallAsyncProcessor;
 
+@property (strong, nonatomic) UserProfileManager *userProfileManager;
+
 @end
 
 @implementation GLPPrivateProfileViewController
@@ -88,55 +89,13 @@
     
     [self configureView];
 
-    
     self.tableView.allowsSelectionDuringEditing=YES;
-    
-    
-//    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
-    // [self loadPosts];
-    
-    //If no, check in database if the user is already requested.
-    
-    //If yes change the button of add user to user already requested.
-    
-    //Check if the user is already in contacts.
-    
-    if([[ContactsManager sharedInstance] isUserContactWithId:self.selectedUserId])
-    {
-        self.contact = YES;
-    }
-    else
-    {
-        if([[ContactsManager sharedInstance] isContactWithIdRequested:self.selectedUserId])
-        {
-            //            NSLog(@"PrivateProfileViewController : User already requested by you.");
-            //[self setContactAsRequested];
-            
-        }
-        else if ([[ContactsManager sharedInstance]isContactWithIdRequestedYou:self.selectedUserId])
-        {
-            //            NSLog(@"PrivateProfileViewController : User requested you.");
-            
-            //[self setAcceptRequestButton];
-            
-        }
-        else
-        {
-            //If not show the private profile view as is.
-            //            NSLog(@"PrivateProfileViewController : Private profile as is.");
-        }
-        
-        self.contact = NO;
-    }
-    
     
     [self registerTableViewCells];
     
     [self initialiseObjects];
     
     [self loadUsersInformation];
-
-    
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -194,12 +153,12 @@
     self.numberOfRows = 1;
     self.profileImage = nil;
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
-    self.posts = [[NSArray alloc] init];
     _emptyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     _selectedLocation = nil;
     _transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
     _trackViewsCountProcessor = [[GLPTrackViewsCountProcessor alloc] init];
     _campusWallAsyncProcessor = [[GLPCampusWallAsyncProcessor alloc] init];
+    _userProfileManager = [[UserProfileManager alloc] initWithUsersRemoteKey:self.selectedUserId];
 }
 
 - (void)configureNotifications
@@ -207,13 +166,27 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goingButtonTouchedWithNotification:) name:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    [self configureManagerNotifications];
  }
+
+- (void)configureManagerNotifications
+{
+    NSString *notificationName = [ProfileManager notificationNameWithUserRemoteKey:self.selectedUserId];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postsLoaded:) name:notificationName object:nil];
+}
 
 - (void)removeNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    [self removeManagerNotifications];
+}
+
+- (void)removeManagerNotifications
+{
+    NSString *notificationName = [ProfileManager notificationNameWithUserRemoteKey:self.selectedUserId];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
 }
 
 
@@ -299,17 +272,20 @@
 
 -(void)loadUsersInformation
 {
-    if(self.contact)
-    {
-        //If the user is contact then load data from ContactsManager.
-        [self loadAndSetContactDetails];
-        
-    }
-    else
-    {
-        //Load user's details from server.
-        [self loadAndSetUserDetails];
-    }
+    //Load user's details from server.
+    [self loadAndSetUserDetails];
+    
+//    if(self.contact)
+//    {
+//        //If the user is contact then load data from ContactsManager.
+//        [self loadAndSetContactDetails];
+//        
+//    }
+//    else
+//    {
+//        //Load user's details from server.
+//        [self loadAndSetUserDetails];
+//    }
 }
 
 - (void)hideNetworkErrorViewIfNeeded
@@ -326,9 +302,7 @@
 
 
 /**
- 
  Loads first user from local database and then from server.
- 
  */
 
 -(void)loadAndSetUserDetails
@@ -384,29 +358,31 @@
 
 - (void)loadPosts
 {
-    [GLPPostManager loadPostsWithRemoteKey:self.profileUser.remoteKey localCallback:^(NSArray *posts) {
-        
-        
-        
-    } remoteCallback:^(BOOL success, NSArray *posts) {
-       
-        if(success)
-        {
-            self.posts = [posts mutableCopy];
-            
-            [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
-            
-            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
-            
-            //TODO: Remove.
-            [self.tableView reloadData];
-        }
-        else
-        {
-            [WebClientHelper loadingPostsError];
-        }
-        
-    }];
+    [_userProfileManager getPosts];
+    
+//    [GLPPostManager loadPostsWithRemoteKey:self.profileUser.remoteKey localCallback:^(NSArray *posts) {
+//        
+//        
+//        
+//    } remoteCallback:^(BOOL success, NSArray *posts) {
+//       
+//        if(success)
+//        {
+//            self.posts = [posts mutableCopy];
+//            
+//            [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
+//            
+//            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+//            
+//            //TODO: Remove.
+//            [self.tableView reloadData];
+//        }
+//        else
+//        {
+//            [WebClientHelper loadingPostsError];
+//        }
+//        
+//    }];
 }
 
 #pragma mark - UI methods
@@ -777,6 +753,23 @@
 }
 
 #pragma mark - Notification methods
+
+/**
+ Method is called once the posts data fetched via UserProfileManager
+ 
+ @param notification NSNotification containing if posts fetched properly or not.
+ 
+ */
+- (void)postsLoaded:(NSNotification *)notification
+{
+    BOOL success = [notification.userInfo[@"success"] boolValue];
+    
+    if(success)
+    {
+        [self.tableView reloadData];
+    }
+}
+
 
 /**
  This method is called when there is an update in views count.

@@ -16,7 +16,7 @@
 @interface GLPPrivateProfileViewController : UITableViewController<NewCommentDelegate, GLPPostCellDelegate, PrivateProfileTopViewCellDelegate>
 
 
-@property (assign, nonatomic) int selectedUserId;
+@property (assign, nonatomic) NSInteger selectedUserId;
 @property (assign, nonatomic) BOOL showComment;
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab;
