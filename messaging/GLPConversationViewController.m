@@ -312,7 +312,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 - (void)configureForm
 {
     self.formTextView.isScrollable = NO;
-//    self.formTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
+    self.formTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
 	self.formTextView.minNumberOfLines = 1;
 	self.formTextView.maxNumberOfLines = 4;
     self.formTextView.minHeight = 36;
@@ -322,27 +322,13 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     self.formTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     
     self.formTextView.backgroundColor = [AppearanceHelper borderMessengerGleepostColour];
-    self.formTextView.placeholder = @"Type a message";
-    
-
-    // center vertically because textview height varies from ios version to screen
-//
-//    formTextViewFrame.origin.y = (self.formView.frame.size.height - self.formTextView.frame.size.height) / 2;
-//    self.formTextView.frame = formTextViewFrame;
-//    CGRectSetH(self.formTextView, 35.0);
+    self.formTextView.placeholder = @"Type a message...";
     
     self.formTextView.tag = 100;
     
     self.formTextView.layer.cornerRadius = 3;
     
     [self.formView setGleepostStyleTopBorder];
-    CGRect formTextViewFrame = self.formTextView.frame;
-
-    DDLogDebug(@"Form Text View height %f : y %f -> %f", formTextViewFrame.size.height, formTextViewFrame.origin.y, _formView.frame.size.height);
-    
-//    self.formTextView.inputAccessoryView  [[UIView alloc] init];
-    
-//    [ShapeFormatterHelper setCornerRadiusWithView:self.formTextView.internalTextView andValue:5];
 }
 
 - (void)configureTableView

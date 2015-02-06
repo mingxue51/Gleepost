@@ -255,11 +255,7 @@ static const CGFloat kBottomMargin = 2; //7
 //        label.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor];
-        
-        UIColor *c = [AppearanceHelper borderBlueMessengerGleepostColour];
-        
         [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderBlueMessengerGleepostColour] andWidth:0.5];
-
     }
     
     

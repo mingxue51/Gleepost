@@ -218,7 +218,7 @@
 
 + (UIColor *)borderBlueMessengerGleepostColour
 {
-    return [UIColor colorWithR:52.0 withG:118.0 andB:161.0];
+    return [UIColor colorWithR:64.0 withG:145.0 andB:199.0];
 }
 
 + (UIColor *)greenGleepostColour
