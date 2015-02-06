@@ -23,6 +23,7 @@
 #import "GLPLoadingCell.h"
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPAttendingPostsManager.h"
+#import "GLPShowLocationViewController.h"
 
 @interface GLPAttendingPostsViewController () <RemovePostCellDelegate, NewCommentDelegate, ViewImageDelegate, GLPPostCellDelegate>
 
@@ -48,6 +49,8 @@
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
 
 @property (strong, nonatomic) GLPAttendingPostsManager *attendingPostsManager;
+
+@property (strong, nonatomic) GLPLocation *selectedLocation;
 
 @end
 
@@ -452,7 +455,9 @@
 
 - (void)showLocationWithLocation:(GLPLocation *)location
 {
-    DDLogDebug(@"showLocationWithLocation");
+    _selectedLocation = location;
+    
+    [self performSegueWithIdentifier:@"show location" sender:self];
 }
 
 - (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
@@ -605,6 +610,12 @@
         GLPPrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
         
         privateProfileViewController.selectedUserId = self.selectedUserId;
+    }
+    else if ([segue.identifier isEqualToString:@"show location"])
+    {
+        GLPShowLocationViewController *showLocationVC = segue.destinationViewController;
+        
+        showLocationVC.location = _selectedLocation;
     }
 }
 
