@@ -101,13 +101,16 @@ static const CGFloat kBottomMargin = 2; //7
     {
         UIView *view = [UIView new];
 //        view.layer.cornerRadius = 12.0;
-        [ShapeFormatterHelper setCornerRadiusWithView:view andValue:5];
+        [ShapeFormatterHelper setCornerRadiusWithView:view andValue:3];
         
         UIImageView *imageView = [UIImageView new];
         imageView.image = [UIImage imageNamed:@"yourchatbubble4"];
         imageView.layer.masksToBounds = YES;
 //        imageView.layer.cornerRadius = 12.0;
         [ShapeFormatterHelper setCornerRadiusWithView:imageView andValue:4];
+        [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderMessengerGleepostColour] andWidth:0.5];
+        
+        
 //        imageView.layer.borderColor = [[UIColor colorWithRed:3.0/255.0 green:215.0/255.0 blue:215.0/255.0 alpha:1.0] CGColor];
 //        imageView.layer.borderWidth = 2;
         
@@ -251,8 +254,9 @@ static const CGFloat kBottomMargin = 2; //7
 //        label.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor];
-
     }
+    
+    
     
     UIButton *errorButton = self.contentView.subviews[3];
     if(_message.sendStatus == kSendStatusFailure) {

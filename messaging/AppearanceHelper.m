@@ -211,6 +211,11 @@
     return [UIColor colorWithR:52 withG:152 andB:218];
 }
 
++ (UIColor *)borderMessengerGleepostColour
+{
+    return [UIColor colorWithR:234.0 withG:234.0 andB:234.0];
+}
+
 + (UIColor *)greenGleepostColour
 {
     return [UIColor colorWithR:63.0 withG:219.0 andB:188.0];
