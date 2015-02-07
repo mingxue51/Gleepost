@@ -10,4 +10,6 @@
 
 @interface UserProfileManager : ProfileManager
 
+- (void)getUserData;
+
 @end

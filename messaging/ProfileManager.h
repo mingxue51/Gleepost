@@ -12,9 +12,16 @@
 
 @interface ProfileManager : NSObject
 
+@property (assign, nonatomic, readonly) NSInteger userRemoteKey;
+
 - (id)initWithUsersRemoteKey:(NSInteger)userRemoteKey;
 - (void)getPosts;
 - (void)loadPreviousPosts;
-+ (NSString *)notificationNameWithUserRemoteKey:(NSInteger)userRemoteKey;
+- (NSInteger)postsCount;
+- (GLPPost *)postWithIndex:(NSInteger)index;
+- (NSInteger)parseRefreshCellNotification:(NSNotification *)notification;
+- (void)parseAndUpdatedViewsCountPostWithNotification:(NSNotification *)notification withCallbackBlock:(void (^) (NSInteger index))callback;
++ (NSString *)postsNotificationNameWithUserRemoteKey:(NSInteger)userRemoteKey;
++ (NSString *)previousPostsNotificationNameWithUserRemoteKey:(NSInteger)userRemoteKey;
 
 @end
