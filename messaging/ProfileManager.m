@@ -12,11 +12,12 @@
 #import "GLPPostImageLoader.h"
 #import "GLPPostNotificationHelper.h"
 #import "GLPCampusWallAsyncProcessor.h"
+#import "UserProfileManager.h"
 
 @interface ProfileManager ()
 
-@property (strong, nonatomic) NSMutableArray *posts;
 @property (strong, nonatomic) GLPCampusWallAsyncProcessor *campusWallAsyncProcessor;
+@property (assign, nonatomic) BOOL remoteLoadedFinished;
 
 @end
 
@@ -40,6 +41,7 @@
 {
     _campusWallAsyncProcessor = [[GLPCampusWallAsyncProcessor alloc] init];
     _posts = [[NSMutableArray alloc] init];
+    _remoteLoadedFinished = NO;
 }
 
 #pragma mark - Client
@@ -48,20 +50,44 @@
 {
     [GLPPostManager loadPostsWithRemoteKey:_userRemoteKey localCallback:^(NSArray *posts) {
         
+        if(posts.count > 0 && self.posts.count == 0)
+        {
+            self.remoteLoadedFinished = NO;
+            [self setNewPosts:posts];
+            [self sendNotificationWithPostsWithSuccess:YES];
+        }
         
     } remoteCallback:^(BOOL success, NSArray *posts) {
         
         if(success)
         {
-            self.posts = [posts mutableCopy];
-            [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
-            [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+            [self setNewPosts:posts];
         }
         
-        [self sendNotificationWithPostsAndSuccess:success];
+        self.remoteLoadedFinished = YES;
+        [self sendNotificationWithPostsWithSuccess:success];
 
         
     }];
+}
+
+- (void)reloadPosts
+{
+    [self loadInitialPosts];
+}
+
+- (void)setNewPosts:(NSArray *)newPosts
+{
+    _posts = [newPosts mutableCopy];
+    
+    if([self isKindOfClass:[UserProfileManager class]])
+    {
+        DDLogDebug(@"ProfileManager : set fake keys");
+        
+        [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
+    }
+    
+    [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
 }
 
 #pragma mark - Operations
@@ -70,7 +96,7 @@
 {
     if(_posts.count > 0)
     {
-        [self sendNotificationWithPostsAndSuccess:YES];
+        [self sendNotificationWithPostsWithSuccess:YES];
     }
 }
 
@@ -134,47 +160,54 @@
     NSInteger postRemoteKey = [notification.userInfo[@"PostRemoteKey"] integerValue];
     NSInteger viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
     
-    [_campusWallAsyncProcessor parseAndUpdatedViewsCountPostWithPostRemoteKey:postRemoteKey andPosts:_posts withCallbackBlock:^(NSInteger index) {
-                
-        if(index != -1)
-        {
-            GLPPost *post = [self.posts objectAtIndex:index];
-            post.viewsCount = viewsCount;
-            
-            if([post isVideoPost])
-            {
-                callback(-1);
-            }
-        }
-        
+    NSInteger index = [_campusWallAsyncProcessor findIndexFromPostsArray:_posts withPostRemoteKey:postRemoteKey];
+    
+    GLPPost *post = nil;
+    
+    if(index != -1)
+    {
+        post = [self.posts objectAtIndex:index];
+        post.viewsCount = viewsCount;
+    }
+    else
+    {
+        callback(-1);
+    }
+    
+    if([post isVideoPost])
+    {
+        callback(-1);
+    }
+    else
+    {
         callback(index);
-        
-    }];
+    }
+
 }
 
 #pragma mark - Post notifications
 
-- (void)sendNotificationWithPostsAndSuccess:(BOOL)success
+- (void)sendNotificationWithPostsWithSuccess:(BOOL)success
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:[ProfileManager postsNotificationNameWithUserRemoteKey:_userRemoteKey] object:self userInfo:@{@"success" : @(success)}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:[self postsNotificationName] object:self userInfo:@{@"success" : @(success), @"remote" : @(self.remoteLoadedFinished)}];
 }
 
 - (void)sendNotificationWithPreviousPosts:(NSArray *)previousPosts withRemain:(BOOL)remain andSuccess:(BOOL)success
 {
     NSDictionary *userInfo = @{@"success" : @(success), @"remain" : @(remain), @"posts" : previousPosts};
-    [[NSNotificationCenter defaultCenter] postNotificationName:[ProfileManager previousPostsNotificationNameWithUserRemoteKey:_userRemoteKey] object:self userInfo:userInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:[self previousPostsNotificationName] object:self userInfo:userInfo];
 }
 
 #pragma mark - Static
 
-+ (NSString *)postsNotificationNameWithUserRemoteKey:(NSInteger)userRemoteKey
+- (NSString *)postsNotificationName
 {
-    return [NSString stringWithFormat:@"%@_%d", GLPNOTIFICATION_USERS_POSTS_FETCHED, userRemoteKey];
+    return [NSString stringWithFormat:@"%@_%d", GLPNOTIFICATION_USERS_POSTS_FETCHED, self.userRemoteKey];
 }
 
-+ (NSString *)previousPostsNotificationNameWithUserRemoteKey:(NSInteger)userRemoteKey
+- (NSString *)previousPostsNotificationName
 {
-    return [NSString stringWithFormat:@"%@_%d", GLPNOTIFICATION_USERS_PREVIOUS_POSTS_FETCHED, userRemoteKey];
+    return [NSString stringWithFormat:@"%@_%d", GLPNOTIFICATION_USERS_PREVIOUS_POSTS_FETCHED, self.userRemoteKey];
 }
 
 

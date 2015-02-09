@@ -10,6 +10,8 @@
 
 @interface LoggedInUserProfileManager : ProfileManager
 
-- (NSIndexPath *)removePostWithPost:(GLPPost *)post;
+- (NSInteger)removePostWithPost:(GLPPost *)post;
+- (NSInteger)updateSocialDataPostWithNotification:(NSNotification *)notification;
+- (void)updateLikedPostWithNotification:(NSNotification *)notification;
 
 @end

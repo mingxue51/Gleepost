@@ -61,6 +61,9 @@
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPCampusWallAsyncProcessor.h"
 #import "GLPTableActivityIndicator.h"
+#import "LoggedInUserProfileManager.h"
+#import "GLPLoadingCell.h"
+#import "TableViewHelper.h"
 
 @interface GLPProfileViewController () <MFMessageComposeViewControllerDelegate, UIActionSheetDelegate, GLPAttendingPopUpViewControllerDelegate>
 
@@ -68,7 +71,7 @@
 
 @property (assign, nonatomic) int numberOfRows;
 
-@property (strong, nonatomic) NSMutableArray *posts;
+//@property (strong, nonatomic) NSMutableArray *posts;
 
 @property (assign, nonatomic) ButtonType selectedTab;
 
@@ -123,7 +126,12 @@
 
 @property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
+
 @property (assign, nonatomic) BOOL postsLoading;
+@property (strong, nonatomic) LoggedInUserProfileManager *loggedInUserProfileManager;
+
+/** Properties for loading previous posts. */
+@property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
 
 @end
 
@@ -146,8 +154,7 @@
     
     [self configureProgressView];
     
-    [self configureNSNotifications];
-    
+    [self configureViewDidLoadNSNotifications];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -186,7 +193,7 @@
         _selectedTab = kButtonRight;
     }
 
-    [self setUpNotifications];
+    [self configureViewWillAppearNSNotifications];
     
     [self loadInternalNotifications];
     
@@ -196,13 +203,11 @@
     }
     
     [self fetchUserData];
-    [self fetchUsersPostsIfNeeded];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
+    [self removeViewWillDisappearNSNotifications];
     [self removeGoingButtonNotification];
     [super viewWillDisappear:animated];
 }
@@ -213,19 +218,33 @@
     [self setTitle];
     [self configureRefreshControl];
     [self setUpGoingButtonNotification];
+    [self fetchUsersPostsIfNeeded];
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
 
-- (void)configureNSNotifications
+- (void)configureViewDidLoadNSNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchUserData) name:GLPNOTIFICATION_REFRESH_PROFILE_CELL object:nil];
+    [self configureManagerNotifications];
+}
+
+- (void)configureManagerNotifications
+{
+    NSString *notificationName = [_loggedInUserProfileManager postsNotificationName];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postsLoaded:) name:notificationName object:nil];
     
+    notificationName = [_loggedInUserProfileManager previousPostsNotificationName];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(previousPostsLoaded:) name:notificationName object:nil];
 }
 
 -(void)dealloc
+{
+    [self removeViewDidLoadNSNotifications];
+}
+
+- (void)removeViewDidLoadNSNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPLikedPostUdated" object:nil];
@@ -233,7 +252,22 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_REFRESH_PROFILE_CELL object:nil];
+    [self removeManagerNotifications];
+}
 
+- (void)removeManagerNotifications
+{
+    NSString *notificationName = [_loggedInUserProfileManager postsNotificationName];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
+    
+    notificationName = [_loggedInUserProfileManager previousPostsNotificationName];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
+}
+
+- (void)removeViewWillDisappearNSNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
 }
 
 - (void)setUpGoingButtonNotification
@@ -258,7 +292,6 @@
 
 -(void)setCustomBackgroundToTableView
 {
-    
     if([GLPiOSSupportHelper isIOS6])
     {
         [GLPiOSSupportHelper setBackgroundImageToTableView:self.tableView];
@@ -274,7 +307,7 @@
     [self.tableView setBackgroundView:backImgView];
 }
 
--(void)setUpNotifications
+-(void)configureViewWillAppearNSNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveInternalNotificationNotification:) name:GLPNOTIFICATION_NEW_NOTIFICATION object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
@@ -289,13 +322,6 @@
 -(void)deletePost:(NSNotification *)notification
 {
     _postUploaded = YES;
-    
-//    [self.tableView reloadData];
-    
-//    int index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
-//    
-//    
-//    [self removeTableViewPostWithIndex:index];
 }
 
 /**
@@ -306,24 +332,14 @@
  */
 - (void)updateViewsCounter:(NSNotification *)notification
 {
-    NSInteger postRemoteKey = [notification.userInfo[@"PostRemoteKey"] integerValue];
-    NSInteger viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
-    
-    [_campusWallAsyncProcessor parseAndUpdatedViewsCountPostWithPostRemoteKey:postRemoteKey andPosts:_posts withCallbackBlock:^(NSInteger index) {
-                
-        if(index != -1 && _selectedTab == kLeft)
+    [_loggedInUserProfileManager parseAndUpdatedViewsCountPostWithNotification:notification withCallbackBlock:^(NSInteger index) {
+        
+        if(index != -1 && _selectedTab == kButtonLeft)
         {
-            GLPPost *post = [self.posts objectAtIndex:index];
-            post.viewsCount = viewsCount;
-            
             dispatch_async(dispatch_get_main_queue(), ^{
-                if(![post isVideoPost])
-                {
-                    [self refreshCellViewWithIndex:index+1];
-                }
+                [self refreshCellViewWithIndex:index+1];
             });
         }
-        
     }];
 }
 
@@ -351,20 +367,14 @@
 
 -(void)configureNavigationBar
 {
-
     //Change the format of the navigation bar.
-    
     self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
     
     //Change the format of the navigation bar.
-    
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
-        
-//    if(self.navigationController.viewControllers.count == 1)
-//    {
-        //Use the default method of formatting only if this VC is the first appeared.
-        [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
-//    }
+
+    //Use the default method of formatting only if this VC is the first appeared.
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
@@ -375,13 +385,11 @@
     //with the navigation to GroupVC.
     
     [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]]];
-    
     self.navigationController.navigationBar.topItem.title = @"MY PROFILE";
 }
 
 -(void)initialiseObjects
 {
-    
     //Find out from which view controller this comes.
     if(self.navigationController.viewControllers.count == 1)
     {
@@ -394,7 +402,7 @@
     
     _selectedTab = kButtonLeft;
     
-    self.posts = [[NSMutableArray alloc] init];
+//    self.posts = [[NSMutableArray alloc] init];
     
     self.numberOfRows = 1;
     
@@ -430,6 +438,9 @@
     
     _postsLoading = NO;
     
+    _loggedInUserProfileManager = [[LoggedInUserProfileManager alloc] init];
+    
+    self.loadingCellStatus = kGLPLoadingCellStatusFinished;
 }
 
 - (void)configureProgressView
@@ -469,11 +480,8 @@
 
 -(void)updateRealImage:(NSNotification*)notification
 {
+    NSInteger index = [_loggedInUserProfileManager parseRefreshCellNotification:notification];
     
-//    int index = [GLPPostNotificationHelper parsePost:&currentPost imageNotification:notification withPostsArray:self.posts];
-    NSInteger index = [GLPPostNotificationHelper parseRefreshCellNotification:notification withPostsArray:self.posts];
-
-
     if(index != -1)
     {
         //Find in which index the post exist and refresh it.
@@ -482,7 +490,6 @@
             [self refreshCellViewWithIndex:index + 1];
         }
     }
-    
 }
 
 -(void)notifyAppWithNewImage:(NSString *)imageUrl
@@ -493,36 +500,23 @@
 
 }
 
--(void)notifyCampusWallWithDeletedPost:(GLPPost *)post
+- (void)updatePost:(NSNotification *)notification
 {
-//    NSDictionary *data = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNumber num] , @"profile_image_url", nil];
-//    
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"GLPProfileImageChanged" object:nil userInfo:data];
-}
-
-
-
--(void)updatePost:(NSNotification*)notification
-{
-    DDLogDebug(@"Update post: %@", notification.userInfo);
-
-    [GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts];
+    NSInteger index = [_loggedInUserProfileManager updateSocialDataPostWithNotification:notification];
     
-    if([GLPPostNotificationHelper parseNotification:notification withPostsArray:self.posts] != -1)
+    if(index != NSNotFound)
     {
-        //Reload again only this post.
-//        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 
--(void)updateLikedPost:(NSNotification*)notification
+- (void)updateLikedPost:(NSNotification*)notification
 {
-    [GLPPostNotificationHelper parseLikedPostNotification:notification withPostsArray:self.posts];
+    [_loggedInUserProfileManager updateLikedPostWithNotification:notification];
     [self.tableView reloadData];
-
 }
 
--(void)postByUserInCampusWall:(NSNotification *)notification
+- (void)postByUserInCampusWall:(NSNotification *)notification
 {
     //Set a boolean value YES in order to reload posts when user navigates back to profile.
     _postUploaded = YES;
@@ -602,9 +596,7 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
-    
     [self clickedButtonToFirstActionSheetWithTitle:selectedButtonTitle];
-    
 }
 
 - (void)clickedButtonToFirstActionSheetWithTitle:(NSString *)buttonTitle
@@ -656,26 +648,13 @@
 
 #pragma mark - RemovePostCellDelegate
 
--(void)removePostWithPost:(GLPPost *)post
+- (void)removePostWithPost:(GLPPost *)post
 {
-    [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
-
-    int index;
-    
-    for(index = 0; index < self.posts.count; ++index)
+    NSInteger index = [_loggedInUserProfileManager removePostWithPost:post];
+    if(index != NSNotFound)
     {
-        GLPPost *p = [self.posts objectAtIndex:index];
-        
-        if(p.remoteKey == post.remoteKey)
-        {
-            [self.posts removeObject:p];
-            
-            [self removeTableViewPostWithIndex:index];
-            
-            return;
-        }
+        [self removeTableViewPostWithIndex:index];
     }
-    
 }
 
 
@@ -707,30 +686,34 @@
 
     _postsLoading = YES;
     
-    [GLPPostManager loadPostsWithRemoteKey:_user.remoteKey localCallback:^(NSArray *posts) {
-        
-        [self refreshNewPosts:posts];
-        
-        if(_posts.count == 0)
-        {
-            [_tableActivityIndicator startActivityIndicator];
-        }
-        
-    } remoteCallback:^(BOOL success, NSArray *posts) {
-        
-        [_tableActivityIndicator stopActivityIndicator];
-        
-        [self stopLoading];
-        
-        if(success)
-        {
-            [self refreshNewPosts:posts];
-        }
-        
-        _postsLoading = NO;
-        
-        [self hideOrShowPostsEmptyView];
-    }];
+    [_tableActivityIndicator startActivityIndicator];
+    
+    [_loggedInUserProfileManager getPosts];
+    
+//    [GLPPostManager loadPostsWithRemoteKey:_user.remoteKey localCallback:^(NSArray *posts) {
+//        
+//        [self refreshNewPosts:posts];
+//        
+//        if(_posts.count == 0)
+//        {
+//            [_tableActivityIndicator startActivityIndicator];
+//        }
+//
+//    } remoteCallback:^(BOOL success, NSArray *posts) {
+//        
+//        [_tableActivityIndicator stopActivityIndicator];
+//        
+//        [self stopLoading];
+//        
+//        if(success)
+//        {
+//            [self refreshNewPosts:posts];
+//        }
+//        
+//        _postsLoading = NO;
+//
+//        [self hideOrShowPostsEmptyView];
+//    }];
 }
 
 - (void)refreshNewPosts:(NSArray *)posts
@@ -744,20 +727,45 @@
 //        }
 //    }
     
-    if(posts.count == 0)
+//    if(posts.count == 0)
+//    {
+//        return;
+//    }
+//    
+//    self.posts = [posts mutableCopy];
+//    
+//    [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
+//    
+//    [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+//    
+//    [self.tableView reloadData];
+//    
+//    _postUploaded = NO;
+}
+
+- (void)loadPreviousPosts
+{
+    if(_selectedTab == kButtonRight)
     {
         return;
     }
     
-    self.posts = [posts mutableCopy];
+    if(self.postsLoading) {
+        return;
+    }
     
-    [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
+    if([_loggedInUserProfileManager postsCount] == 0) {
+        self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+        return;
+    }
     
-    [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
+        return;
+    }
     
-    [self.tableView reloadData];
-    
-    _postUploaded = NO;
+    [self startLoading];
+    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    [_loggedInUserProfileManager loadPreviousPosts];
 }
 
 -(void)loadGroupAndNavigateWithRemoteKey:(NSString *)remoteKey
@@ -777,11 +785,6 @@
             {
                 [WebClientHelper errorLoadingGroup];
             }
-            else
-            {
-//                [WebClientHelper showStandardError];
-            }
-            
         }
         
     }];
@@ -1026,11 +1029,85 @@
     }];
 }
 
+- (void)postsLoaded:(NSNotification *)notification
+{
+    BOOL success = [notification.userInfo[@"success"] boolValue];
+    BOOL remote = [notification.userInfo[@"remote"] boolValue];
+    
+    if(remote)
+    {
+        _postsLoading = NO;
+        _postUploaded = NO;
+        
+        [_tableActivityIndicator stopActivityIndicator];
+        
+        [self stopLoading];
+        
+        if(success)
+        {
+            BOOL remains = [_loggedInUserProfileManager postsCount] == kGLPNumberOfPosts ? YES : NO;
+            self.loadingCellStatus = remains ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+            [self.tableView reloadData];
+        }
+        
+        
+        [self hideOrShowPostsEmptyView];
+        
+        DDLogDebug(@"GLPProfileViewController : remote posts loaded.");
+    }
+    else
+    {
+        if([_loggedInUserProfileManager postsCount] == 0)
+        {
+            [_tableActivityIndicator startActivityIndicator];
+        }
+        else
+        {
+            [self.tableView reloadData];
+        }
+        
+        DDLogDebug(@"GLPProfileViewController : local posts loaded.");
+    }
+}
+
+- (void)previousPostsLoaded:(NSNotification *)notification
+{
+    NSArray *previousPosts = notification.userInfo[@"posts"];
+    BOOL success = [notification.userInfo[@"success"] boolValue];
+    NSInteger remain = [notification.userInfo[@"remain"] integerValue];
+    
+    DDLogDebug(@"Previous posts %@", previousPosts);
+    
+    
+    [self stopLoading];
+    
+    if(!success) {
+        self.loadingCellStatus = kGLPLoadingCellStatusError;
+        [self reloadLoadingCell];
+        return;
+    }
+    
+    self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+    
+    if(previousPosts.count > 0) {
+        
+        [self.tableView reloadData];
+        
+    } else {
+        [self reloadLoadingCell];
+    }
+}
+
+- (void)reloadLoadingCell
+{
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[_loggedInUserProfileManager postsCount] inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+}
+
 - (void)fetchUsersPostsIfNeeded
 {
-    if(_posts.count == 0 || _postUploaded)
+    if([_loggedInUserProfileManager postsCount] == 0 || _postUploaded)
     {
-        [self loadPosts];
+        [_loggedInUserProfileManager reloadPosts];
     }
 }
 
@@ -1041,7 +1118,7 @@
     if(_selectedTab == kButtonRight)
     {
         //Notifications are selected.
-        DDLogDebug(@"numberOfSectionsInTableView: %d", [_notificationsOrganiser numberOfSections]);
+        DDLogDebug(@"numberOfSectionsInTableView: %ld", (long)[_notificationsOrganiser numberOfSections]);
         
         return [_notificationsOrganiser numberOfSections] + 1;
     }
@@ -1054,8 +1131,7 @@
     if(_selectedTab == kButtonLeft)
     {
         [_emptyNotificationsMessage hideEmptyMessageView];
-        
-        return self.numberOfRows + self.posts.count;
+        return self.numberOfRows + [_loggedInUserProfileManager postsCount] + 1;
     }
     else
     {
@@ -1071,7 +1147,7 @@
             extraRow = 1;
         }
         
-        DDLogDebug(@"Number of sections: %d, Current section: %d", [_notificationsOrganiser numberOfSections], section);
+        DDLogDebug(@"Number of sections: %ld, Current section: %ld", (long)[_notificationsOrganiser numberOfSections], (long)section);
 
         
         if(section == 0)
@@ -1079,7 +1155,7 @@
             return self.numberOfRows;
         }
         
-        DDLogDebug(@"numberOfRowsInSection: %d", [_notificationsOrganiser notificationsAtSectionIndex:section - 1].count);
+        DDLogDebug(@"numberOfRowsInSection: %lu", (unsigned long)[_notificationsOrganiser notificationsAtSectionIndex:section - 1].count);
         
         
 //        if([_notificationsOrganiser numberOfSections] == section)
@@ -1102,6 +1178,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //Try to load previous posts.
+    if(indexPath.row-1 == [_loggedInUserProfileManager postsCount] && _selectedTab == kButtonLeft)
+    {
+        return [TableViewHelper generateLoadingCell];
+    }
+    
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
@@ -1208,9 +1290,11 @@
 //        }
 //        else if(_selectedTab == kButtonLeft)
 //       {
-            if(self.posts.count != 0)
+            if([_loggedInUserProfileManager postsCount] != 0)
             {
-                GLPPost *post = self.posts[indexPath.row-1];
+//                GLPPost *post = self.posts[indexPath.row-1];
+                
+                GLPPost *post = [_loggedInUserProfileManager postWithIndex:indexPath.row - 1];
                 
                 if([post imagePost])
                 {
@@ -1249,22 +1333,27 @@
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
+    if(indexPath.row-1 == [_loggedInUserProfileManager postsCount] && _selectedTab == kButtonLeft)
+    {
+        return;
+    }
+    
     if(![[cell class] isSubclassOfClass:[GLPPostCell class]])
     {
         return;
         
     }
     
-    if(_posts.count == 0)
+    if([_loggedInUserProfileManager postsCount] == 0)
     {
-        
         DDLogError(@"Abord ending display with cell.");
-        
         return;
     }
     
     
-    GLPPost *post = _posts[indexPath.row - 1];
+//    GLPPost *post = _posts[indexPath.row - 1];
+
+    GLPPost *post = [_loggedInUserProfileManager postWithIndex:indexPath.row - 1];
     
     GLPPostCell *postCell = (GLPPostCell *)cell;
     
@@ -1277,14 +1366,21 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     if(indexPath.row == 0 && indexPath.section == 0)
     {
         return;
     }
     
     // click on post cell
-    if(_selectedTab == kLeft) {
-        self.selectedPost = self.posts[indexPath.row-1];
+    if(_selectedTab == kLeft)
+    {
+        if(indexPath.row-1 == [_loggedInUserProfileManager postsCount])
+        {
+            return;
+        }
+        
+        self.selectedPost = [_loggedInUserProfileManager postWithIndex:indexPath.row - 1];
         //    self.selectedIndex = indexPath.row;
         //    self.postIndexToReload = indexPath.row-2;
         self.commentCreated = NO;
@@ -1404,6 +1500,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    if(indexPath.row - 1 == [_loggedInUserProfileManager postsCount] && _selectedTab == kButtonLeft) {
+        return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
+    }
+    
     if(indexPath.row == 0 && indexPath.section == 0)
     {
         return PROFILE_TOP_VIEW_HEIGHT;
@@ -1457,7 +1558,7 @@
     }
     else if (indexPath.row >= 1 && indexPath.section == 0)
     {
-        GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-1];
+        GLPPost *currentPost = [_loggedInUserProfileManager postWithIndex:indexPath.row - 1];
         
         if([currentPost imagePost])
         {
@@ -1494,6 +1595,14 @@
     }
     
     return 30.0;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row - 1 == [_loggedInUserProfileManager postsCount] && self.loadingCellStatus == kGLPLoadingCellStatusInit && _selectedTab == kButtonLeft) {
+        DDLogInfo(@"Load previous posts cell activated");
+        [self loadPreviousPosts];
+    }
 }
 
 #pragma mark - View image delegate
@@ -1545,7 +1654,10 @@
 - (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
 {
     _showComment = YES;
-    self.selectedPost = _posts[postIndexPath.row - 1];
+//    self.selectedPost = _posts[postIndexPath.row - 1];
+
+    self.selectedPost = [_loggedInUserProfileManager postWithIndex:postIndexPath.row - 1];
+
     
     self.commentCreated = NO;
     [self performSegueWithIdentifier:@"view post" sender:self];
@@ -1628,7 +1740,9 @@
 
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
 {
-    self.selectedPost = self.posts[postIndex-2];
+//    self.selectedPost = self.posts[postIndex-2];
+
+    self.selectedPost = [_loggedInUserProfileManager postWithIndex:postIndex - 1];
     
     //    self.postIndexToReload = postIndex;
     
@@ -1661,7 +1775,7 @@
     [self.tableView endUpdates];
 }
 
--(void)removeTableViewPostWithIndex:(int)index
+-(void)removeTableViewPostWithIndex:(NSInteger)index
 {
     NSMutableArray *rowsDeleteIndexPath = [[NSMutableArray alloc] init];
     
@@ -1691,7 +1805,7 @@
         return;
     }
     
-    if(self.posts.count == 0)
+    if([_loggedInUserProfileManager postsCount] == 0)
     {
         return;
     }
@@ -1752,9 +1866,9 @@
         
         //Avoid any out of bounds access in array
         
-        if(path.row < self.posts.count)
+        if(path.row < [_loggedInUserProfileManager postsCount])
         {
-            [visiblePosts addObject:[self.posts objectAtIndex:path.row - 1]];
+            [visiblePosts addObject:[_loggedInUserProfileManager postWithIndex:path.row - 1]];
             CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:path];
             CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
             [*postsYValues addObject:@(rectInTableView.size.height/2.0 + rectInSuperview.origin.y)];
@@ -1784,7 +1898,7 @@
     }
     else
     {
-        if(_postsLoading && _posts.count == 0)
+        if([_loggedInUserProfileManager postsCount] == 0)
         {
             [_tableActivityIndicator startActivityIndicator];
         }
@@ -1823,7 +1937,7 @@
 
 - (void)numberOfPostTouched
 {
-    if(_posts.count == 0)
+    if([_loggedInUserProfileManager postsCount] == 0)
     {
         return;
     }
@@ -1948,7 +2062,7 @@
 
 - (void)hideOrShowPostsEmptyView
 {
-    if(_posts.count == 0)
+    if([_loggedInUserProfileManager postsCount] == 0)
     {
         [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kProfilePostsEmptyView withView:self.tableView];
     }

@@ -13,15 +13,17 @@
 @interface ProfileManager : NSObject
 
 @property (assign, nonatomic, readonly) NSInteger userRemoteKey;
+@property (strong, nonatomic, readonly) NSMutableArray *posts;
 
 - (id)initWithUsersRemoteKey:(NSInteger)userRemoteKey;
 - (void)getPosts;
+- (void)reloadPosts;
 - (void)loadPreviousPosts;
 - (NSInteger)postsCount;
 - (GLPPost *)postWithIndex:(NSInteger)index;
 - (NSInteger)parseRefreshCellNotification:(NSNotification *)notification;
 - (void)parseAndUpdatedViewsCountPostWithNotification:(NSNotification *)notification withCallbackBlock:(void (^) (NSInteger index))callback;
-+ (NSString *)postsNotificationNameWithUserRemoteKey:(NSInteger)userRemoteKey;
-+ (NSString *)previousPostsNotificationNameWithUserRemoteKey:(NSInteger)userRemoteKey;
+- (NSString *)postsNotificationName;
+- (NSString *)previousPostsNotificationName;
 
 @end

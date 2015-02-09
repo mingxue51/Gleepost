@@ -95,6 +95,8 @@
     
     [self initialiseObjects];
     
+    [self configureNotifications];
+    
     [self loadAndSetUserDetails];
     
     // Uncomment the following line to preserve selection between presentations.
@@ -109,7 +111,6 @@
     [super viewWillAppear:animated];
     [self configureNavigationBar];
     [self hideNetworkErrorViewIfNeeded];
-    [self configureNotifications];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -166,10 +167,10 @@
 
 - (void)configureManagerNotifications
 {
-    NSString *notificationName = [ProfileManager postsNotificationNameWithUserRemoteKey:self.selectedUserId];
+    NSString *notificationName = [_userProfileManager postsNotificationName];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postsLoaded:) name:notificationName object:nil];
     
-    notificationName = [ProfileManager previousPostsNotificationNameWithUserRemoteKey:self.selectedUserId];
+    notificationName = [_userProfileManager previousPostsNotificationName];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(previousPostsLoaded:) name:notificationName object:nil];
 }
 
@@ -184,12 +185,11 @@
 
 - (void)removeManagerNotifications
 {
-    NSString *notificationName = [ProfileManager postsNotificationNameWithUserRemoteKey:self.selectedUserId];
+    NSString *notificationName = [_userProfileManager postsNotificationName];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
     
-    notificationName = [ProfileManager previousPostsNotificationNameWithUserRemoteKey:self.selectedUserId];
+    notificationName = [_userProfileManager previousPostsNotificationName];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
-
 }
 
 
