@@ -12,6 +12,7 @@
 
 +(UITableViewCell *)generateCellWithMessage:(NSString *)message;
 +(UITableViewCell *)generateEmptyCellWithHeight:(float)height;
++ (UITableViewCell *)generateLoadingCell;
 + (UIView *)generateHeaderViewWithTitle:(NSString *)title andBottomLine:(BOOL)bottomLine;
 + (UIView *)generateEmptyHeader;
 

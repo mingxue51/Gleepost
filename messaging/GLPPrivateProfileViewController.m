@@ -38,6 +38,7 @@
 #import "GLPAttendingPostsViewController.h"
 #import "GLPTrackViewsCountProcessor.h"
 #import "UserProfileManager.h"
+#import "TableViewHelper.h"
 
 @interface GLPPrivateProfileViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -73,6 +74,10 @@
 @property (strong, nonatomic) GLPTrackViewsCountProcessor *trackViewsCountProcessor;
 
 @property (strong, nonatomic) UserProfileManager *userProfileManager;
+
+/** Properties for loading previous posts. */
+@property (assign, nonatomic) BOOL isLoading;
+@property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
 
 @end
 
@@ -140,12 +145,14 @@
     //Initialise rows with 3 because About cell is presented first.
     self.numberOfRows = 1;
     self.profileImage = nil;
+    self.isLoading = NO;
     self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     _emptyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     _selectedLocation = nil;
     _transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
     _trackViewsCountProcessor = [[GLPTrackViewsCountProcessor alloc] init];
     _userProfileManager = [[UserProfileManager alloc] initWithUsersRemoteKey:self.selectedUserId];
+    self.loadingCellStatus = kGLPLoadingCellStatusFinished;
 }
 
 - (void)configureNotifications
@@ -279,6 +286,65 @@
     [_userProfileManager getPosts];
 }
 
+- (void)loadPreviousPosts
+{
+    if(self.isLoading) {
+        return;
+    }
+    
+    if([_userProfileManager postsCount] == 0) {
+        self.loadingCellStatus = kGLPLoadingCellStatusFinished;
+        return;
+    }
+    
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading) {
+        return;
+    }
+    
+    [self startLoading];
+    self.loadingCellStatus = kGLPLoadingCellStatusLoading;
+    [_userProfileManager loadPreviousPosts];
+    
+//TODO: After previous posts' loaded.
+    
+    /**
+     [self stopLoading];
+     
+     if(!success) {
+     self.loadingCellStatus = kGLPLoadingCellStatusError;
+     [self reloadLoadingCell];
+     return;
+     }
+     
+     self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+     
+     
+     if(posts.count > 0) {
+     int firstInsertRow = self.posts.count+1;
+     
+     [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
+     
+     [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.posts.count, posts.count)]];
+     
+     
+     NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+     for(int i = firstInsertRow; i < self.posts.count+1; i++) {
+     [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+     }
+     
+     // update table view with showing new rows and updating the loading row
+     [self.tableView beginUpdates];
+     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:firstInsertRow inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+     [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationTop];
+     [self.tableView endUpdates];
+     
+     } else {
+     [self reloadLoadingCell];
+     }
+     */
+
+}
+
 -(void)loadAndSetContactDetails
 {
     //Try to load image.
@@ -312,7 +378,20 @@
     {
         [self refreshCellViewWithIndex:index+1];
     }
-    
+}
+
+#pragma mark - Request management
+
+- (void)startLoading
+{
+    self.isLoading = YES;
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+- (void)stopLoading
+{
+    self.isLoading = NO;
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 #pragma mark - PrivateProfileTopViewCellDelegate
@@ -367,12 +446,19 @@
         [_emptyPostsMessage hideEmptyMessageView];
     }
     
-    self.currentNumberOfRows = self.numberOfRows + [_userProfileManager postsCount];
+    self.currentNumberOfRows = self.numberOfRows + [_userProfileManager postsCount] + 1;
     return self.currentNumberOfRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    //Try to load previous posts.
+    if(indexPath.row-1 == [_userProfileManager postsCount])
+    {
+        return [TableViewHelper generateLoadingCell];
+    }
+    
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
@@ -464,6 +550,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if(indexPath.row - 1 == [_userProfileManager postsCount]) {
+        return (self.loadingCellStatus != kGLPLoadingCellStatusFinished) ? kGLPLoadingCellHeight : 0;
+    }
+    
     if(indexPath.row == 0)
     {
         return PRIVATE_PROFILE_TOP_VIEW_HEIGHT;
@@ -491,6 +581,14 @@
     }
     
     return 70.0f;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.row - 1 == [_userProfileManager postsCount] && self.loadingCellStatus == kGLPLoadingCellStatusInit) {
+        DDLogInfo(@"Load previous posts cell activated");
+        [self loadPreviousPosts];
+    }
 }
 
 - (PrivateProfileTopViewCell *)configureProfileViewCell:(PrivateProfileTopViewCell *)cell
@@ -540,6 +638,11 @@
         return;
     }
     
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading)
+    {
+        return;
+    }
+    
     //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
     
     NSMutableArray *postsYValues = nil;
@@ -557,6 +660,11 @@
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading)
+    {
+        return;
+    }
+    
     if(decelerate == 0)
     {
         NSMutableArray *postsYValues = nil;
@@ -619,6 +727,8 @@
     
     if(success)
     {
+        BOOL remains = [_userProfileManager postsCount] == kGLPNumberOfPosts ? YES : NO;
+        self.loadingCellStatus = remains ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
         [self.tableView reloadData];
     }
 }
@@ -626,8 +736,29 @@
 - (void)previousPostsLoaded:(NSNotification *)notification
 {
     NSArray *previousPosts = notification.userInfo[@"posts"];
+    BOOL success = [notification.userInfo[@"success"] boolValue];
+    NSInteger remain = [notification.userInfo[@"remain"] integerValue];
     
     DDLogDebug(@"Previous posts %@", previousPosts);
+    
+    
+    [self stopLoading];
+    
+    if(!success) {
+        self.loadingCellStatus = kGLPLoadingCellStatusError;
+        [self reloadLoadingCell];
+        return;
+    }
+    
+    self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
+    
+    if(previousPosts.count > 0) {
+        
+        [self.tableView reloadData];
+        
+    } else {
+        [self reloadLoadingCell];
+    }
 }
 
 - (void)usersDataFetched:(NSNotification *)notification
@@ -656,6 +787,11 @@
             });
         }
     }];
+}
+
+- (void)reloadLoadingCell
+{
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:[_userProfileManager postsCount] inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark - View image delegate
