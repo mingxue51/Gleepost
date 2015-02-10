@@ -196,6 +196,7 @@
 		5840286118D2607800753A5F /* add_new_post_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 5840286018D2607800753A5F /* add_new_post_old.png */; };
 		58403532182FF5FB00499488 /* GLPTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58403531182FF5FB00499488 /* GLPTimelineViewController.m */; };
 		58406AFE1823FCBE0032353E /* NewPostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58406AFD1823FCBE0032353E /* NewPostView.m */; };
+		584119701A8A482A0067E3DC /* GLPLoadingButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5841196F1A8A482A0067E3DC /* GLPLoadingButton.m */; };
 		5841315917FEDD8500A3278D /* AddCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5841315817FEDD8500A3278D /* AddCommentViewController.m */; };
 		5841315C17FEE97D00A3278D /* NewCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5841315B17FEE97D00A3278D /* NewCommentView.m */; };
 		5841316017FF0B4900A3278D /* ChatPanelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5841315F17FF0B4900A3278D /* ChatPanelView.m */; };
@@ -1209,6 +1210,8 @@
 		58403534182FF89F00499488 /* GLPPostManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostManager.m; sourceTree = "<group>"; };
 		58406AFC1823FCBE0032353E /* NewPostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPostView.h; sourceTree = "<group>"; };
 		58406AFD1823FCBE0032353E /* NewPostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPostView.m; sourceTree = "<group>"; };
+		5841196E1A8A482A0067E3DC /* GLPLoadingButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLoadingButton.h; sourceTree = "<group>"; };
+		5841196F1A8A482A0067E3DC /* GLPLoadingButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLoadingButton.m; sourceTree = "<group>"; };
 		5841315717FEDD8500A3278D /* AddCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddCommentViewController.h; sourceTree = "<group>"; };
 		5841315817FEDD8500A3278D /* AddCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddCommentViewController.m; sourceTree = "<group>"; };
 		5841315A17FEE97D00A3278D /* NewCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewCommentView.h; sourceTree = "<group>"; };
@@ -2698,6 +2701,15 @@
 				5897351D193FA0F10048BA85 /* login_separator_line.png */,
 			);
 			name = Login;
+			sourceTree = "<group>";
+		};
+		5841196D1A8A48170067E3DC /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				5841196E1A8A482A0067E3DC /* GLPLoadingButton.h */,
+				5841196F1A8A482A0067E3DC /* GLPLoadingButton.m */,
+			);
+			name = Buttons;
 			sourceTree = "<group>";
 		};
 		5841315D17FF0B0500A3278D /* Comment Classes */ = {
@@ -5022,6 +5034,7 @@
 		80AB896717C2806B0053E784 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5841196D1A8A48170067E3DC /* Buttons */,
 				58EA126D19FA1060003D264E /* Empty Views */,
 				584FA5F719B519EE00FBA61F /* Progress */,
 				58A1D074199BF91700BA7980 /* Labels */,
@@ -6058,6 +6071,7 @@
 				5844293618BCDC6900DFEAF4 /* GLPCommentManager.m in Sources */,
 				58B865E2180DA2B100BB18AF /* NotificationCell.m in Sources */,
 				80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */,
+				584119701A8A482A0067E3DC /* GLPLoadingButton.m in Sources */,
 				80B1735F1805792B00D9669B /* WebClientHelper.m in Sources */,
 				581C3120188F068600BAA082 /* GLPCategoryDao.m in Sources */,
 				58B7815D19F9CB7C003E0F9A /* GLPTableActivityIndicator.m in Sources */,
