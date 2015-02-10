@@ -214,6 +214,7 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchUserData) name:GLPNOTIFICATION_REFRESH_PROFILE_CELL object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeDeallocNotifications) name:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:nil];
     [self configureManagerNotifications];
 }
 
@@ -226,7 +227,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(previousPostsLoaded:) name:notificationName object:nil];
 }
 
--(void)dealloc
+-(void)removeDeallocNotifications
 {
     [self removeViewDidLoadNSNotifications];
 }
@@ -239,6 +240,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_REFRESH_PROFILE_CELL object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:nil];
     [self removeManagerNotifications];
 }
 
