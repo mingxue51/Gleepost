@@ -45,7 +45,7 @@
 
     localCallback(localPosts);
 
-    [[WebClient sharedInstance] userPostsWithRemoteKey:remoteKey callbackBlock:^(BOOL success, NSArray *posts) {
+    [[WebClient sharedInstance] loadUserPostsAfter:nil withRemoteKey:remoteKey callbackBlock:^(BOOL success, NSArray *posts) {
         
         if(!success) {
             remoteCallback(NO, nil);
@@ -53,37 +53,27 @@
         }
         
         DDLogInfo(@"Logged in user's remote posts %@", posts);
-    
-        //Find all the event posts that the user attends.
-//        [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
-//            
-//            if(!success) {
-//                remoteCallback(NO, nil);
-//                return;
-//            }
-        
-            
-            // take only new posts
-//            __block NSMutableArray *userPosts = [NSMutableArray array];
-            
-//            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-//            
-//                for (GLPPost *newPost in posts)
-//                {
-//                    newPost.sendStatus = kSendStatusSent;
-//                    
-//                    [userPosts addObject:newPost];
-//                    
-//                    [GLPPostDao save:newPost inDb:db];
-//                }
-//            }];
-            
-            [GLPPostDao saveUpdateOrRemovePosts:posts withCreatorRemoteKey:remoteKey];
-            
-            
-            remoteCallback(YES, posts);
-        //}];
+        [GLPPostDao saveUpdateOrRemovePosts:posts withCreatorRemoteKey:remoteKey];
+        remoteCallback(YES, posts);
+    }];
+}
 
++ (void)loadPostsWithUsersRemoteKey:(NSInteger)usersRemoteKey afterPost:(GLPPost *)post remoteCallback:(void (^) (BOOL success, BOOL remain, NSArray *posts))remoteCallback
+{
+    [[WebClient sharedInstance] loadUserPostsAfter:post withRemoteKey:usersRemoteKey callbackBlock:^(BOOL success, NSArray *posts) {
+       
+        if(!success)
+        {
+            remoteCallback(NO, NO, nil);
+        }
+        
+        DDLogDebug(@"User's remote posts %@ after post %@", posts, post);
+        [GLPPostDao saveUpdateOrRemovePosts:posts withCreatorRemoteKey:usersRemoteKey];
+        
+        BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+
+        
+        remoteCallback(YES, remains, posts);
     }];
 }
 
