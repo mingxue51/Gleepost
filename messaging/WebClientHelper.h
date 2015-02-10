@@ -76,4 +76,6 @@
 
 + (void)showFailedToDeleteConversationError;
 
++ (void)showLowMemoryWarningFromClass:(NSString *)className;
+
 @end

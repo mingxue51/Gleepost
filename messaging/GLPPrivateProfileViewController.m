@@ -11,8 +11,6 @@
 #import "GLPPrivateProfileViewController.h"
 #import "TransitionDelegateViewImage.h"
 #import "ContactsManager.h"
-#import "ProfileAboutTableViewCell.h"
-#import "ProfileMutualTableViewCell.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "GLPPostManager.h"
@@ -208,7 +206,6 @@
 
 -(void)configureView
 {
-    
     if([GLPiOSSupportHelper isIOS6])
     {
         [GLPiOSSupportHelper setBackgroundImageToTableView:self.tableView];
@@ -217,9 +214,7 @@
     }
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
-    
     [AppearanceHelper setCustomBackgroundToTableView:self.tableView];
-
 }
 
 - (void)setTitle
@@ -228,7 +223,6 @@
     {
         self.navigationController.navigationBar.topItem.title = [_profileUser.name uppercaseString];
     }
-    
 }
 
 -(void)setBottomView
@@ -275,7 +269,6 @@
 
 #pragma mark - Client methods
 
-
 /**
  Loads first user from local database and then from server.
  */
@@ -304,45 +297,6 @@
     [self startLoading];
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
     [_userProfileManager loadPreviousPosts];
-    
-//TODO: After previous posts' loaded.
-    
-    /**
-     [self stopLoading];
-     
-     if(!success) {
-     self.loadingCellStatus = kGLPLoadingCellStatusError;
-     [self reloadLoadingCell];
-     return;
-     }
-     
-     self.loadingCellStatus = remain ? kGLPLoadingCellStatusInit : kGLPLoadingCellStatusFinished;
-     
-     
-     if(posts.count > 0) {
-     int firstInsertRow = self.posts.count+1;
-     
-     [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
-     
-     [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(self.posts.count, posts.count)]];
-     
-     
-     NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
-     for(int i = firstInsertRow; i < self.posts.count+1; i++) {
-     [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
-     }
-     
-     // update table view with showing new rows and updating the loading row
-     [self.tableView beginUpdates];
-     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:firstInsertRow inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
-     [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationTop];
-     [self.tableView endUpdates];
-     
-     } else {
-     [self reloadLoadingCell];
-     }
-     */
-
 }
 
 -(void)loadAndSetContactDetails
@@ -452,7 +406,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     //Try to load previous posts.
     if(indexPath.row-1 == [_userProfileManager postsCount])
     {
@@ -462,33 +415,14 @@
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
-
-    
     static NSString *CellIdentifierProfile = @"PrivateProfileTopViewCell";
     
-//    static NSString *CellIdentifierProfile = @"ProfileCell";
-//    static NSString *CellIdentifierButtons = @"ButtonsCell";
-    
-//    static NSString *CellIdentifierAbout = @"AboutCell";
-//    static NSString *CellIdentifierMutual = @"MutualCell";
-    
-    
     GLPPostCell *postViewCell;
-    
-//    ProfileButtonsTableViewCell *buttonsView;
     PrivateProfileTopViewCell *profileView;
-//    ProfileTableViewCell *profileView;
-//    ProfileAboutTableViewCell *profileAboutView;
-//    ProfileMutualTableViewCell *profileMutualView;
-    
-
     if(indexPath.row == 0)
     {
         profileView = [tableView dequeueReusableCellWithIdentifier:CellIdentifierProfile forIndexPath:indexPath];
-        
-        
         return  [self configureProfileViewCell:profileView];
-        
     }
     else if (indexPath.row >= 1)
     {
@@ -519,9 +453,7 @@
                 [self clearBottomView];
             }
         }
-        
         return postViewCell;
-        
     }
     
     //TODO: See if this is right.
@@ -541,7 +473,6 @@
     }
     
     self.selectedPost = [_userProfileManager postWithIndex:indexPath.row - 1];
-//    self.selectedIndex = indexPath.row;
     self.postIndexToReload = indexPath.row-1;
     self.commentCreated = NO;
     [self performSegueWithIdentifier:@"view post" sender:self];
@@ -560,7 +491,6 @@
     }
     else if(indexPath.row >= 1)
     {
-//        if(self.posts.count != 0 && self.posts)
         if([_userProfileManager postsCount] != 0)
         {
             GLPPost *currentPost = [_userProfileManager postWithIndex:indexPath.row - 1];
@@ -854,27 +784,12 @@
 
 -(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
 {
-    //Decide where to navigate. Private or current profile.
-    
-    
-//    if([[ContactsManager sharedInstance] userRelationshipWithId:remoteKey] == kCurrentUser)
-//    {
-//        self.selectedUserId = -1;
-//        
-//        [self performSegueWithIdentifier:@"view profile" sender:self];
-//    }
-//    else
-//    {
-//        self.selectedUserId = remoteKey;
-//        
-//        [self performSegueWithIdentifier:@"view private profile" sender:self];
-//    }
+
 }
 
 - (void)showLocationWithLocation:(GLPLocation *)location
 {
     _selectedLocation = location;
-    
     [self performSegueWithIdentifier:@"show location" sender:self];
 }
 

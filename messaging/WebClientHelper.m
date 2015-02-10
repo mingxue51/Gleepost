@@ -417,4 +417,11 @@
     [WebClientHelper showAlertWithTitle:@"Error" andMessage:message];
 }
 
+#pragma mark - Warning
+
++ (void)showLowMemoryWarningFromClass:(NSString *)className
+{
+    [WebClientHelper showAlertWithTitle:@"Memory Warning" andMessage:className];
+}
+
 @end

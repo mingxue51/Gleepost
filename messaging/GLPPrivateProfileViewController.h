@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "NSObject_ProfileEnums.h"
 #import "GLPConversation.h"
-#import "ProfileTableViewCell.h"
 #import "GLPPostCell.h"
 #import "PrivateProfileTopViewCell.h"
 @interface GLPPrivateProfileViewController : UITableViewController<NewCommentDelegate, GLPPostCellDelegate, PrivateProfileTopViewCellDelegate, ViewImageDelegate>
