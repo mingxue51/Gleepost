@@ -20,7 +20,7 @@
 - (NSInteger)numberOfPostsAtSectionIndex:(NSInteger)index;
 - (GLPPost *)postWithSection:(NSInteger)section andIndex:(NSInteger)index;
 - (NSString *)headerInSection:(NSInteger)sectionIndex;
-- (NSIndexPath *)removePostWithPost:(GLPPost *)post;
+- (NSDictionary *)removePostWithPost:(GLPPost *)post;
 - (NSIndexPath *)indexPathWithPost:(GLPPost **)post;
 - (NSIndexPath *)updatePostWithRemoteKey:(NSInteger)postRemoteKey andViewsCount:(NSInteger)viewsCount;
 

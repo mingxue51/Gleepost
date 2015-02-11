@@ -49,6 +49,8 @@ static const CGFloat kSideMarginIncludingProfileImage = kProfileImageViewSideMar
 static const CGFloat kTopMargin = 0;
 static const CGFloat kBottomMargin = 2; //7
 
+static const CGFloat kTextSize = 15;
+
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -101,18 +103,20 @@ static const CGFloat kBottomMargin = 2; //7
     {
         UIView *view = [UIView new];
 //        view.layer.cornerRadius = 12.0;
-        [ShapeFormatterHelper setCornerRadiusWithView:view andValue:5];
+        [ShapeFormatterHelper setCornerRadiusWithView:view andValue:3];
         
         UIImageView *imageView = [UIImageView new];
         imageView.image = [UIImage imageNamed:@"yourchatbubble4"];
         imageView.layer.masksToBounds = YES;
 //        imageView.layer.cornerRadius = 12.0;
         [ShapeFormatterHelper setCornerRadiusWithView:imageView andValue:4];
+        
+        
 //        imageView.layer.borderColor = [[UIColor colorWithRed:3.0/255.0 green:215.0/255.0 blue:215.0/255.0 alpha:1.0] CGColor];
 //        imageView.layer.borderWidth = 2;
         
         UILabel *label = [UILabel new];
-        label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:17]; //16
+        label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize]; //16
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByWordWrapping;
         
@@ -244,6 +248,8 @@ static const CGFloat kBottomMargin = 2; //7
         imageView.hidden = YES;
         label.textColor = [UIColor blackColor];
         label.backgroundColor = [UIColor clearColor];
+        [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderMessengerGleepostColour] andWidth:0.5];
+
     } else {
 //        view.backgroundColor = [UIColor clearColor];
         imageView.hidden = YES;
@@ -251,8 +257,10 @@ static const CGFloat kBottomMargin = 2; //7
 //        label.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor];
-
+        [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderBlueMessengerGleepostColour] andWidth:0.5];
     }
+    
+    
     
     UIButton *errorButton = self.contentView.subviews[3];
     if(_message.sendStatus == kSendStatusFailure) {
@@ -288,7 +296,7 @@ static const CGFloat kBottomMargin = 2; //7
 
 + (CGSize)contentLabelSizeForMessage:(GLPMessage *)message
 {
-    UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:17];
+    UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:message.content attributes:@{NSFontAttributeName: font}];
     

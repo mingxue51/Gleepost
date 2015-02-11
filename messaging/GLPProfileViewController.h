@@ -11,7 +11,6 @@
 #import "NSObject_ProfileEnums.h"
 #import "GLPNotificationCell.h"
 #import "ButtonNavigationDelegate.h"
-#import "ProfileTableViewCell.h"
 #import "GLPPostCell.h"
 #import "ProfileTopViewCell.h"
 #import "ImageSelectorViewController.h"

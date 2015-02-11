@@ -97,12 +97,21 @@
 #define GLPNOTIFICATION_USER_GROUPS_LOADED              @"GLPUserGroupsLoaded"
 
 #define GLPNOTIFICATION_GOING_BUTTON_TOUCHED            @"GLPGoingButtonTouched"
+#define GLPNOTIFICATION_GOING_BUTTON_UNTOUCHED          @"GLPGoingButtonUntouched"
 
 #define GLPNOTIFICATION_SEARCH_FOR_GROUPS               @"GLPSearchForGroups"
 
 //GLPAttendingPostsManager
 #define GLPNOTIFICATION_ATTENDING_POSTS_FETCHED         @"GLPAttendingPostsFetched"
 #define GLPNOTIFICATION_ATTENDING_PREVIOUS_POSTS_FETCHED    @"GLPAttendingPreviousPostsFecthed"
+
+//ProfileManager
+#define GLPNOTIFICATION_USERS_POSTS_FETCHED             @"GLPUsersPostsFetched"
+#define GLPNOTIFICATION_USERS_PREVIOUS_POSTS_FETCHED    @"GLPUsersPreviousPostsFetched"
+#define GLPNOTIFICATION_USERS_DATA_FETCHED              @"GLPUsersDataFetched"
+
+//NSNotification name that removes all the NSNotifications observers from view controllers. (Usually after logout).
+#define GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS         @"GLPRemoveVCNotifications"
 
 
 #define GLP_WEBSERVICE_VERSION                      @"1"

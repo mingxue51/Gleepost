@@ -634,42 +634,42 @@ static GLPLiveConversationsManager *instance = nil;
 
 
 // BOTH REGULAR AND RANDOM SO FAR
-- (GLPConversation *)findRegularByParticipant:(GLPUser *)participant
-{
-    DDLogInfo(@"Find regular conversation by participant %d - %@", participant.remoteKey, participant.name);
-    
-    __block GLPConversation *conversation = nil;
-    
-    dispatch_sync(_queue, ^{
-        
-        NSArray *filteredArray = [[_conversations allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-            
-            GLPConversation *attachedConversation = evaluatedObject;
-            
-//            if(attachedConversation.isLive) {
-//                return NO;
-//            }
-            
-            GLPUser *attachedParticipant = [attachedConversation.participants firstObject];
-            
-            DDLogDebug(@"Attached participants: %@", attachedConversation.participants);
-            
-            
-            return attachedParticipant.remoteKey == participant.remoteKey;
-        }]];
-        
-        DDLogInfo(@"Filtered array: %@", filteredArray);
-        
-        if(filteredArray.count == 0) {
-            DDLogInfo(@"Cannot found regular conversation that matches");
-            return;
-        }
-        
-        conversation = filteredArray[0];
-    });
-    
-    return conversation;
-}
+//- (GLPConversation *)findRegularByParticipant:(GLPUser *)participant
+//{
+//    DDLogInfo(@"Find regular conversation by participant %d - %@", participant.remoteKey, participant.name);
+//    
+//    __block GLPConversation *conversation = nil;
+//    
+//    dispatch_sync(_queue, ^{
+//        
+//        NSArray *filteredArray = [[_conversations allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+//            
+//            GLPConversation *attachedConversation = evaluatedObject;
+//            
+////            if(attachedConversation.isLive) {
+////                return NO;
+////            }
+//            
+//            GLPUser *attachedParticipant = [attachedConversation.participants firstObject];
+//            
+//            DDLogDebug(@"Attached participants: %@", attachedConversation.participants);
+//            
+//            
+//            return attachedParticipant.remoteKey == participant.remoteKey;
+//        }]];
+//        
+//        DDLogInfo(@"Filtered array: %@", filteredArray);
+//        
+//        if(filteredArray.count == 0) {
+//            DDLogInfo(@"Cannot found regular conversation that matches");
+//            return;
+//        }
+//        
+//        conversation = filteredArray[0];
+//    });
+//    
+//    return conversation;
+//}
 
 - (GLPConversation *)findOneToOneConversationWithParticipant:(GLPUser *)participant
 {

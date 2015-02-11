@@ -350,7 +350,7 @@ const float TOP_OFFSET = 180.0f;
 }
 
 
--(void)dealloc
+-(void)removeDeallocNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
@@ -364,6 +364,7 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:nil];
 }
 
 - (void)showNetworkErrorViewIfNeeded
@@ -733,6 +734,8 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPendingPostCell) name:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeDeallocNotifications) name:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:nil];
 }
 
 /** This notification called when user presses the going button on post. */

@@ -11,5 +11,6 @@
 @interface GLPCampusWallAsyncProcessor : NSObject
 
 - (void)parseAndUpdatedViewsCountPostWithPostRemoteKey:(NSInteger)postRemoteKey andPosts:(NSArray *)posts withCallbackBlock:(void (^) (NSInteger index))callback;
+- (NSInteger)findIndexFromPostsArray:(NSArray *)posts withPostRemoteKey:(NSInteger)postRemoteKey;
 
 @end

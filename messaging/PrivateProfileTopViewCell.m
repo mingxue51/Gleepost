@@ -54,7 +54,8 @@ const float PRIVATE_PROFILE_TOP_VIEW_HEIGHT = 245;
 
 - (IBAction)sendMessage:(id)sender
 {
-    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findRegularByParticipant:self.currentUser];
+    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findOneToOneConversationWithParticipant:self.currentUser];
+    
     DDLogInfo(@"Regular conversation for participant, conversation remote key: %d", conversation.remoteKey);
     
     if(!conversation) {

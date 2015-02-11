@@ -32,6 +32,23 @@
 }
 
 /**
+ This method should be called only by table views that there is a need to load previous posts.
+ 
+ @return a table view cell that contains a loading text.
+ */
++ (UITableViewCell *)generateLoadingCell
+{
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    cell.textLabel.text = @"Loading...";
+    cell.textLabel.font = [UIFont fontWithName:GLP_APP_FONT size:12.0f];
+    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    cell.textLabel.textColor = [UIColor grayColor];
+    cell.backgroundColor = [UIColor clearColor];
+    cell.userInteractionEnabled = NO;
+    return cell;
+}
+
+/**
  Default Gleepost header.
  
  @param title the title of the header.

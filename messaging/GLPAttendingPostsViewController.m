@@ -23,6 +23,7 @@
 #import "GLPLoadingCell.h"
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPAttendingPostsManager.h"
+#import "GLPShowLocationViewController.h"
 
 @interface GLPAttendingPostsViewController () <RemovePostCellDelegate, NewCommentDelegate, ViewImageDelegate, GLPPostCellDelegate>
 
@@ -49,6 +50,8 @@
 
 @property (strong, nonatomic) GLPAttendingPostsManager *attendingPostsManager;
 
+@property (strong, nonatomic) GLPLocation *selectedLocation;
+
 @end
 
 @implementation GLPAttendingPostsViewController
@@ -57,29 +60,25 @@
 {
     [super viewDidLoad];
     
+    [self configureNotifications];
+
     [self configureTableView];
     
     [self initialiseObjects];
-
-    [self configureNotifications];
 
     [self loadUsersEvents];
     
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    [self configureNotifications];
-
-}
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [self removeNotifications];
-    
     [super viewWillDisappear:animated];
+}
+
+- (void)dealloc
+{
+    [self removeNotifications];
 }
 
 #pragma mark - Configuration
@@ -123,12 +122,9 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(eventsFetched:) name:GLPNOTIFICATION_ATTENDING_POSTS_FETCHED object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(previousEventsFetched:) name:GLPNOTIFICATION_ATTENDING_PREVIOUS_POSTS_FETCHED object:nil];
-
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goingButtonUnpressed:) name:GLPNOTIFICATION_GOING_BUTTON_UNTOUCHED object:nil];
 }
 
 - (void)removeNotifications
@@ -137,7 +133,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ATTENDING_POSTS_FETCHED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ATTENDING_PREVIOUS_POSTS_FETCHED object:nil];
-
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GOING_BUTTON_UNTOUCHED object:nil];
 }
 
 #pragma mark - Table view data source
@@ -439,8 +435,8 @@
 
 -(void)removePostWithPost:(GLPPost *)post
 {
-    NSIndexPath *postIndexPath = [_attendingPostsManager removePostWithPost:post];
-    [self removeTableViewPostWithIndexPath:postIndexPath];
+    NSDictionary *postIndexPathDeletedSection = [_attendingPostsManager removePostWithPost:post];
+    [self removeTableViewPostWithIndexPath:postIndexPathDeletedSection[@"index_path"] andDeletedSections:[postIndexPathDeletedSection[@"delete_section"] boolValue]];
 }
 
 #pragma mark - GLPPostCellDelegate
@@ -459,7 +455,9 @@
 
 - (void)showLocationWithLocation:(GLPLocation *)location
 {
-    DDLogDebug(@"showLocationWithLocation");
+    _selectedLocation = location;
+    
+    [self performSegueWithIdentifier:@"show location" sender:self];
 }
 
 - (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
@@ -530,6 +528,17 @@
     });
 }
 
+- (void)goingButtonUnpressed:(NSNotification *)notification
+{
+    DDLogDebug(@"goingButtonUnpressed %@", notification.userInfo[@"post"]);
+    
+    if([self.selectedUser isLoggedInUser])
+    {
+        [self removePostWithPost:notification.userInfo[@"post"]];
+    }
+    
+}
+
 #pragma mark - Table view refresh methods
 
 -(void)refreshCellViewWithIndexPath:(NSIndexPath *)indexPath
@@ -539,13 +548,24 @@
     [self.tableView endUpdates];
 }
 
--(void)removeTableViewPostWithIndexPath:(NSIndexPath *)indexPath
+-(void)removeTableViewPostWithIndexPath:(NSIndexPath *)indexPath andDeletedSections:(BOOL)deletedSections
 {
     NSMutableArray *rowsDeleteIndexPath = [[NSMutableArray alloc] init];
     
     [rowsDeleteIndexPath addObject:indexPath];
     
-    [self.tableView deleteRowsAtIndexPaths:rowsDeleteIndexPath withRowAnimation:UITableViewRowAnimationRight];
+    NSIndexSet *indexSet = [[NSIndexSet alloc] initWithIndex:indexPath.section];
+    
+    DDLogDebug(@"removeTableViewPostWithIndexPath %d : %d", indexPath.row, indexPath.section);
+    
+    if(deletedSections)
+    {
+        [self.tableView deleteSections:indexSet withRowAnimation:UITableViewRowAnimationRight];
+    }
+    else
+    {
+        [self.tableView deleteRowsAtIndexPaths:rowsDeleteIndexPath withRowAnimation:UITableViewRowAnimationRight];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -590,6 +610,12 @@
         GLPPrivateProfileViewController *privateProfileViewController = segue.destinationViewController;
         
         privateProfileViewController.selectedUserId = self.selectedUserId;
+    }
+    else if ([segue.identifier isEqualToString:@"show location"])
+    {
+        GLPShowLocationViewController *showLocationVC = segue.destinationViewController;
+        
+        showLocationVC.location = _selectedLocation;
     }
 }
 

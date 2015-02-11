@@ -630,7 +630,7 @@ static bool firstTime = YES;
         [viewImage setTransitioningDelegate:self.transitionViewImageController];
     }
     
-    [self.view setBackgroundColor:[UIColor whiteColor]];
+    [self.view setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
     [self presentViewController:viewImage animated:YES completion:nil];
 }
 

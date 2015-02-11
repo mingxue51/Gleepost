@@ -62,8 +62,6 @@
     }
     
     [self fixPositionsHeadersInSectionArrayIfNeeded];
-    
-    DDLogDebug(@"Final event posts %@", _sections);
 }
 
 - (void)fixPositionsHeadersInSectionArrayIfNeeded
@@ -251,7 +249,14 @@
     return nil;
 }
 
-- (NSIndexPath *)removePost:(GLPPost *)post
+/**
+ Removes post from sections data structure.
+ @param post
+ 
+ @return a dictionary contains post's index path with key: index_path and a boolean variable that
+ indicates if a sections needs to be deleted with key: delete_section.
+ */
+- (NSDictionary *)removePost:(GLPPost *)post
 {
     NSIndexPath *indexPath = [self indexPathWithPost:post];
     
@@ -263,8 +268,55 @@
         
     [_sections setObject:section atIndexedSubscript:indexPath.section];
     
+    
+    BOOL sectionDeleted = [self removeSectionIfNeeded];
+    
     DDLogDebug(@"Post removed. New sections %@", _sections);
-    return indexPath;
+    
+    return @{@"index_path": indexPath, @"delete_section" : @(sectionDeleted)};
+}
+
+- (BOOL)removeSectionIfNeeded
+{
+    if(self.sections.count <= 1)
+    {
+        return NO;
+    }
+    
+    NSInteger sectionToBeDeleted = -1;
+    
+    NSInteger index = 0;
+    
+    for(NSDictionary *sectionDict in _sections)
+    {
+        NSArray *postsSection = [sectionDict objectForKey:[[sectionDict allKeys] objectAtIndex:0]];
+        
+        if(postsSection.count == 0)
+        {
+            sectionToBeDeleted = index;
+        }
+        
+        ++index;
+        
+    }
+
+    if(sectionToBeDeleted != -1)
+    {
+        [_sections removeObjectAtIndex:sectionToBeDeleted];
+        
+        return YES;
+    }
+    
+    return NO;
+    
+//    NSDictionary *firstPosts = self.sections[0];
+//    
+//    if(![firstPosts objectForKey:_recentHeader])
+//    {
+//        NSDictionary *d1 = self.sections[0];
+//        self.sections[0] = self.sections[1];
+//        self.sections[1] = d1;
+//    }
 }
 
 - (GLPPost *)lastPost

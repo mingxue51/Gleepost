@@ -25,5 +25,5 @@
 - (id)initWithRemoteKey:(NSInteger)remoteKey;
 - (BOOL)hasProfilePicture;
 - (BOOL)isUpdatedUserData:(GLPUser *)userData;
-
+- (BOOL)isLoggedInUser;
 @end

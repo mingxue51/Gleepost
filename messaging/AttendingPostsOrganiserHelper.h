@@ -20,7 +20,7 @@
 - (void)resetData;
 - (NSIndexPath *)indexPathWithPost:(GLPPost *)post;
 - (NSIndexPath *)updatePostWithRemoteKey:(NSInteger)postRemoteKey andViewsCount:(NSInteger)viewsCount;
-- (NSIndexPath *)removePost:(GLPPost *)post;
+- (NSDictionary *)removePost:(GLPPost *)post;
 - (GLPPost *)lastPost;
 
 @end
