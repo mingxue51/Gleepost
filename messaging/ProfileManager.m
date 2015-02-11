@@ -198,7 +198,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:[self previousPostsNotificationName] object:self userInfo:userInfo];
 }
 
-#pragma mark - Static
+#pragma mark - Helpers
 
 - (NSString *)postsNotificationName
 {

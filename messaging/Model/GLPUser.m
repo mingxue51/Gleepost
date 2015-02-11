@@ -100,6 +100,62 @@
     return copy;
 }
 
+- (BOOL)isEqual:(id)other
+{
+    GLPUser *otherUser = (GLPUser *)other;
+    
+    if(![otherUser.name isEqualToString:self.name])
+    {
+        return NO;
+    }
+    
+    if(![otherUser.profileImageUrl isEqualToString:self.profileImageUrl])
+    {
+        return NO;
+    }
+    
+    if(![otherUser.course isEqualToString:self.course])
+    {
+        return NO;
+    }
+    
+    if(![otherUser.personalMessage isEqualToString:self.personalMessage])
+    {
+        return NO;
+    }
+    
+    if(otherUser.rsvpCount && self.rsvpCount)
+    {
+        if(![otherUser.rsvpCount isEqualToNumber:self.rsvpCount])
+        {
+            return NO;
+        }
+    }
+    
+    if(otherUser.postsCount && self.postsCount)
+    {
+        if(![otherUser.postsCount isEqualToNumber:self.postsCount])
+        {
+            return NO;
+        }
+    }
+    
+    if(otherUser.groupCount && self.groupCount)
+    {
+        if(![otherUser.groupCount isEqualToNumber:self.groupCount])
+        {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
+- (NSUInteger)hash
+{
+    return self.remoteKey;
+}
+
 -(NSString*)description
 {
     return [NSString stringWithFormat:@"Remote Key: %d, Username: %@, Image: %@, Message: %@, Rsvps: %@, Groups: %@, Posts: %@",self.remoteKey, self.name, self.profileImageUrl, self.personalMessage, _rsvpCount, _groupCount, _postsCount];

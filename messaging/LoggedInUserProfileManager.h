@@ -11,6 +11,7 @@
 @interface LoggedInUserProfileManager : ProfileManager
 
 - (NSInteger)removePostWithPost:(GLPPost *)post;
+- (void)getUserData;
 - (NSInteger)updateSocialDataPostWithNotification:(NSNotification *)notification;
 - (void)updateLikedPostWithNotification:(NSNotification *)notification;
 

@@ -109,6 +109,7 @@
 #define GLPNOTIFICATION_USERS_POSTS_FETCHED             @"GLPUsersPostsFetched"
 #define GLPNOTIFICATION_USERS_PREVIOUS_POSTS_FETCHED    @"GLPUsersPreviousPostsFetched"
 #define GLPNOTIFICATION_USERS_DATA_FETCHED              @"GLPUsersDataFetched"
+#define GLPNOTIFICATION_LOGGED_IN_USERS_DATA_FETCHED    @"GLPLoggedInUsersDataFetched"
 
 //NSNotification name that removes all the NSNotifications observers from view controllers. (Usually after logout).
 #define GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS         @"GLPRemoveVCNotifications"

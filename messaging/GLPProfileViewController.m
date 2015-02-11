@@ -215,6 +215,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fetchUserData) name:GLPNOTIFICATION_REFRESH_PROFILE_CELL object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeDeallocNotifications) name:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(usersDataLoaded:) name:GLPNOTIFICATION_LOGGED_IN_USERS_DATA_FETCHED object:nil];
     [self configureManagerNotifications];
 }
 
@@ -240,6 +241,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_REFRESH_PROFILE_CELL object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_LOGGED_IN_USERS_DATA_FETCHED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:nil];
     [self removeManagerNotifications];
 }
@@ -315,6 +317,7 @@
 -(void)deletePost:(NSNotification *)notification
 {
     _postUploaded = YES;
+    [self fetchUserData];
 }
 
 /**
@@ -835,24 +838,13 @@
  */
 - (void)fetchUserData
 {
-    [[GLPProfileLoader sharedInstance] loadUsersDataWithLocalCallback:^(GLPUser *user) {
-        
-        if(user)
-        {
-            _user = user;
-            DDLogDebug(@"Data needs to be updated locally: %@", user);
-            [self refreshCellViewWithIndex:0];
-        }
-        
-    } andRemoteCallback:^(BOOL success, BOOL updatedData, GLPUser *user) {
-       
-        if(success && updatedData)
-        {
-            DDLogDebug(@"Data needs to be updated remotely: %@", user);
-            _user = user;
-            [self refreshCellViewWithIndex:0];
-        }
-    }];
+    [_loggedInUserProfileManager getUserData];
+}
+
+- (void)usersDataLoaded:(NSNotification *)notification
+{
+    _user = notification.userInfo[@"user_data"];
+    [self refreshCellViewWithIndex:0];
 }
 
 - (void)postsLoaded:(NSNotification *)notification
