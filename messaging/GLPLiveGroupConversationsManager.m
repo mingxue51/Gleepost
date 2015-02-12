@@ -103,6 +103,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
 {
     DDLogInfo(@"Load group conversation");
     
+    
     dispatch_async(_queue, ^{
     
         [self showLoadingIndicator];
@@ -119,6 +120,8 @@ static GLPLiveGroupConversationsManager *instance = nil;
                 
                 [self hideLoadingIndicator];
                 
+                //TODO: Error here. We should not save conversation in database in 2 blocks
+
                 //Save in local database.
                 [ConversationManager saveOrUpdateConversation:conversation];
                 
@@ -932,7 +935,8 @@ static GLPLiveGroupConversationsManager *instance = nil;
                            @"newMessages": [NSNumber numberWithBool:newMessages],
                            @"previousMessages": [NSNumber numberWithBool:previousMessages],
                            @"canHaveMorePreviousMessages": [NSNumber numberWithBool:canHaveMorePreviousMessages],
-                           @"newLocalMessage": [NSNumber numberWithBool:newLocalMessage]};
+                           @"newLocalMessage": [NSNumber numberWithBool:newLocalMessage],
+                           @"belongsToGroup" : @(YES)};
     
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil userInfo:args];
 }

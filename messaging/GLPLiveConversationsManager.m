@@ -1591,7 +1591,8 @@ static GLPLiveConversationsManager *instance = nil;
                            @"newMessages": [NSNumber numberWithBool:newMessages],
                            @"previousMessages": [NSNumber numberWithBool:previousMessages],
                            @"canHaveMorePreviousMessages": [NSNumber numberWithBool:canHaveMorePreviousMessages],
-                           @"newLocalMessage": [NSNumber numberWithBool:newLocalMessage]};
+                           @"newLocalMessage": [NSNumber numberWithBool:newLocalMessage],
+                           @"belongsToGroup" : @(NO)};
     
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil userInfo:args];
 }
