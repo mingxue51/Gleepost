@@ -26,7 +26,7 @@
     // default values
     _isOld = NO;
     _sendStatus = kSendStatusLocal;
-    
+    _belongsToGroup = NO;
     return self;
 }
 

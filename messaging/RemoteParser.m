@@ -231,6 +231,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     //Parse last read for participants.
     [conversation setReads: [RemoteParser parseLastRead:json[@"read"] withParticipants:participants]];
     
+    conversation.groupRemoteKey = [json[@"group"] integerValue];
+    
     return conversation;
 }
 
@@ -885,6 +887,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     group.author = [RemoteParser parseMemberFromJson:json[@"creator"] withGroupRemoteKey:group.remoteKey];
     group.loggedInUser = [RemoteParser parseLoggedInUserRoleWithJson:json[@"role"]];
     group.membersCount = [json[@"size"] integerValue];
+    group.conversationRemoteKey = [json[@"conversation"] integerValue];
     [group setPrivacyWithString:json[@"privacy"]];
         
     return group;

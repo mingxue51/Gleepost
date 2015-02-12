@@ -4271,7 +4271,6 @@
                     <connections>
                         <outlet property="activityIndicator" destination="gLX-MY-gal" id="FTe-kd-hYt"/>
                         <outlet property="tableView" destination="LQa-oG-F1O" id="HGA-ir-gyt"/>
-                        <segue destination="9bg-aO-bMl" kind="push" identifier="view members" id="bx4-ky-xRT"/>
                         <segue destination="Wkk-th-enz" kind="push" identifier="view post" id="Ze9-pm-FNm"/>
                         <segue destination="ZBE-A4-gdJ" kind="push" identifier="view private profile" id="ZpN-d9-baB"/>
                         <segue destination="ta0-Mt-RBj" kind="push" identifier="view profile" id="zvV-dv-dTv"/>
@@ -4281,6 +4280,7 @@
                         <segue destination="YKI-NX-LaO" kind="push" identifier="show image selector" id="cxq-Lw-xeo"/>
                         <segue destination="chq-8F-SBT" kind="push" identifier="show attendees" id="y0w-oH-XXi"/>
                         <segue destination="gs3-dw-jL3" kind="push" identifier="invite users" id="c6M-82-Pnp"/>
+                        <segue destination="p7E-nR-kMk" kind="push" identifier="view conversation" id="7g0-HV-ZHz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IfX-ku-VuK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5023,24 +5023,23 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="NkQ-j5-6rL"/>
-        <segue reference="FTW-m4-VDE"/>
-        <segue reference="NSy-Xb-H1O"/>
-        <segue reference="WK7-hw-eyD"/>
-        <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="PMB-JP-q3M"/>
-        <segue reference="Q9z-xI-t0V"/>
-        <segue reference="Wgm-iJ-ADQ"/>
-        <segue reference="TeO-Fd-Ort"/>
-        <segue reference="6aM-BE-RDh"/>
-        <segue reference="Ji2-Jv-WyQ"/>
-        <segue reference="J6b-Ty-4qO"/>
-        <segue reference="sMz-ia-ebt"/>
+        <segue reference="KgO-oz-Ivb"/>
         <segue reference="GTC-XV-iI1"/>
+        <segue reference="sMz-ia-ebt"/>
+        <segue reference="zvV-dv-dTv"/>
+        <segue reference="Q9z-xI-t0V"/>
+        <segue reference="ZpN-d9-baB"/>
+        <segue reference="PMB-JP-q3M"/>
+        <segue reference="NSy-Xb-H1O"/>
+        <segue reference="cxq-Lw-xeo"/>
+        <segue reference="voh-a1-0cl"/>
+        <segue reference="c6M-82-Pnp"/>
+        <segue reference="XA6-SN-ZTj"/>
+        <segue reference="Ze9-pm-FNm"/>
+        <segue reference="y0w-oH-XXi"/>
+        <segue reference="7g0-HV-ZHz"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="HwX-gN-njw"/>
         <segue reference="8oh-gD-Cs7"/>
         <segue reference="b0z-f7-UHU"/>
-        <segue reference="KgO-oz-Ivb"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -22,6 +22,7 @@
 @property (assign, nonatomic) BOOL hasUnreadMessages;
 @property (assign, nonatomic) BOOL isGroup;
 @property (assign, nonatomic) BOOL isLive;
+@property (assign, nonatomic) NSInteger groupRemoteKey;
 
 // transient
 @property (assign, nonatomic) NSInteger lastSyncMessageKey;
@@ -35,6 +36,7 @@
 
 
 - (id)initFromPushNotificationWithRemoteKey:(NSInteger)remoteKey;
+- (id)initFromGroup:(NSInteger)groupRemoteKey withRemoteKey:(NSInteger)remoteKey;
 - (id)initWithParticipants:(NSArray *)participants;
 - (id)initWithParticipants:(NSArray *)participants expiryDate:(NSDate *)expiryDate ended:(BOOL)ended;
 - (void)setReads:(NSArray *)reads;

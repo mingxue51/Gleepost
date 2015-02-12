@@ -18,6 +18,7 @@ extern int const NumberMaxOfMessagesLoaded;
 
 // new methods
 + (NSArray *)loadLocalRegularConversations;
++ (NSArray *)loadLocalGroupConversations;
 + (void)saveOrUpdateConversation:(GLPConversation *)conversation;
 + (void)initialSaveConversationsToDatabase:(NSArray *)conversations;
 + (void)deleteConversation:(GLPConversation *)conversation;

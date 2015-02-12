@@ -111,7 +111,8 @@ static DatabaseManager *instance = nil;
              participants_keys text, \
              unread integer, \
              isGroup integer, \
-             isLive integer);"];
+             isLive integer, \
+             group_remote_key);"];
             
             // conversation reads
             // In that table we store who participants read up to which message.
@@ -254,6 +255,7 @@ static DatabaseManager *instance = nil;
              date integer, \
              user_remote_key integer, \
              loggedin_user_role_key integer, \
+             conversation_remote_key integer, \
              privacy integer);"];
             
             // group members

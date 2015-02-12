@@ -118,7 +118,7 @@
 {
     if(entity.remoteKey == 0)
     {
-        [db executeUpdateWithFormat:@"insert into groups (title, description, image_url, send_status, date, user_remote_key, loggedin_user_role_key, privacy) values(%@, %@, %@, %d, %d, %d, %d, %d)",
+        [db executeUpdateWithFormat:@"insert into groups (title, description, image_url, send_status, date, user_remote_key, loggedin_user_role_key, conversation_remote_key, privacy) values(%@, %@, %@, %d, %d, %d, %d, %d, %d)",
          entity.name,
          entity.groupDescription,
          entity.groupImageUrl,
@@ -126,11 +126,12 @@
          0,
          entity.author.remoteKey,
          entity.loggedInUser.roleLevel,
+         entity.conversationRemoteKey,
          entity.privacy];
     }
     else
     {
-        [db executeUpdateWithFormat:@"insert into groups (remoteKey, title, description, image_url, send_status, date, user_remote_key, loggedin_user_role_key, privacy) values(%d, %@, %@, %@, %d, %d, %d, %d, %d)",
+        [db executeUpdateWithFormat:@"insert into groups (remoteKey, title, description, image_url, send_status, date, user_remote_key, loggedin_user_role_key, conversation_remote_key, privacy) values(%d, %@, %@, %@, %d, %d, %d, %d, %d, %d)",
          entity.remoteKey,
          entity.name,
          entity.groupDescription,
@@ -139,6 +140,7 @@
          0,
          entity.author.remoteKey,
          entity.loggedInUser.roleLevel,
+         entity.conversationRemoteKey,
          entity.privacy];
     }
     

@@ -19,6 +19,7 @@
 #import "GLPImageCacheHelper.h"
 #import "GLPSearchGroups.h"
 #import "GLPMemberDao.h"
+#import "GLPLiveGroupConversationsManager.h"
 
 @interface GLPLiveGroupManager ()
 
@@ -98,6 +99,8 @@ static GLPLiveGroupManager *instance = nil;
             _groups = groups.mutableCopy;
             [[GLPGPPostImageLoader sharedInstance] addGroups:_groups];
         }
+        
+        [[GLPLiveGroupConversationsManager sharedInstance] loadConversationsWithGroups:_groups];
         
         [self notifyWithUpdatedGroups];
     }];

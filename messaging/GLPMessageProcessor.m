@@ -18,6 +18,7 @@
 #import "WebClient.h"
 #import "GLPVideoUploadManager.h"
 #import "GLPTrackViewsCountProcessor.h"
+#import "GLPLiveGroupConversationsManager.h"
 
 @interface GLPMessageProcessor()
 
@@ -76,6 +77,7 @@ static GLPMessageProcessor *instance = nil;
             case kGLPWebSocketEventTypeNewMessage: {
                 DDLogInfo(@"Websocket event: New message");
                 GLPMessage *message = [RemoteParser parseMessageFromJson:event.data forConversation:nil];
+//                [[GLPLiveGroupConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event conversationRemoteKeyFromLocation]];
                 [[GLPLiveConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event conversationRemoteKeyFromLocation]];
                 break;
             }

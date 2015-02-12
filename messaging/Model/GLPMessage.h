@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) GLPConversation *conversation;
+@property (assign, nonatomic) BOOL belongsToGroup;
 
 - (BOOL)followsPreviousMessage:(GLPMessage *)message;
 

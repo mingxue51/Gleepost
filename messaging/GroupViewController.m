@@ -21,7 +21,7 @@
 #import "WebClientHelper.h"
 #import "GLPNewElementsIndicatorView.h"
 #import "GLPLoadingCell.h"
-#import "MembersViewController.h"
+#import "GLPConversationViewController.h"
 #import "GroupOperationManager.h"
 #import "SessionManager.h"
 #import "GLPiOSSupportHelper.h"
@@ -53,6 +53,8 @@
 
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPCampusWallAsyncProcessor.h"
+
+#import "GLPLiveGroupConversationsManager.h"
 
 @interface GroupViewController () <GLPAttendingPopUpViewControllerDelegate, GLPGroupSettingsViewControllerDelegate, GLPPublicGroupPopUpViewControllerDelegate>
 
@@ -96,6 +98,7 @@
 @property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 @property (strong, nonatomic) GLPLocation *selectedLocation;
+@property (strong, nonatomic) GLPConversation *selectedConversation;
 
 @property (assign, nonatomic) BOOL showComment;
 
@@ -143,6 +146,7 @@ const float TOP_OFF_SET = -64.0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewMediaPostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
     [[GLPLiveGroupManager sharedInstance] postGroupReadWithRemoteKey:_group.remoteKey];
+    [[GLPLiveGroupConversationsManager sharedInstance] loadConversationWithRemoteKey:_group.conversationRemoteKey];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1665,8 +1669,20 @@ const float TOP_OFF_SET = -64.0;
         //Navigate to members view controller.
 //        [self performSegueWithIdentifier:@"view members" sender:self];
 
-        DDLogDebug(@"GroupViewController : Navigate to messenger");
+        DDLogDebug(@"GroupViewController : Navigate to messenger %ld", (long)_group.conversationRemoteKey);
+        GLPConversation *conversation = [[GLPLiveGroupConversationsManager sharedInstance] findByRemoteKey:_group.conversationRemoteKey];
         
+        if(!conversation)
+        {
+            _selectedConversation = [[GLPConversation alloc] initFromGroup:_group.remoteKey withRemoteKey:_group.conversationRemoteKey];
+        }
+        else
+        {
+            _selectedConversation = conversation;
+        }
+        
+        [self performSegueWithIdentifier:@"view conversation" sender:self];
+
     }
     else if(buttonType == kButtonLeft)
     {
@@ -2047,11 +2063,11 @@ const float TOP_OFF_SET = -64.0;
         
 //        profileViewController.selectedUserId = self.selectedUserId;
     }
-    else if ([segue.identifier isEqualToString:@"view members"])
+    else if ([segue.identifier isEqualToString:@"view conversation"])
     {
-        MembersViewController *mvc = segue.destinationViewController;
-        
-        mvc.group = _group;
+        GLPConversationViewController *cvc = segue.destinationViewController;
+        cvc.conversation = _selectedConversation;
+        cvc.hidesBottomBarWhenPushed = YES;
     }
     else if ([segue.identifier isEqualToString:@"show location"])
     {

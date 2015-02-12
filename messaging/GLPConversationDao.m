@@ -39,9 +39,22 @@
     return [GLPConversationDaoParser createFromResultSet:resultSet inDb:db];
 }
 
-+ (NSArray *)findConversationsOrderByDateInDb:(FMDatabase *)db;
++ (NSArray *)findMessengerConversationsOrderByDateInDb:(FMDatabase *)db;
 {
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations order by lastUpdate DESC"];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations where group_remote_key = 0 order by lastUpdate DESC"];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        [result addObject:[GLPConversationDaoParser createFromResultSet:resultSet inDb:db]];
+    }
+    
+    return result;
+}
+
++ (NSArray *)findGroupsConversationsOrderByDateInDb:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations where group_remote_key != 0 order by lastUpdate DESC"];
     
     NSMutableArray *result = [NSMutableArray array];
     
@@ -99,7 +112,7 @@
     NSString *participants = [keys componentsJoinedByString:@";"];
 
     
-    [db executeUpdateWithFormat:@"insert into conversations (remoteKey, lastMessage, lastUpdate, title, participants_keys, unread, isGroup, isLive) values(%d, %@, %d, %@, %@, %d, %d, %d)",
+    [db executeUpdateWithFormat:@"insert into conversations (remoteKey, lastMessage, lastUpdate, title, participants_keys, unread, isGroup, isLive, group_remote_key) values(%d, %@, %d, %@, %@, %d, %d, %d, %d)",
      entity.remoteKey,
      entity.lastMessage,
      date,
@@ -107,7 +120,8 @@
      participants,
      entity.hasUnreadMessages,
      entity.isGroup,
-     entity.isLive];
+     entity.isLive,
+     entity.groupRemoteKey];
     
     entity.key = [db lastInsertRowId];
     
@@ -149,37 +163,12 @@
         [keys addObject:[NSNumber numberWithInt:key]];
     }
     
-    int date = [entity.lastUpdate timeIntervalSince1970];
-    
-    //    NSArray *keys = [entity.participants valueForKeyPath:@"key"];
-    NSString *participants = [keys componentsJoinedByString:@";"];
-    
-    
     GLPConversation *conv = [GLPConversationDao findByRemoteKey:entity.remoteKey db:db];
 
     if(conv == nil)
     {
         //Conversation doesn't exist, add conversation.
-        
-        [db executeUpdateWithFormat:@"insert into conversations (remoteKey, lastMessage, lastUpdate, title, participants_keys, unread, isGroup, isLive) values(%d, %@, %d, %@, %@, %d, %d, %d)",
-         entity.remoteKey,
-         entity.lastMessage,
-         date,
-         entity.title,
-         participants,
-         entity.hasUnreadMessages,
-         entity.isGroup,
-         entity.isLive];
-        
-        entity.key = [db lastInsertRowId];
-        
-        for(GLPConversationRead *conversationRead in entity.reads)
-        {
-            [db executeUpdateWithFormat:@"insert into conversations_reads (conversation_remote_key, participant_remote_key, message_read_remote_key) values(%d, %d, %d)",
-             entity.remoteKey,
-             conversationRead.participant.remoteKey,
-             conversationRead.messageRemoteKey];
-        }
+        [GLPConversationDao save:entity db:db];
     }
     else
     {

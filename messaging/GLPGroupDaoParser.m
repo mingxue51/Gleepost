@@ -23,13 +23,10 @@
     entity.groupImageUrl = [resultSet stringForColumn:@"image_url"];
     entity.groupDescription = [resultSet stringForColumn:@"description"];
     entity.sendStatus = [resultSet intForColumn:@"send_status"];
-    
     entity.author = [GLPMemberDao findMemberWithRemoteKey:[resultSet intForColumn:@"user_remote_key"] withGroupRemoteKey:entity.remoteKey andDb:db];
-    
     entity.loggedInUser = [[GLPMember alloc] initWithUser:[SessionManager sharedInstance].user andRoleNumber:[resultSet intForColumn:@"loggedin_user_role_key"]];
-        
     entity.privacy = [resultSet intForColumn:@"privacy"];
-    
+    entity.conversationRemoteKey = [resultSet intForColumn:@"conversation_remote_key"];
     
     return entity;
 }
