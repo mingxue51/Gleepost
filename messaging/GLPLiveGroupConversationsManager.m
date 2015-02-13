@@ -101,7 +101,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
 
 - (void)loadConversationWithRemoteKey:(NSInteger)conversationRemoteKey
 {
-    DDLogInfo(@"Load group conversation remote key %d", conversationRemoteKey);
+    DDLogInfo(@"Load group conversation remote key %ld", (long)conversationRemoteKey);
     
     if(conversationRemoteKey == 0)
     {
@@ -114,8 +114,8 @@ static GLPLiveGroupConversationsManager *instance = nil;
         
         [[WebClient sharedInstance] synchronousGetConversationForRemoteKey:conversationRemoteKey withCallback:^(BOOL success, GLPConversation *conversation) {
             
-            dispatch_async(_queue, ^{
-                
+//            dispatch_async(_queue, ^{
+            
                 if(!success) {
                     DDLogError(@"Cannot load group conversation");
                     _isSynchronizedWithRemote = NO;
@@ -138,7 +138,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
                 [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
                 [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
                 
-            });
+//            });
             
             if(success && conversation)
             {

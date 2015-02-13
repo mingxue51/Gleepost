@@ -29,4 +29,7 @@
 - (void)markConversation:(GLPConversation *)conversation upToTheLastMessageAsRead:(GLPMessage *)lastMessage;
 - (NSArray *)loadLatestMessagesForConversation:(GLPConversation *)conversation;
 - (void)syncConversationPreviousMessages:(GLPConversation *)detachedConversation;
+
+- (void)clear;
+
 @end
