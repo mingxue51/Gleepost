@@ -1,11 +1,6 @@
 #import "GLPMessage.h"
 #import "GLPUser.h"
 
-@interface GLPMessage ()
-
-@end
-
-
 @implementation GLPMessage
 
 @synthesize seen = _seen;
@@ -29,6 +24,7 @@
     _belongsToGroup = NO;
     return self;
 }
+
 
 - (BOOL)followsPreviousMessage:(GLPMessage *)message
 {    

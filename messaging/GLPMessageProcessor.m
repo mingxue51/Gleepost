@@ -76,7 +76,9 @@ static GLPMessageProcessor *instance = nil;
         switch (event.type) {
             case kGLPWebSocketEventTypeNewMessage: {
                 DDLogInfo(@"Websocket event: New message");
+                DDLogDebug(@"Websocket event json %@", json);
                 GLPMessage *message = [RemoteParser parseMessageFromJson:event.data forConversation:nil];
+                
 //                [[GLPLiveGroupConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event conversationRemoteKeyFromLocation]];
                 [[GLPLiveConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event conversationRemoteKeyFromLocation]];
                 break;

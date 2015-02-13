@@ -17,6 +17,7 @@
 #import "GLPMember.h"
 #import "GLPConversationRead.h"
 #import "GLPReviewHistory.h"
+#import "GLPSystemMessage.h"
 
 @interface RemoteParser()
 
@@ -451,6 +452,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (GLPMessage *)parseMessageFromJson:(NSDictionary *)json forConversation:(GLPConversation *)conversation
 {
+
     GLPMessage *message = [[GLPMessage alloc] init];
     message.remoteKey = [json[@"id"] integerValue];
     message.author = [RemoteParser parseUserFromJson:json[@"by"]];
@@ -460,6 +462,13 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     message.sendStatus = kSendStatusSent;
     message.seen = [json[@"seen"] boolValue];
     
+    BOOL systemMessage = [json[@"system"] boolValue];
+    
+    if(systemMessage)
+    {
+        return [[GLPSystemMessage alloc] initWithMessage:message];
+    }
+
     return message;
 }
 

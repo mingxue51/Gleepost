@@ -733,6 +733,7 @@
 		58F0F0C21934F91E0032450F /* categories_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0C11934F91E0032450F /* categories_image.png */; };
 		58F0F0C41934F9320032450F /* right_arrow_navigation.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F0F0C31934F9320032450F /* right_arrow_navigation.png */; };
 		58F0F0C7193507D40032450F /* GLPSelectCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F0F0C6193507D40032450F /* GLPSelectCategoryViewController.m */; };
+		58F2837B1A8E5CBB0002ACE0 /* GLPSystemMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F2837A1A8E5CBB0002ACE0 /* GLPSystemMessage.m */; };
 		58F284DC1A71514D0018ADAB /* PostImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F284DB1A71514D0018ADAB /* PostImageLoader.m */; };
 		58F284DF1A7154950018ADAB /* GLPGPPostImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F284DE1A7154950018ADAB /* GLPGPPostImageLoader.m */; };
 		58F2950119353C9300A638BA /* NewPostCategoriesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F2950019353C9300A638BA /* NewPostCategoriesView.m */; };
@@ -1965,6 +1966,8 @@
 		58F0F0C31934F9320032450F /* right_arrow_navigation.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right_arrow_navigation.png; sourceTree = "<group>"; };
 		58F0F0C5193507D40032450F /* GLPSelectCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSelectCategoryViewController.h; sourceTree = "<group>"; };
 		58F0F0C6193507D40032450F /* GLPSelectCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSelectCategoryViewController.m; sourceTree = "<group>"; };
+		58F283791A8E5CBB0002ACE0 /* GLPSystemMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSystemMessage.h; sourceTree = "<group>"; };
+		58F2837A1A8E5CBB0002ACE0 /* GLPSystemMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSystemMessage.m; sourceTree = "<group>"; };
 		58F284DA1A71514D0018ADAB /* PostImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostImageLoader.h; sourceTree = "<group>"; };
 		58F284DB1A71514D0018ADAB /* PostImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostImageLoader.m; sourceTree = "<group>"; };
 		58F284DD1A7154950018ADAB /* GLPGPPostImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGPPostImageLoader.h; sourceTree = "<group>"; };
@@ -4361,6 +4364,17 @@
 			name = Approval;
 			sourceTree = "<group>";
 		};
+		58F283781A8E5C9D0002ACE0 /* GLPMessage */ = {
+			isa = PBXGroup;
+			children = (
+				807C4D0B180AF0F6003D67E6 /* GLPMessage.h */,
+				807C4D0C180AF0F6003D67E6 /* GLPMessage.m */,
+				58F283791A8E5CBB0002ACE0 /* GLPSystemMessage.h */,
+				58F2837A1A8E5CBB0002ACE0 /* GLPSystemMessage.m */,
+			);
+			name = GLPMessage;
+			sourceTree = "<group>";
+		};
 		58F284D91A7150960018ADAB /* Groups */ = {
 			isa = PBXGroup;
 			children = (
@@ -4707,6 +4721,7 @@
 		807C4CDE180AF08B003D67E6 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				58F283781A8E5C9D0002ACE0 /* GLPMessage */,
 				58ECE0C91A24120600B38FBA /* Approval */,
 				8087E425180EC02E00938264 /* _Comment.h */,
 				8087E426180EC02E00938264 /* _Comment.m */,
@@ -4734,8 +4749,6 @@
 				58C9E15619EC6A88008CB14A /* GLPConversationRead.m */,
 				80C8BA4E18103203004F70DB /* GLPEntity.h */,
 				80C8BA4F18103203004F70DB /* GLPEntity.m */,
-				807C4D0B180AF0F6003D67E6 /* GLPMessage.h */,
-				807C4D0C180AF0F6003D67E6 /* GLPMessage.m */,
 				80C8BA6418104177004F70DB /* GLPPost.h */,
 				80C8BA6518104177004F70DB /* GLPPost.m */,
 				807C4D0D180AF0F6003D67E6 /* GLPUser.h */,
@@ -6221,6 +6234,7 @@
 				80AB896A17C2808A0053E784 /* UIPlaceHolderTextView.m in Sources */,
 				58B90F1918C81B9300FA0955 /* GroupOperationManager.m in Sources */,
 				588F1DBB19EDCEB100DB6D23 /* ATPopUpAfterGoingView.m in Sources */,
+				58F2837B1A8E5CBB0002ACE0 /* GLPSystemMessage.m in Sources */,
 				58960EBC18A19559005FC433 /* CustomPushTransitioning.m in Sources */,
 				5828D7B6181EA682002D71F9 /* GLPLiveConversationDao.m in Sources */,
 				585DF77717ECAC1400FBFC35 /* ChatMessageTableViewCell.m in Sources */,

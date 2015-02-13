@@ -14,6 +14,7 @@
 #import "GLPDateFormatterHelper.h"
 #import "AppearanceHelper.h"
 #import "GLPImageHelper.h"
+#import "GLPSystemMessage.h"
 
 @interface GLPMessageCell()
 
@@ -137,6 +138,17 @@ static const CGFloat kTextSize = 15;
         
         [self.contentView addSubview:button];
     }
+    
+    // system message
+    {
+        UILabel *labelSystem = [[UILabel alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
+        labelSystem.textAlignment = NSTextAlignmentCenter;
+        labelSystem.textColor = [UIColor lightGrayColor];
+        labelSystem.font = [UIFont fontWithName:GLP_TITLE_FONT size:10.0f];
+        labelSystem.userInteractionEnabled = NO;
+        [self.contentView addSubview:labelSystem];
+    }
+    
     self.selectedBackgroundView = [UIView new];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -149,17 +161,34 @@ static const CGFloat kTextSize = 15;
     
     _height = kTopMargin;
     
-    [self configureProfileImage];
-    [self configureTimeLabel];
-    [self configureMessageText];
+    if([_message isKindOfClass:[GLPSystemMessage class]])
+    {
+        [self setHiddedElementsOnSystemMessage:YES];
+        [self configureSystemMessage];
+
+    }
+    else
+    {
+        [self setHiddedElementsOnSystemMessage:NO];
+        [self configureProfileImage];
+        [self configureTimeLabel];
+        [self configureMessageText];
+    }
     
     _height += kBottomMargin;
     
-    if(_height < kProfileImageViewSize) {
+    if(_height < kProfileImageViewSize && ![_message isKindOfClass:[GLPSystemMessage class]]) {
         _height = kProfileImageViewSize;
     }
     
     CGRectSetH(self.contentView, _height);
+}
+
+- (void)configureSystemMessage
+{
+    UILabel *label = self.contentView.subviews[4];
+    GLPSystemMessage *sMessage = (GLPSystemMessage *)_message;
+    [label setText:[sMessage systemMessage]];
 }
 
 - (void)configureProfileImage
@@ -198,7 +227,7 @@ static const CGFloat kTextSize = 15;
 - (void)configureTimeLabel
 {
     UILabel *label = self.contentView.subviews[1];
-
+    
 //    DDLogDebug(@"configureTimeLabel: %@", _message.content);
     
     if(_message.hasHeader) {
@@ -219,7 +248,8 @@ static const CGFloat kTextSize = 15;
     UIView *view = self.contentView.subviews[2];
     UIImageView *imageView = view.subviews[0];
     UILabel *label = view.subviews[1];
-    
+    UIButton *errorButton = self.contentView.subviews[3];
+
     CGSize labelSize = [GLPMessageCell contentLabelSizeForMessage:_message];
     
     if(labelSize.width < kContentLabelMinimalW) {
@@ -262,7 +292,6 @@ static const CGFloat kTextSize = 15;
     
     
     
-    UIButton *errorButton = self.contentView.subviews[3];
     if(_message.sendStatus == kSendStatusFailure) {
         errorButton.hidden = NO;
         CGFloat errorX = _isOnLeftSide ? CGRectGetMaxX(view.frame) + kErrorImageSideMargin : view.frame.origin.x - kErrorImageSideMargin - kErrorImageW;
@@ -273,6 +302,23 @@ static const CGFloat kTextSize = 15;
     }
 
     _height += h;
+}
+
+- (void)setHiddedElementsOnSystemMessage:(BOOL)hidden
+{
+    for(NSUInteger index = 0; index < self.contentView.subviews.count; ++index)
+    {
+        UIView *v = self.contentView.subviews[index];
+        
+        if(index != 4)
+        {
+            [v setHidden:hidden];
+        }
+        else
+        {
+            [v setHidden:!hidden];
+        }
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -320,11 +366,17 @@ static const CGFloat kTextSize = 15;
 {
     CGFloat height = kTopMargin;
     
-    if(message.hasHeader || message.needsProfileImage) {
+    if((message.hasHeader || message.needsProfileImage) && ![message isKindOfClass:[GLPSystemMessage class]]) {
         height = kTimeLabelH + kTimeLabelBottomMargin;
     }
     
-    height += [GLPMessageCell contentLabelSizeForMessage:message].height + kContentLabelVerticalPadding;
+    height += [GLPMessageCell contentLabelSizeForMessage:message].height;
+    
+    if(![message isKindOfClass:[GLPSystemMessage class]])
+    {
+        height += kContentLabelVerticalPadding;
+    }
+    
     height += kBottomMargin;
     
     return height;
