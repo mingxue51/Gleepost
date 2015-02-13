@@ -165,7 +165,6 @@ static const CGFloat kTextSize = 15;
     {
         [self setHiddedElementsOnSystemMessage:YES];
         [self configureSystemMessage];
-
     }
     else
     {

@@ -48,6 +48,7 @@
 #import "GLPShowUsersViewController.h"
 #import "GLPConversationHelper.h"
 #import "GLPLiveGroupManager.h"
+#import "GLPSystemMessage.h"
 
 @interface GLPConversationViewController ()
 
@@ -418,7 +419,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
             continue;
         }
         
-        if ([current.author.name isEqualToString:previous.author.name]) {
+        //Do not configure as following message if the previous message is system message.
+        if ([current.author.name isEqualToString:previous.author.name] && ![previous isKindOfClass:[GLPSystemMessage class]]) {
             [current configureAsFollowingMessage:previous];
             previous = current;
         }
