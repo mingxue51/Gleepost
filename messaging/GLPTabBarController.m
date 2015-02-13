@@ -246,10 +246,8 @@ static NSInteger lastTabbarIndex = 0;
 
 - (void)updateChatBadge:(NSNotification *)notification
 {
-    //TODO: If the new messages is group then check if the selectedIndex
+    //If the new messages is group then check if the selectedIndex
     //is 2. Otherwise do the current implementation.
-    
-    DDLogDebug(@"GLPTabBarController : updateChatBadge %@", notification.userInfo);
     
     BOOL belongToGroupConversation = [notification.userInfo[@"belongsToGroup"] boolValue];
     

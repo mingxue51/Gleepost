@@ -1214,7 +1214,7 @@ static WebClient *instance = nil;
             callback(NO, nil);
             return;
         }
-        
+                
         GLPConversation *conversation = [RemoteParser parseConversationFromJson:json];
         callback(YES, conversation);
     }];

@@ -146,6 +146,7 @@ const float TOP_OFF_SET = -64.0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewMediaPostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
     [[GLPLiveGroupManager sharedInstance] postGroupReadWithRemoteKey:_group.remoteKey];
+    
     [[GLPLiveGroupConversationsManager sharedInstance] loadConversationWithRemoteKey:_group.conversationRemoteKey];
 }
 
@@ -360,7 +361,6 @@ const float TOP_OFF_SET = -64.0;
 
     }
     
-    DDLogDebug(@"Group type %d", _group.privacy);
 }
 
 -(void)configureNavigationBar
@@ -420,8 +420,6 @@ const float TOP_OFF_SET = -64.0;
 
 -(void)removeNotifications
 {
-    DDLogDebug(@"removeNotifications group name %@", _group.name);
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
 //    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
@@ -1060,11 +1058,9 @@ const float TOP_OFF_SET = -64.0;
 {
     UIImage *img = [[GroupOperationManager sharedInstance] pendingGroupImageWithRemoteKey:_group.remoteKey];
     
-    DDLogDebug(@"Load pending image if exist.");
-    
     if(!img)
     {
-        DDLogDebug(@"Pending image doesn't exist.");
+        DDLogError(@"Pending image doesn't exist.");
 
         return;
     }
@@ -1373,7 +1369,6 @@ const float TOP_OFF_SET = -64.0;
     
     [GLPGroupManager loadRemotePostsBefore:remotePost withGroupRemoteKey:_group.remoteKey callback:^(BOOL success, BOOL remain, NSArray *posts) {
         [self stopLoading];
-        DDLogDebug(@"Stop loading activity indicator");
         
 //        [_pongRefreshControl finishedLoading];
 
@@ -1424,24 +1419,14 @@ const float TOP_OFF_SET = -64.0;
 - (void)startLoading
 {
     self.isLoading = YES;
-    
-    DDLogDebug(@"GroupViewController : show indicator startLoading");
-
-    
     [_activityIndicator startAnimating];
-    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
 - (void)stopLoading
 {
     self.isLoading = NO;
-    
-    DDLogDebug(@"GroupViewController : show indicator stopLoading");
-
-    
     [_activityIndicator stopAnimating];
-    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
@@ -1666,23 +1651,7 @@ const float TOP_OFF_SET = -64.0;
 {
     if(buttonType == kButtonRight)
     {
-        //Navigate to members view controller.
-//        [self performSegueWithIdentifier:@"view members" sender:self];
-
-        DDLogDebug(@"GroupViewController : Navigate to messenger %ld", (long)_group.conversationRemoteKey);
-        GLPConversation *conversation = [[GLPLiveGroupConversationsManager sharedInstance] findByRemoteKey:_group.conversationRemoteKey];
-        
-        if(!conversation)
-        {
-            _selectedConversation = [[GLPConversation alloc] initFromGroup:_group.remoteKey withRemoteKey:_group.conversationRemoteKey];
-        }
-        else
-        {
-            _selectedConversation = conversation;
-        }
-        
-        [self performSegueWithIdentifier:@"view conversation" sender:self];
-
+        [self navigateToMessenger];
     }
     else if(buttonType == kButtonLeft)
     {
@@ -1690,8 +1659,24 @@ const float TOP_OFF_SET = -64.0;
     }
     else if (buttonType == kButtonMiddle)
     {
-        DDLogDebug(@"Messages selected!");
     }
+}
+
+- (void)navigateToMessenger
+{
+    DDLogDebug(@"GroupViewController : Navigate to messenger %ld", (long)_group.conversationRemoteKey);
+    GLPConversation *conversation = [[GLPLiveGroupConversationsManager sharedInstance] findByRemoteKey:_group.conversationRemoteKey];
+    
+    if(!conversation)
+    {
+        _selectedConversation = [[GLPConversation alloc] initFromGroup:_group.remoteKey withRemoteKey:_group.conversationRemoteKey];
+    }
+    else
+    {
+        _selectedConversation = conversation;
+    }
+    
+    [self performSegueWithIdentifier:@"view conversation" sender:self];
 }
 
 #pragma mark - GLPPublicGroupPopUpViewControllerDelegate
@@ -1920,9 +1905,6 @@ const float TOP_OFF_SET = -64.0;
     if(self.posts.count == 0)
     {
         float yPosition = [DescriptionSegmentGroupCell getCellHeightWithGroup:_group] ;
-        
-        DDLogDebug(@"yPostion group empty view %f", yPosition);
-
         [[GLPEmptyViewManager sharedInstance] addEmptyGroupPostViewWithView:self.tableView andStartingPosition:yPosition];
     }
     else

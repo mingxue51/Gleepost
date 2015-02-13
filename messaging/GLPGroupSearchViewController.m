@@ -35,9 +35,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self initialiseObjects];
-        
+            
     [self configureSearchBar];
 
     [self configureNotifications];
@@ -69,14 +67,9 @@
     [super viewWillDisappear:animated];
 }
 
-//- (void)configureTableView
-//{
-//    [self.tableView setTableFooterView:[[UIView alloc] init]];
-//    
-//}
-
 - (void)initialiseObjects
 {
+    [super initialiseObjects];
     _privateGroupPopUp = [[TDPopUpAfterGoingView alloc] init];
 }
 

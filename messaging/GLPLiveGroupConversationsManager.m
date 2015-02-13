@@ -101,8 +101,12 @@ static GLPLiveGroupConversationsManager *instance = nil;
 
 - (void)loadConversationWithRemoteKey:(NSInteger)conversationRemoteKey
 {
-    DDLogInfo(@"Load group conversation");
+    DDLogInfo(@"Load group conversation remote key %d", conversationRemoteKey);
     
+    if(conversationRemoteKey == 0)
+    {
+        return;
+    }
     
     dispatch_async(_queue, ^{
     
@@ -111,6 +115,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
         [[WebClient sharedInstance] synchronousGetConversationForRemoteKey:conversationRemoteKey withCallback:^(BOOL success, GLPConversation *conversation) {
             
             dispatch_async(_queue, ^{
+                
                 if(!success) {
                     DDLogError(@"Cannot load group conversation");
                     _isSynchronizedWithRemote = NO;
@@ -120,15 +125,13 @@ static GLPLiveGroupConversationsManager *instance = nil;
                 
                 [self hideLoadingIndicator];
                 
-                //TODO: Error here. We should not save conversation in database in 2 blocks
-
-                //Save in local database.
-                [ConversationManager saveOrUpdateConversation:conversation];
-                
                 DDLogInfo(@"Load conversation success");
                 
-                [self internalAddConversation:conversation isEmpty:NO];
-                
+                //If the conversation has 1 participant (in case of one member) for now don't add conversation.
+                if(conversation)
+                {
+                    [self internalAddConversation:conversation isEmpty:NO];
+                }
                 
                 _isSynchronizedWithRemote = YES;
                 
@@ -136,8 +139,14 @@ static GLPLiveGroupConversationsManager *instance = nil;
                 [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
                 
             });
-        }];
+            
+            if(success && conversation)
+            {
+                //We should not save conversation in database in 2 blocks. That's why we are saving it here.
+                [ConversationManager saveOrUpdateConversation:conversation];
+            }
 
+        }];
     });
 }
 

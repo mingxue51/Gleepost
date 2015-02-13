@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UINavigationItem *navItem;
 @property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
+- (void)initialiseObjects;
 - (void)configureNavigationBar;
 - (void)reloadTableViewWithGroups:(NSArray *)groups;
 - (void)insertToTableViewNewGroup:(GLPGroup *)newGroup;
