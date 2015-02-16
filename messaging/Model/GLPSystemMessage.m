@@ -25,6 +25,8 @@
 
 - (void)initialiseObjectsWithMessage:(GLPMessage *)message
 {
+    self.key = message.key;
+    self.remoteKey = message.remoteKey;
     self.seen = message.seen;
     self.isOld = message.isOld;
     self.displayOrder = message.displayOrder;

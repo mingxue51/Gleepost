@@ -299,7 +299,7 @@
             <objects>
                 <viewController storyboardIdentifier="IntroKindOfNewPostViewController" id="Fyw-Rk-v9s" customClass="IntroKindOfNewPostViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pea-Lo-4mo">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What kind of post is this?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qx7-12-4te">
@@ -614,7 +614,7 @@
             <objects>
                 <viewController storyboardIdentifier="IntorKinfOfEventViewController" id="I2V-r4-Ixi" customClass="IntroKindOfEventViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ssv-q2-2WD">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Vol-nY-9AS">
@@ -1864,7 +1864,7 @@
             <objects>
                 <viewController id="kg4-Pr-bdC" customClass="PickDateEventViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qag-Ya-uD7">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" id="c3Y-EN-qPQ">
@@ -1882,7 +1882,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="khp-62-GyN">
-                                <rect key="frame" x="10" y="359" width="300" height="50"/>
+                                <rect key="frame" x="10" y="423" width="300" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="19"/>
                                 <state key="normal" title="NEXT" backgroundImage="change_pass_name.png">
@@ -4595,7 +4595,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user_image_bg.png" id="IPh-XZ-ut2">
-                                                    <rect key="frame" x="10" y="2" width="40" height="76"/>
+                                                    <rect key="frame" x="10" y="2" width="40" height="82"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lcQ-fh-Cj3">
@@ -5023,23 +5023,23 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="KgO-oz-Ivb"/>
-        <segue reference="GTC-XV-iI1"/>
-        <segue reference="sMz-ia-ebt"/>
-        <segue reference="zvV-dv-dTv"/>
-        <segue reference="Q9z-xI-t0V"/>
         <segue reference="ZpN-d9-baB"/>
-        <segue reference="PMB-JP-q3M"/>
-        <segue reference="NSy-Xb-H1O"/>
-        <segue reference="cxq-Lw-xeo"/>
-        <segue reference="voh-a1-0cl"/>
-        <segue reference="c6M-82-Pnp"/>
-        <segue reference="XA6-SN-ZTj"/>
+        <segue reference="Q9z-xI-t0V"/>
         <segue reference="Ze9-pm-FNm"/>
         <segue reference="y0w-oH-XXi"/>
+        <segue reference="XA6-SN-ZTj"/>
+        <segue reference="cxq-Lw-xeo"/>
         <segue reference="7g0-HV-ZHz"/>
+        <segue reference="voh-a1-0cl"/>
+        <segue reference="c6M-82-Pnp"/>
+        <segue reference="zvV-dv-dTv"/>
+        <segue reference="sMz-ia-ebt"/>
+        <segue reference="aP2-oN-YHg"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="8oh-gD-Cs7"/>
         <segue reference="b0z-f7-UHU"/>
+        <segue reference="KgO-oz-Ivb"/>
+        <segue reference="NSy-Xb-H1O"/>
+        <segue reference="PMB-JP-q3M"/>
     </inferredMetricsTieBreakers>
 </document>

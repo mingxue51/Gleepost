@@ -701,7 +701,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
             if([_conversationsOldestMessageShown[index] isEqualToNumber:@0]) {
                 GLPMessage *first = [syncMessages firstObject];
                 _conversationsOldestMessageShown[index] = [NSNumber numberWithInteger:first.key];
-                DDLogInfo(@"New oldest shown message key: %d", first.key);
+                DDLogInfo(@"New oldest shown message key: %d %@", first.key, first.content);
             }
         }
         
