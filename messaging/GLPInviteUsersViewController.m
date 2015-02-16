@@ -14,12 +14,14 @@
 #import <TAPKeyboardPop/UIViewController+TAPKeyboardPop.h>
 #import "GLPFacebookConnect.h"
 #import "GLPGroupManager.h"
+#import "GLPLiveGroupManager.h"
+#import "GLPLoadingButton.h"
 
 @interface GLPInviteUsersViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UIButton *addSelectedButton;
+@property (weak, nonatomic) IBOutlet GLPLoadingButton *addSelectedButton;
 
 @property (strong, nonatomic) UIButton *facebookButton;
 
@@ -33,8 +35,6 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 {
     [super viewDidLoad];
     
-//    [self configureNavigationBar];
-    
     [self configureTableView];
     
     [self registerTableViewCells];
@@ -44,8 +44,6 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     [self configureFacebookInvitationButton];
     
     [self loadExistingMembers];
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -59,12 +57,8 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 
 - (void)configureNavigationBar
 {
-    
     [super configureNavigationBar];
-    
     self.navigationItem.title = @"ADD GRPOUP MEMBERS";
-
-    
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 }
 
@@ -102,10 +96,8 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     {
         //Load existing members.
         [GLPGroupManager loadMembersWithGroupRemoteKey:self.group.remoteKey withLocalCallback:^(NSArray *members) {
-            
 
             [super setAlreadyMembers:self.alreadyMembers];
-            
             
         } remoteCallback:^(BOOL success, NSArray *members) {
             
@@ -289,14 +281,13 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 #pragma mark - Selectors
 
 - (IBAction)addUsers:(id)sender
-{
-    [WebClientHelper showStandardLoaderWithTitle:@"Sending invitaions" forView:self.view];
+{    
+    [_addSelectedButton startLoading];
     
     NSArray *userKeys = [super getCheckedUsersRemoteKeys];
     
     [[WebClient sharedInstance] addUsers:userKeys toGroup:_group callback:^(BOOL success, GLPGroup *updatedGroup) {
-        
-        [WebClientHelper hideStandardLoaderForView:self.view];
+        [_addSelectedButton stopLoading];
         
         if(!success) {
             [WebClientHelper failedToAddUsers];
@@ -367,6 +358,7 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     [self.navigationController popViewControllerAnimated:YES];
+    [[GLPLiveGroupManager sharedInstance] userJoinedGroup];
 }
 
 #pragma mark - Keyboard management

@@ -154,10 +154,9 @@
         
         if(success)
         {
-            [[GLPLiveGroupManager sharedInstance] deleteGroup:group];
-//            [_delegate groupDeletedWithData:_groupData];
-            [_groups removeObjectAtIndex:indexPath.row];
+            [_groups removeObject:group];
             [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+            [[GLPLiveGroupManager sharedInstance] deleteGroup:group];
         }
         else
         {

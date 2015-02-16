@@ -113,6 +113,8 @@ static GLPLiveGroupManager *instance = nil;
     }];
 }
 
+#pragma mark - Accessors
+
 /**
  Reloads the groups in case the notification has to do with groups.
  NOTE: This method should be called only from web socket event.
@@ -125,10 +127,9 @@ static GLPLiveGroupManager *instance = nil;
     switch (notification.notificationType)
     {
         case kGLPNotificationTypeCreatedPostGroup:
-        case kGLPNotificationTypeInvitedYouToGroup:
+        case kGLPNotificationTypeAddedGroup:
             [self loadInitialGroups];
             break;
-            
         default:
             break;
     }
@@ -329,7 +330,6 @@ static GLPLiveGroupManager *instance = nil;
 - (void)deleteGroup:(GLPGroup *)group
 {
     dispatch_async(_queue, ^{
-        
         [_groups removeObject:group];
         [GLPGroupDao remove:group];
         [GLPMemberDao removeMember:group.loggedInUser withGroupRemoteKey:group.remoteKey];

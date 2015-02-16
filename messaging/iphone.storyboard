@@ -1228,7 +1228,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="XgD-hF-gt9">
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="XgD-hF-gt9" customClass="GLPLoadingButton">
                                 <rect key="frame" x="20" y="292" width="280" height="49"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
@@ -4595,7 +4595,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="user_image_bg.png" id="IPh-XZ-ut2">
-                                                    <rect key="frame" x="10" y="2" width="40" height="82"/>
+                                                    <rect key="frame" x="10" y="2" width="40" height="88"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 </imageView>
                                                 <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lcQ-fh-Cj3">
@@ -5023,23 +5023,23 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="ZpN-d9-baB"/>
-        <segue reference="Q9z-xI-t0V"/>
-        <segue reference="Ze9-pm-FNm"/>
         <segue reference="y0w-oH-XXi"/>
-        <segue reference="XA6-SN-ZTj"/>
-        <segue reference="cxq-Lw-xeo"/>
-        <segue reference="7g0-HV-ZHz"/>
-        <segue reference="voh-a1-0cl"/>
+        <segue reference="Q9z-xI-t0V"/>
+        <segue reference="Gwl-Cd-vyB"/>
         <segue reference="c6M-82-Pnp"/>
+        <segue reference="PMB-JP-q3M"/>
+        <segue reference="NSy-Xb-H1O"/>
+        <segue reference="7g0-HV-ZHz"/>
+        <segue reference="Ze9-pm-FNm"/>
+        <segue reference="voh-a1-0cl"/>
         <segue reference="zvV-dv-dTv"/>
+        <segue reference="cxq-Lw-xeo"/>
+        <segue reference="XA6-SN-ZTj"/>
         <segue reference="sMz-ia-ebt"/>
         <segue reference="aP2-oN-YHg"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="8oh-gD-Cs7"/>
         <segue reference="b0z-f7-UHU"/>
         <segue reference="KgO-oz-Ivb"/>
-        <segue reference="NSy-Xb-H1O"/>
-        <segue reference="PMB-JP-q3M"/>
     </inferredMetricsTieBreakers>
 </document>
