@@ -590,6 +590,39 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     [navVC setViewControllers:@[messagesVC, conversationVC] animated:YES];
 }
 
+//TODO: To be impemented.
+-(void)navigateToGroupConversationWithPNNotification:(GLPPushNotification *)pushNotification
+{
+//    GLPConversation *conversation = [[GLPConversation alloc] initFromPushNotificationWithRemoteKey:[pushNotification.conversationId integerValue]];
+//    
+//    if(!_tabBarController) {
+//        DDLogError(@"Cannot find tab bar VC, abort");
+//        return;
+//    }
+//    
+//    if(_tabBarController.selectedIndex != 2) {
+//        UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+//        [currentNavigationVC popToRootViewControllerAnimated:NO];
+//        [_tabBarController setSelectedIndex:2];
+//    }
+//    
+//    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[2] class]));
+//    UINavigationController *navVC = _tabBarController.viewControllers[2];
+//    
+//    DDLogInfo(@"Messages VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+//    GroupViewController *groupVC = navVC.viewControllers[0];
+//    
+//    GLPGroupsViewController
+//    
+//    GLPConversationViewController *conversationVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GLPConversationViewController"];
+//    conversationVC.conversation = conversation;
+//    conversationVC.comesFromPN = YES;
+//    conversationVC.hidesBottomBarWhenPushed = YES;
+//    
+//    
+//    [navVC setViewControllers:@[messagesVC, conversationVC] animated:YES];
+}
+
 # pragma mark - Handle custom URL Scheme (gleepost://)
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation

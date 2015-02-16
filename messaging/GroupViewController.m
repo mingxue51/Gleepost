@@ -53,8 +53,8 @@
 
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPCampusWallAsyncProcessor.h"
-
 #import "GLPLiveGroupConversationsManager.h"
+
 
 @interface GroupViewController () <GLPAttendingPopUpViewControllerDelegate, GLPGroupSettingsViewControllerDelegate, GLPPublicGroupPopUpViewControllerDelegate>
 
@@ -2053,6 +2053,8 @@ const float TOP_OFF_SET = -64.0;
     }
     else if ([segue.identifier isEqualToString:@"show location"])
     {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+
         GLPShowLocationViewController *showLocationVC = segue.destinationViewController;
         
         showLocationVC.location = _selectedLocation;

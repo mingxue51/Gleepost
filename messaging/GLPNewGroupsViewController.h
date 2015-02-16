@@ -14,7 +14,6 @@
 @interface GLPNewGroupsViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UINavigationItem *navItem;
-@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 - (void)initialiseObjects;
 - (void)configureNavigationBar;
@@ -23,6 +22,10 @@
 - (void)reloadTableViewWithGroup:(GLPGroup *)newGroup;
 - (void)setNavigationBarTitle:(NSString *)title;
 - (void)showOrHideEmptyView;
+- (void)startLoading;
+- (void)stopLoading;
+- (void)showEmptyView;
+- (void)hideEmptyView;
 - (void)groupImageLoadedWithNotification:(NSNotification *)notification;
 - (void)quitFromGroupWithIndexPath:(NSIndexPath *)indexPath;
 

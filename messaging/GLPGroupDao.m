@@ -149,7 +149,7 @@
 
 +(void)remove:(GLPGroup *)group
 {
-    NSAssert(group.remoteKey != 0, @"Key must not be 0.");
+    NSAssert(group.remoteKey != 0, @"Remote key must not be 0.");
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         

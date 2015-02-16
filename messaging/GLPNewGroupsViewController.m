@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (strong, nonatomic) NSMutableArray *groups;
 @property (strong, nonatomic) GLPGroup *selectedGroup;
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 @end
 
@@ -207,12 +208,34 @@
 {
     if(_groups.count == 0)
     {
-        [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kGroupsEmptyView withView:_tableView];
+        [self showEmptyView];
     }
     else
     {
-        [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kGroupsEmptyView];
+        [self hideEmptyView];
     }
+}
+
+- (void)showEmptyView
+{
+    [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kGroupsEmptyView withView:_tableView];
+    [self.tableView setScrollEnabled:NO];
+}
+
+- (void)hideEmptyView
+{
+    [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kGroupsEmptyView];
+    [self.tableView setScrollEnabled:YES];
+}
+
+- (void)startLoading
+{
+    [self.tableActivityIndicator startActivityIndicator];
+}
+
+- (void)stopLoading
+{
+    [self.tableActivityIndicator stopActivityIndicator];
 }
 
 - (void)groupImageLoadedWithNotification:(NSNotification *)notification

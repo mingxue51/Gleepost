@@ -38,6 +38,8 @@
 
 @property (strong, nonatomic) GLPSearchGroups *searchGroupsHelper;
 
+@property (assign, nonatomic) GroupsLoadedStatus groupsLoadedStatus;
+
 //@property (strong, nonatomic) ChangeGroupImageProgressView *changeImageProgressView;
 
 @end
@@ -80,6 +82,7 @@ static GLPLiveGroupManager *instance = nil;
     _pendingGroupTimestamps = [[NSMutableDictionary alloc] init];
     _pendingGroups = [[NSMutableDictionary alloc] init];
     _searchGroupsHelper = [[GLPSearchGroups alloc] init];
+    _groupsLoadedStatus = kNotLoaded;
 }
 
 /**
@@ -92,6 +95,9 @@ static GLPLiveGroupManager *instance = nil;
     [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
         _groups = groups.mutableCopy;
         [[GLPGPPostImageLoader sharedInstance] addGroups:_groups];
+        _groupsLoadedStatus = kLocalLoaded;
+        [self notifyWithUpdatedGroups];
+        
     } remoteCallback:^(BOOL success, NSArray *groups) {
         
         if(success)
@@ -99,6 +105,7 @@ static GLPLiveGroupManager *instance = nil;
             _groups = groups.mutableCopy;
             [[GLPGPPostImageLoader sharedInstance] addGroups:_groups];
         }
+        _groupsLoadedStatus = kRemoteLoaded;
         
         [[GLPLiveGroupConversationsManager sharedInstance] loadConversationsWithGroups:_groups];
         
@@ -324,6 +331,7 @@ static GLPLiveGroupManager *instance = nil;
     dispatch_async(_queue, ^{
         
         [_groups removeObject:group];
+        [GLPGroupDao remove:group];
         [GLPMemberDao removeMember:group.loggedInUser withGroupRemoteKey:group.remoteKey];
     });
     
@@ -391,7 +399,7 @@ static GLPLiveGroupManager *instance = nil;
 
 - (void)notifyWithUpdatedGroups
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GROUPS_LOADED object:self userInfo:@{@"groups": _groups}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GROUPS_LOADED object:self userInfo:@{@"groups": _groups, @"groups_loaded_status" : @(_groupsLoadedStatus)}];
 }
 
 - (void)notifyNewGroupToBeUploaded:(GLPGroup *)newGroup

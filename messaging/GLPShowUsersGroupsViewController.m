@@ -96,7 +96,7 @@
 
 - (void)loadGroups
 {
-    [self.tableActivityIndicator startActivityIndicator];
+    [super startLoading];
     
     [[GLPLiveGroupManager sharedInstance] loadUsersGroupsWithRemoteKey:self.user.remoteKey];
 }
@@ -108,7 +108,7 @@
     BOOL success = [notification.userInfo[@"success"] boolValue];
     NSArray *groups = notification.userInfo[@"groups"];
     
-    [self.tableActivityIndicator stopActivityIndicator];
+    [super stopLoading];
     
     if(success)
     {

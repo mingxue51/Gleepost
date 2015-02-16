@@ -121,7 +121,27 @@
 
 - (void)showGroups
 {
+    [super startLoading];
     [[GLPLiveGroupManager sharedInstance] getGroups];
+}
+
+- (void)refreshUIDependingOnGroupsLoadedStatus:(GroupsLoadedStatus)groupsLoadedStatus withPostsCount:(NSInteger)postsCount
+{
+    
+    if(groupsLoadedStatus == kLocalLoaded && postsCount != 0)
+    {
+        [self hideEmptyView];
+        [self stopLoading];
+    }
+    else if(groupsLoadedStatus == kRemoteLoaded && postsCount == 0)
+    {
+        [self showEmptyView];
+    }
+    else if(groupsLoadedStatus == kRemoteLoaded && postsCount != 0)
+    {
+        [self hideEmptyView];
+        [self stopLoading];
+    }
 }
 
 #pragma mark - NSNotifications
@@ -129,11 +149,13 @@
 - (void)groupsLoaded:(NSNotification *)notification
 {
     NSArray *groups = notification.userInfo[@"groups"];
+    GroupsLoadedStatus groupsLoadedStatus = [notification.userInfo[@"groups_loaded_status"] integerValue];
+    
+    [self refreshUIDependingOnGroupsLoadedStatus:groupsLoadedStatus withPostsCount:groups.count];
     
     DDLogDebug(@"GLPMainGroupsViewController : groupsLoaded %@", groups);
     
     [super reloadTableViewWithGroups:groups];
-    [super showOrHideEmptyView];
 }
 
 - (void)groupImageLoaded:(NSNotification *)notification
@@ -148,14 +170,17 @@
     GLPGroup *newGroup = notification.userInfo[@"group"];
     
     [super insertToTableViewNewGroup:newGroup];
-    [super showOrHideEmptyView];
-
+    
+    [self hideEmptyView];
+    [self stopLoading];
 }
 
 - (void)newGroupCreated:(NSNotification *)notification
 {
     GLPGroup *newGroup = notification.userInfo[@"group"];
     [super reloadTableViewWithGroup:newGroup];
+    [self hideEmptyView];
+    [self stopLoading];
 }
 
 - (void)groupImageChanged:(NSNotification *)notification
