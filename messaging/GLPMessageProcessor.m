@@ -79,8 +79,15 @@ static GLPMessageProcessor *instance = nil;
                 DDLogDebug(@"Websocket event json %@", json);
                 GLPMessage *message = [RemoteParser parseMessageFromJson:event.data forConversation:nil];
                 
-//                [[GLPLiveGroupConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event conversationRemoteKeyFromLocation]];
-                [[GLPLiveConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event conversationRemoteKeyFromLocation]];
+                if(message.belongsToGroup)
+                {
+                    [[GLPLiveGroupConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event conversationRemoteKeyFromLocation]];
+                }
+                else
+                {
+                    [[GLPLiveConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event conversationRemoteKeyFromLocation]];
+                }
+                
                 break;
             }
                 

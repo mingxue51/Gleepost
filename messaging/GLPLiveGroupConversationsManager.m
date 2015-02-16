@@ -112,8 +112,9 @@ static GLPLiveGroupConversationsManager *instance = nil;
     
         [self showLoadingIndicator];
         
-        [[WebClient sharedInstance] synchronousGetConversationForRemoteKey:conversationRemoteKey withCallback:^(BOOL success, GLPConversation *conversation) {
-            
+//        [[WebClient sharedInstance] synchronousGetConversationForRemoteKey:conversationRemoteKey withCallback:^(BOOL success, GLPConversation *conversation) {
+        [[WebClient sharedInstance] getConversationForRemoteKey:conversationRemoteKey withCallback:^(BOOL success, GLPConversation *conversation) {
+        
 //            dispatch_async(_queue, ^{
             
                 if(!success) {

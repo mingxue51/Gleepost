@@ -461,6 +461,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     message.content = json[@"text"];
     message.sendStatus = kSendStatusSent;
     message.seen = [json[@"seen"] boolValue];
+    message.belongsToGroup = [json[@"group"] boolValue];
     
     BOOL systemMessage = [json[@"system"] boolValue];
     
