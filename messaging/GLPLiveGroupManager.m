@@ -136,9 +136,9 @@ static GLPLiveGroupManager *instance = nil;
 
 - (void)getGroups
 {
-    dispatch_sync(_queue, ^{
+//    dispatch_sync(_queue, ^{
         [self notifyWithUpdatedGroups];
-    });
+//    });
 }
 
 - (void)userJoinedGroup
@@ -150,7 +150,7 @@ static GLPLiveGroupManager *instance = nil;
 {
     GLPGroup *pendingGroup = [_pendingGroups objectForKey:timestamp];
     
-    DDLogDebug(@"GLPLiveGroupManager : pending group key %d", pendingGroup.key);
+    DDLogDebug(@"GLPLiveGroupManager : pending group key %ld", (long)pendingGroup.key);
     
     return pendingGroup.key;
 }

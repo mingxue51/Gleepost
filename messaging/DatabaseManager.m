@@ -244,7 +244,6 @@ static DatabaseManager *instance = nil;
              image_url text);"]; //Image url is for future use.
             
             // groups
-            // there is no need to save user_remote_key (the creator) for now.
             [db executeUpdate:@"create table groups ( \
              key integer primary key autoincrement, \
              remoteKey integer unique, \
@@ -256,7 +255,8 @@ static DatabaseManager *instance = nil;
              user_remote_key integer, \
              loggedin_user_role_key integer, \
              conversation_remote_key integer, \
-             privacy integer);"];
+             privacy integer, \
+             members_count integer);"];
             
             // group members
             [db executeUpdate:@"create table members ( \

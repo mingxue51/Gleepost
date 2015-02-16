@@ -27,6 +27,7 @@
     entity.loggedInUser = [[GLPMember alloc] initWithUser:[SessionManager sharedInstance].user andRoleNumber:[resultSet intForColumn:@"loggedin_user_role_key"]];
     entity.privacy = [resultSet intForColumn:@"privacy"];
     entity.conversationRemoteKey = [resultSet intForColumn:@"conversation_remote_key"];
+    entity.membersCount = [resultSet intForColumn:@"members_count"];
     
     return entity;
 }

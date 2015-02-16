@@ -868,12 +868,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return [json[@"attendee_count"] integerValue];
 }
 
-
-//+(NSString *)parseEventTime:(NSDate *)date
-//{
-//    
-//}
-
 #pragma mark - Groups
 
 + (NSArray *)parseGroupsFromJson:(NSArray *)json
