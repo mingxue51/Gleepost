@@ -12,6 +12,7 @@
 #import "NSNotificationCenter+Utils.h"
 #import "NSMutableArray+QueueAdditions.h"
 #import "SessionManager.h"
+#import "GLPReadReceiptsManager.h"
 
 @interface GLPLiveConversationsManager()
 
@@ -894,6 +895,14 @@ static GLPLiveConversationsManager *instance = nil;
     });
     
     return res;
+}
+
+#pragma mark - Read / Receipts
+
+//NOT USED.
+- (void)addReadReceiptWebSocketEvent:(GLPWebSocketEvent *)webSockectEvent
+{
+    [[GLPReadReceiptsManager sharedInstance] addReadReceiptWithWebSocketEvent:webSockectEvent];
 }
 
 # pragma mark - Conversations database

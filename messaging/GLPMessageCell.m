@@ -15,6 +15,7 @@
 #import "AppearanceHelper.h"
 #import "GLPImageHelper.h"
 #import "GLPSystemMessage.h"
+#import "GLPReadReceiptsManager.h"
 
 @interface GLPMessageCell()
 
@@ -149,6 +150,17 @@ static const CGFloat kTextSize = 15;
         [self.contentView addSubview:labelSystem];
     }
     
+    // read receipt message
+    {
+        //The Y position is changing depending on the bubble height.
+        UILabel *readReceiptMessage = [[UILabel alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
+        readReceiptMessage.textAlignment = NSTextAlignmentCenter;
+        readReceiptMessage.textColor = [UIColor lightGrayColor];
+        readReceiptMessage.font = [UIFont fontWithName:GLP_TITLE_FONT size:10.0f];
+        readReceiptMessage.userInteractionEnabled = YES;
+        [self.contentView addSubview:readReceiptMessage];
+    }
+    
     self.selectedBackgroundView = [UIView new];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -172,6 +184,7 @@ static const CGFloat kTextSize = 15;
         [self configureProfileImage];
         [self configureTimeLabel];
         [self configureMessageText];
+        [self configureReadReceiptLabel];
     }
     
     _height += kBottomMargin;
@@ -239,6 +252,24 @@ static const CGFloat kTextSize = 15;
         
     } else {
         label.hidden = YES;
+    }
+}
+
+- (void)configureReadReceiptLabel
+{
+    UILabel *readReceiptLabel = self.contentView.subviews[5];
+    
+    
+    if([[GLPReadReceiptsManager sharedInstance] doesMessageNeedSeenMessage:_message]) {
+        
+        NSString *readReceiptMessage = [[GLPReadReceiptsManager sharedInstance] getReadReceiptMessageWithMessage:_message];
+        readReceiptLabel.hidden = NO;
+        readReceiptLabel.text = readReceiptMessage;
+        CGRectSetY(readReceiptLabel, _height + kTimeLabelBottomMargin);
+        _height += readReceiptLabel.frame.size.height + kTimeLabelBottomMargin;
+        
+    } else {
+        readReceiptLabel.hidden = YES;
     }
 }
 
@@ -374,6 +405,12 @@ static const CGFloat kTextSize = 15;
     if(![message isKindOfClass:[GLPSystemMessage class]])
     {
         height += kContentLabelVerticalPadding;
+    
+        if([[GLPReadReceiptsManager sharedInstance] doesMessageNeedSeenMessage:message])
+        {
+            height += kTimeLabelH;
+        }
+        
     }
     
     height += kBottomMargin;

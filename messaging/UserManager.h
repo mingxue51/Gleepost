@@ -1,17 +1,18 @@
-////
-////  UserManager.h
-////  Gleepost
-////
-////  Created by Lukas on 10/17/13.
-////  Copyright (c) 2013 Gleepost. All rights reserved.
-////
 //
-//#import <Foundation/Foundation.h>
-//#import "GLPUser.h";
+//  UserManager.h
+//  Gleepost
 //
-//@interface UserManager : NSObject
+//  Created by Lukas on 10/17/13.
+//  Copyright (c) 2013 Gleepost. All rights reserved.
 //
-//+ (GLPUser *)getUserForRemoteKey:(NSInteger)remoteKey;
-////+ (GLPUser *)getOrCreateUserForRemoteKey:(NSInteger)remoteKey;
-//
-//@end
+
+#import <Foundation/Foundation.h>
+
+@class GLPUser;
+
+@interface UserManager : NSObject
+
++ (GLPUser *)getUserForRemoteKey:(NSInteger)remoteKey;
+//+ (GLPUser *)getOrCreateUserForRemoteKey:(NSInteger)remoteKey;
+
+@end
