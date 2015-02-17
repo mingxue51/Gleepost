@@ -11,6 +11,8 @@
 #import "GLPReadReceipt.h"
 #import "GLPWebSocketEvent.h"
 #import "GLPMessage.h"
+#import "SessionManager.h"
+#import "NSNotificationCenter+Utils.h"
 
 @interface GLPReadReceiptsManager ()
 
@@ -52,7 +54,7 @@ static GLPReadReceiptsManager *instance = nil;
 
 - (void)addReadReceiptWithWebSocketEvent:(GLPWebSocketEvent *)webSocketEvent
 {
-    if([webSocketEvent.data[@"last_read"] integerValue] == 0)
+    if([webSocketEvent.data[@"last_read"] integerValue] == 0 || [webSocketEvent.data[@"user"] integerValue] == [SessionManager sharedInstance].user.remoteKey)
     {
         return;
     }
@@ -69,8 +71,21 @@ static GLPReadReceiptsManager *instance = nil;
     {
         [_readReceipts setObject:readReceipt forKey:@([readReceipt getConversationRemoteKey])];
     }
+    
+    DDLogDebug(@"GLPReadReceiptsManager : received read %@", [readReceipt getLastUser]);
+    
+    //TODO: Send NSNotification to GLPConversationViewController and then refresh the cell.
+    
+//    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:self userInfo:@{}];
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:self];
 }
 
+/**
+ Once user sends a message, this method should be called.
+ 
+ @param conversationRemoteKey conversation's remote key.
+ 
+ */
 - (void)removeReadReceiptWithConversationRemoteKey:(NSInteger)conversationRemoteKey
 {
     [_readReceipts removeObjectForKey:@(conversationRemoteKey)];

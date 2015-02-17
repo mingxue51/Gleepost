@@ -120,5 +120,9 @@
     return userNames;
 }
 
+#pragma mark - Helpers
+
+//does user exists
+
 
 @end

@@ -142,6 +142,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notSyncWithRemoteFromNotification:) name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageSendUpdateFromNotification:) name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedReadReceiptUpdate:) name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -171,7 +173,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
+
     [super viewWillDisappear:animated];
 }
 
@@ -501,6 +504,15 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     _messages = messages.mutableCopy;
     [self showLoadedMessages];
     [self scrollToTheEndAnimated:NO];
+
+}
+
+- (void)receivedReadReceiptUpdate:(NSNotification *)notification
+{
+    DDLogDebug(@"GLPConversationViewController : receivedReadReceiptUpdate");
+    
+    [self showLoadedMessages];
+    [self scrollToTheEndAnimated:YES];
 
 }
 
