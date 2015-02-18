@@ -114,7 +114,6 @@ static GLPLiveConversationsManager *instance = nil;
             
             for(GLPConversation *conversation in conversations) {
                 [self internalAddConversation:conversation isEmpty:NO];
-                [ConversationManager saveOrUpdateConversation:conversation];
             }
             
             _isSynchronizedWithRemote = YES;
