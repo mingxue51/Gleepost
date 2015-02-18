@@ -16,6 +16,7 @@
 - (id)initWithWebSocketEvent:(GLPWebSocketEvent *)webSocketEvent;
 - (void)addUserWithUser:(GLPUser *)user;
 - (GLPUser *)getLastUser;
+- (NSArray *)users;
 - (NSInteger)getConversationRemoteKey;
 - (NSInteger)getMesssageRemoteKey;
 - (NSString *)generateSeenMessage;

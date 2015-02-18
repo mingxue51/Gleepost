@@ -107,6 +107,18 @@ static GLPReadReceiptsManager *instance = nil;
     return nil;
 }
 
+- (NSArray *)usersWithMessage:(GLPMessage *)message
+{
+    GLPReadReceipt *readReceipt = [_readReceipts objectForKey:@(message.conversation.remoteKey)];
+    
+    if([self doesMessageNeedSeenMessage:message])
+    {
+        return [readReceipt users];
+    }
+    
+    return nil;
+}
+
 - (BOOL)doesMessageNeedSeenMessage:(GLPMessage *)message
 {
     GLPReadReceipt *readReceipt = [_readReceipts objectForKey:@(message.conversation.remoteKey)];

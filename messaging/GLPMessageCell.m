@@ -158,6 +158,8 @@ static const CGFloat kTextSize = 15;
         readReceiptMessage.textColor = [UIColor lightGrayColor];
         readReceiptMessage.font = [UIFont fontWithName:GLP_TITLE_FONT size:10.0f];
         readReceiptMessage.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tapGestrureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(readReceiptLabelClick)];
+        [readReceiptMessage addGestureRecognizer:tapGestrureRecognizer];
         [self.contentView addSubview:readReceiptMessage];
     }
     
@@ -260,8 +262,6 @@ static const CGFloat kTextSize = 15;
     UILabel *readReceiptLabel = self.contentView.subviews[5];
     
     NSString *readReceiptMessage = [[GLPReadReceiptsManager sharedInstance] getReadReceiptMessageWithMessage:_message];
-    
-//    DDLogDebug(@"GLPMessageCell : readReceiptMessage %@ %ld", _message.content, (long)_message.remoteKey);
     
     if(readReceiptMessage) {
        
@@ -370,6 +370,11 @@ static const CGFloat kTextSize = 15;
 - (void)profileImageClick
 {
     [_delegate profileImageClickForMessage:_message];
+}
+
+- (void)readReceiptLabelClick
+{
+    [_delegate readReceitClickForMessage:_message];
 }
 
 # pragma mark - Helpers

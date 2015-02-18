@@ -13,6 +13,7 @@
 
 - (void)errorButtonClickForMessage:(GLPMessage *)message;
 - (void)profileImageClickForMessage:(GLPMessage *)message;
+- (void)readReceitClickForMessage:(GLPMessage *)message;
 
 @end
 

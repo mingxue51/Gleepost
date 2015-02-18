@@ -50,6 +50,9 @@
 #import "GLPLiveGroupManager.h"
 #import "GLPSystemMessage.h"
 
+#import "GLPReadReceiptsManager.h"
+#import "GLPReadReceipt.h"
+
 @interface GLPConversationViewController ()
 
 @property (weak, nonatomic) IBOutlet UIView *formView;
@@ -58,6 +61,9 @@
 @property (weak, nonatomic) IBOutlet HPGrowingTextView *formTextView;
 
 @property (assign, nonatomic) NSInteger selectedUserId;
+@property (strong, nonatomic) NSString *selectedShowUsersTitle;
+@property (strong, nonatomic) NSArray *selectedShowUsers;
+
 @property (strong, nonatomic) NSMutableArray *messages;
 
 @property (strong, nonatomic) GLPIntroducedProfile * introduced;
@@ -242,7 +248,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     //Set navigation to profile selector.
     titleLabelBtn.frame = CGRectMake(0, 0, 70, 44);
-    [titleLabelBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
+    [titleLabelBtn addTarget:self action:@selector(navigateToUserProfileOrShowUsers:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.titleView = titleLabelBtn;
 }
 
@@ -512,23 +518,15 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
     NSInteger messageRemoteKey = [notification.userInfo[@"message_remote_key"] integerValue];
     
-    DDLogDebug(@"GLPConversationViewController : receivedReadReceiptUpdate remote key %ld %@", (long)messageRemoteKey, _messages);
-
-    
     for(GLPMessage *msg in _messages)
     {
         if(messageRemoteKey == msg.remoteKey)
         {
-            
             DDLogDebug(@"GLPConversationViewController : message reloaded %@", msg.content);
             [self reloadItem:msg sizeCanChange:NO];
         }
     }
-    
-//    [self.tableView reloadData];
-//    [self showLoadedMessages];
     [self scrollToTheEndAnimated:YES];
-
 }
 
 # pragma mark - Notifications (keyboard ones in form management mark)
@@ -694,42 +692,6 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 //    DDLogInfo(@"Reload message key: %d - remote key: %d - content: %@", message.key, message.remoteKey, message.content);
 }
 
-
-#pragma mark - Navigation
-
--(void)navigateToProfile:(id)sender
-{
-    UIButton *userButton = (UIButton *)sender;
-    
-    if(userButton.tag == -1)
-    {
-        //Navigate to view a list of users like the attending list.
-        [self performSegueWithIdentifier:@"show users" sender:self];
-    }
-    else
-    {
-        [self navigateToUserProfile:[[GLPUser alloc] initWithRemoteKey:userButton.tag]];
-    }
-}
-
--(void)navigateToUserProfile:(GLPUser *)user
-{
-    self.selectedUserId = user.remoteKey;
-    
-    if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
-    {
-        self.selectedUserId = -1;
-        
-        [self performSegueWithIdentifier:@"view profile" sender:self];
-    }
-    else
-    {
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
-    }
-}
-
-
-
 #pragma mark - Actions
 
 - (void) backButtonTapped
@@ -822,10 +784,66 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     else if([segue.identifier isEqualToString:@"show users"])
     {
         GLPShowUsersViewController *showUsers = segue.destinationViewController;
-        showUsers.selectedTitle = @"PARTICIPANTS";
-        showUsers.users = _conversation.participants;
+        showUsers.selectedTitle = _selectedShowUsersTitle;
+        showUsers.users = _selectedShowUsers;
     }
 }
+
+#pragma mark - Navigation
+
+-(void)navigateToUserProfileOrShowUsers:(id)sender
+{
+    UIButton *userButton = (UIButton *)sender;
+    
+    if(userButton.tag == -1)
+    {
+        _selectedShowUsersTitle = @"PARTICIPANTS";
+        _selectedShowUsers = _conversation.participants;
+        
+        //Navigate to view a list of users like the attending list.
+        [self performSegueWithIdentifier:@"show users" sender:self];
+    }
+    else
+    {
+        [self navigateToUserProfile:[[GLPUser alloc] initWithRemoteKey:userButton.tag]];
+    }
+}
+
+-(void)navigateToUserProfile:(GLPUser *)user
+{
+    self.selectedUserId = user.remoteKey;
+    
+    if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
+    {
+        self.selectedUserId = -1;
+        
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else
+    {
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
+}
+
+- (void)navigateToShowUsersWithMessage:(GLPMessage *)message
+{
+    NSArray *users = [[GLPReadReceiptsManager sharedInstance] usersWithMessage:message];
+    
+    
+    if(users.count == 1)
+    {
+        [self navigateToUserProfile:users[0]];
+    }
+    else
+    {
+        _selectedShowUsersTitle = @"USERS READ MESSAGE";
+        _selectedShowUsers = users;
+        
+        [self performSegueWithIdentifier:@"show users" sender:self];
+    }
+    
+}
+
 
 
 #pragma mark - form management
@@ -1005,6 +1023,11 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 {
     //TODO: Implement that.
     DDLogDebug(@"Message: %@ not sent.", message.content);
+}
+
+- (void)readReceitClickForMessage:(GLPMessage *)message
+{
+    [self navigateToShowUsersWithMessage:message];
 }
 
 @end

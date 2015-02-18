@@ -90,6 +90,11 @@
     return [_users lastObject];
 }
 
+- (NSArray *)users
+{
+    return _users;
+}
+
 - (NSInteger)getMesssageRemoteKey
 {
     return _messageRemoteKey;

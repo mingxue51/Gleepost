@@ -17,6 +17,7 @@
 - (void)addReadReceiptWithWebSocketEvent:(GLPWebSocketEvent *)webSocketEvent;
 - (void)removeReadReceiptWithConversationRemoteKey:(NSInteger)conversationRemoteKey;
 - (NSString *)getReadReceiptMessageWithMessage:(GLPMessage *)message;
+- (NSArray *)usersWithMessage:(GLPMessage *)message;
 - (BOOL)doesMessageNeedSeenMessage:(GLPMessage *)message;
 
 @end
