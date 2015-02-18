@@ -201,9 +201,11 @@
 {
     NSAssert(entity.key != 0, @"Cannot update entity without key");
     
+    int lastUpdate = [entity.lastUpdate timeIntervalSince1970];
+    
     [db executeUpdateWithFormat:@"update conversations set lastMessage=%@, lastUpdate=%d where key=%d",
      entity.lastMessage,
-     entity.lastUpdate,
+     lastUpdate,
      entity.key];
 }
 
