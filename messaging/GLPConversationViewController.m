@@ -509,9 +509,24 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (void)receivedReadReceiptUpdate:(NSNotification *)notification
 {
-    DDLogDebug(@"GLPConversationViewController : receivedReadReceiptUpdate");
+
+    NSInteger messageRemoteKey = [notification.userInfo[@"message_remote_key"] integerValue];
     
-    [self showLoadedMessages];
+    DDLogDebug(@"GLPConversationViewController : receivedReadReceiptUpdate remote key %ld %@", (long)messageRemoteKey, _messages);
+
+    
+    for(GLPMessage *msg in _messages)
+    {
+        if(messageRemoteKey == msg.remoteKey)
+        {
+            
+            DDLogDebug(@"GLPConversationViewController : message reloaded %@", msg.content);
+            [self reloadItem:msg sizeCanChange:NO];
+        }
+    }
+    
+//    [self.tableView reloadData];
+//    [self showLoadedMessages];
     [self scrollToTheEndAnimated:YES];
 
 }
@@ -655,6 +670,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     DDLogInfo(@"Message send update from NSNotification");
     NSInteger key = [[notification userInfo][@"key"] integerValue];
+    NSInteger remoteKey = [[notification userInfo][@"remote_key"] integerValue];
     BOOL sent = [[notification userInfo][@"sent"] boolValue];
     
     NSArray *filtered = [_messages filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"key = %d", key]];
@@ -667,6 +683,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     if(sent) {
         message.sendStatus = kSendStatusSent;
+        message.remoteKey = remoteKey;
     } else {
         message.sendStatus = kSendStatusFailure;
     }

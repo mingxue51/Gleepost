@@ -24,6 +24,7 @@
 #import "NSNotificationCenter+Utils.h"
 #import "GLPMessageProcessor.h"
 #import "GLPLiveGroupConversationsManager.h"
+#import "GLPReadReceiptsManager.h"
 
 @implementation ConversationManager
 
@@ -739,6 +740,7 @@ int const NumberMaxOfMessagesLoaded = 20;
             message.remoteKey = remoteKey;
             message.sendStatus = kSendStatusSent;
             
+            [[GLPReadReceiptsManager sharedInstance] removeReadReceiptWithConversationRemoteKey:message.conversation.remoteKey];
             
         } else {
             message.sendStatus = kSendStatusFailure;

@@ -1331,7 +1331,7 @@ static GLPLiveConversationsManager *instance = nil;
         }
         
         DDLogInfo(@"Local message update completed, with sent status: %@", sentLog);
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil userInfo:@{@"key": [NSNumber numberWithInteger:message.key], @"sent":[NSNumber numberWithBool:sent]}];
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil userInfo:@{@"key": [NSNumber numberWithInteger:message.key], @"remote_key": [NSNumber numberWithInteger:message.remoteKey], @"sent":[NSNumber numberWithBool:sent]}];
     });
 }
 
@@ -1370,6 +1370,11 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (void)markConversation:(GLPConversation *)conversation upToTheLastMessageAsRead:(GLPMessage *)lastMessage
 {
+    if(lastMessage.remoteKey == 0)
+    {
+        return;
+    }
+    
     DDLogInfo(@"Mark message %@ as read.", lastMessage.content);
     
     [[WebClient sharedInstance] markConversationWithRemoteKeyAsRead:conversation.remoteKey upToMessageWithRemoteKey:lastMessage.remoteKey callback:^(BOOL success) {

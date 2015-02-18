@@ -30,7 +30,7 @@
         [self addUserWithRemoteKey:[webSocketEvent.data[@"user"] integerValue]];
         [self configureConversationRemoteKeyWithLocation:webSocketEvent.location];
         self.messageRemoteKey = [webSocketEvent.data[@"last_read"] integerValue];
-        _prefixMessage = @"SEEN BY: ";
+        _prefixMessage = @"SEEN BY: "; 
     }
     
     return self;
@@ -56,6 +56,12 @@
 
 - (void)addUserWithRemoteKey:(NSInteger)userRemoteKey
 {
+    if([self doesUserExistWitRemoteKey:userRemoteKey])
+    {
+        DDLogDebug(@"GLPReadReceipt : user already exists in read receipt abort.");
+        return;
+    }
+    
     GLPUser *user = [UserManager getUserForRemoteKey:userRemoteKey];
     [_users addObject:(user) ? user : [[GLPUser alloc] initWithRemoteKey:userRemoteKey]];
 }
@@ -68,6 +74,12 @@
  */
 - (void)addUserWithUser:(GLPUser *)user
 {
+    if([self doesUserExistWitRemoteKey:user.remoteKey])
+    {
+        DDLogDebug(@"GLPReadReceipt : user already exists in read receipt abort.");
+        return;
+    }
+    
     [_users addObject:user];
 }
 
@@ -120,9 +132,25 @@
     return userNames;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"GLPReadReceipt %ld, %ld, users %@", (long)_conversationRemoteKey, (long)_messageRemoteKey, _users];
+}
+
 #pragma mark - Helpers
 
-//does user exists
+- (BOOL)doesUserExistWitRemoteKey:(NSInteger)userRemoteKey
+{
+    for(GLPUser *user in _users)
+    {
+        if(userRemoteKey == user.remoteKey)
+        {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
 
 
 @end

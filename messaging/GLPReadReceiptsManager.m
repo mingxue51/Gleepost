@@ -72,12 +72,12 @@ static GLPReadReceiptsManager *instance = nil;
         [_readReceipts setObject:readReceipt forKey:@([readReceipt getConversationRemoteKey])];
     }
     
-    DDLogDebug(@"GLPReadReceiptsManager : received read %@", [readReceipt getLastUser]);
+    DDLogDebug(@"GLPReadReceiptsManager : received read %@ data structure %@", [readReceipt getLastUser], _readReceipts);
     
     //TODO: Send NSNotification to GLPConversationViewController and then refresh the cell.
     
 //    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:self userInfo:@{}];
-    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:self userInfo:@{@"message_remote_key" : @([readReceipt getMesssageRemoteKey])}];
 }
 
 /**
@@ -88,6 +88,8 @@ static GLPReadReceiptsManager *instance = nil;
  */
 - (void)removeReadReceiptWithConversationRemoteKey:(NSInteger)conversationRemoteKey
 {
+    DDLogDebug(@"GLPReadReceiptsManager : removeReadReceiptWithConversationRemoteKey %ld", (long)conversationRemoteKey);
+    
     [_readReceipts removeObjectForKey:@(conversationRemoteKey)];
 }
 

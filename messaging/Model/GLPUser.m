@@ -100,9 +100,19 @@
     return copy;
 }
 
+- (BOOL)isEqual:(id)other
+{
+    return [(GLPUser *)other remoteKey] == self.remoteKey;
+}
+
+- (NSUInteger)hash
+{
+    return self.remoteKey;
+}
+
 -(NSString*)description
 {
-    return [NSString stringWithFormat:@"Remote Key: %d, Username: %@, Image: %@, Message: %@, Rsvps: %@, Groups: %@, Posts: %@",self.remoteKey, self.name, self.profileImageUrl, self.personalMessage, _rsvpCount, _groupCount, _postsCount];
+    return [NSString stringWithFormat:@"Remote Key: %ld, Username: %@, Image: %@, Message: %@, Rsvps: %@, Groups: %@, Posts: %@",(long)self.remoteKey, self.name, self.profileImageUrl, self.personalMessage, _rsvpCount, _groupCount, _postsCount];
 }
 
 @end
