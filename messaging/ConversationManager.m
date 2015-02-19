@@ -65,6 +65,15 @@ int const NumberMaxOfMessagesLoaded = 20;
     }];
 }
 
++ (void)saveOrUpdateReadWithReadReceipt:(GLPReadReceipt *)readReceipt
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        [GLPConversationDao saveReadReceiptIfNotExist:readReceipt db:db];
+        
+    }];
+}
+
 + (void)initialSaveConversationsToDatabase:(NSArray *)conversations
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {

@@ -54,13 +54,7 @@
             [reads addObject:conversationRead];
         }
     }
-    
     _finalReads = reads;
-    
-    DDLogDebug(@"GLPMessageDetailsViewController : final reads %@", _reads);
-    DDLogDebug(@"GLPMessageDetailsViewController : message remote key %ld", (long)_message.remoteKey);
-    
-    
     [_tableView reloadData];
 }
 

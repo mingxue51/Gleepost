@@ -14,8 +14,11 @@
 #import "SessionManager.h"
 #import "FMDatabaseAdditions.h"
 #import "GLPConversationRead.h"
+#import "GLPReadReceipt.h"
 
 @implementation GLPConversationDao
+
+#pragma mark - Find methods
 
 + (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db
 {
@@ -84,6 +87,19 @@
     return result;
 }
 
++ (BOOL)doesReadReceipt:(GLPReadReceipt *)readReceipt existsInDb:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations_reads where conversation_remote_key=%d AND participant_remote_key=%d limit 1", [readReceipt getConversationRemoteKey], [readReceipt getLastUser].remoteKey];
+    
+    if(![resultSet next]) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+#pragma mark - Save methods
+
 + (void)save:(GLPConversation *)entity db:(FMDatabase *)db
 {
     // save the users that does not exist
@@ -139,6 +155,14 @@
     }
 }
 
++ (void)saveRead:(GLPReadReceipt *)readReceipt db:(FMDatabase *)db
+{
+    [db executeUpdateWithFormat:@"insert into conversations_reads (conversation_remote_key, participant_remote_key, message_read_remote_key) values(%d, %d, %d)",
+     [readReceipt getConversationRemoteKey],
+     [readReceipt  getLastUser].remoteKey,
+     [readReceipt getMesssageRemoteKey]];
+}
+
 
 //Added.
 
@@ -184,6 +208,19 @@
     }
 }
 
++ (void)saveReadReceiptIfNotExist:(GLPReadReceipt *)readReceipt db:(FMDatabase *)db
+{
+    if([GLPConversationDao doesReadReceipt:readReceipt existsInDb:db])
+    {
+        [GLPConversationDao updateRead:readReceipt db:db];
+    }
+    else
+    {
+        [GLPConversationDao saveRead:readReceipt db:db];
+    }
+}
+
+#pragma mark - Update methods
 
 + (void)update:(GLPConversation *)entity db:(FMDatabase *)db
 {
@@ -233,6 +270,13 @@
         [db executeUpdateWithFormat:@"update conversations_reads set message_read_remote_key=%d where conversation_remote_key=%d AND participant_remote_key=%d", read.messageRemoteKey, entity.remoteKey, read.participant.remoteKey];
     }
 }
+
++ (void)updateRead:(GLPReadReceipt *)readReceipt db:(FMDatabase *)db
+{
+    [db executeUpdateWithFormat:@"update conversations_reads set message_read_remote_key=%d where conversation_remote_key=%d AND participant_remote_key=%d", [readReceipt getMesssageRemoteKey], [readReceipt getConversationRemoteKey], [readReceipt getLastUser].remoteKey];
+}
+
+#pragma mark - Delete methods
 
 + (void)deleteConversationWithRemoteKey:(NSInteger)conversationRemoteKey db:(FMDatabase *)db
 {

@@ -13,6 +13,10 @@
 #import "GLPMessage.h"
 #import "SessionManager.h"
 #import "NSNotificationCenter+Utils.h"
+#import "GLPLiveConversationsManager.h"
+#import "GLPLiveGroupConversationsManager.h"
+#import "GLPConversationRead.h"
+#import "ConversationManager.h"
 
 @interface GLPReadReceiptsManager ()
 
@@ -49,7 +53,7 @@ static GLPReadReceiptsManager *instance = nil;
 
 #pragma mark - Modifiers
 
-//TODO: What happens when we add a message as read receipt in the same conversation?
+//What happens when we add a message as read receipt in the same conversation?
 //Answer: Remove the entry once user presses the send button.
 
 - (void)addReadReceiptWithWebSocketEvent:(GLPWebSocketEvent *)webSocketEvent
@@ -72,11 +76,13 @@ static GLPReadReceiptsManager *instance = nil;
         [_readReceipts setObject:readReceipt forKey:@([readReceipt getConversationRemoteKey])];
     }
     
+    [self updateConversationReadsWithReadReceipt:readReceipt];
+
+    
     DDLogDebug(@"GLPReadReceiptsManager : received read %@ data structure %@", [readReceipt getLastUser], _readReceipts);
     
-    //TODO: Send NSNotification to GLPConversationViewController and then refresh the cell.
-    
-//    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:self userInfo:@{}];
+    //Send NSNotification to GLPConversationViewController and then refresh the cell.
+
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:self userInfo:@{@"message_remote_key" : @([readReceipt getMesssageRemoteKey])}];
 }
 
@@ -88,8 +94,6 @@ static GLPReadReceiptsManager *instance = nil;
  */
 - (void)removeReadReceiptWithConversationRemoteKey:(NSInteger)conversationRemoteKey
 {
-    DDLogDebug(@"GLPReadReceiptsManager : removeReadReceiptWithConversationRemoteKey %ld", (long)conversationRemoteKey);
-    
     [_readReceipts removeObjectForKey:@(conversationRemoteKey)];
 }
 
@@ -129,6 +133,74 @@ static GLPReadReceiptsManager *instance = nil;
     }
     
     return NO;
+}
+
+#pragma mark - Updates
+
+/**
+ Updates or add the conversation reads array (in conversation instances - either GLPLiveGroupConversationsManager
+ or GLPLiveConversationsManager) and in local database in conversation_reads.
+ 
+ @param readReceipt the new read receipt that just received from web socket.
+ 
+ */
+- (void)updateConversationReadsWithReadReceipt:(GLPReadReceipt *)readReceipt
+{
+    [self updateConversationWithReadReceipt:readReceipt];
+    
+    [self updateDatabaseConversationWithReadReceipt:readReceipt];
+}
+
+- (void)updateDatabaseConversationWithReadReceipt:(GLPReadReceipt *)readReceipt
+{
+    [ConversationManager saveOrUpdateReadWithReadReceipt:readReceipt];
+}
+
+- (void)updateConversationWithReadReceipt:(GLPReadReceipt *)readReceipt
+{
+    GLPConversation *conversation = [self getConversationWithReadReceipt:readReceipt];
+    
+    if(conversation)
+    {
+        NSArray *reads = conversation.reads;
+        
+        for(GLPConversationRead *convRead in reads)
+        {
+            if(convRead.participant.remoteKey == [readReceipt getLastUser].remoteKey)
+            {
+                DDLogInfo(@"GLPReadReceiptsManager : read updated %@", conversation.title);
+                convRead.messageRemoteKey = [readReceipt getMesssageRemoteKey];
+                return;
+            }
+        }
+        
+        NSMutableArray *updatedReads = reads.mutableCopy;
+        [updatedReads addObject:[[GLPConversationRead alloc] initWithParticipant:[readReceipt getLastUser] andMessageRemoteKey:[readReceipt getMesssageRemoteKey]]];
+        reads = updatedReads;
+        
+        DDLogInfo(@"GLPReadReceiptsManager : read added %@", conversation.title);
+    }
+}
+
+/**
+ Finds where the message belongs to
+ */
+
+- (GLPConversation *)getConversationWithReadReceipt:(GLPReadReceipt *)readReceipt
+{
+    GLPConversation *conversation = nil;
+    
+    conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:[readReceipt getConversationRemoteKey]];
+    
+    if(conversation)
+    {
+        DDLogDebug(@"GLPReadReceiptsManager : conversation found %@", conversation.reads);
+        
+        return conversation;
+    }
+    
+    conversation = [[GLPLiveGroupConversationsManager sharedInstance] findByRemoteKey:[readReceipt getConversationRemoteKey]];
+    return conversation;
 }
 
 @end
