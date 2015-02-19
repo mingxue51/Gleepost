@@ -691,6 +691,11 @@
 		58DF4158186463A900D53723 /* GLPPostOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF4157186463A900D53723 /* GLPPostOperationManager.m */; };
 		58DF415E186463E000D53723 /* GLPPostUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF415D186463E000D53723 /* GLPPostUploaderManager.m */; };
 		58DF4161186463F900D53723 /* GLPImageUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF4160186463F900D53723 /* GLPImageUploaderManager.m */; };
+		58E17EEA1A950C15006A5552 /* GLPMessageDetailsSegmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58E17EE91A950C15006A5552 /* GLPMessageDetailsSegmentCell.xib */; };
+		58E17EEE1A950D51006A5552 /* GLPMessageDetailsSegmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E17EED1A950D51006A5552 /* GLPMessageDetailsSegmentCell.m */; };
+		58E17EF11A951222006A5552 /* GLPMessageDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E17EF01A951222006A5552 /* GLPMessageDetailsViewController.m */; };
+		58E17EF51A951894006A5552 /* GLPNameTimestampCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58E17EF31A951894006A5552 /* GLPNameTimestampCell.m */; };
+		58E17EF61A951894006A5552 /* GLPNameTimestampCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58E17EF41A951894006A5552 /* GLPNameTimestampCell.xib */; };
 		58E18B911945CF3E0029C764 /* baseball.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E18B861945CF3E0029C764 /* baseball.png */; };
 		58E18B921945CF3E0029C764 /* bowling.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E18B871945CF3E0029C764 /* bowling.png */; };
 		58E18B931945CF3E0029C764 /* bullseye.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E18B881945CF3E0029C764 /* bullseye.png */; };
@@ -1914,6 +1919,14 @@
 		58DF415D186463E000D53723 /* GLPPostUploaderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostUploaderManager.m; sourceTree = "<group>"; };
 		58DF415F186463F900D53723 /* GLPImageUploaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImageUploaderManager.h; sourceTree = "<group>"; };
 		58DF4160186463F900D53723 /* GLPImageUploaderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageUploaderManager.m; sourceTree = "<group>"; };
+		58E17EE91A950C15006A5552 /* GLPMessageDetailsSegmentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPMessageDetailsSegmentCell.xib; sourceTree = "<group>"; };
+		58E17EEC1A950D51006A5552 /* GLPMessageDetailsSegmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPMessageDetailsSegmentCell.h; sourceTree = "<group>"; };
+		58E17EED1A950D51006A5552 /* GLPMessageDetailsSegmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMessageDetailsSegmentCell.m; sourceTree = "<group>"; };
+		58E17EEF1A951222006A5552 /* GLPMessageDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPMessageDetailsViewController.h; sourceTree = "<group>"; };
+		58E17EF01A951222006A5552 /* GLPMessageDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMessageDetailsViewController.m; sourceTree = "<group>"; };
+		58E17EF21A951894006A5552 /* GLPNameTimestampCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNameTimestampCell.h; sourceTree = "<group>"; };
+		58E17EF31A951894006A5552 /* GLPNameTimestampCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNameTimestampCell.m; sourceTree = "<group>"; };
+		58E17EF41A951894006A5552 /* GLPNameTimestampCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPNameTimestampCell.xib; sourceTree = "<group>"; };
 		58E18B861945CF3E0029C764 /* baseball.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = baseball.png; sourceTree = "<group>"; };
 		58E18B871945CF3E0029C764 /* bowling.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bowling.png; sourceTree = "<group>"; };
 		58E18B881945CF3E0029C764 /* bullseye.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bullseye.png; sourceTree = "<group>"; };
@@ -3190,6 +3203,8 @@
 				58CFC766196300AF00FF1E40 /* NewMessageViewController.m */,
 				5879AC8E196442100053262A /* NewGroupMessageViewController.h */,
 				5879AC8F196442100053262A /* NewGroupMessageViewController.m */,
+				58E17EEF1A951222006A5552 /* GLPMessageDetailsViewController.h */,
+				58E17EF01A951222006A5552 /* GLPMessageDetailsViewController.m */,
 			);
 			name = "Messages Classes";
 			sourceTree = "<group>";
@@ -3393,6 +3408,7 @@
 				587CEA66195CECE70043E5E2 /* GLPProfileSegmentView.xib */,
 				58919A4619830B0C0033E77A /* GLPGroupSegmentView.xib */,
 				586F9C4C198818E30093A946 /* DescriptionSegmentGroupCell.xib */,
+				58E17EE91A950C15006A5552 /* GLPMessageDetailsSegmentCell.xib */,
 			);
 			name = Segments;
 			sourceTree = "<group>";
@@ -4090,6 +4106,7 @@
 		58CFC77019630F9500FF1E40 /* Simple name cells */ = {
 			isa = PBXGroup;
 			children = (
+				58E17EF41A951894006A5552 /* GLPNameTimestampCell.xib */,
 				58CFC7711963117500FF1E40 /* GLPSimpleNameCell.xib */,
 				5879AC8619643C1F0053262A /* GLPCheckNameCell.xib */,
 			);
@@ -4105,6 +4122,8 @@
 				5879AC81196435C40053262A /* GLPCheckNameCell.m */,
 				5879AC831964360E0053262A /* GLPNameCell.h */,
 				5879AC841964360E0053262A /* GLPNameCell.m */,
+				58E17EF21A951894006A5552 /* GLPNameTimestampCell.h */,
+				58E17EF31A951894006A5552 /* GLPNameTimestampCell.m */,
 			);
 			name = "Simple name cells";
 			sourceTree = "<group>";
@@ -4190,6 +4209,17 @@
 				58DF4160186463F900D53723 /* GLPImageUploaderManager.m */,
 			);
 			name = "Post Uploader Managers";
+			sourceTree = "<group>";
+		};
+		58E17EEB1A950CDB006A5552 /* Messenger */ = {
+			isa = PBXGroup;
+			children = (
+				805676441805B742006E058E /* MessageCell.h */,
+				805676451805B742006E058E /* MessageCell.m */,
+				58E17EEC1A950D51006A5552 /* GLPMessageDetailsSegmentCell.h */,
+				58E17EED1A950D51006A5552 /* GLPMessageDetailsSegmentCell.m */,
+			);
+			name = Messenger;
 			sourceTree = "<group>";
 		};
 		58E18B851945CEE30029C764 /* Log in Sign up */ = {
@@ -4823,6 +4853,7 @@
 		8096E4E917C2CBEF00C7BF60 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				58E17EEB1A950CDB006A5552 /* Messenger */,
 				580004DA1A729D2300463276 /* Group */,
 				58B3A2FA1A254EEF0082AE81 /* CampusWall */,
 				58B74A8419C014EE007E3416 /* Notification Cells */,
@@ -4835,8 +4866,6 @@
 				586581361805F210005814B4 /* MessageTableViewCell.m */,
 				589A73AD19363DA900D518DF /* Select Category */,
 				5871E4391926214A009B5A74 /* Post */,
-				805676441805B742006E058E /* MessageCell.h */,
-				805676451805B742006E058E /* MessageCell.m */,
 				803B6083181FFE8A00A178EB /* GLPLoadingCell.h */,
 				803B6084181FFE8A00A178EB /* GLPLoadingCell.m */,
 				58FD7067189001AA0024E8A1 /* GLPCategoryCell.h */,
@@ -5686,6 +5715,7 @@
 				58B3A3031A2552800082AE81 /* pending_cell_arrow.png in Resources */,
 				584CF664182274F300EFABB8 /* invitesent.png in Resources */,
 				589EAD2018A436D5005B2F4C /* top_image_campus_wall.png in Resources */,
+				58E17EF61A951894006A5552 /* GLPNameTimestampCell.xib in Resources */,
 				58C1698A19C26CF900F4C203 /* icon_like_pushed.png in Resources */,
 				8096E4DB17C2C37A00C7BF60 /* background.png in Resources */,
 				58299B7C19FA169C00702381 /* GLPMessengerEmptyView.xib in Resources */,
@@ -5788,6 +5818,7 @@
 				58E1E5F419262C37007ACB4F /* more.png in Resources */,
 				584332AA180F343200BD9F74 /* bottom_background_private_profile.png in Resources */,
 				581B8BBB190C282600A74260 /* thermometer_ball.png in Resources */,
+				58E17EEA1A950C15006A5552 /* GLPMessageDetailsSegmentCell.xib in Resources */,
 				585106DC199D87DA000F06BB /* kind_of_event_sports.png in Resources */,
 				58AD86AA18929F2200016C6D /* posts_button.png in Resources */,
 				582A664318AB9BC400006419 /* bar1_selected.png in Resources */,
@@ -6137,6 +6168,7 @@
 				585C514819227B13000910DA /* GLPVideoUploadManager.m in Sources */,
 				58D301DD1989C570003EC08B /* GLPSelectUsersViewController.m in Sources */,
 				5892F11719FB362700B6778F /* GLPGroupPostsEmptyView.m in Sources */,
+				58E17EF11A951222006A5552 /* GLPMessageDetailsViewController.m in Sources */,
 				5866F15518844099007484CF /* AnimationDayController.m in Sources */,
 				80C8BA6318103712004F70DB /* GLPUserDaoParser.m in Sources */,
 				58F2950819355A2F00A638BA /* TDNavigationCategories.m in Sources */,
@@ -6418,6 +6450,7 @@
 				80CE307D17CE5092003007D0 /* DateFormatterManager.m in Sources */,
 				58774D3919649C980034A1C6 /* UIImage+animatedGIF.m in Sources */,
 				588CDF70197623A700373EE3 /* IntroNewGroupViewController.m in Sources */,
+				58E17EF51A951894006A5552 /* GLPNameTimestampCell.m in Sources */,
 				80E7478817CEA0A5001957E5 /* NSString+Utils.m in Sources */,
 				586317991987221F006D79E2 /* GroupTopView.m in Sources */,
 				5890D21B1847692B00E293DD /* GLPStanfordTheme.m in Sources */,
@@ -6442,6 +6475,7 @@
 				5819E66118C7E58E003361B3 /* GLPGroupDao.m in Sources */,
 				802DCE5018AB037100A23511 /* GLPApplicationHelper.m in Sources */,
 				80C8BA56181033CA004F70DB /* GLPComment.m in Sources */,
+				58E17EEE1A950D51006A5552 /* GLPMessageDetailsSegmentCell.m in Sources */,
 				582B404B18AD6C4A00BC4285 /* SoundHelper.m in Sources */,
 				587EA4A417F9C4A0005B3286 /* MemberCell.m in Sources */,
 				80666C441806DA7A00E4E515 /* RemoteParser.m in Sources */,

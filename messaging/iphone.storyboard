@@ -1807,6 +1807,7 @@
                         <segue destination="ZBE-A4-gdJ" kind="push" identifier="view private profile" id="woK-8Q-gjw"/>
                         <segue destination="ta0-Mt-RBj" kind="push" identifier="view profile" id="icH-IF-qcr"/>
                         <segue destination="chq-8F-SBT" kind="push" identifier="show users" id="ecx-lG-qPa"/>
+                        <segue destination="8FW-19-baj" kind="push" identifier="show message details" id="P65-X5-3OO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ltB-QK-87t" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1817,6 +1818,35 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1853" y="-281"/>
+        </scene>
+        <!--Message Details View Controller-->
+        <scene sceneID="VNH-JZ-bdr">
+            <objects>
+                <viewController id="8FW-19-baj" customClass="GLPMessageDetailsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1hr-uQ-nii">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="aHK-B7-IgQ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="8FW-19-baj" id="Bx3-lr-4jb"/>
+                                    <outlet property="delegate" destination="8FW-19-baj" id="gjH-Pk-vDB"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="GgO-Zw-nH8"/>
+                    <connections>
+                        <outlet property="tableView" destination="aHK-B7-IgQ" id="l6s-BS-5lj"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VWx-Go-pqS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2335" y="-281"/>
         </scene>
         <!--Private Profile View Controller-->
         <scene sceneID="Zcz-zy-fr7">
@@ -4922,7 +4952,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Gleepost_mai" width="11" height="43"/>
+        <image name="Gleepost_mai" width="150" height="60"/>
         <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="accept.png" width="254" height="185"/>
         <image name="add-user.png" width="254" height="185"/>
@@ -5023,23 +5053,23 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="y0w-oH-XXi"/>
+        <segue reference="aP2-oN-YHg"/>
+        <segue reference="sMz-ia-ebt"/>
+        <segue reference="icH-IF-qcr"/>
+        <segue reference="7g0-HV-ZHz"/>
         <segue reference="Q9z-xI-t0V"/>
-        <segue reference="Gwl-Cd-vyB"/>
-        <segue reference="c6M-82-Pnp"/>
+        <segue reference="woK-8Q-gjw"/>
         <segue reference="PMB-JP-q3M"/>
         <segue reference="NSy-Xb-H1O"/>
-        <segue reference="7g0-HV-ZHz"/>
         <segue reference="Ze9-pm-FNm"/>
-        <segue reference="voh-a1-0cl"/>
-        <segue reference="zvV-dv-dTv"/>
-        <segue reference="cxq-Lw-xeo"/>
         <segue reference="XA6-SN-ZTj"/>
-        <segue reference="sMz-ia-ebt"/>
-        <segue reference="aP2-oN-YHg"/>
+        <segue reference="cxq-Lw-xeo"/>
+        <segue reference="voh-a1-0cl"/>
+        <segue reference="c6M-82-Pnp"/>
+        <segue reference="ecx-lG-qPa"/>
+        <segue reference="KgO-oz-Ivb"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="8oh-gD-Cs7"/>
         <segue reference="b0z-f7-UHU"/>
-        <segue reference="KgO-oz-Ivb"/>
     </inferredMetricsTieBreakers>
 </document>

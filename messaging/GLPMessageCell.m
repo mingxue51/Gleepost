@@ -25,6 +25,10 @@
 @property (assign, nonatomic) CGFloat height;
 @property (assign, nonatomic) BOOL isOnLeftSide;
 
+/** This variable is true only when the message is going to be viewed in
+ GLPMessageDetailViewController*/
+@property (assign, nonatomic, setter=setViewMode:) BOOL viewMode;
+
 @end
 
 
@@ -50,6 +54,8 @@ static const CGFloat kOppositeSideMarginWithError = 10 + kErrorImageW + kErrorIm
 static const CGFloat kSideMarginIncludingProfileImage = kProfileImageViewSideMargin + kProfileImageViewSize + kProfileImageViewOppositeSideMargin;
 static const CGFloat kTopMargin = 0;
 static const CGFloat kBottomMargin = 2; //7
+
+static const CGFloat kViewModeMargin = 10;
 
 static const CGFloat kTextSize = 15;
 
@@ -122,10 +128,14 @@ static const CGFloat kTextSize = 15;
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByWordWrapping;
         
-        view.userInteractionEnabled = NO;
+        view.userInteractionEnabled = YES;
         
         [view addSubview:imageView];
         [view addSubview:label];
+        
+        UITapGestureRecognizer *tapGestrureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainViewClick)];
+        [view addGestureRecognizer:tapGestrureRecognizer];
+        
         [self.contentView addSubview:view];
     }
     
@@ -210,9 +220,10 @@ static const CGFloat kTextSize = 15;
     UIImageView *imageView = self.contentView.subviews[0];
     
 //    if(_message.hasHeader) {
-    if(_message.needsProfileImage) {
+    
+    if(_message.needsProfileImage || _viewMode) {
         
-        if(!_message.hasHeader)
+        if(!_message.hasHeader && !_viewMode)
         {
             _height += 20 + kTimeLabelBottomMargin;
         }
@@ -244,7 +255,7 @@ static const CGFloat kTextSize = 15;
     
 //    DDLogDebug(@"configureTimeLabel: %@", _message.content);
     
-    if(_message.hasHeader) {
+    if(_message.hasHeader || _viewMode) {
         label.hidden = NO;
         
 //        label.text = [[[GLPDateFormatterHelper messageDateFormatter] stringFromDate:_message.date] uppercaseString];
@@ -263,7 +274,7 @@ static const CGFloat kTextSize = 15;
     
     NSString *readReceiptMessage = [[GLPReadReceiptsManager sharedInstance] getReadReceiptMessageWithMessage:_message];
     
-    if(readReceiptMessage) {
+    if(readReceiptMessage && !_viewMode) {
        
         DDLogDebug(@"GLPMessageCell : configureReadReceiptLabel %@ message %@ remote key %ld", _message.content, readReceiptMessage, (long)_message.remoteKey);
         
@@ -377,6 +388,11 @@ static const CGFloat kTextSize = 15;
     [_delegate readReceitClickForMessage:_message];
 }
 
+- (void)mainViewClick
+{
+    [_delegate mainViewClickForMessage:_message];
+}
+
 # pragma mark - Helpers
 
 + (CGSize)contentLabelSizeForMessage:(GLPMessage *)message
@@ -419,12 +435,38 @@ static const CGFloat kTextSize = 15;
         {
             height += kTimeLabelH;
         }
-        
     }
     
     height += kBottomMargin;
     
     return height;
+}
+
+/**
+ This method should be used only by GLPMessageDetailViewController.
+ 
+ @param message the actual message (non system one).
+ @return the height of the message.
+ */
++ (CGFloat)viewHeightForMessageInViewMode:(GLPMessage *)message
+{
+    CGFloat height = kTopMargin;
+    
+    height = kTimeLabelH + kTimeLabelBottomMargin;
+    
+    
+    height += [GLPMessageCell contentLabelSizeForMessage:message].height;
+    
+    height += kContentLabelVerticalPadding;
+    
+    if([[GLPReadReceiptsManager sharedInstance] doesMessageNeedSeenMessage:message])
+    {
+        height += kTimeLabelH;
+    }
+    
+    height += kBottomMargin;
+    
+    return height + kViewModeMargin;
 }
 
 - (CGFloat)xForCurrentSide:(CGFloat)x w:(CGFloat)w

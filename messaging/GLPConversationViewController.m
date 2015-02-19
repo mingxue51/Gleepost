@@ -52,6 +52,7 @@
 
 #import "GLPReadReceiptsManager.h"
 #import "GLPReadReceipt.h"
+#import "GLPMessageDetailsViewController.h"
 
 @interface GLPConversationViewController ()
 
@@ -63,6 +64,7 @@
 @property (assign, nonatomic) NSInteger selectedUserId;
 @property (strong, nonatomic) NSString *selectedShowUsersTitle;
 @property (strong, nonatomic) NSArray *selectedShowUsers;
+@property (strong, nonatomic) GLPMessage *selectedMessage;
 
 @property (strong, nonatomic) NSMutableArray *messages;
 
@@ -768,84 +770,6 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [self.navigationItem.rightBarButtonItem setEnabled:NO];
 }
 
-
-# pragma mark - Segue
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if([segue.identifier isEqualToString:@"view private profile"]) {
-        GLPPrivateProfileViewController *ppvc = segue.destinationViewController;
-        ppvc.selectedUserId = self.selectedUserId;
-        
-    }
-    else if([segue.identifier isEqualToString:@"view profile"]) {
-        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-    }
-    else if([segue.identifier isEqualToString:@"show users"])
-    {
-        GLPShowUsersViewController *showUsers = segue.destinationViewController;
-        showUsers.selectedTitle = _selectedShowUsersTitle;
-        showUsers.users = _selectedShowUsers;
-    }
-}
-
-#pragma mark - Navigation
-
--(void)navigateToUserProfileOrShowUsers:(id)sender
-{
-    UIButton *userButton = (UIButton *)sender;
-    
-    if(userButton.tag == -1)
-    {
-        _selectedShowUsersTitle = @"PARTICIPANTS";
-        _selectedShowUsers = _conversation.participants;
-        
-        //Navigate to view a list of users like the attending list.
-        [self performSegueWithIdentifier:@"show users" sender:self];
-    }
-    else
-    {
-        [self navigateToUserProfile:[[GLPUser alloc] initWithRemoteKey:userButton.tag]];
-    }
-}
-
--(void)navigateToUserProfile:(GLPUser *)user
-{
-    self.selectedUserId = user.remoteKey;
-    
-    if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
-    {
-        self.selectedUserId = -1;
-        
-        [self performSegueWithIdentifier:@"view profile" sender:self];
-    }
-    else
-    {
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
-    }
-}
-
-- (void)navigateToShowUsersWithMessage:(GLPMessage *)message
-{
-    NSArray *users = [[GLPReadReceiptsManager sharedInstance] usersWithMessage:message];
-    
-    
-    if(users.count == 1)
-    {
-        [self navigateToUserProfile:users[0]];
-    }
-    else
-    {
-        _selectedShowUsersTitle = @"USERS READ MESSAGE";
-        _selectedShowUsers = users;
-        
-        [self performSegueWithIdentifier:@"show users" sender:self];
-    }
-    
-}
-
-
-
 #pragma mark - form management
 
 - (void)keyboardWillShow:(NSNotification *)note{
@@ -1025,9 +949,79 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     DDLogDebug(@"Message: %@ not sent.", message.content);
 }
 
+- (void)mainViewClickForMessage:(GLPMessage *)message
+{
+    _selectedMessage = message;
+    [self performSegueWithIdentifier:@"show message details" sender:self];
+}
+
 - (void)readReceitClickForMessage:(GLPMessage *)message
 {
-    [self navigateToShowUsersWithMessage:message];
+    _selectedMessage = message;
+    [self performSegueWithIdentifier:@"show message details" sender:self];
+}
+
+
+# pragma mark - Segue
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"view private profile"]) {
+        GLPPrivateProfileViewController *ppvc = segue.destinationViewController;
+        ppvc.selectedUserId = self.selectedUserId;
+        
+    }
+    else if([segue.identifier isEqualToString:@"view profile"]) {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+    }
+    else if([segue.identifier isEqualToString:@"show users"])
+    {
+        GLPShowUsersViewController *showUsers = segue.destinationViewController;
+        showUsers.selectedTitle = _selectedShowUsersTitle;
+        showUsers.users = _selectedShowUsers;
+    }
+    else if([segue.identifier isEqualToString:@"show message details"])
+    {
+        GLPMessageDetailsViewController *messageDetailsVC = segue.destinationViewController;
+        messageDetailsVC.message = _selectedMessage;
+        messageDetailsVC.reads = _conversation.reads;
+    }
+}
+
+#pragma mark - Navigation
+
+-(void)navigateToUserProfileOrShowUsers:(id)sender
+{
+    UIButton *userButton = (UIButton *)sender;
+    
+    if(userButton.tag == -1)
+    {
+        _selectedShowUsersTitle = @"PARTICIPANTS";
+        _selectedShowUsers = _conversation.participants;
+        
+        //Navigate to view a list of users like the attending list.
+        [self performSegueWithIdentifier:@"show users" sender:self];
+    }
+    else
+    {
+        [self navigateToUserProfile:[[GLPUser alloc] initWithRemoteKey:userButton.tag]];
+    }
+}
+
+-(void)navigateToUserProfile:(GLPUser *)user
+{
+    self.selectedUserId = user.remoteKey;
+    
+    if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
+    {
+        self.selectedUserId = -1;
+        
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else
+    {
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
 }
 
 @end

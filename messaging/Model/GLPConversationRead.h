@@ -10,7 +10,7 @@
 #import <Foundation/Foundation.h>
 #import "GLPUser.h"
 
-@interface GLPConversationRead : NSObject
+@interface GLPConversationRead : NSObject<NSCopying>
 
 @property (strong, nonatomic) GLPUser *participant;
 @property (assign, nonatomic) NSInteger messageRemoteKey;

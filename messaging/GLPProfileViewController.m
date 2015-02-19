@@ -275,7 +275,7 @@
     
     if(DEV)
     {
-        [WebClientHelper showLowMemoryWarningFromClass:@"GLPProfileViewController"];
+//        [WebClientHelper showLowMemoryWarningFromClass:@"GLPProfileViewController"];
     }
 }
 

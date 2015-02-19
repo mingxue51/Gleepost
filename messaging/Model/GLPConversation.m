@@ -180,6 +180,7 @@
     object.lastSyncMessageKey = _lastSyncMessageKey;
     object.isEnded = _isEnded;
     object.expiryDate = [_expiryDate copyWithZone:zone];
+    object.reads = [_reads copyWithZone:zone];
     
     return object;
 }

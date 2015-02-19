@@ -14,6 +14,7 @@
 - (void)errorButtonClickForMessage:(GLPMessage *)message;
 - (void)profileImageClickForMessage:(GLPMessage *)message;
 - (void)readReceitClickForMessage:(GLPMessage *)message;
+- (void)mainViewClickForMessage:(GLPMessage *)message;
 
 @end
 
@@ -23,6 +24,8 @@
 @property (weak, nonatomic) id<GLPMessageCellDelegate> delegate;
 
 - (void)configureWithMessage:(GLPMessage *)message;
+- (void)setViewMode:(BOOL)viewMode;
 + (CGFloat)viewHeightForMessage:(GLPMessage *)message;
++ (CGFloat)viewHeightForMessageInViewMode:(GLPMessage *)message;
 
 @end

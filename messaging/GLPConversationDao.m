@@ -125,10 +125,15 @@
     
     entity.key = [db lastInsertRowId];
     
-    for(GLPConversationRead *conversationRead in entity.reads)
+    [GLPConversationDao saveConversationReads:entity withDb:db];
+}
+
++ (void)saveConversationReads:(GLPConversation *)conversation withDb:(FMDatabase *)db
+{
+    for(GLPConversationRead *conversationRead in conversation.reads)
     {
         [db executeUpdateWithFormat:@"insert into conversations_reads (conversation_remote_key, participant_remote_key, message_read_remote_key) values(%d, %d, %d)",
-         entity.remoteKey,
+         conversation.remoteKey,
          conversationRead.participant.remoteKey,
          conversationRead.messageRemoteKey];
     }
@@ -175,7 +180,7 @@
         entity.key = conv.key;
 
         //Update conversation.
-        [GLPConversationDao updateConversationLastUpdateAndLastMessage:entity db:db];
+        [GLPConversationDao update:entity db:db];
     }
 }
 
