@@ -2923,7 +2923,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <textAttributes key="titleTextAttributes">
-                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                     <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 </textAttributes>
                                 <items>
@@ -2998,7 +2998,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <textAttributes key="titleTextAttributes">
-                                    <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="20"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                     <color key="textColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 </textAttributes>
                                 <items>
@@ -5053,7 +5053,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="aP2-oN-YHg"/>
+        <segue reference="fah-A8-Ky9"/>
         <segue reference="sMz-ia-ebt"/>
         <segue reference="icH-IF-qcr"/>
         <segue reference="7g0-HV-ZHz"/>
@@ -5063,10 +5063,10 @@
         <segue reference="NSy-Xb-H1O"/>
         <segue reference="Ze9-pm-FNm"/>
         <segue reference="XA6-SN-ZTj"/>
-        <segue reference="cxq-Lw-xeo"/>
         <segue reference="voh-a1-0cl"/>
         <segue reference="c6M-82-Pnp"/>
         <segue reference="ecx-lG-qPa"/>
+        <segue reference="mMc-o6-aUd"/>
         <segue reference="KgO-oz-Ivb"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="8oh-gD-Cs7"/>
