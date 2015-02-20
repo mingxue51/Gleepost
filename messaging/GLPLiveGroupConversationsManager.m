@@ -524,7 +524,9 @@ static GLPLiveGroupConversationsManager *instance = nil;
         conversation.hasUnreadMessages = YES;
         
         DDLogInfo(@"Notify new messages");
-        [self internalNotifyConversation:conversation withNewMessages:YES beingPreviousMessages:NO canHaveMorePreviousMessages:NO];
+        //WARNING: The canHaveMorePreviousMessages was NO before. But that was causing an issue where
+        //the user was unable to load previous messages after he sent a message.
+        [self internalNotifyConversation:conversation withNewMessages:YES beingPreviousMessages:NO canHaveMorePreviousMessages:YES];
     });
 }
 
@@ -562,7 +564,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
         }
         
         DDLogInfo(@"Local message update completed, with sent status: %@", sentLog);
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil userInfo:@{@"key": [NSNumber numberWithInteger:message.key], @"sent":[NSNumber numberWithBool:sent]}];
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil userInfo:@{@"key": [NSNumber numberWithInteger:message.key], @"remote_key": [NSNumber numberWithInteger:message.remoteKey], @"sent":[NSNumber numberWithBool:sent]}];
     });
 }
 
@@ -920,10 +922,12 @@ static GLPLiveGroupConversationsManager *instance = nil;
 
 - (void)internalNotifyConversationHasNewLocalMessages:(GLPConversation *)conversation
 {
+    //WARNING: The canHaveMorePreviousMessages was NO before. But that was causing an issue where
+    //the user was unable to load previous messages after he sent a message.
     [self internalNotifyConversation:conversation
                          newMessages:YES
                beingPreviousMessages:NO
-         canHaveMorePreviousMessages:NO
+         canHaveMorePreviousMessages:YES
                      newLocalMessage:YES];
 }
 

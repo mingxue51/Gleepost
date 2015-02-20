@@ -127,10 +127,13 @@ static GLPReadReceiptsManager *instance = nil;
 {
     GLPReadReceipt *readReceipt = [_readReceipts objectForKey:@(message.conversation.remoteKey)];
     
+    if(!readReceipt)
+    {
+        return NO;
+    }
+    
     if([readReceipt getMesssageRemoteKey] == message.remoteKey && message.author.remoteKey != [readReceipt getLastUser].remoteKey)
     {
-        DDLogDebug(@"GLPReadReceiptsManager : doesMessageNeedSeenMessage %@",readReceipt);
-        
         return YES;
     }
     

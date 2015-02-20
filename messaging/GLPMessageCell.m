@@ -421,6 +421,7 @@ static const CGFloat kTextSize = 15;
 {
     CGFloat height = kTopMargin;
     
+    
     if((message.hasHeader || message.needsProfileImage) && ![message isKindOfClass:[GLPSystemMessage class]]) {
         height = kTimeLabelH + kTimeLabelBottomMargin;
     }

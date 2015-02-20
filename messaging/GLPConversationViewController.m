@@ -517,7 +517,6 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (void)receivedReadReceiptUpdate:(NSNotification *)notification
 {
-
     NSInteger messageRemoteKey = [notification.userInfo[@"message_remote_key"] integerValue];
     
     for(GLPMessage *msg in _messages)

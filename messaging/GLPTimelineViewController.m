@@ -200,17 +200,6 @@ const float TOP_OFFSET = 180.0f;
     
     [self startBackgroundOperations];
     
-    NSLog (@"Font families: %@", [UIFont familyNames]);
-    
-    NSArray *fontFamilies = [UIFont familyNames];
-    
-    for (int i = 0; i < [fontFamilies count]; i++)
-    {
-        NSString *fontFamily = [fontFamilies objectAtIndex:i];
-        NSArray *fontNames = [UIFont fontNamesForFamilyName:[fontFamilies objectAtIndex:i]];
-        NSLog (@"%@: %@", fontFamily, fontNames);
-    }
-    
     //Find the sunset sunrise for preparation of the new chat.
     //TODO: That's will be used in GleepostSD app.
 //    [AnimationDayController sharedInstance];

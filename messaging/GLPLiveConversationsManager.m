@@ -1264,7 +1264,10 @@ static GLPLiveConversationsManager *instance = nil;
         conversation.hasUnreadMessages = YES;
         
         DDLogInfo(@"Notify new messages");
-        [self internalNotifyConversation:conversation withNewMessages:YES beingPreviousMessages:NO canHaveMorePreviousMessages:NO];
+        
+        //WARNING: The canHaveMorePreviousMessages was NO before. But that was causing an issue where
+        //the user was unable to load previous messages after he sent a message.
+        [self internalNotifyConversation:conversation withNewMessages:YES beingPreviousMessages:NO canHaveMorePreviousMessages:YES];
     });
 }
 
@@ -1581,10 +1584,12 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (void)internalNotifyConversationHasNewLocalMessages:(GLPConversation *)conversation
 {
+    //WARNING: The canHaveMorePreviousMessages was NO before. But that was causing an issue where
+    //the user was unable to load previous messages after he sent a message.
     [self internalNotifyConversation:conversation
                          newMessages:YES
                beingPreviousMessages:NO
-         canHaveMorePreviousMessages:NO
+         canHaveMorePreviousMessages:YES
                      newLocalMessage:YES];
 }
 
