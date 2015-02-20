@@ -57,7 +57,7 @@ static GLPWebSocketClient *instance = nil;
     SessionManager *sessionManager = [SessionManager sharedInstance];
     
 //    NSString *url = [NSString stringWithFormat:@"%@ws?id=%d&token=%@", GLP_BASE_URL, sessionManager.user.remoteKey, sessionManager.token];
-    NSString *url = [NSString stringWithFormat:@"%@ws?id=%d&token=%@", [[SessionManager sharedInstance] serverPath], sessionManager.user.remoteKey, sessionManager.token];
+    NSString *url = [NSString stringWithFormat:@"%@ws2?id=%d&token=%@", [[SessionManager sharedInstance] serverPath], sessionManager.user.remoteKey, sessionManager.token];
     NSLog(@"Init web socket with url: %@", url);
     
     _webSocket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:url]];

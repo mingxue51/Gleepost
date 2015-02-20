@@ -522,6 +522,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
         
         // conversation has unread messages
         conversation.hasUnreadMessages = YES;
+        ++conversation.unreadMessagesCount;
         
         DDLogInfo(@"Notify new messages");
         //WARNING: The canHaveMorePreviousMessages was NO before. But that was causing an issue where
@@ -709,6 +710,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
         
         // mark conversation as read
         synchConversation.hasUnreadMessages = NO;
+        synchConversation.unreadMessagesCount = 0;
         
         array = [[NSArray alloc] initWithArray:syncMessages copyItems:YES];
         

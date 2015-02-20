@@ -20,6 +20,7 @@
 @property (strong, nonatomic) NSArray *participants;
 @property (strong, nonatomic) NSString *title;
 @property (assign, nonatomic) BOOL hasUnreadMessages;
+@property (assign, nonatomic) NSInteger unreadMessagesCount;
 @property (assign, nonatomic) BOOL isGroup;
 @property (assign, nonatomic) BOOL isLive;
 @property (assign, nonatomic) NSInteger groupRemoteKey;

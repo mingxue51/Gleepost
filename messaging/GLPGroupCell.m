@@ -14,6 +14,8 @@
 #import "GLPLiveGroupManager.h"
 #import "GLPCustomProgressView.h"
 #import "GLPiOSSupportHelper.h"
+#import "GLPLiveGroupConversationsManager.h"
+#import "GLPConversation.h"
 
 @interface GLPGroupCell ()
 
@@ -186,6 +188,10 @@
 - (void)configureUnreadPostsBadge
 {
     NSInteger count = [[GLPLiveGroupManager sharedInstance] numberOfUnseenPostsWithGroup:_groupData];
+    
+    GLPConversation *conversation = [[GLPLiveGroupConversationsManager sharedInstance] findByRemoteKey:_groupData.conversationRemoteKey];
+        
+    count+=conversation.unreadMessagesCount;
     
     if(count != 0)
     {

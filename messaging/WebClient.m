@@ -1038,7 +1038,7 @@ static WebClient *instance = nil;
     }];
 }
 
--(void)quitFromAGroupWithRemoteKey:(int)groupRemoteKey callback:(void (^) (BOOL success))callbackBlock
+-(void)quitFromAGroupWithRemoteKey:(NSInteger)groupRemoteKey callback:(void (^) (BOOL success))callbackBlock
 {
     
     NSString *path = [NSString stringWithFormat:@"profile/networks/%d", groupRemoteKey];

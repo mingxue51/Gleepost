@@ -20,6 +20,7 @@
 - (void)reloadTableViewWithGroups:(NSArray *)groups;
 - (void)insertToTableViewNewGroup:(GLPGroup *)newGroup;
 - (void)reloadTableViewWithGroup:(GLPGroup *)newGroup;
+- (void)refreshGroupCellWithConversationRemoteKey:(NSInteger)conversationRemoteKey;
 - (void)setNavigationBarTitle:(NSString *)title;
 - (void)showOrHideEmptyView;
 - (void)startLoading;

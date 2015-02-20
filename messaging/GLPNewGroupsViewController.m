@@ -114,6 +114,19 @@
     [_tableView reloadData];
 }
 
+- (void)refreshGroupCellWithConversationRemoteKey:(NSInteger)conversationRemoteKey
+{
+    NSInteger index = [self findGroupWithConversationRemoteKey:conversationRemoteKey];
+    
+    if(index >= _groups.count || index == -1)
+    {
+        DDLogError(@"ERROR: Index out of array's bounds %ld, %ld", (long)index, (unsigned long)_groups.count);
+        return;
+    }
+    
+    [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+}
+
 - (NSInteger)findGroupWithRemoteKey:(NSInteger)remoteKey
 {
     NSInteger index = 0;
@@ -121,6 +134,21 @@
     for(GLPGroup *group in _groups)
     {
         if(group.remoteKey == remoteKey)
+        {
+            break;
+        }
+        ++index;
+    }
+    return index;
+}
+
+- (NSInteger)findGroupWithConversationRemoteKey:(NSInteger)conversationRemoteKey
+{
+    NSInteger index = 0;
+    
+    for(GLPGroup *group in _groups)
+    {
+        if(group.conversationRemoteKey == conversationRemoteKey)
         {
             break;
         }

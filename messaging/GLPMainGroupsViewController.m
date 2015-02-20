@@ -82,6 +82,8 @@
 
 - (void)configureViewDidLoadNotifications
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupMessageReceived:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupsLoaded:) name:GLPNOTIFICATION_GROUPS_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupImageLoaded:) name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupToBeCreated:) name:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED object:nil];
@@ -97,6 +99,7 @@
 
 - (void)removeDeallocNotifications
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUPS_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED object:nil];
@@ -153,7 +156,7 @@
     
     [self refreshUIDependingOnGroupsLoadedStatus:groupsLoadedStatus withPostsCount:groups.count];
     
-    DDLogDebug(@"GLPMainGroupsViewController : groupsLoaded %@", groups);
+    DDLogDebug(@"GLPMainGroupsViewController : groupsLoaded.");
     
     [super reloadTableViewWithGroups:groups];
 }
@@ -189,6 +192,28 @@
     [super reloadTableViewWithGroup:updatedGroup];
 }
 
+- (void)groupMessageReceived:(NSNotification *)notification
+{
+    BOOL belongToGroupConversation = [notification.userInfo[@"belongsToGroup"] boolValue];
+    
+    if(belongToGroupConversation)
+    {
+        BOOL localMessage = [notification.userInfo[@"newLocalMessage"] boolValue];
+        if(localMessage) {
+            return;
+        }
+        
+        NSInteger conversationRemoteKey = [notification.userInfo[@"remoteKey"] integerValue];
+        BOOL newMessages = [notification.userInfo[@"newMessages"] boolValue];
+        if(newMessages) {
+            
+            DDLogDebug(@"GLPMainGroupsViewController : groupMessageReceived");
+            
+            [super refreshGroupCellWithConversationRemoteKey:conversationRemoteKey];
+        }
+    }
+    
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
