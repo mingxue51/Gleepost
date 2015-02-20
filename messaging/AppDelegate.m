@@ -580,6 +580,7 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     
     DDLogInfo(@"Messages VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
     MessengerViewController *messagesVC = navVC.viewControllers[0];
+//    messagesVC.needsReloadConversations = YES;
     
     GLPConversationViewController *conversationVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GLPConversationViewController"];
     conversationVC.conversation = conversation;

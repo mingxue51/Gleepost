@@ -157,6 +157,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [self configureTitleNavigationBar];
+
     [self.tableView reloadData];
     
     [self syncWaitingConversation];
