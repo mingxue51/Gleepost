@@ -31,6 +31,8 @@
             
         case kPNKindSendYouMessage:
             _conversationId = json[@"conv"];
+            _groupId = json[@"group"];
+            _kindOfPN = kPNKindSendYouGroupMessage;
             break;
             
         case kPNKindCommentedYourPost:

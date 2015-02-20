@@ -43,7 +43,9 @@
 #import "ViewPostViewController.h"
 #import "GLPPostManager.h"
 #import "AppearanceHelper.h"
+//TODO: Change to GLPMainGroupsViewController!
 #import "GLPGroupsViewController.h"
+#import "GLPMainGroupsViewController.h"
 #import "GroupViewController.h"
 #import "GLPPushNotification.h"
 #import "GLPiOSSupportHelper.h"
@@ -254,7 +256,9 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
         case kPNKindSendYouMessage:
             [self navigateToConversationWithPNNotification:pushNotification];
             break;
-            
+        case kPNKindSendYouGroupMessage:
+            [self navigateToGroupConversationWithPNNotification:pushNotification];
+            break;
         case kPNKindNewGroupPost:
         case kPNKindAddedYouToGroup:
             [self navigateToGroupPostWithPNNotification:pushNotification];
@@ -580,7 +584,6 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     
     DDLogInfo(@"Messages VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
     MessengerViewController *messagesVC = navVC.viewControllers[0];
-//    messagesVC.needsReloadConversations = YES;
     
     GLPConversationViewController *conversationVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GLPConversationViewController"];
     conversationVC.conversation = conversation;
@@ -591,37 +594,39 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     [navVC setViewControllers:@[messagesVC, conversationVC] animated:YES];
 }
 
-//TODO: To be impemented.
 -(void)navigateToGroupConversationWithPNNotification:(GLPPushNotification *)pushNotification
 {
-//    GLPConversation *conversation = [[GLPConversation alloc] initFromPushNotificationWithRemoteKey:[pushNotification.conversationId integerValue]];
-//    
-//    if(!_tabBarController) {
-//        DDLogError(@"Cannot find tab bar VC, abort");
-//        return;
-//    }
-//    
-//    if(_tabBarController.selectedIndex != 2) {
-//        UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
-//        [currentNavigationVC popToRootViewControllerAnimated:NO];
-//        [_tabBarController setSelectedIndex:2];
-//    }
-//    
-//    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[2] class]));
-//    UINavigationController *navVC = _tabBarController.viewControllers[2];
-//    
-//    DDLogInfo(@"Messages VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
-//    GroupViewController *groupVC = navVC.viewControllers[0];
-//    
-//    GLPGroupsViewController
-//    
-//    GLPConversationViewController *conversationVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GLPConversationViewController"];
-//    conversationVC.conversation = conversation;
-//    conversationVC.comesFromPN = YES;
-//    conversationVC.hidesBottomBarWhenPushed = YES;
-//    
-//    
-//    [navVC setViewControllers:@[messagesVC, conversationVC] animated:YES];
+    if(!_tabBarController) {
+        DDLogError(@"Cannot find tab bar VC, abort");
+        return;
+    }
+    
+    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[2] class]));
+    UINavigationController *navVC = _tabBarController.viewControllers[2];
+    
+    DDLogInfo(@"Messages VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+    GLPMainGroupsViewController *groupsVC = navVC.viewControllers[0];
+    
+    GroupViewController *groupVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GroupViewController"];
+    
+    //TODO: Replace this request by calling this method: loadAndNavigateToGroupWithGroupsVC. After fixing that method.
+    
+    [[WebClient sharedInstance] getGroupDescriptionWithId:[pushNotification.groupId integerValue] withCallbackBlock:^(BOOL success, GLPGroup *group, NSString *errormMessage){
+        
+        if(success)
+        {
+            groupVC.group = group;
+            groupVC.fromPushNotificationWithNewMessage = YES;
+            
+            if(_tabBarController.selectedIndex != 2) {
+                UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+                [currentNavigationVC popToRootViewControllerAnimated:NO];
+                [_tabBarController setSelectedIndex:2];
+            }
+            
+            [navVC setViewControllers:@[groupsVC, groupVC] animated:NO];
+        }
+    }];
 }
 
 # pragma mark - Handle custom URL Scheme (gleepost://)

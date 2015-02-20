@@ -128,13 +128,18 @@ const float TOP_OFF_SET = -64.0;
     
     [self initialiseObjects];
     
-    if(!_fromPushNotification)
-    {
-        [self configureTopImageView];
-        [self configureTableView];
-        [self loadPosts];
-        [self loadPendingImageIfExistAndSetIt];
-    }
+
+    [self configureTopImageView];
+    [self configureTableView];
+    [self loadPosts];
+    [self loadPendingImageIfExistAndSetIt];
+
+    
+    
+//    if(!_fromPushNotification)
+//    {
+//        
+//    }
 
     //Get the video progress view and add it as subview.
     [self getProgressViewAndAddIt];
@@ -185,8 +190,13 @@ const float TOP_OFF_SET = -64.0;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    if(_fromPushNotificationWithNewMessage)
+    {
+        [self navigateToMessenger];
+        _fromPushNotificationWithNewMessage = NO;
+    }
 }
-
 
 - (void)dealloc
 {
