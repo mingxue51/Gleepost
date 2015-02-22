@@ -156,7 +156,7 @@
     
     [self refreshUIDependingOnGroupsLoadedStatus:groupsLoadedStatus withPostsCount:groups.count];
     
-    DDLogDebug(@"GLPMainGroupsViewController : groupsLoaded.");
+    DDLogDebug(@"GLPMainGroupsViewController : groupsLoaded %@", groups);
     
     [super reloadTableViewWithGroups:groups];
 }

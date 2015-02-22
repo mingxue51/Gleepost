@@ -178,6 +178,8 @@
 {
     GLPGroup *group = [_groups objectAtIndex:indexPath.row];
     
+    DDLogDebug(@"GLPNewGroupsViewController : quitFromGroupWithIndexPath %@ - %ld", group, (long)indexPath.row);
+    
     [[WebClient sharedInstance] quitFromAGroupWithRemoteKey:group.remoteKey callback:^(BOOL success) {
         
         if(success)
@@ -197,7 +199,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+{    
     return _groups.count;
 }
 

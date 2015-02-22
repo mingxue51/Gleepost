@@ -329,7 +329,7 @@ static GLPLiveGroupManager *instance = nil;
 
 - (void)deleteGroup:(GLPGroup *)group
 {
-    dispatch_async(_queue, ^{
+    dispatch_sync(_queue, ^{
         [_groups removeObject:group];
         [GLPGroupDao remove:group];
         [GLPMemberDao removeMember:group.loggedInUser withGroupRemoteKey:group.remoteKey];

@@ -87,11 +87,6 @@
 
 - (BOOL)isEqual:(id)other
 {
-//    if(self.key == 0 || [(GLPGroup *)other key] == 0)
-//    {
-//        return NO;
-//    }
-    
     GLPGroup *otherGroup = (GLPGroup *)other;
     
     if(self.remoteKey == 0 || otherGroup.remoteKey == 0)
@@ -99,6 +94,11 @@
         DDLogDebug(@"GLPGroup : Remote Key equals zero");
         
         return [otherGroup key] == self.key;
+    }
+    
+    if(self.key == 0 || [otherGroup key] == 0)
+    {
+        return [otherGroup remoteKey] == self.remoteKey;
     }
     
     return ([otherGroup remoteKey] == self.remoteKey || [otherGroup key] == self.key);
@@ -111,7 +111,10 @@
 
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Name: %@, Key: %d, Remote key: %d Description: %@, Privacy: %@, Logged in user: %@, Owner: %@", _name, _key, _remoteKey, _groupDescription, [self privacyToString], _loggedInUser.name, _author.name];
+//    return [NSString stringWithFormat:@"Name: %@, Key: %d, Remote key: %d Description: %@, Privacy: %@, Logged in user: %@, Owner: %@", _name, _key, _remoteKey, _groupDescription, [self privacyToString], _loggedInUser.name, _author.name];
+    
+    return [NSString stringWithFormat:@"Name: %@, Key: %d, Remote key: %d", _name, _key, _remoteKey];
+
 }
 
 @end
