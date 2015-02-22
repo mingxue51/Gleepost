@@ -143,6 +143,12 @@
     
     [self configureViewDidLoadNSNotifications];
     
+    [self loadPosts];
+    
+//    [self startLoading];
+//    [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
+//    _postsLoading = YES;
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -428,7 +434,7 @@
     
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.tableView];
     
-    _postsLoading = NO;
+//    _postsLoading = NO;
     
     _loggedInUserProfileManager = [[LoggedInUserProfileManager alloc] init];
     
@@ -876,7 +882,15 @@
             [self.tableView reloadData];
         }
         
-        [self hideOrShowPostsEmptyView];
+        if([_loggedInUserProfileManager postsCount] == 0)
+        {
+            [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kProfilePostsEmptyView withView:self.tableView];
+        }
+        else
+        {
+            [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
+        }
+        
     }
     else
     {
@@ -886,6 +900,9 @@
         }
         else
         {
+            _postsLoading = NO;
+            [_tableActivityIndicator stopActivityIndicator];
+            [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
             [self.tableView reloadData];
         }
     }
@@ -1506,21 +1523,29 @@
     
     _selectedTab = buttonType;
     
-    if(_selectedTab == kButtonRight) {
-        
+    if(_selectedTab == kButtonRight)
+    {
         [_tableActivityIndicator stopActivityIndicator];
+        [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
 
         [self notificationsTabClick];
     }
     else
     {
-        if([_loggedInUserProfileManager postsCount] == 0)
+        if([_loggedInUserProfileManager postsCount] == 0 && !_postsLoading)
         {
-            [_tableActivityIndicator startActivityIndicator];
+            [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kProfilePostsEmptyView withView:self.tableView];
+            [_tableActivityIndicator stopActivityIndicator];
         }
-        else
+        else if([_loggedInUserProfileManager postsCount] != 0 && !_postsLoading)
         {
-            [self hideOrShowPostsEmptyView];
+            [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
+            [_tableActivityIndicator stopActivityIndicator];
+        }
+        else if(_postsLoading)
+        {
+            [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
+            [_tableActivityIndicator startActivityIndicator];
         }
     }
     
@@ -1665,20 +1690,6 @@
     else
     {
         [self refreshNotifications];
-    }
-}
-
-#pragma mark - UI
-
-- (void)hideOrShowPostsEmptyView
-{
-    if([_loggedInUserProfileManager postsCount] == 0)
-    {
-        [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kProfilePostsEmptyView withView:self.tableView];
-    }
-    else
-    {
-        [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
     }
 }
 
