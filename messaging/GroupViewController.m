@@ -149,7 +149,8 @@ const float TOP_OFF_SET = -64.0;
     
     [self configureNavigationItems];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewMediaPostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
+    [self configureViewDidLoadNotifications];
+    
     [[GLPLiveGroupManager sharedInstance] postGroupReadWithRemoteKey:_group.remoteKey];
     
     [[GLPLiveGroupConversationsManager sharedInstance] loadConversationWithRemoteKey:_group.conversationRemoteKey];
@@ -159,7 +160,7 @@ const float TOP_OFF_SET = -64.0;
 {
     [super viewWillAppear:animated];
     
-    [self configureNotifications];
+    [self configureViewWillAppearNotifications];
 
     [self setUpGoingButtonNotification];
     
@@ -170,7 +171,7 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [self removeNotifications];
+    [self removeViewWillDisappearNotifications];
     
     [self removeGoingButtonNotification];
     
@@ -200,8 +201,8 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
-
+    [self removeViewDidLoadNotifications];
+    
     [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kGroupPostsEmptyView];
     
     [_tableView removeFromSuperview];
@@ -373,7 +374,7 @@ const float TOP_OFF_SET = -64.0;
     
 }
 
--(void)configureNavigationBar
+- (void)configureNavigationBar
 {
     
     //Change the format of the navigation bar.
@@ -411,7 +412,17 @@ const float TOP_OFF_SET = -64.0;
 
 }
 
--(void)configureNotifications
+- (void)configureViewDidLoadNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewMediaPostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
+}
+
+- (void)removeViewDidLoadNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
+}
+
+- (void)configureViewWillAppearNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     
@@ -426,9 +437,12 @@ const float TOP_OFF_SET = -64.0;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:notificationName object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    
+    //This notification is used in case a new message received to update the Messenger tab badge.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupMessageReceived:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
 }
 
--(void)removeNotifications
+- (void)removeViewWillDisappearNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
@@ -438,6 +452,7 @@ const float TOP_OFF_SET = -64.0;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
 }
 
 - (void)setUpGoingButtonNotification
@@ -572,6 +587,31 @@ const float TOP_OFF_SET = -64.0;
         }
         
     }];
+}
+
+- (void)groupMessageReceived:(NSNotification *)notification
+{
+    BOOL belongToGroupConversation = [notification.userInfo[@"belongsToGroup"] boolValue];
+    
+    if(belongToGroupConversation)
+    {
+        BOOL localMessage = [notification.userInfo[@"newLocalMessage"] boolValue];
+        if(localMessage) {
+            return;
+        }
+        
+        NSInteger conversationRemoteKey = [notification.userInfo[@"remoteKey"] integerValue];
+        BOOL newMessages = [notification.userInfo[@"newMessages"] boolValue];
+        if(newMessages) {
+            
+            DDLogDebug(@"GroupViewController : groupMessageReceived");
+            
+            if(conversationRemoteKey == _group.conversationRemoteKey)
+            {
+                [self refreshCellViewWithIndex:0];
+            }
+        }
+    }
 }
 
 
@@ -718,8 +758,6 @@ const float TOP_OFF_SET = -64.0;
 //        return loadingCell;
         
         return [self cellWithMessage:@"Loading..."];
-        
-        
     }
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
@@ -733,27 +771,8 @@ const float TOP_OFF_SET = -64.0;
     if(indexPath.row == 0)
     {
         groupDescrViewCell = [tableView dequeueReusableCellWithIdentifier:CellDescriptionGroupIdentifier forIndexPath:indexPath];
-        
-//        [profileView setPrivateProfileDelegate:self];
-        
-//        if(self.profileImage && self.profileUser)
-//        {
-//            [profileView initialiseElementsWithUserDetails:self.profileUser withImage:self.profileImage];
-//        }
-//        else if(self.profileImage && !self.profileUser)
-//        {
-//            [profileView initialiseProfileImage:self.profileImage];
-//        }
-//        else
-//        {
-//            [profileView initialiseElementsWithUserDetails:self.profileUser];
-//        }
-        
         [groupDescrViewCell setDelegate:self];
-
-        
         groupDescrViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         [groupDescrViewCell setGroupData:_group];
         
         return groupDescrViewCell;
@@ -782,7 +801,6 @@ const float TOP_OFF_SET = -64.0;
             
             [postViewCell setPost:post withPostIndexPath:indexPath];
         }
-
 
         return postViewCell;
     }
@@ -1666,9 +1684,6 @@ const float TOP_OFF_SET = -64.0;
     else if(buttonType == kButtonLeft)
     {
         [self.tableView reloadData];
-    }
-    else if (buttonType == kButtonMiddle)
-    {
     }
 }
 

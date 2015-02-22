@@ -204,15 +204,15 @@
         }
         
         NSInteger conversationRemoteKey = [notification.userInfo[@"remoteKey"] integerValue];
-        BOOL newMessages = [notification.userInfo[@"newMessages"] boolValue];
-        if(newMessages) {
-            
-            DDLogDebug(@"GLPMainGroupsViewController : groupMessageReceived");
-            
-            [super refreshGroupCellWithConversationRemoteKey:conversationRemoteKey];
-        }
+        
+        //There is not need to parse newMessages attribute because we want to refresh any way
+        //the cell because there is a case that we want to remove the badge.
+        
+        DDLogDebug(@"GLPMainGroupsViewController : groupMessageReceived");
+        
+        [super refreshGroupCellWithConversationRemoteKey:conversationRemoteKey];
+
     }
-    
 }
 
 - (void)didReceiveMemoryWarning {

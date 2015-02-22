@@ -190,7 +190,7 @@
     NSInteger count = [[GLPLiveGroupManager sharedInstance] numberOfUnseenPostsWithGroup:_groupData];
     
     GLPConversation *conversation = [[GLPLiveGroupConversationsManager sharedInstance] findByRemoteKey:_groupData.conversationRemoteKey];
-        
+    
     count+=conversation.unreadMessagesCount;
     
     if(count != 0)

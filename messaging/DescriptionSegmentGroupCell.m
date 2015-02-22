@@ -10,7 +10,8 @@
 #import "GLPGroup.h"
 #import "UILabel+Dimensions.h"
 #import "ShapeFormatterHelper.h"
-
+#import "GLPConversation.h"
+#import "GLPLiveGroupConversationsManager.h"
 
 @interface DescriptionSegmentGroupCell ()
 
@@ -19,6 +20,8 @@
 //@property (weak, nonatomic) IBOutlet GLPThreeSegmentView *segmentView;
 @property (weak, nonatomic) IBOutlet GLPSegmentView *segmentView;
 
+@property (weak, nonatomic) IBOutlet UIImageView *notificationImageView;
+@property (weak, nonatomic) IBOutlet UILabel *notificationLabel;
 
 @property (strong, nonatomic) UIFont *font;
 
@@ -36,11 +39,12 @@ const float DESCR_LBL_WIDTH = 290;
 - (void)awakeFromNib
 {
     // Initialization code
-    
     [self configureFont];
-    
     [self configureSegmentView];
+    [self configureElements];
 }
+
+#pragma mark - Modifiers
 
 - (void)setGroupData:(GLPGroup *)group
 {
@@ -53,6 +57,9 @@ const float DESCR_LBL_WIDTH = 290;
         [_labelDistanceFromTop setConstant:-1];
     }
     
+    GLPConversation *conversation = [[GLPLiveGroupConversationsManager sharedInstance] findByRemoteKey:group.conversationRemoteKey];
+    [self setNumberOfNotifications:conversation.unreadMessagesCount];
+    
 //    [_descriptionLbl setHeightDependingOnText:group.groupDescription withFont:_font];
     
 //    [ShapeFormatterHelper setBorderToView:_descriptionLbl withColour:[UIColor redColor] andWidth:1.0f];
@@ -63,6 +70,11 @@ const float DESCR_LBL_WIDTH = 290;
 
 - (void)segmentSwitched:(ButtonType)conversationsType
 {
+    if(conversationsType == kButtonRight)
+    {
+        [self setNumberOfNotifications:0];
+    }
+    
     [_delegate segmentSwitchedWithButtonType:conversationsType];
 }
 
@@ -70,16 +82,6 @@ const float DESCR_LBL_WIDTH = 290;
 
 - (void)configureSegmentView
 {
-//    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPGroupSegmentView" owner:self options:nil];
-//    
-//    GLPThreeSegmentView *view = [array lastObject];
-//    view.tag = 100;
-//    [view setDelegate:self];
-//    [view setRightButtonTitle:@"Members" andLeftButtonTitle:@"Posts"];
-//    [view setSlideAnimationEnabled:NO];
-//
-//    [_segmentView addSubview:view];
-    
     NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPProfileSegmentView" owner:self options:nil];
     
     GLPSegmentView *view = [array lastObject];
@@ -105,6 +107,39 @@ const float DESCR_LBL_WIDTH = 290;
             [(GLPSegmentView *)v selectLeftButton];
         }
     }
+}
+
+- (void)configureElements
+{
+    [self setHiddenNotificationsElements:NO];
+    [self configureBadge];
+}
+
+- (void)configureBadge
+{
+    [ShapeFormatterHelper setRoundedView:_notificationImageView toDiameter:_notificationImageView.frame.size.height];
+}
+
+#pragma mark - Notifications Count Elements
+
+- (void)setNumberOfNotifications:(NSInteger)notificationsCount
+{
+    if(notificationsCount == 0)
+    {
+        [self setHiddenNotificationsElements:YES];
+        [_notificationLabel setText:[NSString stringWithFormat:@"%ld", (long)notificationsCount]];
+    }
+    else
+    {
+        [self setHiddenNotificationsElements:NO];
+        [_notificationLabel setText:[NSString stringWithFormat:@"%ld", (long)notificationsCount]];
+    }
+}
+
+- (void)setHiddenNotificationsElements:(BOOL)hidden
+{
+    [_notificationImageView setHidden:hidden];
+    [_notificationLabel setHidden:hidden];
 }
 
 #pragma mark - Static
