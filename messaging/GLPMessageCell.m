@@ -275,9 +275,6 @@ static const CGFloat kTextSize = 15;
     NSString *readReceiptMessage = [[GLPReadReceiptsManager sharedInstance] getReadReceiptMessageWithMessage:_message];
     
     if(readReceiptMessage && !_viewMode) {
-       
-        DDLogDebug(@"GLPMessageCell : configureReadReceiptLabel %@ message %@ remote key %ld", _message.content, readReceiptMessage, (long)_message.remoteKey);
-        
         readReceiptLabel.hidden = NO;
         readReceiptLabel.text = readReceiptMessage;
         CGRectSetY(readReceiptLabel, _height + kTimeLabelBottomMargin);

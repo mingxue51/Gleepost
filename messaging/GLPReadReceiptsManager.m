@@ -183,7 +183,7 @@ static GLPReadReceiptsManager *instance = nil;
         [updatedReads addObject:[[GLPConversationRead alloc] initWithParticipant:[readReceipt getLastUser] andMessageRemoteKey:[readReceipt getMesssageRemoteKey]]];
         reads = updatedReads;
         
-        DDLogInfo(@"GLPReadReceiptsManager : read added %@", conversation.title);
+        DDLogInfo(@"GLPReadReceiptsManager : read added %@ updated reads: %@", conversation.title, reads);
     }
 }
 

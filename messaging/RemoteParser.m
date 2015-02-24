@@ -461,9 +461,13 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     message.content = json[@"text"];
     message.sendStatus = kSendStatusSent;
     message.seen = [json[@"seen"] boolValue];
-//    message.belongsToGroup = [json[@"group"] boolValue];
-    message.belongsToGroup = [conversation groupRemoteKey] != 0 ? YES : NO;
-
+    message.belongsToGroup = [json[@"group"] boolValue];
+    
+    //If no give him another chance.
+    if(!message.belongsToGroup)
+    {
+        message.belongsToGroup = [conversation groupRemoteKey] != 0 ? YES : NO;
+    }
     
     BOOL systemMessage = [json[@"system"] boolValue];
     
