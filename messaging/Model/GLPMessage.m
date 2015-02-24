@@ -53,7 +53,7 @@
     message.date = [_date copyWithZone:zone];
     message.author = _author;
     message.conversation = _conversation;
-    
+    message.belongsToGroup = _belongsToGroup;
     
     return message;
 }

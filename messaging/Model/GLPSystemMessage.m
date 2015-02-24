@@ -56,14 +56,19 @@
 
 - (NSString *)systemMessage
 {
+    return [self systemContent].uppercaseString;
+}
+
+- (NSString *)systemContent
+{
     NSString *message = nil;
     
     switch (self.messageType) {
         case kParted:
-            message = [NSString stringWithFormat:@"%@ left the group", self.author.name];
+            message = [NSString stringWithFormat:@"%@ left the %@", self.author.name, [self constantKindOfMessage]];
             break;
         case kJoined:
-            message = [NSString stringWithFormat:@"%@ joined the group", self.author.name];
+            message = [NSString stringWithFormat:@"%@ joined the %@", self.author.name, [self constantKindOfMessage]];
             break;
         case kUnknown:
             message = [NSString stringWithFormat:@"Unknown message"];
@@ -73,7 +78,12 @@
             break;
     }
     
-    return message.uppercaseString;
+    return message;
+}
+
+- (NSString *)constantKindOfMessage
+{
+    return (self.belongsToGroup) ? @"group" : @"conversation";
 }
 
 # pragma mark - Copy

@@ -21,5 +21,6 @@ typedef NS_ENUM(NSUInteger, MessageType) {
 - (id)initWithMessage:(GLPMessage *)message;
 
 - (NSString *)systemMessage;
+- (NSString *)systemContent;
 
 @end

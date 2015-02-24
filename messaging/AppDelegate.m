@@ -604,7 +604,7 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[2] class]));
     UINavigationController *navVC = _tabBarController.viewControllers[2];
     
-    DDLogInfo(@"Messages VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+    DDLogInfo(@"GroupsVC VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
     GLPMainGroupsViewController *groupsVC = navVC.viewControllers[0];
     
     GroupViewController *groupVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GroupViewController"];

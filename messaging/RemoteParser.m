@@ -224,7 +224,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
         GLPMessage *message = [RemoteParser parseMessageFromJson:json[@"mostRecentMessage"] forConversation:nil];
-        conversation.lastMessage = message.content;
+        conversation.lastMessage = ([message isKindOfClass:[GLPSystemMessage class]]) ? [(GLPSystemMessage *)message systemContent] : message.content;
     }
     
     conversation.lastUpdate = [RemoteParser parseDateFromString:json[@"lastActivity"]];
@@ -461,7 +461,9 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     message.content = json[@"text"];
     message.sendStatus = kSendStatusSent;
     message.seen = [json[@"seen"] boolValue];
-    message.belongsToGroup = [json[@"group"] boolValue];
+//    message.belongsToGroup = [json[@"group"] boolValue];
+    message.belongsToGroup = [conversation groupRemoteKey] != 0 ? YES : NO;
+
     
     BOOL systemMessage = [json[@"system"] boolValue];
     
