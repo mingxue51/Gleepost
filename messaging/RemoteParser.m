@@ -1216,6 +1216,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     notification.postRemoteKey = json[@"post"] ? [json[@"post"] integerValue] : 0;
     notification.date = [RemoteParser parseDateFromString:json[@"time"]];
     notification.user = [RemoteParser parseUserFromJson:json[@"user"]];
+    notification.previewMessage = json[@"preview"];
     
     if(json[@"network"]) {
         notification.customParams = @{@"network": json[@"network"]};

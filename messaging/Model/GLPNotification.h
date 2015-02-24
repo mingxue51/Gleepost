@@ -28,6 +28,7 @@ typedef enum {
 @property (assign, nonatomic) BOOL seen;
 @property (strong, nonatomic) NSDate *date;
 @property (strong, nonatomic) GLPUser *user;
+@property (strong, nonatomic) NSString *previewMessage;
 @property (strong, nonatomic) NSDictionary *customParams;
 
 - (NSString *)notificationTypeDescription;
