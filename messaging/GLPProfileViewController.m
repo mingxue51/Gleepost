@@ -681,10 +681,23 @@
     [_loggedInUserProfileManager loadPreviousPosts];
 }
 
--(void)loadGroupAndNavigateWithRemoteKey:(NSString *)remoteKey
+-(void)loadGroupAndNavigateWithRemoteKey:(NSInteger)remoteKey
 {
-    [[WebClient sharedInstance] getGroupDescriptionWithId:[remoteKey integerValue] withCallbackBlock:^(BOOL success, GLPGroup *group, NSString *errorMessage) {
-       
+    GLPGroup *group = [[GLPLiveGroupManager sharedInstance] groupWithRemoteKey:remoteKey];
+    
+    if(!group)
+    {
+        [self loadGroupRemotelyWithRemoteKey:remoteKey];
+    }
+    
+    _groupToNavigate = group;
+    [self performSegueWithIdentifier:@"view group" sender:self];
+}
+
+- (void)loadGroupRemotelyWithRemoteKey:(NSInteger)groupRemoteKey
+{
+    [[WebClient sharedInstance] getGroupDescriptionWithId:groupRemoteKey withCallbackBlock:^(BOOL success, GLPGroup *group, NSString *errorMessage) {
+        
         if(success)
         {
             //Navigate to group with group.
@@ -882,7 +895,7 @@
             [self.tableView reloadData];
         }
         
-        if([_loggedInUserProfileManager postsCount] == 0)
+        if([_loggedInUserProfileManager postsCount] == 0 && _selectedTab == kButtonLeft)
         {
             [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kProfilePostsEmptyView withView:self.tableView];
         }
@@ -1181,7 +1194,7 @@
             //Navigate to group.
             else if (notification.notificationType == kGLPNotificationTypeAddedGroup)
             {
-                [self loadGroupAndNavigateWithRemoteKey:[notification.customParams objectForKey:@"network"]];
+                [self loadGroupAndNavigateWithRemoteKey:[[notification.customParams objectForKey:@"network"] integerValue]];
             }
             else if (notification.notificationType == kGLPNotificationTypeCreatedPostGroup)
             {
