@@ -52,6 +52,7 @@
 #import "FileLogger.h"
 #import "GLPThemeManager.h"
 #import "GLPViewPendingPostViewController.h"
+#import "GLPLiveGroupConversationsManager.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -257,6 +258,7 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
             [self navigateToConversationWithPNNotification:pushNotification];
             break;
         case kPNKindSendYouGroupMessage:
+            [[GLPLiveGroupConversationsManager sharedInstance] syncConversation:[[GLPConversation alloc] initFromPushNotificationWithRemoteKey:[pushNotification.conversationId integerValue]]];
             [self navigateToGroupConversationWithPNNotification:pushNotification];
             break;
         case kPNKindNewGroupPost:
@@ -618,13 +620,21 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
             groupVC.group = group;
             groupVC.fromPushNotificationWithNewMessage = YES;
             
-            if(_tabBarController.selectedIndex != 2) {
+            //We are doing that because there was an issues where the tab bar was dissappearing after
+            //navigating to group convresation and the groups' list tab was selected.
+            [_tabBarController setSelectedIndex:0];
+            
+            if(_tabBarController.selectedIndex != 2)
+            {
                 UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
                 [currentNavigationVC popToRootViewControllerAnimated:NO];
                 [_tabBarController setSelectedIndex:2];
             }
+        
             
             [navVC setViewControllers:@[groupsVC, groupVC] animated:NO];
+            
+            
         }
     }];
 }
