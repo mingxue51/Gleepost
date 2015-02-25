@@ -30,6 +30,8 @@
 - (NSArray *)loadLatestMessagesForConversation:(GLPConversation *)conversation;
 - (void)syncConversationPreviousMessages:(GLPConversation *)detachedConversation;
 
+- (void)markNotSynchronized;
+
 - (void)clear;
 
 @end

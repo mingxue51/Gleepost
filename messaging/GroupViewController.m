@@ -195,7 +195,6 @@ const float TOP_OFF_SET = -64.0;
     if(_fromPushNotificationWithNewMessage)
     {
         [self navigateToMessenger];
-        _fromPushNotificationWithNewMessage = NO;
     }
 }
 
@@ -2074,7 +2073,9 @@ const float TOP_OFF_SET = -64.0;
     {
         GLPConversationViewController *cvc = segue.destinationViewController;
         cvc.conversation = _selectedConversation;
+        cvc.comesFromPN = _fromPushNotificationWithNewMessage;
         cvc.hidesBottomBarWhenPushed = YES;
+        _fromPushNotificationWithNewMessage = NO;
     }
     else if ([segue.identifier isEqualToString:@"show location"])
     {

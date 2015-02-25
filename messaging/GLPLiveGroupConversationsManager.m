@@ -888,6 +888,30 @@ static GLPLiveGroupConversationsManager *instance = nil;
     return [_conversationsMessages[index] firstObject];
 }
 
+- (void)markNotSynchronized
+{
+    DDLogInfo(@"Mark conversations not synchronized anymore");
+    
+    dispatch_async(_queue, ^{
+        _isSynchronizedWithRemote = NO;
+        
+        for(NSNumber *key in [_conversationsSyncStatuses allKeys]) {
+            _conversationsSyncStatuses[key] = [NSNumber numberWithBool:NO];
+        }
+        
+        // all messages that were in waiting to send now marked as failed
+        for(NSNumber *index in _conversationsMessages) {
+            for(GLPMessage *message in _conversationsMessages[index]) {
+                if(message.sendStatus == kSendStatusLocal) {
+                    message.sendStatus = kSendStatusFailure;
+                }
+            }
+        }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
+    });
+}
+
 - (GLPConversation *)internalAttachedConversation:(GLPConversation *)detachedConversation
 {
     GLPConversation *attachedConversation = _conversations[[detachedConversation remoteKeyNumber]];

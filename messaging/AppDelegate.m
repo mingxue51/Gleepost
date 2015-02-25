@@ -52,7 +52,6 @@
 #import "FileLogger.h"
 #import "GLPThemeManager.h"
 #import "GLPViewPendingPostViewController.h"
-#import "GLPLiveGroupConversationsManager.h"
 
 static NSString * const kCustomURLScheme    = @"gleepost";
 static NSString * const kCustomURLHost      = @"verify";
@@ -258,7 +257,6 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
             [self navigateToConversationWithPNNotification:pushNotification];
             break;
         case kPNKindSendYouGroupMessage:
-            [[GLPLiveGroupConversationsManager sharedInstance] syncConversation:[[GLPConversation alloc] initFromPushNotificationWithRemoteKey:[pushNotification.conversationId integerValue]]];
             [self navigateToGroupConversationWithPNNotification:pushNotification];
             break;
         case kPNKindNewGroupPost:
