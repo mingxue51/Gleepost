@@ -527,7 +527,8 @@ static GLPLiveGroupConversationsManager *instance = nil;
         DDLogInfo(@"Notify new messages");
         //WARNING: The canHaveMorePreviousMessages was NO before. But that was causing an issue where
         //the user was unable to load previous messages after he sent a message.
-        [self internalNotifyConversation:conversation withNewMessages:YES beingPreviousMessages:NO canHaveMorePreviousMessages:YES];
+        //Update retrieved to the old attribute.
+        [self internalNotifyConversation:conversation withNewMessages:YES beingPreviousMessages:NO canHaveMorePreviousMessages:NO];
     });
 }
 
@@ -950,10 +951,11 @@ static GLPLiveGroupConversationsManager *instance = nil;
 {
     //WARNING: The canHaveMorePreviousMessages was NO before. But that was causing an issue where
     //the user was unable to load previous messages after he sent a message.
+    //Update retrieved to the old attribute.
     [self internalNotifyConversation:conversation
                          newMessages:YES
                beingPreviousMessages:NO
-         canHaveMorePreviousMessages:YES
+         canHaveMorePreviousMessages:NO
                      newLocalMessage:YES];
 }
 

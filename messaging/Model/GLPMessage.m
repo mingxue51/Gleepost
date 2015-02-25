@@ -30,8 +30,8 @@
 {    
     NSTimeInterval interval = [_date timeIntervalSinceDate:message.date];
     
-    //If the interval is more than five minutes then return YES, otherwise NO.
-    if(interval > 300)
+    //If the interval is more than fifteen minutes then return NO, otherwise YES.
+    if(interval > 900)
     {
         return NO;
     }

@@ -605,18 +605,12 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
             }
             else
             {
-                
                 [[SoundHelper sharedInstance] messageSent];
-
- 
             }
             
-            
-            [self hideTopLoader];
+//            [self hideTopLoader];
         }
-        
         _isFirstLoaded= NO;
-
         
     }
 }
