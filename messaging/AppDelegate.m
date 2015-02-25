@@ -601,13 +601,21 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
         return;
     }
     
+    if(_tabBarController.selectedIndex != 2)
+    {
+        UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+        [currentNavigationVC popToRootViewControllerAnimated:NO];
+        [_tabBarController setSelectedIndex:2];
+        [_tabBarController resetGroupsBadge];
+    }
+    
     DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[2] class]));
     UINavigationController *navVC = _tabBarController.viewControllers[2];
     
     DDLogInfo(@"GroupsVC VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
     GLPMainGroupsViewController *groupsVC = navVC.viewControllers[0];
     
-    GroupViewController *groupVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GroupViewController"];
+    __block GroupViewController *groupVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GroupViewController"];
     
     //TODO: Replace this request by calling this method: loadAndNavigateToGroupWithGroupsVC. After fixing that method.
     
@@ -618,23 +626,12 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
             groupVC.group = group;
             groupVC.fromPushNotificationWithNewMessage = YES;
             
-            //We are doing that because there was an issues where the tab bar was dissappearing after
-            //navigating to group convresation and the groups' list tab was selected.
-            [_tabBarController setSelectedIndex:0];
-            
-            if(_tabBarController.selectedIndex != 2)
-            {
-                UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
-                [currentNavigationVC popToRootViewControllerAnimated:NO];
-                [_tabBarController setSelectedIndex:2];
-            }
-        
+
             
             [navVC setViewControllers:@[groupsVC, groupVC] animated:NO];
-            
-            
         }
     }];
+    
 }
 
 # pragma mark - Handle custom URL Scheme (gleepost://)

@@ -356,6 +356,12 @@ static NSInteger lastTabbarIndex = 0;
     [self updateBadgeContentForIndex:item.tag count:0];
 }
 
+- (void)resetGroupsBadge
+{
+    _groupPostsNotificationsCount = 0;
+    [self updateBadgeContentForIndex:2 count:0];
+}
+
 #pragma mark - Helpers
 
 - (void)showErrorViewInViewIfNeeded

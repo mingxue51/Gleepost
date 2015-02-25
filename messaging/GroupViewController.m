@@ -134,12 +134,6 @@ const float TOP_OFF_SET = -64.0;
     [self loadPosts];
     [self loadPendingImageIfExistAndSetIt];
 
-    
-    
-//    if(!_fromPushNotification)
-//    {
-//        
-//    }
 
     //Get the video progress view and add it as subview.
     [self getProgressViewAndAddIt];
@@ -154,6 +148,11 @@ const float TOP_OFF_SET = -64.0;
     [[GLPLiveGroupManager sharedInstance] postGroupReadWithRemoteKey:_group.remoteKey];
     
     [[GLPLiveGroupConversationsManager sharedInstance] loadConversationWithRemoteKey:_group.conversationRemoteKey];
+    
+    if(_fromPushNotificationWithNewMessage)
+    {
+        [self navigateToMessenger];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -186,16 +185,6 @@ const float TOP_OFF_SET = -64.0;
 {
 //    [_trackViewsCountProcessor resetSentPostsSet];
     [super viewDidDisappear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    if(_fromPushNotificationWithNewMessage)
-    {
-        [self navigateToMessenger];
-    }
 }
 
 - (void)dealloc
