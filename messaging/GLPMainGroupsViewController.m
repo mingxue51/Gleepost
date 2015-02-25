@@ -82,6 +82,8 @@
 
 - (void)configureViewDidLoadNotifications
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupMessageReceived:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupsLoaded:) name:GLPNOTIFICATION_GROUPS_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupImageLoaded:) name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupToBeCreated:) name:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED object:nil];
@@ -97,6 +99,7 @@
 
 - (void)removeDeallocNotifications
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUPS_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED object:nil];
@@ -121,7 +124,27 @@
 
 - (void)showGroups
 {
+    [super startLoading];
     [[GLPLiveGroupManager sharedInstance] getGroups];
+}
+
+- (void)refreshUIDependingOnGroupsLoadedStatus:(GroupsLoadedStatus)groupsLoadedStatus withPostsCount:(NSInteger)postsCount
+{
+    
+    if(groupsLoadedStatus == kLocalLoaded && postsCount != 0)
+    {
+        [self hideEmptyView];
+        [self stopLoading];
+    }
+    else if(groupsLoadedStatus == kRemoteLoaded && postsCount == 0)
+    {
+        [self showEmptyView];
+    }
+    else if(groupsLoadedStatus == kRemoteLoaded && postsCount != 0)
+    {
+        [self hideEmptyView];
+        [self stopLoading];
+    }
 }
 
 #pragma mark - NSNotifications
@@ -129,11 +152,13 @@
 - (void)groupsLoaded:(NSNotification *)notification
 {
     NSArray *groups = notification.userInfo[@"groups"];
+    GroupsLoadedStatus groupsLoadedStatus = [notification.userInfo[@"groups_loaded_status"] integerValue];
+    
+    [self refreshUIDependingOnGroupsLoadedStatus:groupsLoadedStatus withPostsCount:groups.count];
     
     DDLogDebug(@"GLPMainGroupsViewController : groupsLoaded %@", groups);
     
     [super reloadTableViewWithGroups:groups];
-    [super showOrHideEmptyView];
 }
 
 - (void)groupImageLoaded:(NSNotification *)notification
@@ -148,14 +173,17 @@
     GLPGroup *newGroup = notification.userInfo[@"group"];
     
     [super insertToTableViewNewGroup:newGroup];
-    [super showOrHideEmptyView];
-
+    
+    [self hideEmptyView];
+    [self stopLoading];
 }
 
 - (void)newGroupCreated:(NSNotification *)notification
 {
     GLPGroup *newGroup = notification.userInfo[@"group"];
     [super reloadTableViewWithGroup:newGroup];
+    [self hideEmptyView];
+    [self stopLoading];
 }
 
 - (void)groupImageChanged:(NSNotification *)notification
@@ -164,6 +192,28 @@
     [super reloadTableViewWithGroup:updatedGroup];
 }
 
+- (void)groupMessageReceived:(NSNotification *)notification
+{
+    BOOL belongToGroupConversation = [notification.userInfo[@"belongsToGroup"] boolValue];
+    
+    if(belongToGroupConversation)
+    {
+        BOOL localMessage = [notification.userInfo[@"newLocalMessage"] boolValue];
+        if(localMessage) {
+            return;
+        }
+        
+        NSInteger conversationRemoteKey = [notification.userInfo[@"remoteKey"] integerValue];
+        
+        //There is not need to parse newMessages attribute because we want to refresh any way
+        //the cell because there is a case that we want to remove the badge.
+        
+        DDLogDebug(@"GLPMainGroupsViewController : groupMessageReceived");
+        
+        [super refreshGroupCellWithConversationRemoteKey:conversationRemoteKey];
+
+    }
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -43,7 +43,9 @@
 #import "ViewPostViewController.h"
 #import "GLPPostManager.h"
 #import "AppearanceHelper.h"
+//TODO: Change to GLPMainGroupsViewController!
 #import "GLPGroupsViewController.h"
+#import "GLPMainGroupsViewController.h"
 #import "GroupViewController.h"
 #import "GLPPushNotification.h"
 #import "GLPiOSSupportHelper.h"
@@ -254,7 +256,9 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
         case kPNKindSendYouMessage:
             [self navigateToConversationWithPNNotification:pushNotification];
             break;
-            
+        case kPNKindSendYouGroupMessage:
+            [self navigateToGroupConversationWithPNNotification:pushNotification];
+            break;
         case kPNKindNewGroupPost:
         case kPNKindAddedYouToGroup:
             [self navigateToGroupPostWithPNNotification:pushNotification];
@@ -588,6 +592,46 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     
     
     [navVC setViewControllers:@[messagesVC, conversationVC] animated:YES];
+}
+
+-(void)navigateToGroupConversationWithPNNotification:(GLPPushNotification *)pushNotification
+{
+    if(!_tabBarController) {
+        DDLogError(@"Cannot find tab bar VC, abort");
+        return;
+    }
+    
+    if(_tabBarController.selectedIndex != 2)
+    {
+        UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+        [currentNavigationVC popToRootViewControllerAnimated:NO];
+        [_tabBarController setSelectedIndex:2];
+        [_tabBarController resetGroupsBadge];
+    }
+    
+    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[2] class]));
+    UINavigationController *navVC = _tabBarController.viewControllers[2];
+    
+    DDLogInfo(@"GroupsVC VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+    GLPMainGroupsViewController *groupsVC = navVC.viewControllers[0];
+    
+    __block GroupViewController *groupVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GroupViewController"];
+    
+    //TODO: Replace this request by calling this method: loadAndNavigateToGroupWithGroupsVC. After fixing that method.
+    
+    [[WebClient sharedInstance] getGroupDescriptionWithId:[pushNotification.groupId integerValue] withCallbackBlock:^(BOOL success, GLPGroup *group, NSString *errormMessage){
+        
+        if(success)
+        {
+            groupVC.group = group;
+            groupVC.fromPushNotificationWithNewMessage = YES;
+            
+
+            
+            [navVC setViewControllers:@[groupsVC, groupVC] animated:NO];
+        }
+    }];
+    
 }
 
 # pragma mark - Handle custom URL Scheme (gleepost://)

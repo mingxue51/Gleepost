@@ -12,6 +12,13 @@
 @class ChangeGroupImageProgressView;
 @class GLPNotification;
 
+
+typedef NS_ENUM(NSUInteger, GroupsLoadedStatus) {
+    kLocalLoaded,
+    kRemoteLoaded,
+    kNotLoaded
+};
+
 @interface GLPLiveGroupManager : NSObject
 
 + (GLPLiveGroupManager *)sharedInstance;

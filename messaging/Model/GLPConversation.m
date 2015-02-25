@@ -55,6 +55,21 @@
     return self;
 }
 
+- (id)initFromGroup:(NSInteger)groupRemoteKey withRemoteKey:(NSInteger)remoteKey
+{
+    self = [super init];
+    if(!self) {
+        return nil;
+    }
+    
+    self.remoteKey = remoteKey;
+    _isFromPushNotification = YES;
+    _groupRemoteKey = groupRemoteKey;
+    _title = @"Loading conversation";
+    
+    return self;
+}
+
 // Init new regular conversation
 - (id)initWithParticipants:(NSArray *)participants
 {
@@ -165,6 +180,7 @@
     object.lastSyncMessageKey = _lastSyncMessageKey;
     object.isEnded = _isEnded;
     object.expiryDate = [_expiryDate copyWithZone:zone];
+    object.reads = [_reads copyWithZone:zone];
     
     return object;
 }

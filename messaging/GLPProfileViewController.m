@@ -143,6 +143,12 @@
     
     [self configureViewDidLoadNSNotifications];
     
+    [self loadPosts];
+    
+//    [self startLoading];
+//    [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
+//    _postsLoading = YES;
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -277,7 +283,7 @@
     
     if(DEV)
     {
-        [WebClientHelper showLowMemoryWarningFromClass:@"GLPProfileViewController"];
+//        [WebClientHelper showLowMemoryWarningFromClass:@"GLPProfileViewController"];
     }
 }
 
@@ -431,7 +437,7 @@
     
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.tableView];
     
-    _postsLoading = NO;
+//    _postsLoading = NO;
     
     _loggedInUserProfileManager = [[LoggedInUserProfileManager alloc] init];
     
@@ -678,10 +684,24 @@
     [_loggedInUserProfileManager loadPreviousPosts];
 }
 
--(void)loadGroupAndNavigateWithRemoteKey:(NSString *)remoteKey
+-(void)loadGroupAndNavigateWithRemoteKey:(NSInteger)remoteKey
 {
-    [[WebClient sharedInstance] getGroupDescriptionWithId:[remoteKey integerValue] withCallbackBlock:^(BOOL success, GLPGroup *group, NSString *errorMessage) {
-       
+    GLPGroup *group = [[GLPLiveGroupManager sharedInstance] groupWithRemoteKey:remoteKey];
+    
+    if(!group)
+    {
+        [self loadGroupRemotelyWithRemoteKey:remoteKey];
+        return;
+    }
+    
+    _groupToNavigate = group;
+    [self performSegueWithIdentifier:@"view group" sender:self];
+}
+
+- (void)loadGroupRemotelyWithRemoteKey:(NSInteger)groupRemoteKey
+{
+    [[WebClient sharedInstance] getGroupDescriptionWithId:groupRemoteKey withCallbackBlock:^(BOOL success, GLPGroup *group, NSString *errorMessage) {
+        
         if(success)
         {
             //Navigate to group with group.
@@ -868,7 +888,15 @@
             [self.tableView reloadData];
         }
         
-        [self hideOrShowPostsEmptyView];
+        if([_loggedInUserProfileManager postsCount] == 0 && _selectedTab == kButtonLeft)
+        {
+            [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kProfilePostsEmptyView withView:self.tableView];
+        }
+        else
+        {
+            [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
+        }
+        
     }
     else
     {
@@ -878,6 +906,9 @@
         }
         else
         {
+            _postsLoading = NO;
+            [_tableActivityIndicator stopActivityIndicator];
+            [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
             [self.tableView reloadData];
         }
     }
@@ -1108,6 +1139,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if(indexPath.row == 0 && indexPath.section == 0)
     {
@@ -1156,7 +1188,7 @@
             //Navigate to group.
             else if (notification.notificationType == kGLPNotificationTypeAddedGroup)
             {
-                [self loadGroupAndNavigateWithRemoteKey:[notification.customParams objectForKey:@"network"]];
+                [self loadGroupAndNavigateWithRemoteKey:[[notification.customParams objectForKey:@"network"] integerValue]];
             }
             else if (notification.notificationType == kGLPNotificationTypeCreatedPostGroup)
             {
@@ -1498,21 +1530,29 @@
     
     _selectedTab = buttonType;
     
-    if(_selectedTab == kButtonRight) {
-        
+    if(_selectedTab == kButtonRight)
+    {
         [_tableActivityIndicator stopActivityIndicator];
+        [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
 
         [self notificationsTabClick];
     }
     else
     {
-        if([_loggedInUserProfileManager postsCount] == 0)
+        if([_loggedInUserProfileManager postsCount] == 0 && !_postsLoading)
         {
-            [_tableActivityIndicator startActivityIndicator];
+            [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kProfilePostsEmptyView withView:self.tableView];
+            [_tableActivityIndicator stopActivityIndicator];
         }
-        else
+        else if([_loggedInUserProfileManager postsCount] != 0 && !_postsLoading)
         {
-            [self hideOrShowPostsEmptyView];
+            [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
+            [_tableActivityIndicator stopActivityIndicator];
+        }
+        else if(_postsLoading)
+        {
+            [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
+            [_tableActivityIndicator startActivityIndicator];
         }
     }
     
@@ -1657,20 +1697,6 @@
     else
     {
         [self refreshNotifications];
-    }
-}
-
-#pragma mark - UI
-
-- (void)hideOrShowPostsEmptyView
-{
-    if([_loggedInUserProfileManager postsCount] == 0)
-    {
-        [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kProfilePostsEmptyView withView:self.tableView];
-    }
-    else
-    {
-        [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kProfilePostsEmptyView];
     }
 }
 

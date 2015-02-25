@@ -27,6 +27,7 @@
 #import "GLPPendingPostsManager.h"
 #import "CategoryManager.h"
 #import "GLPLiveGroupManager.h"
+#import "GLPLiveGroupConversationsManager.h"
 
 @implementation GLPLoginManager
 
@@ -189,7 +190,6 @@
     __block GLPUser *user;
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        DDLogDebug(@"DB error : findByRemoteKey");
         user = [GLPUserDao findByRemoteKey:userRemoteKey db:db];
     }];
     
@@ -238,7 +238,7 @@
     [[GLPPendingPostsManager sharedInstance] clean];
     
     [[GLPLiveGroupManager sharedInstance] clearData];
-    
+    [[GLPLiveGroupConversationsManager sharedInstance] clear];
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:self];
     
     [[GLPPushManager sharedInstance] unregisterPushTokenWithAuthParams:authParams];

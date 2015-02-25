@@ -35,10 +35,10 @@
 
     entity.participants = participants;
     
-//    entity setReads:
-    
     // parse reads.
     [entity setReads:[GLPConversationDao findReadsWithConversation:entity andDb:db]];
+    
+    entity.groupRemoteKey = [resultSet intForColumn:@"group_remote_key"];
     
 }
 

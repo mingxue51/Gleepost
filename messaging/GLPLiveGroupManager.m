@@ -19,6 +19,7 @@
 #import "GLPImageCacheHelper.h"
 #import "GLPSearchGroups.h"
 #import "GLPMemberDao.h"
+#import "GLPLiveGroupConversationsManager.h"
 
 @interface GLPLiveGroupManager ()
 
@@ -36,6 +37,8 @@
 @property (strong, nonatomic) NSMutableDictionary *pendingGroups;
 
 @property (strong, nonatomic) GLPSearchGroups *searchGroupsHelper;
+
+@property (assign, nonatomic) GroupsLoadedStatus groupsLoadedStatus;
 
 //@property (strong, nonatomic) ChangeGroupImageProgressView *changeImageProgressView;
 
@@ -79,6 +82,7 @@ static GLPLiveGroupManager *instance = nil;
     _pendingGroupTimestamps = [[NSMutableDictionary alloc] init];
     _pendingGroups = [[NSMutableDictionary alloc] init];
     _searchGroupsHelper = [[GLPSearchGroups alloc] init];
+    _groupsLoadedStatus = kNotLoaded;
 }
 
 /**
@@ -91,6 +95,9 @@ static GLPLiveGroupManager *instance = nil;
     [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
         _groups = groups.mutableCopy;
         [[GLPGPPostImageLoader sharedInstance] addGroups:_groups];
+        _groupsLoadedStatus = kLocalLoaded;
+        [self notifyWithUpdatedGroups];
+        
     } remoteCallback:^(BOOL success, NSArray *groups) {
         
         if(success)
@@ -98,10 +105,15 @@ static GLPLiveGroupManager *instance = nil;
             _groups = groups.mutableCopy;
             [[GLPGPPostImageLoader sharedInstance] addGroups:_groups];
         }
+        _groupsLoadedStatus = kRemoteLoaded;
+        
+        [[GLPLiveGroupConversationsManager sharedInstance] loadConversationsWithGroups:_groups];
         
         [self notifyWithUpdatedGroups];
     }];
 }
+
+#pragma mark - Accessors
 
 /**
  Reloads the groups in case the notification has to do with groups.
@@ -115,10 +127,9 @@ static GLPLiveGroupManager *instance = nil;
     switch (notification.notificationType)
     {
         case kGLPNotificationTypeCreatedPostGroup:
-        case kGLPNotificationTypeInvitedYouToGroup:
+        case kGLPNotificationTypeAddedGroup:
             [self loadInitialGroups];
             break;
-            
         default:
             break;
     }
@@ -126,9 +137,9 @@ static GLPLiveGroupManager *instance = nil;
 
 - (void)getGroups
 {
-    dispatch_sync(_queue, ^{
+//    dispatch_sync(_queue, ^{
         [self notifyWithUpdatedGroups];
-    });
+//    });
 }
 
 - (void)userJoinedGroup
@@ -140,7 +151,7 @@ static GLPLiveGroupManager *instance = nil;
 {
     GLPGroup *pendingGroup = [_pendingGroups objectForKey:timestamp];
     
-    DDLogDebug(@"GLPLiveGroupManager : pending group key %d", pendingGroup.key);
+    DDLogDebug(@"GLPLiveGroupManager : pending group key %ld", (long)pendingGroup.key);
     
     return pendingGroup.key;
 }
@@ -318,9 +329,9 @@ static GLPLiveGroupManager *instance = nil;
 
 - (void)deleteGroup:(GLPGroup *)group
 {
-    dispatch_async(_queue, ^{
-        
+    dispatch_sync(_queue, ^{
         [_groups removeObject:group];
+        [GLPGroupDao remove:group];
         [GLPMemberDao removeMember:group.loggedInUser withGroupRemoteKey:group.remoteKey];
     });
     
@@ -388,7 +399,7 @@ static GLPLiveGroupManager *instance = nil;
 
 - (void)notifyWithUpdatedGroups
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GROUPS_LOADED object:self userInfo:@{@"groups": _groups}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GROUPS_LOADED object:self userInfo:@{@"groups": _groups, @"groups_loaded_status" : @(_groupsLoadedStatus)}];
 }
 
 - (void)notifyNewGroupToBeUploaded:(GLPGroup *)newGroup

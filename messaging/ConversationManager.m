@@ -23,6 +23,8 @@
 #import "GLPUserDao.h"
 #import "NSNotificationCenter+Utils.h"
 #import "GLPMessageProcessor.h"
+#import "GLPLiveGroupConversationsManager.h"
+#import "GLPReadReceiptsManager.h"
 
 @implementation ConversationManager
 
@@ -33,15 +35,24 @@ int const NumberMaxOfMessagesLoaded = 20;
 + (NSArray *)loadLocalRegularConversations
 {
     __block NSArray *conversations = nil;
-//    [DatabaseManager run:^(FMDatabase *db) {
-//        conversations = [GLPConversationDao findConversationsOrderByDateInDb:db];
-//    }];
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        conversations = [GLPConversationDao findConversationsOrderByDateInDb:db];
+        conversations = [GLPConversationDao findMessengerConversationsOrderByDateInDb:db];
     }];
     
+    return conversations;
+}
 
++ (NSArray *)loadLocalGroupConversations
+{
+    __block NSArray *conversations = nil;
+    
+    //+ (NSArray *)findGroupsConversationsOrderByDateInDb:(FMDatabase *)db
+
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        conversations = [GLPConversationDao findGroupsConversationsOrderByDateInDb:db];
+    }];
+    
     return conversations;
 }
 
@@ -54,11 +65,18 @@ int const NumberMaxOfMessagesLoaded = 20;
     }];
 }
 
++ (void)saveOrUpdateReadWithReadReceipt:(GLPReadReceipt *)readReceipt
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        [GLPConversationDao saveReadReceiptIfNotExist:readReceipt db:db];
+        
+    }];
+}
+
 + (void)initialSaveConversationsToDatabase:(NSArray *)conversations
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-                
-        [GLPConversationDao deleteAllNormalConversationsInDb:db];
 
         for(GLPConversation *conversation in conversations)
         {
@@ -487,7 +505,16 @@ int const NumberMaxOfMessagesLoaded = 20;
     message.sendStatus = kSendStatusLocal;
     message.seen = YES;
     
-    [[GLPLiveConversationsManager sharedInstance] addLocalMessageToConversation:message];
+    if(conversation.groupRemoteKey == 0)
+    {
+        [[GLPLiveConversationsManager sharedInstance] addLocalMessageToConversation:message];
+    }
+    else
+    {
+        message.belongsToGroup = YES;
+        [[GLPLiveGroupConversationsManager sharedInstance] addLocalMessageToConversation:message];
+    }
+    
     
     // post message to server
     [[GLPMessageProcessor sharedInstance] processLocalMessage:message];
@@ -722,12 +749,20 @@ int const NumberMaxOfMessagesLoaded = 20;
             message.remoteKey = remoteKey;
             message.sendStatus = kSendStatusSent;
             
+            [[GLPReadReceiptsManager sharedInstance] removeReadReceiptWithConversationRemoteKey:message.conversation.remoteKey];
             
         } else {
             message.sendStatus = kSendStatusFailure;
         }
         
-        [[GLPLiveConversationsManager sharedInstance] updateLocalMessageAfterSending:message];
+        if(message.belongsToGroup)
+        {
+            [[GLPLiveGroupConversationsManager sharedInstance] updateLocalMessageAfterSending:message];
+        }
+        else
+        {
+            [[GLPLiveConversationsManager sharedInstance] updateLocalMessageAfterSending:message];
+        }
     }];
 }
 

@@ -25,7 +25,6 @@
 #import "KeyboardHelper.h"
 #import "NSString+Utils.h"
 #import "ConversationManager.h"
-#import "GLPLiveConversationsManager.h"
 #import "GLPNetworkManager.h"
 #import "GLPViewControllerHelper.h"
 
@@ -47,6 +46,13 @@
 #import "UIView+GLPDesign.h"
 #import <TAPKeyboardPop/UIViewController+TAPKeyboardPop.h>
 #import "GLPShowUsersViewController.h"
+#import "GLPConversationHelper.h"
+#import "GLPLiveGroupManager.h"
+#import "GLPSystemMessage.h"
+
+#import "GLPReadReceiptsManager.h"
+#import "GLPReadReceipt.h"
+#import "GLPMessageDetailsViewController.h"
 
 @interface GLPConversationViewController ()
 
@@ -56,6 +62,10 @@
 @property (weak, nonatomic) IBOutlet HPGrowingTextView *formTextView;
 
 @property (assign, nonatomic) NSInteger selectedUserId;
+@property (strong, nonatomic) NSString *selectedShowUsersTitle;
+@property (strong, nonatomic) NSArray *selectedShowUsers;
+@property (strong, nonatomic) GLPMessage *selectedMessage;
+
 @property (strong, nonatomic) NSMutableArray *messages;
 
 @property (strong, nonatomic) GLPIntroducedProfile * introduced;
@@ -65,6 +75,8 @@
 
 
 @property (assign, nonatomic) BOOL isFirstLoaded;
+
+@property (strong, nonatomic) GLPConversationHelper *conversationHelper;
 
 /** This variable is used to prevent the resizing of the table view and of the text view when user navigates back
  to the previews VC using the sliding gesture. 
@@ -90,10 +102,10 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
     // configuration
     [self configureHeader];
+    [self initialiseObjects];
     [self configureTitleNavigationBar];
     [self configureForm];
     [self configureTableView];
-    [self initialiseObjects];
     
     _messages = [NSMutableArray array];
     [self reloadWithItems:_messages];
@@ -107,21 +119,6 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     if([self canLoadMessages]) {
         [self loadInitialMessages];
     }
-    
-    if(_comesFromPN)
-    {
-//        [self.tabBarController.tabBar setHidden:YES];
-    }
-    
-    
-    //This is not needed because we have not contacts on this version.
-    
-//    if([[ContactsManager sharedInstance] isContactWithIdRequested:[_conversation getUniqueParticipant].remoteKey])
-//    {
-//        DDLogDebug(@"Contact already requested.");
-//        [self disableAddUserButton];
-//    }
-    
     _isFirstLoaded = YES;
 }
 
@@ -132,24 +129,6 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [self configureNavigationBar];
     
     [self hideNetworkErrorViewIfNeeded];
-    
-//    CGRect screenRect = [[UIScreen mainScreen] bounds];
-
-    
-//    if(self.tableView.frame.size.height < 465.0f) {
-//        
-//        if(screenRect.size.height == 568.0)
-//        {
-//            [self.tableView setFrame:CGRectMake(0, 0, 320, 455)];
-//
-//        }
-//        else
-//        {
-//            [self.tableView setFrame:CGRectMake(0, 0, 320, 375)];
-//        }
-//        
-//    }
-    
     
     // keyboard management
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -171,11 +150,15 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notSyncWithRemoteFromNotification:) name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageSendUpdateFromNotification:) name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedReadReceiptUpdate:) name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    [self configureTitleNavigationBar];
+
     [self.tableView reloadData];
     
     [self syncWaitingConversation];
@@ -189,7 +172,9 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    [[GLPLiveConversationsManager sharedInstance] resetLastShownMessageForConversation:_conversation];
+//    [[GLPLiveConversationsManager sharedInstance] resetLastShownMessageForConversation:_conversation];
+
+    [_conversationHelper resetLastShownMessageForConversation:_conversation];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
@@ -198,7 +183,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
+
     [super viewWillDisappear:animated];
 }
 
@@ -208,15 +194,22 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 {
     self.introduced = nil;
     _offline = NO;
+    _conversationHelper = [[GLPConversationHelper alloc] initWithBelongsToGroup:(_conversation.groupRemoteKey != 0) ? YES : NO];
 }
 
 - (void)configureTitleNavigationBar
 {
     [self.navigationController setNavigationBarHidden:NO];
     
-    // navigate to profile through navigation bar for user-to-user conversation
-    [self setTitleViewOnNavigationBar];
-    
+    if([_conversationHelper doesBelongToGroup])
+    {
+        [self setGroupTitleViewOnNavigationBar];
+    }
+    else
+    {
+        // navigate to profile through navigation bar for user-to-user conversation
+        [self setTitleViewOnNavigationBar];
+    }
 
     if([self isNewChat])
     {
@@ -231,12 +224,19 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
 }
 
+- (void)setGroupTitleViewOnNavigationBar
+{
+    GLPGroup *group = [[GLPLiveGroupManager sharedInstance] groupWithRemoteKey:_conversation.groupRemoteKey];
+    
+    self.title = group.name.uppercaseString;
+}
+
 - (void)setTitleViewOnNavigationBar
 {
     //Create a button instead of using the default title view for recognising gestures.
     UIButton *titleLabelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [titleLabelBtn setTitle:[_conversation.title uppercaseString] forState:UIControlStateNormal];
-    [titleLabelBtn.titleLabel setFont:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0]];
+    [titleLabelBtn.titleLabel setFont:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:15.0]];
     
     if([_conversation isGroup])
     {
@@ -252,7 +252,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     //Set navigation to profile selector.
     titleLabelBtn.frame = CGRectMake(0, 0, 70, 44);
-    [titleLabelBtn addTarget:self action:@selector(navigateToProfile:) forControlEvents:UIControlEventTouchUpInside];
+    [titleLabelBtn addTarget:self action:@selector(navigateToUserProfileOrShowUsers:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.titleView = titleLabelBtn;
 }
 
@@ -364,7 +364,9 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 - (void)syncConversation
 {
     DDLogInfo(@"Syncing conversation");
-    [[GLPLiveConversationsManager sharedInstance] syncConversation:_conversation];
+//    [[GLPLiveConversationsManager sharedInstance] syncConversation:_conversation];
+
+    [_conversationHelper syncConversation:_conversation];
     
     if(_messages.count == 0) {
         [self showBottomLoader];
@@ -375,7 +377,10 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 {
     DDLogInfo(@"Load new messages");
     
-    NSArray *newMessages = [[GLPLiveConversationsManager sharedInstance] lastestMessagesForConversation:_conversation];
+//    NSArray *newMessages = [[GLPLiveConversationsManager sharedInstance] lastestMessagesForConversation:_conversation];
+
+    NSArray *newMessages = [_conversationHelper lastestMessagesForConversation:_conversation];
+
     
     //Maybe bad practise of code.
     //If the variable is offline and the new messages count is not zero then clear the messages
@@ -397,7 +402,10 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 {
     DDLogInfo(@"Load previous messages");
     
-    NSArray *previousMessages = [[GLPLiveConversationsManager sharedInstance] oldestMessagesForConversation:_conversation];
+//    NSArray *previousMessages = [[GLPLiveConversationsManager sharedInstance] oldestMessagesForConversation:_conversation];
+
+    NSArray *previousMessages = [_conversationHelper oldestMessagesForConversation:_conversation];
+
     
     [self saveScrollContentOffset];
     
@@ -424,7 +432,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
             continue;
         }
         
-        if ([current.author.name isEqualToString:previous.author.name]) {
+        //Do not configure as following message if the previous message is system message.
+        if ([current.author.name isEqualToString:previous.author.name] && ![previous isKindOfClass:[GLPSystemMessage class]]) {
             [current configureAsFollowingMessage:previous];
             previous = current;
         }
@@ -466,7 +475,10 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     DDLogInfo(@"Try to sync waiting conversation");
     
-    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:_conversation.remoteKey];
+//    GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findByRemoteKey:_conversation.remoteKey];
+
+    GLPConversation *conversation = [_conversationHelper findByRemoteKey:_conversation.remoteKey];
+
     
     if(!conversation) {
         DDLogInfo(@"Conversation waiting to be loaded not found");
@@ -481,7 +493,9 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (void)markMessagesAsReadUpToTheLastSeen
 {
-    [[GLPLiveConversationsManager sharedInstance] markConversation:_conversation upToTheLastMessageAsRead:[_messages lastObject]];
+//    [[GLPLiveConversationsManager sharedInstance] markConversation:_conversation upToTheLastMessageAsRead:[_messages lastObject]];
+
+    [_conversationHelper markConversation:_conversation upToTheLastMessageAsRead:[_messages lastObject]];
 }
 
 /**
@@ -493,13 +507,29 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
  */
 - (void)loadInitialMessagesFromDatabase
 {
+//    NSArray *messages = [[GLPLiveConversationsManager sharedInstance] loadLatestMessagesForConversation:_conversation];
 
-    NSArray *messages = [[GLPLiveConversationsManager sharedInstance] loadLatestMessagesForConversation:_conversation];
+    NSArray *messages = [_conversationHelper loadLatestMessagesForConversation:_conversation];
     
     _messages = messages.mutableCopy;
     [self showLoadedMessages];
     [self scrollToTheEndAnimated:NO];
 
+}
+
+- (void)receivedReadReceiptUpdate:(NSNotification *)notification
+{
+    NSInteger messageRemoteKey = [notification.userInfo[@"message_remote_key"] integerValue];
+    
+    for(GLPMessage *msg in _messages)
+    {
+        if(messageRemoteKey == msg.remoteKey)
+        {
+            DDLogDebug(@"GLPConversationViewController : message reloaded %@", msg.content);
+            [self reloadItem:msg sizeCanChange:NO];
+        }
+    }
+    [self scrollToTheEndAnimated:YES];
 }
 
 # pragma mark - Notifications (keyboard ones in form management mark)
@@ -575,18 +605,12 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
             }
             else
             {
-                
                 [[SoundHelper sharedInstance] messageSent];
-
- 
             }
             
-            
-            [self hideTopLoader];
+//            [self hideTopLoader];
         }
-        
         _isFirstLoaded= NO;
-
         
     }
 }
@@ -641,6 +665,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     DDLogInfo(@"Message send update from NSNotification");
     NSInteger key = [[notification userInfo][@"key"] integerValue];
+    NSInteger remoteKey = [[notification userInfo][@"remote_key"] integerValue];
     BOOL sent = [[notification userInfo][@"sent"] boolValue];
     
     NSArray *filtered = [_messages filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"key = %d", key]];
@@ -653,6 +678,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     if(sent) {
         message.sendStatus = kSendStatusSent;
+        message.remoteKey = remoteKey;
     } else {
         message.sendStatus = kSendStatusFailure;
     }
@@ -662,42 +688,6 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 //    [self reloadItem:message sizeCanChange:YES];
 //    DDLogInfo(@"Reload message key: %d - remote key: %d - content: %@", message.key, message.remoteKey, message.content);
 }
-
-
-#pragma mark - Navigation
-
--(void)navigateToProfile:(id)sender
-{
-    UIButton *userButton = (UIButton *)sender;
-    
-    if(userButton.tag == -1)
-    {
-        //Navigate to view a list of users like the attending list.
-        [self performSegueWithIdentifier:@"show users" sender:self];
-    }
-    else
-    {
-        [self navigateToUserProfile:[[GLPUser alloc] initWithRemoteKey:userButton.tag]];
-    }
-}
-
--(void)navigateToUserProfile:(GLPUser *)user
-{
-    self.selectedUserId = user.remoteKey;
-    
-    if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
-    {
-        self.selectedUserId = -1;
-        
-        [self performSegueWithIdentifier:@"view profile" sender:self];
-    }
-    else
-    {
-        [self performSegueWithIdentifier:@"view private profile" sender:self];
-    }
-}
-
-
 
 #pragma mark - Actions
 
@@ -719,8 +709,17 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         if(_conversation.isGroup)
         {
             //Create new group conversation.
-            [[GLPLiveConversationsManager sharedInstance] createRegularConversationWithUsers:_conversation.participants callback:^(GLPConversation *conversation) {
-               
+//            [[GLPLiveConversationsManager sharedInstance] createRegularConversationWithUsers:_conversation.participants callback:^(GLPConversation *conversation) {
+//               
+//                _conversation = conversation;
+//                _isEmptyConversation = NO;
+//                
+//                [self createMessageFromForm];
+//                
+//            }];
+            
+            [_conversationHelper createRegularConversationWithUsers:_conversation.participants callback:^(GLPConversation *conversation) {
+                
                 _conversation = conversation;
                 _isEmptyConversation = NO;
                 
@@ -730,7 +729,13 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         }
         else
         {
-            [[GLPLiveConversationsManager sharedInstance] createRegularConversationWithUser:[_conversation getUniqueParticipant] callback:^(GLPConversation *conversation) {
+//            [[GLPLiveConversationsManager sharedInstance] createRegularConversationWithUser:[_conversation getUniqueParticipant] callback:^(GLPConversation *conversation) {
+//                _conversation = conversation;
+//                _isEmptyConversation = NO;
+//                [self createMessageFromForm];
+//            }];
+
+            [_conversationHelper createRegularConversationWithUser:[_conversation getUniqueParticipant] callback:^(GLPConversation *conversation) {
                 _conversation = conversation;
                 _isEmptyConversation = NO;
                 [self createMessageFromForm];
@@ -759,28 +764,6 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 {
     [self.navigationItem.rightBarButtonItem setEnabled:NO];
 }
-
-
-# pragma mark - Segue
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if([segue.identifier isEqualToString:@"view private profile"]) {
-        GLPPrivateProfileViewController *ppvc = segue.destinationViewController;
-        ppvc.selectedUserId = self.selectedUserId;
-        
-    }
-    else if([segue.identifier isEqualToString:@"view profile"]) {
-        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-    }
-    else if([segue.identifier isEqualToString:@"show users"])
-    {
-        GLPShowUsersViewController *showUsers = segue.destinationViewController;
-        showUsers.selectedTitle = @"PARTICIPANTS";
-        showUsers.users = _conversation.participants;
-    }
-}
-
 
 #pragma mark - form management
 
@@ -923,7 +906,9 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         return;
     }
     
-    [[GLPLiveConversationsManager sharedInstance] syncConversationPreviousMessages:_conversation];
+//    [[GLPLiveConversationsManager sharedInstance] syncConversationPreviousMessages:_conversation];
+    [_conversationHelper syncConversationPreviousMessages:_conversation];
+
 }
 
 //- (BOOL)animateAlongsideTransition:(void (^)(id <UIViewControllerTransitionCoordinatorContext>context))animation
@@ -957,6 +942,81 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 {
     //TODO: Implement that.
     DDLogDebug(@"Message: %@ not sent.", message.content);
+}
+
+- (void)mainViewClickForMessage:(GLPMessage *)message
+{
+    _selectedMessage = message;
+    [self performSegueWithIdentifier:@"show message details" sender:self];
+}
+
+- (void)readReceitClickForMessage:(GLPMessage *)message
+{
+    _selectedMessage = message;
+    [self performSegueWithIdentifier:@"show message details" sender:self];
+}
+
+
+# pragma mark - Segue
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"view private profile"]) {
+        GLPPrivateProfileViewController *ppvc = segue.destinationViewController;
+        ppvc.selectedUserId = self.selectedUserId;
+        
+    }
+    else if([segue.identifier isEqualToString:@"view profile"]) {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+    }
+    else if([segue.identifier isEqualToString:@"show users"])
+    {
+        GLPShowUsersViewController *showUsers = segue.destinationViewController;
+        showUsers.selectedTitle = _selectedShowUsersTitle;
+        showUsers.users = _selectedShowUsers;
+    }
+    else if([segue.identifier isEqualToString:@"show message details"])
+    {
+        GLPMessageDetailsViewController *messageDetailsVC = segue.destinationViewController;
+        messageDetailsVC.message = _selectedMessage;
+        messageDetailsVC.reads = _conversation.reads;
+    }
+}
+
+#pragma mark - Navigation
+
+-(void)navigateToUserProfileOrShowUsers:(id)sender
+{
+    UIButton *userButton = (UIButton *)sender;
+    
+    if(userButton.tag == -1)
+    {
+        _selectedShowUsersTitle = @"PARTICIPANTS";
+        _selectedShowUsers = _conversation.participants;
+        
+        //Navigate to view a list of users like the attending list.
+        [self performSegueWithIdentifier:@"show users" sender:self];
+    }
+    else
+    {
+        [self navigateToUserProfile:[[GLPUser alloc] initWithRemoteKey:userButton.tag]];
+    }
+}
+
+-(void)navigateToUserProfile:(GLPUser *)user
+{
+    self.selectedUserId = user.remoteKey;
+    
+    if([[ContactsManager sharedInstance] userRelationshipWithId:self.selectedUserId] == kCurrentUser)
+    {
+        self.selectedUserId = -1;
+        
+        [self performSegueWithIdentifier:@"view profile" sender:self];
+    }
+    else
+    {
+        [self performSegueWithIdentifier:@"view private profile" sender:self];
+    }
 }
 
 @end

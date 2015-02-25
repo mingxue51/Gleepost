@@ -18,6 +18,9 @@
 #import "WebClient.h"
 #import "GLPVideoUploadManager.h"
 #import "GLPTrackViewsCountProcessor.h"
+#import "GLPLiveGroupConversationsManager.h"
+#import "UserManager.h"
+#import "GLPReadReceiptsManager.h"
 
 @interface GLPMessageProcessor()
 
@@ -75,8 +78,18 @@ static GLPMessageProcessor *instance = nil;
         switch (event.type) {
             case kGLPWebSocketEventTypeNewMessage: {
                 DDLogInfo(@"Websocket event: New message");
+                DDLogDebug(@"Websocket event json %@", json);
                 GLPMessage *message = [RemoteParser parseMessageFromJson:event.data forConversation:nil];
-                [[GLPLiveConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event conversationRemoteKeyFromLocation]];
+                
+                if(message.belongsToGroup)
+                {
+                    [[GLPLiveGroupConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event conversationRemoteKeyFromLocation]];
+                }
+                else
+                {
+                    [[GLPLiveConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event conversationRemoteKeyFromLocation]];
+                }
+                
                 break;
             }
                 
@@ -114,6 +127,12 @@ static GLPMessageProcessor *instance = nil;
                 
             case kGLPWebSocketEventTypeViews: {
                 [GLPTrackViewsCountProcessor updateViewsCounter:[event.data[@"views"] integerValue] onPost:[event.data[@"post"] integerValue]];
+                break;
+            }
+            case kGLPWebSocketEventTypeRead: {
+                GLPUser *user = [UserManager getUserForRemoteKey:[event.data[@"user"] integerValue]];
+                [[GLPReadReceiptsManager sharedInstance] addReadReceiptWithWebSocketEvent:event];
+                DDLogDebug(@"WebSocket event read %@ - %@", event.data[@"last_read"], user);
                 break;
             }
            

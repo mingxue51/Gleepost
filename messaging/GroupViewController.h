@@ -30,4 +30,7 @@
  in order to focus on the latest user's post.*/
 @property (assign, nonatomic) NSInteger postCreatedRemoteKey;
 @property (assign, nonatomic) BOOL fromPushNotification;
+
+@property (assign, nonatomic) BOOL fromPushNotificationWithNewMessage;
+
 @end

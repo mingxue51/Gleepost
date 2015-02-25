@@ -86,7 +86,7 @@
         return;
     }
     
-    [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0f], NSFontAttributeName, [[GLPThemeManager sharedInstance] navigationBarTitleColour], NSForegroundColorAttributeName, nil]];
+    [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:15.0f], NSFontAttributeName, [[GLPThemeManager sharedInstance] navigationBarTitleColour], NSForegroundColorAttributeName, nil]];
     
     NSString *string = self.topItem.title;
     
@@ -102,7 +102,7 @@
         return;
     }
     
-    [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:17.0], NSFontAttributeName, [[GLPThemeManager sharedInstance] campusWallNavigationBarTitleColour], NSForegroundColorAttributeName, nil]];
+    [self setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:15.0f], NSFontAttributeName, [[GLPThemeManager sharedInstance] campusWallNavigationBarTitleColour], NSForegroundColorAttributeName, nil]];
     
     NSString *string = self.topItem.title;
     

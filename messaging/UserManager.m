@@ -1,15 +1,31 @@
-////
-////  UserManager.m
-////  Gleepost
-////
-////  Created by Lukas on 10/17/13.
-////  Copyright (c) 2013 Gleepost. All rights reserved.
-////
 //
-//#import "UserManager.h"
+//  UserManager.m
+//  Gleepost
 //
-//@implementation UserManager
+//  Created by Lukas on 10/17/13.
+//  Copyright (c) 2013 Gleepost. All rights reserved.
 //
+
+#import "UserManager.h"
+#import "GLPUserDao.h"
+#import "DatabaseManager.h"
+
+@implementation UserManager
+
++ (GLPUser *)getUserForRemoteKey:(NSInteger)remoteKey
+{
+    __block GLPUser *user = nil;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        user = [GLPUserDao findByRemoteKey:remoteKey db:db];
+    
+    }];
+    
+    
+    return user;
+}
+
 //+ (GLPUser *)getUserForRemoteKey:(NSInteger)remoteKey
 //{
 //    GLPUser *user = [GLPUser MR_findFirstByAttribute:@"remoteKey" withValue:[NSNumber numberWithInteger:remoteKey]];
@@ -20,7 +36,9 @@
 //    
 //    return user;
 //}
-//
+
+
+
 //+ (GLPUser *)getOrCreateUserForRemoteKey:(NSInteger)remoteKey
 //{
 //    GLPUser *user = [GLPUser MR_findFirstByAttribute:@"remoteKey" withValue:[NSNumber numberWithInteger:remoteKey]];
@@ -34,5 +52,5 @@
 //    
 //    return user;
 //}
-//
-//@end
+
+@end

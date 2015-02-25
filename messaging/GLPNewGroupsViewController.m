@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UINavigationBar *navigationBar;
 @property (strong, nonatomic) NSMutableArray *groups;
 @property (strong, nonatomic) GLPGroup *selectedGroup;
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 @end
 
@@ -113,6 +114,19 @@
     [_tableView reloadData];
 }
 
+- (void)refreshGroupCellWithConversationRemoteKey:(NSInteger)conversationRemoteKey
+{
+    NSInteger index = [self findGroupWithConversationRemoteKey:conversationRemoteKey];
+    
+    if(index >= _groups.count || index == -1)
+    {
+        DDLogError(@"ERROR: Index out of array's bounds %ld, %ld", (long)index, (unsigned long)_groups.count);
+        return;
+    }
+    
+    [_tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+}
+
 - (NSInteger)findGroupWithRemoteKey:(NSInteger)remoteKey
 {
     NSInteger index = 0;
@@ -120,6 +134,21 @@
     for(GLPGroup *group in _groups)
     {
         if(group.remoteKey == remoteKey)
+        {
+            break;
+        }
+        ++index;
+    }
+    return index;
+}
+
+- (NSInteger)findGroupWithConversationRemoteKey:(NSInteger)conversationRemoteKey
+{
+    NSInteger index = 0;
+    
+    for(GLPGroup *group in _groups)
+    {
+        if(group.conversationRemoteKey == conversationRemoteKey)
         {
             break;
         }
@@ -149,14 +178,15 @@
 {
     GLPGroup *group = [_groups objectAtIndex:indexPath.row];
     
+    DDLogDebug(@"GLPNewGroupsViewController : quitFromGroupWithIndexPath %@ - %ld", group, (long)indexPath.row);
+    
     [[WebClient sharedInstance] quitFromAGroupWithRemoteKey:group.remoteKey callback:^(BOOL success) {
         
         if(success)
         {
-            [[GLPLiveGroupManager sharedInstance] deleteGroup:group];
-//            [_delegate groupDeletedWithData:_groupData];
-            [_groups removeObjectAtIndex:indexPath.row];
+            [_groups removeObject:group];
             [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+            [[GLPLiveGroupManager sharedInstance] deleteGroup:group];
         }
         else
         {
@@ -207,12 +237,34 @@
 {
     if(_groups.count == 0)
     {
-        [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kGroupsEmptyView withView:_tableView];
+        [self showEmptyView];
     }
     else
     {
-        [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kGroupsEmptyView];
+        [self hideEmptyView];
     }
+}
+
+- (void)showEmptyView
+{
+    [[GLPEmptyViewManager sharedInstance] addEmptyViewWithKindOfView:kGroupsEmptyView withView:_tableView];
+    [self.tableView setScrollEnabled:NO];
+}
+
+- (void)hideEmptyView
+{
+    [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kGroupsEmptyView];
+    [self.tableView setScrollEnabled:YES];
+}
+
+- (void)startLoading
+{
+    [self.tableActivityIndicator startActivityIndicator];
+}
+
+- (void)stopLoading
+{
+    [self.tableActivityIndicator stopActivityIndicator];
 }
 
 - (void)groupImageLoadedWithNotification:(NSNotification *)notification

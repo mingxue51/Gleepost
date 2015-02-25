@@ -1038,7 +1038,7 @@ static WebClient *instance = nil;
     }];
 }
 
--(void)quitFromAGroupWithRemoteKey:(int)groupRemoteKey callback:(void (^) (BOOL success))callbackBlock
+-(void)quitFromAGroupWithRemoteKey:(NSInteger)groupRemoteKey callback:(void (^) (BOOL success))callbackBlock
 {
     
     NSString *path = [NSString stringWithFormat:@"profile/networks/%d", groupRemoteKey];
@@ -1214,7 +1214,7 @@ static WebClient *instance = nil;
             callback(NO, nil);
             return;
         }
-        
+                
         GLPConversation *conversation = [RemoteParser parseConversationFromJson:json];
         callback(YES, conversation);
     }];
@@ -2342,7 +2342,7 @@ static WebClient *instance = nil;
 
 #pragma mark - Notifications
 
--(void)getNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
+-(void)getUnreadNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
 {
     [self getPath:@"notifications" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *items = [RemoteParser parseNotificationsFromJson:responseObject];

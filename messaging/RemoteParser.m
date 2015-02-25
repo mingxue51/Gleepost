@@ -17,6 +17,7 @@
 #import "GLPMember.h"
 #import "GLPConversationRead.h"
 #import "GLPReviewHistory.h"
+#import "GLPSystemMessage.h"
 
 @interface RemoteParser()
 
@@ -223,13 +224,15 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
         GLPMessage *message = [RemoteParser parseMessageFromJson:json[@"mostRecentMessage"] forConversation:nil];
-        conversation.lastMessage = message.content;
+        conversation.lastMessage = ([message isKindOfClass:[GLPSystemMessage class]]) ? [(GLPSystemMessage *)message systemContent] : message.content;
     }
     
     conversation.lastUpdate = [RemoteParser parseDateFromString:json[@"lastActivity"]];
     
     //Parse last read for participants.
     [conversation setReads: [RemoteParser parseLastRead:json[@"read"] withParticipants:participants]];
+    
+    conversation.groupRemoteKey = [json[@"group"] integerValue];
     
     return conversation;
 }
@@ -449,6 +452,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (GLPMessage *)parseMessageFromJson:(NSDictionary *)json forConversation:(GLPConversation *)conversation
 {
+
     GLPMessage *message = [[GLPMessage alloc] init];
     message.remoteKey = [json[@"id"] integerValue];
     message.author = [RemoteParser parseUserFromJson:json[@"by"]];
@@ -457,7 +461,21 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     message.content = json[@"text"];
     message.sendStatus = kSendStatusSent;
     message.seen = [json[@"seen"] boolValue];
+    message.belongsToGroup = [json[@"group"] boolValue];
     
+    //If no give him another chance.
+    if(!message.belongsToGroup)
+    {
+        message.belongsToGroup = [conversation groupRemoteKey] != 0 ? YES : NO;
+    }
+    
+    BOOL systemMessage = [json[@"system"] boolValue];
+    
+    if(systemMessage)
+    {
+        return [[GLPSystemMessage alloc] initWithMessage:message];
+    }
+
     return message;
 }
 
@@ -856,12 +874,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return [json[@"attendee_count"] integerValue];
 }
 
-
-//+(NSString *)parseEventTime:(NSDate *)date
-//{
-//    
-//}
-
 #pragma mark - Groups
 
 + (NSArray *)parseGroupsFromJson:(NSArray *)json
@@ -885,6 +897,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     group.author = [RemoteParser parseMemberFromJson:json[@"creator"] withGroupRemoteKey:group.remoteKey];
     group.loggedInUser = [RemoteParser parseLoggedInUserRoleWithJson:json[@"role"]];
     group.membersCount = [json[@"size"] integerValue];
+    group.conversationRemoteKey = [json[@"conversation"] integerValue];
     [group setPrivacyWithString:json[@"privacy"]];
         
     return group;
@@ -1207,6 +1220,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     notification.postRemoteKey = json[@"post"] ? [json[@"post"] integerValue] : 0;
     notification.date = [RemoteParser parseDateFromString:json[@"time"]];
     notification.user = [RemoteParser parseUserFromJson:json[@"user"]];
+    notification.previewMessage = json[@"preview"];
     
     if(json[@"network"]) {
         notification.customParams = @{@"network": json[@"network"]};

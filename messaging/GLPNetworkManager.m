@@ -15,6 +15,7 @@
 #import "WebClient.h"
 #import "GLPLiveGroupManager.h"
 #import "GLPProfileLoader.h"
+#import "GLPLiveGroupConversationsManager.h"
 
 @interface GLPNetworkManager()
 
@@ -115,6 +116,8 @@ static GLPNetworkManager *instance = nil;
     
     [[GLPWebSocketClient sharedInstance] stopWebSocket];
     [[GLPLiveConversationsManager sharedInstance] markNotSynchronized];
+    [[GLPLiveGroupConversationsManager sharedInstance] markNotSynchronized];
+    
 }
 
 - (void)webSocketDidConnect
@@ -156,14 +159,17 @@ static GLPNetworkManager *instance = nil;
     }];
 }
 
-- (void)webSocketDidFailOrClose
+- (void)webSocketDidClose
 {
-    //Load local conversations.
-    [[GLPLiveConversationsManager sharedInstance] loadConversationsFromDatabase];
-    
     [self stopNetworkOperations];
 }
 
+- (void)webSocketDidFail
+{
+    //Load local conversations.
+    [[GLPLiveConversationsManager sharedInstance] loadConversationsFromDatabase];
+    [self webSocketDidClose];
+}
 
 /**
  This method should be called even the app don't know if there is network

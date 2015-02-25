@@ -11,12 +11,16 @@
 #import "GroupViewController.h"
 #import "UINavigationBar+Format.h"
 #import "GLPLiveGroupManager.h"
+#import "GLPGroupCell.h"
+#import "GLPPrivateGroupPopUpViewController.h"
+#import "TDPopUpAfterGoingView.h"
 
 @class GLPGroup;
 
 @interface GLPShowUsersGroupsViewController ()
 
 @property (strong, nonatomic) GLPGroup *selectedGroup;
+@property (strong, nonatomic) TDPopUpAfterGoingView *privateGroupPopUp;
 
 @end
 
@@ -46,6 +50,12 @@
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
 }
 
+- (void)initialiseObjects
+{
+    [super initialiseObjects];
+    _privateGroupPopUp = [[TDPopUpAfterGoingView alloc] init];
+}
+
 - (void)configureTitle
 {
     self.title = [NSString stringWithFormat:@"%@'S GROUPS", _user.name.uppercaseString];
@@ -61,12 +71,32 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupsLoaded:) name:GLPNOTIFICATION_USER_GROUPS_LOADED object:nil];
 }
 
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    GLPGroup *selectedGroup = [super groupWithIndexPath:indexPath];
+    
+    if(selectedGroup.privacy == kPrivateGroup)
+    {
+        DDLogDebug(@"Group is private!");
+        
+        GLPGroupCell *cell = (GLPGroupCell *)[tableView cellForRowAtIndexPath:indexPath];
+        
+        [self showPrivatePopUpViewWithGroupImage:[cell groupImage]];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        return;
+    }
+    
+    [super navigateToGroup:selectedGroup];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
 
 #pragma mark - Client
 
 - (void)loadGroups
 {
-    [self.tableActivityIndicator startActivityIndicator];
+    [super startLoading];
     
     [[GLPLiveGroupManager sharedInstance] loadUsersGroupsWithRemoteKey:self.user.remoteKey];
 }
@@ -78,7 +108,7 @@
     BOOL success = [notification.userInfo[@"success"] boolValue];
     NSArray *groups = notification.userInfo[@"groups"];
     
-    [self.tableActivityIndicator stopActivityIndicator];
+    [super stopLoading];
     
     if(success)
     {
@@ -91,17 +121,21 @@
     // Dispose of any resources that can be recreated.
 }
 
-
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)showPrivatePopUpViewWithGroupImage:(UIImage *)image
 {
-    if([segue.identifier isEqualToString:@"view group"])
-    {
-        GroupViewController *gvc = segue.destinationViewController;
-        gvc.group = self.selectedGroup;
-    }
+    //Show the pop up view.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPPrivateGroupPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPrivateGroupPopUpViewController"];
+    
+    [cvc setGroupImage:image];
+    
+    cvc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    [cvc setTransitioningDelegate:self.privateGroupPopUp];
+    
+    [self presentViewController:cvc animated:YES completion:nil];
 }
 
 @end

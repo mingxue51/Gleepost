@@ -156,7 +156,7 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)getApprovalStatusCallbackBlock:(void (^) (BOOL success, NSInteger level))callbackBlock;
 
 // notifications
--(void)getNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
+-(void)getUnreadNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
 - (void)getAllNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
 -(void)synchronousGetNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
 

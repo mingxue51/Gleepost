@@ -14,6 +14,8 @@
 #import "GLPDateFormatterHelper.h"
 #import "AppearanceHelper.h"
 #import "GLPImageHelper.h"
+#import "GLPSystemMessage.h"
+#import "GLPReadReceiptsManager.h"
 
 @interface GLPMessageCell()
 
@@ -22,6 +24,10 @@
 
 @property (assign, nonatomic) CGFloat height;
 @property (assign, nonatomic) BOOL isOnLeftSide;
+
+/** This variable is true only when the message is going to be viewed in
+ GLPMessageDetailViewController*/
+@property (assign, nonatomic, setter=setViewMode:) BOOL viewMode;
 
 @end
 
@@ -48,6 +54,8 @@ static const CGFloat kOppositeSideMarginWithError = 10 + kErrorImageW + kErrorIm
 static const CGFloat kSideMarginIncludingProfileImage = kProfileImageViewSideMargin + kProfileImageViewSize + kProfileImageViewOppositeSideMargin;
 static const CGFloat kTopMargin = 0;
 static const CGFloat kBottomMargin = 2; //7
+
+static const CGFloat kViewModeMargin = 10;
 
 static const CGFloat kTextSize = 15;
 
@@ -120,10 +128,14 @@ static const CGFloat kTextSize = 15;
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByWordWrapping;
         
-        view.userInteractionEnabled = NO;
+        view.userInteractionEnabled = YES;
         
         [view addSubview:imageView];
         [view addSubview:label];
+        
+        UITapGestureRecognizer *tapGestrureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainViewClick)];
+        [view addGestureRecognizer:tapGestrureRecognizer];
+        
         [self.contentView addSubview:view];
     }
     
@@ -137,6 +149,30 @@ static const CGFloat kTextSize = 15;
         
         [self.contentView addSubview:button];
     }
+    
+    // system message
+    {
+        UILabel *labelSystem = [[UILabel alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
+        labelSystem.textAlignment = NSTextAlignmentCenter;
+        labelSystem.textColor = [UIColor lightGrayColor];
+        labelSystem.font = [UIFont fontWithName:GLP_TITLE_FONT size:10.0f];
+        labelSystem.userInteractionEnabled = NO;
+        [self.contentView addSubview:labelSystem];
+    }
+    
+    // read receipt message
+    {
+        //The Y position is changing depending on the bubble height.
+        UILabel *readReceiptMessage = [[UILabel alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
+        readReceiptMessage.textAlignment = NSTextAlignmentCenter;
+        readReceiptMessage.textColor = [UIColor lightGrayColor];
+        readReceiptMessage.font = [UIFont fontWithName:GLP_TITLE_FONT size:10.0f];
+        readReceiptMessage.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tapGestrureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(readReceiptLabelClick)];
+        [readReceiptMessage addGestureRecognizer:tapGestrureRecognizer];
+        [self.contentView addSubview:readReceiptMessage];
+    }
+    
     self.selectedBackgroundView = [UIView new];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -149,17 +185,34 @@ static const CGFloat kTextSize = 15;
     
     _height = kTopMargin;
     
-    [self configureProfileImage];
-    [self configureTimeLabel];
-    [self configureMessageText];
+    if([_message isKindOfClass:[GLPSystemMessage class]])
+    {
+        [self setHiddedElementsOnSystemMessage:YES];
+        [self configureSystemMessage];
+    }
+    else
+    {
+        [self setHiddedElementsOnSystemMessage:NO];
+        [self configureProfileImage];
+        [self configureTimeLabel];
+        [self configureMessageText];
+        [self configureReadReceiptLabel];
+    }
     
     _height += kBottomMargin;
     
-    if(_height < kProfileImageViewSize) {
+    if(_height < kProfileImageViewSize && ![_message isKindOfClass:[GLPSystemMessage class]]) {
         _height = kProfileImageViewSize;
     }
     
     CGRectSetH(self.contentView, _height);
+}
+
+- (void)configureSystemMessage
+{
+    UILabel *label = self.contentView.subviews[4];
+    GLPSystemMessage *sMessage = (GLPSystemMessage *)_message;
+    [label setText:[sMessage systemMessage]];
 }
 
 - (void)configureProfileImage
@@ -167,9 +220,10 @@ static const CGFloat kTextSize = 15;
     UIImageView *imageView = self.contentView.subviews[0];
     
 //    if(_message.hasHeader) {
-    if(_message.needsProfileImage) {
+    
+    if(_message.needsProfileImage || _viewMode) {
         
-        if(!_message.hasHeader)
+        if(!_message.hasHeader && !_viewMode)
         {
             _height += 20 + kTimeLabelBottomMargin;
         }
@@ -198,10 +252,10 @@ static const CGFloat kTextSize = 15;
 - (void)configureTimeLabel
 {
     UILabel *label = self.contentView.subviews[1];
-
+    
 //    DDLogDebug(@"configureTimeLabel: %@", _message.content);
     
-    if(_message.hasHeader) {
+    if(_message.hasHeader || _viewMode) {
         label.hidden = NO;
         
 //        label.text = [[[GLPDateFormatterHelper messageDateFormatter] stringFromDate:_message.date] uppercaseString];
@@ -214,12 +268,30 @@ static const CGFloat kTextSize = 15;
     }
 }
 
+- (void)configureReadReceiptLabel
+{
+    UILabel *readReceiptLabel = self.contentView.subviews[5];
+    
+    NSString *readReceiptMessage = [[GLPReadReceiptsManager sharedInstance] getReadReceiptMessageWithMessage:_message];
+    
+    if(readReceiptMessage && !_viewMode) {
+        readReceiptLabel.hidden = NO;
+        readReceiptLabel.text = readReceiptMessage;
+        CGRectSetY(readReceiptLabel, _height + kTimeLabelBottomMargin);
+        _height += readReceiptLabel.frame.size.height + kTimeLabelBottomMargin;
+        
+    } else {
+        readReceiptLabel.hidden = YES;
+    }
+}
+
 - (void)configureMessageText
 {
     UIView *view = self.contentView.subviews[2];
     UIImageView *imageView = view.subviews[0];
     UILabel *label = view.subviews[1];
-    
+    UIButton *errorButton = self.contentView.subviews[3];
+
     CGSize labelSize = [GLPMessageCell contentLabelSizeForMessage:_message];
     
     if(labelSize.width < kContentLabelMinimalW) {
@@ -262,7 +334,6 @@ static const CGFloat kTextSize = 15;
     
     
     
-    UIButton *errorButton = self.contentView.subviews[3];
     if(_message.sendStatus == kSendStatusFailure) {
         errorButton.hidden = NO;
         CGFloat errorX = _isOnLeftSide ? CGRectGetMaxX(view.frame) + kErrorImageSideMargin : view.frame.origin.x - kErrorImageSideMargin - kErrorImageW;
@@ -273,6 +344,23 @@ static const CGFloat kTextSize = 15;
     }
 
     _height += h;
+}
+
+- (void)setHiddedElementsOnSystemMessage:(BOOL)hidden
+{
+    for(NSUInteger index = 0; index < self.contentView.subviews.count; ++index)
+    {
+        UIView *v = self.contentView.subviews[index];
+        
+        if(index != 4)
+        {
+            [v setHidden:hidden];
+        }
+        else
+        {
+            [v setHidden:!hidden];
+        }
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -290,6 +378,16 @@ static const CGFloat kTextSize = 15;
 - (void)profileImageClick
 {
     [_delegate profileImageClickForMessage:_message];
+}
+
+- (void)readReceiptLabelClick
+{
+    [_delegate readReceitClickForMessage:_message];
+}
+
+- (void)mainViewClick
+{
+    [_delegate mainViewClickForMessage:_message];
 }
 
 # pragma mark - Helpers
@@ -320,14 +418,53 @@ static const CGFloat kTextSize = 15;
 {
     CGFloat height = kTopMargin;
     
-    if(message.hasHeader || message.needsProfileImage) {
+    
+    if((message.hasHeader || message.needsProfileImage) && ![message isKindOfClass:[GLPSystemMessage class]]) {
         height = kTimeLabelH + kTimeLabelBottomMargin;
     }
     
-    height += [GLPMessageCell contentLabelSizeForMessage:message].height + kContentLabelVerticalPadding;
+    height += [GLPMessageCell contentLabelSizeForMessage:message].height;
+    
+    if(![message isKindOfClass:[GLPSystemMessage class]])
+    {
+        height += kContentLabelVerticalPadding;
+    
+        if([[GLPReadReceiptsManager sharedInstance] doesMessageNeedSeenMessage:message])
+        {
+            height += kTimeLabelH;
+        }
+    }
+    
     height += kBottomMargin;
     
     return height;
+}
+
+/**
+ This method should be used only by GLPMessageDetailViewController.
+ 
+ @param message the actual message (non system one).
+ @return the height of the message.
+ */
++ (CGFloat)viewHeightForMessageInViewMode:(GLPMessage *)message
+{
+    CGFloat height = kTopMargin;
+    
+    height = kTimeLabelH + kTimeLabelBottomMargin;
+    
+    
+    height += [GLPMessageCell contentLabelSizeForMessage:message].height;
+    
+    height += kContentLabelVerticalPadding;
+    
+    if([[GLPReadReceiptsManager sharedInstance] doesMessageNeedSeenMessage:message])
+    {
+        height += kTimeLabelH;
+    }
+    
+    height += kBottomMargin;
+    
+    return height + kViewModeMargin;
 }
 
 - (CGFloat)xForCurrentSide:(CGFloat)x w:(CGFloat)w
