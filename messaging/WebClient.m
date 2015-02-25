@@ -2342,7 +2342,7 @@ static WebClient *instance = nil;
 
 #pragma mark - Notifications
 
--(void)getNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
+-(void)getUnreadNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
 {
     [self getPath:@"notifications" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *items = [RemoteParser parseNotificationsFromJson:responseObject];

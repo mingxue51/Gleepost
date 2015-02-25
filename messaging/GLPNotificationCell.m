@@ -110,11 +110,7 @@ const float NOTIFICATION_CELL_HEIGHT = 43.0; //60.0
     
     
     CGSize size = rect.size;
-    
-    DDLogDebug(@"GLPNotificationCell %f", size.height);
-    
     return size;
-    
 }
 
 + (CGFloat)getCellHeightForNotification:(GLPNotification *)notification

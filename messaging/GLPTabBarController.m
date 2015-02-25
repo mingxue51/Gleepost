@@ -224,9 +224,7 @@ static NSInteger lastTabbarIndex = 0;
     NSDictionary *d = notification.userInfo;
     
     GLPNotification *internalNotification = d[@"new_notification"];
-    
-    DDLogDebug(@"NOTIFICATION FROM INTERNAL: %@", internalNotification.customParams);
-    
+        
     if(internalNotification.notificationType == kGLPNotificationTypeCreatedPostGroup)
     {
         _groupPostsNotificationsCount++;

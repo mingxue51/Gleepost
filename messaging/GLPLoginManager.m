@@ -190,7 +190,6 @@
     __block GLPUser *user;
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        DDLogDebug(@"DB error : findByRemoteKey");
         user = [GLPUserDao findByRemoteKey:userRemoteKey db:db];
     }];
     

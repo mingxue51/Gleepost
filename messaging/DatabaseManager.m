@@ -228,6 +228,7 @@ static DatabaseManager *instance = nil;
              seen integer, \
              date integer, \
              type integer, \
+             preview_message text, \
              post_remote_key integer, \
              user_remote_key integer, \
              group_remote_key integer);"];

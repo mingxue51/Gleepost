@@ -165,7 +165,6 @@ const float ANIMATION_DURATION = 0.1;
 
 - (void)reloadButtonsFormat
 {
-    
     if(![self isSlideAnimationEnabled])
     {
         [_delegate segmentSwitched:_conversationType];
@@ -174,18 +173,11 @@ const float ANIMATION_DURATION = 0.1;
     
     if(_conversationType == kButtonLeft)
     {
-        DDLogDebug(@"reloadButtonsFormat kButtonLeft");
-
         [self leftButtonSelected];
-        
-        
     }
     else
     {
-        DDLogDebug(@"reloadButtonsFormat kButtonRight");
-
         [self rightButtonSelected];
-        
     }
 }
 
@@ -203,11 +195,7 @@ const float ANIMATION_DURATION = 0.1;
         CGRectSetX(_slideImageView, _leftLbl.frame.origin.x);
         
     } completion:^(BOOL finished) {
-        
         [_delegate segmentSwitched:_conversationType];
-        
-
-        
     }];
 }
 
