@@ -159,14 +159,17 @@ static GLPNetworkManager *instance = nil;
     }];
 }
 
-- (void)webSocketDidFailOrClose
+- (void)webSocketDidClose
 {
-    //Load local conversations.
-    [[GLPLiveConversationsManager sharedInstance] loadConversationsFromDatabase];
-    
     [self stopNetworkOperations];
 }
 
+- (void)webSocketDidFail
+{
+    //Load local conversations.
+    [[GLPLiveConversationsManager sharedInstance] loadConversationsFromDatabase];
+    [self webSocketDidClose];
+}
 
 /**
  This method should be called even the app don't know if there is network

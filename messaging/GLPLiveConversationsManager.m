@@ -909,9 +909,11 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (void)loadConversationsFromDatabase
 {
-    DDLogInfo(@"");
     
     NSArray *localConversations = [ConversationManager loadLocalRegularConversations];
+    
+    DDLogInfo(@"GLPLiveConversationManager : loadConversationsFromDatabase %@", localConversations);
+
     
     dispatch_async(_queue, ^{
         
