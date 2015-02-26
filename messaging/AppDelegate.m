@@ -65,13 +65,15 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
+    NSString *storyBoardName = @"iphone_ipad";
+    
     [self setupLogging];
     [self setupGoogleAnalytics];
     [self setupFlurryAnalytics];
     [self setupPush];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyBoardName bundle:nil];
     
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
 

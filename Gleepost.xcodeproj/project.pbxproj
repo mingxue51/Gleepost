@@ -472,6 +472,8 @@
 		5890249B195DF02700084E2F /* PrivateProfileTopViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5890249A195DF02700084E2F /* PrivateProfileTopViewCell.xib */; };
 		5890249E195DF05C00084E2F /* PrivateProfileTopViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890249D195DF05C00084E2F /* PrivateProfileTopViewCell.m */; };
 		589024A0195DF1ED00084E2F /* message_button_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 5890249F195DF1ED00084E2F /* message_button_old.png */; };
+		58907DCC1A9FC12B00E8531A /* iphone_ipad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58907DCB1A9FC12B00E8531A /* iphone_ipad.storyboard */; };
+		58907DCE1A9FE22800E8531A /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58907DCD1A9FE22800E8531A /* Launch Screen.xib */; };
 		5890D0401A2AA7D10088C302 /* GLPViewPendingPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D03F1A2AA7D10088C302 /* GLPViewPendingPostViewController.m */; };
 		5890D214184763E700E293DD /* GLPThemeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D213184763E700E293DD /* GLPThemeManager.m */; };
 		5890D2181847676A00E293DD /* GLPTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D2171847676A00E293DD /* GLPTheme.m */; };
@@ -1613,6 +1615,8 @@
 		5890249C195DF05C00084E2F /* PrivateProfileTopViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivateProfileTopViewCell.h; sourceTree = "<group>"; };
 		5890249D195DF05C00084E2F /* PrivateProfileTopViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivateProfileTopViewCell.m; sourceTree = "<group>"; };
 		5890249F195DF1ED00084E2F /* message_button_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message_button_old.png; sourceTree = "<group>"; };
+		58907DCB1A9FC12B00E8531A /* iphone_ipad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iphone_ipad.storyboard; sourceTree = "<group>"; };
+		58907DCD1A9FE22800E8531A /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		5890D03E1A2AA7D10088C302 /* GLPViewPendingPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPViewPendingPostViewController.h; sourceTree = "<group>"; };
 		5890D03F1A2AA7D10088C302 /* GLPViewPendingPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPViewPendingPostViewController.m; sourceTree = "<group>"; };
 		5890D212184763E700E293DD /* GLPThemeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPThemeManager.h; sourceTree = "<group>"; };
@@ -3495,6 +3499,16 @@
 			name = "Pop-ups";
 			sourceTree = "<group>";
 		};
+		588AB06D1A9F6C7F005F17B1 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				58907DCB1A9FC12B00E8531A /* iphone_ipad.storyboard */,
+				80AB893C17C268440053E784 /* iphone.storyboard */,
+				58907DCD1A9FE22800E8531A /* Launch Screen.xib */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
 		588D8595195B5595002F516A /* Top view cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -4949,7 +4963,7 @@
 				80AB892C17C267F50053E784 /* AppDelegate.m */,
 				80AB893417C267F50053E784 /* messaging.xcdatamodeld */,
 				80AB892317C267F50053E784 /* Supporting Files */,
-				80AB893C17C268440053E784 /* iphone.storyboard */,
+				588AB06D1A9F6C7F005F17B1 /* Storyboards */,
 				5898DF5218057AF70095C7BD /* Images.xcassets */,
 			);
 			name = Gleepost;
@@ -5710,6 +5724,7 @@
 				5879AC8C19643CEA0053262A /* user_selected.png in Resources */,
 				58CE8EA019D9B8010028DEB7 /* kind_of_event_no.png in Resources */,
 				585EBB3618E317B200BDAE81 /* add_members_bg_press_down.png in Resources */,
+				58907DCE1A9FE22800E8531A /* Launch Screen.xib in Resources */,
 				589CE50E18D227910046DAD2 /* the_bar4.png in Resources */,
 				5840286118D2607800753A5F /* add_new_post_old.png in Resources */,
 				58B3A3031A2552800082AE81 /* pending_cell_arrow.png in Resources */,
@@ -5990,6 +6005,7 @@
 				5829F48E18B1546300A7B871 /* in_contacts.png in Resources */,
 				5861130F19EF0541008220DC /* pad_icon.png in Resources */,
 				5890D22118477B7C00E293DD /* navigation_bar_stanford.png in Resources */,
+				58907DCC1A9FC12B00E8531A /* iphone_ipad.storyboard in Resources */,
 				58F9EC641937580900714432 /* back_black.png in Resources */,
 				806E3D821832B1960063AACE /* NotificationBackgroundWarningIcon.png in Resources */,
 				58CF2BD918EA130800EB786E /* campus_wall_background_main_old.png in Resources */,
