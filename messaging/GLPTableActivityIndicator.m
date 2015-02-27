@@ -63,7 +63,12 @@
             break;
     }
     
-    CGRectSetX(_activityIndicator, 141.0 + 5.0);
+    //Calculation of the middle of the screen:
+    //ScreenWidth / 2 - IndicatorWidth /2
+    
+//    CGRectSetX(_activityIndicator, 141.0 + 5.0);
+    
+    CGRectSetX(_activityIndicator, [[UIScreen mainScreen] bounds].size.width/2 - _activityIndicator.frame.size.width/2);
     
     CGRectSetY(_activityIndicator, yPosition);
     

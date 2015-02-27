@@ -76,6 +76,8 @@
     UIView *view = [[UIApplication sharedApplication] windows][1];
     [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:view];
     
+    DDLogDebug(@"loginUserFromLoginScreen %@ : %@", _emailTextField.text, _passwordTextField.text);
+    
     [GLPLoginManager loginWithIdentifier:_emailTextField.text andPassword:_passwordTextField.text shouldRemember:shouldRemember callback:^(BOOL success, NSString *errorMessage) {
         
         [WebClientHelper hideStandardLoaderForView:view];
