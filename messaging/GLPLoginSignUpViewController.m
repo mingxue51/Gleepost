@@ -75,7 +75,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
 - (void)showSignUpViewController
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPSignUpViewController *signUpVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSignUpViewController"];
     
     if(_fbLoginInfo)

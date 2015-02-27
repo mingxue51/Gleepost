@@ -591,7 +591,6 @@
 		58B7816019F9E6B0003E0F9A /* GLPImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B7815F19F9E6B0003E0F9A /* GLPImageHelper.m */; };
 		58B7816419F9E719003E0F9A /* group_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 58B7816219F9E719003E0F9A /* group_placeholder.png */; };
 		58B7816519F9E719003E0F9A /* profile_placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 58B7816319F9E719003E0F9A /* profile_placeholder.png */; };
-		58B865E2180DA2B100BB18AF /* NotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B865E1180DA2B100BB18AF /* NotificationCell.m */; };
 		58B90F1918C81B9300FA0955 /* GroupOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B90F1818C81B9300FA0955 /* GroupOperationManager.m */; };
 		58B90F1C18C81DF800FA0955 /* GLPOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B90F1B18C81DF800FA0955 /* GLPOperationManager.m */; };
 		58B90F1F18C8216300FA0955 /* GroupUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B90F1E18C8216200FA0955 /* GroupUploaderManager.m */; };
@@ -1753,8 +1752,6 @@
 		58B7815F19F9E6B0003E0F9A /* GLPImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageHelper.m; sourceTree = "<group>"; };
 		58B7816219F9E719003E0F9A /* group_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = group_placeholder.png; sourceTree = "<group>"; };
 		58B7816319F9E719003E0F9A /* profile_placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profile_placeholder.png; sourceTree = "<group>"; };
-		58B865E0180DA2B100BB18AF /* NotificationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationCell.h; sourceTree = "<group>"; };
-		58B865E1180DA2B100BB18AF /* NotificationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationCell.m; sourceTree = "<group>"; };
 		58B90F1718C81B9300FA0955 /* GroupOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupOperationManager.h; sourceTree = "<group>"; };
 		58B90F1818C81B9300FA0955 /* GroupOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupOperationManager.m; sourceTree = "<group>"; };
 		58B90F1A18C81DF800FA0955 /* GLPOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPOperationManager.h; sourceTree = "<group>"; };
@@ -3877,8 +3874,6 @@
 		58B74A8419C014EE007E3416 /* Notification Cells */ = {
 			isa = PBXGroup;
 			children = (
-				58B865E0180DA2B100BB18AF /* NotificationCell.h */,
-				58B865E1180DA2B100BB18AF /* NotificationCell.m */,
 				58B74A8519C01541007E3416 /* GLPNotificationCell.h */,
 				58B74A8619C01541007E3416 /* GLPNotificationCell.m */,
 			);
@@ -6055,7 +6050,6 @@
 				5892F10819FB080900B6778F /* GLPProfilePostsEmptyView.m in Sources */,
 				58D301DA1989C10E003EC08B /* GLPInviteUsersViewController.m in Sources */,
 				5844293618BCDC6900DFEAF4 /* GLPCommentManager.m in Sources */,
-				58B865E2180DA2B100BB18AF /* NotificationCell.m in Sources */,
 				80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */,
 				584119701A8A482A0067E3DC /* GLPLoadingButton.m in Sources */,
 				80B1735F1805792B00D9669B /* WebClientHelper.m in Sources */,
