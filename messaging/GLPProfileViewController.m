@@ -16,7 +16,6 @@
 #import "WebClientHelper.h"
 #import "AppearanceHelper.h"
 #import "GLPPrivateProfileViewController.h"
-#import "LoginRegisterViewController.h"
 #import "ViewPostViewController.h"
 #import "GLPNotificationManager.h"
 #import "GLPThemeManager.h"
