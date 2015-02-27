@@ -16,7 +16,7 @@
 #import "ImageFormatterHelper.h"
 #import "AppearanceHelper.h"
 
-@interface ImageSelectorViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface ImageSelectorViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) GLPImageSelectorLoader *imageLoader;
@@ -146,10 +146,10 @@
 
 #pragma mark - UICollectionViewDelegateFlowLayout
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    return IMAGE_COLLECTION_CELL_DIMENSIONS;
-}
+//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return IMAGE_COLLECTION_CELL_DIMENSIONS;
+//}
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionView *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {

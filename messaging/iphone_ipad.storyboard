@@ -1309,8 +1309,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SoY-OL-TmF">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SoY-OL-TmF">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mH5-mu-lir">
                                     <size key="itemSize" width="50" height="50"/>
@@ -1326,6 +1326,12 @@
                             </collectionView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="SoY-OL-TmF" firstAttribute="leading" secondItem="huw-Qa-xzO" secondAttribute="leading" id="WRS-s8-gqW"/>
+                            <constraint firstItem="SoY-OL-TmF" firstAttribute="top" secondItem="huw-Qa-xzO" secondAttribute="top" id="fMb-EI-cER"/>
+                            <constraint firstItem="JTN-ZV-y9M" firstAttribute="top" secondItem="SoY-OL-TmF" secondAttribute="bottom" id="fsi-IS-2dd"/>
+                            <constraint firstAttribute="trailing" secondItem="SoY-OL-TmF" secondAttribute="trailing" id="n0Y-HQ-uy3"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="PICK AN IMAGE" id="yui-yw-81A"/>
                     <connections>
@@ -1334,7 +1340,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZXG-ns-BrL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5401.875" y="-5052.4647887323936"/>
+            <point key="canvasLocation" x="5401" y="-5053"/>
         </scene>
         <!--Add Comment View Controller-->
         <scene sceneID="lf3-ch-FK3">
