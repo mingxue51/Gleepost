@@ -49,7 +49,7 @@ const float ONE_LINE_HEIGHT = 20;
 
 -(void)setElementsWithPost:(GLPPost *)post
 {
-//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blueColor] andWidth:1.0f];
+//    [ShapeFormatterHelper setBorderToView:self.locationBtn withColour:[UIColor blueColor] andWidth:1.0f];
     
     //TODO: Fix that by creating specific queue. There is a problem here where an
     //      empty post is viewed without data in and then the actual data appeared.
@@ -80,6 +80,10 @@ const float ONE_LINE_HEIGHT = 20;
         [_locationBtn setHidden:NO];
         
         [_locationBtn setTitle:post.location.name forState:UIControlStateNormal];
+        [_locationBtn sizeToFit];
+        
+        DDLogDebug(@"Location button width %f - %@", _locationBtn.frame.size.width, _locationBtn.titleLabel.text);
+        
     }
     else
     {
