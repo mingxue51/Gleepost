@@ -634,7 +634,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
     
     [ShapeFormatterHelper setRoundedView:_userImageView toDiameter:_userImageView.frame.size.height];
 
-    [ShapeFormatterHelper setTopCornerRadius:_postImageView withViewFrame:_postImageView.frame withValue:0];
+//    [ShapeFormatterHelper setTopCornerRadius:_postImageView withViewFrame:_postImageView.frame withValue:0];
     
     [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:5];
     
