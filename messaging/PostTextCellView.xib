@@ -45,23 +45,15 @@
                                         </constraints>
                                     </imageView>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="separator_line.png" translatesAutoresizingMaskIntoConstraints="NO" id="X3l-B5-lUc">
-                                        <rect key="frame" x="29" y="33" width="240" height="1"/>
+                                        <rect key="frame" x="29" y="34" width="240" height="1"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="kcg-jx-EWM"/>
                                         </constraints>
                                     </imageView>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_blue_pin.png" translatesAutoresizingMaskIntoConstraints="NO" id="Mb0-aG-CnH">
-                                        <rect key="frame" x="229" y="4" width="18" height="15"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="15" id="YE2-9a-s17"/>
-                                            <constraint firstAttribute="width" constant="18" id="tKd-v8-pfn"/>
-                                        </constraints>
-                                    </imageView>
-                                    <button contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sn3-A6-KTz">
-                                        <rect key="frame" x="249" y="4" width="43" height="18"/>
+                                    <button contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sn3-A6-KTz">
+                                        <rect key="frame" x="172" y="3" width="118" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="Ffd-xL-4Tz"/>
-                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="140" id="adR-Vw-fd0"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                         <state key="normal" title="Button">
@@ -72,20 +64,27 @@
                                             <action selector="showLocation:" destination="eJM-2L-W3q" eventType="touchUpInside" id="Ol6-Ss-Omo"/>
                                         </connections>
                                     </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="location_blue_pin.png" translatesAutoresizingMaskIntoConstraints="NO" id="Mb0-aG-CnH">
+                                        <rect key="frame" x="152" y="5" width="18" height="15"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="15" id="YE2-9a-s17"/>
+                                            <constraint firstAttribute="width" constant="18" id="tKd-v8-pfn"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="X3l-B5-lUc" secondAttribute="trailing" constant="29" id="4XT-06-Kum"/>
-                                    <constraint firstItem="sn3-A6-KTz" firstAttribute="top" secondItem="LhW-jF-MuF" secondAttribute="top" constant="4" id="Brf-x6-Tqk"/>
+                                    <constraint firstItem="sn3-A6-KTz" firstAttribute="leading" secondItem="Mb0-aG-CnH" secondAttribute="trailing" constant="2" id="AMC-zE-yIi"/>
+                                    <constraint firstItem="sn3-A6-KTz" firstAttribute="top" secondItem="LhW-jF-MuF" secondAttribute="top" constant="2" id="Brf-x6-Tqk"/>
+                                    <constraint firstItem="Mb0-aG-CnH" firstAttribute="leading" secondItem="qCr-X2-nFh" secondAttribute="trailing" constant="1" id="HBj-1N-0el"/>
                                     <constraint firstItem="zuP-sW-WZr" firstAttribute="leading" secondItem="LhW-jF-MuF" secondAttribute="leading" constant="10" id="HCn-ab-gqr"/>
                                     <constraint firstItem="qCr-X2-nFh" firstAttribute="leading" secondItem="zuP-sW-WZr" secondAttribute="trailing" constant="4" id="K7B-41-AG3"/>
                                     <constraint firstItem="qCr-X2-nFh" firstAttribute="top" secondItem="LhW-jF-MuF" secondAttribute="top" constant="2" id="Pb1-cw-zFK"/>
                                     <constraint firstItem="X3l-B5-lUc" firstAttribute="top" secondItem="sn3-A6-KTz" secondAttribute="bottom" constant="10" id="Vnn-Es-rTQ"/>
                                     <constraint firstItem="zuP-sW-WZr" firstAttribute="top" secondItem="LhW-jF-MuF" secondAttribute="top" constant="4" id="WKE-Xv-D8o"/>
-                                    <constraint firstItem="sn3-A6-KTz" firstAttribute="leading" secondItem="Mb0-aG-CnH" secondAttribute="trailing" constant="2" id="Wkb-Hr-gfh"/>
                                     <constraint firstAttribute="height" constant="33" id="gQz-ji-r0S"/>
                                     <constraint firstItem="Mb0-aG-CnH" firstAttribute="top" secondItem="LhW-jF-MuF" secondAttribute="top" constant="4" id="jVe-Tj-J5u"/>
-                                    <constraint firstAttribute="trailing" secondItem="sn3-A6-KTz" secondAttribute="trailing" constant="8" id="rIj-v6-cmn"/>
                                     <constraint firstItem="X3l-B5-lUc" firstAttribute="leading" secondItem="LhW-jF-MuF" secondAttribute="leading" constant="29" id="y2v-p1-Fp6"/>
                                 </constraints>
                             </view>
@@ -129,6 +128,7 @@
                             <constraint firstItem="LhW-jF-MuF" firstAttribute="leading" secondItem="eJM-2L-W3q" secondAttribute="leading" id="TKb-DX-PGh"/>
                             <constraint firstItem="LhW-jF-MuF" firstAttribute="top" secondItem="c8y-Xv-Q7R" secondAttribute="bottom" constant="7" id="XsF-0m-QK0"/>
                             <constraint firstAttribute="trailing" secondItem="c8y-Xv-Q7R" secondAttribute="trailing" constant="30" id="Y6g-yJ-iFo"/>
+                            <constraint firstItem="sn3-A6-KTz" firstAttribute="width" secondItem="eJM-2L-W3q" secondAttribute="width" multiplier="0.4" constant="-2" id="epr-3Z-nbb"/>
                             <constraint firstItem="nIc-gq-Txd" firstAttribute="top" secondItem="eJM-2L-W3q" secondAttribute="top" constant="10" id="kG2-vM-0ql"/>
                             <constraint firstItem="qCr-X2-nFh" firstAttribute="width" secondItem="eJM-2L-W3q" secondAttribute="width" multiplier="0.35" constant="17" id="m8r-Cg-Pac"/>
                             <constraint firstItem="c8y-Xv-Q7R" firstAttribute="top" secondItem="eJM-2L-W3q" secondAttribute="top" constant="5" id="uFS-sE-3He"/>
@@ -247,8 +247,8 @@
                                             <action selector="likePost:" destination="lnW-OL-CTy" eventType="touchUpInside" id="L7E-EA-bUZ"/>
                                         </connections>
                                     </button>
-                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UCr-ze-2T6">
-                                        <rect key="frame" x="234" y="0.0" width="40" height="36"/>
+                                    <button contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UCr-ze-2T6">
+                                        <rect key="frame" x="234" y="1" width="40" height="36"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="EaO-qC-NbK"/>
                                             <constraint firstAttribute="height" constant="36" id="Lca-q3-eJj"/>
@@ -407,7 +407,7 @@
                 <outlet property="mainView" destination="lnW-OL-CTy" id="egu-bS-8tj"/>
                 <outlet property="topView" destination="eJM-2L-W3q" id="GhG-b0-2hb"/>
             </connections>
-            <point key="canvasLocation" x="-121" y="91.5"/>
+            <point key="canvasLocation" x="-121" y="90.5"/>
         </tableViewCell>
     </objects>
     <resources>

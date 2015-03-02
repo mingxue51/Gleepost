@@ -65,7 +65,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nhd-DC-O10">
-                                        <rect key="frame" x="170" y="2" width="120" height="18"/>
+                                        <rect key="frame" x="173" y="2" width="119" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="18" id="aDb-TD-v3d"/>
                                         </constraints>
@@ -79,7 +79,7 @@
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_blue_pin.png" translatesAutoresizingMaskIntoConstraints="NO" id="vkD-TI-0Px">
-                                        <rect key="frame" x="150" y="4" width="18" height="15"/>
+                                        <rect key="frame" x="153" y="4" width="18" height="15"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="15" id="BAH-pV-wVs"/>
                                             <constraint firstAttribute="width" constant="18" id="jiO-Sc-aVu"/>
@@ -88,8 +88,9 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="Nhd-DC-O10" firstAttribute="width" secondItem="TIn-bn-41b" secondAttribute="width" multiplier="0.4" id="4s0-6x-B5n"/>
+                                    <constraint firstItem="Nhd-DC-O10" firstAttribute="leading" secondItem="vkD-TI-0Px" secondAttribute="trailing" constant="2" id="0dv-ff-PbE"/>
                                     <constraint firstItem="Nhd-DC-O10" firstAttribute="top" secondItem="TIn-bn-41b" secondAttribute="top" constant="2" id="5DE-0n-sie"/>
+                                    <constraint firstItem="vkD-TI-0Px" firstAttribute="leading" secondItem="xhg-cc-Ny7" secondAttribute="trailing" constant="2" id="7GK-NP-xgh"/>
                                     <constraint firstAttribute="bottom" secondItem="Nhd-DC-O10" secondAttribute="bottom" constant="2" id="A9w-Sw-3Zg"/>
                                     <constraint firstItem="vkD-TI-0Px" firstAttribute="top" secondItem="TIn-bn-41b" secondAttribute="top" constant="4" id="DgH-A0-yEa"/>
                                     <constraint firstAttribute="height" constant="22" id="EVY-l0-fOf"/>
@@ -99,8 +100,6 @@
                                     <constraint firstItem="A8E-nW-P06" firstAttribute="leading" secondItem="TIn-bn-41b" secondAttribute="leading" constant="10" id="TJQ-Kl-ohQ"/>
                                     <constraint firstAttribute="bottom" secondItem="vkD-TI-0Px" secondAttribute="bottom" constant="3" id="e78-F2-be3"/>
                                     <constraint firstAttribute="bottom" secondItem="xhg-cc-Ny7" secondAttribute="bottom" constant="1" id="gcc-fq-Hzx"/>
-                                    <constraint firstItem="Nhd-DC-O10" firstAttribute="leading" secondItem="vkD-TI-0Px" secondAttribute="trailing" constant="2" id="hgQ-0Z-CpG"/>
-                                    <constraint firstAttribute="trailing" secondItem="Nhd-DC-O10" secondAttribute="trailing" constant="10" id="tRv-O1-dVB"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="260" translatesAutoresizingMaskIntoConstraints="NO" id="nqe-5G-JTa">
@@ -125,6 +124,7 @@
                             <constraint firstItem="EJA-Rf-TPo" firstAttribute="top" secondItem="gZY-ao-KSb" secondAttribute="top" constant="2" id="efZ-bg-ThU"/>
                             <constraint firstAttribute="height" constant="67" id="fnf-HS-iz0"/>
                             <constraint firstItem="TIn-bn-41b" firstAttribute="top" secondItem="nqe-5G-JTa" secondAttribute="bottom" constant="9" id="sdh-qH-p0A" userLabel="Vertical Space - (7) - View - Label - Labelasd ads asd as dsa das dsa das das dasd adas"/>
+                            <constraint firstItem="Nhd-DC-O10" firstAttribute="width" secondItem="gZY-ao-KSb" secondAttribute="width" multiplier="0.35" constant="14" id="zzk-Gs-a2c"/>
                         </constraints>
                         <connections>
                             <outlet property="eventTimeLbl" destination="xhg-cc-Ny7" id="hod-hq-WYo"/>
