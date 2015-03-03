@@ -13,8 +13,12 @@
 #import "PendingPostManager.h"
 #import "AppearanceHelper.h"
 #import "GLPApprovalManager.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface IntroKindOfNewPostViewController ()
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceEventAnnouncement;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceAnnouncementGeneral;
 
 @end
 
@@ -29,6 +33,8 @@
     [self configureIsGroupPost];
     
     [[GLPApprovalManager sharedInstance] reloadApprovalLevel];
+    
+    [self configureConstrainsDependingOnScreenSize];
 }
 
 //- (void)viewDidDisappear:(BOOL)animated
@@ -59,6 +65,15 @@
 {
     [[PendingPostManager sharedInstance] setGroupPost:self.groupPost];
     [[PendingPostManager sharedInstance] setGroup:self.group];
+}
+
+- (void)configureConstrainsDependingOnScreenSize
+{
+    if([GLPiOSSupportHelper useShortConstrains])
+    {
+        _distanceAnnouncementGeneral.constant = 10.0;
+        _distanceEventAnnouncement.constant = 10.0;
+    }
 }
 
 #pragma mark - Selectors

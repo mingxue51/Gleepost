@@ -376,7 +376,7 @@ const float TOP_OFFSET = 180.0f;
 {
     if([[SessionManager sharedInstance] isFirstTimeLoggedIn] && ![self isWalkthroughFinished])
     {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
         GLPWalkthroughViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPWalkthroughViewController"];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -2354,7 +2354,7 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)viewPostImage:(UIImage*)postImage
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
     viewImage.image = postImage;
     viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
@@ -2514,7 +2514,7 @@ const float TOP_OFFSET = 180.0f;
     _selectedPost = notification.userInfo[@"post"];
     
     //Show the pop up view.
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
@@ -2572,13 +2572,12 @@ const float TOP_OFFSET = 180.0f;
 {
     if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
     {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
         IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         newPostVC.groupPost = NO;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:navigationController animated:YES completion:nil];
-        
     }
     else
     {
@@ -2595,7 +2594,7 @@ const float TOP_OFFSET = 180.0f;
         UIGraphicsEndImageContext();
         
         
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
         UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         
         // vc.view.backgroundColor = [UIColor clearColor];
@@ -2655,7 +2654,7 @@ const float TOP_OFFSET = 180.0f;
 //    UIGraphicsEndImageContext();
 //    
 //    
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
 //    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
 //    
 //    // vc.view.backgroundColor = [UIColor clearColor];
@@ -2666,7 +2665,7 @@ const float TOP_OFFSET = 180.0f;
 
 - (void)showCategoriesViewController
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"Categories"];
     
     /**
@@ -2713,7 +2712,7 @@ const float TOP_OFFSET = 180.0f;
     NSDictionary *dict = [notification userInfo];
     GLPPost *post = [dict objectForKey:@"Post"];
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     ViewPostViewController *vpvc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostViewController"];
     vpvc.post = post;
     vpvc.isFromCampusLive = YES;

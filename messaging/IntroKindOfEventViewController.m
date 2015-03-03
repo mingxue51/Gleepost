@@ -10,9 +10,11 @@
 #import "PendingPostManager.h"
 #import "CategoryManager.h"
 #import "UINavigationBar+Format.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface IntroKindOfEventViewController ()
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distancePartyButtonFromTop;
 
 @end
 
@@ -21,8 +23,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self configureNavigationBar];
+    [self configureConstrainsDependingOnScreenSize];
 }
 
 - (void)configureNavigationBar
@@ -30,6 +32,14 @@
     self.title = @"NEW POST";
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+}
+
+- (void)configureConstrainsDependingOnScreenSize
+{
+    if([GLPiOSSupportHelper useShortConstrains])
+    {
+        _distancePartyButtonFromTop.constant = 10.0;
+    }
 }
 
 

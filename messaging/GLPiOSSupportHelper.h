@@ -10,9 +10,9 @@
 
 @interface GLPiOSSupportHelper : NSObject
 
-+(void)configureTabbarController:(UITabBarController *)tabbar;
-+(void)setBackgroundImageToTableView:(UITableView *)tableView;
-+(BOOL)isIOS6;
++ (BOOL)useShortConstrains;
++ (void)setBackgroundImageToTableView:(UITableView *)tableView;
++ (BOOL)isIOS6;
 + (BOOL)isIOS7;
 
 @end

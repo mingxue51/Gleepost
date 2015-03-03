@@ -46,6 +46,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleCharactersLeftLbl;
 @property (weak, nonatomic) IBOutlet UIView *textFieldView;
 @property (weak, nonatomic) IBOutlet UIImageView *separatorLineImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeight;
 
 /** Should be 2 categories (event and user's selected. */
 //@property (strong, nonatomic) NSArray *eventCategories;
@@ -932,17 +933,19 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     // Need to translate the bounds to account for rotation.
     keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
     
-    float newHeightOfContentTextView = [self findNewHeightForTheContentTextViewWithKeboardFrame:keyboardBounds];
-    
-    float newYDescriptionLbl = [self findNewYForDescriptionCharactersLeftWithKeboardFrame:keyboardBounds];
+    if(keyboardBounds.size.height == 0)
+    {
+        return;
+    }
     
     float newHeightOfTextFieldView = [self findNewHeightForTextFieldViewWithKeyboardFrame:keyboardBounds];
     
+    [_textFieldView layoutIfNeeded];
+    
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
-        
-        CGRectSetH(_textFieldView, newHeightOfTextFieldView);
-        CGRectSetH(_contentTextView, newHeightOfContentTextView);
-        CGRectSetY(_descriptionCharactersLeftLbl, newYDescriptionLbl);
+
+        [_textViewHeight setConstant:newHeightOfTextFieldView];
+        [_textFieldView layoutIfNeeded];
         
     } completion:^(BOOL finished) {
         
