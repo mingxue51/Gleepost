@@ -32,7 +32,7 @@
             <connections>
                 <outlet property="imageView" destination="9P1-Nn-Ham" id="N4B-o2-Ec5"/>
             </connections>
-            <point key="canvasLocation" x="119" y="201"/>
+            <point key="canvasLocation" x="206" y="301"/>
         </collectionViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

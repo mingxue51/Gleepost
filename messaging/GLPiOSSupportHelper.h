@@ -11,6 +11,7 @@
 @interface GLPiOSSupportHelper : NSObject
 
 + (BOOL)useShortConstrains;
++ (CGFloat)screenWidth;
 + (void)setBackgroundImageToTableView:(UITableView *)tableView;
 + (BOOL)isIOS6;
 + (BOOL)isIOS7;

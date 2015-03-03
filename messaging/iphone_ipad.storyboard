@@ -2102,7 +2102,6 @@
                     <navigationItem key="navigationItem" id="Zbm-7e-z30">
                         <barButtonItem key="backBarButtonItem" title=" " id="ehd-JC-GzG"/>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="black" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="backImageView" destination="rNp-Ot-cEp" id="y1w-Jv-yAT"/>
                         <outlet property="locationLabel" destination="2Zd-OK-ep5" id="gS9-JO-KaJ"/>
@@ -4142,22 +4141,22 @@
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="fah-A8-Ky9"/>
-        <segue reference="2ju-Ui-QdM"/>
+        <segue reference="EAz-MH-b19"/>
         <segue reference="J6b-Ty-4qO"/>
         <segue reference="C5K-bl-yN1"/>
-        <segue reference="Ji2-Jv-WyQ"/>
-        <segue reference="NkQ-j5-6rL"/>
-        <segue reference="WK7-hw-eyD"/>
-        <segue reference="Th4-GT-P8f"/>
-        <segue reference="EAz-MH-b19"/>
-        <segue reference="wR3-TA-URh"/>
+        <segue reference="fah-A8-Ky9"/>
+        <segue reference="2ju-Ui-QdM"/>
         <segue reference="X2Z-pC-dgW"/>
         <segue reference="KgO-oz-Ivb"/>
         <segue reference="c6M-82-Pnp"/>
         <segue reference="7g0-HV-ZHz"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="FCS-Ek-fLH"/>
+        <segue reference="Ji2-Jv-WyQ"/>
+        <segue reference="NkQ-j5-6rL"/>
+        <segue reference="WK7-hw-eyD"/>
+        <segue reference="Th4-GT-P8f"/>
+        <segue reference="wR3-TA-URh"/>
+        <segue reference="YIa-ii-tw7"/>
         <segue reference="Af2-b2-Cbn"/>
     </inferredMetricsTieBreakers>
 </document>
