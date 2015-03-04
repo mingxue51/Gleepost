@@ -18,7 +18,6 @@
                         <rect key="frame" x="10" y="0.0" width="300" height="95"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="300" id="7y2-hC-B3q"/>
                             <constraint firstAttribute="height" constant="95" id="FKM-Jq-RVa"/>
                         </constraints>
                     </imageView>
@@ -26,7 +25,6 @@
                         <rect key="frame" x="61" y="10" width="229" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="21n-Nn-N6L"/>
-                            <constraint firstAttribute="width" constant="229" id="mAJ-us-gqq"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -35,17 +33,15 @@
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="30Z-0M-DB7" userLabel="Date">
                         <rect key="frame" x="61" y="27" width="229" height="21"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="229" id="gZb-tZ-jmP"/>
                             <constraint firstAttribute="height" constant="21" id="wgG-wo-k9l"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                         <color key="textColor" red="0.72429049739999996" green="0.72429049739999996" blue="0.72429049739999996" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="250" placeholderIntrinsicHeight="56" text="Label" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="w27-LX-izE" customClass="CopyLabel">
+                    <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="250" placeholderIntrinsicHeight="56" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="w27-LX-izE" customClass="CopyLabel">
                         <rect key="frame" x="20" y="54" width="280" height="19"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="280" id="ALn-Bs-TR7"/>
                             <constraint firstAttribute="height" constant="19" id="KWo-Na-kNv"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
@@ -54,13 +50,13 @@
                     <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3Xl-hr-3LV" customClass="GLPImageView">
                         <rect key="frame" x="20" y="10" width="36" height="36"/>
                         <constraints>
+                            <constraint firstAttribute="width" constant="36" id="kX1-1a-fwR"/>
                             <constraint firstAttribute="height" constant="36" id="nY4-MI-lGC"/>
                         </constraints>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="30Z-0M-DB7" secondAttribute="trailing" constant="30" id="2HV-cT-nLA"/>
                     <constraint firstItem="w27-LX-izE" firstAttribute="top" secondItem="30Z-0M-DB7" secondAttribute="bottom" constant="6" id="Bob-Nb-fjt"/>
                     <constraint firstItem="30Z-0M-DB7" firstAttribute="leading" secondItem="3Xl-hr-3LV" secondAttribute="trailing" constant="5" id="EMb-TI-G4h"/>
                     <constraint firstItem="a3r-59-00Z" firstAttribute="leading" secondItem="3Xl-hr-3LV" secondAttribute="trailing" constant="5" id="HJg-yz-f0J"/>
@@ -68,9 +64,14 @@
                     <constraint firstItem="3Xl-hr-3LV" firstAttribute="leading" secondItem="w27-LX-izE" secondAttribute="leading" id="Iv5-dT-mmv"/>
                     <constraint firstItem="a3r-59-00Z" firstAttribute="top" secondItem="9Pj-FO-wfU" secondAttribute="top" constant="10" id="T6y-nb-53z"/>
                     <constraint firstItem="Uah-fu-XDX" firstAttribute="leading" secondItem="9Pj-FO-wfU" secondAttribute="leading" constant="10" id="XAU-Dl-ZmQ"/>
+                    <constraint firstAttribute="trailing" secondItem="a3r-59-00Z" secondAttribute="trailing" constant="30" id="aWH-SN-4nH"/>
                     <constraint firstItem="30Z-0M-DB7" firstAttribute="top" secondItem="9Pj-FO-wfU" secondAttribute="top" constant="27" id="bkK-YH-1IM"/>
                     <constraint firstItem="3Xl-hr-3LV" firstAttribute="top" secondItem="9Pj-FO-wfU" secondAttribute="top" constant="10" id="c1b-5T-lzI"/>
                     <constraint firstItem="w27-LX-izE" firstAttribute="leading" secondItem="9Pj-FO-wfU" secondAttribute="leading" constant="20" id="fL5-Ug-aCB"/>
+                    <constraint firstAttribute="trailing" secondItem="30Z-0M-DB7" secondAttribute="trailing" constant="30" id="qZc-1M-Adk"/>
+                    <constraint firstAttribute="trailing" secondItem="Uah-fu-XDX" secondAttribute="trailing" constant="10" id="rKP-Om-I9X"/>
+                    <constraint firstItem="3Xl-hr-3LV" firstAttribute="leading" secondItem="9Pj-FO-wfU" secondAttribute="leading" constant="20" id="tPT-g2-xdb"/>
+                    <constraint firstAttribute="trailing" secondItem="w27-LX-izE" secondAttribute="trailing" constant="20" id="uKM-Sv-XoA"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -83,7 +84,7 @@
                 <outlet property="userImageView" destination="3Xl-hr-3LV" id="dqV-nh-8dQ"/>
                 <outlet property="userNameLabel" destination="a3r-59-00Z" id="Zqp-rm-7pN"/>
             </connections>
-            <point key="canvasLocation" x="-50" y="135.5"/>
+            <point key="canvasLocation" x="-69" y="151.5"/>
         </tableViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
