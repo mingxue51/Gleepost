@@ -8,6 +8,7 @@
 
 #import "UIRefreshControl+CustomLoader.h"
 #import "UIImage+animatedGIF.h"
+#import "GLPiOSSupportHelper.h"
 
 @implementation UIRefreshControl (CustomLoader)
 
@@ -37,10 +38,12 @@
 
 - (void)configureRefreshControl
 {
+    CGFloat screenWidth = [GLPiOSSupportHelper screenWidth];
+    
     [self setBackgroundColor:[UIColor whiteColor]];
     [self setTintColor:[UIColor clearColor]];
     
-    UIImageView *subView = [[UIImageView alloc] initWithFrame:CGRectMake(132, 0, 56, 56)];
+    UIImageView *subView = [[UIImageView alloc] initWithFrame:CGRectMake((screenWidth/2) - 28, 0, 56, 56)];
     
     NSString *filePath = [[NSBundle mainBundle] pathForResource: @"loader2" ofType: @"gif"];
     

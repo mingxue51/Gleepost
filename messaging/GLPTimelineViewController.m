@@ -2499,7 +2499,7 @@ const float TOP_OFFSET = 180.0f;
 
 - (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
 {
-    DDLogDebug(@"navigateToPostForCommentWithIndexPath Post index path %d : %d", postIndexPath.row, postIndexPath.section);
+    DDLogDebug(@"navigateToPostForCommentWithIndexPath Post index path %ld : %ld", (long)postIndexPath.row, (long)postIndexPath.section);
 
     _showComment = YES;
     self.selectedPost = [self.posts objectAtIndex:postIndexPath.row];
@@ -2693,7 +2693,7 @@ const float TOP_OFFSET = 180.0f;
     }
     else
     {
-        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 48, 320, 375)]; //0 63 320 302
+        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 60, [GLPiOSSupportHelper screenWidth], 375)]; //0 63 320 302
         [cvc.blurBack setImage:[image stackBlur:10.0f]];
         [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
     }

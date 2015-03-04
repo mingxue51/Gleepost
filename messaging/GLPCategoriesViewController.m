@@ -38,9 +38,6 @@
     [self configTableView];
     
     [self configAppearance];
-    
-
-//    [self.backgroundView setImage:[self.screenshot stackBlur:3.0f]];
 }
 
 - (void)viewWillAppear:(BOOL)animated

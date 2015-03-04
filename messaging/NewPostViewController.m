@@ -125,7 +125,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [self configureTextViews];
     
     [self formatElements];
-        
+    
     [self loadDataIfNeeded];
     
     DDLogDebug(@"Categories %@", [[PendingPostManager sharedInstance] categories]);

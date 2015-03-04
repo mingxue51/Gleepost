@@ -51,7 +51,9 @@ const float CATEGORIES_ANIMATION_TIME = 0.8;
         
         
         NSString *keyPath = @"position.y";
-        id finalValue = [NSNumber numberWithFloat:300];
+//        id finalValue = [NSNumber numberWithFloat:350];
+        id finalValue = [NSNumber numberWithFloat:toVC.view.center.y];
+        
         
         SKBounceAnimation *bounceAnimation = [SKBounceAnimation animationWithKeyPath:keyPath];
         bounceAnimation.fromValue = [NSNumber numberWithFloat:toVC.view.center.x];
