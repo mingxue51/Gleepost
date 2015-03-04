@@ -47,6 +47,9 @@
 @property (weak, nonatomic) IBOutlet UIView *textFieldView;
 @property (weak, nonatomic) IBOutlet UIImageView *separatorLineImageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceContentViewFromTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewHeight;
+
 
 /** Should be 2 categories (event and user's selected. */
 //@property (strong, nonatomic) NSArray *eventCategories;
@@ -122,9 +125,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [self configureTextViews];
     
     [self formatElements];
-    
-    [self formatTextView];
-    
+        
     [self loadDataIfNeeded];
     
     DDLogDebug(@"Categories %@", [[PendingPostManager sharedInstance] categories]);
@@ -246,14 +247,12 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
  */
 - (void)configureContents
 {
-    
     if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
     {
         [_titleTextField setHidden:YES];
         [_titleCharactersLeftLbl setHidden:YES];
         [_separatorLineImageView setHidden:YES];
-        CGRectSetY(_contentTextView, 10);
-        CGRectAddH(_contentTextView, 30);
+        [_distanceContentViewFromTop setConstant:-30];
     }
 }
 
@@ -267,11 +266,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     {
         [self.titleTextField becomeFirstResponder];
     }
-}
-
--(void)formatTextView
-{
-//    _contentTextView.placeholderColor = [UIColor colorWithRed:LIGHT_BLACK_RGB green:LIGHT_BLACK_RGB blue:LIGHT_BLACK_RGB alpha:1.0];
 }
 
 -(void)configureTextViews

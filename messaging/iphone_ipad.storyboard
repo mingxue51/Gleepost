@@ -826,6 +826,7 @@
                         <outlet property="addVideoButton" destination="lAu-ke-OVB" id="dhr-8a-7aF"/>
                         <outlet property="contentTextView" destination="xQ9-fx-Znm" id="Ovc-YV-tDo"/>
                         <outlet property="descriptionCharactersLeftLbl" destination="1aL-CF-A6K" id="miq-5F-OLb"/>
+                        <outlet property="distanceContentViewFromTop" destination="HTq-Qc-KsS" id="OoE-k5-EIA"/>
                         <outlet property="pendingImageView" destination="ExH-7M-Uom" id="Ez3-Ou-x5J"/>
                         <outlet property="separatorLineImageView" destination="wil-LC-KvW" id="m6z-6s-ypC"/>
                         <outlet property="textFieldView" destination="Vrl-Br-ib2" id="Al0-gF-eOh"/>
