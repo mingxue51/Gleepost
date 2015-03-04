@@ -1099,11 +1099,8 @@
                                 </connections>
                             </tableView>
                             <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7Us-7b-XyJ">
-                                <rect key="frame" x="0.0" y="441" width="600" height="149"/>
+                                <rect key="frame" x="0.0" y="441" width="600" height="159"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="149" id="q4b-bk-glg"/>
-                                </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="LZL-vv-rQt" appends="YES" id="BVT-6R-dkO"/>
                                 </connections>
@@ -1125,6 +1122,7 @@
                             <constraint firstAttribute="trailing" secondItem="DhH-lh-3JV" secondAttribute="trailing" id="fFG-4Y-cln"/>
                             <constraint firstItem="DhH-lh-3JV" firstAttribute="top" secondItem="VW6-Jx-hoc" secondAttribute="bottom" id="fuF-9T-Gfj"/>
                             <constraint firstItem="VW6-Jx-hoc" firstAttribute="top" secondItem="e6R-iO-VTP" secondAttribute="top" id="hqh-zI-VPa"/>
+                            <constraint firstItem="5WK-CP-GuW" firstAttribute="top" secondItem="7Us-7b-XyJ" secondAttribute="bottom" id="lgr-np-BEh"/>
                             <constraint firstAttribute="trailing" secondItem="MGx-Bk-zFC" secondAttribute="trailing" id="o59-zp-LiJ"/>
                             <constraint firstItem="VW6-Jx-hoc" firstAttribute="leading" secondItem="e6R-iO-VTP" secondAttribute="leading" id="u4F-2w-do6"/>
                             <constraint firstItem="7Us-7b-XyJ" firstAttribute="top" secondItem="DhH-lh-3JV" secondAttribute="bottom" constant="6" id="vrY-Cr-sD4"/>
