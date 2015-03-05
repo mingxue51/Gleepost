@@ -209,9 +209,7 @@
 {
     DDLogInfo(@"Logged in user remote key: %ld", (long)user.remoteKey);
     
-    [[GLPNetworkManager sharedInstance] startNetworkOperations];
-    [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
-    
+    [[GLPNetworkManager sharedInstance] startNetworkOperations];    
     [[WebClient sharedInstance] markNotificationsRead:nil];
     //That is removed because we are doing that by each message in conversation.
 //    [[WebClient sharedInstance] markConversationsRead:nil];

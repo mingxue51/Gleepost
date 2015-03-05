@@ -817,6 +817,8 @@ const float TOP_OFFSET = 180.0f;
     [self.navigationController.navigationBar setCampusWallFontFormat];
     //Set to all the application the status bar text white.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    
+    self.title = [[GLPThemeManager sharedInstance] campusWallTitle];
 }
 
 - (void)addNavigationButtons

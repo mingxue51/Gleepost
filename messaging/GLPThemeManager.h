@@ -13,12 +13,6 @@
 
 +(GLPThemeManager*)sharedInstance;
 
--(void)setNetwork:(NSString*)network;
--(NSString*)imageForChatBackground;
--(NSString*)imageForNavBar;
--(UIColor*)colorForTabBar;
--(NSString*)pullDownButton;
--(GLPThemeType)themeIdentifier;
 - (UIImage *)navigationBarImage;
 - (UIImage *)leftItemColouredImage:(UIImage *)leftImage;
 - (UIImage *)rightItemColouredImage:(UIImage *)rightImage;
@@ -28,6 +22,7 @@
 - (UIColor *)nameTintColour;
 - (UIColor *)tabbarSelectedColour;
 - (UIColor *)tabbarUnselectedColour;
+- (NSString *)campusWallTitle;
 - (NSString *)appNameWithString:(NSString *)string;
 - (NSString *)lowerCaseAppName;
 @end

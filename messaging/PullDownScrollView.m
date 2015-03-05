@@ -37,14 +37,14 @@
 -(void) initialiseElements
 {
 //    UIImage *pullDownImage = [UIImage imageNamed:@"pull_down_button"];
-    UIImage *pullDownImage = [UIImage imageNamed:[[GLPThemeManager sharedInstance] pullDownButton]];
-    
-    CGSize sizeOfCircleImage = pullDownImage.size;
-    self.pullDownImageView = [[UIImageView alloc] initWithImage:pullDownImage];
-    
-    [self.pullDownImageView setFrame:CGRectMake((self.frame.size.width/2)-(sizeOfCircleImage.width/4), (self.frame.size.height/2)-(sizeOfCircleImage.height/4), sizeOfCircleImage.width/2, sizeOfCircleImage.height/2)];
-    
-    isLoading = false;
+//    UIImage *pullDownImage = [UIImage imageNamed:[[GLPThemeManager sharedInstance] pullDownButton]];
+//    
+//    CGSize sizeOfCircleImage = pullDownImage.size;
+//    self.pullDownImageView = [[UIImageView alloc] initWithImage:pullDownImage];
+//    
+//    [self.pullDownImageView setFrame:CGRectMake((self.frame.size.width/2)-(sizeOfCircleImage.width/4), (self.frame.size.height/2)-(sizeOfCircleImage.height/4), sizeOfCircleImage.width/2, sizeOfCircleImage.height/2)];
+//    
+//    isLoading = false;
     
     /**
      [tableView setShowsHorizontalScrollIndicator:NO];
@@ -53,7 +53,7 @@
     //[self setShowsHorizontalScrollIndicator:NO];
     //[self setShowsVerticalScrollIndicator:NO];
     
-    [self addSubview:self.pullDownImageView];
+//    [self addSubview:self.pullDownImageView];
 }
 
 #pragma mark - Scroll View Delegate

@@ -70,7 +70,7 @@
     [self configTabbar];
     
     //Get theme type.
-    self.themeType = [[GLPThemeManager sharedInstance] themeIdentifier];
+//    self.themeType = [[GLPThemeManager sharedInstance] themeIdentifier];
     
     
     //    [self presentViewController:<#(UIViewController *)#> animated:<#(BOOL)#> completion:<#^(void)completion#>]

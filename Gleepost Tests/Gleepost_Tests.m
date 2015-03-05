@@ -66,7 +66,7 @@
 
 - (void)testThemeManagerColours
 {
-    [[GLPThemeManager sharedInstance] setNetwork:@"University of Leeds"];
+//    [[GLPThemeManager sharedInstance] setNetwork:@"University of Leeds"];
     
     UIImage *image = [[GLPThemeManager sharedInstance] navigationBarImage];
     

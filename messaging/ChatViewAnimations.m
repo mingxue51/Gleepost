@@ -901,18 +901,18 @@ static BOOL animateBubbles = YES;
 
 -(void) setBackgroundImage
 {
-    self.backgroundColor = [UIColor clearColor];
-    
-    //UIImage *newChatImage = [UIImage imageNamed:@"new_chat_background"];
-    UIImage *newChatImage = [UIImage imageNamed:[[GLPThemeManager sharedInstance] imageForChatBackground]];
-    UIImageView *backgroundImage = [[UIImageView alloc] init];
-    
-    [backgroundImage setFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-    
-    backgroundImage.image = newChatImage;
-    
-    [self addSubview:backgroundImage];
-    [self sendSubviewToBack:backgroundImage];
+//    self.backgroundColor = [UIColor clearColor];
+//    
+//    //UIImage *newChatImage = [UIImage imageNamed:@"new_chat_background"];
+//    UIImage *newChatImage = [UIImage imageNamed:[[GLPThemeManager sharedInstance] imageForChatBackground]];
+//    UIImageView *backgroundImage = [[UIImageView alloc] init];
+//    
+//    [backgroundImage setFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+//    
+//    backgroundImage.image = newChatImage;
+//    
+//    [self addSubview:backgroundImage];
+//    [self sendSubviewToBack:backgroundImage];
 }
 
 //TODO: The method is not used.
