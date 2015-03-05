@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -126,10 +126,10 @@
                             <constraint firstAttribute="bottom" secondItem="bdw-WU-FLr" secondAttribute="bottom" id="vgE-7b-vaR"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ovK-8b-jTl">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ovK-8b-jTl" userLabel="Badge View">
                         <rect key="frame" x="290" y="0.0" width="25" height="25"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="group_badge.png" translatesAutoresizingMaskIntoConstraints="NO" id="Zu9-dX-Thi">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="group_badge.png" translatesAutoresizingMaskIntoConstraints="NO" id="Zu9-dX-Thi">
                                 <rect key="frame" x="0.0" y="0.0" width="25" height="25"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="4" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y3y-wI-lLj">
@@ -140,12 +140,22 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="25" id="6Bc-Gu-5sg"/>
+                            <constraint firstAttribute="bottom" secondItem="Zu9-dX-Thi" secondAttribute="bottom" id="CHI-Sv-iAp"/>
+                            <constraint firstItem="Zu9-dX-Thi" firstAttribute="leading" secondItem="ovK-8b-jTl" secondAttribute="leading" id="E6C-RO-3ry"/>
+                            <constraint firstItem="Zu9-dX-Thi" firstAttribute="top" secondItem="ovK-8b-jTl" secondAttribute="top" id="K9z-g9-LYt"/>
+                            <constraint firstAttribute="height" constant="25" id="T5m-fI-6va"/>
+                            <constraint firstAttribute="trailing" secondItem="Zu9-dX-Thi" secondAttribute="trailing" id="W37-3M-Ewi"/>
+                        </constraints>
                     </view>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="PIb-i3-OFs" secondAttribute="bottom" constant="4" id="5qO-9S-4jz"/>
                     <constraint firstAttribute="trailing" secondItem="PIb-i3-OFs" secondAttribute="trailing" constant="10" id="IU4-ma-tcd"/>
+                    <constraint firstItem="ovK-8b-jTl" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Icy-4C-7j3"/>
                     <constraint firstItem="PIb-i3-OFs" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="cAh-8a-Dzd"/>
+                    <constraint firstAttribute="trailing" secondItem="ovK-8b-jTl" secondAttribute="trailing" constant="5" id="sJA-gm-a62"/>
                     <constraint firstItem="PIb-i3-OFs" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="xv3-Vr-nKU"/>
                 </constraints>
             </tableViewCellContentView>
@@ -165,7 +175,7 @@
                 <outlet property="progressViewTopDistance" destination="d8E-Vz-1VW" id="ubc-DR-R2W"/>
                 <outlet property="uploadingImageProgressBar" destination="W0I-1B-MPv" id="YkP-aQ-Udo"/>
             </connections>
-            <point key="canvasLocation" x="-56" y="273.5"/>
+            <point key="canvasLocation" x="-312" y="235.5"/>
         </tableViewCell>
     </objects>
     <resources>

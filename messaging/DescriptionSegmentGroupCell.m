@@ -12,6 +12,7 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPConversation.h"
 #import "GLPLiveGroupConversationsManager.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface DescriptionSegmentGroupCell ()
 
@@ -90,6 +91,9 @@ const float DESCR_LBL_WIDTH = 290;
     [view setRightButtonTitle:@"Messenger" andLeftButtonTitle:@"Newsfeed"];
     [view setSlideAnimationEnabled:NO];
 
+//    [view setCenter:CGPointMake([GLPiOSSupportHelper screenWidth] / 2, view.center.y)];
+    CGRectSetW(view, 300.0);
+    
     [_segmentView addSubview:view];
 }
 

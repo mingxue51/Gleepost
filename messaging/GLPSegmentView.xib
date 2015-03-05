@@ -34,6 +34,7 @@
                 <outlet property="rightLbl" destination="qN4-TC-V5N" id="hVV-g6-2rP"/>
                 <outlet property="slideImageView" destination="y28-nC-lR7" id="fYM-jy-app"/>
             </connections>
+            <point key="canvasLocation" x="226" y="123"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

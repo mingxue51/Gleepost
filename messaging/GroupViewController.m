@@ -268,7 +268,7 @@ const float TOP_OFF_SET = -64.0;
     
     _strechedImageView = [array objectAtIndex:0];
     
-    _strechedImageView.frame = CGRectMake(0, -kStretchedImageHeight, self.tableView.frame.size.width, kStretchedImageHeight);
+    _strechedImageView.frame = CGRectMake(0, -kStretchedImageHeight, [GLPiOSSupportHelper screenWidth], kStretchedImageHeight);
     
     [self refreshTopImageView];
     
@@ -517,8 +517,8 @@ const float TOP_OFF_SET = -64.0;
 {
     NSDictionary *dict = [notification userInfo];
     
-    int key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
-    int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
+    NSInteger key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
+    NSInteger remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
     NSString * urlImage = [dict objectForKey:@"imageUrl"];
     
 

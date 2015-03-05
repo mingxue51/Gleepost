@@ -225,7 +225,7 @@
 
 - (void)popUpIntroView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     IntroNewGroupViewController *introNewGroupVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroNewGroupViewController"];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:introNewGroupVC];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -234,7 +234,7 @@
 
 - (void)popUpSearchGroupsView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPGroupSearchViewController *searchGroupsVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPGroupSearchViewController"];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:searchGroupsVC];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;

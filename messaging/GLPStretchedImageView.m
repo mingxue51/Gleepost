@@ -9,6 +9,7 @@
 #import "GLPStretchedImageView.h"
 #import "ShapeFormatterHelper.h"
 #import "NSString+Utils.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPStretchedImageView ()
 
@@ -55,7 +56,11 @@ const float kStretchedImageHeight = 250;
 
 - (void)configureLabel
 {
-    _title = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 130.0, 280.0, 80.0)];
+    CGFloat screenWidth = [GLPiOSSupportHelper screenWidth];
+    
+    _title = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 130.0, screenWidth - 40, 80.0)];
+    
+    [_title setCenter:CGPointMake(screenWidth / 2, _title.center.y)];
     
     [_title setFont:_font];
     
@@ -78,6 +83,8 @@ const float kStretchedImageHeight = 250;
 - (void)configureTransparentImageView
 {
     _transImageView = [[UIImageView alloc] initWithFrame:self.frame];
+    
+    CGRectSetW(_transImageView, [GLPiOSSupportHelper screenWidth]);
     
     [_transImageView setBackgroundColor:[UIColor blackColor]];
     

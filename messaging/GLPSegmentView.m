@@ -55,6 +55,7 @@ const float ANIMATION_DURATION = 0.1;
     [self configuration];
     [self formatElements];
     [self configureGesturesToLabels];
+    CGRectSetW(self, 300.0);
 }
 
 - (void)configuration
