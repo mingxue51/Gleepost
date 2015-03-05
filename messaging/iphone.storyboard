@@ -4952,7 +4952,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Gleepost_mai" width="46" height="11"/>
+        <image name="Gleepost_mai" width="31" height="31"/>
         <image name="Gleepost_main.png" width="406" height="212"/>
         <image name="accept.png" width="254" height="185"/>
         <image name="add-user.png" width="254" height="185"/>

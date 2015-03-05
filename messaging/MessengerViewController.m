@@ -164,6 +164,7 @@
 //    
 //    [_segmentView addSubview:view];
     
+    [_searchBarView setAutoresizingMask:UIViewAutoresizingNone];
     
     NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPSearchBar" owner:self options:nil];
     
@@ -177,6 +178,8 @@
     _glpSearchBar = view;
     
     [_searchBarView addSubview:view];
+    
+    [view setNeedsUpdateConstraints];
     
 }
 

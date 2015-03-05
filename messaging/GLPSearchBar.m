@@ -8,12 +8,14 @@
 
 #import "GLPSearchBar.h"
 #import "ShapeFormatterHelper.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPSearchBar ()
 
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textFieldWidth;
 
 @end
 
@@ -33,6 +35,12 @@
     [ShapeFormatterHelper setRoundedView:_textField toDiameter:5.0];
     [self setLeftPaddingToTextField];
     
+}
+
+- (void)updateConstraints {
+    [super updateConstraints];
+    [_textFieldWidth setConstant:[GLPiOSSupportHelper screenWidth] - 16.0];
+    CGRectSetW(self, [GLPiOSSupportHelper screenWidth]);
 }
 
 - (void)configureTextField
