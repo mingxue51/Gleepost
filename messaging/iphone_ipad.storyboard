@@ -2507,11 +2507,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Lwi-RM-iiC">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Lwi-RM-iiC">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="Lwi-RM-iiC" secondAttribute="bottom" id="9xq-7M-5af"/>
+                            <constraint firstItem="Lwi-RM-iiC" firstAttribute="leading" secondItem="qe2-jN-uZe" secondAttribute="leading" id="Gzo-QS-py8"/>
+                            <constraint firstItem="Lwi-RM-iiC" firstAttribute="top" secondItem="Jhg-TW-tWO" secondAttribute="bottom" id="aHX-gy-cg8"/>
+                            <constraint firstAttribute="trailing" secondItem="Lwi-RM-iiC" secondAttribute="trailing" id="cwk-23-de2"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Kuk-0K-D8F"/>
                     <connections>
@@ -2520,7 +2526,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KSP-Qi-oYN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6712.5" y="-3483.8028169014083"/>
+            <point key="canvasLocation" x="6712" y="-3484"/>
         </scene>
         <!--Show Users Groups View Controller-->
         <scene sceneID="uWa-gG-Sd6">
