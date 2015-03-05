@@ -247,7 +247,7 @@
 
 - (void)viewNewMessageView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     NewGroupMessageViewController *newGroupMessageVC = [storyboard instantiateViewControllerWithIdentifier:@"NewGroupMessageViewController"];
 //    [newPostVC setDelegate:self];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newGroupMessageVC];
