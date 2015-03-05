@@ -16,6 +16,7 @@
 #import "GLPImageHelper.h"
 #import "GLPSystemMessage.h"
 #import "GLPReadReceiptsManager.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPMessageCell()
 
@@ -99,12 +100,14 @@ static const CGFloat kTextSize = 15;
 
     // timeview
     {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake([GLPiOSSupportHelper screenWidth] / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
         label.textAlignment = NSTextAlignmentCenter;
         label.textColor = [UIColor lightGrayColor];
         label.font = [UIFont fontWithName:GLP_TITLE_FONT size:10.0f];
         label.userInteractionEnabled = NO;
         [self.contentView addSubview:label];
+        
+//        [ShapeFormatterHelper setBorderToView:label withColour:[UIColor redColor] andWidth:1.0];
     }
 
     // text view
@@ -163,7 +166,7 @@ static const CGFloat kTextSize = 15;
     // read receipt message
     {
         //The Y position is changing depending on the bubble height.
-        UILabel *readReceiptMessage = [[UILabel alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
+        UILabel *readReceiptMessage = [[UILabel alloc] initWithFrame:CGRectMake([GLPiOSSupportHelper screenWidth] / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
         readReceiptMessage.textAlignment = NSTextAlignmentCenter;
         readReceiptMessage.textColor = [UIColor lightGrayColor];
         readReceiptMessage.font = [UIFont fontWithName:GLP_TITLE_FONT size:10.0f];
