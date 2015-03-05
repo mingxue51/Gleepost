@@ -296,7 +296,6 @@
 		5851114219A83D9900488E79 /* progress_bar_cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851114119A83D9900488E79 /* progress_bar_cloud.png */; };
 		5851957D18CFA26E00F8CE46 /* GLPiOSSupportHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851957C18CFA26E00F8CE46 /* GLPiOSSupportHelper.m */; };
 		58536ED918BE77440036FD00 /* GLPTemporaryUserInformationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */; };
-		58536EDC18BE84210036FD00 /* gleepost-dev.cer in Resources */ = {isa = PBXBuildFile; fileRef = 58536EDB18BE84210036FD00 /* gleepost-dev.cer */; };
 		585790D31A366DE300418528 /* GLPVideoPendingPostProgressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585790D21A366DE300418528 /* GLPVideoPendingPostProgressManager.m */; };
 		585882CE190E8B49000BFBF9 /* thermometer_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 585882CD190E8B49000BFBF9 /* thermometer_shadow.png */; };
 		585909A819D42E40006ACC64 /* GLPLiveGroupPostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585909A719D42E40006ACC64 /* GLPLiveGroupPostManager.m */; };
@@ -660,6 +659,7 @@
 		58D3D738182ADB4200DE2925 /* TransitionDelegateViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */; };
 		58D4FF3219A53093006E7AC8 /* GLPVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D4FF3119A53093006E7AC8 /* GLPVideo.m */; };
 		58D612B4184E63C100915B51 /* mascot_stanford.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D612B3184E63C100915B51 /* mascot_stanford.png */; };
+		58D67DAE1AA8FF7900CBA6BC /* gleepost-dev.cer in Resources */ = {isa = PBXBuildFile; fileRef = 58D67DAD1AA8FF7900CBA6BC /* gleepost-dev.cer */; };
 		58D70D501A83C9C70023B478 /* back_final_new_old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D70D4F1A83C9C70023B478 /* back_final_new_old@2x.png */; };
 		58D70D541A84C6D40023B478 /* back_final@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D70D531A84C6D40023B478 /* back_final@2x.png */; };
 		58D70D581A8513400023B478 /* ProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D70D571A8513400023B478 /* ProfileManager.m */; };
@@ -1367,7 +1367,6 @@
 		5851957C18CFA26E00F8CE46 /* GLPiOSSupportHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPiOSSupportHelper.m; sourceTree = "<group>"; };
 		58536ED718BE77440036FD00 /* GLPTemporaryUserInformationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTemporaryUserInformationManager.h; sourceTree = "<group>"; };
 		58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTemporaryUserInformationManager.m; sourceTree = "<group>"; };
-		58536EDB18BE84210036FD00 /* gleepost-dev.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "gleepost-dev.cer"; sourceTree = "<group>"; };
 		585790D11A366DE300418528 /* GLPVideoPendingPostProgressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoPendingPostProgressManager.h; sourceTree = "<group>"; };
 		585790D21A366DE300418528 /* GLPVideoPendingPostProgressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoPendingPostProgressManager.m; sourceTree = "<group>"; };
 		585882CD190E8B49000BFBF9 /* thermometer_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thermometer_shadow.png; sourceTree = "<group>"; };
@@ -1879,6 +1878,7 @@
 		58D4FF3019A53093006E7AC8 /* GLPVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideo.h; sourceTree = "<group>"; };
 		58D4FF3119A53093006E7AC8 /* GLPVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideo.m; sourceTree = "<group>"; };
 		58D612B3184E63C100915B51 /* mascot_stanford.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mascot_stanford.png; sourceTree = "<group>"; };
+		58D67DAD1AA8FF7900CBA6BC /* gleepost-dev.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "gleepost-dev.cer"; sourceTree = "<group>"; };
 		58D70D4F1A83C9C70023B478 /* back_final_new_old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_final_new_old@2x.png"; sourceTree = "<group>"; };
 		58D70D531A84C6D40023B478 /* back_final@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_final@2x.png"; sourceTree = "<group>"; };
 		58D70D561A8513400023B478 /* ProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileManager.h; sourceTree = "<group>"; };
@@ -2366,8 +2366,8 @@
 		11E2FBAF1856FCA9002EB2FA /* SSLCertificates */ = {
 			isa = PBXGroup;
 			children = (
+				58D67DAD1AA8FF7900CBA6BC /* gleepost-dev.cer */,
 				588CDF6C197618CA00373EE3 /* gleepost.cer */,
-				58536EDB18BE84210036FD00 /* gleepost-dev.cer */,
 			);
 			name = SSLCertificates;
 			path = messaging;
@@ -5909,6 +5909,7 @@
 				80595E1318B1B02900D99E41 /* Localizable.strings in Resources */,
 				582B404718AD3E5800BC4285 /* speaker_category_old.png in Resources */,
 				80E7478C17CEA7CB001957E5 /* get_conversations.json in Resources */,
+				58D67DAE1AA8FF7900CBA6BC /* gleepost-dev.cer in Resources */,
 				58AD86A318929F2200016C6D /* about_button.png in Resources */,
 				80E7479417CEAED7001957E5 /* get_messages.json in Resources */,
 				80C4CABA17CFE3C400AFA80C /* post_register.json in Resources */,
@@ -5962,7 +5963,6 @@
 				585AE26C192BF1FD00174CED /* bird-house-7_old@2x.png in Resources */,
 				58350A6B198AF733000BB1CA /* GLPNetworkErrorView.xib in Resources */,
 				5829F48F18B1546300A7B871 /* pending_request.png in Resources */,
-				58536EDC18BE84210036FD00 /* gleepost-dev.cer in Resources */,
 				588DE5D418A8FA40001D344D /* add_photo_btn.png in Resources */,
 				5887C7F219FF0C65004441B9 /* locker_private_group.png in Resources */,
 				5887C7E319FDB391004441B9 /* campus_live_placeholder.png in Resources */,
