@@ -1664,11 +1664,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Eq-0j-BH2">
-                                <rect key="frame" x="0.0" y="518" width="320" height="50"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Eq-0j-BH2">
+                                <rect key="frame" x="0.0" y="550" width="600" height="50"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3v9-7h-mSC">
-                                        <rect key="frame" x="254" y="7" width="60" height="35"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3aj-QJ-wDM" customClass="HPGrowingTextView">
+                                        <rect key="frame" x="7" y="7" width="517" height="36"/>
+                                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3v9-7h-mSC">
+                                        <rect key="frame" x="532" y="7" width="60" height="35"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="35" id="oSr-ae-Krq"/>
+                                            <constraint firstAttribute="width" constant="60" id="wjt-pm-FTH"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
                                         <state key="normal" title="SEND">
                                             <color key="titleColor" red="0.20392156859999999" green="0.59607843140000005" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1678,15 +1686,21 @@
                                             <action selector="sendButtonClicked:" destination="p7E-nR-kMk" eventType="touchUpInside" id="cTt-tt-l3f"/>
                                         </connections>
                                     </button>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3aj-QJ-wDM" customClass="HPGrowingTextView">
-                                        <rect key="frame" x="7" y="7" width="240" height="36"/>
-                                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
-                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="6ez-G1-Lij"/>
+                                    <constraint firstItem="3v9-7h-mSC" firstAttribute="leading" secondItem="3aj-QJ-wDM" secondAttribute="trailing" constant="8" id="CC4-ws-n8Q"/>
+                                    <constraint firstAttribute="trailing" secondItem="3v9-7h-mSC" secondAttribute="trailing" constant="8" id="J8H-9S-GKF"/>
+                                    <constraint firstItem="3aj-QJ-wDM" firstAttribute="leading" secondItem="9Eq-0j-BH2" secondAttribute="leading" constant="7" id="MRA-gW-9nm"/>
+                                    <constraint firstAttribute="bottom" secondItem="3v9-7h-mSC" secondAttribute="bottom" constant="8" id="ci4-In-FHM"/>
+                                    <constraint firstItem="3aj-QJ-wDM" firstAttribute="top" secondItem="9Eq-0j-BH2" secondAttribute="top" constant="7" id="nvz-vA-8pc"/>
+                                    <constraint firstItem="3v9-7h-mSC" firstAttribute="top" secondItem="9Eq-0j-BH2" secondAttribute="top" constant="7" id="oGn-tN-31V"/>
+                                    <constraint firstAttribute="bottom" secondItem="3aj-QJ-wDM" secondAttribute="bottom" constant="7" id="zz4-8C-1cl"/>
+                                </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="70" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="CuF-td-RD0">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="518"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="70" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="CuF-td-RD0">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="549"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                                 <prototypes>
@@ -1829,6 +1843,15 @@
                         </subviews>
                         <color key="backgroundColor" red="0.93877551020408168" green="0.93877551020408168" blue="0.93877551020408168" alpha="1" colorSpace="calibratedRGB"/>
                         <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="CuF-td-RD0" firstAttribute="top" secondItem="LAc-ph-K7S" secondAttribute="top" id="Eez-7S-eNQ"/>
+                            <constraint firstItem="9Eq-0j-BH2" firstAttribute="top" secondItem="CuF-td-RD0" secondAttribute="bottom" constant="1" id="Fu4-Qs-SdG"/>
+                            <constraint firstItem="CuF-td-RD0" firstAttribute="leading" secondItem="LAc-ph-K7S" secondAttribute="leading" id="S7S-QI-Vke"/>
+                            <constraint firstAttribute="trailing" secondItem="9Eq-0j-BH2" secondAttribute="trailing" id="VHn-vb-qu4"/>
+                            <constraint firstItem="9Eq-0j-BH2" firstAttribute="leading" secondItem="LAc-ph-K7S" secondAttribute="leading" id="gqu-aQ-cze"/>
+                            <constraint firstItem="g6p-u7-LFG" firstAttribute="top" secondItem="9Eq-0j-BH2" secondAttribute="bottom" id="o3y-eV-9Eb"/>
+                            <constraint firstAttribute="trailing" secondItem="CuF-td-RD0" secondAttribute="trailing" id="uGN-YR-MeS"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="pIl-Dh-nRJ">
                         <barButtonItem key="backBarButtonItem" title=" " id="lGK-dl-ANd"/>
@@ -1838,6 +1861,8 @@
                     <connections>
                         <outlet property="formTextView" destination="3aj-QJ-wDM" id="Fiz-JO-YGF"/>
                         <outlet property="formView" destination="9Eq-0j-BH2" id="XEh-7j-pIU"/>
+                        <outlet property="messageFormViewDistanceFromBottom" destination="o3y-eV-9Eb" id="5aS-Ja-AYf"/>
+                        <outlet property="messageFormViewHeight" destination="6ez-G1-Lij" id="B6g-Cj-XEq"/>
                         <outlet property="sendButton" destination="3v9-7h-mSC" id="PtJ-ss-l9Y"/>
                         <outlet property="tableView" destination="CuF-td-RD0" id="Gg4-Ow-Sit"/>
                         <segue destination="ZBE-A4-gdJ" kind="show" identifier="view private profile" id="woK-8Q-gjw"/>
@@ -1853,7 +1878,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3474.375" y="-296.83098591549293"/>
+            <point key="canvasLocation" x="3474" y="-297"/>
         </scene>
         <!--Message Details View Controller-->
         <scene sceneID="VNH-JZ-bdr">

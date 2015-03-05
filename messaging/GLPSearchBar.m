@@ -28,6 +28,8 @@
     [self configureTextFieldView];
     
     [self configureTextField];
+    
+    CGRectSetW(self, [GLPiOSSupportHelper screenWidth]);
 }
 
 - (void)configureTextFieldView
@@ -35,12 +37,6 @@
     [ShapeFormatterHelper setRoundedView:_textField toDiameter:5.0];
     [self setLeftPaddingToTextField];
     
-}
-
-- (void)updateConstraints {
-    [super updateConstraints];
-    [_textFieldWidth setConstant:[GLPiOSSupportHelper screenWidth] - 16.0];
-    CGRectSetW(self, [GLPiOSSupportHelper screenWidth]);
 }
 
 - (void)configureTextField

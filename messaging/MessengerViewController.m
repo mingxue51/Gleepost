@@ -164,6 +164,8 @@
 //    
 //    [_segmentView addSubview:view];
     
+    //We are doing that to let the GLPSearchBar contrains applied. Also the Autoresized Subviews Attributes
+    //has disabled.
     [_searchBarView setAutoresizingMask:UIViewAutoresizingNone];
     
     NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPSearchBar" owner:self options:nil];
@@ -178,9 +180,6 @@
     _glpSearchBar = view;
     
     [_searchBarView addSubview:view];
-    
-    [view setNeedsUpdateConstraints];
-    
 }
 
 - (void)initialiseObjects

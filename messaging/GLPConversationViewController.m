@@ -78,6 +78,9 @@
 
 @property (strong, nonatomic) GLPConversationHelper *conversationHelper;
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *messageFormViewHeight;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *messageFormViewDistanceFromBottom;
+
 /** This variable is used to prevent the resizing of the table view and of the text view when user navigates back
  to the previews VC using the sliding gesture. 
  Look in method keyboardWillShow: and in method tableViewClicked:.
@@ -784,23 +787,38 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
     
 	// get a rect for the textView frame
-	CGRect containerFrame = self.formView.frame;
-    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
+//	CGRect containerFrame = self.formView.frame;
+//    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
+//    
+//	CGRect tableViewFrame = self.tableView.frame;
+//    tableViewFrame.size.height = containerFrame.origin.y - self.tableView.frame.origin.y;
     
-	CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.size.height = containerFrame.origin.y - self.tableView.frame.origin.y;
+    if(keyboardBounds.size.height == 0)
+    {
+        return;
+    }
+    
+    [_formView layoutIfNeeded];
+    [self.tableView layoutIfNeeded];
     
     DDLogDebug(@"Keyboard will show");
     
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
-        self.formView.frame = containerFrame;
-        self.tableView.frame = tableViewFrame;
+//        self.formView.frame = containerFrame;
+//        self.tableView.frame = tableViewFrame;
+//        
+//        [self scrollToTheEndAnimated:NO];
         
-        [self scrollToTheEndAnimated:NO];
+        _messageFormViewDistanceFromBottom.constant = keyboardBounds.size.height;
+        [_formView layoutIfNeeded];
+        [self.tableView layoutIfNeeded];
         
     } completion:^(BOOL finished) {
-        [self.tableView setNeedsLayout];
+//        [self.tableView setNeedsLayout];
     }];
+
+    [self scrollToTheEndAnimated:YES];
+
 }
 
 - (void)keyboardWillHide:(NSNotification *)note{
@@ -821,15 +839,22 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     UIViewAnimationCurve animationCurve = curve.intValue;
 	
 	// get a rect for the textView frame
-	CGRect containerFrame = self.formView.frame;
-    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
+//	CGRect containerFrame = self.formView.frame;
+//    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
+//    
+//	CGRect tableViewFrame = self.tableView.frame;
+//    tableViewFrame.size.height = containerFrame.origin.y - self.tableView.frame.origin.y;
     
-	CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.size.height = containerFrame.origin.y - self.tableView.frame.origin.y;
+    [_formView layoutIfNeeded];
+    [self.tableView layoutIfNeeded];
     
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
-        self.formView.frame = containerFrame;
-        self.tableView.frame = tableViewFrame;
+//        self.formView.frame = containerFrame;
+//        self.tableView.frame = tableViewFrame;
+        
+        _messageFormViewDistanceFromBottom.constant = 0;
+        [_formView layoutIfNeeded];
+        [self.tableView layoutIfNeeded];
         
     } completion:^(BOOL finished) {
         [self.tableView setNeedsLayout];
@@ -847,15 +872,15 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 {
     float diff = (growingTextView.frame.size.height - height);
     
-	CGRect r = self.formView.frame;
-    r.size.height -= diff;
-    r.origin.y += diff;
-	self.formView.frame = r;
-    
-    CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.size.height += diff;
-    self.tableView.frame = tableViewFrame;
-    
+//	CGRect r = self.formView.frame;
+//    r.size.height -= diff;
+//    r.origin.y += diff;
+//	self.formView.frame = r;
+//    
+//    CGRect tableViewFrame = self.tableView.frame;
+//    tableViewFrame.size.height += diff;
+//    self.tableView.frame = tableViewFrame;
+    _messageFormViewHeight.constant -= diff;
     [self scrollToTheEndAnimated:NO];
 }
 

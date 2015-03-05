@@ -1147,11 +1147,7 @@ static bool firstTime = YES;
 //    CGRect tableViewFrame = self.tableView.frame;
 //    tableViewFrame.size.height += diff;
 //    self.tableView.frame = tableViewFrame;
-
-    DDLogDebug(@"growingTextView: %f : %f : %f", height, diff, _commentFormViewHeight.constant);
-    
     _commentFormViewHeight.constant -= diff;
-    
     [self scrollToTheEndAnimated:NO];
 }
 

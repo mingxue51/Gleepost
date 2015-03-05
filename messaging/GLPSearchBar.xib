@@ -14,9 +14,6 @@
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3lZ-UL-p29">
                     <rect key="frame" x="8" y="7" width="304" height="30"/>
                     <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="304" id="SwS-TJ-OOc"/>
-                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
@@ -38,6 +35,7 @@
             <constraints>
                 <constraint firstItem="3Ee-1F-CnV" firstAttribute="top" secondItem="CF5-V9-v9U" secondAttribute="bottom" constant="12" id="GFH-JS-NCH"/>
                 <constraint firstItem="CF5-V9-v9U" firstAttribute="top" secondItem="Vir-i5-CVR" secondAttribute="top" constant="12" id="Hvv-JO-T6d"/>
+                <constraint firstAttribute="trailing" secondItem="3lZ-UL-p29" secondAttribute="trailing" constant="8" id="Rsq-eN-F1M"/>
                 <constraint firstAttribute="trailing" secondItem="3Ee-1F-CnV" secondAttribute="trailing" id="XnP-tg-cOA"/>
                 <constraint firstAttribute="trailing" secondItem="CF5-V9-v9U" secondAttribute="trailing" constant="33" id="aAh-Zm-P1q"/>
                 <constraint firstItem="3Ee-1F-CnV" firstAttribute="top" secondItem="3lZ-UL-p29" secondAttribute="bottom" constant="7" id="elp-oc-A8y"/>
@@ -51,7 +49,6 @@
             <connections>
                 <outlet property="activityIndicator" destination="CF5-V9-v9U" id="naQ-hY-8vI"/>
                 <outlet property="textField" destination="3lZ-UL-p29" id="LlL-tr-WBI"/>
-                <outlet property="textFieldWidth" destination="SwS-TJ-OOc" id="cyf-qX-RBj"/>
             </connections>
             <point key="canvasLocation" x="340" y="282.5"/>
         </view>
