@@ -81,6 +81,8 @@
 
 - (void)configureSearchBar
 {
+    [_searchBarView setAutoresizingMask:UIViewAutoresizingNone];
+
     NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPSearchBar" owner:self options:nil];
     
     GLPSearchBar *view = [array lastObject];
