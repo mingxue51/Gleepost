@@ -36,7 +36,6 @@
 {
     [ShapeFormatterHelper setRoundedView:_textField toDiameter:5.0];
     [self setLeftPaddingToTextField];
-    
 }
 
 - (void)configureTextField

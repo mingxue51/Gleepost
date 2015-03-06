@@ -50,7 +50,7 @@
                 <outlet property="activityIndicator" destination="CF5-V9-v9U" id="naQ-hY-8vI"/>
                 <outlet property="textField" destination="3lZ-UL-p29" id="LlL-tr-WBI"/>
             </connections>
-            <point key="canvasLocation" x="312" y="246.5"/>
+            <point key="canvasLocation" x="111" y="182.5"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
