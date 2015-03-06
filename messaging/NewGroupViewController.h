@@ -19,7 +19,7 @@
 
 @end
 
-@interface NewGroupViewController : UIViewController <ImageSelectorViewControllerDelegate>
+@interface NewGroupViewController : UIViewController <ImageSelectorViewControllerDelegate, UITextFieldDelegate, UITextViewDelegate>
 
 @property (assign, nonatomic) GroupPrivacy groupType;
 

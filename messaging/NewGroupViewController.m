@@ -14,6 +14,7 @@
 #import "UINavigationBar+Utils.h"
 #import "UIView+GLPDesign.h"
 #import "ShapeFormatterHelper.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface NewGroupViewController ()
 
@@ -54,6 +55,10 @@
 @property (strong, nonatomic) NSDictionary *selectedGroupType;
 
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewHeight;
+
+
+
 @end
 
 @implementation NewGroupViewController
@@ -75,16 +80,35 @@
     
     [self setDataToGroupViews];
 
-    
+    [self configureViews];
 
-    if(!IS_IPHONE_5) {
-        CGFloat offset = -25;
-//        CGRectMoveY(_groupDescriptionTextView, offset);
-        CGRectAddH(_groupDescriptionTextView, offset);
-
-    }
+//    if(!IS_IPHONE_5) {
+//        CGFloat offset = -25;
+////        CGRectMoveY(_groupDescriptionTextView, offset);
+//        CGRectAddH(_groupDescriptionTextView, offset);
+//
+//    }
 }
 
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    
+    [_groupNameTextField resignFirstResponder];
+    
+    [_groupDescriptionTextView resignFirstResponder];
+    return YES;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if([text isEqualToString:@"\n"])
+    {
+        [_groupDescriptionTextView resignFirstResponder];
+        
+        return NO;
+    }
+    
+    return YES;
+}
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -136,6 +160,13 @@
     [ShapeFormatterHelper setTwoLeftCornerRadius:_selectedImageView withViewFrame:_selectedImageView.frame withValue:4];
 }
 
+- (void)configureViews
+{
+    if([GLPiOSSupportHelper useShortConstrains])
+    {
+        [_mainViewHeight setConstant:50.0];
+    }
+}
 
 - (void)configureNotifications
 {
@@ -423,8 +454,8 @@
         
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
         
-        CGRectSetH(_mainView, newHeightOfMainView);
-        CGRectSetY(_selectImageView, newYSelectImageView);
+//        CGRectSetH(_mainView, newHeightOfMainView);
+//        CGRectSetY(_selectImageView, newYSelectImageView);
         
     } completion:^(BOOL finished) {
         
