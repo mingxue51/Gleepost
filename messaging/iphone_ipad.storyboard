@@ -4208,59 +4208,124 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xef-WS-a7i">
-                                <rect key="frame" x="10" y="159" width="300" height="125"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xef-WS-a7i">
+                                <rect key="frame" x="70" y="83" width="460" height="192"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="public_group.png" translatesAutoresizingMaskIntoConstraints="NO" id="sBJ-Db-Osp">
-                                        <rect key="frame" x="13" y="16" width="111" height="93"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="public_group.png" translatesAutoresizingMaskIntoConstraints="NO" id="sBJ-Db-Osp">
+                                        <rect key="frame" x="15" y="29" width="161" height="135"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="sBJ-Db-Osp" secondAttribute="height" multiplier="37:31" id="9p0-nf-Edy"/>
+                                        </constraints>
                                     </imageView>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Anyone on campus can join &amp; the group will show up in search results." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9K-wA-wFd">
-                                        <rect key="frame" x="132" y="34" width="157" height="57"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anyone on campus can join &amp; the group will show up in search results." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c9K-wA-wFd">
+                                        <rect key="frame" x="186" y="79" width="264" height="34"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                         <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
+                                        <variation key="widthClass=regular">
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
+                                        </variation>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerY" secondItem="c9K-wA-wFd" secondAttribute="centerY" id="1LZ-ZG-UGz"/>
+                                    <constraint firstItem="c9K-wA-wFd" firstAttribute="leading" secondItem="sBJ-Db-Osp" secondAttribute="trailing" constant="10" id="HxE-x4-8QC"/>
+                                    <constraint firstItem="sBJ-Db-Osp" firstAttribute="leading" secondItem="Xef-WS-a7i" secondAttribute="leading" constant="15" id="Z72-Ll-aim"/>
+                                    <constraint firstAttribute="centerY" secondItem="sBJ-Db-Osp" secondAttribute="centerY" id="kHR-6A-UaC"/>
+                                    <constraint firstAttribute="trailing" secondItem="c9K-wA-wFd" secondAttribute="trailing" constant="10" id="neJ-Ff-dOh"/>
+                                    <constraint firstAttribute="width" secondItem="Xef-WS-a7i" secondAttribute="height" multiplier="12:5" id="yUF-AY-jPu"/>
+                                    <constraint firstItem="sBJ-Db-Osp" firstAttribute="width" secondItem="Xef-WS-a7i" secondAttribute="width" multiplier="0.35" id="zJ5-ny-w8T"/>
+                                </constraints>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lQj-xz-s28">
-                                <rect key="frame" x="10" y="294" width="300" height="125"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lQj-xz-s28">
+                                <rect key="frame" x="70" y="285" width="460" height="192"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="private_group.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ijc-dw-udT">
-                                        <rect key="frame" x="13" y="16" width="111" height="93"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="private_group.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ijc-dw-udT">
+                                        <rect key="frame" x="13" y="29" width="161" height="135"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="Ijc-dw-udT" secondAttribute="height" multiplier="37:31" id="glw-mO-5cG"/>
+                                        </constraints>
                                     </imageView>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Membership by invitation only &amp; the group will show up in search results." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lVa-x0-NDl">
-                                        <rect key="frame" x="132" y="34" width="157" height="57"/>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Membership by invitation only &amp; the group will show up in search results." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lVa-x0-NDl">
+                                        <rect key="frame" x="184" y="79" width="266" height="34"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                                         <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
+                                        <variation key="widthClass=regular">
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
+                                        </variation>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="lVa-x0-NDl" secondAttribute="trailing" constant="10" id="Og2-fk-gaZ"/>
+                                    <constraint firstItem="Ijc-dw-udT" firstAttribute="width" secondItem="lQj-xz-s28" secondAttribute="width" multiplier="0.35" id="RpT-ck-Ik1"/>
+                                    <constraint firstAttribute="centerY" secondItem="lVa-x0-NDl" secondAttribute="centerY" id="VIW-vl-LLG"/>
+                                    <constraint firstAttribute="centerY" secondItem="Ijc-dw-udT" secondAttribute="centerY" id="Wdh-Xd-T0B"/>
+                                    <constraint firstItem="lVa-x0-NDl" firstAttribute="leading" secondItem="Ijc-dw-udT" secondAttribute="trailing" constant="10" id="eGm-Lb-pHJ"/>
+                                    <constraint firstAttribute="width" secondItem="lQj-xz-s28" secondAttribute="height" multiplier="12:5" id="m1j-Ns-uKv"/>
+                                    <constraint firstItem="Ijc-dw-udT" firstAttribute="leading" secondItem="lQj-xz-s28" secondAttribute="leading" constant="13" id="vIg-3F-a49"/>
+                                </constraints>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jRe-xc-AZd">
-                                <rect key="frame" x="10" y="429" width="300" height="125"/>
-                                <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="secret_group.png" translatesAutoresizingMaskIntoConstraints="NO" id="wq1-2f-wyy">
-                                        <rect key="frame" x="13" y="16" width="111" height="93"/>
-                                    </imageView>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Membership by invitation only &amp; the group will not show up in search results." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bhQ-fE-iPT">
-                                        <rect key="frame" x="132" y="34" width="157" height="57"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
-                                        <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </view>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="What kind of group do you want?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j9G-Qw-ky6">
-                                <rect key="frame" x="20" y="32" width="280" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What kind of group do you want?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j9G-Qw-ky6">
+                                <rect key="frame" x="57" y="32" width="486" height="36"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="j9G-Qw-ky6" secondAttribute="height" multiplier="40:3" id="7tZ-BR-Dke"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                 <color key="textColor" red="0.58823529411764708" green="0.58823529411764708" blue="0.58823529411764708" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
+                                <variation key="widthClass=regular">
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="25"/>
+                                </variation>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jRe-xc-AZd">
+                                <rect key="frame" x="70" y="487" width="460" height="192"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="secret_group.png" translatesAutoresizingMaskIntoConstraints="NO" id="wq1-2f-wyy">
+                                        <rect key="frame" x="13" y="29" width="161" height="135"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="wq1-2f-wyy" secondAttribute="height" multiplier="37:31" id="yRe-aW-TQ2"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Membership by invitation only &amp; the group will not show up in search results." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bhQ-fE-iPT">
+                                        <rect key="frame" x="184" y="79" width="266" height="34"/>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
+                                        <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <variation key="widthClass=regular">
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
+                                        </variation>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="bhQ-fE-iPT" firstAttribute="leading" secondItem="wq1-2f-wyy" secondAttribute="trailing" constant="10" id="01g-Dh-vqi"/>
+                                    <constraint firstAttribute="centerY" secondItem="wq1-2f-wyy" secondAttribute="centerY" id="6nT-cb-C1s"/>
+                                    <constraint firstAttribute="trailing" secondItem="bhQ-fE-iPT" secondAttribute="trailing" constant="10" id="8oA-Ge-iwI"/>
+                                    <constraint firstAttribute="centerY" secondItem="bhQ-fE-iPT" secondAttribute="centerY" id="Qxw-51-OSZ"/>
+                                    <constraint firstItem="wq1-2f-wyy" firstAttribute="leading" secondItem="jRe-xc-AZd" secondAttribute="leading" constant="13" id="aLI-LN-Wde"/>
+                                    <constraint firstAttribute="width" secondItem="jRe-xc-AZd" secondAttribute="height" multiplier="12:5" id="ecT-nl-TEJ"/>
+                                    <constraint firstItem="wq1-2f-wyy" firstAttribute="width" secondItem="jRe-xc-AZd" secondAttribute="width" multiplier="0.35" id="yLv-O8-pwA"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="lQj-xz-s28" firstAttribute="width" secondItem="p4a-gS-0GV" secondAttribute="width" multiplier="0.6" constant="100" id="0Or-Mr-VZk"/>
+                            <constraint firstItem="lQj-xz-s28" firstAttribute="top" secondItem="Xef-WS-a7i" secondAttribute="bottom" constant="10" id="62b-CB-O8h"/>
+                            <constraint firstAttribute="centerX" secondItem="j9G-Qw-ky6" secondAttribute="centerX" id="6Gx-en-mj7"/>
+                            <constraint firstItem="j9G-Qw-ky6" firstAttribute="width" secondItem="p4a-gS-0GV" secondAttribute="width" multiplier="0.81" id="Y05-rI-hEr"/>
+                            <constraint firstItem="jRe-xc-AZd" firstAttribute="width" secondItem="p4a-gS-0GV" secondAttribute="width" multiplier="0.6" constant="100" id="bES-ix-72d"/>
+                            <constraint firstItem="jRe-xc-AZd" firstAttribute="top" secondItem="lQj-xz-s28" secondAttribute="bottom" constant="10" id="fJ8-gc-Rgr"/>
+                            <constraint firstAttribute="centerX" secondItem="lQj-xz-s28" secondAttribute="centerX" id="ion-C9-YI8"/>
+                            <constraint firstItem="j9G-Qw-ky6" firstAttribute="top" secondItem="sys-cp-PW3" secondAttribute="bottom" constant="12" id="liw-di-SZo"/>
+                            <constraint firstAttribute="centerX" secondItem="jRe-xc-AZd" secondAttribute="centerX" id="tzw-D3-AmO"/>
+                            <constraint firstItem="Xef-WS-a7i" firstAttribute="top" secondItem="j9G-Qw-ky6" secondAttribute="bottom" constant="15" id="wTy-jj-4go"/>
+                            <constraint firstAttribute="centerX" secondItem="Xef-WS-a7i" secondAttribute="centerX" id="x4g-HA-tSB"/>
+                            <constraint firstItem="Xef-WS-a7i" firstAttribute="width" secondItem="p4a-gS-0GV" secondAttribute="width" multiplier="0.6" constant="100" id="znR-wT-2i4"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="NEW GROUP" id="Cr5-6a-HKP">
                         <barButtonItem key="backBarButtonItem" title=" " id="Qe7-bO-eEb"/>
@@ -4275,7 +4340,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="o9x-3X-FOJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2893.125" y="-4342.6056338028166"/>
+            <point key="canvasLocation" x="2877" y="-4343"/>
         </scene>
         <!--NEW GROUP-->
         <scene sceneID="4Uz-HE-arm">
