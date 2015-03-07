@@ -27,7 +27,6 @@
 
 - (void)setImageWithUrl:(NSString *)url;
 - (void)setDownloadedImage:(UIImage *)image;
-- (void)setTitleWithString:(NSString *)title;
 - (void)setSubtitleWithString:(NSString *)subtitle;
 - (void)setSmallSubtitleWithString:(NSString *)smallSubtitle;
 - (void)setNumberOfPosts:(NSInteger)number;

@@ -35,7 +35,7 @@ const float PRIVATE_PROFILE_TOP_VIEW_HEIGHT = 245;
     
     [super setImageWithUrl:userData.profileImageUrl];
     
-    [super setTitleWithString:userData.name];
+//    [super setTitleWithString:userData.name];
     
     [super setSubtitleWithString:userData.networkName];
     
