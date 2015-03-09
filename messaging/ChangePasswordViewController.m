@@ -11,6 +11,7 @@
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "GLPUserDao.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface ChangePasswordViewController ()
 
@@ -26,6 +27,10 @@
  
 @property (weak, nonatomic) IBOutlet UIButton *changeButton;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonYAlignment;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonWidth;
+
 @end
 
 @implementation ChangePasswordViewController
@@ -35,6 +40,7 @@
     [super viewDidLoad];
     [self configureNavigationBar];
     [self configureView];
+    [self configureConstraints];
     [self showKeyboardOnTheFirstTextField];
 }
 
@@ -86,6 +92,15 @@
         [_passWord setHidden:YES];
         [_oldPassWord setSecureTextEntry:NO];
         [_changeButton setTitle:@"CHANGE TAGLINE" forState:UIControlStateNormal];
+    }
+}
+
+- (void)configureConstraints
+{
+    if([GLPiOSSupportHelper useShortConstrains])
+    {
+        [_buttonYAlignment setConstant:30];
+        [_buttonWidth setConstant:-50];
     }
 }
 
