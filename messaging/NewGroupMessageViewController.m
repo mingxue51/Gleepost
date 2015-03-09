@@ -232,7 +232,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
 {
     GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findOneToOneConversationWithParticipant:self.checkedUsers[0]];
     
-    DDLogInfo(@"Regular conversation for participant, conversation remote key: %d", conversation.remoteKey);
+    DDLogInfo(@"Regular conversation for participant, conversation remote key: %ld", (long)conversation.remoteKey);
     
     if(!conversation)
     {

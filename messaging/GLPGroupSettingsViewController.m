@@ -135,7 +135,7 @@ typedef NS_ENUM(NSUInteger, SettingsItem) {
     
     NSDictionary *dictionary = [_settingsItems objectAtIndex:indexPath.row];
     
-    NSArray *object = [dictionary objectForKey:[NSNumber numberWithInt:indexPath.row]];
+    NSArray *object = [dictionary objectForKey:[NSNumber numberWithInteger:indexPath.row]];
     
     NSString *title = object[0];
     

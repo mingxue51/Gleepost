@@ -29,7 +29,7 @@
 
 @property (strong, nonatomic) NSMutableArray *members;
 
-@property (assign, nonatomic) int selectedUserId;
+@property (assign, nonatomic) NSInteger selectedUserId;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
