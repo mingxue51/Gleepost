@@ -155,7 +155,7 @@ static const CGFloat kTextSize = 15;
     
     // system message
     {
-        UILabel *labelSystem = [[UILabel alloc] initWithFrame:CGRectMake(self.contentView.frame.size.width / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
+        UILabel *labelSystem = [[UILabel alloc] initWithFrame:CGRectMake([GLPiOSSupportHelper screenWidth] / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
         labelSystem.textAlignment = NSTextAlignmentCenter;
         labelSystem.textColor = [UIColor lightGrayColor];
         labelSystem.font = [UIFont fontWithName:GLP_TITLE_FONT size:10.0f];
