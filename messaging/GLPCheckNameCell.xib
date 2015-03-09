@@ -51,7 +51,6 @@
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MoO-z5-nVa">
                         <rect key="frame" x="255" y="0.0" width="65" height="49"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="49" id="kjM-Vc-Tmi"/>
                             <constraint firstAttribute="width" constant="65" id="yE1-X4-d4h"/>
                         </constraints>
                         <state key="normal">
