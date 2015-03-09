@@ -1,4 +1,4 @@
-platform :ios, '6.1'
+platform :ios, '7.0'
 pod 'AFNetworking',	  '~> 1.3.1'
 pod 'AFHTTPRequestOperationLogger',	'~> 0.10.0'
 pod 'MBProgressHUD', '~> 0.8'
@@ -23,3 +23,4 @@ pod 'Facebook-iOS-SDK', '3.19'
 pod 'FXPageControl', '1.3.2'
 pod 'TAPKeyboardPop', '~> 0.1.2'
 pod 'GPUImage'
+pod "URBMediaFocusViewController"

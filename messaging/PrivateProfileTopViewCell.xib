@@ -14,12 +14,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="244"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YSr-J6-fiE">
-                        <rect key="frame" x="0.0" y="979" width="320" height="21"/>
-                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="20"/>
-                        <color key="textColor" red="0.20392156859999999" green="0.59607843140000005" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f0q-Ba-U5g">
                         <rect key="frame" x="10" y="10" width="75" height="75"/>
                     </imageView>
@@ -102,7 +96,6 @@
                 <outlet property="rsvpsLbl" destination="6uM-Ea-RNt" id="zbE-8X-kuZ"/>
                 <outlet property="smallSubtitleLbl" destination="LZZ-CC-Hpj" id="iNY-fV-CCm"/>
                 <outlet property="subtitleLbl" destination="dHL-wg-VFW" id="wMc-F5-f2i"/>
-                <outlet property="titleLbl" destination="YSr-J6-fiE" id="UbY-58-E9i"/>
             </connections>
         </tableViewCell>
     </objects>

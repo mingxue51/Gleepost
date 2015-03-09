@@ -75,6 +75,7 @@
 #import "GLPCategoryTitleCell.h"
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPCampusWallAsyncProcessor.h"
+#import "URBMediaFocusViewController.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -86,6 +87,8 @@
 @property (strong, nonatomic) NewPostView *postView;
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (strong, nonatomic) TransitionDelegateViewCategories *transitionCategoriesViewController;
+@property (strong, nonatomic) URBMediaFocusViewController *mediaFocusViewController;
+
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
 @property (strong, nonatomic) UIImage *imageToBeView;
 
@@ -335,6 +338,12 @@ const float TOP_OFFSET = 180.0f;
     _showComment = NO;
     
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.tableView];
+    _mediaFocusViewController = [[URBMediaFocusViewController alloc] init];
+    
+    _mediaFocusViewController.parallaxEnabled = NO;
+    _mediaFocusViewController.shouldShowPhotoActions = YES;
+    _mediaFocusViewController.shouldRotateToDeviceOrientation = NO;
+    _mediaFocusViewController.shouldBlurBackground = NO;
 }
 
 - (void)startBackgroundOperations
@@ -2354,19 +2363,22 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)viewPostImage:(UIImage*)postImage
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = postImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+//    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
+//    viewImage.image = postImage;
+//    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
+//    viewImage.modalPresentationStyle = UIModalPresentationCustom;
+//    
+//    if(![GLPiOSSupportHelper isIOS6])
+//    {
+//        [viewImage setTransitioningDelegate:self.transitionViewImageController];
+//    }
+//    
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:viewImage animated:YES completion:nil];
     
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
+    [_mediaFocusViewController showImage:postImage fromView:self.view];
     
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
 }
 
 
