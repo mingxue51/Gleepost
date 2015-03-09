@@ -104,7 +104,7 @@ const float NOTIFICATION_CELL_HEIGHT = 43.0; //60.0
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
     
-    CGRect rect = [attributedText boundingRectWithSize:(CGSize){MAX_NOTIFICATION_CONTENT_WIDHT, MAX_NOTIFICATION_CONTENT_HEIGHT}
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){[GLPNotificationCell getMaxTitleLabelHeight], MAX_NOTIFICATION_CONTENT_HEIGHT}
                                                options:(NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin)
                                                context:nil];
     
@@ -140,6 +140,11 @@ const float NOTIFICATION_CELL_HEIGHT = 43.0; //60.0
     
     
     return finalHeight;
+}
+
++ (CGFloat)getMaxTitleLabelHeight
+{
+    return [[UIScreen mainScreen] bounds].size.width - 80;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

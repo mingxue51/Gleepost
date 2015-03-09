@@ -191,7 +191,7 @@ const float ONE_LINE_HEIGHT = 20;
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
     
-    CGRect rect = [attributedText boundingRectWithSize:(CGSize){[TopPostView getMaxTitleLableHeight], TITLE_MAX_HEIGHT}
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){[TopPostView getMaxTitleLabelHeight], TITLE_MAX_HEIGHT}
                                                options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
                                                context:nil];
     
@@ -213,7 +213,7 @@ const float ONE_LINE_HEIGHT = 20;
     return NO;
 }
 
-+ (CGFloat)getMaxTitleLableHeight
++ (CGFloat)getMaxTitleLabelHeight
 {
     return [[UIScreen mainScreen] bounds].size.width -20 - 40;
 }

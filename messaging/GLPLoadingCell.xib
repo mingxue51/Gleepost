@@ -14,14 +14,24 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="39"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EMG-2H-pSn" userLabel="Loading View">
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EMG-2H-pSn" userLabel="Loading View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="39"/>
                         <subviews>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="xUB-NY-00x">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="xUB-NY-00x">
                                 <rect key="frame" x="150" y="10" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="f7i-3P-3oB"/>
+                                    <constraint firstAttribute="width" constant="20" id="jJA-u7-tGR"/>
+                                </constraints>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="xUB-NY-00x" secondAttribute="trailing" constant="150" id="AuS-FY-OP1"/>
+                            <constraint firstItem="xUB-NY-00x" firstAttribute="top" secondItem="EMG-2H-pSn" secondAttribute="top" constant="10" id="NVm-5d-w2r"/>
+                            <constraint firstItem="xUB-NY-00x" firstAttribute="leading" secondItem="EMG-2H-pSn" secondAttribute="leading" constant="150" id="oC4-4w-zd4"/>
+                            <constraint firstAttribute="bottom" secondItem="xUB-NY-00x" secondAttribute="bottom" constant="9" id="yNF-Ng-Hia"/>
+                        </constraints>
                     </view>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f3g-cx-NiY" userLabel="Error View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="39"/>
@@ -38,6 +48,12 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="EMG-2H-pSn" secondAttribute="trailing" id="BUe-Ld-b3y"/>
+                    <constraint firstAttribute="bottom" secondItem="EMG-2H-pSn" secondAttribute="bottom" id="I1v-7w-XxB"/>
+                    <constraint firstItem="EMG-2H-pSn" firstAttribute="top" secondItem="Vs2-5C-WJf" secondAttribute="top" id="Ly2-LE-skk"/>
+                    <constraint firstItem="EMG-2H-pSn" firstAttribute="leading" secondItem="Vs2-5C-WJf" secondAttribute="leading" id="oCl-d3-XiE"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="activityIndicatorView" destination="xUB-NY-00x" id="vpP-xN-TzB"/>
