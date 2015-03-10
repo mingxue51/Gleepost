@@ -150,7 +150,6 @@
                         <rect key="frame" x="10" y="189" width="300" height="40"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="300" id="arU-SF-7Fr"/>
                             <constraint firstAttribute="height" constant="40" id="xvJ-6L-JZl"/>
                         </constraints>
                     </view>
@@ -182,9 +181,11 @@
                     <constraint firstAttribute="centerX" secondItem="tod-Ik-7Mf" secondAttribute="centerX" constant="-145" id="NI5-bC-fen"/>
                     <constraint firstItem="tod-Ik-7Mf" firstAttribute="top" secondItem="0b1-ox-FLb" secondAttribute="bottom" constant="21" id="Oef-93-vur"/>
                     <constraint firstAttribute="trailing" secondItem="0b1-ox-FLb" secondAttribute="trailing" id="P95-Pf-gbc"/>
+                    <constraint firstItem="tfn-Qh-8lY" firstAttribute="leading" secondItem="bk0-KH-bPG" secondAttribute="leading" constant="10" id="PdN-iP-ex8"/>
                     <constraint firstItem="0b1-ox-FLb" firstAttribute="leading" secondItem="bk0-KH-bPG" secondAttribute="leading" constant="10" id="TWM-Rh-bQP"/>
                     <constraint firstAttribute="trailing" secondItem="JIZ-wM-42z" secondAttribute="trailing" id="WnJ-6d-sBy"/>
                     <constraint firstItem="tfn-Qh-8lY" firstAttribute="top" secondItem="0b1-ox-FLb" secondAttribute="bottom" constant="26" id="dJZ-vE-sxe"/>
+                    <constraint firstAttribute="trailing" secondItem="tfn-Qh-8lY" secondAttribute="trailing" constant="10" id="ehn-sk-tcP"/>
                     <constraint firstAttribute="centerY" secondItem="0Js-ka-wWS" secondAttribute="centerY" constant="4.5" id="luf-Rj-9tv"/>
                     <constraint firstItem="0Js-ka-wWS" firstAttribute="leading" secondItem="bk0-KH-bPG" secondAttribute="leading" constant="10" id="yoK-pu-Ofo"/>
                 </constraints>
