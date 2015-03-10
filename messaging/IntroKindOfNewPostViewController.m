@@ -34,9 +34,6 @@
     [[GLPApprovalManager sharedInstance] reloadApprovalLevel];
     
     [self configureConstrainsDependingOnScreenSize];
-    
-    //0.11
-    
 }
 
 //- (void)viewDidDisappear:(BOOL)animated

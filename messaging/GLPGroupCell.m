@@ -247,7 +247,7 @@
 
 + (CGFloat)height
 {
-    return 135;
+    return [GLPiOSSupportHelper screenWidth] * 0.42;
 }
 
 + (NSString *)cellIdentifier

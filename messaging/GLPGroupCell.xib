@@ -175,7 +175,7 @@
                 <outlet property="progressViewTopDistance" destination="d8E-Vz-1VW" id="ubc-DR-R2W"/>
                 <outlet property="uploadingImageProgressBar" destination="W0I-1B-MPv" id="YkP-aQ-Udo"/>
             </connections>
-            <point key="canvasLocation" x="-495" y="183.5"/>
+            <point key="canvasLocation" x="-403" y="194.5"/>
         </tableViewCell>
     </objects>
     <resources>
