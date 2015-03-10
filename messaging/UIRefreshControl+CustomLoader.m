@@ -74,12 +74,14 @@
 
 - (void)configureActivityInidicator
 {
+    CGFloat screenWidth = [GLPiOSSupportHelper screenWidth];
+
     [self setBackgroundColor:[UIColor whiteColor]];
     [self setTintColor:[UIColor whiteColor]];
     
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    
-    CGRectSetX(indicator, 150.0);
+    //150.0
+    CGRectSetX(indicator, (screenWidth / 2) - indicator.frame.size.width / 2);
     CGRectSetY(indicator, 15.0);
     
     [indicator startAnimating];
