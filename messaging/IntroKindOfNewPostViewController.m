@@ -17,8 +17,7 @@
 
 @interface IntroKindOfNewPostViewController ()
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceEventAnnouncement;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceAnnouncementGeneral;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleHeightConstrain;
 
 @end
 
@@ -35,6 +34,9 @@
     [[GLPApprovalManager sharedInstance] reloadApprovalLevel];
     
     [self configureConstrainsDependingOnScreenSize];
+    
+    //0.11
+    
 }
 
 //- (void)viewDidDisappear:(BOOL)animated
@@ -71,8 +73,7 @@
 {
     if([GLPiOSSupportHelper useShortConstrains])
     {
-        _distanceAnnouncementGeneral.constant = 10.0;
-        _distanceEventAnnouncement.constant = 10.0;
+        [_titleHeightConstrain setConstant:-60];
     }
 }
 

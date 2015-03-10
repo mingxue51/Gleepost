@@ -213,10 +213,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="What kind of post is this?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qx7-12-4te">
-                                <rect key="frame" x="105" y="57" width="390" height="22"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="22" id="TAm-Im-iYs"/>
-                                </constraints>
+                                <rect key="frame" x="105" y="64" width="390" height="22"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                 <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -227,15 +224,17 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Qx7-12-4te" firstAttribute="height" secondItem="pea-Lo-4mo" secondAttribute="height" multiplier="0.26" id="9zF-DI-XxK"/>
                             <constraint firstItem="w2k-GW-guz" firstAttribute="leading" secondItem="pea-Lo-4mo" secondAttribute="leading" constant="12" id="BuW-oD-5ui"/>
                             <constraint firstItem="CVv-2f-DCn" firstAttribute="top" secondItem="w2k-GW-guz" secondAttribute="bottom" constant="12" id="CUQ-Ss-A5x"/>
-                            <constraint firstAttribute="centerX" secondItem="Qx7-12-4te" secondAttribute="centerX" id="Ehd-8L-Npc"/>
+                            <constraint firstAttribute="centerX" secondItem="Qx7-12-4te" secondAttribute="centerX" id="OHb-Or-l0D"/>
                             <constraint firstItem="CVv-2f-DCn" firstAttribute="leading" secondItem="pea-Lo-4mo" secondAttribute="leading" constant="12" id="Pdb-GS-TF9"/>
                             <constraint firstItem="0A2-6Z-8JS" firstAttribute="top" secondItem="CVv-2f-DCn" secondAttribute="bottom" constant="12" id="QHR-7d-OgF"/>
                             <constraint firstAttribute="trailing" secondItem="w2k-GW-guz" secondAttribute="trailing" constant="12" id="aJR-zy-99E"/>
-                            <constraint firstItem="Qx7-12-4te" firstAttribute="top" secondItem="pea-Lo-4mo" secondAttribute="top" constant="15" id="ehH-xw-bOR"/>
+                            <constraint firstItem="Qx7-12-4te" firstAttribute="top" secondItem="oq6-pu-7y5" secondAttribute="bottom" id="l8r-1F-Hzl"/>
                             <constraint firstAttribute="trailing" secondItem="0A2-6Z-8JS" secondAttribute="trailing" constant="12" id="lKM-9w-bSs"/>
                             <constraint firstAttribute="bottom" secondItem="0A2-6Z-8JS" secondAttribute="bottom" constant="12" id="mvS-8v-iSB"/>
+                            <constraint firstItem="Qx7-12-4te" firstAttribute="top" secondItem="oq6-pu-7y5" secondAttribute="bottom" id="qOj-Za-h8P"/>
                             <constraint firstAttribute="trailing" secondItem="CVv-2f-DCn" secondAttribute="trailing" constant="12" id="rxb-IO-IsI"/>
                             <constraint firstItem="0A2-6Z-8JS" firstAttribute="leading" secondItem="pea-Lo-4mo" secondAttribute="leading" constant="12" id="uES-LK-8DU"/>
                         </constraints>
@@ -245,6 +244,7 @@
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="titleHeightConstrain" destination="9zF-DI-XxK" id="38y-In-ekT"/>
                         <segue destination="Pdc-xo-P59" kind="show" identifier="final new post" id="YIa-ii-tw7"/>
                         <segue destination="I2V-r4-Ixi" kind="show" identifier="view event selector" id="xgi-R7-O90"/>
                     </connections>
@@ -4920,17 +4920,17 @@
         <segue reference="7l2-k5-pHQ"/>
         <segue reference="7g0-HV-ZHz"/>
         <segue reference="Ze9-pm-FNm"/>
-        <segue reference="c6M-82-Pnp"/>
         <segue reference="y0w-oH-XXi"/>
-        <segue reference="Gwl-Cd-vyB"/>
-        <segue reference="Th4-GT-P8f"/>
+        <segue reference="c6M-82-Pnp"/>
+        <segue reference="WK7-hw-eyD"/>
         <segue reference="EAz-MH-b19"/>
+        <segue reference="Th4-GT-P8f"/>
         <segue reference="wR3-TA-URh"/>
         <segue reference="fah-A8-Ky9"/>
-        <segue reference="KgO-oz-Ivb"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="2GR-ci-jSQ"/>
-        <segue reference="YIa-ii-tw7"/>
+        <segue reference="KgO-oz-Ivb"/>
         <segue reference="Af2-b2-Cbn"/>
+        <segue reference="YIa-ii-tw7"/>
     </inferredMetricsTieBreakers>
 </document>
