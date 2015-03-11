@@ -81,16 +81,16 @@
                         <constraint firstAttribute="height" constant="176" id="vUH-oq-0NF"/>
                     </constraints>
                 </view>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.49999999999999961" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Happening Now" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eWV-6b-ZMx">
-                    <rect key="frame" x="22" y="11" width="200" height="15"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eWV-6b-ZMx">
+                    <rect key="frame" x="22" y="11" width="227" height="17"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="eWV-6b-ZMx" secondAttribute="height" multiplier="40:3" id="pG2-EQ-niG"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
-                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                    <color key="textColor" red="0.74117642641067505" green="0.74117642641067505" blue="0.74117648601531982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ghb-X9-m0Q" customClass="CampusWallHeader">
+                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ghb-X9-m0Q" customClass="CampusWallHeader">
                     <rect key="frame" x="0.0" y="36" width="600" height="250"/>
                     <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
@@ -124,7 +124,7 @@
                 <outlet property="eventsBtn" destination="GDy-2Q-C8T" id="aT9-AK-4ce"/>
                 <outlet property="stanfordLbl" destination="hqQ-6c-uJb" id="fr3-Zn-a3V"/>
             </connections>
-            <point key="canvasLocation" x="367" y="356"/>
+            <point key="canvasLocation" x="303" y="373"/>
         </view>
     </objects>
     <resources>

@@ -87,11 +87,11 @@ NSString *BORING_IMAGE;
 
 -(void)initialiseObjects
 {
-    HAPPENING_NOW_MSG = @"Happening Now";
-    HAPPENING_TODAY_MSG = @"Happening Today";
-    HAPPENING_TOMORROW_MSG = @"Happening Tomorrow";
-    HAPPENING_THIS_WEEK_MSG = @"Happening This Week";
-    HAPPENED_TODAY = @"Happened Earlier";
+    HAPPENING_NOW_MSG = @"Events Happening Now";
+    HAPPENING_TODAY_MSG = @"Events Happening Today";
+    HAPPENING_TOMORROW_MSG = @"Events Happening Tomorrow";
+    HAPPENING_THIS_WEEK_MSG = @"Events Happening This Week";
+    HAPPENED_TODAY = @"Events Happened Earlier";
     NOTHING_HAPPENING = @"Nothing happening on campus!";
     BORING_IMAGE = @"calendar_boring";
     

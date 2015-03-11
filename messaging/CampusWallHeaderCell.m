@@ -262,15 +262,12 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 {
     [_userNameLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
     
-    [_contentLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
-    
     [_goingBtn.titleLabel setFont:[UIFont fontWithName:GLP_TITLE_FONT size:20]];
     
     [_attendingLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:17]];
     
     [_staticAttendingLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:17]];
     
-    [_timeLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:10]];
     
     [self configureGoingButton];
 }
