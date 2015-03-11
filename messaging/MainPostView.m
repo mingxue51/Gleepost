@@ -311,7 +311,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
     {
         [_postImageDistanceFromTopConstrain setConstant:0];
 
-        distanceFromTop = 83;
+        distanceFromTop = 95; //83
 
         distanceFromTop = [self configureDistanceFromTopDependingOnFactor:15 withBasicValue:distanceFromTop];
 
