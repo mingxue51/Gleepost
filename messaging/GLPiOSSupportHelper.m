@@ -24,6 +24,11 @@
     return [UIScreen mainScreen].bounds.size.width;
 }
 
++ (CGFloat)screenHeight
+{
+    return [UIScreen mainScreen].bounds.size.height;
+}
+
 + (BOOL)isIOS6
 {
     return (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_6_1);

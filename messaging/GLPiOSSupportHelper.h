@@ -12,6 +12,7 @@
 
 + (BOOL)useShortConstrains;
 + (CGFloat)screenWidth;
++ (CGFloat)screenHeight;
 + (void)setBackgroundImageToTableView:(UITableView *)tableView;
 + (BOOL)isIOS6;
 + (BOOL)isIOS7;
