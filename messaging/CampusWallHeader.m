@@ -16,6 +16,7 @@
 #import "CampusLiveManager.h"
 #import "GLPTableActivityIndicator.h"
 #import "GLPCLPostImageLoader.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface CampusWallHeader ()
 
@@ -256,7 +257,7 @@ NSString *BORING_IMAGE;
 
 -(CGFloat)vsscrollView:(VSScrollView *)scrollView widthForViewAtPosition:(int)position
 {
-    return CELL_WIDTH;
+    return [GLPiOSSupportHelper screenWidth] * 0.7;
 }
 
 -(CGFloat)vsscrollView:(VSScrollView *)scrollView heightForViewAtPosition:(int)position
@@ -399,7 +400,7 @@ NSString *BORING_IMAGE;
         return;
     }
     
-    int middleCellPosition = [[positionsOfVisibleCells objectAtIndex:1]integerValue];
+    NSInteger middleCellPosition = [[positionsOfVisibleCells objectAtIndex:1] integerValue];
     
     
     if(position == 0 || position == [self numberOfViews]-1)

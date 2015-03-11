@@ -1570,7 +1570,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Gan-eB-2ZM"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zSp-u0-oa6">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="YEs-ju-Eh1">
@@ -2614,7 +2614,7 @@
                         <viewControllerLayoutGuide type="bottom" id="BXn-Ie-7ZA"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="qe2-jN-uZe">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Lwi-RM-iiC">
@@ -4897,16 +4897,16 @@
         <segue reference="X2Z-pC-dgW"/>
         <segue reference="fah-A8-Ky9"/>
         <segue reference="2ju-Ui-QdM"/>
-        <segue reference="zvV-dv-dTv"/>
-        <segue reference="Th4-GT-P8f"/>
-        <segue reference="C4C-f3-cdX"/>
-        <segue reference="EAz-MH-b19"/>
-        <segue reference="Txr-8X-v5l"/>
-        <segue reference="wR3-TA-URh"/>
-        <segue reference="guC-Nf-HGz"/>
-        <segue reference="aph-g3-dhm"/>
-        <segue reference="bc7-so-Tnw"/>
+        <segue reference="uet-Cl-mZq"/>
+        <segue reference="2GR-ci-jSQ"/>
+        <segue reference="j6r-TK-6Al"/>
+        <segue reference="C5K-bl-yN1"/>
         <segue reference="XMX-SH-Gag"/>
+        <segue reference="rCT-Ex-vO8"/>
+        <segue reference="Th4-GT-P8f"/>
+        <segue reference="EAz-MH-b19"/>
+        <segue reference="wR3-TA-URh"/>
+        <segue reference="bc7-so-Tnw"/>
         <segue reference="rdb-8v-KiD"/>
         <segue reference="KgO-oz-Ivb"/>
         <segue reference="c6M-82-Pnp"/>

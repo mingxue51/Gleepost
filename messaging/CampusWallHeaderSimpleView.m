@@ -33,7 +33,8 @@
     
     if(self)
     {
-        [self setFrame:CGRectMake(0, 0, 320.0f, 200.0f)];
+        //was 200 (campus wall header + 50)
+        [self setFrame:CGRectMake(0, 0, 320.0f, 283)];
         
 //        [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor]];
         
