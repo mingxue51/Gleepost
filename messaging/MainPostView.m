@@ -199,6 +199,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     }
     
     
+//    [ShapeFormatterHelper setBorderToView:_videoView withColour:[UIColor redColor] andWidth:1.0];
 //    [ShapeFormatterHelper setBorderToView:_wideCommentBtn withColour:[UIColor redColor]];
     
 //    [ShapeFormatterHelper setBorderToView:_socialView withColour:[UIColor blueColor]];

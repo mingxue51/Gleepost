@@ -367,7 +367,6 @@
                                     <constraint firstItem="Wp0-MB-hxp" firstAttribute="leading" secondItem="4HT-5v-R3a" secondAttribute="trailing" id="Cj0-c4-ED8"/>
                                     <constraint firstAttribute="height" constant="40" id="Dzy-x2-0Wa"/>
                                     <constraint firstAttribute="trailing" secondItem="7NR-Mx-RHV" secondAttribute="trailing" constant="16" id="IfJ-ha-Jyk"/>
-                                    <constraint firstItem="Wp0-MB-hxp" firstAttribute="leading" secondItem="4HT-5v-R3a" secondAttribute="trailing" id="JXx-G5-RXg"/>
                                     <constraint firstItem="Wp0-MB-hxp" firstAttribute="top" secondItem="ASk-mZ-O68" secondAttribute="top" constant="1" id="Tvy-Ls-cbP"/>
                                     <constraint firstItem="7NR-Mx-RHV" firstAttribute="top" secondItem="ASk-mZ-O68" secondAttribute="top" constant="-14" id="Z9n-1G-SPv"/>
                                     <constraint firstItem="2ze-7F-x8n" firstAttribute="top" secondItem="ASk-mZ-O68" secondAttribute="top" constant="-17" id="iZP-ZX-SRX"/>
@@ -502,7 +501,7 @@
                 <outlet property="mainView" destination="jCQ-SX-55v" id="Zfm-mE-R6p"/>
                 <outlet property="topView" destination="gZY-ao-KSb" id="okb-cU-28U"/>
             </connections>
-            <point key="canvasLocation" x="-220" y="-12"/>
+            <point key="canvasLocation" x="-552" y="-61"/>
         </tableViewCell>
     </objects>
     <resources>
