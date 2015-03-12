@@ -655,6 +655,7 @@
 		58D70D5B1A8525BD0023B478 /* LoggedInUserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D70D5A1A8525BD0023B478 /* LoggedInUserProfileManager.m */; };
 		58D70D5E1A8525C90023B478 /* UserProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D70D5D1A8525C90023B478 /* UserProfileManager.m */; };
 		58D7B09E1A004DE300A9A48C /* gleepost_login_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7B09D1A004DE300A9A48C /* gleepost_login_logo.png */; };
+		58D7ED171AB1C9C30072FF25 /* GLPViewsCountView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D7ED161AB1C9C30072FF25 /* GLPViewsCountView.m */; };
 		58D7F76519A2A98F00C39A4C /* location_top_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7F76419A2A98F00C39A4C /* location_top_button.png */; };
 		58D7F76719A2A9B500C39A4C /* camera_top_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7F76619A2A9B500C39A4C /* camera_top_button.png */; };
 		58D7F76B19A2ABB600C39A4C /* kind_of_post_announcement.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D7F76819A2ABB600C39A4C /* kind_of_post_announcement.png */; };
@@ -1844,6 +1845,8 @@
 		58D70D5C1A8525C90023B478 /* UserProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileManager.h; sourceTree = "<group>"; };
 		58D70D5D1A8525C90023B478 /* UserProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileManager.m; sourceTree = "<group>"; };
 		58D7B09D1A004DE300A9A48C /* gleepost_login_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gleepost_login_logo.png; sourceTree = "<group>"; };
+		58D7ED151AB1C9C30072FF25 /* GLPViewsCountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPViewsCountView.h; sourceTree = "<group>"; };
+		58D7ED161AB1C9C30072FF25 /* GLPViewsCountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPViewsCountView.m; sourceTree = "<group>"; };
 		58D7F76419A2A98F00C39A4C /* location_top_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_top_button.png; sourceTree = "<group>"; };
 		58D7F76619A2A9B500C39A4C /* camera_top_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera_top_button.png; sourceTree = "<group>"; };
 		58D7F76819A2ABB600C39A4C /* kind_of_post_announcement.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_post_announcement.png; sourceTree = "<group>"; };
@@ -2673,6 +2676,8 @@
 		5841196D1A8A48170067E3DC /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				58A855BF1949BA8C0059CF57 /* GLPButton.h */,
+				58A855C01949BA8C0059CF57 /* GLPButton.m */,
 				5841196E1A8A482A0067E3DC /* GLPLoadingButton.h */,
 				5841196F1A8A482A0067E3DC /* GLPLoadingButton.m */,
 			);
@@ -4095,6 +4100,15 @@
 			name = Profile;
 			sourceTree = "<group>";
 		};
+		58D7ED141AB1C9AD0072FF25 /* UIViews */ = {
+			isa = PBXGroup;
+			children = (
+				58D7ED151AB1C9C30072FF25 /* GLPViewsCountView.h */,
+				58D7ED161AB1C9C30072FF25 /* GLPViewsCountView.m */,
+			);
+			name = UIViews;
+			sourceTree = "<group>";
+		};
 		58DC02381804377D0008993A /* New Chat Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -5025,6 +5039,7 @@
 		80AB896717C2806B0053E784 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				58D7ED141AB1C9AD0072FF25 /* UIViews */,
 				5841196D1A8A48170067E3DC /* Buttons */,
 				58EA126D19FA1060003D264E /* Empty Views */,
 				584FA5F719B519EE00FBA61F /* Progress */,
@@ -5049,8 +5064,6 @@
 				80DC9AF1184616F000A8E48B /* GLPConversationPictureImageView.m */,
 				58272F7E1896807900CD7522 /* FakeNavigationBar.h */,
 				58272F7F1896807900CD7522 /* FakeNavigationBar.m */,
-				58A855BF1949BA8C0059CF57 /* GLPButton.h */,
-				58A855C01949BA8C0059CF57 /* GLPButton.m */,
 				58774D3F196568350034A1C6 /* GLPSearchBar.h */,
 				58774D40196568350034A1C6 /* GLPSearchBar.m */,
 				58350A6C198AF9C2000BB1CA /* GLPNetworkErrorView.h */,
@@ -6086,6 +6099,7 @@
 				C0090C2018A8BC2800153878 /* GLPLoadMoreCell.m in Sources */,
 				807C4D11180AF0F6003D67E6 /* _Conversation.m in Sources */,
 				5819E65E18C7E3FC003361B3 /* GLPGroupDaoParser.m in Sources */,
+				58D7ED171AB1C9C30072FF25 /* GLPViewsCountView.m in Sources */,
 				5887C7EA19FEF81B004441B9 /* GLPPopUpDialogViewController.m in Sources */,
 				586581371805F210005814B4 /* MessageTableViewCell.m in Sources */,
 				806E3D881832B1960063AACE /* TSMessageView.m in Sources */,
