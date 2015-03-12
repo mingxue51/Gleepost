@@ -44,7 +44,7 @@
 @implementation GLPPostCell
 
 const float IMAGE_CELL_HEIGHT = 425;        //386
-const float VIDEO_CELL_HEIGHT = 527;        //510
+const float VIDEO_CELL_HEIGHT = 553;        //527
 const float TEXT_CELL_HEIGHT = 225;         //200
 const float IMAGE_CELL_ONE_LINE_HEIGHT = IMAGE_CELL_HEIGHT - 15;
 const float VIDEO_CELL_ONE_LINE_HEIGHT = VIDEO_CELL_HEIGHT - 21;

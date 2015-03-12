@@ -336,8 +336,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 
 -(void)setPositionsForVideoWithHeight:(float)height
 {
-    float fixedBottomViewHeight = 432.0f;
-    float backgroundImageViewHeight = 512.0f + height;
+    float fixedBottomViewHeight = 459.0f;
+    float backgroundImageViewHeight = 538.0f + height;
     float distanceFromTop = 0.0f;
     
     if([self isCurrentPostEvent])

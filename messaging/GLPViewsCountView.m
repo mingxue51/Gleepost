@@ -47,9 +47,9 @@
         [self setHidden:NO];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.viewsCountLabel setText:labelText];
+            [_viewCountLabelWidth setConstant:[GLPViewsCountView getContentLabelSizeForContent:labelText] + 1];
         });
         
-        [_viewCountLabelWidth setConstant:[GLPViewsCountView getContentLabelSizeForContent:labelText] + 1];
     }
     
 }
