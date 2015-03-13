@@ -255,11 +255,11 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 {
     float distanceFromTop = 0.0f;
     float fixedBottomViewHeight = FIXED_BOTTOM_TEXT_VIEW_HEIGHT;
-    float backgroundImageViewHeight = 213.0f + height;
+    float backgroundImageViewHeight = 225.0f + height;
     
     if([self isCurrentPostEvent])
     {
-        distanceFromTop = 100.0f;
+        distanceFromTop = 111.0f;
         
         distanceFromTop = [self configureDistanceFromTopDependingOnFactor:17 withBasicValue:distanceFromTop];
         
@@ -270,8 +270,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     }
     else
     {
-        distanceFromTop = 10.0f; //25
-        backgroundImageViewHeight -= 87.0f;
+        distanceFromTop = 28.0f;
+        backgroundImageViewHeight -= 80.0f;
     }
     
     //Set constrains.
