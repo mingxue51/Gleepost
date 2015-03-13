@@ -58,7 +58,7 @@
                 <outlet property="rightLbl" destination="fZK-Kd-anU" id="cuY-5e-ayr"/>
                 <outlet property="slideImageView" destination="ECe-GF-5Qi" id="aZ7-xi-zf7"/>
             </connections>
-            <point key="canvasLocation" x="312" y="169"/>
+            <point key="canvasLocation" x="252" y="129"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

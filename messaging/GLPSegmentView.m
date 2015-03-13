@@ -57,6 +57,8 @@ const float ANIMATION_DURATION = 0.1;
     [self formatElements];
     [self configureGesturesToLabels];
     CGRectSetW(self, [GLPiOSSupportHelper screenWidth] - 20);
+    CGRectSetH(self, ([GLPiOSSupportHelper screenWidth] - 20) * 0.13);
+
 }
 
 - (void)configuration
@@ -222,6 +224,13 @@ const float ANIMATION_DURATION = 0.1;
 
     }];
 
+}
+
+#pragma mark - Static
+
++ (CGFloat)segmentHeight
+{
+    return ([GLPiOSSupportHelper screenWidth] - 20) * 0.13;
 }
 
 /*

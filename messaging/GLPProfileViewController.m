@@ -1229,7 +1229,7 @@
     
     if(indexPath.row == 0 && indexPath.section == 0)
     {
-        return PROFILE_TOP_VIEW_HEIGHT;
+        return [ProfileTopViewCell profileTopViewHeight];
     }
     else if (indexPath.section > 0)
     {

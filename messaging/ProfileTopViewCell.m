@@ -22,7 +22,7 @@
 
 @implementation ProfileTopViewCell
 
-const float PROFILE_TOP_VIEW_HEIGHT = 238;
+const CGFloat PROFILE_TOP_VIEW_HEIGHT = 238;
 
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
@@ -157,6 +157,15 @@ const float PROFILE_TOP_VIEW_HEIGHT = 238;
 - (void)numberOfRsvpsTouched
 {
     [_delegate numberOfRsvpsTouched];
+}
+
+#pragma mark - Static
+
++ (CGFloat)profileTopViewHeight
+{
+    //const float PROFILE_TOP_VIEW_HEIGHT = 238;
+
+    return PROFILE_TOP_VIEW_HEIGHT + [GLPSegmentView segmentHeight];
 }
 
 
