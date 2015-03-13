@@ -695,7 +695,7 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
                         [WebClientHelper hideStandardLoaderForView:weakSelf.window.rootViewController.view];
                         
                         if (success) {
-                            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+                            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
                             UIViewController *initVC = [storyboard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
                             
                             weakSelf.window.rootViewController = initVC;

@@ -647,15 +647,8 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)configTabbarFormat
 {
-    
-    if([GLPiOSSupportHelper isIOS6])
-    {
-        return;
-    }
-    
     // set selected and unselected icons
     NSArray *items = self.tabBarController.tabBar.items;
-    
     
     UITabBarItem *item = [items objectAtIndex:0];
     
@@ -665,51 +658,9 @@ const float TOP_OFFSET = 180.0f;
     
     [AppearanceHelper setUnselectedColourForTabbarItem:item];
     
-    
 //    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    
     self.homeTabbarItem = item;
-    
-    
-    
-    item = [items objectAtIndex:1];
-    
-    item.image = [[UIImage imageNamed:@"message-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    
-    item.selectedImage = [UIImage imageNamed:@"message-7"];
-    
-    
-    
-//    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
 
-    
-    [AppearanceHelper setUnselectedColourForTabbarItem:item];
-
-
-    
-    item = [items objectAtIndex:2];
-    
-    item.image = [[UIImage imageNamed:@"man-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    
-    item.selectedImage = [UIImage imageNamed:@"man-7"];
-    
-//    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-
-    [AppearanceHelper setUnselectedColourForTabbarItem:item];
-
-    
-    item = [items objectAtIndex:3];
-    
-    item.image = [[UIImage imageNamed:@"id-card-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    
-    item.selectedImage = [UIImage imageNamed:@"id-card-7"];
-    
-//    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-
-    
-    [AppearanceHelper setUnselectedColourForTabbarItem:item];
-
-   
     
     // this way, the icon gets rendered as it is (thus, it needs to be green in this example)
 //    item0.image = [[UIImage imageNamed:@"contacts.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
