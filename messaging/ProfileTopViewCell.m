@@ -93,7 +93,7 @@ const CGFloat PROFILE_TOP_VIEW_HEIGHT = 238;
     [view setDelegate:self];
     [view setRightButtonTitle:@"Notifications" andLeftButtonTitle:@"Posts"];
     
-    CGRectSetW(view, 300.0);
+//    CGRectSetW(view, 300.0);
 
 //    _segmentView = view;
     
