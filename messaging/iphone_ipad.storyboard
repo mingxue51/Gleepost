@@ -651,7 +651,7 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vol-nY-9AS">
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vol-nY-9AS">
                                 <rect key="frame" x="18" y="143" width="564" height="103"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Vol-nY-9AS" secondAttribute="height" multiplier="60:11" id="bpP-gp-7KT"/>
@@ -668,7 +668,7 @@
                                     <action selector="selectCategory:" destination="I2V-r4-Ixi" eventType="touchUpInside" id="LRn-jm-PEV"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ddc-6d-QaF">
+                            <button opaque="NO" tag="3" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ddc-6d-QaF">
                                 <rect key="frame" x="18" y="359" width="564" height="104"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Ddc-6d-QaF" secondAttribute="height" multiplier="60:11" id="mYZ-1g-pOt"/>
@@ -685,7 +685,7 @@
                                     <action selector="selectCategory:" destination="I2V-r4-Ixi" eventType="touchUpInside" id="EvX-u1-XOr"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZn-8n-DQx">
+                            <button opaque="NO" tag="4" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fZn-8n-DQx">
                                 <rect key="frame" x="18" y="468" width="564" height="103"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="fZn-8n-DQx" secondAttribute="height" multiplier="60:11" id="Du0-Yl-Pb0"/>
@@ -702,7 +702,7 @@
                                     <action selector="selectCategory:" destination="I2V-r4-Ixi" eventType="touchUpInside" id="7az-BM-ORB"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="teY-nL-mc6">
+                            <button opaque="NO" tag="5" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="teY-nL-mc6">
                                 <rect key="frame" x="18" y="576" width="564" height="104"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="teY-nL-mc6" secondAttribute="height" multiplier="60:11" id="wGp-SG-I6p"/>
@@ -719,7 +719,7 @@
                                     <action selector="selectCategory:" destination="I2V-r4-Ixi" eventType="touchUpInside" id="xfz-D5-0gW"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K5A-pV-Nnw">
+                            <button opaque="NO" tag="6" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K5A-pV-Nnw">
                                 <rect key="frame" x="18" y="685" width="564" height="103"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="K5A-pV-Nnw" secondAttribute="height" multiplier="60:11" id="RMI-np-Rmw"/>
@@ -748,7 +748,7 @@
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="25"/>
                                 </variation>
                             </label>
-                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4hG-Ti-OWo">
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4hG-Ti-OWo">
                                 <rect key="frame" x="18" y="251" width="564" height="103"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="4hG-Ti-OWo" secondAttribute="height" multiplier="60:11" id="D3j-jp-YaO"/>
@@ -768,23 +768,23 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="QVJ-kG-gX7" firstAttribute="top" secondItem="xuL-Tf-XpN" secondAttribute="bottom" constant="20" id="1S9-KG-6Hm"/>
                             <constraint firstItem="Vol-nY-9AS" firstAttribute="width" secondItem="ssv-q2-2WD" secondAttribute="width" multiplier="0.94" id="3t5-yw-5VJ"/>
                             <constraint firstAttribute="centerX" secondItem="fZn-8n-DQx" secondAttribute="centerX" id="4Hk-b1-aor"/>
+                            <constraint firstItem="QVJ-kG-gX7" firstAttribute="top" secondItem="xuL-Tf-XpN" secondAttribute="bottom" constant="20" id="4II-7D-hMc"/>
                             <constraint firstAttribute="centerX" secondItem="K5A-pV-Nnw" secondAttribute="centerX" id="6IZ-gY-SFZ"/>
                             <constraint firstItem="teY-nL-mc6" firstAttribute="width" secondItem="ssv-q2-2WD" secondAttribute="width" multiplier="0.94" id="91k-7D-ee7"/>
                             <constraint firstAttribute="centerX" secondItem="QVJ-kG-gX7" secondAttribute="centerX" id="EgH-eH-AJa"/>
-                            <constraint firstItem="fZn-8n-DQx" firstAttribute="top" secondItem="Ddc-6d-QaF" secondAttribute="bottom" constant="5" id="FAh-aP-vVo"/>
-                            <constraint firstItem="Ddc-6d-QaF" firstAttribute="top" secondItem="4hG-Ti-OWo" secondAttribute="bottom" constant="5" id="FMF-zi-IV2"/>
-                            <constraint firstItem="teY-nL-mc6" firstAttribute="top" secondItem="fZn-8n-DQx" secondAttribute="bottom" constant="5" id="Gxx-2r-UnS"/>
+                            <constraint firstItem="fZn-8n-DQx" firstAttribute="top" secondItem="Ddc-6d-QaF" secondAttribute="bottom" constant="12" id="FAh-aP-vVo"/>
+                            <constraint firstItem="Ddc-6d-QaF" firstAttribute="top" secondItem="4hG-Ti-OWo" secondAttribute="bottom" constant="12" id="FMF-zi-IV2"/>
+                            <constraint firstItem="teY-nL-mc6" firstAttribute="top" secondItem="fZn-8n-DQx" secondAttribute="bottom" constant="12" id="Gxx-2r-UnS"/>
                             <constraint firstAttribute="centerX" secondItem="Ddc-6d-QaF" secondAttribute="centerX" id="Mpo-hc-SYh"/>
                             <constraint firstItem="fZn-8n-DQx" firstAttribute="width" secondItem="ssv-q2-2WD" secondAttribute="width" multiplier="0.94" id="RJH-yj-qtI"/>
                             <constraint firstItem="QVJ-kG-gX7" firstAttribute="width" secondItem="ssv-q2-2WD" secondAttribute="width" multiplier="0.65" id="Wf6-Mf-XSS"/>
-                            <constraint firstItem="K5A-pV-Nnw" firstAttribute="top" secondItem="teY-nL-mc6" secondAttribute="bottom" constant="5" id="aRv-dB-pVf"/>
-                            <constraint firstItem="Vol-nY-9AS" firstAttribute="top" secondItem="QVJ-kG-gX7" secondAttribute="bottom" constant="28" id="c8g-7Y-aVE"/>
+                            <constraint firstItem="K5A-pV-Nnw" firstAttribute="top" secondItem="teY-nL-mc6" secondAttribute="bottom" constant="12" id="aRv-dB-pVf"/>
                             <constraint firstItem="4hG-Ti-OWo" firstAttribute="width" secondItem="ssv-q2-2WD" secondAttribute="width" multiplier="0.94" id="h4C-HK-4JC"/>
                             <constraint firstItem="K5A-pV-Nnw" firstAttribute="width" secondItem="ssv-q2-2WD" secondAttribute="width" multiplier="0.94" id="hD7-7R-eZd"/>
-                            <constraint firstItem="4hG-Ti-OWo" firstAttribute="top" secondItem="Vol-nY-9AS" secondAttribute="bottom" constant="5" id="iLU-Gp-R9u"/>
+                            <constraint firstItem="4hG-Ti-OWo" firstAttribute="top" secondItem="Vol-nY-9AS" secondAttribute="bottom" constant="12" id="iLU-Gp-R9u"/>
+                            <constraint firstAttribute="bottom" secondItem="K5A-pV-Nnw" secondAttribute="bottom" constant="14" id="nY8-Op-LkR"/>
                             <constraint firstAttribute="centerX" secondItem="4hG-Ti-OWo" secondAttribute="centerX" id="rN9-LP-6fo"/>
                             <constraint firstAttribute="centerX" secondItem="teY-nL-mc6" secondAttribute="centerX" id="wMP-D0-XFu"/>
                             <constraint firstItem="Ddc-6d-QaF" firstAttribute="width" secondItem="ssv-q2-2WD" secondAttribute="width" multiplier="0.94" id="wSE-NX-yzy"/>
@@ -795,7 +795,14 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="p8T-jz-bPg"/>
                     </navigationItem>
                     <connections>
-                        <outlet property="distancePartyButtonFromTop" destination="c8g-7Y-aVE" id="urp-vK-a7D"/>
+                        <outlet property="distancePartyButtonFromTop" destination="4II-7D-hMc" id="D8a-hR-fZY"/>
+                        <outlet property="titleLabel" destination="QVJ-kG-gX7" id="rUP-QE-9Nn"/>
+                        <outlet property="topButton" destination="Vol-nY-9AS" id="2Vs-qd-40U"/>
+                        <outletCollection property="distancesBetweenButtons" destination="iLU-Gp-R9u" id="Z7l-hR-8jc"/>
+                        <outletCollection property="distancesBetweenButtons" destination="FMF-zi-IV2" id="I5O-gA-rMT"/>
+                        <outletCollection property="distancesBetweenButtons" destination="FAh-aP-vVo" id="5ke-sk-cBS"/>
+                        <outletCollection property="distancesBetweenButtons" destination="Gxx-2r-UnS" id="Z1L-rf-SSw"/>
+                        <outletCollection property="distancesBetweenButtons" destination="aRv-dB-pVf" id="PBE-WB-Ndu"/>
                         <segue destination="kg4-Pr-bdC" kind="show" identifier="pick date" id="gXd-GI-Xrq"/>
                     </connections>
                 </viewController>
