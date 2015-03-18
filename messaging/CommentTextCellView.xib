@@ -84,7 +84,7 @@
                 <outlet property="userImageView" destination="3Xl-hr-3LV" id="dqV-nh-8dQ"/>
                 <outlet property="userNameLabel" destination="a3r-59-00Z" id="Zqp-rm-7pN"/>
             </connections>
-            <point key="canvasLocation" x="-69" y="151.5"/>
+            <point key="canvasLocation" x="-63" y="161.5"/>
         </tableViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

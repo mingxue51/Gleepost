@@ -47,7 +47,7 @@ const CGFloat CATEGORY_TITLE_HEIGHT = 30.0;
     NSDictionary *dict = [notification userInfo];
     NSString *category = [dict objectForKey:@"Category"];
     
-    [_categoryLabel setText:[NSString stringWithFormat:@"%@ Posts", category]];
+    [_categoryLabel setText:[NSString stringWithFormat:@"%@", category]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

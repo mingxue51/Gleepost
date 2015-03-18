@@ -54,7 +54,7 @@
     [self addSubview:subView];
     
 //    UIImageView *margingImage = [[UIImageView alloc] initWithFrame:CGRectMake(132, 56, 56, 100)];
-    UIImageView *margingImage = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, screenWidth, 1000)];
+    UIImageView *margingImage = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, screenWidth, 340)];
 
     
     [margingImage setBackgroundColor:[UIColor whiteColor]];

@@ -17,23 +17,6 @@
 
 @implementation GLPViewsCountView
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    DDLogDebug(@"GLPViewsCountView : awakeFromNib");
-}
-
-- (instancetype)initWithCoder:(NSCoder *)coder
-{
-    self = [super initWithCoder:coder];
-    if (self) {
-        
-        DDLogDebug(@"GLPViewsCountView : initWithCoder");
-        
-    }
-    return self;
-}
-
 - (void)setViewsCount:(NSInteger)viewsCount
 {
     if(viewsCount == 0)
@@ -49,9 +32,7 @@
             [self.viewsCountLabel setText:labelText];
             [_viewCountLabelWidth setConstant:[GLPViewsCountView getContentLabelSizeForContent:labelText] + 1];
         });
-        
     }
-    
 }
 
 #pragma mark - Label size
@@ -83,14 +64,6 @@
 + (CGFloat)mainLabelMaxWidth
 {
     return 280.0;
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-
-    
 }
 
 /*

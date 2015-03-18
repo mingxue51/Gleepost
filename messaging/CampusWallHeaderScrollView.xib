@@ -57,10 +57,10 @@
                     <color key="backgroundColor" red="0.96470588239999999" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vK1-da-w7X" userLabel="Background">
-                    <rect key="frame" x="0.0" y="0.0" width="600" height="283"/>
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="288"/>
                     <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="283" id="XLH-3Q-dyv"/>
+                        <constraint firstAttribute="height" constant="288" id="XLH-3Q-dyv"/>
                     </constraints>
                 </imageView>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iuv-S5-gzi">
