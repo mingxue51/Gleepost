@@ -36,7 +36,7 @@
 @implementation GLPMessageCell
 
 static const CGFloat KViewW = 320;
-static const CGFloat kProfileImageViewSize = 40;
+static const CGFloat kProfileImageViewSize = 44;
 static const CGFloat kTimeLabelW = 200;
 static const CGFloat kTimeLabelH = 20;
 static const CGFloat kContentLabelMinimalW = 15;

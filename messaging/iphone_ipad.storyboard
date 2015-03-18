@@ -214,7 +214,7 @@
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="What kind of post is this?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qx7-12-4te">
                                 <rect key="frame" x="105" y="64" width="390" height="22"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="20"/>
                                 <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <variation key="widthClass=regular">
@@ -812,7 +812,7 @@
                         <viewControllerLayoutGuide type="bottom" id="j2A-UE-uic"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Uup-Ac-dvo">
-                        <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZkJ-og-3e0">
@@ -1236,7 +1236,7 @@
                         <viewControllerLayoutGuide type="bottom" id="2NT-o0-cV7"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="gzK-Nh-D8K">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HiE-3X-VtA">
@@ -2072,7 +2072,7 @@
                                 </variation>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khp-62-GyN">
-                                <rect key="frame" x="18" y="587" width="564" height="94"/>
+                                <rect key="frame" x="18" y="492" width="564" height="94"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="khp-62-GyN" secondAttribute="height" multiplier="6:1" id="Vc7-QY-Vd4"/>
                                 </constraints>
@@ -2093,7 +2093,7 @@
                         <constraints>
                             <constraint firstItem="c3Y-EN-qPQ" firstAttribute="width" secondItem="qag-Ya-uD7" secondAttribute="width" id="6o4-7h-DxQ"/>
                             <constraint firstItem="c3Y-EN-qPQ" firstAttribute="top" secondItem="lH5-Rq-uh0" secondAttribute="bottom" constant="28" id="9rx-XM-eLz"/>
-                            <constraint firstItem="khp-62-GyN" firstAttribute="top" secondItem="c3Y-EN-qPQ" secondAttribute="bottom" constant="118" id="Fke-g2-dyJ"/>
+                            <constraint firstAttribute="bottom" secondItem="khp-62-GyN" secondAttribute="bottom" constant="14" id="Vhg-VM-J6X"/>
                             <constraint firstAttribute="centerX" secondItem="lH5-Rq-uh0" secondAttribute="centerX" id="eYp-S1-3OM"/>
                             <constraint firstItem="lH5-Rq-uh0" firstAttribute="top" secondItem="V23-NC-jN0" secondAttribute="bottom" constant="20" id="fGW-JL-fk5"/>
                             <constraint firstItem="lH5-Rq-uh0" firstAttribute="width" secondItem="qag-Ya-uD7" secondAttribute="width" multiplier="0.8" id="jgV-wh-GZ4"/>
@@ -2487,11 +2487,11 @@
                         <viewControllerLayoutGuide type="bottom" id="PNF-Cd-P5C"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="24B-RR-p0F">
-                        <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="sF6-1G-9nG">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="OCL-m2-6vS" userLabel="InternalView">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="319"/>
@@ -2744,7 +2744,7 @@
                         <viewControllerLayoutGuide type="bottom" id="yN7-y1-hHT"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="hce-Ag-WWS">
-                        <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TXB-nT-icI">
@@ -2797,7 +2797,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="71u-hz-5pq">
-                                <rect key="frame" x="0.0" y="73" width="600" height="414"/>
+                                <rect key="frame" x="0.0" y="73" width="600" height="463"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="KsD-qK-Acp" id="McK-8o-ryU"/>
@@ -4906,22 +4906,22 @@
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="X2Z-pC-dgW"/>
         <segue reference="fah-A8-Ky9"/>
         <segue reference="2ju-Ui-QdM"/>
         <segue reference="uet-Cl-mZq"/>
-        <segue reference="rCT-Ex-vO8"/>
-        <segue reference="C5K-bl-yN1"/>
-        <segue reference="XMX-SH-Gag"/>
         <segue reference="2GR-ci-jSQ"/>
+        <segue reference="C5K-bl-yN1"/>
         <segue reference="j6r-TK-6Al"/>
+        <segue reference="rCT-Ex-vO8"/>
+        <segue reference="XMX-SH-Gag"/>
         <segue reference="8oh-gD-Cs7"/>
-        <segue reference="b0z-f7-UHU"/>
-        <segue reference="EAz-MH-b19"/>
-        <segue reference="wR3-TA-URh"/>
         <segue reference="bc7-so-Tnw"/>
-        <segue reference="X2Z-pC-dgW"/>
+        <segue reference="wR3-TA-URh"/>
+        <segue reference="EAz-MH-b19"/>
+        <segue reference="rdb-8v-KiD"/>
         <segue reference="KgO-oz-Ivb"/>
         <segue reference="c6M-82-Pnp"/>
-        <segue reference="rdb-8v-KiD"/>
+        <segue reference="YIa-ii-tw7"/>
     </inferredMetricsTieBreakers>
 </document>

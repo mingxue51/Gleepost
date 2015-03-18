@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -137,16 +138,16 @@
                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iK6-y7-w6w" customClass="MainPostView">
                         <rect key="frame" x="14" y="91" width="292" height="487"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rvv-XG-fjZ" userLabel="Content Label">
-                                <rect key="frame" x="10" y="375" width="267" height="16"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rvv-XG-fjZ" userLabel="Content Label">
+                                <rect key="frame" x="10" y="376" width="267" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="Cue-S2-lvF"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wQ8-CB-whj" userLabel="ViewsCountView" customClass="GLPViewsCountView">
-                                <rect key="frame" x="10" y="409" width="272" height="15"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wQ8-CB-whj" userLabel="ViewsCountView" customClass="GLPViewsCountView">
+                                <rect key="frame" x="10" y="410" width="272" height="15"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="VIEWS" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="th2-R3-43C" userLabel="ViewsCountFixLabel">
                                         <rect key="frame" x="33" y="2" width="42" height="15"/>
@@ -252,8 +253,8 @@
                                     <outlet property="videoView" destination="Jd2-ka-kpE" id="lAD-sq-Keg"/>
                                 </connections>
                             </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Hp-QQ-a1A" userLabel="User View">
-                                <rect key="frame" x="0.0" y="323" width="292" height="44"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Hp-QQ-a1A" userLabel="User View">
+                                <rect key="frame" x="0.0" y="322" width="292" height="46"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="ago" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6NQ-iY-jQb">
                                         <rect key="frame" x="52" y="22" width="161" height="14"/>
@@ -302,11 +303,11 @@
                                             <action selector="moreOptions:" destination="iK6-y7-w6w" eventType="touchUpInside" id="QIS-os-UDt"/>
                                         </connections>
                                     </button>
-                                    <button contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EeF-kn-mHb">
-                                        <rect key="frame" x="209" y="1" width="75" height="39"/>
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EeF-kn-mHb">
+                                        <rect key="frame" x="193" y="0.0" width="89" height="46"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="75" id="NUk-X5-tFx"/>
-                                            <constraint firstAttribute="height" constant="39" id="hUX-66-txY"/>
+                                            <constraint firstAttribute="width" constant="89" id="NUk-X5-tFx"/>
+                                            <constraint firstAttribute="width" secondItem="EeF-kn-mHb" secondAttribute="height" multiplier="25:13" id="rRV-ZG-B1g"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
                                         <state key="normal" title="I'M GOING" backgroundImage="going_pushed_back_btn.png">
@@ -322,7 +323,7 @@
                                     <constraint firstItem="6NQ-iY-jQb" firstAttribute="top" secondItem="vGG-vo-Jhi" secondAttribute="bottom" constant="2" id="00s-B0-dDd"/>
                                     <constraint firstAttribute="trailing" secondItem="MyE-5D-9g2" secondAttribute="trailing" id="1GE-kT-0iO"/>
                                     <constraint firstItem="EeF-kn-mHb" firstAttribute="top" secondItem="1Hp-QQ-a1A" secondAttribute="top" id="Omz-aw-uJt"/>
-                                    <constraint firstAttribute="trailing" secondItem="EeF-kn-mHb" secondAttribute="trailing" constant="8" id="UyL-Bq-wLF"/>
+                                    <constraint firstAttribute="trailing" secondItem="EeF-kn-mHb" secondAttribute="trailing" constant="10" id="UyL-Bq-wLF"/>
                                     <constraint firstItem="MyE-5D-9g2" firstAttribute="top" secondItem="1Hp-QQ-a1A" secondAttribute="top" constant="5" id="ZUr-hD-YV4"/>
                                     <constraint firstItem="6NQ-iY-jQb" firstAttribute="leading" secondItem="1XF-hU-YVI" secondAttribute="trailing" constant="7" id="bC6-gc-Rb6"/>
                                     <constraint firstItem="EeF-kn-mHb" firstAttribute="leading" secondItem="vGG-vo-Jhi" secondAttribute="trailing" constant="15" id="c8a-96-y53"/>
@@ -331,11 +332,11 @@
                                     <constraint firstItem="MyE-5D-9g2" firstAttribute="leading" secondItem="6NQ-iY-jQb" secondAttribute="trailing" constant="37" id="oo8-TK-9sj"/>
                                     <constraint firstItem="vGG-vo-Jhi" firstAttribute="top" secondItem="1Hp-QQ-a1A" secondAttribute="top" id="sgf-Pk-C5g"/>
                                     <constraint firstItem="vGG-vo-Jhi" firstAttribute="leading" secondItem="1XF-hU-YVI" secondAttribute="trailing" constant="7" id="xsX-1o-HdJ"/>
-                                    <constraint firstAttribute="height" constant="44" id="zg1-Qf-6Wf"/>
+                                    <constraint firstAttribute="height" constant="46" id="zg1-Qf-6Wf"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dhI-EZ-yh1" userLabel="Social View">
-                                <rect key="frame" x="0.0" y="441" width="292" height="40"/>
+                                <rect key="frame" x="0.0" y="443" width="292" height="40"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I2a-Lq-hHs">
                                         <rect key="frame" x="62" y="0.0" width="54" height="11"/>

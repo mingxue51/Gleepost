@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
@@ -145,7 +146,7 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p9l-bX-fhh" userLabel="User View">
-                                <rect key="frame" x="0.0" y="208" width="290" height="38"/>
+                                <rect key="frame" x="0.0" y="208" width="290" height="45"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GUe-OU-BSE">
                                         <rect key="frame" x="52" y="20" width="161" height="16"/>
@@ -194,11 +195,11 @@
                                             <action selector="moreOptions:" destination="jCQ-SX-55v" eventType="touchUpInside" id="N70-Ij-NZ0"/>
                                         </connections>
                                     </button>
-                                    <button contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NqB-Nx-PIG">
-                                        <rect key="frame" x="207" y="1" width="76" height="38"/>
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NqB-Nx-PIG">
+                                        <rect key="frame" x="191" y="0.0" width="89" height="45"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="38" id="aZu-KK-Pkv"/>
-                                            <constraint firstAttribute="width" constant="76" id="bo0-WT-71b"/>
+                                            <constraint firstAttribute="width" secondItem="NqB-Nx-PIG" secondAttribute="height" multiplier="2:1" id="ZQY-Z3-wdW"/>
+                                            <constraint firstAttribute="width" constant="89" id="bo0-WT-71b"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
                                         <state key="normal" title="I'M GOING" backgroundImage="going_pushed_back_btn.png">
@@ -217,12 +218,12 @@
                                     <constraint firstItem="GUe-OU-BSE" firstAttribute="top" secondItem="p9l-bX-fhh" secondAttribute="top" constant="19" id="OeT-mX-yZO"/>
                                     <constraint firstItem="zBQ-cm-AFU" firstAttribute="top" secondItem="p9l-bX-fhh" secondAttribute="top" id="Y0U-L5-rvA"/>
                                     <constraint firstItem="GUe-OU-BSE" firstAttribute="leading" secondItem="zBQ-cm-AFU" secondAttribute="trailing" constant="7" id="e6c-rC-J3a"/>
-                                    <constraint firstAttribute="height" constant="38" id="eHm-fa-q9P"/>
+                                    <constraint firstAttribute="height" constant="45" id="eHm-fa-q9P"/>
                                     <constraint firstItem="ksK-Rs-vLX" firstAttribute="top" secondItem="p9l-bX-fhh" secondAttribute="top" id="hKH-yM-7mY"/>
                                     <constraint firstItem="GUe-OU-BSE" firstAttribute="width" secondItem="p9l-bX-fhh" secondAttribute="width" multiplier="0.5" constant="16" id="len-iH-EwR"/>
                                     <constraint firstAttribute="trailing" secondItem="CRJ-gT-Nhx" secondAttribute="trailing" id="quU-SG-mOS"/>
                                     <constraint firstItem="ksK-Rs-vLX" firstAttribute="leading" secondItem="zBQ-cm-AFU" secondAttribute="trailing" constant="7" id="t3U-Sy-Gt5"/>
-                                    <constraint firstAttribute="trailing" secondItem="NqB-Nx-PIG" secondAttribute="trailing" constant="7" id="wDS-9y-SX4"/>
+                                    <constraint firstAttribute="trailing" secondItem="NqB-Nx-PIG" secondAttribute="trailing" constant="10" id="wDS-9y-SX4"/>
                                     <constraint firstItem="zBQ-cm-AFU" firstAttribute="leading" secondItem="p9l-bX-fhh" secondAttribute="leading" constant="10" id="y5t-EP-Ima"/>
                                 </constraints>
                             </view>

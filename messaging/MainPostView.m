@@ -118,7 +118,7 @@
 @implementation MainPostView
 
 const float FIXED_TOP_TEXT_BACKGROUND_HEIGHT = 70;
-const float FIXED_BOTTOM_TEXT_VIEW_HEIGHT = 120; //100
+const float FIXED_BOTTOM_TEXT_VIEW_HEIGHT = 114; //100
 
 const float FIXED_TOP_MEDIA_BACKGROUND_HEIGHT = 250;
 const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
@@ -255,7 +255,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 {
     float distanceFromTop = 0.0f;
     float fixedBottomViewHeight = FIXED_BOTTOM_TEXT_VIEW_HEIGHT;
-    float backgroundImageViewHeight = 225.0f + height;
+    float backgroundImageViewHeight = 219.0f + height;
     
     if([self isCurrentPostEvent])
     {

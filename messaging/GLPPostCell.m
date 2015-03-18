@@ -45,7 +45,7 @@
 
 const float IMAGE_CELL_HEIGHT = 425;        //386
 const float VIDEO_CELL_HEIGHT = 553;        //527
-const float TEXT_CELL_HEIGHT = 239;         //225
+const float TEXT_CELL_HEIGHT = 233;         //225
 const float IMAGE_CELL_ONE_LINE_HEIGHT = IMAGE_CELL_HEIGHT - 15;
 const float VIDEO_CELL_ONE_LINE_HEIGHT = VIDEO_CELL_HEIGHT - 21;
 const float TEXT_CELL_ONE_LINE_HEIGHT = TEXT_CELL_HEIGHT - 15;

@@ -177,12 +177,13 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="JIZ-wM-42z" firstAttribute="top" secondItem="bk0-KH-bPG" secondAttribute="top" id="0mf-ID-EQP"/>
+                    <constraint firstItem="tfn-Qh-8lY" firstAttribute="top" secondItem="lU5-qO-y5G" secondAttribute="bottom" constant="-14" id="7EB-DC-ZQT"/>
                     <constraint firstAttribute="centerX" secondItem="tfn-Qh-8lY" secondAttribute="centerX" id="BNZ-xU-UV5"/>
                     <constraint firstAttribute="trailing" secondItem="tod-Ik-7Mf" secondAttribute="trailing" constant="5" id="Dge-he-ueo"/>
                     <constraint firstAttribute="trailing" secondItem="0Js-ka-wWS" secondAttribute="trailing" constant="14" id="GOv-nV-8JI"/>
                     <constraint firstItem="0b1-ox-FLb" firstAttribute="top" secondItem="0Js-ka-wWS" secondAttribute="bottom" constant="3" id="Kty-ac-W4T"/>
                     <constraint firstItem="JIZ-wM-42z" firstAttribute="leading" secondItem="bk0-KH-bPG" secondAttribute="leading" id="KwF-8B-PAr"/>
-                    <constraint firstItem="tod-Ik-7Mf" firstAttribute="top" secondItem="0b1-ox-FLb" secondAttribute="bottom" constant="20" id="Oef-93-vur"/>
+                    <constraint firstItem="tfn-Qh-8lY" firstAttribute="top" secondItem="tod-Ik-7Mf" secondAttribute="bottom" constant="-13" id="NQY-SC-25I"/>
                     <constraint firstAttribute="trailing" secondItem="0b1-ox-FLb" secondAttribute="trailing" constant="14" id="P95-Pf-gbc"/>
                     <constraint firstItem="tfn-Qh-8lY" firstAttribute="leading" secondItem="bk0-KH-bPG" secondAttribute="leading" constant="14" id="PdN-iP-ex8"/>
                     <constraint firstItem="0Js-ka-wWS" firstAttribute="top" secondItem="C4V-37-dC5" secondAttribute="bottom" constant="14" id="Qqb-Q0-z89"/>
@@ -192,7 +193,6 @@
                     <constraint firstAttribute="trailing" secondItem="tfn-Qh-8lY" secondAttribute="trailing" constant="14" id="ehn-sk-tcP"/>
                     <constraint firstItem="0Js-ka-wWS" firstAttribute="leading" secondItem="bk0-KH-bPG" secondAttribute="leading" constant="14" id="yoK-pu-Ofo"/>
                     <constraint firstAttribute="bottom" secondItem="tfn-Qh-8lY" secondAttribute="bottom" constant="14" id="zWV-dv-6AH"/>
-                    <constraint firstItem="lU5-qO-y5G" firstAttribute="top" secondItem="0b1-ox-FLb" secondAttribute="bottom" constant="21" id="znA-IG-TCy"/>
                 </constraints>
             </tableViewCellContentView>
             <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -208,7 +208,7 @@
                 <outlet property="smallSubtitleLbl" destination="0b1-ox-FLb" id="Te5-TW-76c"/>
                 <outlet property="subtitleLbl" destination="0Js-ka-wWS" id="7Ee-WO-FgX"/>
             </connections>
-            <point key="canvasLocation" x="-818" y="217"/>
+            <point key="canvasLocation" x="-1086" y="173"/>
         </tableViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
