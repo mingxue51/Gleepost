@@ -52,15 +52,15 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Xpk-OO-Rws" firstAttribute="leading" secondItem="gXy-uL-jgy" secondAttribute="leading" constant="295" id="4ou-XD-lgN"/>
+                    <constraint firstItem="2jr-qC-Y2d" firstAttribute="top" secondItem="Osz-eM-p8Y" secondAttribute="bottom" constant="-13" id="6aX-UC-sas"/>
                     <constraint firstItem="2eP-nG-eU0" firstAttribute="leading" secondItem="gXy-uL-jgy" secondAttribute="leading" constant="15" id="BYZ-er-SEg"/>
                     <constraint firstItem="2jr-qC-Y2d" firstAttribute="leading" secondItem="gXy-uL-jgy" secondAttribute="leading" constant="14" id="CDj-me-vhS"/>
                     <constraint firstAttribute="trailing" secondItem="2jr-qC-Y2d" secondAttribute="trailing" constant="14" id="HtX-8e-ahU"/>
-                    <constraint firstItem="Xpk-OO-Rws" firstAttribute="top" secondItem="2eP-nG-eU0" secondAttribute="bottom" constant="5" id="KHc-LY-igR"/>
+                    <constraint firstAttribute="trailing" secondItem="Osz-eM-p8Y" secondAttribute="trailing" constant="5" id="Ig2-tr-bAc"/>
+                    <constraint firstItem="2jr-qC-Y2d" firstAttribute="top" secondItem="Xpk-OO-Rws" secondAttribute="bottom" constant="-13" id="QNw-D4-Iie"/>
                     <constraint firstItem="2eP-nG-eU0" firstAttribute="top" secondItem="gXy-uL-jgy" secondAttribute="top" constant="10" id="RHz-W7-RQm"/>
-                    <constraint firstItem="Osz-eM-p8Y" firstAttribute="leading" secondItem="gXy-uL-jgy" secondAttribute="leading" constant="295" id="RYX-nH-fUF"/>
+                    <constraint firstAttribute="trailing" secondItem="Xpk-OO-Rws" secondAttribute="trailing" constant="5" id="h0f-du-E3b"/>
                     <constraint firstAttribute="trailing" secondItem="2eP-nG-eU0" secondAttribute="trailing" constant="15" id="i1d-nO-krO"/>
-                    <constraint firstItem="Osz-eM-p8Y" firstAttribute="top" secondItem="2eP-nG-eU0" secondAttribute="bottom" constant="5" id="m4A-Mq-Xlp"/>
                     <constraint firstAttribute="bottom" secondItem="2jr-qC-Y2d" secondAttribute="bottom" constant="14" id="uMv-uq-WDN"/>
                 </constraints>
             </tableViewCellContentView>

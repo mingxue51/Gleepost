@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,30 +15,27 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="59"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YEy-QR-ahx">
-                        <rect key="frame" x="10" y="0.0" width="300" height="59"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YEy-QR-ahx">
+                        <rect key="frame" x="14" y="0.0" width="292" height="57"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="300" id="PDR-jN-p69"/>
-                            <constraint firstAttribute="height" constant="59" id="eTL-Wq-NbY"/>
+                            <constraint firstAttribute="width" secondItem="YEy-QR-ahx" secondAttribute="height" multiplier="300:59" id="5QJ-oN-z8y"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Jq-xA-WZ3">
-                        <rect key="frame" x="10" y="8" width="300" height="43"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="43" id="B0E-cA-JVY"/>
-                            <constraint firstAttribute="width" constant="300" id="enT-SM-kbX"/>
-                        </constraints>
+                        <rect key="frame" x="10" y="18" width="300" height="24"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="centerX" secondItem="1Jq-xA-WZ3" secondAttribute="centerX" id="VDg-f5-F0V"/>
-                    <constraint firstItem="1Jq-xA-WZ3" firstAttribute="top" secondItem="DZz-0P-MTs" secondAttribute="top" constant="8" id="Xj9-b9-T6B"/>
-                    <constraint firstAttribute="centerX" secondItem="YEy-QR-ahx" secondAttribute="centerX" id="bRL-oW-3Rx"/>
+                    <constraint firstAttribute="trailing" secondItem="YEy-QR-ahx" secondAttribute="trailing" constant="14" id="esD-bK-9U8"/>
+                    <constraint firstItem="YEy-QR-ahx" firstAttribute="leading" secondItem="DZz-0P-MTs" secondAttribute="leading" constant="14" id="f7K-qI-6ZD"/>
+                    <constraint firstItem="YEy-QR-ahx" firstAttribute="centerY" secondItem="1Jq-xA-WZ3" secondAttribute="centerY" constant="-1.5" id="kxW-gy-xE8"/>
+                    <constraint firstItem="1Jq-xA-WZ3" firstAttribute="leading" secondItem="DZz-0P-MTs" secondAttribute="leading" constant="10" id="lXo-So-VGg"/>
                     <constraint firstItem="YEy-QR-ahx" firstAttribute="top" secondItem="DZz-0P-MTs" secondAttribute="top" id="q7H-iG-VLR"/>
+                    <constraint firstAttribute="trailing" secondItem="1Jq-xA-WZ3" secondAttribute="trailing" constant="10" id="ymT-jh-qdc"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -45,6 +43,7 @@
                 <outlet property="categoryImage" destination="YEy-QR-ahx" id="U1V-9u-CaB"/>
                 <outlet property="categoryNameLbl" destination="1Jq-xA-WZ3" id="rfc-gv-OpP"/>
             </connections>
+            <point key="canvasLocation" x="272" y="265"/>
         </tableViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

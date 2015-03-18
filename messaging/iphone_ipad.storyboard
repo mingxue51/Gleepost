@@ -1163,6 +1163,9 @@
                         <outlet property="blurBack" destination="VJg-9l-69Q" id="9Fx-46-xai"/>
                         <outlet property="tableView" destination="MGx-Bk-zFC" id="2Er-aZ-rJW"/>
                         <outlet property="topImageView" destination="VW6-Jx-hoc" id="HDY-Wf-b8p"/>
+                        <outletCollection property="tableViewsHeights" destination="Dit-YH-nFV" id="WsR-DW-E5j"/>
+                        <outletCollection property="tableViewsHeights" destination="tRb-ZT-Nj1" id="Wwc-Dr-XuB"/>
+                        <outletCollection property="tableViewsHeights" destination="vC6-Yn-h9j" id="tEQ-zJ-m5W"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aK2-YR-WtJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
