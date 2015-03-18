@@ -15,14 +15,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WNd-Am-Mk9" customClass="GLPConversationPictureImageView">
-                        <rect key="frame" x="10" y="7" width="50" height="50"/>
+                        <rect key="frame" x="10" y="7" width="54" height="54"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="50" id="DxL-eY-UFR"/>
-                            <constraint firstAttribute="width" constant="50" id="yLv-Z5-8s1"/>
+                            <constraint firstAttribute="height" constant="54" id="DxL-eY-UFR"/>
+                            <constraint firstAttribute="width" constant="54" id="yLv-Z5-8s1"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Labelgp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sRP-Ur-t8L">
-                        <rect key="frame" x="65" y="11" width="157" height="20"/>
+                        <rect key="frame" x="71" y="11" width="151" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="AeO-Pn-B5B"/>
                         </constraints>
@@ -31,7 +31,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello World" lineBreakMode="tailTruncation" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZI3-Ya-ReG">
-                        <rect key="frame" x="65" y="32" width="246" height="21"/>
+                        <rect key="frame" x="71" y="32" width="240" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="KQB-go-Kqe"/>
                         </constraints>
@@ -50,13 +50,13 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="sRP-Ur-t8L" firstAttribute="leading" secondItem="WNd-Am-Mk9" secondAttribute="trailing" constant="5" id="5iB-F1-elO"/>
+                    <constraint firstItem="sRP-Ur-t8L" firstAttribute="leading" secondItem="WNd-Am-Mk9" secondAttribute="trailing" constant="7" id="5iB-F1-elO"/>
                     <constraint firstAttribute="trailing" secondItem="Vz8-xv-TEq" secondAttribute="trailing" constant="9" id="E34-0C-mIy"/>
                     <constraint firstItem="sRP-Ur-t8L" firstAttribute="top" secondItem="EEf-GO-96Q" secondAttribute="top" constant="11" id="LLS-TK-X6g"/>
                     <constraint firstItem="ZI3-Ya-ReG" firstAttribute="top" secondItem="sRP-Ur-t8L" secondAttribute="bottom" constant="1" id="Ryq-E6-Idh"/>
                     <constraint firstItem="WNd-Am-Mk9" firstAttribute="top" secondItem="EEf-GO-96Q" secondAttribute="top" constant="7" id="TF5-2J-dbr"/>
                     <constraint firstAttribute="trailing" secondItem="sRP-Ur-t8L" secondAttribute="trailing" constant="98" id="aES-Do-85s"/>
-                    <constraint firstItem="ZI3-Ya-ReG" firstAttribute="leading" secondItem="WNd-Am-Mk9" secondAttribute="trailing" constant="5" id="fLw-s4-1kB"/>
+                    <constraint firstItem="ZI3-Ya-ReG" firstAttribute="leading" secondItem="WNd-Am-Mk9" secondAttribute="trailing" constant="7" id="fLw-s4-1kB"/>
                     <constraint firstAttribute="trailing" secondItem="ZI3-Ya-ReG" secondAttribute="trailing" constant="9" id="i3c-KD-YkT"/>
                     <constraint firstItem="WNd-Am-Mk9" firstAttribute="leading" secondItem="EEf-GO-96Q" secondAttribute="leading" constant="10" id="nBM-4K-1Ge"/>
                     <constraint firstItem="ZI3-Ya-ReG" firstAttribute="top" secondItem="Vz8-xv-TEq" secondAttribute="bottom" constant="6" id="oRW-eK-RI3"/>
