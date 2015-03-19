@@ -30,6 +30,7 @@ typedef NS_ENUM(NSUInteger, GroupPrivacy) {
 @property (assign, nonatomic) NSInteger membersCount;
 @property (assign, nonatomic) GroupPrivacy privacy;
 @property (assign, nonatomic) NSInteger conversationRemoteKey;
+@property (strong, nonatomic) NSDate *lastActivity;
 
 //Not create in local database
 @property (strong, nonatomic) GLPMember *loggedInUser;

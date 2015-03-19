@@ -137,8 +137,6 @@ static GLPReadReceiptsManager *instance = nil;
         return NO;
     }
     
-    DDLogDebug(@"GLPReadReceiptsManager : doesMessage new key %ld, old key %ld", [readReceipt getMesssageRemoteKey], [message remoteKey]);
-    
     if([readReceipt getMesssageRemoteKey] == message.remoteKey && message.author.remoteKey != [readReceipt getLastUser].remoteKey)
     {
         return YES;
@@ -150,7 +148,7 @@ static GLPReadReceiptsManager *instance = nil;
 #pragma mark - Updates
 
 /**
- Updates or add the conversation reads array (in conversation instances - either GLPLiveGroupConversationsManager
+ Updates or adds the conversation reads array (in conversation instances - either GLPLiveGroupConversationsManager
  or GLPLiveConversationsManager) and in local database in conversation_reads.
  
  @param readReceipt the new read receipt that just received from web socket.
