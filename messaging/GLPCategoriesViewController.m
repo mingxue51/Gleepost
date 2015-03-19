@@ -69,7 +69,7 @@
 
 - (void)configureTableViewHeightDependingOnConstrains
 {
-    CGFloat tableViewHeight = _categories.count * [GLPCategoryCell height];
+    CGFloat tableViewHeight = _categories.count * [GLPCategoryCell height] + [GLPCategoryCell bottomPadding];
     
     for(NSLayoutConstraint *constraint in self.tableViewsHeights)
     {

@@ -2662,7 +2662,7 @@ const float TOP_OFFSET = 180.0f;
         //
         
         //TODO: Fix that. Apply the new library and make a helper to do all the progress.
-        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 60, [GLPiOSSupportHelper screenWidth], ([[CategoryManager sharedInstance] categoriesNames].count - 1) * [GLPCategoryCell height])]; //0 63 320 302
+        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 60, [GLPiOSSupportHelper screenWidth], ([[CategoryManager sharedInstance] categoriesNames].count - 1) * [GLPCategoryCell height] + [GLPCategoryCell bottomPadding])]; //0 63 320 302
 
         [cvc.blurBack setImage:[image stackBlur:10.0f]];
         [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
