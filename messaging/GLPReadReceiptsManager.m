@@ -67,9 +67,14 @@ static GLPReadReceiptsManager *instance = nil;
 
     GLPReadReceipt *existedReadReceipt = [_readReceipts objectForKey: @([readReceipt getConversationRemoteKey])];
     
-    if(existedReadReceipt)
+    if(existedReadReceipt && [readReceipt getMesssageRemoteKey] == [existedReadReceipt getMesssageRemoteKey])
     {
         [existedReadReceipt addUserWithUser: [readReceipt getLastUser]];
+    }
+    else if(existedReadReceipt && [readReceipt getMesssageRemoteKey] != [existedReadReceipt getMesssageRemoteKey])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:self userInfo:@{@"message_remote_key" : @([existedReadReceipt getMesssageRemoteKey])}];
+        [_readReceipts setObject:readReceipt forKey:@([readReceipt getConversationRemoteKey])];
     }
     else
     {
@@ -131,6 +136,8 @@ static GLPReadReceiptsManager *instance = nil;
     {
         return NO;
     }
+    
+    DDLogDebug(@"GLPReadReceiptsManager : doesMessage new key %ld, old key %ld", [readReceipt getMesssageRemoteKey], [message remoteKey]);
     
     if([readReceipt getMesssageRemoteKey] == message.remoteKey && message.author.remoteKey != [readReceipt getLastUser].remoteKey)
     {
