@@ -19,20 +19,26 @@
 
 - (void)setViewsCount:(NSInteger)viewsCount
 {
+    NSString *labelText = nil;
+    
     if(viewsCount == 0)
     {
-        [self setHidden:YES];
+//        [self setHidden:YES];
+        labelText = @"1";
+        
     }
     else
     {
-        NSString *labelText = [NSString stringWithFormat:@"%@", @(viewsCount)];
+        labelText = [NSString stringWithFormat:@"%@", @(viewsCount)];
         
         [self setHidden:NO];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.viewsCountLabel setText:labelText];
-            [_viewCountLabelWidth setConstant:[GLPViewsCountView getContentLabelSizeForContent:labelText] + 1];
-        });
+
     }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.viewsCountLabel setText:labelText];
+        [_viewCountLabelWidth setConstant:[GLPViewsCountView getContentLabelSizeForContent:labelText] + 1];
+    });
 }
 
 #pragma mark - Label size
