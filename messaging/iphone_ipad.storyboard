@@ -3729,25 +3729,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar tag="1" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbF-Gw-ctR">
-                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="1JZ-89-C8s"/>
-                                </constraints>
-                                <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <textAttributes key="titleTextAttributes">
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="textShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </textAttributes>
-                                <items>
-                                    <navigationItem id="Yn9-AJ-9fa">
-                                        <barButtonItem key="backBarButtonItem" title=" " id="3dw-9v-7eR"/>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="vCH-Vq-2QU">
-                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                                 <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="dataSource" destination="COF-aX-mXS" id="8qq-M6-hRy"/>
@@ -3758,12 +3741,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="vCH-Vq-2QU" secondAttribute="trailing" id="0lS-QX-1fO"/>
-                            <constraint firstAttribute="trailing" secondItem="vbF-Gw-ctR" secondAttribute="trailing" id="4ZI-Wb-EGq"/>
-                            <constraint firstItem="vCH-Vq-2QU" firstAttribute="top" secondItem="vbF-Gw-ctR" secondAttribute="bottom" id="Spn-OQ-MYg"/>
-                            <constraint firstItem="vbF-Gw-ctR" firstAttribute="top" secondItem="QtP-mN-CJZ" secondAttribute="bottom" id="UgK-Jn-x8k"/>
-                            <constraint firstItem="gGG-eM-pBh" firstAttribute="top" secondItem="vCH-Vq-2QU" secondAttribute="bottom" id="ZYw-cJ-9su"/>
-                            <constraint firstItem="vbF-Gw-ctR" firstAttribute="leading" secondItem="sA9-AK-Chf" secondAttribute="leading" id="a0T-4Q-gf0"/>
+                            <constraint firstItem="gGG-eM-pBh" firstAttribute="top" secondItem="vCH-Vq-2QU" secondAttribute="bottom" id="XYH-Jd-VQD"/>
                             <constraint firstItem="vCH-Vq-2QU" firstAttribute="leading" secondItem="sA9-AK-Chf" secondAttribute="leading" id="dvf-8D-DKI"/>
+                            <constraint firstItem="vCH-Vq-2QU" firstAttribute="top" secondItem="sA9-AK-Chf" secondAttribute="top" id="r7E-oN-smc"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Klg-0X-d6X">
@@ -3771,8 +3751,6 @@
                     </navigationItem>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
-                        <outlet property="navItem" destination="Yn9-AJ-9fa" id="UTB-kF-3tq"/>
-                        <outlet property="navigationBar" destination="vbF-Gw-ctR" id="FZB-Bb-Ez0"/>
                         <outlet property="tableView" destination="vCH-Vq-2QU" id="TTF-AI-fDM"/>
                         <segue destination="K1l-cB-NEz" kind="show" identifier="view group" id="X2Z-pC-dgW"/>
                         <segue destination="AQy-Vp-E9s" kind="show" identifier="new group" id="KgO-oz-Ivb"/>
@@ -4920,15 +4898,15 @@
         <segue reference="fah-A8-Ky9"/>
         <segue reference="2ju-Ui-QdM"/>
         <segue reference="uet-Cl-mZq"/>
-        <segue reference="2GR-ci-jSQ"/>
-        <segue reference="C5K-bl-yN1"/>
-        <segue reference="j6r-TK-6Al"/>
         <segue reference="rCT-Ex-vO8"/>
+        <segue reference="C5K-bl-yN1"/>
         <segue reference="XMX-SH-Gag"/>
+        <segue reference="2GR-ci-jSQ"/>
+        <segue reference="j6r-TK-6Al"/>
         <segue reference="8oh-gD-Cs7"/>
-        <segue reference="bc7-so-Tnw"/>
-        <segue reference="wR3-TA-URh"/>
         <segue reference="EAz-MH-b19"/>
+        <segue reference="wR3-TA-URh"/>
+        <segue reference="bc7-so-Tnw"/>
         <segue reference="rdb-8v-KiD"/>
         <segue reference="KgO-oz-Ivb"/>
         <segue reference="c6M-82-Pnp"/>
