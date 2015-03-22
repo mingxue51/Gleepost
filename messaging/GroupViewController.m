@@ -375,29 +375,18 @@ const float TOP_OFF_SET = -64.0;
     
     if([self isFakeNavigationBarVisible])
     {
-        //_fakeNavigationBarVisible = NO;
-//        [self.navigationController.navigationBar makeVisibleWithTitle:_group.name];
-//        [_fakeNavigationBar showNavigationBar];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
     }
     else
     {
-        //_fakeNavigationBarVisible = YES;
-//        [self.navigationController.navigationBar invisible];
-//        [_fakeNavigationBar hideNavigationBar];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
     }
     
     [self.navigationController.navigationBar invisible];
-
-
     
     //Set title.
     self.navigationController.navigationBar.topItem.title = @"";
-    
-
 }
 
 - (void)configureViewDidLoadNotifications

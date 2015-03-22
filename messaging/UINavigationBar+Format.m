@@ -115,7 +115,6 @@
 
 - (void)invisible
 {
-    
     [self setBackgroundImage:[UIImage imageNamed:@"navigationbar_trans"]
               forBarPosition:UIBarPositionAny
                   barMetrics:UIBarMetricsDefault];
@@ -123,34 +122,10 @@
     self.shadowImage = [UIImage new];
     self.translucent = YES;
 //    self.backgroundColor = [UIColor clearColor];
-    self.topItem.titleView = nil;
+//    self.topItem.titleView = nil;
     self.topItem.title = @"";
     [self setTintColor:[AppearanceHelper blueGleepostColour]];
 
-}
-
-- (void)makeVisibleWithTitle:(NSString *)title
-{
-//    [self.topItem.titleView setAlpha:0.0];
-//    [self setAlpha:0.0];
-    self.topItem.title = [title uppercaseString];
-//    self.topItem.titleView = [self generateViewWithLableWithTitle:title];
-    
-    [self whiteBackgroundFormatWithShadow:YES];
-    
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-
-    
-    
-    
-//    [UIView animateWithDuration:0.5 animations:^{
-//       
-////        [self.topItem.titleView setAlpha:1.0];
-//
-//        [self setAlpha:1.0];
-//        
-//    }];
-    
 }
 
 #pragma mark - Helpers
