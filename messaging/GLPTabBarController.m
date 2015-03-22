@@ -16,6 +16,7 @@
 #import "GLPNetworkManager.h"
 #import "GLPNetworkErrorView.h"
 #import "GLPLiveGroupManager.h"
+#import "AppearanceHelper.h"
 
 @interface GLPTabBarController ()
 
@@ -65,6 +66,7 @@ static NSInteger lastTabbarIndex = 0;
     _shouldHideErrorView = NO;
     _networkErrorView.tag = 100;
     
+    [self formatTabbar];
     
 //    self.tabBar.layer.borderWidth = 1.0;
 //    self.tabBar.layer.borderColor = [UIColor redColor].CGColor;
@@ -121,6 +123,48 @@ static NSInteger lastTabbarIndex = 0;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SHOW_CAPTURE_VIEW object:nil];
 }
 
+- (void)formatTabbar
+{
+    // set selected and unselected icons
+    NSArray *items = self.tabBar.items;
+    
+    
+    UITabBarItem *item = [items objectAtIndex:0];
+    
+    item.image = [[UIImage imageNamed:@"bird-house-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+    
+    
+    item = [items objectAtIndex:1];
+    
+    item.image = [[UIImage imageNamed:@"message-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"message-7"];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+    
+    
+    
+    item = [items objectAtIndex:2];
+    
+    item.image = [[UIImage imageNamed:@"man-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"man-7"];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+    
+    
+    item = [items objectAtIndex:3];
+    
+    item.image = [[UIImage imageNamed:@"id-card-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"id-card-7"];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+}
 
 /**
  This method checks if it's the first time that user logged in.
@@ -224,9 +268,7 @@ static NSInteger lastTabbarIndex = 0;
     NSDictionary *d = notification.userInfo;
     
     GLPNotification *internalNotification = d[@"new_notification"];
-    
-    DDLogDebug(@"NOTIFICATION FROM INTERNAL: %@", internalNotification.customParams);
-    
+        
     if(internalNotification.notificationType == kGLPNotificationTypeCreatedPostGroup)
     {
         _groupPostsNotificationsCount++;
@@ -246,7 +288,44 @@ static NSInteger lastTabbarIndex = 0;
 
 - (void)updateChatBadge:(NSNotification *)notification
 {
-    if(self.selectedIndex == 1) {
+    //If the new messages is group then check if the selectedIndex
+    //is 2. Otherwise do the current implementation.
+    
+    BOOL belongToGroupConversation = [notification.userInfo[@"belongsToGroup"] boolValue];
+    
+    if(belongToGroupConversation)
+    {
+        [self updateChatBadgeWithIndex:2 andNotification:notification];
+    }
+    else
+    {
+        [self updateChatBadgeWithIndex:1 andNotification:notification];
+    }
+    
+//    if(self.selectedIndex == 1) {
+//        return;
+//    }
+//    
+//    DDLogInfo(@"Tab bar update message badge notification");
+//    
+//    BOOL localMessage = [notification.userInfo[@"newLocalMessage"] boolValue];
+//    if(localMessage) {
+//        DDLogInfo(@"Ignore locally posted messages");
+//        return;
+//    }
+//    
+//    BOOL newMessages = [notification.userInfo[@"newMessages"] boolValue];
+//    if(newMessages) {
+//        _messagesCount++;
+//        [self updateBadgeForIndex:1 count:_messagesCount];
+//        
+//        DDLogInfo(@"Tab bar messages badge increment notification count");
+//    }
+}
+
+- (void)updateChatBadgeWithIndex:(NSInteger)badgeIndex andNotification:(NSNotification *)notification
+{
+    if(self.selectedIndex == badgeIndex) {
         return;
     }
     
@@ -261,7 +340,7 @@ static NSInteger lastTabbarIndex = 0;
     BOOL newMessages = [notification.userInfo[@"newMessages"] boolValue];
     if(newMessages) {
         _messagesCount++;
-        [self updateBadgeForIndex:1 count:_messagesCount];
+        [self updateBadgeForIndex:badgeIndex count:_messagesCount];
         
         DDLogInfo(@"Tab bar messages badge increment notification count");
     }
@@ -317,6 +396,12 @@ static NSInteger lastTabbarIndex = 0;
     }
 
     [self updateBadgeContentForIndex:item.tag count:0];
+}
+
+- (void)resetGroupsBadge
+{
+    _groupPostsNotificationsCount = 0;
+    [self updateBadgeContentForIndex:2 count:0];
 }
 
 #pragma mark - Helpers

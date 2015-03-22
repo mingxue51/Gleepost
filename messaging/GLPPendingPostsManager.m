@@ -76,9 +76,20 @@ static GLPPendingPostsManager *instance = nil;
  */
 - (void)addNewPendingPost:(GLPPost *)pendingPost
 {
-    NSAssert([pendingPost isPending], @"Pending post's variable should be true");
-    
     [self.pendingPosts insertObject:pendingPost atIndex:0];
+    
+    [GLPPostDao updatePendingStatuswithPost:pendingPost];
+}
+
+- (void)updateNewPendingPostInEditMode:(GLPPost *)pendingPost
+{
+    //TODO: NEEDS FIX.
+    
+    NSAssert([pendingPost isPendingInEditMode], @"Pending post's variable should be true");
+    
+    [self.pendingPosts removeObject:pendingPost];
+    [self.pendingPosts insertObject:pendingPost atIndex:0];
+
     
     [GLPPostDao updatePendingStatuswithPost:pendingPost];
 }
@@ -120,11 +131,13 @@ static GLPPendingPostsManager *instance = nil;
 {
     [self removePost:pendingPost];
 
-    [GLPPostDao updatePendingStatuswithPost:pendingPost];
-    
+    [GLPPostManager deletePostWithPost:pendingPost];
+
     //Remove history.
     [GLPReviewHistoryDao removeReviewHistoryWithPost:pendingPost];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
+
 }
 
 - (GLPPost *)postWithRemoteKey:(NSInteger)postRemoteKey
@@ -284,6 +297,7 @@ static GLPPendingPostsManager *instance = nil;
         [GLPReviewHistoryDao saveReviewHistoryArrayOfPost:pendingPost];
     }
 }
+
 
 #pragma mark - Helpers
 

@@ -34,7 +34,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1061</string>
+	<string>1128</string>
 	<key>FacebookAppID</key>
 	<string>230797090361137</string>
 	<key>FacebookDisplayName</key>
@@ -55,6 +55,8 @@
 	</array>
 	<key>UILaunchImageFile</key>
 	<string>splash.png</string>
+	<key>UILaunchStoryboardName</key>
+	<string>Launch Screen</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

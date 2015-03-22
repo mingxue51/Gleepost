@@ -19,6 +19,8 @@
 - (GLPPost *)postWithIndex:(NSInteger)postIndex andSectionIndex:(NSInteger)sectionIndex;
 - (void)resetData;
 - (NSIndexPath *)indexPathWithPost:(GLPPost *)post;
-- (NSIndexPath *)removePost:(GLPPost *)post;
+- (NSIndexPath *)updatePostWithRemoteKey:(NSInteger)postRemoteKey andViewsCount:(NSInteger)viewsCount;
+- (NSDictionary *)removePost:(GLPPost *)post;
+- (GLPPost *)lastPost;
 
 @end

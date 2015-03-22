@@ -187,7 +187,7 @@
         localEntities = [GLPPostDao findPostsInGroupWithRemoteKey:groupId inDb:db];
     }];
     
-    DDLogInfo(@"local group posts %d", localEntities.count);
+    DDLogInfo(@"local group posts %lu", (unsigned long)localEntities.count);
     
     if(localEntities.count > 0) {
         localCallback(localEntities);
@@ -197,15 +197,11 @@
        
         if(success)
         {
-            [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
-               
-                BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
-                
-                [GLPPostDao saveGroupPosts:posts withGroupRemoteKey:groupId];
-                
-                remoteCallback(YES, remains, posts);
-                
-            }];
+            BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+            
+            [GLPPostDao saveUpdateOrRemovePosts:posts withGroupRemoteKey:groupId];
+            
+            remoteCallback(YES, remains, posts);
         }
         else
         {
@@ -594,8 +590,8 @@
 + (NSIndexPath *)parseGroup:(GLPGroup **)group imageNotification:(NSNotification *)notification withGroupsArray:(NSArray *)groups
 {
     NSDictionary *dict = [notification userInfo];
-    NSNumber *remoteKey = [dict objectForKey:@"RemoteKey"];
-    UIImage *finalImage = [dict objectForKey:@"FinalImage"];
+    NSNumber *remoteKey = [dict objectForKey:@"remote_key"];
+    UIImage *finalImage = [dict objectForKey:@"image_loaded"];
     
     GLPGroup *currentGroup = nil;
     
@@ -613,17 +609,6 @@
         
         *group = currentGroup;
     }
-    
-//    if(!currentPost)
-//    {
-//        post = nil;
-//        return postIndex;
-//    }
-//    else
-//    {
-//        currentPost.finalImage = finalImage;
-//        *post = currentPost;
-//    }
     
     return groupIndexPath;
 }
@@ -702,7 +687,7 @@
         
         if(success)
         {
-            [GLPMemberDao saveMembers:members];
+            [GLPMemberDao saveMembers:members withGroupRemoteKey:groupRemoteKey];
             
             members = [GLPGroupManager orderMembersByNameWithMembers:members];
             

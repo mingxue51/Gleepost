@@ -70,24 +70,6 @@
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     
     [AppearanceHelper setSelectedColourForTabbarItem:_groupTabbarItem withColour:[AppearanceHelper redGleepostColour]];
-    
-//    for (UIView *subView in self.searchBar.subviews)
-//    {
-//        for (UIView *secondLevelSubview in subView.subviews){
-//            if ([secondLevelSubview isKindOfClass:[UITextField class]])
-//            {
-//                UITextField *searchBarTextField = (UITextField *)secondLevelSubview;
-//                
-//                //set font color here
-//                [searchBarTextField setBackgroundColor:[UIColor redColor]];
-//                
-//                break;
-//            }
-//        }
-//    }
-    
-//    [_searchBar setSearchFieldBackgroundImage:[ImageFormatterHelper generateImageWithColour:[UIColor blackColor]] forState:UIControlStateNormal];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -116,7 +98,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GROUP_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SEARCH_FOR_GROUPS object:nil];
-
 }
 
 #pragma mark - Configuration
@@ -215,25 +196,25 @@
 
 -(void)updateGroupRemoteKeyAndImage:(NSNotification *)notification
 {
-    int remoteKey = [GLPGroupManager parseNotification:notification withGroupsArray:_groups];
+    DDLogDebug(@"updateGroupRemoteKeyAndImage");
     
-    if(remoteKey == -1)
-    {
-        return;
-    }
-    
-//    [self.collectionView reloadData];
-    
-    NSIndexPath *indexPath = [GLPGroupManager findIndexPathForGroupRemoteKey:remoteKey inGroups:_groups];
-    
-    DDLogDebug(@"Reload with index path: %d", indexPath.row);
+    [self loadGroupsWithGroup:nil];
     
     
-    //TODO: Reload specific rows in the collection view.
-    
-//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationFade];
-    
-    [_collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject: indexPath]];
+//    int remoteKey = [GLPGroupManager parseNotification:notification withGroupsArray:_groups];
+//    
+//    if(remoteKey == -1)
+//    {
+//        return;
+//    }
+//    
+////    [self.collectionView reloadData];
+//    
+//    NSIndexPath *indexPath = [GLPGroupManager findIndexPathForGroupRemoteKey:remoteKey inGroups:_groups];
+//    
+//    DDLogDebug(@"Reload with index path: %d", indexPath.row);
+//    
+//    [_collectionView reloadItemsAtIndexPaths:[NSArray arrayWithObject: indexPath]];
 }
 
 - (void)groupImageLoaded:(NSNotification *)notification
@@ -381,36 +362,7 @@
     }
 }
 
-//- (BOOL)isSearchBarFirstResponder
-//{
-//    GLPSearchBar *view = nil;
-//    
-//    for(UIView *v in _searchBarView.subviews)
-//    {
-//        if(v.tag == 101)
-//        {
-//            view = (GLPSearchBar *)v;
-//        }
-//    }
-//    
-//    return [view isTextFieldFirstResponder];
-//}
-//
-//- (void)resignFirstResponder
-//{
-//    
-//}
-
 #pragma mark - Group Created Delegate
-
-//TODO: Make those methods more efficient.
-
-//-(void)groupCreatedWithData:(GLPGroup *)group
-//{
-//    [self reloadNewGroupWithGroup:group];
-//    
-//    //    [self createNewGroupWithGroup:group];
-//}
 
 -(void)groupCreatedWithNotification:(NSNotification *)notification
 {
@@ -418,10 +370,9 @@
     
     GLPGroup *group = [dictionary objectForKey:@"new group"];
     
+    NSAssert(group.key != 0, @"Group needs to have key");
     
-    [self reloadNewGroupWithGroup:group];
-    
-    //    [self createNewGroupWithGroup:group];
+    [self loadGroupsWithGroup:group];
 }
 
 #pragma mark - GroupCollectionViewCellDelegate
@@ -434,7 +385,7 @@
     
     //[self removeGroupFromCollectionViewWithRemoteKey:group.remoteKey];
     
-    [self reloadNewGroupWithGroup:nil];
+    [self loadGroupsWithGroup:nil];
 }
 
 -(void)showViewOptionsWithActionSheer:(UIActionSheet *)actionSheet
@@ -448,7 +399,7 @@
 //by introducing new approach of managing pending group etc.
 //See more: https://www.pivotaltracker.com/story/show/77912494
 
--(void)loadGroupsWithGroup:(GLPGroup *)createdGroup
+- (void)loadGroupsWithGroup:(GLPGroup *)createdGroup
 {
     if(createdGroup)
     {
@@ -459,84 +410,35 @@
         [_groups addObject:createdGroup];
         [_filteredGroups addObject:createdGroup];
         
-        DDLogInfo(@"Load groups with pending group: %@", createdGroup);
+        DDLogInfo(@"Load groups with pending group: %@ key %ld", createdGroup, (long)createdGroup.key);
     }
     
-
+    
     [[GLPLiveGroupManager sharedInstance] loadGroupsWithPendingGroups:_groups  withLiveCallback:^(NSArray *groups) {
-        _groups = groups.mutableCopy;
-        _filteredGroups = groups.mutableCopy;
         
-        [_collectionView reloadData];
+//        if(![groups isEqualToArray:_groups])
+//        {
+            DDLogInfo(@"GLPGroupsViewController : local updates");
+            _groups = groups.mutableCopy;
+            _filteredGroups = groups.mutableCopy;
+            [_collectionView reloadData];
+//        }
         
     } remoteCallback:^(BOOL success, NSArray *remoteGroups) {
         
-        if(success)
-        {
+//        if(success && ![remoteGroups isEqualToArray:_groups])
+//        {
+            DDLogInfo(@"GLPGroupsViewController : remote updates");
+
             _groups = remoteGroups.mutableCopy;
             _filteredGroups = remoteGroups.mutableCopy;
-                        
             [_collectionView reloadData];
-        }
+//        }
         
     }];
-    
-    
-    
-    
-    
-    
-    
-//        [GLPGroupManager loadGroups:_groups withLocalCallback:^(NSArray *groups) {
-//            
-//            _groups = groups.mutableCopy;
-//            _filteredGroups = groups.mutableCopy;
-//            
-//            [_collectionView reloadData];
-//            
-//            
-//            
-//        } remoteCallback:^(BOOL success, NSArray *groups) {
-//            
-//            if(!success)
-//            {
-//                return;
-//            }
-//            
-//            _groups = groups.mutableCopy;
-//            _filteredGroups = groups.mutableCopy;
-//            
-//            [_collectionView reloadData];
-//            
-//        }];
-//    }
-//    else
-//    {
-
-//    }
-
-
 }
 
 #pragma mark - UI loaders
-
-//-(void)showGroups
-//{
-//    if(self.groups.count > 0)
-//    {
-//        NSDictionary *result = [GLPGroupManager processGroups:_groups];
-//        
-//        _groupsStr = [result objectForKey:@"GroupNames"];
-//        _categorisedGroups = [result objectForKey:@"CategorisedGroups"];
-//        _groupSections = [result objectForKey:@"Sections"];
-//    }
-//    else
-//    {
-//        _groupsStr = [[NSMutableArray alloc] init];
-//        _categorisedGroups = [[NSMutableDictionary alloc] init];
-//        _groupSections = [[NSMutableArray alloc] init];
-//    }
-//}
 
 - (void)removeGroupFromCollectionViewWithRemoteKey:(NSInteger)groupRemoteKey
 {
@@ -554,12 +456,6 @@
     }
 
     [_collectionView deleteItemsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
-}
-
-
--(void)reloadNewGroupWithGroup:(GLPGroup *)group
-{
-    [self loadGroupsWithGroup:group];
 }
 
 - (void)showOrHideEmptyView

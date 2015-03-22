@@ -28,5 +28,6 @@
 - (void)showBottomLoader;
 - (void)hideBottomLoader:(BOOL)animated;
 - (void)scrollToTheEndAnimated:(BOOL)animated;
+- (void)scrollToTheEndWithDelay;
 
 @end

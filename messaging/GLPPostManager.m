@@ -45,7 +45,7 @@
 
     localCallback(localPosts);
 
-    [[WebClient sharedInstance] userPostsWithRemoteKey:remoteKey callbackBlock:^(BOOL success, NSArray *posts) {
+    [[WebClient sharedInstance] loadUserPostsAfter:nil withRemoteKey:remoteKey callbackBlock:^(BOOL success, NSArray *posts) {
         
         if(!success) {
             remoteCallback(NO, nil);
@@ -53,37 +53,27 @@
         }
         
         DDLogInfo(@"Logged in user's remote posts %@", posts);
-    
-        //Find all the event posts that the user attends.
-        [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
-            
-            if(!success) {
-                remoteCallback(NO, nil);
-                return;
-            }
-            
-            
-            // take only new posts
-//            __block NSMutableArray *userPosts = [NSMutableArray array];
-            
-//            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-//            
-//                for (GLPPost *newPost in posts)
-//                {
-//                    newPost.sendStatus = kSendStatusSent;
-//                    
-//                    [userPosts addObject:newPost];
-//                    
-//                    [GLPPostDao save:newPost inDb:db];
-//                }
-//            }];
-            
-            [GLPPostDao saveUpdateOrRemovePosts:posts withCreatorRemoteKey:remoteKey];
-            
-            
-            remoteCallback(YES, posts);
-        }];
+        [GLPPostDao saveUpdateOrRemovePosts:posts withCreatorRemoteKey:remoteKey];
+        remoteCallback(YES, posts);
+    }];
+}
 
++ (void)loadPostsWithUsersRemoteKey:(NSInteger)usersRemoteKey afterPost:(GLPPost *)post remoteCallback:(void (^) (BOOL success, BOOL remain, NSArray *posts))remoteCallback
+{
+    [[WebClient sharedInstance] loadUserPostsAfter:post withRemoteKey:usersRemoteKey callbackBlock:^(BOOL success, NSArray *posts) {
+       
+        if(!success)
+        {
+            remoteCallback(NO, NO, nil);
+        }
+        
+        DDLogDebug(@"User's remote posts %@ after post %@", posts, post);
+        [GLPPostDao saveUpdateOrRemovePosts:posts withCreatorRemoteKey:usersRemoteKey];
+        
+        BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+
+        
+        remoteCallback(YES, remains, posts);
     }];
 }
 
@@ -99,57 +89,25 @@
             return;
         }
         
-        //Find all the event posts that the user attends.
-        [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
-           
-            if(!success) {
-                callback(NO, NO, nil, nil);
-                return;
-            }
-            
+        // take only new posts
+        NSArray *newPosts = [GLPPostDao getTheNewPostsWithRemotePosts:posts];
+        
+        NSArray *deletedPosts = [GLPPostDao saveUpdateOrRemovePostsInCW:posts];
+        
+        
+        DDLogInfo(@"remote posts %lu", (unsigned long)newPosts.count);
+        
+        if(!newPosts || newPosts.count == 0) {
+            callback(YES, NO, nil, deletedPosts);
+            return;
+        }
+        
+        // only new posts loaded, means it may remain some
+        BOOL remain = newPosts.count == posts.count;
+        
+        callback(YES, remain, newPosts, deletedPosts);
 
-//            for (GLPPost *newPost in posts)
-//            {
-//                if(newPost.remoteKey == post.remoteKey)
-//                {
-//                    break;
-//                }
-//                
-//  
-//                if([GLPPostManager isPost:newPost containedInArray:notUploadedPosts])
-//                {
-//                    continue;
-//                }
-//                
-//                
-//                //If newPost is contained to already posted posts then continue.
-//                //Avoid duplications.
-//                [newPosts addObject:newPost];
-//            }
-            
-            
-//            if(notUploadedPosts.count > 0)
-//            {
-//                DDLogDebug(@"GLPPostManager : Not uploaded posts exist abort.");
-//                callback(YES, NO, nil, deletedPosts);
-//            }
-            
-            // take only new posts
-            NSArray *newPosts = [GLPPostDao getTheNewPostsWithRemotePosts:posts];
-            
-            NSArray *deletedPosts = [GLPPostDao saveUpdateOrRemovePostsInCW:posts];
-
-            
-            DDLogInfo(@"remote posts %lu", (unsigned long)newPosts.count);
-            
-            if(!newPosts || newPosts.count == 0) {
-                callback(YES, NO, nil, deletedPosts);
-                return;
-            }
-            
-            // only new posts loaded, means it may remain some
-            BOOL remain = newPosts.count == posts.count;
-            
+        
 //            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
 //                for (GLPPost *newPost in newPosts) {
 //                    newPost.sendStatus = kSendStatusSent;
@@ -157,8 +115,7 @@
 //                }
 //            }];
             
-            callback(YES, remain, newPosts, deletedPosts);
-        }];
+//        }];
         
 //        // take only new posts
 //        NSMutableArray *newPosts = [NSMutableArray array];
@@ -259,33 +216,12 @@
             remoteCallback(YES, NO, nil);
             return;
         }
+            
+        [GLPPostDao saveUpdateOrRemovePostsInCW:posts];
         
-        //Find all the event posts that the user attends.
-        [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
-            
-            
-            if(!success)
-            {
-                remoteCallback(NO, NO, nil);
-                return;
-            }
-            
-//            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-//                
-//                //Set liked to the database if the user liked from other device (?)
-//                for(GLPPost *post in posts)
-//                {
-//                    post.sendStatus = kSendStatusSent;
-//                    [GLPPostDao save:post inDb:db];
-//                }
-//            }];
-            
-            [GLPPostDao saveUpdateOrRemovePostsInCW:posts];
-            
-            BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
-            
-            remoteCallback(YES, remains, posts);
-        }];
+        BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+        
+        remoteCallback(YES, remains, posts);
         
 //        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
 //            
@@ -351,35 +287,25 @@
             return;
         }
         
+        NSLog(@"remote posts %d", posts.count);
         
-        //Find all the event posts that the user attends.
-        [GLPPostManager addAttendingToEventPosts:posts callback:^(BOOL success, NSArray *posts) {
-           
-            if(!success)
-            {
-                callback(NO, NO, nil);
+        if(!posts || posts.count == 0) {
+            callback(YES, NO, nil);
+            return;
+        }
+        
+        [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+            for(GLPPost *post in posts) {
+                post.sendStatus = kSendStatusSent;
+                [GLPPostDao save:post inDb:db];
             }
-            
-            NSLog(@"remote posts %d", posts.count);
-            
-            if(!posts || posts.count == 0) {
-                callback(YES, NO, nil);
-                return;
-            }
-            
-            [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-                for(GLPPost *post in posts) {
-                    post.sendStatus = kSendStatusSent;
-                    [GLPPostDao save:post inDb:db];
-                }
-            }];
-            
-            BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
-            
-            callback(YES, remains, posts);
-            
-            
         }];
+        
+        BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+        
+        callback(YES, remains, posts);
+        
+        
         
 //        NSLog(@"remote posts %d", posts.count);
 //        
@@ -421,6 +347,30 @@
     }];
 }
 
++ (void)getAttendingEventsAfter:(GLPPost *)post withUserRemoteKey:(NSInteger)userRemoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callbackBlock
+{
+    [[WebClient sharedInstance] getAttendingEventsAfter:post withUserRemoteKey:userRemoteKey callback:^(BOOL success, NSArray *posts) {
+       
+        if(!success) {
+            callbackBlock(NO, NO, nil);
+            return;
+        }
+        
+        
+        DDLogInfo(@"attending events after %d", posts.count);
+        
+        if(!posts || posts.count == 0) {
+            callbackBlock(YES, NO, nil);
+            return;
+        }
+        
+        BOOL remains = posts.count == kGLPNumberOfPosts ? YES : NO;
+        
+        callbackBlock(YES, remains, posts);
+    }];
+}
+
+
 +(void)loadPostWithRemoteKey:(NSInteger)remoteKey callback:(void (^)(BOOL sucess, GLPPost* post))callback
 {
     [[WebClient sharedInstance] getPostWithRemoteKey:remoteKey withCallbackBlock:^(BOOL success, GLPPost *post) {
@@ -458,38 +408,6 @@
         
         callback(YES, eventPosts);
     }];
-}
-
-+(void)addAttendingToEventPosts:(NSArray *)posts callback:(void (^) (BOOL success, NSArray* posts))callback
-{
-    [[WebClient sharedInstance] userAttendingLivePostsWithCallbackBlock:^(BOOL success, NSArray *postsIds) {
-       
-        if(success)
-        {
-            [GLPPostManager formatEventPosts:posts withPostIds:postsIds];
-            
-            callback(YES, posts);
-        }
-        else
-        {
-            callback(NO, nil);
-        }
-        
-    }];
-}
-
-+(void)formatEventPosts:(NSArray *)posts withPostIds:(NSArray *)postsIds
-{
-    for(GLPPost *p in posts)
-    {
-        for(NSNumber *n in postsIds)
-        {
-            if([n integerValue] == p.remoteKey)
-            {
-                p.attended = YES;
-            }
-        }
-    }
 }
 
 //+(void)getNewPostsAndSaveToDatabaseWithOldPosts:(NSArray*)localEntities

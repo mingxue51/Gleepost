@@ -30,6 +30,6 @@ typedef enum {
 - (void)restartNetworkOperations;
 - (void)stopNetworkOperations;
 - (void)webSocketDidConnect;
-- (void)webSocketDidFailOrClose;
-
+- (void)webSocketDidClose;
+- (void)webSocketDidFail;
 @end

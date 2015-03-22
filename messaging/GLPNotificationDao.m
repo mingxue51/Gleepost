@@ -43,6 +43,17 @@
     return result;
 }
 
++ (GLPNotification *)findNotificationWithRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db
+{
+     FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from notifications where remoteKey=%d limit 1", remoteKey];
+     
+     if(![resultSet next]) {
+     return nil;
+     }
+     
+     return [GLPNotificationDaoParser createFromResultSet:resultSet inDb:db];
+}
+
 + (void)updateSeenStatus:(GLPNotification *)entity inDb:(FMDatabase *)db
 {
     NSAssert(entity.key != 0, @"Update entity without key");
@@ -60,10 +71,11 @@
     int groupRemoteKey = [GLPNotificationDao parseGroupRemoteKeyWithEntity:entity];
     
     
-    [db executeUpdateWithFormat:@"insert into notifications (remoteKey, seen, date, type, post_remote_key, user_remote_key, group_remote_key) values(%d, %d, %d, %d, %d, %d, %d)",
+    [db executeUpdateWithFormat:@"insert into notifications (remoteKey, seen, date, preview_message, type, post_remote_key, user_remote_key, group_remote_key) values(%d, %d, %d, %@, %d, %d, %d, %d)",
                       entity.remoteKey,
                         entity.seen,
                         date,
+                        entity.previewMessage,
                       entity.notificationType,
                       entity.postRemoteKey,
                       entity.user.remoteKey,
@@ -74,6 +86,18 @@
     
     //Add the user to users table.
     [GLPUserDao saveIfNotExist:entity.user db:db];
+}
+
++ (void)saveIfNeeded:(GLPNotification *)entity db:(FMDatabase *)db
+{
+    GLPNotification *notification = [GLPNotificationDao findNotificationWithRemoteKey:entity.remoteKey db:db];
+    
+    if(notification)
+    {
+        return;
+    }
+    
+    [GLPNotificationDao save:entity inDb:db];
 }
 
 + (void)saveNotifications:(NSArray *)notifications

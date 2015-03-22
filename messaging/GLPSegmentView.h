@@ -32,4 +32,6 @@ typedef NS_ENUM(NSInteger, ButtonType) {
 - (void)selectLeftButton;
 - (void)setSlideAnimationEnabled:(BOOL)enabled;
 
++ (CGFloat)segmentHeight;
+
 @end

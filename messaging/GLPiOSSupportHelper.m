@@ -10,9 +10,23 @@
 
 @implementation GLPiOSSupportHelper
 
-+(void)configureTabbarController:(UITabBarController *)tabbar
+
+/**
+ @return YES if the app is running on iPhone 4(S).
+ */
++ (BOOL)useShortConstrains
 {
-    
+    return [UIScreen mainScreen].bounds.size.height == 480.0;
+}
+
++ (CGFloat)screenWidth
+{
+    return [UIScreen mainScreen].bounds.size.width;
+}
+
++ (CGFloat)screenHeight
+{
+    return [UIScreen mainScreen].bounds.size.height;
 }
 
 + (BOOL)isIOS6

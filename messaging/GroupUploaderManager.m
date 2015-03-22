@@ -13,6 +13,7 @@
 #import "ImageFormatterHelper.h"
 #import "SessionManager.h"
 #import "GLPLiveGroupManager.h"
+#import "GLPImageCacheHelper.h"
 
 @interface GroupUploaderManager ()
 
@@ -75,28 +76,24 @@
     
     [[WebClient sharedInstance] createGroupWithGroup:group callback:^(BOOL success, GLPGroup *remoteGroup) {
         
+        remoteGroup.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
         
-        group.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+        DDLogInfo(@"Group uploaded with success: %d and group remoteKey: %d", success, remoteGroup.remoteKey);
         
-        group.remoteKey = success ? remoteGroup.remoteKey : 0;
+        remoteGroup.key = group.key;
         
-        DDLogInfo(@"Group uploaded with success: %d and group remoteKey: %d", success, group.remoteKey);
-        
-        [GLPGroupDao updateGroupSendingData:group];
+        [GLPGroupDao updateGroupSendingData:remoteGroup];
         
         if(success)
         {
-//            _uploadImageContentBlock(group);
-            [self notifyControllerWithGroup:group];
+            [[GLPLiveGroupManager sharedInstance] updateGroupAfterCreated:remoteGroup];
         }
     }];
 }
 
--(void)uploadGroupWithTimestamp:(NSDate*)timestamp andImageUrl:(NSString*)url
+- (void)uploadGroupWithTimestamp:(NSDate *)timestamp andImageUrl:(NSString *)url
 {
     //Group ready to be uploaded.
-    
-    void (^_uploadImageContentBlock)(GLPGroup*);
     
     GLPGroup *group = nil;
     
@@ -104,42 +101,25 @@
     {
         group = [_readyGroups objectForKey:timestamp];
         group.groupImageUrl = url;
-        
-        _uploadImageContentBlock = ^(GLPGroup* group){
-            
-            
-        //Notify ContactsViewController after finish.
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
-                                                                        object:nil
-                                                                        userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
-                                                                                    @"imageUrl":group.groupImageUrl,
-                                                                                    @"key":[NSNumber numberWithInt:group.key]}];
-            
-        };
     }
     
     DDLogInfo(@"Group uploading task started with group title: %@ and image url: %@.",group.name, group.groupImageUrl);
     
     
-    //    _incomingPost.imagesUrls = [[NSArray alloc] initWithObjects:[self.urls objectForKey:[NSNumber numberWithInt:1]], nil];
-    
     
     [[WebClient sharedInstance] createGroupWithGroup:group callback:^(BOOL success, GLPGroup *remoteGroup) {
-       
         
-        group.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+        remoteGroup.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
+        remoteGroup.key = group.key;
         
-        group.remoteKey = success ? remoteGroup.remoteKey : 0;
+        DDLogInfo(@"Group uploaded with success: %d and group remoteKey: %ld", success, (long)group.remoteKey);
         
-        DDLogInfo(@"Group uploaded with success: %d and group remoteKey: %d", success, group.remoteKey);
+        [GLPGroupDao updateGroupSendingData:remoteGroup];
 
-        [GLPGroupDao updateGroupSendingData:group];
-        
         if(success)
         {
-            _uploadImageContentBlock(group);
-        
-            
+            [[GLPLiveGroupManager sharedInstance] updateGroupAfterCreated:remoteGroup];
+
             //Remove post from the NSDictionary.
             [self removeGroupWithTimestamp:timestamp];
 
@@ -154,7 +134,6 @@
     //Remove if pending image exist.
     [self removeEntryFromPendingGroupImagesWithRemoteKey:group.remoteKey];
     
-//    [NSTimer scheduledTimerWithTimeInterval:3.0f target:self selector:@selector(test:) userInfo:nil repeats:YES];
     [_pendingGroupImages setObject:image forKey:[NSNumber numberWithInt:group.remoteKey]];
 
     NSData *imageData = [self convertImageToData:image];
@@ -165,11 +144,7 @@
 
 -(void)removeEntryFromPendingGroupImagesWithRemoteKey:(int)remoteKey
 {
-    DDLogDebug(@"Pending group images before: %@", _pendingGroupImages);
-
     [_pendingGroupImages removeObjectForKey:[NSNumber numberWithInt:remoteKey]];
-    
-    DDLogDebug(@"Pending group images: %@", _pendingGroupImages);
 }
 
 
@@ -179,21 +154,16 @@
        
         if(success)
         {
-            DDLogDebug(@"Image url: %@", imageUrl);
+            DDLogDebug(@"GroupUploadedManager : Updated image url %@", imageUrl);
             
-            [self removeEntryFromPendingGroupImagesWithRemoteKey:group.remoteKey];
-
             //If imageUrl is empty it means that the image canceled.
             if(![imageUrl isEqualToString:@""])
             {
-                [self updateDatabaseWithGroup:group andUrl:imageUrl];
-                
-                //Send notification to contacts view controller.
-                [self notifyControllerWithGroup:group];
-                
+                [self updateDatabaseAndCacheWithGroup:group andUrl:imageUrl];
                 [self setNewUrlToGroup:group withUrl:imageUrl];
             }
-
+            
+            [self removeEntryFromPendingGroupImagesWithRemoteKey:group.remoteKey];
         }
         
     }];
@@ -205,10 +175,6 @@
        
         if(success)
         {
-//            [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS object:self userInfo:@{@"image_ready": @""}];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS object:self userInfo:@{@"image_ready": @""}];
-            
             //Tell to GLPLiveGroupManager that the new image is uploaded and attached to group.
             [[GLPLiveGroupManager sharedInstance] finishUploadingNewImageToGroup:group];
         }
@@ -220,8 +186,10 @@
     }];
 }
 
--(void)updateDatabaseWithGroup:(GLPGroup *)group andUrl:(NSString *)url
+-(void)updateDatabaseAndCacheWithGroup:(GLPGroup *)group andUrl:(NSString *)url
 {
+    UIImage *pendingImage = [_pendingGroupImages objectForKey:@(group.remoteKey)];
+    [GLPImageCacheHelper replaceImage:pendingImage withImageUrl:url andOldImageUrl:group.groupImageUrl];
     group.groupImageUrl = url;
     [GLPGroupDao updateGroup:group];
 }
@@ -241,31 +209,5 @@
 {
     return [_pendingGroupImages objectForKey:[NSNumber numberWithInt:remoteKey]];
 }
-
-#pragma mark - Notifications
-
--(void)notifyControllerWithGroup:(GLPGroup *)group
-{
-    
-    if(group.groupImageUrl)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
-                                                                        object:nil
-                                                                      userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
-                                                                                 @"imageUrl": group.groupImageUrl,
-                                                                                 @"key":[NSNumber numberWithInt:group.key]}];
-    }
-    else
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPGroupUploaded"
-                                                                        object:nil
-                                                                      userInfo:@{@"remoteKey":[NSNumber numberWithInt:group.remoteKey],
-                                                                                 @"key":[NSNumber numberWithInt:group.key]}];
-    }
-    
-
-}
-
-
 
 @end

@@ -19,6 +19,7 @@
 #import "AppearanceHelper.h"
 #import "UINavigationBar+Format.h"
 #import "SessionManager.h"
+#import "GLPTableActivityIndicator.h"
 
 @interface MembersViewController () <UIActionSheetDelegate, MemberCellDelegate>
 
@@ -28,7 +29,7 @@
 
 @property (strong, nonatomic) NSMutableArray *members;
 
-@property (assign, nonatomic) int selectedUserId;
+@property (assign, nonatomic) NSInteger selectedUserId;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -39,9 +40,24 @@
 /** This object is used when for adding or removing member as admin. */
 @property (strong, nonatomic) GLPMember *selectedMember;
 
+@property (strong, nonatomic, readonly) NSString *addUserAsAdminText;
+@property (strong, nonatomic, readonly) NSString *removeUserFromAdminText;
+
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
+
 @end
 
 @implementation MembersViewController
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self)
+    {
+        [self configureConstantStrings];
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -60,18 +76,14 @@
     
     [self loadMembers];
     
-    [AppearanceHelper makeBackDefaultButton];
-    
     [self configureNavigationBar];
-
+    [self configureTitleNavigationBar];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    [self configureTitleNavigationBar];
-    
+
 }
 
 #pragma mark - Configuration
@@ -100,21 +112,26 @@
     
 }
 
+- (void)configureConstantStrings
+{
+    _addUserAsAdminText = @"Add user as administrator";
+    _removeUserFromAdminText = @"Revoke Admin Permissions";
+}
+
 -(void)configurateTableView
 {
     [self.tableView registerNib:[UINib nibWithNibName:@"MemberCell" bundle:nil] forCellReuseIdentifier:@"MemberCell"];
     
     //Remove empty cells.
     [self.tableView setTableFooterView:[[UIView alloc] init]];
-
 }
 
 - (void)configureTitleNavigationBar
 {
-    self.navigationController.navigationBar.topItem.title = @"MEMBERS";
+    self.navigationItem.title = @"MEMBERS";
 
-    self.navigationController.navigationBar.shadowImage = [UIImage new];
-    self.navigationController.navigationBar.translucent = NO;
+//    self.navigationController.navigationBar.shadowImage = [UIImage new];
+//    self.navigationController.navigationBar.translucent = NO;
     
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
@@ -137,8 +154,9 @@
 - (void)configureObjects
 {
     _loggedInUserMember = [[GLPMember alloc] initWithUser:[SessionManager sharedInstance].user];
-    
     _selectedMember = nil;
+    _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorTop withView:self.tableView];
+    [_tableActivityIndicator addY:150];
 }
 
 
@@ -202,15 +220,14 @@
     
     if(member.roleLevel == kAdministrator)
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Administrator options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Remove user from being administrator", nil];
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Administrator options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:_removeUserFromAdminText, nil];
     }
     else
     {
-        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Administrator options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Add user as administrator", nil];
+        actionSheet = [[UIActionSheet alloc]initWithTitle:@"Administrator options" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:_addUserAsAdminText, nil];
     }
     
     _selectedMember = member;
-    
 
     [actionSheet showInView:[self.view window]];
 }
@@ -221,12 +238,12 @@
 {
     NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
 
-    if([selectedButtonTitle isEqualToString:@"Add user as administrator"])
+    if([selectedButtonTitle isEqualToString:_addUserAsAdminText])
     {
         //Add user as administrator.
         [self setMemberAsAdministrator:_selectedMember];
     }
-    else if([selectedButtonTitle isEqualToString:@"Remove user from being administrator"])
+    else if([selectedButtonTitle isEqualToString:_removeUserFromAdminText])
     {
         //Remove user from being administrator.
         [self removeMemberFromAdministrator:_selectedMember];
@@ -237,13 +254,17 @@
 
 -(void)loadMembers
 {
+    [_tableActivityIndicator startActivityIndicator];
     
     [GLPGroupManager loadMembersWithGroupRemoteKey:self.group.remoteKey withLocalCallback:^(NSArray *members) {
         
+        if(members.count > 0)
+        {
+            [_tableActivityIndicator stopActivityIndicator];
+        }
+        
         self.members = members.mutableCopy;
-        
         [self findRoleOfLoggedInUser];
-        
         [self.tableView reloadData];
         
     } remoteCallback:^(BOOL success, NSArray *members) {
@@ -251,24 +272,12 @@
         if(success)
         {
             self.members = members.mutableCopy;
-            
             [self findRoleOfLoggedInUser];
-
             [self.tableView reloadData];
-            
         }
+        
+        [_tableActivityIndicator stopActivityIndicator];
     }];
-    
-//    [[WebClient sharedInstance] getMembersWithGroupRemoteKey:self.group.remoteKey withCallbackBlock:^(BOOL success, NSArray *members) {
-//        
-//        if(success)
-//        {
-//            self.members = members;
-//            
-//            [self.tableView reloadData];
-//        }
-//        
-//    }];
 }
 
 - (void)setMemberAsAdministrator:(GLPMember *)member
@@ -277,12 +286,9 @@
         
         if(success)
         {
-            
             DDLogDebug(@"Member just become admin %@", member.roleName);
             [self updateMemberWithMember:member];
-            
             [self.tableView reloadData];
-
         }
     }];
 }

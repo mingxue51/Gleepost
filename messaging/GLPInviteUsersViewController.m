@@ -14,14 +14,19 @@
 #import <TAPKeyboardPop/UIViewController+TAPKeyboardPop.h>
 #import "GLPFacebookConnect.h"
 #import "GLPGroupManager.h"
+#import "GLPLiveGroupManager.h"
+#import "GLPLoadingButton.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPInviteUsersViewController ()
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UIButton *addSelectedButton;
+@property (weak, nonatomic) IBOutlet GLPLoadingButton *addSelectedButton;
 
 @property (strong, nonatomic) UIButton *facebookButton;
+
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *buttonDistanceFromBottom;
 
 @end
 
@@ -33,8 +38,6 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 {
     [super viewDidLoad];
     
-//    [self configureNavigationBar];
-    
     [self configureTableView];
     
     [self registerTableViewCells];
@@ -44,8 +47,6 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     [self configureFacebookInvitationButton];
     
     [self loadExistingMembers];
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -60,7 +61,7 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 - (void)configureNavigationBar
 {
     [super configureNavigationBar];
-    
+    self.navigationItem.title = @"ADD GRPOUP MEMBERS";
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 }
 
@@ -84,7 +85,7 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 
 - (void)configureFacebookInvitationButton
 {
-    _facebookButton = [[UIButton alloc] initWithFrame:CGRectMake(35.0f, 50.0f, 250.0f, 60.0f)];
+    _facebookButton = [[UIButton alloc] initWithFrame:CGRectMake(([GLPiOSSupportHelper screenWidth] - 250) / 2, 50.0f, 250.0f, 60.0f)];
     [_facebookButton setImage:[UIImage imageNamed:@"fb_invite"] forState:UIControlStateNormal];
     [_facebookButton setHidden:YES];
     [_facebookButton addTarget:self action:@selector(inviteFriendsToFB:) forControlEvents:UIControlEventTouchUpInside];
@@ -98,10 +99,8 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     {
         //Load existing members.
         [GLPGroupManager loadMembersWithGroupRemoteKey:self.group.remoteKey withLocalCallback:^(NSArray *members) {
-            
 
             [super setAlreadyMembers:self.alreadyMembers];
-            
             
         } remoteCallback:^(BOOL success, NSArray *members) {
             
@@ -175,6 +174,11 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if(indexPath.row >= self.searchedUsers.count)
+    {
+        return;
+    }
+    
     //Navigate to user's profile.
     
     GLPUser *seletedUser = nil;
@@ -280,14 +284,13 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 #pragma mark - Selectors
 
 - (IBAction)addUsers:(id)sender
-{
-    [WebClientHelper showStandardLoaderWithTitle:@"Sending invitaions" forView:self.view];
+{    
+    [_addSelectedButton startLoading];
     
     NSArray *userKeys = [super getCheckedUsersRemoteKeys];
     
-    [[WebClient sharedInstance] addUsers:userKeys toGroup:_group callback:^(BOOL success) {
-        
-        [WebClientHelper hideStandardLoaderForView:self.view];
+    [[WebClient sharedInstance] addUsers:userKeys toGroup:_group callback:^(BOOL success, GLPGroup *updatedGroup) {
+        [_addSelectedButton stopLoading];
         
         if(!success) {
             [WebClientHelper failedToAddUsers];
@@ -358,6 +361,7 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     [self.navigationController popViewControllerAnimated:YES];
+    [[GLPLiveGroupManager sharedInstance] userJoinedGroup];
 }
 
 #pragma mark - Keyboard management
@@ -375,33 +379,12 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     // Need to translate the bounds to account for rotation.
     keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
     
-    //Change the position of the button depending on the size of the keyboard.
-    float buttonYValue = [self findNewPositionOfTheButton:_addSelectedButton.frame withKeboardFrame:keyboardBounds];
-    
-    CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.size.height = buttonYValue - tableViewFrame.origin.y;
-    
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
-        
-        self.tableView.frame = tableViewFrame;
-        
-        CGRectSetY(_addSelectedButton, buttonYValue);
-        
+        [_buttonDistanceFromBottom setConstant:keyboardBounds.size.height + 5];
+        [_addSelectedButton layoutIfNeeded];
     } completion:^(BOOL finished) {
-        
         [self.tableView setNeedsLayout];
-        
     }];
-}
-
-- (float)findNewPositionOfTheButton:(CGRect)buttonFrame withKeboardFrame:(CGRect)keyboardFrame
-{
-    float keyboardY = keyboardFrame.origin.y;
-    
-    //We are substracting with 125 because without it the position is wrong.
-    //So if we don't substract with that number the position of the button will be wrong.
-    
-    return keyboardY - buttonFrame.size.height - 5 - 125;
 }
 
 #pragma mark - Navigation

@@ -27,7 +27,10 @@ typedef NS_ENUM(NSUInteger, GroupPrivacy) {
 @property (strong, nonatomic) UIImage *loadedImage;
 @property (assign, nonatomic) BOOL isFromPushNotification;
 @property (assign, nonatomic) NSInteger unreadNewPosts;
+@property (assign, nonatomic) NSInteger membersCount;
 @property (assign, nonatomic) GroupPrivacy privacy;
+@property (assign, nonatomic) NSInteger conversationRemoteKey;
+@property (strong, nonatomic) NSDate *lastActivity;
 
 //Not create in local database
 @property (strong, nonatomic) GLPMember *loggedInUser;
@@ -37,6 +40,7 @@ typedef NS_ENUM(NSUInteger, GroupPrivacy) {
 -(id)initWithName:(NSString *)name andRemoteKey:(int)remoteKey;
 - (id)initFromPushNotificationWithRemoteKey:(NSInteger)remoteKey;
 - (NSString *)privacyToString;
+- (NSString *)generatePendingIdentifier;
 - (void)setPrivacyWithString:(NSString *)privacy;
 
 @end

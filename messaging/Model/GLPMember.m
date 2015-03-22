@@ -118,6 +118,16 @@
     return (GLPUser *)self;
 }
 
+- (BOOL)isEqual:(id)other
+{
+    return [(GLPMember *)other remoteKey] == self.remoteKey;
+}
+
+- (NSUInteger)hash
+{
+    return self.remoteKey;
+}
+
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"Name %@, Group remote key %ld", self.name, (long)_groupRemoteKey];

@@ -13,12 +13,15 @@
 #import "ContactsManager.h"
 #import "GLPPrivateProfileViewController.h"
 #import "WebClient.h"
+#import "GLPTableActivityIndicator.h"
 
 @interface GLPShowUsersViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (assign, nonatomic) NSInteger selectedUserId;
+
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 @end
 
@@ -28,6 +31,8 @@
 {
     [super viewDidLoad];
     
+    [self initialiseObjects];
+    
     [self configureNavigationBar];
     
     [self configureTableView];
@@ -36,6 +41,11 @@
     
     [self showUsers];
     
+}
+
+- (void)initialiseObjects
+{
+    _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorCenter withView:_tableView];
 }
 
 - (void)configureNavigationBar
@@ -122,12 +132,16 @@
 
 - (void)loadAttendeesIfNeeded
 {
-    if(self.postRemoteKey == -1)
+    if(self.postRemoteKey == 0)
     {
         return;
     }
     
+    [_tableActivityIndicator startActivityIndicator];
+    
     [[WebClient sharedInstance] loadAttendeesWithPostRemoteKey:self.postRemoteKey callback:^(NSArray *users, BOOL success) {
+        
+        [_tableActivityIndicator stopActivityIndicator];
         
         if(success)
         {
@@ -137,8 +151,6 @@
         
     }];
 }
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -10,16 +10,30 @@
 
 @class GLPGroup;
 @class ChangeGroupImageProgressView;
+@class GLPNotification;
+
+
+typedef NS_ENUM(NSUInteger, GroupsLoadedStatus) {
+    kLocalLoaded,
+    kRemoteLoaded,
+    kNotLoaded
+};
 
 @interface GLPLiveGroupManager : NSObject
 
 + (GLPLiveGroupManager *)sharedInstance;
 
-- (void)loadGroups;
+- (void)loadInitialGroups;
+
+- (void)loadGroupsIfNeededWithNewNotification:(GLPNotification *)notification;
 
 - (void)loadGroupsWithPendingGroups:(NSArray *)pending withLiveCallback:(void (^) (NSArray* groups))local remoteCallback:(void (^) (BOOL success, NSArray *remoteGroups))remote;
 
 - (GLPGroup *)groupWithRemoteKey:(NSInteger)groupRemoteKey;
+- (NSInteger)getPendingGroupKeyWithTimestamp:(NSDate *)timestamp;
+- (void)deleteGroup:(GLPGroup *)group;
+
+- (void)userJoinedGroup;
 
 - (void)addUnreadPostWithGroupRemoteKey:(NSInteger)groupKey;
 
@@ -27,13 +41,21 @@
 
 - (NSInteger)numberOfUnseenPostsWithGroup:(GLPGroup *)group;
 
-- (NSArray *)liveGroups;
+- (void)getGroups;
+
+- (void)newGroupToBeCreated:(GLPGroup *)pendingGroup withTimestamp:(NSDate *)timestamp;
+- (void)updateGroupAfterCreated:(GLPGroup *)createdGroup;
+- (void)clearData;
 
 - (ChangeGroupImageProgressView *)progressViewWithGroup:(GLPGroup *)group;
 
 - (void)startChangeImageProgressingWithGroup:(GLPGroup *)group;
 
 - (void)finishUploadingNewImageToGroup:(GLPGroup *)group;
+- (void)clearUploadingNewImageToGroup:(GLPGroup *)group;
+
+- (void)searchGroupsWithQuery:(NSString *)query;
+- (void)loadUsersGroupsWithRemoteKey:(NSInteger)userRemoteKey;
 
 - (NSDate *)timestampWithGroupRemoteKey:(NSInteger)groupRemoteKey;
 

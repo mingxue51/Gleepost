@@ -9,8 +9,19 @@
 #import <Foundation/Foundation.h>
 #import "GLPTheme.h"
 
-@interface GLPDefaultTheme : GLPTheme
+@interface GLPDefaultTheme : NSObject
 
--(id)init;
+/** Includes  tab bar highlight, user names on posts, colour login screen */
+@property (strong, nonatomic) UIColor *primaryColour;
+@property (strong, nonatomic) UIColor *leftNavBarElementColour;
+@property (strong, nonatomic) UIColor *rightNavBarElementColour;
+@property (strong, nonatomic) UIColor *navBarBackgroundColour;
+@property (strong, nonatomic) UIColor *campusWallTitleColour;
+@property (strong, nonatomic) UIColor *generalNavBarTitleColour;
+
+- (UIImage *)navigationBarImage;
+- (UIImage *)leftItemColouredImage:(UIImage *)leftImage;
+- (UIImage *)rightItemColouredImage:(UIImage *)rightImage;
+- (NSString *)campusWallTitle;
 
 @end

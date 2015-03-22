@@ -34,7 +34,7 @@
         case kGLPNotificationTypeAcceptedYou:
             return [NSString stringWithFormat:@"Your are now friends"];
         case kGLPNotificationTypeCommented:
-            return [NSString stringWithFormat:@"%@ commented on your post", self.user.name];
+            return [NSString stringWithFormat:@"%@ commented on your post: \"%@\"", self.user.name, self.previewMessage];
         case kGLPNotificationTypeLiked:
             return [NSString stringWithFormat:@"%@ likes your post", self.user.name];
         case kGLPNotificationTypeAddedYou:
@@ -42,7 +42,7 @@
         case kGLPNotificationTypeAddedGroup:
             return [NSString stringWithFormat:@"%@ added you to a group", self.user.name];
         case kGLPNotificationTypeCreatedPostGroup:
-            return [NSString stringWithFormat:@"%@ created new post in group.", self.user.name];
+            return [NSString stringWithFormat:@"%@ created a post in your group.", self.user.name];
         case kGLPNotificationTypePostApproved:
             return [NSString stringWithFormat:@"%@ approved your post.", self.user.name];
         case kGLPNotificationTypePostRejected:

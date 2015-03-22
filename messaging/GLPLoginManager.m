@@ -26,6 +26,8 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "GLPPendingPostsManager.h"
 #import "CategoryManager.h"
+#import "GLPLiveGroupManager.h"
+#import "GLPLiveGroupConversationsManager.h"
 
 @implementation GLPLoginManager
 
@@ -188,7 +190,6 @@
     __block GLPUser *user;
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        DDLogDebug(@"DB error : findByRemoteKey");
         user = [GLPUserDao findByRemoteKey:userRemoteKey db:db];
     }];
     
@@ -208,9 +209,7 @@
 {
     DDLogInfo(@"Logged in user remote key: %ld", (long)user.remoteKey);
     
-    [[GLPNetworkManager sharedInstance] startNetworkOperations];
-    [[GLPThemeManager sharedInstance] setNetwork:user.networkName];
-    
+    [[GLPNetworkManager sharedInstance] startNetworkOperations];    
     [[WebClient sharedInstance] markNotificationsRead:nil];
     //That is removed because we are doing that by each message in conversation.
 //    [[WebClient sharedInstance] markConversationsRead:nil];
@@ -235,6 +234,10 @@
     [[SDImageCache sharedImageCache] clearDisk];
 
     [[GLPPendingPostsManager sharedInstance] clean];
+    
+    [[GLPLiveGroupManager sharedInstance] clearData];
+    [[GLPLiveGroupConversationsManager sharedInstance] clear];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:self];
     
     [[GLPPushManager sharedInstance] unregisterPushTokenWithAuthParams:authParams];
 }

@@ -27,6 +27,7 @@
 #import "GLPPostImageLoader.h"
 #import "GLPImageHelper.h"
 #import "GLPThemeManager.h"
+#import "GLPViewsCountView.h"
 
 @interface MainPostView ()
 
@@ -38,7 +39,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *timePostLbl;
 
-@property (weak, nonatomic) IBOutlet UILabel *nameLbl;
+@property (weak, nonatomic) IBOutlet GLPLabel *nameLbl;
 
 @property (weak, nonatomic) IBOutlet UILabel *contentLbl;
 
@@ -66,6 +67,8 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
+//@property (weak, nonatomic) IBOutlet UILabel *viewsCountLabel;
+
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingViewIndicator;
@@ -81,6 +84,10 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *backgroundImageHeight;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *loadingViewHeight;
+
+@property (weak, nonatomic) IBOutlet UIView *userView;
+
+@property (weak, nonatomic) IBOutlet GLPViewsCountView *viewsCountView;
 
 //This variable is temporary.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceBetweenTitleAndClockView;
@@ -111,29 +118,10 @@
 @implementation MainPostView
 
 const float FIXED_TOP_TEXT_BACKGROUND_HEIGHT = 70;
-const float FIXED_BOTTOM_TEXT_VIEW_HEIGHT = 100;
+const float FIXED_BOTTOM_TEXT_VIEW_HEIGHT = 114; //100
 
 const float FIXED_TOP_MEDIA_BACKGROUND_HEIGHT = 250;
-const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
-
-
-
--(id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    
-    if(self)
-    {
-        
-    }
-    
-    return self;
-}
-
-- (void)awakeFromNib
-{
-
-}
+const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 
 #pragma mark - Modifiers
 
@@ -145,9 +133,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [self formatElements];
     
     if(_post.sendStatus == kSendStatusLocalEdited)
-    {
-        DDLogDebug(@"MainPostView : kSendStatusLocalEdited YES %d", _post.sendStatus);
-        
+    {        
         [_loadingView setHidden:NO];
         
         [_loadingViewIndicator startAnimating];
@@ -156,8 +142,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     else
     {
-        DDLogDebug(@"MainPostView : kSendStatusLocalEdited NO %d", _post.sendStatus);
-
         [_loadingView setHidden:YES];
     }
     
@@ -174,6 +158,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [_nameLbl setText:post.author.name];
     [_nameLbl setTextColor:[[GLPThemeManager sharedInstance] nameTintColour]];
     _nameLbl.tag = _post.author.remoteKey;
+    
+    [_viewsCountView setViewsCount:_post.viewsCount];
     
     _viewPost = viewPost;
     
@@ -204,117 +190,49 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [self addGesturesToElements];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
     
+    
+    if([_post isVideoPost])
+    {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setNewViewsCount:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    }
+    
+    
+//    [ShapeFormatterHelper setBorderToView:_videoView withColour:[UIColor redColor] andWidth:1.0];
 //    [ShapeFormatterHelper setBorderToView:_wideCommentBtn withColour:[UIColor redColor]];
     
 //    [ShapeFormatterHelper setBorderToView:_socialView withColour:[UIColor blueColor]];
     
-//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blueColor]];
+//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blueColor] andWidth:1.0];
     
 //    [ShapeFormatterHelper setBorderToView:_commentBtn withColour:[UIColor redColor]];
 //    
 //    [ShapeFormatterHelper setBorderToView:_wideCommentBtn withColour:[UIColor blackColor]];
 //    
 //    [ShapeFormatterHelper setBorderToView:_shareBtn withColour:[UIColor greenColor]];
-    
-    
 }
 
-- (void)configureNotifications
+- (void)setNewViewsCount:(NSNotification *)viewsCountNotification
 {
-//    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_SHOW_MORE_OPTIONS, (long)_post.remoteKey];
-//    
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
-//
-//    
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moreOptions:) name:notificationName object:nil];
+    NSInteger postRemoteKey = [viewsCountNotification.userInfo[@"PostRemoteKey"] integerValue];
+    NSInteger viewsCount = [viewsCountNotification.userInfo[@"UpdatedViewsCount"] integerValue];
+    
+    if(postRemoteKey != self.post.remoteKey)
+    {
+        return;
+    }
+    
+    FLog(@"MainPostView : setNewViewsCount %@", viewsCountNotification);
+
+    _post.viewsCount = viewsCount;
+    [_viewsCountView setViewsCount:viewsCount];
 }
 
 - (void)dealloc
 {
-//    NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_SHOW_MORE_OPTIONS, (long)_post.remoteKey];
-//    
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
-}
-
-
--(void)setNewHeightDependingOnLabelHeight:(float)height andIsViewPost:(BOOL)isViewPost
-{
-    
-//    if([_post isVideoPost] && !isViewPost)
-//    {
-//        [self setPositionsOfVideo];
-//        
-//        return;
-//    }
-    
-    float fixedTopBackgroundHeight = 0.0f;
-    float fixedBottomViewHeight = 0.0f;
-    float backgroundImageViewHeight = 0.0f;
-
-    
-    if([_post imagePost])
-    {
-        fixedTopBackgroundHeight = FIXED_TOP_MEDIA_BACKGROUND_HEIGHT;
-        fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
-        backgroundImageViewHeight = 390.0f + height;
-    }
-    else if ([_post isVideoPost])
-    {
-        backgroundImageViewHeight = 510.0f;
-//        [_backgroundImageHeight setConstant:backgroundImageViewHeight];
-        
-    }
-    else
-    {
-        fixedTopBackgroundHeight = FIXED_TOP_TEXT_BACKGROUND_HEIGHT;
-        fixedBottomViewHeight = FIXED_BOTTOM_TEXT_VIEW_HEIGHT;
-        backgroundImageViewHeight = 190.0f + height;
-    }
-    
-    if([self isCurrentPostEvent])
-    {
-        [_backgroundImageHeight setConstant:backgroundImageViewHeight];
-        
-        [_postImageDistanceFromTopConstrain setConstant:7];
-//        [_postImageDistanceFromLeftConstrain setConstant:0];
-        
-//        [_postImageWidthConstrain setConstant:300];
-
-    }
-    else if(![self isCurrentPostEvent])
-    {
-        [_backgroundImageHeight setConstant:backgroundImageViewHeight - 85.0f];
-
-        
-        [_postImageDistanceFromTopConstrain setConstant:10];
-
-//        [_postImageDistanceFromLeftConstrain setConstant:0];
-        
-//        [_postImageWidthConstrain setConstant:280];
-    }
-    
-    [_contentLabelHeightConstrain setConstant:height];
-    
-//    [_topBackgroundHeightConstrain setConstant:height+ (_mediaAvailable) ? FIXED_TOP_MEDIA_BACKGROUND_HEIGHT : FIXED_TOP_TEXT_BACKGROUND_HEIGHT];
-    
-
-//    [_topBackgroundHeightConstrain setConstant:height + fixedTopBackgroundHeight];
-
-    
-//    [_distanceFromTopView setConstant:16];
-
-    if([self isCurrentPostEvent])
-    {
-        [self.distanceFromTop setConstant:85]; //81
-    }
-    else
-    {
-        [self.distanceFromTop setConstant:25];
-    }
-
-    [self.mainViewHeight setConstant:height + fixedBottomViewHeight];
-
+    FLog(@"MainView : DEALLOC");
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
 }
 
 -(void)setHeightDependingOnLabelHeight:(float)height andIsViewPost:(BOOL)isViewPost
@@ -337,14 +255,11 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 {
     float distanceFromTop = 0.0f;
     float fixedBottomViewHeight = FIXED_BOTTOM_TEXT_VIEW_HEIGHT;
-    float backgroundImageViewHeight = 0.0f;
-
-    backgroundImageViewHeight = 190.0f + height;
-
+    float backgroundImageViewHeight = 219.0f + height;
     
     if([self isCurrentPostEvent])
     {
-        distanceFromTop = 100.0f;
+        distanceFromTop = 111.0f;
         
         distanceFromTop = [self configureDistanceFromTopDependingOnFactor:17 withBasicValue:distanceFromTop];
         
@@ -355,8 +270,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     }
     else
     {
-        distanceFromTop = 10.0f; //25
-        backgroundImageViewHeight -= 87.0f;
+        distanceFromTop = 28.0f;
+        backgroundImageViewHeight -= 80.0f;
     }
     
     //Set constrains.
@@ -377,16 +292,14 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     float fixedBottomViewHeight = 0.0f;
     float distanceFromTop = 0.0f;
     
-    backgroundImageViewHeight = 371.0f + height;    //378.0f
+    backgroundImageViewHeight = 416.0f + height;  //388 //new 402 + 14
     fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
     
     if([self isCurrentPostEvent])
     {
         [_postImageDistanceFromTopConstrain setConstant:0];
-//        [_postImageDistanceFromLeftConstrain setConstant:0];
-        
 
-        distanceFromTop = 83;
+        distanceFromTop = 95; //83
 
         distanceFromTop = [self configureDistanceFromTopDependingOnFactor:15 withBasicValue:distanceFromTop];
 
@@ -406,10 +319,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         
         [_postImageDistanceFromTopConstrain setConstant:0];
         
-//        [_postImageDistanceFromLeftConstrain setConstant:0];
-        
-        backgroundImageViewHeight -= 57.0f; //70
-        
+        backgroundImageViewHeight -= (90.0f - 22); //70
         distanceFromTop = 25.0f;
     }
     
@@ -426,8 +336,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)setPositionsForVideoWithHeight:(float)height
 {
-    float fixedBottomViewHeight = 412.0f;
-    float backgroundImageViewHeight = 495.0f + height;
+    float fixedBottomViewHeight = 459.0f;
+    float backgroundImageViewHeight = 538.0f + height;
     float distanceFromTop = 0.0f;
     
     if([self isCurrentPostEvent])
@@ -559,9 +469,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
             
             if (found)
             {
-                DDLogDebug(@"Image found YES current image url %@ title %@", imageUrl, _post.eventTitle);
-                
-
                     if([imageUrl.absoluteString isEqualToString:_post.imagesUrls[0]])
                     {
                         dispatch_async(dispatch_get_main_queue(), ^{
@@ -623,6 +530,13 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 
 -(void)showVideoView
 {
+//    if([_videoView isVideoLoading])
+//    {
+//        DDLogDebug(@"MainPostView : Video is loading");
+//        
+//        return;
+//    }
+    
     [_activityIndicator stopAnimating];
     [_videoView setHidden:NO];
     [_postImageView setHidden:YES];
@@ -705,10 +619,9 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     
     [ShapeFormatterHelper setRoundedView:_userImageView toDiameter:_userImageView.frame.size.height];
 
-    [ShapeFormatterHelper setTopCornerRadius:_postImageView withViewFrame:_postImageView.frame withValue:0];
+//    [ShapeFormatterHelper setTopCornerRadius:_postImageView withViewFrame:_postImageView.frame withValue:0];
     
     [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:5];
-    
     
     [ShapeFormatterHelper setBorderToView:_backgroundImageView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0f];
     
@@ -740,18 +653,14 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     if(_post.liked)
     {
         [_likeBtn setTitleColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar"]] forState:UIControlStateNormal];
-        
         //Add the thumbs up selected version of image.
         [_likeBtn setImage:[UIImage imageNamed:@"icon_like_pushed"] forState:UIControlStateNormal];
-        
     }
     else
     {
         [_likeBtn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        
         //Add the thumbs up selected version of i   age.
         [_likeBtn setImage:[UIImage imageNamed:@"icon_like"] forState:UIControlStateNormal];
-        
     }
 }
 
@@ -880,9 +789,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
     [tap setNumberOfTapsRequired:1];
     [_commentsLbl addGestureRecognizer:tap];
     
-    tap = [[UITapGestureRecognizer alloc] initWithTarget:_delegate action:@selector(navigateToProfile:)];
-    [tap setNumberOfTapsRequired:1];
-    [_nameLbl addGestureRecognizer:tap];
+    [_nameLbl setDelegate:self];
 }
 
 -(void)addGestureToPostImage
@@ -1031,9 +938,13 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
 {
     if(_goingBtn.tag == 1)
     {
+        DDLogDebug(@"MainPostView : goingToEvent");
+
         //Not attend.
         [self notAttendingToEvent];
         [self makeButtonUnselected];
+        [self sendNotificationGoingUnpressed];
+        
     }
     else if(_goingBtn.tag == 2)
     {
@@ -1084,7 +995,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         _post.finalImage = _postImageView.image;
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post":_post}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post" : _post}];
+}
+
+- (void)sendNotificationGoingUnpressed
+{    
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_UNTOUCHED object:self userInfo:@{@"post" : _post}];
 }
 
 - (void)notifyToRefreshThePostInCampusWall
@@ -1169,6 +1085,13 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 295;
         }
         
     }];
+}
+
+#pragma mark - GLPLabelDelegate
+
+- (void)labelTouchedWithTag:(NSInteger)tag
+{
+    [_delegate navigateToProfile:_nameLbl];
 }
 
 #pragma mark - Action Sheet delegate

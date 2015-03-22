@@ -31,6 +31,8 @@
     NSString *groupRemoteKeyStr = [NSString stringWithFormat:@"%d", groupRemoteKey];
     
     entity.customParams = @{@"network" : groupRemoteKeyStr};
+    
+    entity.previewMessage = [resultSet stringForColumn:@"preview_message"];
 }
 
 + (GLPNotification *)createFromResultSet:(FMResultSet *)resultSet inDb:(FMDatabase *)db

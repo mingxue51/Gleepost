@@ -70,7 +70,23 @@ static NSString * const kOkButtonTitle       = @"Ok";
 - (IBAction)signUp:(id)sender
 {
     _fbLoginInfo = nil;
-    [self performSegueWithIdentifier:@"show signup" sender:self];
+    [self showSignUpViewController];
+}
+
+- (void)showSignUpViewController
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+    GLPSignUpViewController *signUpVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSignUpViewController"];
+    
+    if(_fbLoginInfo)
+    {
+        signUpVC.parentVC = self;
+        signUpVC.facebookLoginInfo = _fbLoginInfo;
+    }
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:signUpVC];
+    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (IBAction)signIn:(id)sender
@@ -87,7 +103,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
     [self.navigationController.navigationBar setTranslucent:YES];
     
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
-    
+
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
@@ -219,7 +235,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
                 {
                     //Pop up the verification view.
                     _fbLoginInfo = [NSDictionary dictionaryWithObjectsAndKeys:name, @"Name", email, @"Email", nil];
-                    [self performSegueWithIdentifier:@"show signup" sender:self];
+                    [self showSignUpViewController];
                     
                 }
                 else
@@ -425,22 +441,6 @@ static NSString * const kOkButtonTitle       = @"Ok";
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-# pragma mark - Navigation
-
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if([segue.identifier isEqualToString:@"show signup"])
-    {
-        GLPSignUpViewController *signUpVC = segue.destinationViewController;
-        if(_fbLoginInfo)
-        {
-            signUpVC.parentVC = self;
-            signUpVC.facebookLoginInfo = _fbLoginInfo;
-        }
-
-    }
 }
 
 @end

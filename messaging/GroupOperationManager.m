@@ -10,12 +10,11 @@
 #import "GroupUploaderManager.h"
 #import "GLPGroupDao.h"
 #import "GLPiOSSupportHelper.h"
+#import "GLPLiveGroupManager.h"
 
 @interface GroupOperationManager ()
 
 @property (strong, nonatomic) GroupUploaderManager *groupUploader;
-
-
 
 @end
 
@@ -95,9 +94,7 @@ static GroupOperationManager *instance = nil;
 -(void)setGroup:(GLPGroup *)group withTimestamp:(NSDate *)timestamp
 {
     //Save to group local database.
-    group.sendStatus = kSendStatusLocal;
-    [GLPGroupDao save:group];
-    
+    [[GLPLiveGroupManager sharedInstance] newGroupToBeCreated:group withTimestamp:timestamp];
     [_groupUploader addGroup:group withTimestamp:timestamp];
 }
 
@@ -105,7 +102,6 @@ static GroupOperationManager *instance = nil;
 
 -(void)changeGroupImageWithImage:(UIImage *)image withGroup:(GLPGroup *)group
 {
-    
     [_groupUploader changeGroupImageWithImage:image withGroup:group];
 }
 
@@ -113,14 +109,5 @@ static GroupOperationManager *instance = nil;
 {
     return [_groupUploader pendingGroupImageWithRemoteKey:remoteKey];
 }
-
-/**
- -(void)uploadImage:(UIImage *)image withTimestamp:(NSDate *)timestamp
- {
- 
- }
- 
- */
-
 
 @end

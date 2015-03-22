@@ -92,12 +92,6 @@ static BOOL visibility = NO;
         UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(singleTapRecognized:)];
         singleTap.numberOfTapsRequired = 1;
         [self.commentTextView addGestureRecognizer:singleTap];
-        
-        
-        self.fdTakeController = [[FDTakeController alloc] init];
-        self.fdTakeController.delegate = self;
-        
-        
         [self.commentTextView becomeFirstResponder];
 
     }
@@ -359,35 +353,6 @@ static BOOL visibility = NO;
     {
         NSLog(@"Remain");
     }
-    
-}
-
-- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)in
-{
-    self.imagePosted = YES;
-    
-    self.uploadedImage.image = photo;
-}
-
--(void)takeController:(FDTakeController *)controller didCancelAfterAttempting:(BOOL)madeAttempt
-{
-    [self.commentTextView becomeFirstResponder];
-
-}
-
--(void)takeController:(FDTakeController *)controller didFailAfterAttempting:(BOOL)madeAttempt
-{
-    [self.commentTextView becomeFirstResponder];
-    
-}
-
-- (IBAction)addImage:(id)sender
-{
-    
-    [self.fdTakeController takePhotoOrChooseFromLibrary];
-    [self.commentTextView becomeFirstResponder];
-
-    
     
 }
 

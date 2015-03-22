@@ -55,6 +55,7 @@
     return self;
 }
 
+
 -(void)initialiseObjects
 {
 //    _previewVC = [[PBJVideoPlayerController alloc] init];
@@ -70,11 +71,15 @@
 {
     if(ON_DEVICE)
     {
+        DDLogDebug(@"VideoView : setUpVideoViewWithPost %ld", (long)_remoteKey);
+        
         _remoteKey = post.remoteKey;
         
         _post = post;
         
         [self loadThumbnail];
+        
+        [self deregisterNotifications];
         
         [self registerNotifications];
         
@@ -133,6 +138,13 @@
         
         [self configurePlaybackElementsWithPreviewVC:_previewVC];
     }
+}
+
+#pragma mark - Accessors
+
+- (BOOL)isVideoLoading
+{
+    return (_remoteKey != 0);
 }
 
 #pragma mark - Nofications
@@ -294,12 +306,8 @@
 
     DDLogDebug(@"Thumbnail view hidden: %d, Post content: %@, Url: %@", [_thumbnailImageView isHidden], _post.content, _post.video.thumbnailUrl);
     
-    
     [_thumbnailImageView sd_setImageWithURL:[NSURL URLWithString: _post.video.thumbnailUrl] placeholderImage:[UIImage imageNamed:@"default_thumbnail"] options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
         DDLogDebug(@"Video image loaded with post %@ : %@ Cache type: %d", _post.content, image, cacheType);
-
-        
     }];
 }
 

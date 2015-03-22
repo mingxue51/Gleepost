@@ -276,6 +276,48 @@
     [WebClientHelper showStandardErrorWithTitle:@"Tagline changed" andContent:[NSString stringWithFormat:@"Your new tagline is: %@.", tagline]];
 }
 
+#pragma mark - Location
+
++ (void)showLocationRestrictionError
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Location is disabled." andContent:[NSString stringWithFormat:@"To include location with %@, go to your Settings App > Privacy > Location Services.", [[GLPThemeManager sharedInstance] appNameWithString:@"%@"]]];
+}
+
+/**
+ This method should be called only if the app is running on iOS 8 or later.
+ 
+ @return a UIAlertController with UIAlertControllerStyleAlert that has the ability to navigate to app's privacy settings.
+ 
+ */
++ (UIAlertController *)generateAlertViewForLocationError
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Location is disabled."
+                                                                   message:[NSString stringWithFormat:@"To include location with %@, go to your Settings App > Privacy > Location Services.", [[GLPThemeManager sharedInstance] appNameWithString:@"%@"]]
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"Not Now" style:UIAlertActionStyleCancel
+                                                          handler:^(UIAlertAction * action) {
+                                                              
+                                                              
+                                                          }];
+    
+    UIAlertAction *settingsAction = [UIAlertAction actionWithTitle:@"Settings" style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * action) {
+                                                               [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                                                           }];
+    
+    [alert addAction:defaultAction];
+    [alert addAction:settingsAction];
+    
+    return alert;
+}
+
+#pragma mark - Conversations
+
++ (void)showFailedToDeleteConversationError
+{
+    [self showAlertWithTitle:@"Oops!" andMessage:@"There was a problem deleting the conversation. Please check your connection and try again"];
+}
 
 #pragma mark - Media
 
@@ -373,6 +415,13 @@
     NSString *message = [[GLPThemeManager sharedInstance] appNameWithString:@"%@ needs permissions to save that event to your Calendar. Please check your settings and try again."];
     
     [WebClientHelper showAlertWithTitle:@"Error" andMessage:message];
+}
+
+#pragma mark - Warning
+
++ (void)showLowMemoryWarningFromClass:(NSString *)className
+{
+    [WebClientHelper showAlertWithTitle:@"Memory Warning" andMessage:className];
 }
 
 @end

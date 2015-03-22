@@ -10,10 +10,10 @@
 #import "GLPPost.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "GLPiOSSupportHelper.h"
-#import "GLPCampusLiveImageOperation.h"
+#import "GLPPostImageOperation.h"
 #import "NSNotificationCenter+Utils.h"
 
-@interface GLPCLPostImageLoader () <GLPCampusLiveImageOperationDelegate>
+@interface GLPCLPostImageLoader () <GLPPostImageOperationDelegate>
 
 @property (strong, nonatomic) NSOperationQueue *operationQueue;
 @property (strong, nonatomic) NSMutableDictionary *pendingOperations;
@@ -109,7 +109,7 @@ static GLPCLPostImageLoader *instance = nil;
 {    
     DDLogDebug(@"GLPCLPostImageLoader : image added %ld - %@", (long)remoteKey, imageUrl);
     
-    GLPCampusLiveImageOperation *operation = [[GLPCampusLiveImageOperation alloc] initWithImageUrl:imageUrl andRemoteKey:remoteKey];
+    GLPPostImageOperation *operation = [[GLPPostImageOperation alloc] initWithImageUrl:imageUrl andRemoteKey:remoteKey];
     
     [operation setDelegate:self];
     
@@ -117,9 +117,7 @@ static GLPCLPostImageLoader *instance = nil;
 }
 
 - (void)notifyCampusLiveWithImage:(UIImage *)image andPostRemoteKey:(NSInteger)remoteKey
-{
-    DDLogDebug(@"GLPCLPostImageLoader : notifyCampusLiveWithImage %ld image %@", (long)remoteKey, image);
-    
+{    
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:[self generateNotificationWithRemoteKey:remoteKey] object:self userInfo:@{@"image_loaded" : image, @"remote_key" : @(remoteKey)}];
 }
 
@@ -148,7 +146,7 @@ static GLPCLPostImageLoader *instance = nil;
 - (void)operationFinishedWithImage:(UIImage *)image andRemoteKey:(NSInteger)remoteKey
 {
     [_pendingOperations removeObjectForKey:@(remoteKey)];
-    DDLogDebug(@"Current operations %@ count %lu", _operationQueue.operations, (unsigned long)_operationQueue.operationCount);
+//    DDLogDebug(@"Current operations %@ count %lu", _operationQueue.operations, (unsigned long)_operationQueue.operationCount);
     [self notifyCampusLiveWithImage:image andPostRemoteKey:remoteKey];
 
 }

@@ -18,5 +18,6 @@
 
 - (id)initWithName:(NSString *)name address:(NSString *)address latitude:(double)lat longitude:(double)lng andDistance:(NSInteger)distance;
 - (id)initWithName:(NSString *)name address:(NSString *)address latitude:(double)lat longitude:(double)lng;
+-(id)copyWithZone:(NSZone *)zone;
 
 @end

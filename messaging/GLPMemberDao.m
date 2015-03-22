@@ -41,9 +41,6 @@
         
     }
     
-    DDLogDebug(@"findMembersWithGroupRemoteKey %d", [db hasOpenResultSets]);
-
-    
     return members;
 }
 
@@ -71,11 +68,8 @@
     __block NSArray *members = [[NSMutableArray alloc] init];
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        
         members = [GLPMemberDao findMembersWithGroupRemoteKey:groupRemoteKey db:db];
-        
     }];
-    
     return members;
 }
 
@@ -111,6 +105,23 @@
     }];
 }
 
++ (void)removeMembers:(NSArray *)members withGroupRemoteKey:(NSInteger)groupRemoteKey db:(FMDatabase *)db
+{
+    for(GLPMember *member in members)
+    {
+        [db executeUpdateWithFormat:@"delete from members where group_remote_key=%d AND remoteKey=%d", groupRemoteKey, member.remoteKey];
+    }
+}
+
++ (void)removeMember:(GLPMember *)member withGroupRemoteKey:(NSInteger)groupRemoteKey
+{
+    NSAssert(groupRemoteKey != 0, @"Member should have group remote key.");
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        [db executeUpdateWithFormat:@"delete from members where group_remote_key=%d AND remoteKey=%d", groupRemoteKey, member.remoteKey];
+    }];
+}
+
 /**
  Save member if member not exist with the current group remote key.
  
@@ -143,30 +154,46 @@
      entity.groupRemoteKey,
      entity.roleLevel];
 
-
     entity.key = [db lastInsertRowId];
 }
 
-+(void)saveMembers:(NSArray *)members
++ (void)saveMembers:(NSArray *)members withGroupRemoteKey:(NSInteger)groupRemoteKey
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
-        //Remove all elements from database.
-//        [self removeAllTheEntriesInDb:db];
+        //Remove all members if needed.
+        NSMutableArray *localMembers = [GLPMemberDao findMembersWithGroupRemoteKey:groupRemoteKey db:db].mutableCopy;
+        
+        NSArray *membersToBeDeleted = [GLPMemberDao subtractRemotePosts:members withLocalPosts:localMembers];
+        
+        DDLogInfo(@"GLPMemberDao : Members to be deleted %@", membersToBeDeleted);
+        
+        if(members)
+        {
+            [GLPMemberDao removeMembers:membersToBeDeleted withGroupRemoteKey:groupRemoteKey db:db];
+        }
         
         for(GLPMember *member in members)
         {
             member.key = [GLPMemberDao saveMemberIfNotExist:member db:db];
         }
-        
     }];
+}
+
++ (NSArray *)subtractRemotePosts:(NSArray *)remoteMembers withLocalPosts:(NSMutableArray *)localMembers
+{
+    [localMembers removeObjectsInArray:remoteMembers];
+    
+    if([remoteMembers isEqualToArray:localMembers])
+    {
+        return nil;
+    }
+    return localMembers;
 }
 
 +(void)removeAllTheEntriesInDb:(FMDatabase*)db
 {
-    BOOL removed = [db executeUpdateWithFormat:@"delete from members"];
-    
-    DDLogDebug(@"All the members list removed %d.", removed);
+    [db executeUpdateWithFormat:@"delete from members"];
 }
 
 @end

@@ -21,7 +21,7 @@
 #import "WebClientHelper.h"
 #import "GLPNewElementsIndicatorView.h"
 #import "GLPLoadingCell.h"
-#import "MembersViewController.h"
+#import "GLPConversationViewController.h"
 #import "GroupOperationManager.h"
 #import "SessionManager.h"
 #import "GLPiOSSupportHelper.h"
@@ -51,6 +51,11 @@
 #import "GLPInviteUsersViewController.h"
 #import "GLPTableActivityIndicator.h"
 
+#import "GLPTrackViewsCountProcessor.h"
+#import "GLPCampusWallAsyncProcessor.h"
+#import "GLPLiveGroupConversationsManager.h"
+
+
 @interface GroupViewController () <GLPAttendingPopUpViewControllerDelegate, GLPGroupSettingsViewControllerDelegate, GLPPublicGroupPopUpViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *posts;
@@ -77,7 +82,6 @@
 @property (assign, nonatomic) int postIndexToReload;
 
 @property (strong, nonatomic) UIImage *groupImage;
-@property (strong, nonatomic) FDTakeController *fdTakeController;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
@@ -94,8 +98,13 @@
 @property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 @property (strong, nonatomic) GLPLocation *selectedLocation;
+@property (strong, nonatomic) GLPConversation *selectedConversation;
 
 @property (assign, nonatomic) BOOL showComment;
+
+/** Captures the visibility of current cells. */
+@property (strong, nonatomic) GLPTrackViewsCountProcessor *trackViewsCountProcessor;
+@property (strong, nonatomic) GLPCampusWallAsyncProcessor *campusWallAsyncProcessor;
 
 @end
 
@@ -119,14 +128,12 @@ const float TOP_OFF_SET = -64.0;
     
     [self initialiseObjects];
     
-    if(!_fromPushNotification)
-    {
-        [self configureTopImageView];
-        [self configureTableView];
-        [self loadPosts];
-        [self loadPendingImageIfExistAndSetIt];
-    }
-    
+
+    [self configureTopImageView];
+    [self configureTableView];
+    [self loadPosts];
+    [self loadPendingImageIfExistAndSetIt];
+
 
     //Get the video progress view and add it as subview.
     [self getProgressViewAndAddIt];
@@ -136,32 +143,23 @@ const float TOP_OFF_SET = -64.0;
     
     [self configureNavigationItems];
     
-    
-//    if(_fromPushNotification)
-//    {
-//        [self loadGroupData];
-//    }
-    
-//    [self loadMembers];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewMediaPostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
-
+    [self configureViewDidLoadNotifications];
     
     [[GLPLiveGroupManager sharedInstance] postGroupReadWithRemoteKey:_group.remoteKey];
+    
+    [[GLPLiveGroupConversationsManager sharedInstance] loadConversationWithRemoteKey:_group.conversationRemoteKey];
+    
+    if(_fromPushNotificationWithNewMessage)
+    {
+        [self navigateToMessenger];
+    }
 }
-
-//- (void)viewDidLayoutSubviews
-//{
-//    self.pongRefreshControl = [BOZPongRefreshControl attachToTableView:self.tableView
-//                                                     withRefreshTarget:self
-//                                                      andRefreshAction:@selector(loadEarlierPostsFromPullToRefresh)];
-//}
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    [self configureNotifications];
+    [self configureViewWillAppearNotifications];
 
     [self setUpGoingButtonNotification];
     
@@ -172,24 +170,27 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-//    if([self isFakeNavigationBarVisible])
-//    {
-//        [_fakeNavigationBar showNavigationBar];
-//    }
-    [self removeNotifications];
+    [self removeViewWillDisappearNotifications];
     
     [self removeGoingButtonNotification];
+    
+    [_trackViewsCountProcessor resetSentPostsSet];
 
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     
     [super viewWillDisappear:animated];
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+//    [_trackViewsCountProcessor resetSentPostsSet];
+    [super viewDidDisappear:animated];
+}
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
-
+    [self removeViewDidLoadNotifications];
+    
     [[GLPEmptyViewManager sharedInstance] hideViewWithKind:kGroupPostsEmptyView];
     
     [_tableView removeFromSuperview];
@@ -205,8 +206,6 @@ const float TOP_OFF_SET = -64.0;
     ChangeGroupImageProgressView *progressView =[[GLPLiveGroupManager sharedInstance] progressViewWithGroup:_group];
     
     progressView.tag = _group.remoteKey;
-    
-//    DDLogDebug(@"getImageProgressViewAndAddIt: %d : %@", _group.remoteKey, progressView);
     
     [self.tableView addSubview:progressView];
 }
@@ -230,12 +229,6 @@ const float TOP_OFF_SET = -64.0;
 {
     //Register nib files in table view.
     
-//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTableViewCell" bundle:nil] forCellReuseIdentifier:@"ProfileCell"];
-    
-    
-
-//    [self.tableView registerNib:[UINib nibWithNibName:@"ProfileViewTwoButtonsTableViewCell" bundle:nil] forCellReuseIdentifier:@"TwoButtonsCell"];
-    
     [self.tableView registerNib:[UINib nibWithNibName:@"DescriptionSegmentGroupCell" bundle:nil] forCellReuseIdentifier:@"DescriptionSegmentGroupCell"];
     
     //Register posts.
@@ -245,46 +238,11 @@ const float TOP_OFF_SET = -64.0;
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
-    //Register contacts' cells.
-    
-//    [self.tableView registerNib:[UINib nibWithNibName:@"ContactCell" bundle:nil] forCellReuseIdentifier:@"ContactCell"];
-    
-    
-    
-//    [self.tableView registerNib:[UINib nibWithNibName:@"GLPLoadingCell" bundle:nil] forCellReuseIdentifier:@"LoadingCell"];
-
 
 }
 
 -(void)configureTableView
 {
-    // refresh control
-//    _refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectMake(50, 150, 320, 60)];
-//    [_refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
-
-    
-
-//    self.refreshControl = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0, 300, 320, 70)];
-//    [self.refreshControl setTintColor:[UIColor blackColor]];
-//    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
-//    [_tableView addSubview: self.refreshControl];
-//    
-//    [_tableView bringSubviewToFront:self.refreshControl];
-    
-    
-//    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0")) {
-//        self.tableView.contentInset = UIEdgeInsetsMake(self.topLayoutGuide.length, 0, 0, 0); // This is the default and might not be necessary
-    
-//        self.headerContainerViewConstraint.constant = -self.topLayoutGuide.length;
-    
-//        self.tableView.tableHeaderView.frame = CGRectMake(self.tableView.tableHeaderView.frame.origin.x, self.tableView.tableHeaderView.frame.origin.y, self.tableView.tableHeaderView.frame.size.width, self.tableView.tableHeaderView.frame.size.height - self.topLayoutGuide.length);
- //   }
-    
-//    [_activityIndicator setFrame:CGRectMake(50, 100, 320, 70)];
-    
-    
-
-    
     if([GLPiOSSupportHelper isIOS6])
     {
         [GLPiOSSupportHelper setBackgroundImageToTableView:self.tableView];
@@ -310,7 +268,7 @@ const float TOP_OFF_SET = -64.0;
     
     _strechedImageView = [array objectAtIndex:0];
     
-    _strechedImageView.frame = CGRectMake(0, -kStretchedImageHeight, self.tableView.frame.size.width, kStretchedImageHeight);
+    _strechedImageView.frame = CGRectMake(0, -kStretchedImageHeight, [GLPiOSSupportHelper screenWidth], kStretchedImageHeight);
     
     [self refreshTopImageView];
     
@@ -354,10 +312,6 @@ const float TOP_OFF_SET = -64.0;
     
     self.transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
     
-    self.fdTakeController = [[FDTakeController alloc] init];
-    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
-    self.fdTakeController.delegate = self;
-    
     _fakeNavigationBar = [[FakeNavigationBarView alloc] initWithTitle:_group.name];
     
     [self.view addSubview:_fakeNavigationBar];
@@ -371,6 +325,8 @@ const float TOP_OFF_SET = -64.0;
     _showComment = NO;
     
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.view];
+    _trackViewsCountProcessor = [[GLPTrackViewsCountProcessor alloc] init];
+    _campusWallAsyncProcessor = [[GLPCampusWallAsyncProcessor alloc] init];
 }
 
 - (void)configureNavigationItems
@@ -398,11 +354,15 @@ const float TOP_OFF_SET = -64.0;
     {
         [self.navigationController.navigationBar setButton:kRight withImageName:@"join_group" withButtonSize:CGSizeMake(37.0, 30.0) withSelector:@selector(joinGroupTouched) andTarget:self];
     }
+    else if([_group.loggedInUser isMemberOfGroup] && ![_group.loggedInUser isAuthenticatedForChanges])
+    {
+        [self.navigationController.navigationBar setButton:kRight specialButton:kQuit withImageName:@"more_group" withButtonSize:CGSizeMake(30.0, 30.0) withSelector:@selector(showSettings:) andTarget:self];
+
+    }
     
-    DDLogDebug(@"Group type %d", _group.privacy);
 }
 
--(void)configureNavigationBar
+- (void)configureNavigationBar
 {
     
     //Change the format of the navigation bar.
@@ -415,32 +375,31 @@ const float TOP_OFF_SET = -64.0;
     
     if([self isFakeNavigationBarVisible])
     {
-        //_fakeNavigationBarVisible = NO;
-//        [self.navigationController.navigationBar makeVisibleWithTitle:_group.name];
-//        [_fakeNavigationBar showNavigationBar];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
     }
     else
     {
-        //_fakeNavigationBarVisible = YES;
-//        [self.navigationController.navigationBar invisible];
-//        [_fakeNavigationBar hideNavigationBar];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
     }
     
     [self.navigationController.navigationBar invisible];
-
-
     
     //Set title.
     self.navigationController.navigationBar.topItem.title = @"";
-    
-
 }
 
--(void)configureNotifications
+- (void)configureViewDidLoadNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadNewMediaPostWithPost:) name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
+}
+
+- (void)removeViewDidLoadNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
+}
+
+- (void)configureViewWillAppearNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateRealImage:) name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     
@@ -453,13 +412,15 @@ const float TOP_OFF_SET = -64.0;
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_GROUP_VIDEO_POST_READY, (long)_group.remoteKey];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:notificationName object:nil];
-
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    
+    //This notification is used in case a new message received to update the Messenger tab badge.
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupMessageReceived:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
 }
 
--(void)removeNotifications
+- (void)removeViewWillDisappearNotifications
 {
-    DDLogDebug(@"removeNotifications group name %@", _group.name);
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_IMAGE_LOADED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
 //    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil];
@@ -467,7 +428,8 @@ const float TOP_OFF_SET = -64.0;
     NSString *notificationName = [NSString stringWithFormat:@"%@_%ld", GLPNOTIFICATION_GROUP_VIDEO_POST_READY, (long)_group.remoteKey];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self name:notificationName object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
 }
 
 - (void)setUpGoingButtonNotification
@@ -544,8 +506,8 @@ const float TOP_OFF_SET = -64.0;
 {
     NSDictionary *dict = [notification userInfo];
     
-    int key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
-    int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
+    NSInteger key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
+    NSInteger remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
     NSString * urlImage = [dict objectForKey:@"imageUrl"];
     
 
@@ -572,10 +534,61 @@ const float TOP_OFF_SET = -64.0;
     }
     
     [[GLPLiveGroupPostManager sharedInstance] removePost:uploadedPost fromGroupWithRemoteKey:_group.remoteKey];
-
-    
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+/**
+ This method is called when there is an update in views count.
+ 
+ @param notification the notification contains post remote key and the updated
+ number of views.
+ */
+- (void)updateViewsCounter:(NSNotification *)notification
+{
+    NSInteger postRemoteKey = [notification.userInfo[@"PostRemoteKey"] integerValue];
+    NSInteger viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
     
+    [_campusWallAsyncProcessor parseAndUpdatedViewsCountPostWithPostRemoteKey:postRemoteKey andPosts:_posts withCallbackBlock:^(NSInteger index) {
+                
+        if(index != -1)
+        {
+            GLPPost *post = [self.posts objectAtIndex:index];
+            post.viewsCount = viewsCount;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if(![post isVideoPost])
+                {
+                    [self refreshCellViewWithIndex:index+1];
+                }
+            });
+        }
+        
+    }];
+}
+
+- (void)groupMessageReceived:(NSNotification *)notification
+{
+    BOOL belongToGroupConversation = [notification.userInfo[@"belongsToGroup"] boolValue];
+    
+    if(belongToGroupConversation)
+    {
+        BOOL localMessage = [notification.userInfo[@"newLocalMessage"] boolValue];
+        if(localMessage) {
+            return;
+        }
+        
+        NSInteger conversationRemoteKey = [notification.userInfo[@"remoteKey"] integerValue];
+        BOOL newMessages = [notification.userInfo[@"newMessages"] boolValue];
+        if(newMessages) {
+            
+            DDLogDebug(@"GroupViewController : groupMessageReceived");
+            
+            if(conversationRemoteKey == _group.conversationRemoteKey)
+            {
+                [self refreshCellViewWithIndex:0];
+            }
+        }
+    }
 }
 
 
@@ -615,7 +628,7 @@ const float TOP_OFF_SET = -64.0;
 -(void)refreshCellViewWithIndex:(NSInteger)index
 {
     [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView endUpdates];
 }
 
@@ -722,8 +735,6 @@ const float TOP_OFF_SET = -64.0;
 //        return loadingCell;
         
         return [self cellWithMessage:@"Loading..."];
-        
-        
     }
     
     static NSString *CellIdentifierWithImage = @"ImageCell";
@@ -737,27 +748,8 @@ const float TOP_OFF_SET = -64.0;
     if(indexPath.row == 0)
     {
         groupDescrViewCell = [tableView dequeueReusableCellWithIdentifier:CellDescriptionGroupIdentifier forIndexPath:indexPath];
-        
-//        [profileView setPrivateProfileDelegate:self];
-        
-//        if(self.profileImage && self.profileUser)
-//        {
-//            [profileView initialiseElementsWithUserDetails:self.profileUser withImage:self.profileImage];
-//        }
-//        else if(self.profileImage && !self.profileUser)
-//        {
-//            [profileView initialiseProfileImage:self.profileImage];
-//        }
-//        else
-//        {
-//            [profileView initialiseElementsWithUserDetails:self.profileUser];
-//        }
-        
         [groupDescrViewCell setDelegate:self];
-
-        
         groupDescrViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         [groupDescrViewCell setGroupData:_group];
         
         return groupDescrViewCell;
@@ -787,7 +779,6 @@ const float TOP_OFF_SET = -64.0;
             [postViewCell setPost:post withPostIndexPath:indexPath];
         }
 
-
         return postViewCell;
     }
     
@@ -801,6 +792,7 @@ const float TOP_OFF_SET = -64.0;
     cell.textLabel.font = [UIFont fontWithName:GLP_APP_FONT size:12.0f];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.textColor = [UIColor grayColor];
+    cell.backgroundColor = [UIColor clearColor];
     cell.userInteractionEnabled = NO;
     return cell;
 }
@@ -918,6 +910,8 @@ const float TOP_OFF_SET = -64.0;
     [self makeVisibleOrInvisibleActivityIndicatorWithOffset:yOffset];
     
     [self makeVisibleOrInvisibleNavigationBarWithOffset:yOffset];
+    
+    [_trackViewsCountProcessor resetVisibleCells];
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
@@ -930,6 +924,85 @@ const float TOP_OFF_SET = -64.0;
     {
         [self loadEarlierPostsFromPullToRefresh];
     }
+}
+
+
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if(self.posts.count == 0)
+    {
+        return;
+    }
+    
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading)
+    {
+        return;
+    }
+    
+    //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
+    
+    NSMutableArray *postsYValues = nil;
+
+    NSArray *visiblePosts = [self getVisiblePostsInTableViewWithYValues:&postsYValues];
+    
+    DDLogDebug(@"GroupVC scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
+    
+    [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
+}
+
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(self.loadingCellStatus == kGLPLoadingCellStatusLoading)
+    {
+        return;
+    }
+    
+    if(decelerate == 0)
+    {
+        NSMutableArray *postsYValues = nil;
+
+        NSArray *visiblePosts = [self getVisiblePostsInTableViewWithYValues:&postsYValues];
+        
+        DDLogDebug(@"GroupVC scrollViewDidEndDragging2 posts: %@", visiblePosts);
+        
+        [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
+    }
+}
+
+/**
+ This method is used to take a snapshot of the current visible posts cells.
+ 
+ @param postsYValues this parameter is passed in order to be returned with the current
+ Y values of each respect visible post.
+ 
+ @return The visible posts.
+ 
+ */
+-(NSArray *)getVisiblePostsInTableViewWithYValues:(NSMutableArray **)postsYValues
+{
+    NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
+    *postsYValues = [[NSMutableArray alloc] init];
+    NSArray *paths = [self.tableView indexPathsForVisibleRows];
+    
+    for (NSIndexPath *path in paths)
+    {
+        if(path.row == 0)
+        {
+            continue;
+        }
+        
+        //Avoid any out of bounds access in array
+        
+        if(path.row < self.posts.count)
+        {
+            [visiblePosts addObject:[self.posts objectAtIndex:path.row - 1]];
+            CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:path];
+            CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
+            [*postsYValues addObject:@(rectInTableView.size.height/2.0 + rectInSuperview.origin.y)];
+        }
+    }
+    
+    return visiblePosts;
 }
 
 - (void)configureStrechedImageViewWithOffset:(float)offset
@@ -960,9 +1033,7 @@ const float TOP_OFF_SET = -64.0;
 }
 
 - (void)makeVisibleOrInvisibleNavigationBarWithOffset:(float)offset
-{
-//    DDLogDebug(@"Offset: %f, top off set: %f", offset, TOP_OFF_SET);
-    
+{    
     if(offset >= TOP_OFF_SET)
     {
         if([self isFakeNavigationBarVisible])
@@ -992,11 +1063,9 @@ const float TOP_OFF_SET = -64.0;
 {
     UIImage *img = [[GroupOperationManager sharedInstance] pendingGroupImageWithRemoteKey:_group.remoteKey];
     
-    DDLogDebug(@"Load pending image if exist.");
-    
     if(!img)
     {
-        DDLogDebug(@"Pending image doesn't exist.");
+        DDLogError(@"Pending image doesn't exist.");
 
         return;
     }
@@ -1010,11 +1079,19 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)joinGroupTouched
 {
-    [[WebClient sharedInstance] joinPublicGroup:_group callback:^(BOOL success) {
+    [[WebClient sharedInstance] joinPublicGroup:_group callback:^(BOOL success, GLPGroup *updatedGroup) {
         
         if(success)
         {
+            //TODO: The updatedGroup now is nil because server is not sending the updated group after the joining.
+            
+            self.navigationItem.rightBarButtonItems = nil;
+//            _group = updatedGroup;
+            [_group.loggedInUser setRoleKey:1];
+            
+            [self configureNavigationItems];
             [self showAfterJoiningPopUpView];
+            [[GLPLiveGroupManager sharedInstance] userJoinedGroup];
 //            [self switchUserAsMemberOfGroup];
 //            [self configureNavigationItems];
         }
@@ -1098,14 +1175,14 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)focusOnTheLatestUsersPostIfNeeded
 {
-    if(_userCreatedPost)
+    if(self.postCreatedRemoteKey != 0)
     {
         GLPPost *usersPost = nil;
         int index = 0;
         
         for(GLPPost *p in _posts)
         {
-            if(p.author.remoteKey == _userCreatedPost.remoteKey)
+            if(p.remoteKey == self.postCreatedRemoteKey)
             {
                 usersPost = p;
                 break;
@@ -1115,15 +1192,12 @@ const float TOP_OFF_SET = -64.0;
         
         if(usersPost)
         {
-            
             if(index == _posts.count)
             {
                 DDLogError(@"Index to scroll should be less than the number of posts. Abort scrolling");
-                
                 return;
             }
             
-            DDLogDebug(@"Post index: %d", index);
             //Scroll to index.
             [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:index + 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
         }
@@ -1251,11 +1325,7 @@ const float TOP_OFF_SET = -64.0;
         } else {
             [self reloadLoadingCell];
         }
-        
-        
     }];
-    
-    
 }
 
 - (void)reloadLoadingCell
@@ -1304,7 +1374,6 @@ const float TOP_OFF_SET = -64.0;
     
     [GLPGroupManager loadRemotePostsBefore:remotePost withGroupRemoteKey:_group.remoteKey callback:^(BOOL success, BOOL remain, NSArray *posts) {
         [self stopLoading];
-        DDLogDebug(@"Stop loading activity indicator");
         
 //        [_pongRefreshControl finishedLoading];
 
@@ -1355,18 +1424,14 @@ const float TOP_OFF_SET = -64.0;
 - (void)startLoading
 {
     self.isLoading = YES;
-    
     [_activityIndicator startAnimating];
-    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
 - (void)stopLoading
 {
     self.isLoading = NO;
-    
     [_activityIndicator stopAnimating];
-    
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
@@ -1408,7 +1473,12 @@ const float TOP_OFF_SET = -64.0;
     self.isLoading = YES;
     
     //    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
-        
+    
+    if(self.posts == nil)
+    {
+        self.posts = [[NSMutableArray alloc] init];
+    }
+    
     NSArray *posts = [[NSArray alloc] initWithObjects:inPost, nil];
     
     [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
@@ -1421,7 +1491,7 @@ const float TOP_OFF_SET = -64.0;
     //Add the pending new image post to the GLPLiveGroupPostManager.
     [[GLPLiveGroupPostManager sharedInstance] addImagePost:inPost withGroupRemoteKey:_group.remoteKey];
     
-//    self.isLoading = NO;
+    self.isLoading = NO;
     
     //Bring the fake navigation bar to from because is hidden by new cell.
     //    [self.tableView bringSubviewToFront:self.reNavBar];
@@ -1436,12 +1506,18 @@ const float TOP_OFF_SET = -64.0;
     
     //    GLPPost *post = (self.posts.count > 0) ? self.posts[0] : nil;
     
+    if(self.posts == nil)
+    {
+        self.posts = [[NSMutableArray alloc] init];
+    }
+    
     NSArray *posts = [[NSArray alloc] initWithObjects:post, nil];
     
     [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
     
     [self updateTableViewWithNewPostsAndScrollToTop:posts.count];
     
+    [self showOrHidePostsEmptyView];
     
     self.isLoading = NO;
 }
@@ -1473,27 +1549,6 @@ const float TOP_OFF_SET = -64.0;
     
 }
 
-#pragma mark - FDTakeController delegate
-
-- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)dictionary
-{
-    _groupImage = photo;
-    
-    //Set directly the new user's profile image.
-//    self.userImage = photo;
-//    
-    [self refreshCellViewWithIndex:0];
-    
-    
-    //Communicate with server to change the image.
-//    GroupUploaderManager *uploader = [[GroupUploaderManager alloc] init];
-//    
-//    [uploader changeGroupImageWithImage:_groupImage withGroup:_group];
-    
-    [[GroupOperationManager sharedInstance] changeGroupImageWithImage:_groupImage withGroup:_group];
-    
-}
-
 #pragma mark - ImageSelectorViewControllerDelegate & GLPGroupSettingsViewControllerDelegate
 
 /**
@@ -1503,7 +1558,7 @@ const float TOP_OFF_SET = -64.0;
 {
     
     //If there is already an image uploading then remove it and continue with the rest of procedure.
-    [[GLPLiveGroupManager sharedInstance] finishUploadingNewImageToGroup:_group];
+    [[GLPLiveGroupManager sharedInstance] clearUploadingNewImageToGroup:_group];
     
     [self removeCurrentImageProgressView];
     
@@ -1546,7 +1601,7 @@ const float TOP_OFF_SET = -64.0;
 
 //-(void)viewPostImage:(UIImage*)postImage
 //{
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
 //    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
 //    vc.image = postImage;
 //    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
@@ -1601,18 +1656,29 @@ const float TOP_OFF_SET = -64.0;
 {
     if(buttonType == kButtonRight)
     {
-        //Navigate to members view controller.
-        [self performSegueWithIdentifier:@"view members" sender:self];
-        
+        [self navigateToMessenger];
     }
     else if(buttonType == kButtonLeft)
     {
         [self.tableView reloadData];
     }
-    else if (buttonType == kButtonMiddle)
+}
+
+- (void)navigateToMessenger
+{
+    DDLogDebug(@"GroupViewController : Navigate to messenger %ld", (long)_group.conversationRemoteKey);
+    GLPConversation *conversation = [[GLPLiveGroupConversationsManager sharedInstance] findByRemoteKey:_group.conversationRemoteKey];
+    
+    if(!conversation)
     {
-        DDLogDebug(@"Messages selected!");
+        _selectedConversation = [[GLPConversation alloc] initFromGroup:_group.remoteKey withRemoteKey:_group.conversationRemoteKey];
     }
+    else
+    {
+        _selectedConversation = conversation;
+    }
+    
+    [self performSegueWithIdentifier:@"view conversation" sender:self];
 }
 
 #pragma mark - GLPPublicGroupPopUpViewControllerDelegate
@@ -1706,7 +1772,7 @@ const float TOP_OFF_SET = -64.0;
 
 -(void)viewPostImage:(UIImage*)postImage
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
     viewImage.image = postImage;
     viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
@@ -1726,7 +1792,7 @@ const float TOP_OFF_SET = -64.0;
     _selectedPost = notification.userInfo[@"post"];
     
     //Show the pop up view.
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
@@ -1742,7 +1808,7 @@ const float TOP_OFF_SET = -64.0;
 - (void)showAfterJoiningPopUpView
 {
     //Show the pop up view.
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPPublicGroupPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPublicGroupPopUpViewController"];
     
     [cvc setDelegate:self];
@@ -1841,9 +1907,6 @@ const float TOP_OFF_SET = -64.0;
     if(self.posts.count == 0)
     {
         float yPosition = [DescriptionSegmentGroupCell getCellHeightWithGroup:_group] ;
-        
-        DDLogDebug(@"yPostion group empty view %f", yPosition);
-
         [[GLPEmptyViewManager sharedInstance] addEmptyGroupPostViewWithView:self.tableView andStartingPosition:yPosition];
     }
     else
@@ -1896,7 +1959,7 @@ const float TOP_OFF_SET = -64.0;
 
 -(void)showImage
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
     viewImage.image = _groupImage;
     viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
@@ -1921,7 +1984,7 @@ const float TOP_OFF_SET = -64.0;
         return;
     }
 
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
 //    IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
 //    newPostVC.group = _group;
 //    [newPostVC setDelegate:self];
@@ -1930,7 +1993,7 @@ const float TOP_OFF_SET = -64.0;
 //    [self presentViewController:navigationController animated:YES completion:nil];
     
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
     newPostVC.groupPost = YES;
     newPostVC.group = _group;
@@ -1941,7 +2004,7 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)showSettings:(id)sender
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPGroupSettingsViewController *groupSettingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"GLPGroupSettingsViewController"];
     groupSettingsViewController.group = _group;
     groupSettingsViewController.delegate = self;
@@ -1984,14 +2047,18 @@ const float TOP_OFF_SET = -64.0;
         
 //        profileViewController.selectedUserId = self.selectedUserId;
     }
-    else if ([segue.identifier isEqualToString:@"view members"])
+    else if ([segue.identifier isEqualToString:@"view conversation"])
     {
-        MembersViewController *mvc = segue.destinationViewController;
-        
-        mvc.group = _group;
+        GLPConversationViewController *cvc = segue.destinationViewController;
+        cvc.conversation = _selectedConversation;
+        cvc.comesFromPN = _fromPushNotificationWithNewMessage;
+        cvc.hidesBottomBarWhenPushed = YES;
+        _fromPushNotificationWithNewMessage = NO;
     }
     else if ([segue.identifier isEqualToString:@"show location"])
     {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+
         GLPShowLocationViewController *showLocationVC = segue.destinationViewController;
         
         showLocationVC.location = _selectedLocation;

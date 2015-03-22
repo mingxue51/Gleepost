@@ -63,10 +63,11 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)getPostsAfter:(GLPPost *)post withCategoryTag:(NSString*)tag callback:(void (^)(BOOL success, NSArray *posts))callbackBlock;
 -(void)getEventPostsAfterDate:(NSDate*)date withCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock;
 - (void)getAttendingEventsForUserWithRemoteKey:(NSInteger)userRemoteKey callback:(void (^) (BOOL success, NSArray *posts))callback;
+- (void)getAttendingEventsAfter:(GLPPost *)post withUserRemoteKey:(NSInteger)userRemoteKey callback:(void (^)(BOOL success, NSArray *posts))callbackBlock;
 - (void)createPost:(GLPPost *)post callbackBlock:(void (^)(BOOL success, int remoteKey))callbackBlock;
 - (void)editPost:(GLPPost *)editedPost callbackBlock:(void (^)(BOOL success, GLPPost *updatedPost))callbackBlock;
 -(void)getPostWithRemoteKey:(NSInteger)remoteKey withCallbackBlock:(void (^) (BOOL success, GLPPost *post))callbackBlock;
--(void)userPostsWithRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL sucess, NSArray *posts))callbackBlock;
+-(void)loadUserPostsAfter:(GLPPost *)post withRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock;
 -(void)deletePostWithRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock;
 - (void)reportPostWithRemoteKey:(NSInteger)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock;
 - (void)loadAttendeesWithPostRemoteKey:(NSInteger)postRemoteKey callback:(void (^)(NSArray *users, BOOL success))callback;
@@ -74,10 +75,7 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock;
 - (void)createComment:(GLPComment *)comment callbackBlock:(void (^)(BOOL success))callbackBlock;
 
--(void)userAttendingLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *postsIds))callbackBlock;
 -(void)attendEvent:(BOOL)attend withPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success, NSInteger popularity))callbackBlock;
-
-
 
 - (void)getConversationsFilterByLive:(BOOL)live withCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock;
 - (void)getConversationForRemoteKey:(NSInteger)remoteKey withCallback:(void (^)(BOOL success, GLPConversation *conversation))callback;
@@ -139,6 +137,7 @@ extern NSString * const kWebserviceBaseUrl;
 
 -(void)uploadImage:(NSData*)image ForUserRemoteKey:(int)userRemoteKey callbackBlock: (void (^)(BOOL success, NSString *response)) callbackBlock;
 -(void)uploadImage:(NSData *)imageData callback:(void (^)(BOOL success, NSString *imageUrl))callback;
+-(void)uploadGroupImage:(NSData *)imageData withTimestamp:(NSDate *)timestamp callback:(void (^)(BOOL success, NSString *imageUrl))callback;
 
 - (void)uploadImage:(NSData *)imageData forGroupWithRemoteKey:(NSInteger)groupRemoteKey callback:(void (^)(BOOL success, NSString *imageUrl))callback;
 
@@ -157,7 +156,7 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)getApprovalStatusCallbackBlock:(void (^) (BOOL success, NSInteger level))callbackBlock;
 
 // notifications
--(void)getNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
+-(void)getUnreadNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
 - (void)getAllNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
 -(void)synchronousGetNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback;
 
@@ -179,8 +178,8 @@ extern NSString * const kWebserviceBaseUrl;
 
 // groups
 
-- (void)addUsers:(NSArray *)users toGroup:(GLPGroup *)group callback:(void (^)(BOOL success))callback;
-- (void)joinPublicGroup:(GLPGroup *)group callback:(void (^) (BOOL success))callback;
+- (void)addUsers:(NSArray *)users toGroup:(GLPGroup *)group callback:(void (^)(BOOL success, GLPGroup *updatedGroup))callback;
+- (void)joinPublicGroup:(GLPGroup *)group callback:(void (^) (BOOL success, GLPGroup *updatedGroup))callback;
 - (void)searchGroupsWithName:(NSString *)groupName callback:(void (^) (BOOL success, NSArray *groups))callback;
 - (void)searchGroupsWithUsersRemoteKey:(NSInteger)usersRemoteKey callback:(void (^) (BOOL success, NSArray *groups))callback;
 

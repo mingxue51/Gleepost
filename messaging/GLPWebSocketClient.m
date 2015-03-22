@@ -86,14 +86,24 @@ static GLPWebSocketClient *instance = nil;
     _webSocket = nil;
 }
 
+- (void)sendMessageWithJson:(NSData *)data
+{
+    if(_webSocket.readyState == SR_CLOSING || _webSocket.readyState == SR_CLOSED || _webSocket.readyState == SR_CONNECTING)
+    {
+        DDLogInfo(@"Send message via web socket cannot be completed because the web socket is in closing state or closed, abort");
+        return;
+    }
+    
+    [_webSocket send:data];
+}
+
+# pragma mark - Web socket delegate
+
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)response
 {
     DDLogInfo(@"Web socket received response: %@", response);
     [[GLPMessageProcessor sharedInstance] processWebSocketMessage:response];
 }
-
-
-# pragma mark - Web socket delegate
 
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket
 {
@@ -104,13 +114,13 @@ static GLPWebSocketClient *instance = nil;
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error
 {
     NSLog(@"Web socket did fail with error: %@", error);
-    [[GLPNetworkManager sharedInstance] webSocketDidFailOrClose];
+    [[GLPNetworkManager sharedInstance] webSocketDidFail];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean
 {
     NSLog(@"Web socket did close with code: %d, reason: %@, was clean: %d", code, reason, wasClean);
-    [[GLPNetworkManager sharedInstance] webSocketDidFailOrClose];
+    [[GLPNetworkManager sharedInstance] webSocketDidClose];
 }
 
 

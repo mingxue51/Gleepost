@@ -20,6 +20,7 @@
 #import "NewGroupMessageViewController.h"
 #import "GLPEmptyViewManager.h"
 #import "GLPThemeManager.h"
+#import "WebClientHelper.h"
 
 @interface MessengerViewController ()
 
@@ -43,8 +44,7 @@
 
 @property (strong, nonatomic) UITapGestureRecognizer *tap;
 
-// reload conversations when user comes back from chat view, in order to update last message and last update
-@property (assign, nonatomic) BOOL needsReloadConversations;
+
 @property (strong, nonatomic) UIActivityIndicatorView *activityIndicatorView;
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
 @property (strong, nonatomic) UITabBarItem *messagesTabbarItem;
@@ -71,6 +71,8 @@
     [self configureGestures];
     
     [self addNavigationButtons];
+    
+    [self configureViewDidLoadNotifications];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -94,15 +96,14 @@
     [AppearanceHelper setSelectedColourForTabbarItem:self.messagesTabbarItem withColour:[AppearanceHelper redGleepostColour]];
     
     
-    if(self.needsReloadConversations) {
+//    if(self.needsReloadConversations) {
         [self reloadConversations];
-    }
+//    }
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
@@ -110,18 +111,14 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     // reload the local conversations next time the VC appears
-    self.needsReloadConversations = YES;
-    
+//    self.needsReloadConversations = YES;
     [super viewDidDisappear:animated];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
-    
     [AppearanceHelper setUnselectedColourForTabbarItem:self.messagesTabbarItem];
-    
     [super viewWillDisappear:animated];
 }
 
@@ -167,6 +164,9 @@
 //    
 //    [_segmentView addSubview:view];
     
+    //We are doing that to let the GLPSearchBar contrains applied. Also the Autoresized Subviews Attributes
+    //has disabled.
+    [_searchBarView setAutoresizingMask:UIViewAutoresizingNone];
     
     NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPSearchBar" owner:self options:nil];
     
@@ -180,7 +180,6 @@
     _glpSearchBar = view;
     
     [_searchBarView addSubview:view];
-    
 }
 
 - (void)initialiseObjects
@@ -190,7 +189,7 @@
     
     // various control init
     self.loadingCellStatus = kGLPLoadingCellStatusLoading;
-    self.needsReloadConversations = NO;
+//    self.needsReloadConversations = NO;
     
 //    _refreshControl = [[UIRefreshControl alloc] init];
 //    [_refreshControl addTarget:self action:@selector(reloadConversations) forControlEvents:UIControlEventValueChanged];
@@ -200,9 +199,19 @@
 
 - (void)configureNotifications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationSyncFromNotification:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationsSyncFromNotification:) name:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
+}
+
+- (void)configureViewDidLoadNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeDidLoadNotifications) name:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationSyncFromNotification:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
+}
+
+- (void)removeDidLoadNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:nil];
 }
 
 - (void)configureTabbar
@@ -238,7 +247,7 @@
 
 - (void)viewNewMessageView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     NewGroupMessageViewController *newGroupMessageVC = [storyboard instantiateViewControllerWithIdentifier:@"NewGroupMessageViewController"];
 //    [newPostVC setDelegate:self];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newGroupMessageVC];
@@ -275,12 +284,14 @@
         FLog(@"Delete conversation with index path: %d", indexPath.row);
         
         GLPConversation *conversationToBeDeleted = _conversations[indexPath.row];
-        
+        [self deleteConversationFromTableViewWithIndexPath:indexPath];
+
         [[GLPLiveConversationsManager sharedInstance] deleteConversation:conversationToBeDeleted withCallbackBlock:^(BOOL success) {
             
-            if(success)
+            if(!success)
             {
-                [self deleteConversationFromTableViewWithIndexPath:indexPath];
+                [WebClientHelper showFailedToDeleteConversationError];
+                [self reloadConversations];
             }
         }];
     }
@@ -529,8 +540,7 @@
 
 - (void)removeCellWithIndexPath:(NSIndexPath *)indexPathRow
 {
-        [self.tableView deleteRowsAtIndexPaths:@[indexPathRow] withRowAnimation:UITableViewRowAnimationLeft];
-
+    [self.tableView deleteRowsAtIndexPaths:@[indexPathRow] withRowAnimation:UITableViewRowAnimationLeft];
 }
 
 - (void)deleteConversationFromTableViewWithIndexPath:(NSIndexPath *)indexPath

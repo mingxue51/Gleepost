@@ -5,6 +5,7 @@
 //  Created by Σιλουανός on 28/11/13.
 //  Copyright (c) 2013 Gleepost. All rights reserved.
 //
+//  This class is deprecated. Should not be used anymore.
 
 #import "GLPTheme.h"
 #import "UIColor+GLPAdditions.h"

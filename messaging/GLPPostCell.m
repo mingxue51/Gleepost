@@ -43,15 +43,15 @@
 
 @implementation GLPPostCell
 
-const float IMAGE_CELL_HEIGHT = 386;        //393
-const float VIDEO_CELL_HEIGHT = 510;        //498
-const float TEXT_CELL_HEIGHT = 200;
+const float IMAGE_CELL_HEIGHT = 430;        //386
+const float VIDEO_CELL_HEIGHT = 553;        //527
+const float TEXT_CELL_HEIGHT = 233;         //225
 const float IMAGE_CELL_ONE_LINE_HEIGHT = IMAGE_CELL_HEIGHT - 15;
 const float VIDEO_CELL_ONE_LINE_HEIGHT = VIDEO_CELL_HEIGHT - 21;
 const float TEXT_CELL_ONE_LINE_HEIGHT = TEXT_CELL_HEIGHT - 15;
 const float FIXED_SIZE_OF_NON_EVENT_VIDEO_CELL = VIDEO_CELL_HEIGHT - 75; //65
-const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 60; //70
-const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 87;
+const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 67; //70
+const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 80;
 const float POST_CONTENT_LABEL_MAX_WIDTH = 270;
 const float FIVE_LINES_LIMIT = 101.0;
 const float ONE_LINE_LIMIT = 18.0;
@@ -78,7 +78,7 @@ const float ONE_LINE_LIMIT = 18.0;
 #pragma mark - Modifiers
 
 -(void)setPost:(GLPPost *)post withPostIndexPath:(NSIndexPath *)indexPath
-{
+{    
     _post = post;
     _postIndexPath = indexPath;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -226,9 +226,21 @@ const float ONE_LINE_LIMIT = 18.0;
 
 -(void)navigateToProfile:(id)sender
 {
-    UITapGestureRecognizer *incomingImage = (UITapGestureRecognizer*) sender;
+    NSInteger userRemoteKey = 0;
 
-    NSInteger userRemoteKey = incomingImage.view.tag;
+    if([sender isKindOfClass:[UIView class]])
+    {
+        UIView *incomingView = (UIView *)sender;
+        
+        userRemoteKey = incomingView.tag;
+        
+    }
+    else
+    {
+        UITapGestureRecognizer *incomingView = (UITapGestureRecognizer*) sender;
+        
+        userRemoteKey = incomingView.view.tag;
+    }
     
     [self.delegate elementTouchedWithRemoteKey:userRemoteKey];
 }

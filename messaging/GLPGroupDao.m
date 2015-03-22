@@ -49,8 +49,10 @@
 + (NSArray *)findRemoteGroupsdb:(FMDatabase *)db
 {
     NSMutableArray *groups = [[NSMutableArray alloc] init];
-    
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from groups where send_status = %d", kSendStatusSent];
+
+//    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from groups where send_status = %d order by remoteKey asc", kSendStatusSent];
+
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from groups where send_status = %d order by last_activity desc", kSendStatusSent];
     
     while ([resultSet next])
     {
@@ -59,7 +61,6 @@
         [groups addObject: currentGroup];
         
     }
-    
     return groups;
 }
 
@@ -89,16 +90,18 @@
     return groups;
 }
 
-+(void)saveIfNotExist:(GLPGroup *)entity
++ (NSInteger)saveIfNotExist:(GLPGroup *)entity
 {
+    __block NSInteger key = 0;
+    
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        
-        [GLPGroupDao saveIfNotExist:entity db:db];
-        
+        key = [GLPGroupDao saveIfNotExist:entity db:db];
     }];
+    
+    return key;
 }
 
-+(int)saveIfNotExist:(GLPGroup *)entity db:(FMDatabase *)db
++ (NSInteger)saveIfNotExist:(GLPGroup *)entity db:(FMDatabase *)db
 {
     GLPGroup *group = [GLPGroupDao findByRemoteKey:entity.remoteKey db:db];
     
@@ -113,41 +116,40 @@
     return group.key;
 }
 
-+(void)save:(GLPGroup *)group
-{
-    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        
-        [GLPGroupDao save:group inDb:db];
-        
-    }];
-}
-
 + (void)save:(GLPGroup *)entity inDb:(FMDatabase *)db
 {
+    int date = [entity.lastActivity timeIntervalSince1970];
+    
     if(entity.remoteKey == 0)
     {
-        [db executeUpdateWithFormat:@"insert into groups (title, description, image_url, send_status, date, user_remote_key, loggedin_user_role_key, privacy) values(%@, %@, %@, %d, %d, %d, %d, %d)",
+        [db executeUpdateWithFormat:@"insert into groups (title, description, image_url, send_status, date, last_activity, user_remote_key, loggedin_user_role_key, conversation_remote_key, privacy, members_count) values(%@, %@, %@, %d, %d, %d, %d, %d, %d, %d, %d)",
          entity.name,
          entity.groupDescription,
          entity.groupImageUrl,
          entity.sendStatus,
          0,
+         date,
          entity.author.remoteKey,
          entity.loggedInUser.roleLevel,
-         entity.privacy];
+         entity.conversationRemoteKey,
+         entity.privacy,
+         entity.membersCount];
     }
     else
     {
-        [db executeUpdateWithFormat:@"insert into groups (remoteKey, title, description, image_url, send_status, date, user_remote_key, loggedin_user_role_key, privacy) values(%d, %@, %@, %@, %d, %d, %d, %d, %d)",
+        [db executeUpdateWithFormat:@"insert into groups (remoteKey, title, description, image_url, send_status, date, last_activity, user_remote_key, loggedin_user_role_key, conversation_remote_key, privacy, members_count) values(%d, %@, %@, %@, %d, %d, %d, %d, %d, %d, %d, %d)",
          entity.remoteKey,
          entity.name,
          entity.groupDescription,
          entity.groupImageUrl,
          entity.sendStatus,
          0,
+         date,
          entity.author.remoteKey,
          entity.loggedInUser.roleLevel,
-         entity.privacy];
+         entity.conversationRemoteKey,
+         entity.privacy,
+         entity.membersCount];
     }
     
     entity.key = [db lastInsertRowId];
@@ -155,7 +157,7 @@
 
 +(void)remove:(GLPGroup *)group
 {
-    NSAssert(group.remoteKey != 0, @"Key must not be 0.");
+    NSAssert(group.remoteKey != 0, @"Remote key must not be 0.");
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
@@ -169,7 +171,7 @@
     
     [GLPPostDao deletePostsWithGroupRemoteKey:group.remoteKey db:db];
     
-    DDLogInfo(@"Group with key %d removed status %d.", group.remoteKey, removed);
+    DDLogInfo(@"Group with key %ld removed status %d.", (long)group.remoteKey, removed);
 }
 
 +(void)updateGroupSendingData:(GLPGroup *)entity db:(FMDatabase *)db
@@ -224,9 +226,7 @@
     NSAssert(entity.remoteKey != 0, @"Update group entity without remote key");
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-
         [self updateGroupWithRemoteKey:entity db:db];
-        
     }];
 
 }
@@ -235,13 +235,12 @@
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
-        [self cleanTable:db];
+//        [self cleanTable:db];
         
         for(GLPGroup *group in groups)
         {
             group.sendStatus = kSendStatusSent;
-            
-            [GLPGroupDao save:group inDb:db];
+            [GLPGroupDao saveIfNotExist:group db:db];
         }
         
     }];

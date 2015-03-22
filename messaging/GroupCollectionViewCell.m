@@ -15,6 +15,8 @@
 #import "UIView+GLPDesign.h"
 #import "GLPLiveGroupManager.h"
 #import "GLPImageHelper.h"
+#import "GLPMemberDao.h"
+#import "GLPGPPostImageLoader.h"
 
 @interface GroupCollectionViewCell ()
 
@@ -119,7 +121,32 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
     }
     else
     {
-        [_groupImage sd_setImageWithURL:[NSURL URLWithString:_groupData.groupImageUrl] placeholderImage:[GLPImageHelper placeholderGroupImage] options:SDWebImageRetryFailed];
+        [_groupImage sd_setImageWithURL:[NSURL URLWithString:_groupData.groupImageUrl] placeholderImage:[GLPImageHelper placeholderGroupImage] options:SDWebImageLowPriority];
+        
+//        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//            
+//            [_groupImage setImage:[GLPImageHelper placeholderGroupImage]];
+//            
+//            [[GLPGPPostImageLoader sharedInstance] findImageWithUrl:[NSURL URLWithString:_groupData.groupImageUrl] callback:^(UIImage *image, BOOL found) {
+//                
+//                if(found)
+//                {
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        [_groupImage setImage:image];
+//                        
+//                    });
+//                }
+//                else
+//                {
+//                    dispatch_async(dispatch_get_main_queue(), ^{
+//                        [_groupImage setImage:[GLPImageHelper placeholderGroupImage]];
+//                    });
+//                }
+//                
+//            }];
+//        });
+
+        
     }
 }
 
@@ -266,6 +293,7 @@ const CGSize GROUP_COLLECTION_CELL_DIMENSIONS = {145.0, 145.0};
         if(success)
         {
             DDLogInfo(@"User not in group: %@ anymore", _groupName.text);
+            [GLPMemberDao removeMember:_groupData.loggedInUser withGroupRemoteKey:_groupData.remoteKey];
             [_delegate groupDeletedWithData:_groupData];
         }
         else

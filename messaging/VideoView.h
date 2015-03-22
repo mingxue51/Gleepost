@@ -17,5 +17,6 @@
 - (void)setUpVideoViewWithPost:(GLPPost *)post;
 - (void)registerNotifications;
 - (void)deregisterNotifications;
+- (BOOL)isVideoLoading;
 
 @end

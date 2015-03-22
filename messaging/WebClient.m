@@ -602,7 +602,7 @@ static WebClient *instance = nil;
     [self putPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         GLPPost *newEditedPost = [RemoteParser parsePostFromJson:responseObject];
-        newEditedPost.pending = YES;
+        newEditedPost.pendingInEditMode = YES;
         
         DDLogDebug(@"WebClient : after edit post %@, actual post %@", responseObject, newEditedPost);
                 
@@ -619,7 +619,7 @@ static WebClient *instance = nil;
 -(void)getPostWithRemoteKey:(NSInteger)remoteKey withCallbackBlock:(void (^) (BOOL success, GLPPost *post))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"posts/%d/", (int)remoteKey];
-    
+
     
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -667,6 +667,28 @@ static WebClient *instance = nil;
        
         callback(NO, nil);
         
+    }];
+}
+
+- (void)getAttendingEventsAfter:(GLPPost *)post withUserRemoteKey:(NSInteger)userRemoteKey callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
+{
+    NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
+    
+    if(post)
+    {
+        params[@"before"] = [NSNumber numberWithInt:post.remoteKey];
+    }
+    
+    NSString *path = [NSString stringWithFormat:@"user/%d/attending", userRemoteKey];
+    
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *attendingPosts = [RemoteParser parsePostsFromJson:responseObject];
+        callbackBlock(YES, attendingPosts);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
     }];
 }
 
@@ -720,12 +742,19 @@ static WebClient *instance = nil;
     }];
 }
 
--(void)userPostsWithRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
+-(void)loadUserPostsAfter:(GLPPost *)post withRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
 {
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:self.sessionManager.authParameters];
+    
+    if(post)
+    {
+        [params setObject:@(post.remoteKey) forKey:@"before"];
+    }
+    
     
     NSString *path = [NSString stringWithFormat:@"user/%d/posts",remoteKey];
     
-    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSArray *posts = [RemoteParser parsePostsFromJson:responseObject];
         callbackBlock(YES, posts);
@@ -792,22 +821,6 @@ static WebClient *instance = nil;
 }
 
 #pragma mark - Campus Live
-
--(void)userAttendingLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *postsIds))callbackBlock
-{
-    NSString *path = @"profile/attending";
-    
-    [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSArray *posts = [RemoteParser parseLivePostsIds:responseObject];
-        callbackBlock(YES, posts);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        callbackBlock(NO, nil);
-        
-    }];
-}
 
 -(void)attendEvent:(BOOL)attend withPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success, NSInteger popularity))callbackBlock
 {
@@ -1007,16 +1020,13 @@ static WebClient *instance = nil;
     }
     
     
-    
     [params setObject:[group privacyToString] forKey:@"privacy"];
     
-    
-    DDLogDebug(@"Group to be created: %@", group);
     
     [self postPath:@"networks" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         GLPGroup *group = [RemoteParser parseGroupFromJson:responseObject];
-        
+        group.membersCount = 1;
         callbackBlock(YES, group);
         
         
@@ -1028,10 +1038,10 @@ static WebClient *instance = nil;
     }];
 }
 
--(void)quitFromAGroupWithRemoteKey:(int)groupRemoteKey callback:(void (^) (BOOL success))callbackBlock
+-(void)quitFromAGroupWithRemoteKey:(NSInteger)groupRemoteKey callback:(void (^) (BOOL success))callbackBlock
 {
     
-    NSString *path = [NSString stringWithFormat:@"profile/networks/%d", groupRemoteKey];
+    NSString *path = [NSString stringWithFormat:@"profile/networks/%ld", (long)groupRemoteKey];
     
     
     
@@ -1069,7 +1079,7 @@ static WebClient *instance = nil;
     }];
 }
 
-- (void)addUsers:(NSArray *)users toGroup:(GLPGroup *)group callback:(void (^)(BOOL success))callback
+- (void)addUsers:(NSArray *)users toGroup:(GLPGroup *)group callback:(void (^)(BOOL success, GLPGroup *updatedGroup))callback
 {
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
     params[@"users"] = [users componentsJoinedByString:@","];
@@ -1077,13 +1087,16 @@ static WebClient *instance = nil;
     NSString *path = [NSString stringWithFormat:@"networks/%d/users", group.remoteKey];
     
     [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        callback(YES);
+        DDLogDebug(@"Webclient : addUsers %@", responseObject);
+        
+        GLPGroup *updatedGroup = [RemoteParser parseGroupFromJson:responseObject];
+        callback(YES, updatedGroup);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        callback(NO);
+        callback(NO, nil);
     }];
 }
 
-- (void)joinPublicGroup:(GLPGroup *)group callback:(void (^) (BOOL success))callback
+- (void)joinPublicGroup:(GLPGroup *)group callback:(void (^) (BOOL success, GLPGroup *updatedGroup))callback
 {
 //    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
 
@@ -1201,7 +1214,7 @@ static WebClient *instance = nil;
             callback(NO, nil);
             return;
         }
-        
+                
         GLPConversation *conversation = [RemoteParser parseConversationFromJson:json];
         callback(YES, conversation);
     }];
@@ -1965,6 +1978,40 @@ static WebClient *instance = nil;
     [self enqueueHTTPRequestOperation:operation];
 }
 
+- (void)uploadGroupImage:(NSData *)imageData withTimestamp:(NSDate *)timestamp callback:(void (^)(BOOL success, NSString *imageUrl))callback
+{
+    
+    NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"upload" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        
+        [formData appendPartWithFileData:imageData name:@"image" fileName:[NSString stringWithFormat:@"user_id_%d_image.png", self.sessionManager.user.remoteKey] mimeType:@"image/png"];
+    }];
+    
+    [request setTimeoutInterval:300];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        NSLog(@"Sentt %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+        NSInteger groupKey = [[GLPLiveGroupManager sharedInstance] getPendingGroupKeyWithTimestamp:timestamp];
+        NSString *notificationName = [NSString stringWithFormat:@"%ld_%@", (long)groupKey, GLPNOTIFICATION_NEW_GROUP_IMAGE_PROGRESS];
+        DDLogDebug(@"WebClient : notification name %@", notificationName);
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:@{@"uploaded_progress" : [NSNumber numberWithFloat:(float)totalBytesWritten/(float)totalBytesExpectedToWrite]}];
+        
+    }];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"upload image response %@", responseObject);
+        
+        NSString *response = [RemoteParser parseImageUrl:(NSDictionary*)operation.responseString];
+        callback(YES, response);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
+    
+    [self enqueueHTTPRequestOperation:operation];
+}
+
 
 -(void)uploadImage:(NSData*)image ForUserRemoteKey:(int)userRemoteKey callbackBlock: (void (^)(BOOL success, NSString *response)) callbackBlock
 {
@@ -2295,7 +2342,7 @@ static WebClient *instance = nil;
 
 #pragma mark - Notifications
 
--(void)getNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
+-(void)getUnreadNotificationsWithCallback:(void (^)(BOOL success, NSArray *notifications))callback
 {
     [self getPath:@"notifications" parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *items = [RemoteParser parseNotificationsFromJson:responseObject];

@@ -111,7 +111,8 @@ static DatabaseManager *instance = nil;
              participants_keys text, \
              unread integer, \
              isGroup integer, \
-             isLive integer);"];
+             isLive integer, \
+             group_remote_key);"];
             
             // conversation reads
             // In that table we store who participants read up to which message.
@@ -227,6 +228,7 @@ static DatabaseManager *instance = nil;
              seen integer, \
              date integer, \
              type integer, \
+             preview_message text, \
              post_remote_key integer, \
              user_remote_key integer, \
              group_remote_key integer);"];
@@ -243,7 +245,6 @@ static DatabaseManager *instance = nil;
              image_url text);"]; //Image url is for future use.
             
             // groups
-            // there is no need to save user_remote_key (the creator) for now.
             [db executeUpdate:@"create table groups ( \
              key integer primary key autoincrement, \
              remoteKey integer unique, \
@@ -252,9 +253,12 @@ static DatabaseManager *instance = nil;
              image_url text, \
              send_status integer, \
              date integer, \
+             last_activity integer, \
              user_remote_key integer, \
              loggedin_user_role_key integer, \
-             privacy integer);"];
+             conversation_remote_key integer, \
+             privacy integer, \
+             members_count integer);"];
             
             // group members
             [db executeUpdate:@"create table members ( \

@@ -16,12 +16,12 @@
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import <QuartzCore/QuartzCore.h>
 #import "ShapeFormatterHelper.h"
+#import "GLPImageHelper.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface TopTableViewCell ()
 
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageView;
-
-@property (weak, nonatomic) IBOutlet UILabel *titleLbl;
 
 @property (weak, nonatomic) IBOutlet UILabel *subtitleLbl;
 
@@ -33,12 +33,14 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *rsvpsLbl;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainImageViewWidth;
+
+
 @end
 
 @implementation TopTableViewCell
 
 @synthesize mainImageView = _mainImageView;
-@synthesize titleLbl = _titleLbl;
 @synthesize subtitleLbl = _subtitleLbl;
 @synthesize smallSubtitleLbl = _smallSubtitleLbl;
 
@@ -61,17 +63,16 @@
 #pragma mark - Modifiers
 
 - (void)setImageWithUrl:(NSString *)url
-{
+{    
     if([url isEqualToString:@""])
     {
         //Set default image.
-        [_mainImageView setImage:[UIImage imageNamed:@"default_user_image2"]];
+        [_mainImageView setImage:[GLPImageHelper placeholderUserImage]];
     }
     else
     {
-        
         //Fetch the image from the server and add it to the image view.
-        [_mainImageView setImageWithURL:[NSURL URLWithString:url] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [_mainImageView sd_setImageWithURL:[NSURL URLWithString:url] placeholderImage:[GLPImageHelper placeholderUserImage]];
     }
 }
 
@@ -83,10 +84,10 @@
     }
 }
 
-- (void)setTitleWithString:(NSString *)title
-{
-    [_titleLbl setText:title];
-}
+//- (void)setTitleWithString:(NSString *)title
+//{
+//    [_titleLbl setText:title];
+//}
 
 - (void)setSubtitleWithString:(NSString *)subtitle
 {
@@ -119,7 +120,7 @@
 {
     if(_mainImageView.tag == 0)
     {
-        [ShapeFormatterHelper setRoundedView:_mainImageView toDiameter:_mainImageView.frame.size.height];
+        [ShapeFormatterHelper setRoundedView:_mainImageView toDiameter:_mainImageViewWidth.multiplier * [GLPiOSSupportHelper screenWidth]];
     }
 //    else
 //    {

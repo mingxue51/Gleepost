@@ -11,5 +11,6 @@
 @interface GLPTabBarController : UITabBarController <UITabBarControllerDelegate>
 
 - (void)messagesBadgeUnknownNumber;
+- (void)resetGroupsBadge;
 
 @end

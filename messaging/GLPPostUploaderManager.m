@@ -17,6 +17,7 @@
 #import "GLPVideoPostCWProgressManager.h"
 #import "GLPLiveGroupPostManager.h"
 #import "GLPPendingPostsManager.h"
+#import "GLPApprovalManager.h"
 
 @interface GLPPostUploaderManager ()
 
@@ -447,7 +448,7 @@
     {
         _uploadContentBlock = ^(GLPPost *post){
             
-            if(post.isPending)
+            if([post isPendingInEditMode])
             {
                 //Notify GLPPendingPostView and GLPPendingPostsVC after edit.
                 [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_EDITED object:nil userInfo:@{@"post_edited": post}];
@@ -463,7 +464,7 @@
     
     DDLogInfo(@"Text post uploading task started with post content: %@.",textPost.content);
     
-    if(textPost.pending)
+    if(textPost.pendingInEditMode)
     {
         //There is no need to send nsnotification once the editing started. There is no need for now.
         
@@ -524,7 +525,7 @@
     
     _uploadImageContentBlock = ^(GLPPost* post){
         
-        if(post.pending)
+        if(post.pendingInEditMode)
         {
             //Notify GLPPendingPostView and GLPPendingPostsVC after edit.
             [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_EDITED object:nil userInfo:@{@"post_edited": post}];
@@ -540,7 +541,7 @@
 
     NSLog(@"Post uploading task started with post content: %@ and image url: %@.",post.content, [post.imagesUrls objectAtIndex:0]);
     
-    if(post.pending)
+    if(post.pendingInEditMode)
     {
         [[WebClient sharedInstance] editPost:post callbackBlock:^(BOOL success, GLPPost *updatedPost) {
            
@@ -627,9 +628,9 @@
         [self videoPostReadyToUpload];
     };
 
-    NSLog(@"Post uploading task started with post content: %@ and video url: %@, pending %d.",post.content, post.video.url, post.pending);
+    NSLog(@"Post uploading task started with post content: %@ and video url: %@, pending %d.",post.content, post.video.url, post.pendingInEditMode);
     
-    if(post.pending)
+    if(post.pendingInEditMode)
     {
         [[WebClient sharedInstance] editPost:post callbackBlock:^(BOOL success, GLPPost *updatedPost) {
             
@@ -714,7 +715,7 @@
     
     DDLogInfo(@"Post uploading task started with post content: %@ and video url: %@.",videoPost.content, videoPost.video.url);
     
-    if(videoPost.pending)
+    if(videoPost.pendingInEditMode)
     {
         [[WebClient sharedInstance] editPost:videoPost callbackBlock:^(BOOL success, GLPPost *editedPost) {
             
@@ -836,13 +837,21 @@
 {
     DDLogDebug(@"Group post? %@", post.group);
     
-    if(post.pending)
+    if(post.pendingInEditMode)
     {
         //Notify pending posts GLPPendingPostView and GLPPendingPostsVC after edit.
         [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_POST_EDITED object:nil userInfo:@{@"post_edited" : post}];
         
         [[GLPPendingPostsManager sharedInstance] progressFinished];
 
+        return;
+    }
+    
+    if(![[GLPApprovalManager sharedInstance] shouldPostBeVisible:post])
+    {
+        [[GLPVideoPostCWProgressManager sharedInstance] progressFinished];
+
+        DDLogDebug(@"GLPPostUploaderManager : Post should not be visible. TODO: Pop up a message to tell the user that the post is pending.");
         return;
     }
     

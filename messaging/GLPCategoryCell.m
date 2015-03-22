@@ -7,6 +7,7 @@
 //
 
 #import "GLPCategoryCell.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPCategoryCell ()
 
@@ -18,22 +19,11 @@
 @implementation GLPCategoryCell
 
 NSString * const kGLPCategoryCell = @"CategoryCell";
+CGFloat const CellMargin = 14.0;
+CGFloat const BottomPadding = 8.0;
+CGFloat const Multiplication = 0.1712; //0.1966
 
--(id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    
-    if(self)
-    {
-        
-    }
-    
-    return self;
-}
-
-
-
--(void)updateCategory:(GLPCategory*)category withImage:(UIImage*)image
+- (void)updateCategory:(GLPCategory*)category withImage:(UIImage*)image
 {
     if(category.uiSelected)
     {
@@ -47,8 +37,18 @@ NSString * const kGLPCategoryCell = @"CategoryCell";
     [self.categoryImage setImage:image];
     
     [self.categoryNameLbl setText:category.name];
+}
+
++ (CGFloat)height
+{
+//    DDLogDebug(@"GLPCategoryCell : height %f - screen width %f", ([GLPiOSSupportHelper screenWidth] - CellMargin * 2), [GLPiOSSupportHelper screenWidth]);
     
-    
+    return ([GLPiOSSupportHelper screenWidth] - CellMargin * 2) * Multiplication + BottomPadding;
+}
+
++ (CGFloat)bottomPadding
+{
+    return BottomPadding;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

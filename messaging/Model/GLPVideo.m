@@ -47,6 +47,16 @@
     return self;
 }
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    GLPVideo *video = [[self class] allocWithZone:zone];
+    video.url = [self.url copyWithZone:zone];
+    video.thumbnailUrl = [self.thumbnailUrl copyWithZone:zone];
+    video.path = [self.path copyWithZone:zone];
+    video.pendingKey = [self.pendingKey copyWithZone:zone];
+    return video;
+}
+
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"Pending key: %@, Url: %@, Thumbnail: %@", _pendingKey, _url, _thumbnailUrl];

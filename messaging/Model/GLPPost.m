@@ -11,6 +11,7 @@
 #import "DateFormatterHelper.h"
 #import "GLPLocation.h"
 #import "GLPReviewHistory.h"
+#import "GLPCategory.h"
 
 @implementation GLPPost
 
@@ -32,7 +33,8 @@
     }
     
     _sendStatus = kSendStatusLocal;
-    _pending = NO;
+    _pendingInEditMode = NO;
+    _viewsCount = 0;
     return self;
 }
 
@@ -43,7 +45,8 @@
     if(self)
     {
         self.remoteKey = remoteKey;
-        _pending = NO;
+        _pendingInEditMode = NO;
+        _viewsCount = 0;
     }
     
     return self;
@@ -93,6 +96,23 @@
     }
     
     return NO;
+}
+
+- (BOOL)isParty
+{
+    for(GLPCategory *c in self.categories)
+    {
+        if([c.tag isEqualToString:@"party"])
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (BOOL)isEvent
+{
+    return self.eventTitle != nil;
 }
 
 - (Action)pendingPostStatus
@@ -169,13 +189,43 @@
     return self.remoteKey;
 }
 
+#pragma mark - Copy
+
+-(id)copyWithZone:(NSZone *)zone
+{
+    DDLogDebug(@"GLPPost : copyWithZone %@", zone);
+    
+    GLPPost *post = [[self class] allocWithZone:zone];
+    post.likes = self.likes;
+    post.commentsCount = self.commentsCount;
+    post.content = [self.content copyWithZone:zone];
+    post.date = [self.date copyWithZone:zone];
+    post.dateEventStarts = [self.dateEventStarts copyWithZone:zone];
+    post.eventTitle = [self.eventTitle copyWithZone:zone];
+    post.author = [self.author copyWithZone:zone];
+    post.imagesUrls = [self.imagesUrls copyWithZone:zone];
+    post.reviewHistory = [self.reviewHistory copyWithZone:zone];
+    post.video = [self.video copyWithZone:zone];
+    post.location = [self.location copyWithZone:zone];
+//    post.tempImage = [self.tempImage copy:nil];
+//    post.finalImage = self.finalImage;
+    post.liked = self.liked;
+    post.sendStatus = self.sendStatus;
+    post.categories = [self.categories copyWithZone:zone];
+    post.popularity = self.popularity;
+    post.attendees = self.attendees;
+    post.attended = self.attended;
+    post.viewsCount = self.viewsCount;
+    post.pendingInEditMode = self.pendingInEditMode;
+    
+    return post;
+}
+
 -(NSString *)description
 {
 //    return [NSString stringWithFormat:@"Post id: %ld, Content: %@ Sending status: %d Date: %@, Group: %@, SendStatus %d, Event date: %@", (long)self.remoteKey, self.content, self.sendStatus, self.date, self.group, self.sendStatus, self.dateEventStarts];
     
-    return [NSString stringWithFormat:@"Post content %@, remote key %d", self.content, self.remoteKey];
+    return [NSString stringWithFormat:@"Post content %@, remote key %d Views count %d", self.content, self.remoteKey, self.viewsCount];
 }
-
-
 
 @end

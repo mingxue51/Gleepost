@@ -15,6 +15,7 @@
 #import "WebClient.h"
 #import "GLPLiveGroupManager.h"
 #import "GLPProfileLoader.h"
+#import "GLPLiveGroupConversationsManager.h"
 
 @interface GLPNetworkManager()
 
@@ -115,6 +116,8 @@ static GLPNetworkManager *instance = nil;
     
     [[GLPWebSocketClient sharedInstance] stopWebSocket];
     [[GLPLiveConversationsManager sharedInstance] markNotSynchronized];
+    [[GLPLiveGroupConversationsManager sharedInstance] markNotSynchronized];
+    
 }
 
 - (void)webSocketDidConnect
@@ -123,59 +126,50 @@ static GLPNetworkManager *instance = nil;
     [[GLPLiveConversationsManager sharedInstance] loadConversations];
     
     // init the groups list.
-    [[GLPLiveGroupManager sharedInstance] loadGroups];
+    [[GLPLiveGroupManager sharedInstance] loadInitialGroups];
     
     // load user's data.
  //   [[GLPProfileLoader sharedInstance] loadUserData];
-
     
-    // get notifications
-    __block BOOL requestsSuccess = YES;
-    __block int conversationsNumber = 0;
-    
-    UIApplication *application = [UIApplication sharedApplication];
-    if(application.applicationIconBadgeNumber > 0)
-    {
-        [GLPNotificationManager fetchNotificationsFromServerWithCallBack:^(BOOL success, NSArray *notifications) {
+    [GLPNotificationManager fetchNotificationsFromServerWithCallBack:^(BOOL success, NSArray *notifications) {
+        
+        if(success)
+        {
+            NSInteger conversationsNumber = 0;
             
-            if(success)
+            UIApplication *application = [UIApplication sharedApplication];
+            if(application.applicationIconBadgeNumber > 0)
             {
+                
                 //Check for new notifications.
                 int notificationsNumber = notifications.count;
                 
                 //Subtract the number of application badge number with number of notifications.
                 conversationsNumber = application.applicationIconBadgeNumber - notificationsNumber;
                 
-                
-                NSDictionary *args = @{@"conversationsCount":[NSNumber numberWithInt:conversationsNumber]};
+                //                NSDictionary *args = @{@"conversationsCount":[NSNumber numberWithInt:conversationsNumber]};
                 
                 //Set the number of conversations in tab bar.
-                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATION_COUNT object:nil userInfo:args];
+                //                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATION_COUNT object:nil userInfo:args];
                 
+                application.applicationIconBadgeNumber = 0;
+                DDLogInfo(@"Reset application icon badge number to 0");
             }
-        }];
-    }
-    
-    //That is removed because we are doing that by each message in conversation.
-    
-//    [[WebClient sharedInstance] markConversationsRead:^(BOOL success) {
-//        requestsSuccess = success;
-//    }];
-    
-    if(requestsSuccess) {
-        application.applicationIconBadgeNumber = 0;
-        DDLogInfo(@"Reset application icon badge number to 0");
-    }
+        }
+    }];
 }
 
-- (void)webSocketDidFailOrClose
+- (void)webSocketDidClose
 {
-    //Load local conversations.
-    [[GLPLiveConversationsManager sharedInstance] loadConversationsFromDatabase];
-    
     [self stopNetworkOperations];
 }
 
+- (void)webSocketDidFail
+{
+    //Load local conversations.
+    [[GLPLiveConversationsManager sharedInstance] loadConversationsFromDatabase];
+    [self webSocketDidClose];
+}
 
 /**
  This method should be called even the app don't know if there is network

@@ -7,20 +7,20 @@
 //
 
 #import "GLPShowUsersGroupsViewController.h"
-#import "SearchGroupCell.h"
 #import "WebClient.h"
 #import "GroupViewController.h"
 #import "UINavigationBar+Format.h"
+#import "GLPLiveGroupManager.h"
+#import "GLPGroupCell.h"
+#import "GLPPrivateGroupPopUpViewController.h"
+#import "TDPopUpAfterGoingView.h"
 
 @class GLPGroup;
 
 @interface GLPShowUsersGroupsViewController ()
 
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-
-@property (strong, nonatomic) NSArray *usersGroups;
-
 @property (strong, nonatomic) GLPGroup *selectedGroup;
+@property (strong, nonatomic) TDPopUpAfterGoingView *privateGroupPopUp;
 
 @end
 
@@ -29,24 +29,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self registerTableViewCells];
-    
+    [self configureNotifications];
     [self loadGroups];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self configureTitle];
-    
     [self configureNavigationBar];
 }
 
-- (void)registerTableViewCells
+- (void)dealloc
 {
-    [_tableView registerNib:[UINib nibWithNibName:@"SearchGroupCell" bundle:nil] forCellReuseIdentifier:@"SearchGroupCell"];
+    [self removeNotifications];
 }
 
 - (void)configureNavigationBar
@@ -54,66 +50,70 @@
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
 }
 
+- (void)initialiseObjects
+{
+    [super initialiseObjects];
+    _privateGroupPopUp = [[TDPopUpAfterGoingView alloc] init];
+}
+
 - (void)configureTitle
 {
-    self.title = [NSString stringWithFormat:@"%@'s groups", _user.name];
+    self.title = [NSString stringWithFormat:@"%@'S GROUPS", _user.name.uppercaseString];
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (void)removeNotifications
 {
-    return 1;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_USER_GROUPS_LOADED object:nil];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (void)configureNotifications
 {
-    return _usersGroups.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"SearchGroupCell";
-    
-    SearchGroupCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    [cell setGroupData:_usersGroups[indexPath.row]];
-    
-    return cell;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(groupsLoaded:) name:GLPNOTIFICATION_USER_GROUPS_LOADED object:nil];
 }
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    self.selectedGroup = _usersGroups[indexPath.row];
+    GLPGroup *selectedGroup = [super groupWithIndexPath:indexPath];
     
-    [self performSegueWithIdentifier:@"view group" sender:self];
+    if(selectedGroup.privacy == kPrivateGroup)
+    {
+        DDLogDebug(@"Group is private!");
+        
+        GLPGroupCell *cell = (GLPGroupCell *)[tableView cellForRowAtIndexPath:indexPath];
+        
+        [self showPrivatePopUpViewWithGroupImage:[cell groupImage]];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        return;
+    }
     
+    [super navigateToGroup:selectedGroup];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    GLPGroup *group = _usersGroups[indexPath.row];
-    
-    return [SearchGroupCell getCellHeightWithGroup:group];
 }
 
 #pragma mark - Client
 
 - (void)loadGroups
 {
-    [[WebClient sharedInstance] searchGroupsWithUsersRemoteKey:self.user.remoteKey callback:^(BOOL success, NSArray *groups) {
-       
-        if(success)
-        {
-            _usersGroups = groups;
-            
-            [_tableView reloadData];
-        }
-        
-    }];
+    [super startLoading];
+    
+    [[GLPLiveGroupManager sharedInstance] loadUsersGroupsWithRemoteKey:self.user.remoteKey];
+}
+
+#pragma mark - NSNotifications
+
+- (void)groupsLoaded:(NSNotification *)notification
+{
+    BOOL success = [notification.userInfo[@"success"] boolValue];
+    NSArray *groups = notification.userInfo[@"groups"];
+    
+    [super stopLoading];
+    
+    if(success)
+    {
+        [self reloadTableViewWithGroups:groups];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -121,21 +121,21 @@
     // Dispose of any resources that can be recreated.
 }
 
-
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)showPrivatePopUpViewWithGroupImage:(UIImage *)image
 {
-    if([segue.identifier isEqualToString:@"view group"])
-    {
-        GroupViewController *gvc = segue.destinationViewController;
-        
-        gvc.group = self.selectedGroup;
-    }
+    //Show the pop up view.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    GLPPrivateGroupPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPrivateGroupPopUpViewController"];
     
+    [cvc setGroupImage:image];
     
+    cvc.modalPresentationStyle = UIModalPresentationCustom;
+    
+    [cvc setTransitioningDelegate:self.privateGroupPopUp];
+    
+    [self presentViewController:cvc animated:YES completion:nil];
 }
-
 
 @end

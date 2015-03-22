@@ -195,7 +195,6 @@ static GLPVideoUploadManager *instance = nil;
             
             return;
         }
-        
 
         if(videoPosts.count > 0)
         {

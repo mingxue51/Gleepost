@@ -14,6 +14,7 @@
 #import "GLPGroupsEmptyView.h"
 #import "GLPProfilePostsEmptyView.h"
 #import "GLPGroupPostsEmptyView.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPEmptyViewManager ()
 
@@ -127,7 +128,12 @@ static GLPEmptyViewManager *instance = nil;
         return _groupsEmptyView;
     }
     
+    [view setAutoresizingMask:UIViewAutoresizingNone];
+
     _groupsEmptyView = [[[NSBundle mainBundle] loadNibNamed:@"GLPGroupsEmptyView" owner:view options:nil] objectAtIndex:0];
+    
+    CGRectSetY(_groupsEmptyView, -5.0);
+
     
     [view addSubview:_groupsEmptyView];
     
@@ -142,7 +148,12 @@ static GLPEmptyViewManager *instance = nil;
         return _messengerEmptyView;
     }
     
+    [view setAutoresizingMask:UIViewAutoresizingNone];
+
     _messengerEmptyView = [[[NSBundle mainBundle] loadNibNamed:@"GLPMessengerEmptyView" owner:view options:nil] objectAtIndex:0];
+    
+    CGRectSetW(_messengerEmptyView, [GLPiOSSupportHelper screenWidth]);
+    CGRectSetH(_messengerEmptyView, [GLPiOSSupportHelper screenHeight]);
     
     [view addSubview:_messengerEmptyView];
     
@@ -156,7 +167,14 @@ static GLPEmptyViewManager *instance = nil;
         return _profilePostsEmptyView;
     }
     
+    [view setAutoresizingMask:UIViewAutoresizingNone];
+
+    
     _profilePostsEmptyView = [[[NSBundle mainBundle] loadNibNamed:@"GLPProfilePostsEmptyView" owner:view options:nil] objectAtIndex:0];
+    
+    CGRectSetW(_profilePostsEmptyView, [GLPiOSSupportHelper screenWidth]);
+    CGRectSetH(_profilePostsEmptyView, [GLPiOSSupportHelper screenHeight]);
+    CGRectSetY(_profilePostsEmptyView, 235.0);
     
     [view addSubview:_profilePostsEmptyView];
     
@@ -174,6 +192,8 @@ static GLPEmptyViewManager *instance = nil;
     _groupPostsEmptyView = [[[NSBundle mainBundle] loadNibNamed:@"GLPGroupPostsEmptyView" owner:view options:nil] objectAtIndex:0];
     [_groupPostsEmptyView setYPosition:yPosition];
     
+    CGRectSetW(_groupPostsEmptyView, [GLPiOSSupportHelper screenWidth]);
+    CGRectSetH(_groupPostsEmptyView, [GLPiOSSupportHelper screenHeight]);
     
     [view addSubview:_groupPostsEmptyView];
     

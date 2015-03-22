@@ -16,13 +16,13 @@
 #import "EventBarView.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
-#import "ImageFormatterHelper.h"
 #import "ReflectedImageView.h"
 #import "UIImage+Alpha.h"
 #import "GLPVideo.h"
 #import "GLPImageHelper.h"
 #import "GLPPostImageLoader.h"
 #import "UIImageView+Animations.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface CampusWallHeaderCell ()
 
@@ -36,10 +36,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *staticAttendingLbl;
 @property (weak, nonatomic) IBOutlet UIButton *goingBtn;
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLbl;
-@property (weak, nonatomic) IBOutlet EventBarView *eventBarView;
+//@property (weak, nonatomic) IBOutlet EventBarView *eventBarView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelWidth;
+@property (weak, nonatomic) IBOutlet UIImageView *topBackgroundImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
+
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *imageActivityIndicatior;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *eventImageHeight;
 
 @end
 
@@ -47,7 +50,7 @@
 @implementation CampusWallHeaderCell
 
 const float CELL_WIDTH = 180.0; //220
-const float CELL_HEIGHT = 150.0; //Change the height //132
+const float CELL_HEIGHT = 250.0; //Change the height //150.0
 const float TITLE_LABEL_MAX_WIDTH = 160.0;
 const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
@@ -188,7 +191,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 //    [_eventBarView increaseBarLevel:postData.popularity];
  
     
-    [_eventBarView setLevelWithPopularity:postData.popularity];
+//    [_eventBarView setLevelWithPopularity:postData.popularity];
     
 //    [_attendingLbl setText:@"0"];
     
@@ -218,8 +221,6 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 
             [_eventImage setImage:image];
             [_imageActivityIndicatior stopAnimating];
-                
-                DDLogDebug(@"Image loaded from cache %@", imgUrl);
         }
         else
         {
@@ -261,15 +262,12 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 {
     [_userNameLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
     
-    [_contentLbl setFont:[UIFont fontWithName:[NSString stringWithFormat:@"%@",GLP_TITLE_FONT] size:14.0f]];
-    
     [_goingBtn.titleLabel setFont:[UIFont fontWithName:GLP_TITLE_FONT size:20]];
     
     [_attendingLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:17]];
     
     [_staticAttendingLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:17]];
     
-    [_timeLbl setFont:[UIFont fontWithName:GLP_TITLE_FONT size:16]];
     
     [self configureGoingButton];
 }
@@ -278,27 +276,40 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 {
     [self formatEventImage];
     [self formatBackgroundImage];
+    [self formatTopBackgroundImage];
 }
 
 - (void)formatBackgroundImage
 {
     [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:5];
-    
     [ShapeFormatterHelper setBorderToView:_backgroundImageView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:0.4f];
+}
+
+- (void)formatTopBackgroundImage
+{
+    CGRect finalImageDimensions = self.eventImage.frame;
+    
+    finalImageDimensions.size.width = [GLPiOSSupportHelper screenWidth] * 0.7;
+    finalImageDimensions.size.height = CELL_HEIGHT * 0.82;
+    
+    [ShapeFormatterHelper createTwoTopCornerRadius:_topBackgroundImageView withViewBounts:finalImageDimensions andSizeOfCorners:CGSizeMake(5.0, 5.0)];
+    
+    [ShapeFormatterHelper setBorderToView:_topBackgroundImageView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:0.4f];
 }
 
 -(void)formatEventImage
 {
-    //Resize the image.
-//    [ImageFormatterHelper imageWithImage:<#(UIImage *)#> scaledToWidth:<#(float)#>]
-    
-    
     //Set alpha to a specific part of the image.
     
     //http://stackoverflow.com/questions/14107979/blur-an-image-of-specific-part-rectangular-circular
     
+    CGRect finalImageDimensions = self.eventImage.frame;
+    
+    finalImageDimensions.size.width = [GLPiOSSupportHelper screenWidth] * 0.7;
+    finalImageDimensions.size.height = CELL_HEIGHT * _eventImageHeight.multiplier;
+    
     //Format the image.
-    [ShapeFormatterHelper createTwoTopCornerRadius:self.eventImage withViewBounts:self.eventImage.frame andSizeOfCorners:CGSizeMake(5.0, 5.0)];
+    [ShapeFormatterHelper createTwoTopCornerRadius:self.eventImage withViewBounts:finalImageDimensions andSizeOfCorners:CGSizeMake(5.0, 5.0)];
 }
 
 
@@ -327,14 +338,14 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
 -(void)setTimeWithTime:(NSDate *)date
 {
     if ([[NSDate date] compare:date] == NSOrderedDescending) {
-        [_timeLbl setText:[date timeAgo]];
+        [_timeLbl setText:[[date timeAgo] uppercaseString]];
         
     } else if ([[NSDate date] compare:date] == NSOrderedAscending) {
         
-        [_timeLbl setText:[date stringWithHumanizedTimeDifference:NSDateHumanizedSuffixLeft withFullString:YES]];
+        [_timeLbl setText:[[date stringWithHumanizedTimeDifference:NSDateHumanizedSuffixLeft withFullString:YES] uppercaseString]];
         
     } else {
-        [_timeLbl setText:[date timeAgo]];
+        [_timeLbl setText:[[date timeAgo] uppercaseString]];
         
     }
 }
@@ -369,7 +380,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
                 _postData.attended = YES;
                 ++_postData.attendees;
                 [self makeButtonSelected:currentButton];
-                [_eventBarView increaseLevelWithNumberOfAttendees:_postData.attendees andPopularity:popularity];
+//                [_eventBarView increaseLevelWithNumberOfAttendees:_postData.attendees andPopularity:popularity];
 
 
             }
@@ -396,7 +407,7 @@ const float TITLE_LABEL_MAX_HEIGHT = 50.0;
                 _postData.attended = NO;
                 --_postData.attendees;
                 [self makeButtonUnselected:currentButton];
-                [_eventBarView decreaseLevelWithPopularity:popularity];
+//                [_eventBarView decreaseLevelWithPopularity:popularity];
 
             }
             else

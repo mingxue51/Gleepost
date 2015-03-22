@@ -19,5 +19,6 @@ typedef NS_ENUM(NSUInteger, TableActivityIndicatorPosition) {
 - (id)initWithPosition:(TableActivityIndicatorPosition)position withView:(UIView *)view;
 - (void)stopActivityIndicator;
 - (void)startActivityIndicator;
+- (void)addY:(CGFloat)height;
 
 @end

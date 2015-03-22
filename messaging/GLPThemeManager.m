@@ -7,19 +7,16 @@
 //
 
 #import "GLPThemeManager.h"
-#import "GLPStanfordTheme.h"
 #import "GLPDefaultTheme.h"
 #import "AppearanceHelper.h"
 
 @interface GLPThemeManager()
 
-@property (strong, nonatomic) GLPTheme *selectedTheme;
+@property (strong, nonatomic) GLPDefaultTheme *selectedTheme;
 
 @end
 
 @implementation GLPThemeManager
-
-NSString * const stanfordUniversity = @"University of Leeds";
 
 static GLPThemeManager *instance = nil;
 
@@ -34,51 +31,16 @@ static GLPThemeManager *instance = nil;
     return instance;
 }
 
-//TODO: Do this after testing.
-
-//-(id)init
-//{
-//    self = [super init];
-//    
-//    if(self)
-//    {
-//        //Set default when network did not set before.
-//        [self setNetwork:@""];
-//    }
-//    
-//    return self;
-//}
-
--(void)setNetwork:(NSString*)network
+- (id)init
 {
-    if([network isEqualToString:stanfordUniversity])
-    {
-        self.selectedTheme = [[GLPStanfordTheme alloc] init];
-    }
-    else
+    self = [super init];
+    
+    if(self)
     {
         self.selectedTheme = [[GLPDefaultTheme alloc] init];
     }
-}
-
--(UIColor*)colorForTabBar
-{
-    return [self.selectedTheme tabbarColour];
-}
-
--(NSString*)imageForChatBackground
-{
-    return [self.selectedTheme chatBackground];
-}
-
--(NSString*)imageForNavBar
-{
-    return [self.selectedTheme navbar];
-}
-
--(NSString*)pullDownButton
-{
-    return [self.selectedTheme pullDownImage];
+    
+    return self;
 }
 
 #pragma mark - New implementation
@@ -100,27 +62,27 @@ static GLPThemeManager *instance = nil;
 
 - (UIColor *)navigationBarColour
 {
-    return [self.selectedTheme firstColour];
+    return [self.selectedTheme navBarBackgroundColour];
 }
 
 - (UIColor *)navigationBarTitleColour
 {
-    return [self.selectedTheme fourthColour];
+    return [self.selectedTheme generalNavBarTitleColour];
 }
 
 - (UIColor *)campusWallNavigationBarTitleColour
 {
-    return [self.selectedTheme fifthColour];
+    return [self.selectedTheme campusWallTitleColour];
 }
 
 - (UIColor *)nameTintColour
 {
-    return [self.selectedTheme fifthColour];
+    return [self.selectedTheme primaryColour];
 }
 
 - (UIColor *)tabbarSelectedColour
 {
-    return [self.selectedTheme fifthColour];
+    return [self.selectedTheme primaryColour];
 }
 
 - (UIColor *)tabbarUnselectedColour
@@ -128,9 +90,9 @@ static GLPThemeManager *instance = nil;
     return [AppearanceHelper colourForRegisterTextFields];
 }
 
--(GLPThemeType)themeIdentifier
+- (NSString *)campusWallTitle
 {
-    return [self.selectedTheme identifier];
+    return  [self.selectedTheme campusWallTitle];
 }
 
 - (NSString *)appNameWithString:(NSString *)string

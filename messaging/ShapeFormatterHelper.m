@@ -34,7 +34,7 @@
 +(void)createTwoTopCornerRadius:(UIImageView*)imageView withViewBounts:(CGRect)viewBounds andSizeOfCorners:(CGSize)sizeOfCorners
 {
     UIBezierPath *maskPath;
-    maskPath = [UIBezierPath bezierPathWithRoundedRect:imageView.bounds byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight) cornerRadii:sizeOfCorners];
+    maskPath = [UIBezierPath bezierPathWithRoundedRect:viewBounds byRoundingCorners:(UIRectCornerTopLeft | UIRectCornerTopRight) cornerRadii:sizeOfCorners];
     
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
     maskLayer.frame = viewBounds;
@@ -85,7 +85,7 @@
     view.layer.mask = maskLayer;
 }
 
-+(void)setCornerRadiusWithView:(UIView*)imageView andValue:(int)value
++(void)setCornerRadiusWithView:(UIView *)imageView andValue:(int)value
 {
     imageView.layer.cornerRadius = value;
 }

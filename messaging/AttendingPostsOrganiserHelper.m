@@ -61,7 +61,26 @@
         }
     }
     
-    DDLogDebug(@"Final event posts %@", _sections);
+    [self fixPositionsHeadersInSectionArrayIfNeeded];
+}
+
+- (void)fixPositionsHeadersInSectionArrayIfNeeded
+{
+    
+    if(self.sections.count <= 1)
+    {
+        return;
+    }
+    
+    NSDictionary *firstPosts = self.sections[0];
+    
+    if(![firstPosts objectForKey:_recentHeader])
+    {
+        NSDictionary *d1 = self.sections[0];
+        self.sections[0] = self.sections[1];
+        self.sections[1] = d1;
+    }
+    
 }
 
 #pragma mark - Operations
@@ -128,9 +147,9 @@
     
     for(NSString *key in headerPosts)
     {
-        NSArray *notifications = [headerPosts objectForKey:key];
+        NSArray *posts = [headerPosts objectForKey:key];
         
-        return notifications;
+        return posts;
     }
     
     return nil;
@@ -147,15 +166,25 @@
     
     for(NSString *key in headerPosts)
     {
-        NSArray *notifications = [headerPosts objectForKey:key];
+        NSArray *posts = [headerPosts objectForKey:key];
         
-        return [notifications objectAtIndex:postIndex];
+        if(postIndex >= posts.count)
+        {
+            return nil;
+        }
+        
+        return [posts objectAtIndex:postIndex];
     }
     
     return nil;
 }
 
 - (NSIndexPath *)indexPathWithPost:(GLPPost *)post
+{
+    return [self indexPathWithPostRemoteKey:post.remoteKey];
+}
+
+- (NSIndexPath *)indexPathWithPostRemoteKey:(NSInteger)postRemoteKey
 {
     NSInteger row = 0;
     NSInteger section = 0;
@@ -166,7 +195,7 @@
         
         for(GLPPost *p in postsSection)
         {
-            if(p.remoteKey == post.remoteKey)
+            if(p.remoteKey == postRemoteKey)
             {
                 return [NSIndexPath indexPathForItem:row inSection:section];
             }
@@ -180,7 +209,54 @@
     return nil;
 }
 
-- (NSIndexPath *)removePost:(GLPPost *)post
+/**
+ Updates the post with remote key and the updated views count and returns the index path
+ of the found post.
+ 
+ @param postRemoteKey the post's remote key.
+ @param viewsCount the updated views count of the post.
+ @return the index path of the post or nil if post not found or post is video post.
+ */
+- (NSIndexPath *)updatePostWithRemoteKey:(NSInteger)postRemoteKey andViewsCount:(NSInteger)viewsCount
+{
+    NSInteger row = 0;
+    NSInteger section = 0;
+    
+    for(NSDictionary *sectionDict in _sections)
+    {
+        NSArray *postsSection = [sectionDict objectForKey:[[sectionDict allKeys] objectAtIndex:0]];
+        
+        for(GLPPost *p in postsSection)
+        {
+            if(p.remoteKey == postRemoteKey)
+            {
+                p.viewsCount = viewsCount;
+                
+                if([p isVideoPost])
+                {                    
+                    return nil;
+                }
+                
+                return [NSIndexPath indexPathForItem:row inSection:section];
+            }
+            ++row;
+        }
+        row = 0;
+        
+        ++section;
+    }
+    
+    return nil;
+}
+
+/**
+ Removes post from sections data structure.
+ @param post
+ 
+ @return a dictionary contains post's index path with key: index_path and a boolean variable that
+ indicates if a sections needs to be deleted with key: delete_section.
+ */
+- (NSDictionary *)removePost:(GLPPost *)post
 {
     NSIndexPath *indexPath = [self indexPathWithPost:post];
     
@@ -192,10 +268,63 @@
         
     [_sections setObject:section atIndexedSubscript:indexPath.section];
     
+    
+    BOOL sectionDeleted = [self removeSectionIfNeeded];
+    
     DDLogDebug(@"Post removed. New sections %@", _sections);
     
+    return @{@"index_path": indexPath, @"delete_section" : @(sectionDeleted)};
+}
+
+- (BOOL)removeSectionIfNeeded
+{
+    if(self.sections.count <= 1)
+    {
+        return NO;
+    }
     
-    return indexPath;
+    NSInteger sectionToBeDeleted = -1;
+    
+    NSInteger index = 0;
+    
+    for(NSDictionary *sectionDict in _sections)
+    {
+        NSArray *postsSection = [sectionDict objectForKey:[[sectionDict allKeys] objectAtIndex:0]];
+        
+        if(postsSection.count == 0)
+        {
+            sectionToBeDeleted = index;
+        }
+        
+        ++index;
+        
+    }
+
+    if(sectionToBeDeleted != -1)
+    {
+        [_sections removeObjectAtIndex:sectionToBeDeleted];
+        
+        return YES;
+    }
+    
+    return NO;
+    
+//    NSDictionary *firstPosts = self.sections[0];
+//    
+//    if(![firstPosts objectForKey:_recentHeader])
+//    {
+//        NSDictionary *d1 = self.sections[0];
+//        self.sections[0] = self.sections[1];
+//        self.sections[1] = d1;
+//    }
+}
+
+- (GLPPost *)lastPost
+{
+    NSString *lastHeader = [self headerInSection:[self lastSection]-1];
+    NSDictionary *dictionary = [self containsDictionaryWithHeader:lastHeader];
+    NSArray *postsSection = [dictionary objectForKey:[[dictionary allKeys] objectAtIndex:0]];
+    return [postsSection lastObject];
 }
 
 

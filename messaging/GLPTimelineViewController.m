@@ -73,6 +73,10 @@
 #import "GLPPendingPostsManager.h"
 #import "GLPPendingCell.h"
 #import "GLPCategoryTitleCell.h"
+#import "GLPTrackViewsCountProcessor.h"
+#import "GLPCampusWallAsyncProcessor.h"
+#import "URBMediaFocusViewController.h"
+#import "GLPCategoryCell.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -84,6 +88,8 @@
 @property (strong, nonatomic) NewPostView *postView;
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (strong, nonatomic) TransitionDelegateViewCategories *transitionCategoriesViewController;
+@property (strong, nonatomic) URBMediaFocusViewController *mediaFocusViewController;
+
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
 @property (strong, nonatomic) UIImage *imageToBeView;
 
@@ -136,6 +142,8 @@
 
 /** Captures the visibility of current cells. */
 @property (strong, nonatomic) GLPFlurryVisibleCellProcessor *flurryVisibleProcessor;
+@property (strong, nonatomic) GLPTrackViewsCountProcessor *trackViewsCountProcessor;
+@property (strong, nonatomic) GLPCampusWallAsyncProcessor *campusWallAsyncProcessor;
 
 @property (strong ,nonatomic ) EmptyMessage *emptyGroupPostsMessage;
 
@@ -254,7 +262,6 @@ const float TOP_OFFSET = 180.0f;
     // hide new element visual indicator if needed
     [self hideNewElementsIndicatorView];
     
-    
     [[GLPVideoLoaderManager sharedInstance] enableTimelineJustFetched];
     
     //Show navigation bar.
@@ -268,6 +275,8 @@ const float TOP_OFFSET = 180.0f;
     [self stopReloadingCron];
     
     [self removeGoingButtonNotification];
+    
+    [_trackViewsCountProcessor resetSentPostsSet];
     
     [super viewDidDisappear:animated];
 }
@@ -315,6 +324,8 @@ const float TOP_OFFSET = 180.0f;
 //    [self.view addSubview:_topImageView];
     
     _flurryVisibleProcessor = [[GLPFlurryVisibleCellProcessor alloc] init];
+    _trackViewsCountProcessor = [[GLPTrackViewsCountProcessor alloc] init];
+    _campusWallAsyncProcessor = [[GLPCampusWallAsyncProcessor alloc] init];
     _emptyGroupPostsMessage = [[EmptyMessage alloc] initWithText:@"No more group posts." withPosition:EmptyMessagePositionFurtherBottom andTableView:self.tableView];
     
 //    _emptyCategoryPostsMessage = [[EmptyMessage alloc] initWithText:@"No posts yet" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
@@ -328,6 +339,12 @@ const float TOP_OFFSET = 180.0f;
     _showComment = NO;
     
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.tableView];
+    _mediaFocusViewController = [[URBMediaFocusViewController alloc] init];
+    
+    _mediaFocusViewController.parallaxEnabled = NO;
+    _mediaFocusViewController.shouldShowPhotoActions = YES;
+    _mediaFocusViewController.shouldRotateToDeviceOrientation = NO;
+    _mediaFocusViewController.shouldBlurBackground = NO;
 }
 
 - (void)startBackgroundOperations
@@ -343,7 +360,7 @@ const float TOP_OFFSET = 180.0f;
 }
 
 
--(void)dealloc
+-(void)removeDeallocNotifications
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUpdated" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"GLPPostUploaded" object:nil];
@@ -356,6 +373,8 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:nil];
 }
 
 - (void)showNetworkErrorViewIfNeeded
@@ -367,7 +386,7 @@ const float TOP_OFFSET = 180.0f;
 {
     if([[SessionManager sharedInstance] isFirstTimeLoggedIn] && ![self isWalkthroughFinished])
     {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
         GLPWalkthroughViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPWalkthroughViewController"];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -467,6 +486,39 @@ const float TOP_OFFSET = 180.0f;
         }
         
     });
+}
+
+/**
+ This method is called when there is an update in views count.
+ 
+ @param notification the notification contains post remote key and the updated
+        number of views.
+ */
+- (void)updateViewsCounter:(NSNotification *)notification
+{
+    DDLogDebug(@"GLPTimelineViewController : notification %@", notification.userInfo);
+    
+    NSInteger postRemoteKey = [notification.userInfo[@"PostRemoteKey"] integerValue];
+    NSInteger viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
+    
+    [_campusWallAsyncProcessor parseAndUpdatedViewsCountPostWithPostRemoteKey:postRemoteKey andPosts:_posts withCallbackBlock:^(NSInteger index) {
+            
+        if(index != -1)
+        {
+            GLPPost *post = [self.posts objectAtIndex:index];
+
+            post.viewsCount = viewsCount;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                if(![post isVideoPost])
+                {
+                    [self refreshCellViewWithIndex:index];
+                }
+            });
+        }
+        
+    }];
 }
 
 /**
@@ -596,15 +648,8 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)configTabbarFormat
 {
-    
-    if([GLPiOSSupportHelper isIOS6])
-    {
-        return;
-    }
-    
     // set selected and unselected icons
     NSArray *items = self.tabBarController.tabBar.items;
-    
     
     UITabBarItem *item = [items objectAtIndex:0];
     
@@ -614,51 +659,9 @@ const float TOP_OFFSET = 180.0f;
     
     [AppearanceHelper setUnselectedColourForTabbarItem:item];
     
-    
 //    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    
     self.homeTabbarItem = item;
-    
-    
-    
-    item = [items objectAtIndex:1];
-    
-    item.image = [[UIImage imageNamed:@"message-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    
-    item.selectedImage = [UIImage imageNamed:@"message-7"];
-    
-    
-    
-//    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
 
-    
-    [AppearanceHelper setUnselectedColourForTabbarItem:item];
-
-
-    
-    item = [items objectAtIndex:2];
-    
-    item.image = [[UIImage imageNamed:@"man-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    
-    item.selectedImage = [UIImage imageNamed:@"man-7"];
-    
-//    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-
-    [AppearanceHelper setUnselectedColourForTabbarItem:item];
-
-    
-    item = [items objectAtIndex:3];
-    
-    item.image = [[UIImage imageNamed:@"id-card-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    
-    item.selectedImage = [UIImage imageNamed:@"id-card-7"];
-    
-//    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-
-    
-    [AppearanceHelper setUnselectedColourForTabbarItem:item];
-
-   
     
     // this way, the icon gets rendered as it is (thus, it needs to be green in this example)
 //    item0.image = [[UIImage imageNamed:@"contacts.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -690,6 +693,10 @@ const float TOP_OFFSET = 180.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateVideoPostAfterCreatingThePost:) name:GLPNOTIFICATION_VIDEO_POST_READY object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshPendingPostCell) name:GLPNOTIFICATION_NEW_PENDING_POST object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateViewsCounter:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeDeallocNotifications) name:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:nil];
 }
 
 /** This notification called when user presses the going button on post. */
@@ -771,6 +778,10 @@ const float TOP_OFFSET = 180.0f;
     [self.navigationController.navigationBar setCampusWallFontFormat];
     //Set to all the application the status bar text white.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    
+//    self.title = [[GLPThemeManager sharedInstance] campusWallTitle];
+    
+    self.navigationController.navigationBar.topItem.title = [[GLPThemeManager sharedInstance] campusWallTitle];
 }
 
 - (void)addNavigationButtons
@@ -839,12 +850,6 @@ const float TOP_OFFSET = 180.0f;
         //            [self.tableView endUpdates];
 
     }
-    else
-    {
-        DDLogDebug(@"GLPTimelineViewController : no need to refresh cell with index %lu", (unsigned long)index);
-    }
-    
-
 }
 
 - (BOOL)cellNeedsReloadWithIndex:(NSInteger)index
@@ -1570,6 +1575,7 @@ const float TOP_OFFSET = 180.0f;
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [_flurryVisibleProcessor resetVisibleCells];
+    [_trackViewsCountProcessor resetVisibleCells];
     
     
     CGFloat currentOffset = scrollView.contentOffset.y;
@@ -1665,7 +1671,7 @@ const float TOP_OFFSET = 180.0f;
     {
         return;
     }
-    //|| scrollView.contentOffset.y < 0
+
     if(self.isLoading )
     {
         DDLogDebug(@"scrollViewDidEndDecelerating1 is loading abort.");
@@ -1675,9 +1681,13 @@ const float TOP_OFFSET = 180.0f;
     
     //Capture the current cells that are visible and add them to the GLPFlurryVisibleProcessor.
     
-    NSArray *visiblePosts = [self getVisiblePostsInTableView];
+    NSMutableArray *postsYValues = nil;
+    
+    NSArray *visiblePosts = [self getVisiblePostsInTableViewWithYValues:&postsYValues];
     
     [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
+    
+    [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
     
     DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
     
@@ -1689,7 +1699,7 @@ const float TOP_OFFSET = 180.0f;
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
 //    DDLogDebug(@"scrollViewDidEndDragging2 did scroll: %f", scrollView.contentOffset.y);
-
+    
     if(decelerate == 0)
     {
         //|| scrollView.contentOffset.y < 0
@@ -1700,17 +1710,19 @@ const float TOP_OFFSET = 180.0f;
             return;
         }
         
-        NSArray *visiblePosts = [self getVisiblePostsInTableView];
+        NSMutableArray *postsYValues = nil;
+        
+        NSArray *visiblePosts = [self getVisiblePostsInTableViewWithYValues:&postsYValues];
         
         [_flurryVisibleProcessor addVisiblePosts:visiblePosts];
         
-//        DDLogDebug(@"scrollViewDidEndDragging2 posts: %@", visiblePosts);
-
+        [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
+        
+        DDLogDebug(@"scrollViewDidEndDragging2 posts %lu", (unsigned long)visiblePosts.count);
         
         [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
         
         _tableViewFirstTimeScrolled = YES;
-
     }
 }
 
@@ -1719,6 +1731,8 @@ const float TOP_OFFSET = 180.0f;
     //[self contract];
     return YES;
 }
+
+
 
 #pragma mark - Hidden navigation bar
 
@@ -2022,7 +2036,7 @@ const float TOP_OFFSET = 180.0f;
 {
     // hide the new elements indicator if needed when we are on top
     if(!self.elementsIndicatorView.hidden && (indexPath.row == 0 || indexPath.row < self.insertedNewRowsCount)) {
-        NSLog(@"HIDE %d - %d", indexPath.row, self.insertedNewRowsCount);
+        NSLog(@"HIDE %ld - %ld", (long)indexPath.row, (long)self.insertedNewRowsCount);
         
         self.insertedNewRowsCount = 0; // reset the count
         [self hideNewElementsIndicatorView];
@@ -2251,12 +2265,17 @@ const float TOP_OFFSET = 180.0f;
 /**
  This method is used to take a snapshot of the current visible posts cells.
  
+ @param postsYValues this parameter is passed in order to be returned with the current
+        Y values of each respect visible post.
+ 
  @return The visible posts.
  
  */
--(NSArray *)getVisiblePostsInTableView
+-(NSArray *)getVisiblePostsInTableViewWithYValues:(NSMutableArray **)postsYValues
 {
     NSMutableArray *visiblePosts = [[NSMutableArray alloc] init];
+    
+    *postsYValues = [[NSMutableArray alloc] init];
     
     NSArray *paths = [self.tableView indexPathsForVisibleRows];
     
@@ -2268,9 +2287,18 @@ const float TOP_OFFSET = 180.0f;
         
         if(row < self.posts.count)
         {
-            [visiblePosts addObject:[self.posts objectAtIndex:row]];
+            GLPPost *post = [self.posts objectAtIndex:row];
+            [visiblePosts addObject:post];
+            
+            CGRect rectInTableView = [self.tableView rectForRowAtIndexPath:path];
+            CGRect rectInSuperview = [self.tableView convertRect:rectInTableView toView:[self.tableView superview]];
+            
+            [*postsYValues addObject:@(rectInTableView.size.height/2.0 + rectInSuperview.origin.y)];
+            
+            DDLogDebug(@"-> Post: %@, Y: %f %f result %f", post, rectInSuperview.origin.y, rectInTableView.size.height, rectInTableView.size.height/2.0 + rectInSuperview.origin.y);
         }
     }
+    
     return visiblePosts;
 }
 
@@ -2291,19 +2319,22 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)viewPostImage:(UIImage*)postImage
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = postImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+//    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
+//    viewImage.image = postImage;
+//    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
+//    viewImage.modalPresentationStyle = UIModalPresentationCustom;
+//    
+//    if(![GLPiOSSupportHelper isIOS6])
+//    {
+//        [viewImage setTransitioningDelegate:self.transitionViewImageController];
+//    }
+//    
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:viewImage animated:YES completion:nil];
     
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
+    [_mediaFocusViewController showImage:postImage fromView:self.view];
     
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
 }
 
 
@@ -2405,7 +2436,7 @@ const float TOP_OFFSET = 180.0f;
     [self scrollToTheTop];
 }
 
-#pragma mark GLPPostCellDelegate
+#pragma mark - GLPPostCellDelegate
 
 -(void)elementTouchedWithRemoteKey:(NSInteger)remoteKey
 {
@@ -2436,7 +2467,7 @@ const float TOP_OFFSET = 180.0f;
 
 - (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
 {
-    DDLogDebug(@"navigateToPostForCommentWithIndexPath Post index path %d : %d", postIndexPath.row, postIndexPath.section);
+    DDLogDebug(@"navigateToPostForCommentWithIndexPath Post index path %ld : %ld", (long)postIndexPath.row, (long)postIndexPath.section);
 
     _showComment = YES;
     self.selectedPost = [self.posts objectAtIndex:postIndexPath.row];
@@ -2451,7 +2482,7 @@ const float TOP_OFFSET = 180.0f;
     _selectedPost = notification.userInfo[@"post"];
     
     //Show the pop up view.
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
@@ -2509,13 +2540,12 @@ const float TOP_OFFSET = 180.0f;
 {
     if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
     {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
         IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         newPostVC.groupPost = NO;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:navigationController animated:YES completion:nil];
-        
     }
     else
     {
@@ -2532,7 +2562,7 @@ const float TOP_OFFSET = 180.0f;
         UIGraphicsEndImageContext();
         
         
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
         UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         
         // vc.view.backgroundColor = [UIColor clearColor];
@@ -2592,7 +2622,7 @@ const float TOP_OFFSET = 180.0f;
 //    UIGraphicsEndImageContext();
 //    
 //    
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
 //    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
 //    
 //    // vc.view.backgroundColor = [UIColor clearColor];
@@ -2603,7 +2633,7 @@ const float TOP_OFFSET = 180.0f;
 
 - (void)showCategoriesViewController
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"Categories"];
     
     /**
@@ -2631,7 +2661,13 @@ const float TOP_OFFSET = 180.0f;
     }
     else
     {
-        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 48, 320, 375)]; //0 63 320 302
+//        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 60, [GLPiOSSupportHelper screenWidth], 375)]; //0 63 320 302
+        
+        //
+        
+        //TODO: Fix that. Apply the new library and make a helper to do all the progress.
+        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 60, [GLPiOSSupportHelper screenWidth], ([[CategoryManager sharedInstance] categoriesNames].count - 1) * [GLPCategoryCell height] + [GLPCategoryCell bottomPadding])]; //0 63 320 302
+
         [cvc.blurBack setImage:[image stackBlur:10.0f]];
         [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
     }
@@ -2650,7 +2686,7 @@ const float TOP_OFFSET = 180.0f;
     NSDictionary *dict = [notification userInfo];
     GLPPost *post = [dict objectForKey:@"Post"];
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     ViewPostViewController *vpvc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostViewController"];
     vpvc.post = post;
     vpvc.isFromCampusLive = YES;

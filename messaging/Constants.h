@@ -29,6 +29,8 @@
 #define GLPNOTIFICATION_NEW_NOTIFICATION                @"GLPNewNotification"
 #define GLPNOTIFICATION_NEW_MESSAGE                     @"GLPNewMessage"
 #define GLPNOTIFICATION_MESSAGE_SEND_UPDATE             @"GLPMessageSendUpdate"
+#define GLPNOTIFICATION_READ_RECEIPT_RECEIVED           @"GLPReadReceiptReceived"
+
 #define GLPNOTIFICATION_NETWORK_UPDATE                  @"GLPNetworkStatusUpdate"
 #define GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE        @"GLPSynchronizedWithRemote"
 #define GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE    @"GLPNotSynchronizedWithRemote"
@@ -46,6 +48,8 @@
 #define GLPNOTIFICATION_RECEIVE_VIDEO_PATH              @"GLPReceiveVideoPath"
 
 #define GLPNOTIFICATION_NEW_GROUP_CREATED              @"GLPNewGroupCreated"
+#define GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED        @"GLPNewGroupToBeCreated"
+#define GLPNOTIFICATION_NEW_GROUP_IMAGE_PROGRESS       @"GLPNewGroupImageProgress"
 
 #define GLPNOTIFICATION_DISMISS_WALKTHROUGH             @"GLPDismissWalkthrough"
 
@@ -78,17 +82,39 @@
 #define GLPNOTIFICATION_VIDEO_LOADED                    @"GLPVideoLoaded"
 
 #define GLPNOTIFICATION_SHOW_MORE_OPTIONS               @"GLPShowMoreOptions"
+#define GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE          @"GLPPostCellViewsUpdate"
+
+#define GLPNOTIFICATION_REFRESH_PROFILE_CELL            @"GLPRefreshProfileCell"
 
 #define GLPNOTIFICATION_CHANGE_IMAGE_PROGRESS           @"GLPChangeImageProgress"
 #define GLPNOTIFICATION_CHANGE_GROUP_IMAGE_PROGRESS     @"GLPChangeGroupImageProgress"
+#define GLPNOTIFICATION_CHANGE_GROUP_IMAGE_FINISHED     @"GLPChangeGroupImageFinished"
 
 #define GLPNOTIFICATION_GROUP_IMAGE_LOADED              @"GLPGroupImageLoaded"
+#define GLPNOTIFICATION_GROUPS_LOADED                   @"GLPGroupsLoaded"
 #define GLPNOTIFICATION_POST_IMAGE_LOADED               @"GLPPostImageLoaded"
 
+
+#define GLPNOTIFICATION_GROUPS_FECTHED_AFTER_QUERY      @"GLPGroupsFetchedAfterQuery"
+#define GLPNOTIFICATION_USER_GROUPS_LOADED              @"GLPUserGroupsLoaded"
+
 #define GLPNOTIFICATION_GOING_BUTTON_TOUCHED            @"GLPGoingButtonTouched"
+#define GLPNOTIFICATION_GOING_BUTTON_UNTOUCHED          @"GLPGoingButtonUntouched"
 
 #define GLPNOTIFICATION_SEARCH_FOR_GROUPS               @"GLPSearchForGroups"
 
+//GLPAttendingPostsManager
+#define GLPNOTIFICATION_ATTENDING_POSTS_FETCHED         @"GLPAttendingPostsFetched"
+#define GLPNOTIFICATION_ATTENDING_PREVIOUS_POSTS_FETCHED    @"GLPAttendingPreviousPostsFecthed"
+
+//ProfileManager
+#define GLPNOTIFICATION_USERS_POSTS_FETCHED             @"GLPUsersPostsFetched"
+#define GLPNOTIFICATION_USERS_PREVIOUS_POSTS_FETCHED    @"GLPUsersPreviousPostsFetched"
+#define GLPNOTIFICATION_USERS_DATA_FETCHED              @"GLPUsersDataFetched"
+#define GLPNOTIFICATION_LOGGED_IN_USERS_DATA_FETCHED    @"GLPLoggedInUsersDataFetched"
+
+//NSNotification name that removes all the NSNotifications observers from view controllers. (Usually after logout).
+#define GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS         @"GLPRemoveVCNotifications"
 
 
 #define GLP_WEBSERVICE_VERSION                      @"1"

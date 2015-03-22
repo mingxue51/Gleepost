@@ -8,6 +8,7 @@
 
 #import "UIRefreshControl+CustomLoader.h"
 #import "UIImage+animatedGIF.h"
+#import "GLPiOSSupportHelper.h"
 
 @implementation UIRefreshControl (CustomLoader)
 
@@ -37,10 +38,12 @@
 
 - (void)configureRefreshControl
 {
+    CGFloat screenWidth = [GLPiOSSupportHelper screenWidth];
+    
     [self setBackgroundColor:[UIColor whiteColor]];
     [self setTintColor:[UIColor clearColor]];
     
-    UIImageView *subView = [[UIImageView alloc] initWithFrame:CGRectMake(132, 0, 56, 56)];
+    UIImageView *subView = [[UIImageView alloc] initWithFrame:CGRectMake((screenWidth/2) - 28, 0, 56, 56)];
     
     NSString *filePath = [[NSBundle mainBundle] pathForResource: @"loader2" ofType: @"gif"];
     
@@ -51,7 +54,7 @@
     [self addSubview:subView];
     
 //    UIImageView *margingImage = [[UIImageView alloc] initWithFrame:CGRectMake(132, 56, 56, 100)];
-    UIImageView *margingImage = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 1000)];
+    UIImageView *margingImage = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, screenWidth, 340)];
 
     
     [margingImage setBackgroundColor:[UIColor whiteColor]];
@@ -71,12 +74,14 @@
 
 - (void)configureActivityInidicator
 {
+    CGFloat screenWidth = [GLPiOSSupportHelper screenWidth];
+
     [self setBackgroundColor:[UIColor whiteColor]];
     [self setTintColor:[UIColor whiteColor]];
     
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    
-    CGRectSetX(indicator, 150.0);
+    //150.0
+    CGRectSetX(indicator, (screenWidth / 2) - indicator.frame.size.width / 2);
     CGRectSetY(indicator, 15.0);
     
     [indicator startAnimating];

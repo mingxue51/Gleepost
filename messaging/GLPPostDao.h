@@ -29,6 +29,7 @@ typedef NS_ENUM(NSUInteger, KindOfQuery) {
 + (NSArray *)findAllPendingPostsWithVideosInDb:(FMDatabase *)db;
 + (void)save:(GLPPost *)entity inDb:(FMDatabase *)db;
 + (void)saveUpdateOrRemovePosts:(NSArray *)posts withCreatorRemoteKey:(NSInteger)userRemoteKey;
++ (void)saveUpdateOrRemovePosts:(NSArray *)posts withGroupRemoteKey:(NSInteger)groupRemoteKey;
 + (NSArray *)getTheNewPostsWithRemotePosts:(NSArray *)remotePosts;
 + (NSArray *)saveUpdateOrRemovePostsInCW:(NSArray *)posts;
 + (void)saveOrUpdatePost:(GLPPost *)entity;
@@ -36,7 +37,6 @@ typedef NS_ENUM(NSUInteger, KindOfQuery) {
 + (void)deleteAllInDb:(FMDatabase *)db;
 +(void)updateLikedStatusWithPost:(GLPPost*)entity inDb:(FMDatabase*)db;
 +(void)updateCommentStatusWithNumberOfComments:(int)number andPostRemoteKey:(int)remoteKey inDb:(FMDatabase*)db;
-+ (void)saveGroupPosts:(NSArray *)groupPosts withGroupRemoteKey:(NSInteger)groupRemoteKey;
 +(NSArray*)likedPostsInDb:(FMDatabase*)db;
 +(void)updatePostAttending:(GLPPost*)entity db:(FMDatabase *)db;
 + (void)updatePendingStatuswithPost:(GLPPost *)entity;

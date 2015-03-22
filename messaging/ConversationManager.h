@@ -12,13 +12,17 @@
 #import "GLPMessage.h"
 #import "GLPUser.h"
 
+@class GLPReadReceipt;
+
 @interface ConversationManager : NSObject
 
 extern int const NumberMaxOfMessagesLoaded;
 
 // new methods
 + (NSArray *)loadLocalRegularConversations;
++ (NSArray *)loadLocalGroupConversations;
 + (void)saveOrUpdateConversation:(GLPConversation *)conversation;
++ (void)saveOrUpdateReadWithReadReceipt:(GLPReadReceipt *)readReceipt;
 + (void)initialSaveConversationsToDatabase:(NSArray *)conversations;
 + (void)deleteConversation:(GLPConversation *)conversation;
 + (void)initialSaveMessagesToDatabase:(NSArray *)messages;

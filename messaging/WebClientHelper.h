@@ -10,11 +10,9 @@
 
 @interface WebClientHelper : NSObject
 
-+(void) showStandardLoaderWithTitle:(NSString *)title forView:(UIView *)view;
-+ (void) showStandardLoaderWithoutSpinningAndWithTitle:(NSString*) title forView:(UIView *)view;
++(void)showStandardLoaderWithTitle:(NSString *)title forView:(UIView *)view;
++ (void)showStandardLoaderWithoutSpinningAndWithTitle:(NSString*) title forView:(UIView *)view;
 +(void) hideStandardLoaderForView:(UIView *)view;
-//+(void) showStandardErrorWithTitle:(NSString *)title andContent:(NSString *)content;
-//+(void) showStandardError;
 +(void)showInternetConnectionErrorWithTitle:(NSString*)title;
 +(void)showStandardEmailError;
 +(void)showStandardPasswordError;
@@ -34,6 +32,9 @@
 +(void)showFailedToDeletePostError;
 
 + (void)failedToLoadPost;
+
++ (void)showLocationRestrictionError;
++ (UIAlertController *)generateAlertViewForLocationError;
 
 + (void)accountVerificationError;
 + (void)accountLoginError;
@@ -72,5 +73,9 @@
 
 + (void)showReportedDone;
 + (void)showFailedToReport;
+
++ (void)showFailedToDeleteConversationError;
+
++ (void)showLowMemoryWarningFromClass:(NSString *)className;
 
 @end

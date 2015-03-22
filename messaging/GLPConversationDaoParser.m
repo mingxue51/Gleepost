@@ -24,21 +24,29 @@
     entity.isGroup = [resultSet boolForColumn:@"isGroup"];
     entity.isLive = [resultSet boolForColumn:@"isLive"];
     
+    DDLogDebug(@"GLPConversationDaoParser : participants keys %@", [resultSet stringForColumn:@"participants_keys"]);
+    
     // get participants
     NSArray *participantsKeys = [[resultSet stringForColumn:@"participants_keys"] componentsSeparatedByString:@";"];
     NSMutableArray *participants = [NSMutableArray array];
     for(NSString *key in participantsKeys) {
         GLPUser *user = [GLPUserDao findByKey:[key integerValue] db:db];
+        
+        if(!user)
+        {
+            continue;
+        }
+        
         NSAssert(user, @"User from conversation participants must not be null");
         [participants addObject:user];
     }
 
     entity.participants = participants;
     
-//    entity setReads:
-    
     // parse reads.
     [entity setReads:[GLPConversationDao findReadsWithConversation:entity andDb:db]];
+    
+    entity.groupRemoteKey = [resultSet intForColumn:@"group_remote_key"];
     
 }
 

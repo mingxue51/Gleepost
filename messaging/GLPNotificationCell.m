@@ -32,9 +32,9 @@
 
 @implementation GLPNotificationCell
 
-const float MAX_NOTIFICATION_CONTENT_HEIGHT = 35.0;
+const float MAX_NOTIFICATION_CONTENT_HEIGHT = 40.0;
 const float MAX_NOTIFICATION_CONTENT_WIDHT = 240.0;
-const float NOTIFICATION_CELL_HEIGHT = 60.0;
+const float NOTIFICATION_CELL_HEIGHT = 43.0; //60.0
 
 - (void)awakeFromNib
 {
@@ -64,18 +64,6 @@ const float NOTIFICATION_CELL_HEIGHT = 60.0;
     [self configureImage];
     
     [self configureTime];
-    
-    [self configureCustomSeparatorLine];
-    
-}
-
-- (void)configureCustomSeparatorLine
-{
-    UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(60.0, [GLPNotificationCell getCellHeightForNotification:_notification] - 1, 260.0, 1.0)];
-    
-    [v setBackgroundColor:[UIColor colorWithR:237.0 withG:237.0 andB:237.0]];
-    
-    [self addSubview:v];
 }
 
 - (void)configureTime
@@ -116,15 +104,13 @@ const float NOTIFICATION_CELL_HEIGHT = 60.0;
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
     
-    CGRect rect = [attributedText boundingRectWithSize:(CGSize){MAX_NOTIFICATION_CONTENT_WIDHT, MAX_NOTIFICATION_CONTENT_HEIGHT}
-                                               options:(NSStringDrawingUsesLineFragmentOrigin)
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){[GLPNotificationCell getMaxTitleLabelHeight], MAX_NOTIFICATION_CONTENT_HEIGHT}
+                                               options:(NSStringDrawingUsesFontLeading | NSStringDrawingUsesLineFragmentOrigin)
                                                context:nil];
     
     
     CGSize size = rect.size;
-    
     return size;
-    
 }
 
 + (CGFloat)getCellHeightForNotification:(GLPNotification *)notification
@@ -149,7 +135,16 @@ const float NOTIFICATION_CELL_HEIGHT = 60.0;
             break;
     }
     
+    finalHeight += [GLPNotificationCell getContentLabelSizeForContent:[notification notificationTypeDescription]].height;
+    
+    
+    
     return finalHeight;
+}
+
++ (CGFloat)getMaxTitleLabelHeight
+{
+    return [[UIScreen mainScreen] bounds].size.width - 80;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

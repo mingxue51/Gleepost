@@ -18,11 +18,14 @@
 #import "NewPostViewController.h"
 #import "GLPPrivateProfileViewController.h"
 #import "ContactsManager.h"
+#import "GLPTableActivityIndicator.h"
 
 @interface GLPViewPendingPostViewController () <UITableViewDataSource, UITabBarDelegate, GLPPostCellDelegate, GLPImageViewDelegate, GLPLabelDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (assign, nonatomic) NSInteger selectedUserRemoteKey;
+@property (assign, nonatomic) BOOL postReadyToBeShown;
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 @end
 
@@ -33,6 +36,8 @@
     [super viewDidLoad];
     
     [self registerTableViewCells];
+    
+    [self initialiseObjects];
     
     [self selfLoadPendingPostIfNeeded];
     
@@ -63,6 +68,20 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"CommentTextCellView" bundle:nil] forCellReuseIdentifier:@"CommentTextCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"CommentTitleCellView" bundle:nil] forCellReuseIdentifier:@"CommentTitleCellView"];
+}
+
+- (void)initialiseObjects
+{
+    if(_pendingPost.content)
+    {
+        self.postReadyToBeShown = YES;
+    }
+    else
+    {
+        self.postReadyToBeShown = NO;
+    }
+    
+    _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorCenter withView:self.tableView];
 }
 
 - (void)configureNavigationBar
@@ -96,6 +115,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if(!_postReadyToBeShown)
+    {
+        //Add 1 in order to create another cell for post.
+        return 0;
+    }
+    
     if(self.pendingPost.reviewHistory && self.pendingPost.reviewHistory.count > 0)
     {
         GLPReviewHistory *rHistory = self.pendingPost.reviewHistory[0];
@@ -214,16 +239,18 @@
     
     if([self comesFromNotifications])
     {
-        //Load the post.
-        self.pendingPost.content = @"Loading...";
+        [_tableActivityIndicator startActivityIndicator];
         self.title = @"Loading...";
-        
         [GLPPostManager loadPostWithRemoteKey:self.pendingPost.remoteKey callback:^(BOOL success, GLPPost *post) {
+            
+            [_tableActivityIndicator stopActivityIndicator];
             
             self.title = @"VIEW POST";
             
             if(success)
             {
+                _postReadyToBeShown = YES;
+
                 self.pendingPost = post;
                 
                 self.pendingPost = [GLPPostManager setFakeKeyToPost:self.pendingPost];

@@ -246,4 +246,27 @@
     return indexPath;
 }
 
+- (BOOL)isEmpty
+{
+    NSInteger sectionsCount = _sections.count;
+    
+    if(sectionsCount == 0)
+    {
+        return YES;
+    }
+    
+    
+    for(NSUInteger i = 0; i < _sections.count; ++i)
+    {
+        NSArray *posts = [self postsAtSectionIndex:i];
+        
+        if(posts.count > 0)
+        {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
 @end

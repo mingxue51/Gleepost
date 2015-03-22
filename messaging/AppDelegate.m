@@ -35,7 +35,6 @@
 #import "NSNotificationCenter+Utils.h"
 #import "GLPPushManager.h"
 #import "GLPFacebookConnect.h"
-#import "GroupsViewController.h"
 #import "GroupViewController.h"
 #import "GLPPrivateProfileViewController.h"
 #import "GLPProfileViewController.h"
@@ -44,7 +43,9 @@
 #import "ViewPostViewController.h"
 #import "GLPPostManager.h"
 #import "AppearanceHelper.h"
+//TODO: Change to GLPMainGroupsViewController!
 #import "GLPGroupsViewController.h"
+#import "GLPMainGroupsViewController.h"
 #import "GroupViewController.h"
 #import "GLPPushNotification.h"
 #import "GLPiOSSupportHelper.h"
@@ -64,13 +65,15 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
+    NSString *storyBoardName = @"iphone_ipad";
+    
     [self setupLogging];
     [self setupGoogleAnalytics];
     [self setupFlurryAnalytics];
     [self setupPush];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyBoardName bundle:nil];
     
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
 
@@ -230,7 +233,7 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     DDLogInfo(@"Receive remote notification, current app state: %@", [GLPApplicationHelper applicationStateToString:application.applicationState]);
-    
+        
 //    pnTestVariable++;
 //    
 //
@@ -255,7 +258,9 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
         case kPNKindSendYouMessage:
             [self navigateToConversationWithPNNotification:pushNotification];
             break;
-            
+        case kPNKindSendYouGroupMessage:
+            [self navigateToGroupConversationWithPNNotification:pushNotification];
+            break;
         case kPNKindNewGroupPost:
         case kPNKindAddedYouToGroup:
             [self navigateToGroupPostWithPNNotification:pushNotification];
@@ -278,7 +283,6 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
             if(![pushNotification.version isEqualToString:actualVersion])
             {
                 [self navigateToGleepostApp];
-                
             }
         }
             break;
@@ -592,6 +596,46 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
     [navVC setViewControllers:@[messagesVC, conversationVC] animated:YES];
 }
 
+-(void)navigateToGroupConversationWithPNNotification:(GLPPushNotification *)pushNotification
+{
+    if(!_tabBarController) {
+        DDLogError(@"Cannot find tab bar VC, abort");
+        return;
+    }
+    
+    if(_tabBarController.selectedIndex != 2)
+    {
+        UINavigationController *currentNavigationVC = (UINavigationController *) _tabBarController.selectedViewController;
+        [currentNavigationVC popToRootViewControllerAnimated:NO];
+        [_tabBarController setSelectedIndex:2];
+        [_tabBarController resetGroupsBadge];
+    }
+    
+    DDLogInfo(@"Nav VC: %@", NSStringFromClass([_tabBarController.viewControllers[2] class]));
+    UINavigationController *navVC = _tabBarController.viewControllers[2];
+    
+    DDLogInfo(@"GroupsVC VC: %@", NSStringFromClass([navVC.viewControllers[0] class]));
+    GLPMainGroupsViewController *groupsVC = navVC.viewControllers[0];
+    
+    __block GroupViewController *groupVC = [_tabBarController.storyboard instantiateViewControllerWithIdentifier:@"GroupViewController"];
+    
+    //TODO: Replace this request by calling this method: loadAndNavigateToGroupWithGroupsVC. After fixing that method.
+    
+    [[WebClient sharedInstance] getGroupDescriptionWithId:[pushNotification.groupId integerValue] withCallbackBlock:^(BOOL success, GLPGroup *group, NSString *errormMessage){
+        
+        if(success)
+        {
+            groupVC.group = group;
+            groupVC.fromPushNotificationWithNewMessage = YES;
+            
+
+            
+            [navVC setViewControllers:@[groupsVC, groupVC] animated:NO];
+        }
+    }];
+    
+}
+
 # pragma mark - Handle custom URL Scheme (gleepost://)
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
@@ -651,7 +695,7 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
                         [WebClientHelper hideStandardLoaderForView:weakSelf.window.rootViewController.view];
                         
                         if (success) {
-                            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+                            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
                             UIViewController *initVC = [storyboard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
                             
                             weakSelf.window.rootViewController = initVC;

@@ -17,17 +17,25 @@
     if(self)
     {
         _participant = participant;
-        
         _messageRemoteKey = messageRemoteKey;
     }
     
     return self;
 }
 
+# pragma mark - Copy
+
+-(id)copyWithZone:(NSZone *)zone
+{
+    GLPConversationRead *object = [[self class] allocWithZone:zone];
+    object.participant = [_participant copyWithZone:zone];
+    object.messageRemoteKey = _messageRemoteKey;
+    return object;
+}
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"Participant %@, Message remote key %ld", _participant, (long)_messageRemoteKey];
+    return [NSString stringWithFormat:@"Participant name %@ - %d, Message remote key %ld", _participant.name, _participant.remoteKey, (long)_messageRemoteKey];
 }
 
 @end

@@ -80,9 +80,41 @@
     }
 }
 
+- (NSString *)generatePendingIdentifier
+{
+    return [NSString stringWithFormat:@"PENDING_%ld", (long)self.key];
+}
+
+- (BOOL)isEqual:(id)other
+{
+    GLPGroup *otherGroup = (GLPGroup *)other;
+    
+    if(self.remoteKey == 0 || otherGroup.remoteKey == 0)
+    {
+        DDLogDebug(@"GLPGroup : Remote Key equals zero");
+        
+        return [otherGroup key] == self.key;
+    }
+    
+    if(self.key == 0 || [otherGroup key] == 0)
+    {
+        return [otherGroup remoteKey] == self.remoteKey;
+    }
+    
+    return ([otherGroup remoteKey] == self.remoteKey || [otherGroup key] == self.key);
+}
+
+- (NSUInteger)hash
+{
+    return self.remoteKey;
+}
+
 -(NSString *)description
 {
-    return [NSString stringWithFormat:@"Name: %@, Key: %d, Remote key: %d, Url: %@, Description: %@, Privacy: %@", _name, _key, _remoteKey, _groupImageUrl, _groupDescription, [self privacyToString]];
+//    return [NSString stringWithFormat:@"Name: %@, Key: %d, Remote key: %d Description: %@, Privacy: %@, Logged in user: %@, Owner: %@", _name, _key, _remoteKey, _groupDescription, [self privacyToString], _loggedInUser.name, _author.name];
+    
+    return [NSString stringWithFormat:@"Name: %@, Key: %d, Remote key: %d", _name, _key, _remoteKey];
+
 }
 
 @end

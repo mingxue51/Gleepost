@@ -16,10 +16,12 @@
 + (void)loadInitialPostsWithLocalCallback:(void (^)(NSArray *localPosts))localCallback remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback;
 //+(void)loadRemotePostsForUserRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, NSArray *posts))callback;
 + (void)loadPostsWithRemoteKey:(NSInteger)remoteKey localCallback:(void (^) (NSArray *posts))localCallback remoteCallback:(void (^)(BOOL success, NSArray *posts))remoteCallback;
++ (void)loadPostsWithUsersRemoteKey:(NSInteger)usersRemoteKey afterPost:(GLPPost *)post remoteCallback:(void (^) (BOOL success, BOOL remain, NSArray *posts))remoteCallback;
 + (void)loadLocalPostsBefore:(GLPPost *)post callback:(void (^)(NSArray *posts))callback;
 + (void)loadRemotePostsBefore:(GLPPost *)post withNotUploadedPosts:(NSArray *)notUploadedPosts andCurrentPosts:(NSArray *)currentPosts callback:(void (^)(BOOL success, BOOL remain, NSArray *posts, NSArray *deletedPosts))callback;
 + (void)loadPreviousPostsAfter:(GLPPost *)post callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
 + (void)getAttendingEventsWithUsersRemoteKey:(NSInteger)userRemoteKey callback:(void (^) (BOOL success, NSArray *posts))callback;
++ (void)getAttendingEventsAfter:(GLPPost *)post withUserRemoteKey:(NSInteger)userRemoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callbackBlock;
 +(void)loadPostWithRemoteKey:(NSInteger)remoteKey callback:(void (^)(BOOL sucess, GLPPost* post))callback;
 + (void)searchForPendingVideoPostCallback:(void (^) (NSArray *videoPosts))callback;
 + (void)createLocalPost:(GLPPost*)post;
@@ -36,6 +38,5 @@
 + (void)updatePostAttending:(GLPPost*)post;
 + (void)updatePostPending:(GLPPost *)post;
 +(void)deletePostWithPost:(GLPPost *)post;
-+(void)addAttendingToEventPosts:(NSArray *)posts callback:(void (^) (BOOL success, NSArray* posts))callback;
 
 @end

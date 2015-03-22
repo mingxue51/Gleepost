@@ -11,6 +11,7 @@
 #import "UINavigationBar+Utils.h"
 #import "ShapeFormatterHelper.h"
 #import "UIView+GLPDesign.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface IntroNewGroupViewController ()
 
@@ -19,6 +20,11 @@
 @property IBOutlet UIView *secretGroupView;
 
 @property (assign, nonatomic) GroupPrivacy currentGroupPrivacy;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topDistanceFromTitle;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomDistanceFromTitle;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceBetweenFirstAndSecond;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceBetweenSecondAndThird;
+
 
 @end
 
@@ -27,12 +33,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self configNavigationBar];
-    
     [self configureViewsGestures];
-    
     [self formatViews];
+    [self configureViews];
 }
 
 - (void)configNavigationBar
@@ -68,6 +72,17 @@
     [_privateGroupView setGleepostStyleBorder];
     [_publicGroupView setGleepostStyleBorder];
     [_secretGroupView setGleepostStyleBorder];
+}
+
+- (void)configureViews
+{
+    if([GLPiOSSupportHelper useShortConstrains])
+    {
+        [_topDistanceFromTitle setConstant:5.0];
+        [_bottomDistanceFromTitle setConstant:5.0];
+        [_distanceBetweenFirstAndSecond setConstant:5.0];
+        [_distanceBetweenSecondAndThird setConstant:5.0];
+    }
 }
 
 #pragma mark - Selectors
@@ -124,9 +139,7 @@
 - (void)groupCreatedWithData:(GLPGroup *)group
 {
     //Dismiss view controller and send notification to the preview view. (groups view)
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_GROUP_CREATED object:nil userInfo:@{@"new group" : group}];
-    
+        
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

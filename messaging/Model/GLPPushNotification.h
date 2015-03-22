@@ -14,6 +14,7 @@ typedef NS_ENUM(NSUInteger, PNKind) {
     kPNKindLikedYourPost,
     kPNKindCommentedYourPost,
     kPNKindSendYouMessage,
+    kPNKindSendYouGroupMessage,
     kPNKindNewAppVersion,
     kPNKindPostApproved,
     kPNKindPostRejected,

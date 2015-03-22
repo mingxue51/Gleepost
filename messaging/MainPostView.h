@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GLPPost.h"
+#import "GLPLabel.h"
 
 @protocol MainPostViewDelegate <NSObject>
 
@@ -22,13 +23,11 @@
 
 @end
 
-@interface MainPostView : UIView <UIActionSheetDelegate>
+@interface MainPostView : UIView <UIActionSheetDelegate, GLPLabelDelegate>
 
 @property (assign, nonatomic) UITableViewCell <MainPostViewDelegate> *delegate;
 
 -(void)setElementsWithPost:(GLPPost *)post withViewPost:(BOOL)viewPost;
-
-//-(void)setNewHeightDependingOnLabelHeight:(float)height andIsViewPost:(BOOL)isViewPost;
 
 -(void)setHeightDependingOnLabelHeight:(float)height andIsViewPost:(BOOL)isViewPost;
 

@@ -26,6 +26,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *addSelectedButton;
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *buttonDistanceFromBottom;
 
 @end
 
@@ -231,7 +232,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
 {
     GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findOneToOneConversationWithParticipant:self.checkedUsers[0]];
     
-    DDLogInfo(@"Regular conversation for participant, conversation remote key: %d", conversation.remoteKey);
+    DDLogInfo(@"Regular conversation for participant, conversation remote key: %ld", (long)conversation.remoteKey);
     
     if(!conversation)
     {
@@ -252,7 +253,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
     //Create new conversation with users.
     GLPConversation *conversation = [[GLPLiveConversationsManager sharedInstance] findGroupConversationWithParticipants:checkedUsers];
     
-    DDLogInfo(@"Regular conversation with participants, conversation remote key: %d", conversation.remoteKey);
+    DDLogInfo(@"Regular conversation with participants, conversation remote key: %ld", (long)conversation.remoteKey);
     
     if(!conversation)
     {
@@ -307,7 +308,7 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
 {
     [_addSelectedButton setEnabled:YES];
  
-    [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@(%d)", FIXED_BUTTON_TITLE, self.checkedUsers.count] forState:UIControlStateNormal];
+    [_addSelectedButton setTitle:[NSString stringWithFormat:@"%@(%lu)", FIXED_BUTTON_TITLE, (unsigned long)self.checkedUsers.count] forState:UIControlStateNormal];
 }
 
 - (void)resetAndDisableButton
@@ -337,33 +338,18 @@ const NSString *FIXED_BUTTON_ONE_USER_TITLE = @"Begin conversation ";
     // Need to translate the bounds to account for rotation.
     keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
     
-    //Change the position of the button depending on the size of the keyboard.
-    float buttonYValue = [self findNewPositionOfTheButton:_addSelectedButton.frame withKeboardFrame:keyboardBounds];
-    
-    CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.size.height = buttonYValue - tableViewFrame.origin.y;
+    [_addSelectedButton layoutIfNeeded];
     
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
         
-        self.tableView.frame = tableViewFrame;
-        
-        CGRectSetY(_addSelectedButton, buttonYValue);
+        [_buttonDistanceFromBottom setConstant:keyboardBounds.size.height + 5];
+        [_addSelectedButton layoutIfNeeded];
         
     } completion:^(BOOL finished) {
         
         [self.tableView setNeedsLayout];
         
     }];
-}
-
-- (float)findNewPositionOfTheButton:(CGRect)buttonFrame withKeboardFrame:(CGRect)keyboardFrame
-{
-    float keyboardY = keyboardFrame.origin.y;
-    
-    //We are substracting with 125 because without it the position is wrong.
-    //So if we don't substract with that number the position of the button will be wrong.
-    
-    return keyboardY - buttonFrame.size.height - 5 - 125;
 }
 
 #pragma mark - Navigation

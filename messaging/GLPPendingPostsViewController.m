@@ -20,7 +20,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "GLPVideoLoaderManager.h"
 
-@interface GLPPendingPostsViewController () <UITableViewDataSource, UITableViewDelegate, GLPPostCellDelegate, NewCommentDelegate>
+@interface GLPPendingPostsViewController () <UITableViewDataSource, UITableViewDelegate, GLPPostCellDelegate, NewCommentDelegate, RemovePostCellDelegate, ViewImageDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) PendingPostsOrganiserHelper *pendingPostOrganiser;
@@ -223,8 +223,6 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    DDLogDebug(@"GLPPendingPostsViewController : section %d", section);
-    
     return [TableViewHelper generateHeaderViewWithTitle:[_pendingPostOrganiser headerInSection:section] andBottomLine:NO];
 }
 
@@ -361,6 +359,10 @@
     
     [_pendingPostOrganiser removePost:post];
     
+    [[GLPPendingPostsManager sharedInstance] removePendingPost:post];
+    
+    [self popViewControllerIfNeeded];
+    
     [self removeTableViewPostWithIndexPath:postIndexPath];
 }
 
@@ -467,6 +469,14 @@
         GLPViewPendingPostViewController *viewPendingPostVC = segue.destinationViewController;
         viewPendingPostVC.pendingPost = self.selectedPost;
      }
+}
+
+- (void)popViewControllerIfNeeded
+{
+    if([_pendingPostOrganiser isEmpty])
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 

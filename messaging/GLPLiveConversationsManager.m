@@ -12,6 +12,7 @@
 #import "NSNotificationCenter+Utils.h"
 #import "NSMutableArray+QueueAdditions.h"
 #import "SessionManager.h"
+#import "GLPReadReceiptsManager.h"
 
 @interface GLPLiveConversationsManager()
 
@@ -93,6 +94,8 @@ static GLPLiveConversationsManager *instance = nil;
         
         if(success)
         {
+            [self setUnreadMessageInConversationIfExist:conversations];
+            
             //Save in local database.
             [ConversationManager initialSaveConversationsToDatabase:conversations];
         }
@@ -119,6 +122,37 @@ static GLPLiveConversationsManager *instance = nil;
             [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
         });
     }];
+}
+
+/**
+ If there is a new message sets unread messages in conversations and sends an NSNotification
+ to update the messenger tab bar badge.
+ 
+ @param updatedConversations
+ */
+- (void)setUnreadMessageInConversationIfExist:(NSArray *)updatedConversations
+{
+    NSInteger newConversationsCount = 0;
+    
+    for(GLPConversation *conversation in updatedConversations)
+    {
+        NSNumber *index = [NSNumber numberWithInteger:conversation.remoteKey];
+        
+        // do not add twice the same conversation
+        if(_conversations[index])
+        {
+            GLPConversation *existedConversation = _conversations[index];
+            
+            if([existedConversation setUnreadMessageWithUpdatedConversation:conversation])
+            {
+                ++newConversationsCount;
+            }
+        }
+    }
+    
+    NSDictionary *args = @{@"conversationsCount":@(newConversationsCount)};
+    //Set the number of conversations in tab bar.
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CONVERSATION_COUNT object:nil userInfo:args];
 }
 
 - (void)createRandomConversation:(void (^)(GLPConversation *conversation))callback
@@ -601,42 +635,42 @@ static GLPLiveConversationsManager *instance = nil;
 
 
 // BOTH REGULAR AND RANDOM SO FAR
-- (GLPConversation *)findRegularByParticipant:(GLPUser *)participant
-{
-    DDLogInfo(@"Find regular conversation by participant %d - %@", participant.remoteKey, participant.name);
-    
-    __block GLPConversation *conversation = nil;
-    
-    dispatch_sync(_queue, ^{
-        
-        NSArray *filteredArray = [[_conversations allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
-            
-            GLPConversation *attachedConversation = evaluatedObject;
-            
-//            if(attachedConversation.isLive) {
-//                return NO;
-//            }
-            
-            GLPUser *attachedParticipant = [attachedConversation.participants firstObject];
-            
-            DDLogDebug(@"Attached participants: %@", attachedConversation.participants);
-            
-            
-            return attachedParticipant.remoteKey == participant.remoteKey;
-        }]];
-        
-        DDLogInfo(@"Filtered array: %@", filteredArray);
-        
-        if(filteredArray.count == 0) {
-            DDLogInfo(@"Cannot found regular conversation that matches");
-            return;
-        }
-        
-        conversation = filteredArray[0];
-    });
-    
-    return conversation;
-}
+//- (GLPConversation *)findRegularByParticipant:(GLPUser *)participant
+//{
+//    DDLogInfo(@"Find regular conversation by participant %d - %@", participant.remoteKey, participant.name);
+//    
+//    __block GLPConversation *conversation = nil;
+//    
+//    dispatch_sync(_queue, ^{
+//        
+//        NSArray *filteredArray = [[_conversations allValues] filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+//            
+//            GLPConversation *attachedConversation = evaluatedObject;
+//            
+////            if(attachedConversation.isLive) {
+////                return NO;
+////            }
+//            
+//            GLPUser *attachedParticipant = [attachedConversation.participants firstObject];
+//            
+//            DDLogDebug(@"Attached participants: %@", attachedConversation.participants);
+//            
+//            
+//            return attachedParticipant.remoteKey == participant.remoteKey;
+//        }]];
+//        
+//        DDLogInfo(@"Filtered array: %@", filteredArray);
+//        
+//        if(filteredArray.count == 0) {
+//            DDLogInfo(@"Cannot found regular conversation that matches");
+//            return;
+//        }
+//        
+//        conversation = filteredArray[0];
+//    });
+//    
+//    return conversation;
+//}
 
 - (GLPConversation *)findOneToOneConversationWithParticipant:(GLPUser *)participant
 {
@@ -863,13 +897,23 @@ static GLPLiveConversationsManager *instance = nil;
     return res;
 }
 
+#pragma mark - Read / Receipts
+
+//NOT USED.
+- (void)addReadReceiptWebSocketEvent:(GLPWebSocketEvent *)webSockectEvent
+{
+    [[GLPReadReceiptsManager sharedInstance] addReadReceiptWithWebSocketEvent:webSockectEvent];
+}
+
 # pragma mark - Conversations database
 
 - (void)loadConversationsFromDatabase
 {
-    DDLogInfo(@"Load local conversations");
     
     NSArray *localConversations = [ConversationManager loadLocalRegularConversations];
+    
+    DDLogInfo(@"GLPLiveConversationManager : loadConversationsFromDatabase %@", localConversations);
+
     
     dispatch_async(_queue, ^{
         
@@ -1222,6 +1266,10 @@ static GLPLiveConversationsManager *instance = nil;
         conversation.hasUnreadMessages = YES;
         
         DDLogInfo(@"Notify new messages");
+        
+        //WARNING: The canHaveMorePreviousMessages was NO before. But that was causing an issue where
+        //the user was unable to load previous messages after he sent a message.
+        //Update retrieved to the old attribute.
         [self internalNotifyConversation:conversation withNewMessages:YES beingPreviousMessages:NO canHaveMorePreviousMessages:NO];
     });
 }
@@ -1289,7 +1337,7 @@ static GLPLiveConversationsManager *instance = nil;
         }
         
         DDLogInfo(@"Local message update completed, with sent status: %@", sentLog);
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil userInfo:@{@"key": [NSNumber numberWithInteger:message.key], @"sent":[NSNumber numberWithBool:sent]}];
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil userInfo:@{@"key": [NSNumber numberWithInteger:message.key], @"remote_key": [NSNumber numberWithInteger:message.remoteKey], @"sent":[NSNumber numberWithBool:sent]}];
     });
 }
 
@@ -1328,6 +1376,11 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (void)markConversation:(GLPConversation *)conversation upToTheLastMessageAsRead:(GLPMessage *)lastMessage
 {
+    if(lastMessage.remoteKey == 0)
+    {
+        return;
+    }
+    
     DDLogInfo(@"Mark message %@ as read.", lastMessage.content);
     
     [[WebClient sharedInstance] markConversationWithRemoteKeyAsRead:conversation.remoteKey upToMessageWithRemoteKey:lastMessage.remoteKey callback:^(BOOL success) {
@@ -1534,6 +1587,9 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (void)internalNotifyConversationHasNewLocalMessages:(GLPConversation *)conversation
 {
+    //WARNING: The canHaveMorePreviousMessages was NO before. But that was causing an issue where
+    //the user was unable to load previous messages after he sent a message.
+    //Update retrieved to the old attribute.
     [self internalNotifyConversation:conversation
                          newMessages:YES
                beingPreviousMessages:NO
@@ -1558,7 +1614,8 @@ static GLPLiveConversationsManager *instance = nil;
                            @"newMessages": [NSNumber numberWithBool:newMessages],
                            @"previousMessages": [NSNumber numberWithBool:previousMessages],
                            @"canHaveMorePreviousMessages": [NSNumber numberWithBool:canHaveMorePreviousMessages],
-                           @"newLocalMessage": [NSNumber numberWithBool:newLocalMessage]};
+                           @"newLocalMessage": [NSNumber numberWithBool:newLocalMessage],
+                           @"belongsToGroup" : @(NO)};
     
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil userInfo:args];
 }

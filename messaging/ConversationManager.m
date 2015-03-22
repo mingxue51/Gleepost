@@ -23,6 +23,8 @@
 #import "GLPUserDao.h"
 #import "NSNotificationCenter+Utils.h"
 #import "GLPMessageProcessor.h"
+#import "GLPLiveGroupConversationsManager.h"
+#import "GLPReadReceiptsManager.h"
 
 @implementation ConversationManager
 
@@ -33,15 +35,24 @@ int const NumberMaxOfMessagesLoaded = 20;
 + (NSArray *)loadLocalRegularConversations
 {
     __block NSArray *conversations = nil;
-//    [DatabaseManager run:^(FMDatabase *db) {
-//        conversations = [GLPConversationDao findConversationsOrderByDateInDb:db];
-//    }];
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        conversations = [GLPConversationDao findConversationsOrderByDateInDb:db];
+        conversations = [GLPConversationDao findMessengerConversationsOrderByDateInDb:db];
     }];
     
+    return conversations;
+}
 
++ (NSArray *)loadLocalGroupConversations
+{
+    __block NSArray *conversations = nil;
+    
+    //+ (NSArray *)findGroupsConversationsOrderByDateInDb:(FMDatabase *)db
+
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        conversations = [GLPConversationDao findGroupsConversationsOrderByDateInDb:db];
+    }];
+    
     return conversations;
 }
 
@@ -54,11 +65,18 @@ int const NumberMaxOfMessagesLoaded = 20;
     }];
 }
 
++ (void)saveOrUpdateReadWithReadReceipt:(GLPReadReceipt *)readReceipt
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        [GLPConversationDao saveReadReceiptIfNotExist:readReceipt db:db];
+        
+    }];
+}
+
 + (void)initialSaveConversationsToDatabase:(NSArray *)conversations
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-                
-        [GLPConversationDao deleteAllNormalConversationsInDb:db];
 
         for(GLPConversation *conversation in conversations)
         {
@@ -480,14 +498,23 @@ int const NumberMaxOfMessagesLoaded = 20;
     DDLogInfo(@"Create message with content %@", content);
     
     __block GLPMessage *message = [[GLPMessage alloc] init];
-    message.content = content;
+    message.content = [ConversationManager removeLastNewLinesFromContent:content];
     message.conversation = conversation;
     message.date = [NSDate dateInUTC];
     message.author = [SessionManager sharedInstance].user;
     message.sendStatus = kSendStatusLocal;
     message.seen = YES;
     
-    [[GLPLiveConversationsManager sharedInstance] addLocalMessageToConversation:message];
+    if(conversation.groupRemoteKey == 0)
+    {
+        [[GLPLiveConversationsManager sharedInstance] addLocalMessageToConversation:message];
+    }
+    else
+    {
+        message.belongsToGroup = YES;
+        [[GLPLiveGroupConversationsManager sharedInstance] addLocalMessageToConversation:message];
+    }
+    
     
     // post message to server
     [[GLPMessageProcessor sharedInstance] processLocalMessage:message];
@@ -502,9 +529,11 @@ int const NumberMaxOfMessagesLoaded = 20;
 //            [GLPConversationDao updateConversationLastUpdateAndLastMessage:conversation db:db];
 //        }];
 //    }
+}
 
-    
-
++ (NSString *)removeLastNewLinesFromContent:(NSString *)content
+{
+    return [content stringByTrimmingCharactersInSet: [NSCharacterSet newlineCharacterSet]];
 }
 
 //+ (void)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation localCallback:(void (^)(GLPMessage *localMessage))localCallback
@@ -711,21 +740,32 @@ int const NumberMaxOfMessagesLoaded = 20;
 // Executed in background, from GLPNewMessageProcessorOperation
 + (void)sendMessage:(GLPMessage *)message
 {
-    DDLogInfo(@"Post message %@ to server, with key: %d", message.content, message.key);
+    DDLogInfo(@"Post message %@ to server, with key: %ld", message.content, (long)message.key);
     
     [[WebClient sharedInstance] createMessageSynchronously:message callback:^(BOOL success, NSInteger remoteKey) {
-        DDLogInfo(@"Message with key %d posted to server. Success: %d. New remote key: %d", message.key, success, remoteKey);
+        DDLogInfo(@"Message with key %ld posted to server. Success: %d. New remote key: %ld", (long)message.key, success, (long)remoteKey);
         
         if(success) {
             message.remoteKey = remoteKey;
             message.sendStatus = kSendStatusSent;
             
+            //We are not removing and read receipt entry because is removed after a new message
+            //is received.
+            
+//            [[GLPReadReceiptsManager sharedInstance] removeReadReceiptWithConversationRemoteKey:message.conversation.remoteKey];
             
         } else {
             message.sendStatus = kSendStatusFailure;
         }
         
-        [[GLPLiveConversationsManager sharedInstance] updateLocalMessageAfterSending:message];
+        if(message.belongsToGroup)
+        {
+            [[GLPLiveGroupConversationsManager sharedInstance] updateLocalMessageAfterSending:message];
+        }
+        else
+        {
+            [[GLPLiveConversationsManager sharedInstance] updateLocalMessageAfterSending:message];
+        }
     }];
 }
 

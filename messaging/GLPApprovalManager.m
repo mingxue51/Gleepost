@@ -49,6 +49,56 @@ static GLPApprovalManager *instance = nil;
     return self.currentApproveLevel.approveLevel;
 }
 
+/**
+ Checks the approval level and the kind of post user already selected.
+ If the kind of post needs to be approved this method returns YES, otherwise NO.
+ */
+- (BOOL)shouldPostBeVisible:(GLPPost *)post
+{
+    if([post isGroupPost])
+    {
+        return YES;
+    }
+    else
+    {
+        switch (self.currentApprovalLevel)
+        {
+            case kNone:
+                DDLogInfo(@"NewPostViewController : Approval level off.");
+                return YES;
+                break;
+                
+            case kOnlyParties:
+                if([post isParty])
+                {
+                    DDLogInfo(@"NewPostViewController : Approval level on parties.");
+                    return NO;
+                }
+                else
+                {
+                    return YES;
+                }
+                break;
+                
+            case kAllEvents:
+                DDLogInfo(@"NewPostViewController : Approval level on all events.");
+                return ![post isEvent];
+                break;
+                
+            case kAll:
+                DDLogInfo(@"NewPostViewController : Approval level on all posts.");
+                return NO;
+                break;
+                
+            default:
+                break;
+        }
+        
+    }
+    
+    return NO;
+}
+
 #pragma mark - Client
 
 - (void)reloadApprovalLevel

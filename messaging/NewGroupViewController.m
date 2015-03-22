@@ -14,6 +14,7 @@
 #import "UINavigationBar+Utils.h"
 #import "UIView+GLPDesign.h"
 #import "ShapeFormatterHelper.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface NewGroupViewController ()
 
@@ -45,7 +46,6 @@
 
 @property (strong, nonatomic) UIImage *groupImage;
 @property (weak, nonatomic) IBOutlet UIButton *addImageBtn;
-@property (strong, nonatomic) FDTakeController *fdTakeController;
 @property (strong, nonatomic) UIProgressView *progress;
 
 @property (strong, nonatomic) NSDate *timestamp;
@@ -53,6 +53,10 @@
 @property (strong, nonatomic) NSDictionary *groupTypes;
 
 @property (strong, nonatomic) NSDictionary *selectedGroupType;
+
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewHeight;
+
 
 
 @end
@@ -66,8 +70,6 @@
     
     [self configureTextView];
     
-    [self configureFDTakeController];
-    
     [self configureGesturesOnViews];
     
     [self formatViews];
@@ -78,16 +80,35 @@
     
     [self setDataToGroupViews];
 
-    
+    [self configureViews];
 
-    if(!IS_IPHONE_5) {
-        CGFloat offset = -25;
-//        CGRectMoveY(_groupDescriptionTextView, offset);
-        CGRectAddH(_groupDescriptionTextView, offset);
-
-    }
+//    if(!IS_IPHONE_5) {
+//        CGFloat offset = -25;
+////        CGRectMoveY(_groupDescriptionTextView, offset);
+//        CGRectAddH(_groupDescriptionTextView, offset);
+//
+//    }
 }
 
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    
+    [_groupNameTextField resignFirstResponder];
+    
+    [_groupDescriptionTextView resignFirstResponder];
+    return YES;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if([text isEqualToString:@"\n"])
+    {
+        [_groupDescriptionTextView resignFirstResponder];
+        
+        return NO;
+    }
+    
+    return YES;
+}
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -139,11 +160,12 @@
     [ShapeFormatterHelper setTwoLeftCornerRadius:_selectedImageView withViewFrame:_selectedImageView.frame withValue:4];
 }
 
--(void)configureFDTakeController
+- (void)configureViews
 {
-    self.fdTakeController = [[FDTakeController alloc] init];
-    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
-    self.fdTakeController.delegate = self;
+    if([GLPiOSSupportHelper useShortConstrains])
+    {
+        [_mainViewHeight setConstant:50.0];
+    }
 }
 
 - (void)configureNotifications
@@ -252,22 +274,20 @@
 
 #pragma mark - Selectors
 
-- (IBAction)dismissModalView:(id)sender
+- (void)dismissModalView:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)createNewGroup:(id)sender
+- (void)createNewGroup:(id)sender
 {
     GLPGroup *group = [[GLPGroup alloc] init];
-    
     
     if(![self isInformationInBounds])
     {
         [WebClientHelper showOutOfBoundsError];
         return;
     }
-    
     
     if ([self isInformationValid])
     {
@@ -278,26 +298,22 @@
             group.groupDescription = _groupDescriptionTextView.text;
         }
         
-        DDLogDebug(@"FINAL Group type: %d", _groupType);
-        
         group.privacy = _groupType;
-        
-        [[GroupOperationManager sharedInstance] setGroup:group withTimestamp:_timestamp];
         
         group.pendingImage = _groupImage;
         
-        [_delegate groupCreatedWithData:group];
+        [[GroupOperationManager sharedInstance] setGroup:group withTimestamp:_timestamp];
+        
+        
+        DDLogDebug(@"FINAL Group type: %u and key %ld", _groupType, (long)group.key);
 
+        [_delegate groupCreatedWithData:group];
     }
     else
     {
         [WebClientHelper showEmptyTextError];
     }
     
-}
-- (IBAction)addImage:(id)sender
-{
-    [self.fdTakeController takePhotoOrChooseFromLibrary];
 }
 
 - (void)dropDownList
@@ -396,30 +412,6 @@
     }];
 }
 
-#pragma mark - FDTakeController delegate
-
-- (void)takeController:(FDTakeController *)controller gotPhoto:(UIImage *)photo withInfo:(NSDictionary *)inDict
-{
-    
-    [[self.addImageBtn imageView] setContentMode: UIViewContentModeScaleAspectFill];
-    
-    [self.addImageBtn setImage:photo forState:UIControlStateNormal];
-    
-//    _hasImage = YES;
-    
-    _groupImage = photo;
-    
-    
-    _timestamp = [NSDate date];
-    
-    //Add image to image uploader to start the uploading.
-    [[GroupOperationManager sharedInstance] uploadImage:_groupImage withTimestamp:_timestamp];
-    
-        
-//    [_postUploader uploadImageToQueue:self.imgToUpload];
-    //[_postUploader startUploadingImage:self.imgToUpload];
-}
-
 #pragma mark - ImageSelectorViewControllerDelegate
 
 - (void)takeImage:(UIImage *)image
@@ -458,16 +450,12 @@
     
     float newHeightOfMainView = [self findNewHeightForTheCentralViewWithKeboardFrame:keyboardBounds];
     
-    DDLogDebug(@"Keyboard will show new %f, old %f", newHeightOfMainView, _mainView.frame.size.height);
-    
     float newYSelectImageView = [self findNewYOfSelectImageViewWithKeyboardFrame:keyboardBounds];
-    
-    DDLogDebug(@"Y select image view old %f, new %f", _selectImageView.frame.origin.y, newYSelectImageView);
-    
+        
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
         
-        CGRectSetH(_mainView, newHeightOfMainView);
-        CGRectSetY(_selectImageView, newYSelectImageView);
+//        CGRectSetH(_mainView, newHeightOfMainView);
+//        CGRectSetY(_selectImageView, newYSelectImageView);
         
     } completion:^(BOOL finished) {
         

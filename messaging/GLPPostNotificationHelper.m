@@ -13,14 +13,14 @@
 
 @implementation GLPPostNotificationHelper
 
-+(int)parseNotification:(NSNotification*)notification withPostsArray:(NSArray*)posts
++ (NSInteger)parseNotification:(NSNotification *)notification withPostsArray:(NSArray *)posts
 {
     NSDictionary *dict = [notification userInfo];
     NSNumber *remoteKey = [dict objectForKey:@"RemoteKey"];
     NSNumber *numberOfComments = [dict objectForKey:@"NumberOfComments"];
     NSNumber *numberOfLikes = [dict objectForKey:@"NumberOfLikes"];
     
-    int index = 0;
+    NSInteger index = 0;
     
     GLPPost *currentPost = nil;
     
@@ -38,11 +38,11 @@
     
     if(currentPost == nil)
     {
-        return -1;
+        return NSNotFound;
     }
     
-    currentPost.commentsCount = [numberOfComments intValue];
-    currentPost.likes = [numberOfLikes intValue];
+    currentPost.commentsCount = [numberOfComments integerValue];
+    currentPost.likes = [numberOfLikes integerValue];
     
     return index;
 }
@@ -89,6 +89,7 @@
     NSDictionary *dict = [notification userInfo];
     NSNumber *remoteKey = [dict objectForKey:@"RemoteKey"];
     NSNumber *liked = [dict objectForKey:@"Liked"];
+    
     int index = 0;
     
     GLPPost *currentPost = nil;
@@ -269,9 +270,6 @@
     
     for(GLPPost *p in posts)
     {
-        
-        DDLogDebug(@"Post rKey: %ld", (long)p.remoteKey);
-        
         if(p.remoteKey == remoteKey)
         {
             return index;

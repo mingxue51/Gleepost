@@ -36,6 +36,7 @@
 - (NSString *)generateNSNotificationUploadFinshedNameForPendingPost;
 
 - (void)addNewPendingPost:(GLPPost *)pendingPost;
+- (void)updateNewPendingPostInEditMode:(GLPPost *)pendingPost;
 - (void)updatePendingPostAfterEdit:(GLPPost *)pendingPost;
 - (void)updatePendingPostBeforeEdit:(GLPPost *)pendingPost;
 - (void)removePendingPost:(GLPPost *)pendingPost;

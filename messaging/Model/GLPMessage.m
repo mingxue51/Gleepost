@@ -1,11 +1,6 @@
 #import "GLPMessage.h"
 #import "GLPUser.h"
 
-@interface GLPMessage ()
-
-@end
-
-
 @implementation GLPMessage
 
 @synthesize seen = _seen;
@@ -26,16 +21,17 @@
     // default values
     _isOld = NO;
     _sendStatus = kSendStatusLocal;
-    
+    _belongsToGroup = NO;
     return self;
 }
+
 
 - (BOOL)followsPreviousMessage:(GLPMessage *)message
 {    
     NSTimeInterval interval = [_date timeIntervalSinceDate:message.date];
     
-    //If the interval is more than five minutes then return YES, otherwise NO.
-    if(interval > 300)
+    //If the interval is more than fifteen minutes then return NO, otherwise YES.
+    if(interval > 900)
     {
         return NO;
     }
@@ -57,7 +53,7 @@
     message.date = [_date copyWithZone:zone];
     message.author = _author;
     message.conversation = _conversation;
-    
+    message.belongsToGroup = _belongsToGroup;
     
     return message;
 }

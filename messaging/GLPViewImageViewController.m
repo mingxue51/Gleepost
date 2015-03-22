@@ -14,7 +14,8 @@
 
 //@property (weak, nonatomic) IBOutlet GLPViewImageScrollView *scrollView;
 
-@property (weak, nonatomic) IBOutlet UIView *mainView;
+//@property (weak, nonatomic) IBOutlet UIView *mainView;
+@property (weak, nonatomic) IBOutlet GLPViewImageScrollView *scrollView;
 
 @end
 
@@ -79,11 +80,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    GLPViewImageScrollView *scrollView = [[GLPViewImageScrollView alloc] initWithFrame:self.mainView.bounds];
+//    GLPViewImageScrollView *scrollView = [[GLPViewImageScrollView alloc] initWithFrame:self.mainView.bounds];
     
-    [scrollView setImage:_image];
+    [_scrollView setImage:_image];
     
-    [self.mainView addSubview:scrollView];
+//    [self.mainView addSubview:scrollView];
 
 }
 

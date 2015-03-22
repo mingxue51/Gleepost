@@ -43,7 +43,9 @@
 @property (assign, nonatomic) int popularity;
 @property (assign, nonatomic) NSInteger attendees;
 @property (assign, nonatomic) BOOL attended;
-@property (assign, nonatomic, getter=isPending) BOOL pending;
+@property (assign, nonatomic) NSInteger viewsCount;
+//@property (assign, nonatomic, getter=isPending) BOOL pending;
+@property (assign, nonatomic, getter=isPendingInEditMode) BOOL pendingInEditMode;
 
 //In case post has group information.
 @property (strong, nonatomic) GLPGroup *group;
@@ -53,6 +55,8 @@
 -(BOOL)imagePost;
 -(BOOL)isGroupPost;
 -(BOOL)isVideoPost;
+- (BOOL)isParty;
+- (BOOL)isEvent;
 - (void)updatePostWithNewPost:(GLPPost *)newPost;
 - (Action)pendingPostStatus;
 - (NSDate *)generateDateEventEnds;

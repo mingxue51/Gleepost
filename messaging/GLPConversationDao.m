@@ -14,8 +14,11 @@
 #import "SessionManager.h"
 #import "FMDatabaseAdditions.h"
 #import "GLPConversationRead.h"
+#import "GLPReadReceipt.h"
 
 @implementation GLPConversationDao
+
+#pragma mark - Find methods
 
 + (GLPConversation *)findByRemoteKey:(NSInteger)remoteKey db:(FMDatabase *)db
 {
@@ -39,9 +42,22 @@
     return [GLPConversationDaoParser createFromResultSet:resultSet inDb:db];
 }
 
-+ (NSArray *)findConversationsOrderByDateInDb:(FMDatabase *)db;
++ (NSArray *)findMessengerConversationsOrderByDateInDb:(FMDatabase *)db;
 {
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations order by lastUpdate DESC"];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations where group_remote_key = 0 order by lastUpdate DESC"];
+    
+    NSMutableArray *result = [NSMutableArray array];
+    
+    while ([resultSet next]) {
+        [result addObject:[GLPConversationDaoParser createFromResultSet:resultSet inDb:db]];
+    }
+    
+    return result;
+}
+
++ (NSArray *)findGroupsConversationsOrderByDateInDb:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations where group_remote_key != 0 order by lastUpdate DESC"];
     
     NSMutableArray *result = [NSMutableArray array];
     
@@ -71,6 +87,19 @@
     return result;
 }
 
++ (BOOL)doesReadReceipt:(GLPReadReceipt *)readReceipt existsInDb:(FMDatabase *)db
+{
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from conversations_reads where conversation_remote_key=%d AND participant_remote_key=%d limit 1", [readReceipt getConversationRemoteKey], [readReceipt getLastUser].remoteKey];
+    
+    if(![resultSet next]) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+#pragma mark - Save methods
+
 + (void)save:(GLPConversation *)entity db:(FMDatabase *)db
 {
     // save the users that does not exist
@@ -99,7 +128,7 @@
     NSString *participants = [keys componentsJoinedByString:@";"];
 
     
-    [db executeUpdateWithFormat:@"insert into conversations (remoteKey, lastMessage, lastUpdate, title, participants_keys, unread, isGroup, isLive) values(%d, %@, %d, %@, %@, %d, %d, %d)",
+    [db executeUpdateWithFormat:@"insert into conversations (remoteKey, lastMessage, lastUpdate, title, participants_keys, unread, isGroup, isLive, group_remote_key) values(%d, %@, %d, %@, %@, %d, %d, %d, %d)",
      entity.remoteKey,
      entity.lastMessage,
      date,
@@ -107,17 +136,31 @@
      participants,
      entity.hasUnreadMessages,
      entity.isGroup,
-     entity.isLive];
+     entity.isLive,
+     entity.groupRemoteKey];
     
     entity.key = [db lastInsertRowId];
     
-    for(GLPConversationRead *conversationRead in entity.reads)
+    [GLPConversationDao saveConversationReads:entity withDb:db];
+}
+
++ (void)saveConversationReads:(GLPConversation *)conversation withDb:(FMDatabase *)db
+{
+    for(GLPConversationRead *conversationRead in conversation.reads)
     {
         [db executeUpdateWithFormat:@"insert into conversations_reads (conversation_remote_key, participant_remote_key, message_read_remote_key) values(%d, %d, %d)",
-         entity.remoteKey,
+         conversation.remoteKey,
          conversationRead.participant.remoteKey,
          conversationRead.messageRemoteKey];
     }
+}
+
++ (void)saveRead:(GLPReadReceipt *)readReceipt db:(FMDatabase *)db
+{
+    [db executeUpdateWithFormat:@"insert into conversations_reads (conversation_remote_key, participant_remote_key, message_read_remote_key) values(%d, %d, %d)",
+     [readReceipt getConversationRemoteKey],
+     [readReceipt  getLastUser].remoteKey,
+     [readReceipt getMesssageRemoteKey]];
 }
 
 
@@ -149,47 +192,35 @@
         [keys addObject:[NSNumber numberWithInt:key]];
     }
     
-    int date = [entity.lastUpdate timeIntervalSince1970];
-    
-    //    NSArray *keys = [entity.participants valueForKeyPath:@"key"];
-    NSString *participants = [keys componentsJoinedByString:@";"];
-    
-    
     GLPConversation *conv = [GLPConversationDao findByRemoteKey:entity.remoteKey db:db];
 
     if(conv == nil)
     {
         //Conversation doesn't exist, add conversation.
-        
-        [db executeUpdateWithFormat:@"insert into conversations (remoteKey, lastMessage, lastUpdate, title, participants_keys, unread, isGroup, isLive) values(%d, %@, %d, %@, %@, %d, %d, %d)",
-         entity.remoteKey,
-         entity.lastMessage,
-         date,
-         entity.title,
-         participants,
-         entity.hasUnreadMessages,
-         entity.isGroup,
-         entity.isLive];
-        
-        entity.key = [db lastInsertRowId];
-        
-        for(GLPConversationRead *conversationRead in entity.reads)
-        {
-            [db executeUpdateWithFormat:@"insert into conversations_reads (conversation_remote_key, participant_remote_key, message_read_remote_key) values(%d, %d, %d)",
-             entity.remoteKey,
-             conversationRead.participant.remoteKey,
-             conversationRead.messageRemoteKey];
-        }
+        [GLPConversationDao save:entity db:db];
     }
     else
     {
         entity.key = conv.key;
 
         //Update conversation.
-        [GLPConversationDao updateConversationLastUpdateAndLastMessage:entity db:db];
+        [GLPConversationDao update:entity db:db];
     }
 }
 
++ (void)saveReadReceiptIfNotExist:(GLPReadReceipt *)readReceipt db:(FMDatabase *)db
+{
+    if([GLPConversationDao doesReadReceipt:readReceipt existsInDb:db])
+    {
+        [GLPConversationDao updateRead:readReceipt db:db];
+    }
+    else
+    {
+        [GLPConversationDao saveRead:readReceipt db:db];
+    }
+}
+
+#pragma mark - Update methods
 
 + (void)update:(GLPConversation *)entity db:(FMDatabase *)db
 {
@@ -212,9 +243,11 @@
 {
     NSAssert(entity.key != 0, @"Cannot update entity without key");
     
+    int lastUpdate = [entity.lastUpdate timeIntervalSince1970];
+    
     [db executeUpdateWithFormat:@"update conversations set lastMessage=%@, lastUpdate=%d where key=%d",
      entity.lastMessage,
-     entity.lastUpdate,
+     lastUpdate,
      entity.key];
 }
 
@@ -237,6 +270,13 @@
         [db executeUpdateWithFormat:@"update conversations_reads set message_read_remote_key=%d where conversation_remote_key=%d AND participant_remote_key=%d", read.messageRemoteKey, entity.remoteKey, read.participant.remoteKey];
     }
 }
+
++ (void)updateRead:(GLPReadReceipt *)readReceipt db:(FMDatabase *)db
+{
+    [db executeUpdateWithFormat:@"update conversations_reads set message_read_remote_key=%d where conversation_remote_key=%d AND participant_remote_key=%d", [readReceipt getMesssageRemoteKey], [readReceipt getConversationRemoteKey], [readReceipt getLastUser].remoteKey];
+}
+
+#pragma mark - Delete methods
 
 + (void)deleteConversationWithRemoteKey:(NSInteger)conversationRemoteKey db:(FMDatabase *)db
 {

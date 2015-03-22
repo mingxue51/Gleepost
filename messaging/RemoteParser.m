@@ -17,6 +17,7 @@
 #import "GLPMember.h"
 #import "GLPConversationRead.h"
 #import "GLPReviewHistory.h"
+#import "GLPSystemMessage.h"
 
 @interface RemoteParser()
 
@@ -130,7 +131,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         
         post.reviewHistory = [RemoteParser parseReviewHistories:postJson[@"review_history"]];
         
-        post.pending = YES;
+        post.pendingInEditMode = YES;
         
         post.sendStatus = kSendStatusSent;
         
@@ -200,10 +201,11 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         [participants addObject:user];
     }
     
-    if(participants.count < 2) {
-        DDLogError(@"Ignore conversation that does not contain at least 2 participants");
-        return nil;
-    }
+    //That is removed because there is a possibility of one participant in a group's conversation.
+//    if(participants.count < 2) {
+//        DDLogError(@"Ignore conversation that does not contain at least 2 participants");
+//        return nil;
+//    }
     
     GLPConversation *conversation;
     
@@ -214,6 +216,11 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         BOOL ended = [expiry[@"ended"] boolValue];
         conversation = [[GLPConversation alloc] initWithParticipants:participants expiryDate:expiryDate ended:ended];
     }
+    else if(json[@"group"])
+    {
+        //group's conversation.
+        conversation = [[GLPConversation alloc] initGroupsConversationWithParticipants:participants];
+    }
     // normal conversation
     else {
         conversation = [[GLPConversation alloc] initWithParticipants:participants];
@@ -223,13 +230,15 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
         GLPMessage *message = [RemoteParser parseMessageFromJson:json[@"mostRecentMessage"] forConversation:nil];
-        conversation.lastMessage = message.content;
+        conversation.lastMessage = ([message isKindOfClass:[GLPSystemMessage class]]) ? [(GLPSystemMessage *)message systemContent] : message.content;
     }
     
     conversation.lastUpdate = [RemoteParser parseDateFromString:json[@"lastActivity"]];
     
     //Parse last read for participants.
     [conversation setReads: [RemoteParser parseLastRead:json[@"read"] withParticipants:participants]];
+    
+    conversation.groupRemoteKey = [json[@"group"] integerValue];
     
     return conversation;
 }
@@ -449,6 +458,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 
 + (GLPMessage *)parseMessageFromJson:(NSDictionary *)json forConversation:(GLPConversation *)conversation
 {
+
     GLPMessage *message = [[GLPMessage alloc] init];
     message.remoteKey = [json[@"id"] integerValue];
     message.author = [RemoteParser parseUserFromJson:json[@"by"]];
@@ -457,7 +467,21 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     message.content = json[@"text"];
     message.sendStatus = kSendStatusSent;
     message.seen = [json[@"seen"] boolValue];
+    message.belongsToGroup = [json[@"group"] boolValue];
     
+    //If no give him another chance.
+    if(!message.belongsToGroup)
+    {
+        message.belongsToGroup = [conversation groupRemoteKey] != 0 ? YES : NO;
+    }
+    
+    BOOL systemMessage = [json[@"system"] boolValue];
+    
+    if(systemMessage)
+    {
+        return [[GLPSystemMessage alloc] initWithMessage:message];
+    }
+
     return message;
 }
 
@@ -576,12 +600,9 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     post.video = [RemoteParser parseVideosData:json[@"videos"]];
     
-    
     //Parse categories.
     post.categories = [self parseCategoriesFromJson:json[@"categories"] forPost:post];
-    
-    
-    
+
     //Parse users' likes of the post and find if the post is liked by logged in user.
     NSArray *usersLiked = json[@"likes"];
     
@@ -605,27 +626,20 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         }
     }
     
-    post.group = [RemoteParser parseGroupFromJson:json[@"network"]];
+    post.viewsCount = [json[@"views"] integerValue];
+    
+    if(json[@"network"])
+    {
+        post.group = [RemoteParser parseGroupFromJson:json[@"network"]];
+    }
+    
     
     if(json[@"review_history"])
     {
         post.reviewHistory = [RemoteParser parseReviewHistories:json[@"review_history"]];
     }
-
-//    
-//    NSArray *jsonArray = json[@"images"];
-//    
-//    if(jsonArray.count > 0) {
-//        NSMutableArray *imagesUrls = [NSMutableArray arrayWithCapacity:jsonArray.count];
-//        for(NSString *url in jsonArray) {
-//            [imagesUrls addObject:url];
-//        }
-//        post.imagesUrls = imagesUrls;
-//    } else {
-//        post.imagesUrls = [NSArray array];
-//    }
     
-    
+    post.attended = [json[@"attending"] boolValue];
     
     return post;
 }
@@ -851,20 +865,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
 }
 
-+(NSArray *)parseLivePostsIds:(NSArray *)jsonIds
-{
-    NSMutableArray *array = [[NSMutableArray alloc] init];
-    
-    for(id remoteKey in jsonIds)
-    {
-        [array addObject:[NSNumber numberWithInteger:[remoteKey integerValue]]];
-
-//        [array addObject:[NSNumber numberWithInteger:[remoteKey integerValue]]];
-    }
-    
-    return array;
-}
-
 #pragma mark - Attendees
 
 +(NSInteger)parseNewPopularity:(NSDictionary *)json
@@ -883,12 +883,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 {
     return [json[@"attendee_count"] integerValue];
 }
-
-
-//+(NSString *)parseEventTime:(NSDate *)date
-//{
-//    
-//}
 
 #pragma mark - Groups
 
@@ -910,14 +904,20 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     group.groupDescription = json[@"description"];
     group.groupImageUrl = json[@"image"];
-    
     group.author = [RemoteParser parseMemberFromJson:json[@"creator"] withGroupRemoteKey:group.remoteKey];
     group.loggedInUser = [RemoteParser parseLoggedInUserRoleWithJson:json[@"role"]];
-    
-//    group.loggedInUser = [RemoteParser parseMemberFromJson:json[@"creator"] withGroupRemoteKey:group.remoteKey];
-    
+    group.membersCount = [json[@"size"] integerValue];
+    group.conversationRemoteKey = [json[@"conversation"] integerValue];
     [group setPrivacyWithString:json[@"privacy"]];
+    
+    if(json[@"last_activity"])
+    {
+        DDLogDebug(@"RemoteParser : parseGroupFromJson %@", json[@"last_activity"]);
         
+        group.lastActivity = [RemoteParser parseDateFromString:json[@"last_activity"]];
+    }
+    
+    
     return group;
 }
 
@@ -931,12 +931,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 + (GLPPost *)parsePostGroupFromJson:(NSDictionary *)json
 {
     GLPPost *groupPost = [RemoteParser parsePostFromJson:json];
-
     groupPost.group = [RemoteParser parseGroupFromJson:json[@"network"]];
-    
-    
     return groupPost;
-    
 }
 
 + (NSArray *)parsePostsGroupFromJson:(NSArray *)jsonPosts
@@ -1104,8 +1100,13 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
 }
 
 
-+(NSString*)parseLoginErrorMessage:(NSString*)error
++(NSString *)parseLoginErrorMessage:(NSString *)error
 {
+    if(!error)
+    {
+        return @"Please check your internet connection and try again.";
+    }
+    
     if([error rangeOfString:@"unverified"].location != NSNotFound)
     {
         return @"Your email remains unverified. Please verify your email and try again.";
@@ -1237,6 +1238,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     notification.postRemoteKey = json[@"post"] ? [json[@"post"] integerValue] : 0;
     notification.date = [RemoteParser parseDateFromString:json[@"time"]];
     notification.user = [RemoteParser parseUserFromJson:json[@"user"]];
+    notification.previewMessage = json[@"preview"];
     
     if(json[@"network"]) {
         notification.customParams = @{@"network": json[@"network"]};

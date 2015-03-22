@@ -12,6 +12,7 @@
 #import "SessionManager.h"
 #import "WebClient.h"
 #import "NSNotificationCenter+Utils.h"
+#import "GLPLiveGroupManager.h"
 
 @implementation GLPNotificationManager
 
@@ -31,12 +32,6 @@
 
 +(void)loadUnreadnotificationsWithCallback:(void (^) (BOOL success, NSArray *unreadNotifications))callback
 {
-//    __block NSArray *localEntities;
-//    
-//    [DatabaseManager run:^(FMDatabase *db) {
-//        localEntities = [GLPNotificationDao findUnreadNotificationsInDb:db];
-//    }];
-    
     __block NSArray *localEntities;
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
@@ -250,6 +245,8 @@
         [GLPNotificationDao save:notification inDb:db];
     }];
     
+    [[GLPLiveGroupManager sharedInstance] loadGroupsIfNeededWithNewNotification:notification];
+    
     [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_NOTIFICATION object:self userInfo:@{@"new_notification": notification}];
 }
 
@@ -257,17 +254,16 @@
 + (void)saveNotifications:(NSArray *)notifications
 {
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        
-//        if([GLPNotificationDao countReadNotificationsInDb:db]>10)
-//        {
-//            [GLPNotificationDao deleteNotifications:db withNumber:notifications.count];
-//        }
-            
         for(GLPNotification *notification in notifications)
         {
-            [GLPNotificationDao save:notification inDb:db];
-            DDLogInfo(@"New notifications after become active.");
-            [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_NOTIFICATION object:nil userInfo:nil];
+            [GLPNotificationDao saveIfNeeded:notification db:db];
+            
+            if(!notification.seen)
+            {
+                DDLogInfo(@"New notification after become active. %@", notification.notificationTypeDescription);
+
+                [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_NEW_NOTIFICATION object:nil userInfo:nil];
+            }
         }
     }];
 }
@@ -281,12 +277,14 @@
 
 +(void)fetchNotificationsFromServerWithCallBack:(void (^) (BOOL success, NSArray *notifications))callback
 {
-    [[WebClient sharedInstance] getNotificationsWithCallback:^(BOOL success, NSArray *notifications) {
-        if(success) {
-            NSLog(@"New notifications from get notifications request: %d", notifications.count);
+    [[WebClient sharedInstance] getAllNotificationsWithCallback:^(BOOL success, NSArray *notifications) {
+       
+        if(success)
+        {
+            NSLog(@"All notifications from get notifications request: %d", notifications.count);
             
-            if(notifications.count > 0) {
-                
+            if(notifications.count > 0)
+            {
                 //Check if the same notification exist in database and if it is unread. If yes the don't call GLPNewNotifications.
                 NSArray* finalNotifications = [GLPNotificationManager cleanNotificationsArray:notifications];
                 
@@ -297,18 +295,22 @@
                 }
                 else
                 {
-                    DDLogInfo(@"No new final notifications.");
+                    DDLogInfo(@"GLPNotificationsManager : No new final notifications.");
                 }
                 
                 callback(success, notifications);
             }
             else
             {
-                callback(NO, nil);
+                callback(YES, [[NSArray alloc] init]);
             }
         }
+        else
+        {
+            callback(NO, nil);
+        }
+     
     }];
-    
 }
 
 + (void)loadNotificationsWithLocalCallback:(void (^) (BOOL success, NSArray *notifications))localCallback andRemoteCallback:(void (^) (BOOL success, NSArray *remoteNotifications))remoteCallback

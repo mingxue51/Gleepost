@@ -14,5 +14,6 @@ extern const CGFloat IMAGE_COLLECTION_CELL_MARGIN;
 @interface ImageCollectionViewCell : UICollectionViewCell
 
 - (void)setImageViewImage:(UIImage *)image;
++ (CGSize)imageCollectionCellDimensions;
 
 @end

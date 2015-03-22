@@ -5,6 +5,8 @@
 //  Created by Σιλουανός on 17/7/14.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
+//  This is custom image selector. This class provides to the user the ability to
+//  snap a photo or to choose photo from his/her library.
 
 #import "ImageSelectorViewController.h"
 #import "UINavigationBar+Format.h"
@@ -14,7 +16,7 @@
 #import "ImageFormatterHelper.h"
 #import "AppearanceHelper.h"
 
-@interface ImageSelectorViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface ImageSelectorViewController ()<UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDataSource, UICollectionViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) GLPImageSelectorLoader *imageLoader;
@@ -54,6 +56,9 @@
 
 - (void)configureNavigationBar
 {
+    
+    [self.navigationController.navigationBar setHidden:NO];
+
     
     if(![self comesFromGroupViewController])
     {
@@ -143,7 +148,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    return IMAGE_COLLECTION_CELL_DIMENSIONS;
+    return [ImageCollectionViewCell imageCollectionCellDimensions];
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionView *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section

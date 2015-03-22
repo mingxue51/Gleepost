@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,7 +14,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="301"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9hy-w6-aDe">
+                    <imageView clipsSubviews="YES" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9hy-w6-aDe">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="190"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="190" id="1d6-KH-Q5T"/>
@@ -31,12 +31,18 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="9hy-w6-aDe" firstAttribute="top" secondItem="G1a-lj-ifd" secondAttribute="top" id="CXu-cj-lBV"/>
+                    <constraint firstItem="9hy-w6-aDe" firstAttribute="leading" secondItem="G1a-lj-ifd" secondAttribute="leading" id="OoV-tP-R2F"/>
+                    <constraint firstAttribute="trailing" secondItem="9hy-w6-aDe" secondAttribute="trailing" id="Zyo-cX-orr"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="mainImageView" destination="9hy-w6-aDe" id="b8x-A6-m5E"/>
                 <outlet property="segmentView" destination="FvJ-YK-DNz" id="f9d-WP-3sU"/>
                 <outlet property="smallSubtitleLbl" destination="7Eh-92-EaU" id="TuE-zc-f7l"/>
             </connections>
+            <point key="canvasLocation" x="309" y="260"/>
         </tableViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
