@@ -22,7 +22,7 @@
 
 @implementation ProfileTopViewCell
 
-const float PROFILE_TOP_VIEW_HEIGHT = 238;
+const CGFloat PROFILE_TOP_VIEW_HEIGHT = 238;
 
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
@@ -46,7 +46,7 @@ const float PROFILE_TOP_VIEW_HEIGHT = 238;
         [super setImageWithUrl:userData.profileImageUrl];
     }
     
-    [super setTitleWithString:userData.name];
+//    [super setTitleWithString:userData.name];
     
     [super setSubtitleWithString:userData.fullName];
     
@@ -93,6 +93,8 @@ const float PROFILE_TOP_VIEW_HEIGHT = 238;
     [view setDelegate:self];
     [view setRightButtonTitle:@"Notifications" andLeftButtonTitle:@"Posts"];
     
+//    CGRectSetW(view, 300.0);
+
 //    _segmentView = view;
     
     [_segmentView addSubview:view];
@@ -155,6 +157,15 @@ const float PROFILE_TOP_VIEW_HEIGHT = 238;
 - (void)numberOfRsvpsTouched
 {
     [_delegate numberOfRsvpsTouched];
+}
+
+#pragma mark - Static
+
++ (CGFloat)profileTopViewHeight
+{
+    //const float PROFILE_TOP_VIEW_HEIGHT = 238;
+
+    return PROFILE_TOP_VIEW_HEIGHT + [GLPSegmentView segmentHeight];
 }
 
 

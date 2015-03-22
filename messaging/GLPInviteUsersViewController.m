@@ -16,6 +16,7 @@
 #import "GLPGroupManager.h"
 #import "GLPLiveGroupManager.h"
 #import "GLPLoadingButton.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPInviteUsersViewController ()
 
@@ -24,6 +25,8 @@
 @property (weak, nonatomic) IBOutlet GLPLoadingButton *addSelectedButton;
 
 @property (strong, nonatomic) UIButton *facebookButton;
+
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *buttonDistanceFromBottom;
 
 @end
 
@@ -82,7 +85,7 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
 
 - (void)configureFacebookInvitationButton
 {
-    _facebookButton = [[UIButton alloc] initWithFrame:CGRectMake(35.0f, 50.0f, 250.0f, 60.0f)];
+    _facebookButton = [[UIButton alloc] initWithFrame:CGRectMake(([GLPiOSSupportHelper screenWidth] - 250) / 2, 50.0f, 250.0f, 60.0f)];
     [_facebookButton setImage:[UIImage imageNamed:@"fb_invite"] forState:UIControlStateNormal];
     [_facebookButton setHidden:YES];
     [_facebookButton addTarget:self action:@selector(inviteFriendsToFB:) forControlEvents:UIControlEventTouchUpInside];
@@ -376,33 +379,12 @@ const NSString *FIXED_BUTTON_TLT = @"Add selected ";
     // Need to translate the bounds to account for rotation.
     keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
     
-    //Change the position of the button depending on the size of the keyboard.
-    float buttonYValue = [self findNewPositionOfTheButton:_addSelectedButton.frame withKeboardFrame:keyboardBounds];
-    
-    CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.size.height = buttonYValue - tableViewFrame.origin.y;
-    
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
-        
-        self.tableView.frame = tableViewFrame;
-        
-        CGRectSetY(_addSelectedButton, buttonYValue);
-        
+        [_buttonDistanceFromBottom setConstant:keyboardBounds.size.height + 5];
+        [_addSelectedButton layoutIfNeeded];
     } completion:^(BOOL finished) {
-        
         [self.tableView setNeedsLayout];
-        
     }];
-}
-
-- (float)findNewPositionOfTheButton:(CGRect)buttonFrame withKeboardFrame:(CGRect)keyboardFrame
-{
-    float keyboardY = keyboardFrame.origin.y;
-    
-    //We are substracting with 125 because without it the position is wrong.
-    //So if we don't substract with that number the position of the button will be wrong.
-    
-    return keyboardY - buttonFrame.size.height - 5 - 125;
 }
 
 #pragma mark - Navigation

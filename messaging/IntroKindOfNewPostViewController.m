@@ -13,8 +13,11 @@
 #import "PendingPostManager.h"
 #import "AppearanceHelper.h"
 #import "GLPApprovalManager.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface IntroKindOfNewPostViewController ()
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleHeightConstrain;
 
 @end
 
@@ -29,6 +32,8 @@
     [self configureIsGroupPost];
     
     [[GLPApprovalManager sharedInstance] reloadApprovalLevel];
+    
+    [self configureConstrainsDependingOnScreenSize];
 }
 
 //- (void)viewDidDisappear:(BOOL)animated
@@ -59,6 +64,14 @@
 {
     [[PendingPostManager sharedInstance] setGroupPost:self.groupPost];
     [[PendingPostManager sharedInstance] setGroup:self.group];
+}
+
+- (void)configureConstrainsDependingOnScreenSize
+{
+    if([GLPiOSSupportHelper useShortConstrains])
+    {
+        [_titleHeightConstrain setConstant:-60];
+    }
 }
 
 #pragma mark - Selectors

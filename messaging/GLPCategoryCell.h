@@ -13,7 +13,9 @@
 
 extern NSString * const kGLPCategoryCell;
 
--(void)updateCategory:(GLPCategory*)category withImage:(UIImage*)image;
+- (void)updateCategory:(GLPCategory*)category withImage:(UIImage*)image;
 
++ (CGFloat)height;
++ (CGFloat)bottomPadding;
 
 @end

@@ -1041,7 +1041,7 @@ static WebClient *instance = nil;
 -(void)quitFromAGroupWithRemoteKey:(NSInteger)groupRemoteKey callback:(void (^) (BOOL success))callbackBlock
 {
     
-    NSString *path = [NSString stringWithFormat:@"profile/networks/%d", groupRemoteKey];
+    NSString *path = [NSString stringWithFormat:@"profile/networks/%ld", (long)groupRemoteKey];
     
     
     

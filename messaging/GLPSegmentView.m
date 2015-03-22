@@ -10,6 +10,7 @@
 #import "AppearanceHelper.h"
 #import "UIColor+GLPAdditions.h"
 #import "ShapeFormatterHelper.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPSegmentView ()
 
@@ -55,6 +56,9 @@ const float ANIMATION_DURATION = 0.1;
     [self configuration];
     [self formatElements];
     [self configureGesturesToLabels];
+    CGRectSetW(self, [GLPiOSSupportHelper screenWidth] - 28);
+    CGRectSetH(self, ([GLPiOSSupportHelper screenWidth] - 28) * 0.13);
+
 }
 
 - (void)configuration
@@ -220,6 +224,13 @@ const float ANIMATION_DURATION = 0.1;
 
     }];
 
+}
+
+#pragma mark - Static
+
++ (CGFloat)segmentHeight
+{
+    return ([GLPiOSSupportHelper screenWidth] - 28) * 0.13;
 }
 
 /*

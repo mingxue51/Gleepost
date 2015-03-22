@@ -164,6 +164,9 @@
 //    
 //    [_segmentView addSubview:view];
     
+    //We are doing that to let the GLPSearchBar contrains applied. Also the Autoresized Subviews Attributes
+    //has disabled.
+    [_searchBarView setAutoresizingMask:UIViewAutoresizingNone];
     
     NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPSearchBar" owner:self options:nil];
     
@@ -177,7 +180,6 @@
     _glpSearchBar = view;
     
     [_searchBarView addSubview:view];
-    
 }
 
 - (void)initialiseObjects
@@ -245,7 +247,7 @@
 
 - (void)viewNewMessageView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     NewGroupMessageViewController *newGroupMessageVC = [storyboard instantiateViewControllerWithIdentifier:@"NewGroupMessageViewController"];
 //    [newPostVC setDelegate:self];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newGroupMessageVC];

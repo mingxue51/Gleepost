@@ -8,23 +8,13 @@
 
 #import "GLPNetworkErrorView.h"
 #import "GLPNetworkManager.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPNetworkErrorView ()
 
 @end
 
 @implementation GLPNetworkErrorView
-
-
-//- (id)initWithCoder:(NSCoder *)aDecoder
-//{
-//    self = [super initWithCoder:aDecoder];
-//    if (self)
-//    {
-//        [self configureView];
-//    }
-//    return self;
-//}
 
 - (id)init
 {
@@ -33,9 +23,6 @@
     if(self)
     {
         [self configureView];
-        
-        
-//        shouldBeHidden = NO;
     }
     
     return self;
@@ -44,6 +31,8 @@
 - (void)configureView
 {
     GLPNetworkErrorView *view = [[[NSBundle mainBundle] loadNibNamed:@"GLPNetworkErrorView" owner:self options:nil] objectAtIndex:0];
+    
+    CGRectSetW(view, [GLPiOSSupportHelper screenWidth]);
     
     [self setFrame:view.frame];
     

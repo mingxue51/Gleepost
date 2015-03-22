@@ -12,6 +12,7 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPConversation.h"
 #import "GLPLiveGroupConversationsManager.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface DescriptionSegmentGroupCell ()
 
@@ -33,7 +34,7 @@
 
 @implementation DescriptionSegmentGroupCell
 
-const float GROUP_DESCR_VIEW_HEIGHT = 70;
+const float GROUP_DESCR_VIEW_HEIGHT = 84;
 const float DESCR_LBL_WIDTH = 290;
 
 - (void)awakeFromNib
@@ -89,7 +90,7 @@ const float DESCR_LBL_WIDTH = 290;
     [view setDelegate:self];
     [view setRightButtonTitle:@"Messenger" andLeftButtonTitle:@"Newsfeed"];
     [view setSlideAnimationEnabled:NO];
-
+    
     [_segmentView addSubview:view];
 }
 

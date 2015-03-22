@@ -16,6 +16,7 @@
 #import "GLPNetworkManager.h"
 #import "GLPNetworkErrorView.h"
 #import "GLPLiveGroupManager.h"
+#import "AppearanceHelper.h"
 
 @interface GLPTabBarController ()
 
@@ -65,6 +66,7 @@ static NSInteger lastTabbarIndex = 0;
     _shouldHideErrorView = NO;
     _networkErrorView.tag = 100;
     
+    [self formatTabbar];
     
 //    self.tabBar.layer.borderWidth = 1.0;
 //    self.tabBar.layer.borderColor = [UIColor redColor].CGColor;
@@ -121,6 +123,48 @@ static NSInteger lastTabbarIndex = 0;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SHOW_CAPTURE_VIEW object:nil];
 }
 
+- (void)formatTabbar
+{
+    // set selected and unselected icons
+    NSArray *items = self.tabBar.items;
+    
+    
+    UITabBarItem *item = [items objectAtIndex:0];
+    
+    item.image = [[UIImage imageNamed:@"bird-house-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"bird-house-7"];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+    
+    
+    item = [items objectAtIndex:1];
+    
+    item.image = [[UIImage imageNamed:@"message-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"message-7"];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+    
+    
+    
+    item = [items objectAtIndex:2];
+    
+    item.image = [[UIImage imageNamed:@"man-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"man-7"];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+    
+    
+    item = [items objectAtIndex:3];
+    
+    item.image = [[UIImage imageNamed:@"id-card-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
+    item.selectedImage = [UIImage imageNamed:@"id-card-7"];
+    
+    [AppearanceHelper setUnselectedColourForTabbarItem:item];
+}
 
 /**
  This method checks if it's the first time that user logged in.

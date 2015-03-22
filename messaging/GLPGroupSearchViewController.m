@@ -73,6 +73,11 @@
     _privateGroupPopUp = [[TDPopUpAfterGoingView alloc] init];
 }
 
+- (void)configureTableView
+{
+    [super configureSearchGroupsTableView];
+}
+
 - (void)configureNavigationBar
 {
     [super configureNavigationBar];
@@ -81,6 +86,8 @@
 
 - (void)configureSearchBar
 {
+    [_searchBarView setAutoresizingMask:UIViewAutoresizingNone];
+
     NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPSearchBar" owner:self options:nil];
     
     GLPSearchBar *view = [array lastObject];
@@ -273,7 +280,7 @@
 - (void)showPrivatePopUpViewWithGroupImage:(UIImage *)image
 {
     //Show the pop up view.
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPPrivateGroupPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPrivateGroupPopUpViewController"];
     
     [cvc setGroupImage:image];

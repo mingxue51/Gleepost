@@ -11,16 +11,19 @@
 #import "GLPMainGroupsViewController.h"
 #import "GLPThemeManager.h"
 #import "UINavigationBar+Utils.h"
+#import "UINavigationBar+Format.h"
 #import "AppearanceHelper.h"
 #import "UIViewController+Flurry.h"
 #import "UIViewController+GAI.h"
 #import "GLPLiveGroupManager.h"
 #import "IntroNewGroupViewController.h"
 #import "GLPGroupSearchViewController.h"
+#import "FakeNavigationBarView.h"
 
 @interface GLPMainGroupsViewController ()
 
 @property (strong, nonatomic) UITabBarItem *groupTabbarItem;
+@property (strong, nonatomic) FakeNavigationBarView *fakeNavigationBar;
 
 @end
 
@@ -33,12 +36,15 @@
     [self configureNavigationButtons];
     [self configureViewDidLoadNotifications];
     [self showGroups];
+    
+    _fakeNavigationBar = [[FakeNavigationBarView alloc] initWithTitle:@"MY GROUPS"];
+    [self.view addSubview:_fakeNavigationBar];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
+//    [self.navigationController setNavigationBarHidden:YES animated:NO];
     [self sendViewToGAI:NSStringFromClass([self class])];
     [self sendViewToFlurry:NSStringFromClass([self class])];
 }
@@ -61,7 +67,8 @@
     [super configureNavigationBar];
     [super setNavigationBarTitle:@"MY GROUPS"];
     [self.view setBackgroundColor:[[GLPThemeManager sharedInstance] navigationBarColour]];
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
+//    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    [self.navigationController.navigationBar invisible];
 }
 
 - (void)configTabbar
@@ -76,8 +83,13 @@
 
 - (void)configureNavigationButtons
 {
-    [self.navigationController.navigationBar setButton:kRight specialButton:kNoSpecial withImage:@"new_group" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpIntroView) withTarget:self andNavigationItem:self.navItem];
-    [self.navigationController.navigationBar setButton:kLeft specialButton:kNoSpecial withImage:@"search_groups_magnify_glass" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpSearchGroupsView) withTarget:self andNavigationItem:self.navItem];
+//    [self.navigationController.navigationBar setButton:kRight specialButton:kNoSpecial withImage:@"new_group" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpIntroView) withTarget:self andNavigationItem:self.navItem];
+    
+//    [self.navigationController.navigationBar setButton:kLeft specialButton:kNoSpecial withImage:@"search_groups_magnify_glass" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpSearchGroupsView) withTarget:self andNavigationItem:self.navItem];
+    
+    [self.navigationController.navigationBar setButton:kRight specialButton:kNoSpecial withImageName:@"new_group" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpIntroView) andTarget:self];
+
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kNoSpecial withImageName:@"search_groups_magnify_glass" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpSearchGroupsView) andTarget:self];
 }
 
 - (void)configureViewDidLoadNotifications
@@ -225,7 +237,7 @@
 
 - (void)popUpIntroView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     IntroNewGroupViewController *introNewGroupVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroNewGroupViewController"];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:introNewGroupVC];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -234,8 +246,8 @@
 
 - (void)popUpSearchGroupsView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    GLPGroupSearchViewController *searchGroupsVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPGroupSearchViewController"];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+    GLPGroupSearchViewController *searchGroupsVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPGroupSearchViewController2"];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:searchGroupsVC];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:YES completion:nil];

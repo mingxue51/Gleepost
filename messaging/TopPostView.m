@@ -27,11 +27,15 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *eventTitleLblHeight;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *locationImageDistanceFromEdge;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *locationButtonWidth;
+
+
 @end
 
 @implementation TopPostView
 
-const float TITLE_MAX_WIDTH = 260.0;
 const float TITLE_MAX_HEIGHT = 50.0;
 const float TWO_LINES_HEIGHT = 40.0;
 const float ONE_LINE_HEIGHT = 20;
@@ -49,7 +53,7 @@ const float ONE_LINE_HEIGHT = 20;
 
 -(void)setElementsWithPost:(GLPPost *)post
 {
-//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blueColor] andWidth:1.0f];
+//    [ShapeFormatterHelper setBorderToView:self.eventTitleLbl withColour:[UIColor blueColor] andWidth:1.0f];
     
     //TODO: Fix that by creating specific queue. There is a problem here where an
     //      empty post is viewed without data in and then the actual data appeared.
@@ -66,6 +70,7 @@ const float ONE_LINE_HEIGHT = 20;
             [self setEventTimeWithTime:post.dateEventStarts];
             
             [self configureLocationElementsWithPost:post];
+    
 //        });
         
 //    });
@@ -149,6 +154,29 @@ const float ONE_LINE_HEIGHT = 20;
 //    return ([SessionManager sharedInstance].user.remoteKey == self.post.author.remoteKey);
 //}
 
+#pragma mark - Location button calculations
+
+- (CGFloat)getLocationWidth:(NSString *)location
+{
+    if(!location)
+    {
+        return 0.0;
+    }
+    
+    UIFont *font = [UIFont fontWithName:@"Helvetica Neue" size:14.0];
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:location attributes:@{NSFontAttributeName: font}];
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){[self getMaxLengthOfLocationButton], 18.0}
+                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                               context:nil];
+    CGSize size = rect.size;
+    return size.width;
+}
+
+- (CGFloat)getMaxLengthOfLocationButton
+{
+    return ([[UIScreen mainScreen] bounds].size.width / 2) - 18 - 10 - 2 - 8;
+}
+
 #pragma mark - Label size
 
 + (float)getContentLabelSizeForContent:(NSString *)content
@@ -163,7 +191,7 @@ const float ONE_LINE_HEIGHT = 20;
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
     
-    CGRect rect = [attributedText boundingRectWithSize:(CGSize){TITLE_MAX_WIDTH, TITLE_MAX_HEIGHT}
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){[TopPostView getMaxTitleLabelHeight], TITLE_MAX_HEIGHT}
                                                options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
                                                context:nil];
     
@@ -183,6 +211,11 @@ const float ONE_LINE_HEIGHT = 20;
     }
     
     return NO;
+}
+
++ (CGFloat)getMaxTitleLabelHeight
+{
+    return [[UIScreen mainScreen] bounds].size.width -20 - 40;
 }
 
 /*

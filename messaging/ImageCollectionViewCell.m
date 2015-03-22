@@ -7,6 +7,7 @@
 //
 
 #import "ImageCollectionViewCell.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface ImageCollectionViewCell ()
 
@@ -17,7 +18,6 @@
 
 @implementation ImageCollectionViewCell
 
-const CGSize IMAGE_COLLECTION_CELL_DIMENSIONS = {100.0, 100.0};
 const CGFloat IMAGE_COLLECTION_CELL_MARGIN = 5.0;
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -32,6 +32,12 @@ const CGFloat IMAGE_COLLECTION_CELL_MARGIN = 5.0;
 - (void)setImageViewImage:(UIImage *)image
 {
     [_imageView setImage:image];
+}
+
++ (CGSize)imageCollectionCellDimensions
+{
+    CGFloat size = ([GLPiOSSupportHelper screenWidth] - 20) / 3;
+    return CGSizeMake(size, size);
 }
 
 /*

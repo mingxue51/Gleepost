@@ -47,17 +47,16 @@
     
     [_userImageView setImageUrl:conversationRead.participant.profileImageUrl withPlaceholderImage:[GLPImageHelper placeholderUserImagePath]];
     
-    [self configureCustomSeparatorLine];
 }
 
-- (void)configureCustomSeparatorLine
-{
-    UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, [GLPNameTimestampCell height] - 1, 320.0, 1.0)];
-    
-    [v setBackgroundColor:[UIColor colorWithR:237.0 withG:237.0 andB:237.0]];
-    
-    [self addSubview:v];
-}
+//- (void)configureCustomSeparatorLine
+//{
+//    UIImageView *v = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, [GLPNameTimestampCell height] - 1, 320.0, 1.0)];
+//    
+//    [v setBackgroundColor:[UIColor colorWithR:237.0 withG:237.0 andB:237.0]];
+//    
+//    [self addSubview:v];
+//}
 
 + (CGFloat)height
 {

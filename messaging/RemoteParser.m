@@ -201,10 +201,11 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         [participants addObject:user];
     }
     
-    if(participants.count < 2) {
-        DDLogError(@"Ignore conversation that does not contain at least 2 participants");
-        return nil;
-    }
+    //That is removed because there is a possibility of one participant in a group's conversation.
+//    if(participants.count < 2) {
+//        DDLogError(@"Ignore conversation that does not contain at least 2 participants");
+//        return nil;
+//    }
     
     GLPConversation *conversation;
     
@@ -214,6 +215,11 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         NSDate *expiryDate = [RemoteParser parseDateFromString:expiry[@"time"]];
         BOOL ended = [expiry[@"ended"] boolValue];
         conversation = [[GLPConversation alloc] initWithParticipants:participants expiryDate:expiryDate ended:ended];
+    }
+    else if(json[@"group"])
+    {
+        //group's conversation.
+        conversation = [[GLPConversation alloc] initGroupsConversationWithParticipants:participants];
     }
     // normal conversation
     else {
@@ -622,7 +628,11 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     post.viewsCount = [json[@"views"] integerValue];
     
-    post.group = [RemoteParser parseGroupFromJson:json[@"network"]];
+    if(json[@"network"])
+    {
+        post.group = [RemoteParser parseGroupFromJson:json[@"network"]];
+    }
+    
     
     if(json[@"review_history"])
     {
@@ -899,7 +909,15 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     group.membersCount = [json[@"size"] integerValue];
     group.conversationRemoteKey = [json[@"conversation"] integerValue];
     [group setPrivacyWithString:json[@"privacy"]];
+    
+    if(json[@"last_activity"])
+    {
+        DDLogDebug(@"RemoteParser : parseGroupFromJson %@", json[@"last_activity"]);
         
+        group.lastActivity = [RemoteParser parseDateFromString:json[@"last_activity"]];
+    }
+    
+    
     return group;
 }
 

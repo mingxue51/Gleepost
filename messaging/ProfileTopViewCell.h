@@ -26,12 +26,12 @@
 
 @interface ProfileTopViewCell : TopTableViewCell <GLPSegmentViewDelegate, TopTableViewCellDelegate>
 
-extern const float PROFILE_TOP_VIEW_HEIGHT;
-
 @property (weak, nonatomic) UIViewController <ProfileTopViewCellDelegate> *delegate;
 
 - (void)setUserData:(GLPUser *)userData;
 - (void)showNotificationBubbleWithNotificationCount:(int)notificationCount;
 - (void)hideNotificationBubble;
 - (void)comesFromPushNotification:(BOOL)fromPN;
++ (CGFloat)profileTopViewHeight;
+
 @end

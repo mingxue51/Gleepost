@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,18 +12,35 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="empty_profile_posts.png" translatesAutoresizingMaskIntoConstraints="NO" id="9A0-xk-vzF">
-                    <rect key="frame" x="66" y="63" width="188" height="104"/>
-                </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="THERE ARE NO POSTS YET." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EDw-0e-ZrX">
-                    <rect key="frame" x="8" y="19" width="304" height="21"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HfB-lY-UMC">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="THERE ARE NO POSTS YET." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EDw-0e-ZrX">
+                    <rect key="frame" x="32" y="10" width="256" height="16"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="13"/>
                     <color key="textColor" red="0.74901960779999999" green="0.74901960779999999" blue="0.74901960779999999" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_profile_posts.png" translatesAutoresizingMaskIntoConstraints="NO" id="9A0-xk-vzF">
+                    <rect key="frame" x="96" y="26" width="128" height="193"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="EDw-0e-ZrX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="77h-7c-eGw"/>
+                <constraint firstAttribute="centerX" secondItem="9A0-xk-vzF" secondAttribute="centerX" id="85B-Zb-ZIT"/>
+                <constraint firstAttribute="centerX" secondItem="EDw-0e-ZrX" secondAttribute="centerX" id="C0b-Gh-EWA"/>
+                <constraint firstAttribute="bottom" secondItem="HfB-lY-UMC" secondAttribute="bottom" id="F6Z-wR-Dyg"/>
+                <constraint firstItem="HfB-lY-UMC" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="HSz-Xy-Zw8"/>
+                <constraint firstItem="9A0-xk-vzF" firstAttribute="top" secondItem="EDw-0e-ZrX" secondAttribute="bottom" id="b2P-vx-NCX"/>
+                <constraint firstAttribute="trailing" secondItem="HfB-lY-UMC" secondAttribute="trailing" id="iFv-Fh-ODw"/>
+                <constraint firstItem="9A0-xk-vzF" firstAttribute="width" secondItem="HfB-lY-UMC" secondAttribute="width" multiplier="0.4" id="j3f-21-1m8"/>
+                <constraint firstItem="EDw-0e-ZrX" firstAttribute="width" secondItem="HfB-lY-UMC" secondAttribute="width" multiplier="0.8" id="qMO-AA-ykf"/>
+                <constraint firstItem="HfB-lY-UMC" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="uuI-GZ-hQN"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="252" y="227"/>
         </view>
     </objects>
     <resources>

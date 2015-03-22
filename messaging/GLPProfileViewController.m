@@ -16,7 +16,6 @@
 #import "WebClientHelper.h"
 #import "AppearanceHelper.h"
 #import "GLPPrivateProfileViewController.h"
-#import "LoginRegisterViewController.h"
 #import "ViewPostViewController.h"
 #import "GLPNotificationManager.h"
 #import "GLPThemeManager.h"
@@ -548,7 +547,7 @@
 -(void)showSettings:(id)sender
 {
     ///GLPSettingsViewController
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPSettingsViewController *settingsVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSettingsViewController"];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:settingsVC];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -592,7 +591,7 @@
 
 -(void)showImage
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
     viewImage.image = _user.profileImage;
     viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
@@ -1230,7 +1229,7 @@
     
     if(indexPath.row == 0 && indexPath.section == 0)
     {
-        return PROFILE_TOP_VIEW_HEIGHT;
+        return [ProfileTopViewCell profileTopViewHeight];
     }
     else if (indexPath.section > 0)
     {
@@ -1293,7 +1292,7 @@
 
 -(void)viewPostImage:(UIImage*)postImage
 {
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
 //    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
 //    vc.image = postImage;
 //    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
@@ -1306,7 +1305,7 @@
     
     
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
     viewImage.image = postImage;
     viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
@@ -1348,7 +1347,7 @@
     _selectedPost = notification.userInfo[@"post"];
     
     //Show the pop up view.
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];

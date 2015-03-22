@@ -16,6 +16,7 @@
 #import "CampusLiveManager.h"
 #import "GLPTableActivityIndicator.h"
 #import "GLPCLPostImageLoader.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface CampusWallHeader ()
 
@@ -86,11 +87,11 @@ NSString *BORING_IMAGE;
 
 -(void)initialiseObjects
 {
-    HAPPENING_NOW_MSG = @"Happening Now";
-    HAPPENING_TODAY_MSG = @"Happening Today";
-    HAPPENING_TOMORROW_MSG = @"Happening Tomorrow";
-    HAPPENING_THIS_WEEK_MSG = @"Happening This Week";
-    HAPPENED_TODAY = @"Happened Earlier";
+    HAPPENING_NOW_MSG = @"Events Happening Now";
+    HAPPENING_TODAY_MSG = @"Events Happening Today";
+    HAPPENING_TOMORROW_MSG = @"Events Happening Tomorrow";
+    HAPPENING_THIS_WEEK_MSG = @"Events Happening This Week";
+    HAPPENED_TODAY = @"Events Happened Earlier";
     NOTHING_HAPPENING = @"Nothing happening on campus!";
     BORING_IMAGE = @"calendar_boring";
     
@@ -256,7 +257,7 @@ NSString *BORING_IMAGE;
 
 -(CGFloat)vsscrollView:(VSScrollView *)scrollView widthForViewAtPosition:(int)position
 {
-    return CELL_WIDTH;
+    return [GLPiOSSupportHelper screenWidth] * 0.7;
 }
 
 -(CGFloat)vsscrollView:(VSScrollView *)scrollView heightForViewAtPosition:(int)position
@@ -399,7 +400,7 @@ NSString *BORING_IMAGE;
         return;
     }
     
-    int middleCellPosition = [[positionsOfVisibleCells objectAtIndex:1]integerValue];
+    NSInteger middleCellPosition = [[positionsOfVisibleCells objectAtIndex:1] integerValue];
     
     
     if(position == 0 || position == [self numberOfViews]-1)

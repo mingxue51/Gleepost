@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,22 +12,37 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VxJ-ca-J0G">
-                    <rect key="frame" x="90" y="31" width="150" height="21"/>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VxJ-ca-J0G">
+                    <rect key="frame" x="85" y="31" width="150" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="Qut-ah-A2C"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="042-2f-gWr">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="042-2f-gWr">
                     <rect key="frame" x="0.0" y="63" width="320" height="1"/>
                     <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="jZG-TE-eCh"/>
+                    </constraints>
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="VxJ-ca-J0G" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="31" id="Mlg-Gg-GV8"/>
+                <constraint firstItem="042-2f-gWr" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gyS-gG-0zt"/>
+                <constraint firstAttribute="centerX" secondItem="VxJ-ca-J0G" secondAttribute="centerX" id="k8u-Nj-xts"/>
+                <constraint firstAttribute="trailing" secondItem="042-2f-gWr" secondAttribute="trailing" id="pC1-Uw-Vcc"/>
+                <constraint firstAttribute="bottom" secondItem="042-2f-gWr" secondAttribute="bottom" id="xib-NE-e6W"/>
+                <constraint firstItem="VxJ-ca-J0G" firstAttribute="width" secondItem="042-2f-gWr" secondAttribute="width" multiplier="0.47" id="xmT-Kp-h3o"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="titleLbl" destination="VxJ-ca-J0G" id="mGm-zm-M7R"/>
             </connections>
+            <point key="canvasLocation" x="319" y="346"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

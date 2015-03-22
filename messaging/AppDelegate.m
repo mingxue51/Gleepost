@@ -65,13 +65,15 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
+    NSString *storyBoardName = @"iphone_ipad";
+    
     [self setupLogging];
     [self setupGoogleAnalytics];
     [self setupFlurryAnalytics];
     [self setupPush];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyBoardName bundle:nil];
     
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
 
@@ -693,7 +695,7 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
                         [WebClientHelper hideStandardLoaderForView:weakSelf.window.rootViewController.view];
                         
                         if (success) {
-                            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+                            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
                             UIViewController *initVC = [storyboard instantiateViewControllerWithIdentifier:@"MainTabBarController"];
                             
                             weakSelf.window.rootViewController = initVC;

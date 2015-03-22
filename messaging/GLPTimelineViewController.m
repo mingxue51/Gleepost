@@ -75,6 +75,8 @@
 #import "GLPCategoryTitleCell.h"
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPCampusWallAsyncProcessor.h"
+#import "URBMediaFocusViewController.h"
+#import "GLPCategoryCell.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -86,6 +88,8 @@
 @property (strong, nonatomic) NewPostView *postView;
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (strong, nonatomic) TransitionDelegateViewCategories *transitionCategoriesViewController;
+@property (strong, nonatomic) URBMediaFocusViewController *mediaFocusViewController;
+
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
 @property (strong, nonatomic) UIImage *imageToBeView;
 
@@ -335,6 +339,12 @@ const float TOP_OFFSET = 180.0f;
     _showComment = NO;
     
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.tableView];
+    _mediaFocusViewController = [[URBMediaFocusViewController alloc] init];
+    
+    _mediaFocusViewController.parallaxEnabled = NO;
+    _mediaFocusViewController.shouldShowPhotoActions = YES;
+    _mediaFocusViewController.shouldRotateToDeviceOrientation = NO;
+    _mediaFocusViewController.shouldBlurBackground = NO;
 }
 
 - (void)startBackgroundOperations
@@ -376,7 +386,7 @@ const float TOP_OFFSET = 180.0f;
 {
     if([[SessionManager sharedInstance] isFirstTimeLoggedIn] && ![self isWalkthroughFinished])
     {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
         GLPWalkthroughViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPWalkthroughViewController"];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cvc];
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
@@ -638,15 +648,8 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)configTabbarFormat
 {
-    
-    if([GLPiOSSupportHelper isIOS6])
-    {
-        return;
-    }
-    
     // set selected and unselected icons
     NSArray *items = self.tabBarController.tabBar.items;
-    
     
     UITabBarItem *item = [items objectAtIndex:0];
     
@@ -656,51 +659,9 @@ const float TOP_OFFSET = 180.0f;
     
     [AppearanceHelper setUnselectedColourForTabbarItem:item];
     
-    
 //    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    
     self.homeTabbarItem = item;
-    
-    
-    
-    item = [items objectAtIndex:1];
-    
-    item.image = [[UIImage imageNamed:@"message-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    
-    item.selectedImage = [UIImage imageNamed:@"message-7"];
-    
-    
-    
-//    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
 
-    
-    [AppearanceHelper setUnselectedColourForTabbarItem:item];
-
-
-    
-    item = [items objectAtIndex:2];
-    
-    item.image = [[UIImage imageNamed:@"man-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    
-    item.selectedImage = [UIImage imageNamed:@"man-7"];
-    
-//    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-
-    [AppearanceHelper setUnselectedColourForTabbarItem:item];
-
-    
-    item = [items objectAtIndex:3];
-    
-    item.image = [[UIImage imageNamed:@"id-card-7"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    
-    item.selectedImage = [UIImage imageNamed:@"id-card-7"];
-    
-//    item.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-
-    
-    [AppearanceHelper setUnselectedColourForTabbarItem:item];
-
-   
     
     // this way, the icon gets rendered as it is (thus, it needs to be green in this example)
 //    item0.image = [[UIImage imageNamed:@"contacts.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -2073,7 +2034,7 @@ const float TOP_OFFSET = 180.0f;
 {
     // hide the new elements indicator if needed when we are on top
     if(!self.elementsIndicatorView.hidden && (indexPath.row == 0 || indexPath.row < self.insertedNewRowsCount)) {
-        NSLog(@"HIDE %d - %d", indexPath.row, self.insertedNewRowsCount);
+        NSLog(@"HIDE %ld - %ld", (long)indexPath.row, (long)self.insertedNewRowsCount);
         
         self.insertedNewRowsCount = 0; // reset the count
         [self hideNewElementsIndicatorView];
@@ -2356,19 +2317,22 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)viewPostImage:(UIImage*)postImage
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = postImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+//    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
+//    viewImage.image = postImage;
+//    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
+//    viewImage.modalPresentationStyle = UIModalPresentationCustom;
+//    
+//    if(![GLPiOSSupportHelper isIOS6])
+//    {
+//        [viewImage setTransitioningDelegate:self.transitionViewImageController];
+//    }
+//    
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:viewImage animated:YES completion:nil];
     
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
+    [_mediaFocusViewController showImage:postImage fromView:self.view];
     
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
 }
 
 
@@ -2501,7 +2465,7 @@ const float TOP_OFFSET = 180.0f;
 
 - (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
 {
-    DDLogDebug(@"navigateToPostForCommentWithIndexPath Post index path %d : %d", postIndexPath.row, postIndexPath.section);
+    DDLogDebug(@"navigateToPostForCommentWithIndexPath Post index path %ld : %ld", (long)postIndexPath.row, (long)postIndexPath.section);
 
     _showComment = YES;
     self.selectedPost = [self.posts objectAtIndex:postIndexPath.row];
@@ -2516,7 +2480,7 @@ const float TOP_OFFSET = 180.0f;
     _selectedPost = notification.userInfo[@"post"];
     
     //Show the pop up view.
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
@@ -2574,13 +2538,12 @@ const float TOP_OFFSET = 180.0f;
 {
     if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
     {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
         IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         newPostVC.groupPost = NO;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
         navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:navigationController animated:YES completion:nil];
-        
     }
     else
     {
@@ -2597,7 +2560,7 @@ const float TOP_OFFSET = 180.0f;
         UIGraphicsEndImageContext();
         
         
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
         UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         
         // vc.view.backgroundColor = [UIColor clearColor];
@@ -2657,7 +2620,7 @@ const float TOP_OFFSET = 180.0f;
 //    UIGraphicsEndImageContext();
 //    
 //    
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
 //    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
 //    
 //    // vc.view.backgroundColor = [UIColor clearColor];
@@ -2668,7 +2631,7 @@ const float TOP_OFFSET = 180.0f;
 
 - (void)showCategoriesViewController
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"Categories"];
     
     /**
@@ -2696,7 +2659,13 @@ const float TOP_OFFSET = 180.0f;
     }
     else
     {
-        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 48, 320, 375)]; //0 63 320 302
+//        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 60, [GLPiOSSupportHelper screenWidth], 375)]; //0 63 320 302
+        
+        //
+        
+        //TODO: Fix that. Apply the new library and make a helper to do all the progress.
+        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 60, [GLPiOSSupportHelper screenWidth], ([[CategoryManager sharedInstance] categoriesNames].count - 1) * [GLPCategoryCell height] + [GLPCategoryCell bottomPadding])]; //0 63 320 302
+
         [cvc.blurBack setImage:[image stackBlur:10.0f]];
         [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
     }
@@ -2715,7 +2684,7 @@ const float TOP_OFFSET = 180.0f;
     NSDictionary *dict = [notification userInfo];
     GLPPost *post = [dict objectForKey:@"Post"];
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     ViewPostViewController *vpvc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostViewController"];
     vpvc.post = post;
     vpvc.isFromCampusLive = YES;

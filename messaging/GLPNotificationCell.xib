@@ -25,7 +25,6 @@
                         <rect key="frame" x="60" y="16" width="240" height="13"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="13" id="74x-0y-CIN"/>
-                            <constraint firstAttribute="width" constant="240" id="8Wu-Vh-w1n"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
                         <nil key="highlightedColor"/>
@@ -62,7 +61,6 @@
                         <rect key="frame" x="60" y="55" width="260" height="1"/>
                         <color key="backgroundColor" red="0.92941176469999998" green="0.92941176469999998" blue="0.92941176469999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="260" id="5Jl-Vo-44k"/>
                             <constraint firstAttribute="height" constant="1" id="pFR-vi-5xG"/>
                         </constraints>
                     </imageView>
@@ -71,7 +69,9 @@
                     <constraint firstItem="929-kD-Ex9" firstAttribute="leading" secondItem="IA8-sF-11N" secondAttribute="trailing" constant="10" id="4wz-wx-LHY"/>
                     <constraint firstItem="vW9-AR-KT1" firstAttribute="leading" secondItem="IA8-sF-11N" secondAttribute="trailing" constant="10" id="8On-Gc-mJj"/>
                     <constraint firstItem="929-kD-Ex9" firstAttribute="top" secondItem="V70-TH-kDW" secondAttribute="top" constant="15" id="BfJ-Is-aGF"/>
+                    <constraint firstAttribute="trailing" secondItem="3wK-fB-0y4" secondAttribute="trailing" id="CnV-nI-PJV"/>
                     <constraint firstItem="IA8-sF-11N" firstAttribute="top" secondItem="V70-TH-kDW" secondAttribute="top" constant="10" id="CtW-gz-cxI"/>
+                    <constraint firstAttribute="trailing" secondItem="929-kD-Ex9" secondAttribute="trailing" constant="20" id="Kd8-UJ-RQs"/>
                     <constraint firstItem="IA8-sF-11N" firstAttribute="leading" secondItem="V70-TH-kDW" secondAttribute="leading" constant="10" id="Pt2-EN-Edi"/>
                     <constraint firstItem="vW9-AR-KT1" firstAttribute="top" secondItem="929-kD-Ex9" secondAttribute="bottom" constant="5" id="ll3-rB-Stv"/>
                     <constraint firstItem="3wK-fB-0y4" firstAttribute="leading" secondItem="V70-TH-kDW" secondAttribute="leading" constant="60" id="qlh-Vz-rEp"/>
@@ -86,7 +86,7 @@
                 <outlet property="notificationImageView" destination="IA8-sF-11N" id="qf5-ot-Va7"/>
                 <outlet property="timeLabel" destination="vW9-AR-KT1" id="ZLj-8F-OmC"/>
             </connections>
-            <point key="canvasLocation" x="293" y="392"/>
+            <point key="canvasLocation" x="90" y="259"/>
         </tableViewCell>
     </objects>
     <resources>

@@ -29,6 +29,7 @@
 - (void)hideEmptyView;
 - (void)groupImageLoadedWithNotification:(NSNotification *)notification;
 - (void)quitFromGroupWithIndexPath:(NSIndexPath *)indexPath;
+- (void)configureSearchGroupsTableView;
 
 - (GLPGroup *)groupWithIndexPath:(NSIndexPath *)indexPath;
 - (void)navigateToGroup:(GLPGroup *)group;

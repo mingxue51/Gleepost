@@ -28,6 +28,7 @@
     entity.privacy = [resultSet intForColumn:@"privacy"];
     entity.conversationRemoteKey = [resultSet intForColumn:@"conversation_remote_key"];
     entity.membersCount = [resultSet intForColumn:@"members_count"];
+    entity.lastActivity = [resultSet dateForColumn:@"last_activity"];
     
     return entity;
 }

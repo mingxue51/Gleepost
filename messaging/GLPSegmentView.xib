@@ -11,22 +11,46 @@
             <rect key="frame" x="0.0" y="0.0" width="300" height="32"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="y28-nC-lR7">
-                    <rect key="frame" x="2" y="2" width="148" height="28"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dzM-gq-fgG">
+                    <rect key="frame" x="149" y="0.0" width="1" height="32"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="1" id="roh-qe-vew"/>
+                    </constraints>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="y28-nC-lR7">
+                    <rect key="frame" x="2" y="2" width="147" height="28"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </imageView>
-                <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Private" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XhO-CZ-cPs">
-                    <rect key="frame" x="2" y="5" width="148" height="21"/>
+                <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Private" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XhO-CZ-cPs">
+                    <rect key="frame" x="2" y="5" width="147" height="21"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Group" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qN4-TC-V5N">
+                <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qN4-TC-V5N">
                     <rect key="frame" x="150" y="5" width="148" height="21"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
             <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="centerX" secondItem="dzM-gq-fgG" secondAttribute="centerX" id="4ou-nb-SV0"/>
+                <constraint firstItem="y28-nC-lR7" firstAttribute="leading" secondItem="C6m-kO-dos" secondAttribute="leading" constant="2" id="9hp-rx-CrX"/>
+                <constraint firstItem="XhO-CZ-cPs" firstAttribute="leading" secondItem="C6m-kO-dos" secondAttribute="leading" constant="2" id="AER-YS-4Is"/>
+                <constraint firstItem="dzM-gq-fgG" firstAttribute="leading" secondItem="XhO-CZ-cPs" secondAttribute="trailing" id="EIe-qC-G02"/>
+                <constraint firstAttribute="trailing" secondItem="qN4-TC-V5N" secondAttribute="trailing" constant="2" id="INb-Ub-ehh"/>
+                <constraint firstAttribute="bottom" secondItem="XhO-CZ-cPs" secondAttribute="bottom" constant="6" id="MVy-u3-iMp"/>
+                <constraint firstItem="dzM-gq-fgG" firstAttribute="leading" secondItem="y28-nC-lR7" secondAttribute="trailing" id="PCW-Cb-V6C"/>
+                <constraint firstAttribute="bottom" secondItem="y28-nC-lR7" secondAttribute="bottom" constant="2" id="QSk-Zk-6T8"/>
+                <constraint firstItem="qN4-TC-V5N" firstAttribute="leading" secondItem="dzM-gq-fgG" secondAttribute="trailing" id="R4W-So-1Fh"/>
+                <constraint firstItem="y28-nC-lR7" firstAttribute="top" secondItem="C6m-kO-dos" secondAttribute="top" constant="2" id="hJk-Ef-Pah"/>
+                <constraint firstItem="qN4-TC-V5N" firstAttribute="top" secondItem="C6m-kO-dos" secondAttribute="top" constant="5" id="hKs-ST-Kih"/>
+                <constraint firstAttribute="bottom" secondItem="dzM-gq-fgG" secondAttribute="bottom" id="kup-Wy-OkO"/>
+                <constraint firstItem="XhO-CZ-cPs" firstAttribute="top" secondItem="C6m-kO-dos" secondAttribute="top" constant="5" id="pjZ-JZ-9BE"/>
+                <constraint firstItem="dzM-gq-fgG" firstAttribute="top" secondItem="C6m-kO-dos" secondAttribute="top" id="sQs-4s-r5w"/>
+                <constraint firstAttribute="bottom" secondItem="qN4-TC-V5N" secondAttribute="bottom" constant="6" id="xYx-5s-sfg"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
@@ -34,6 +58,7 @@
                 <outlet property="rightLbl" destination="qN4-TC-V5N" id="hVV-g6-2rP"/>
                 <outlet property="slideImageView" destination="y28-nC-lR7" id="fYM-jy-app"/>
             </connections>
+            <point key="canvasLocation" x="-127" y="197"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

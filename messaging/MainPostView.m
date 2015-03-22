@@ -27,6 +27,7 @@
 #import "GLPPostImageLoader.h"
 #import "GLPImageHelper.h"
 #import "GLPThemeManager.h"
+#import "GLPViewsCountView.h"
 
 @interface MainPostView ()
 
@@ -66,7 +67,7 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
-@property (weak, nonatomic) IBOutlet UILabel *viewsCountLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *viewsCountLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 
@@ -83,6 +84,10 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *backgroundImageHeight;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *loadingViewHeight;
+
+@property (weak, nonatomic) IBOutlet UIView *userView;
+
+@property (weak, nonatomic) IBOutlet GLPViewsCountView *viewsCountView;
 
 //This variable is temporary.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceBetweenTitleAndClockView;
@@ -113,29 +118,10 @@
 @implementation MainPostView
 
 const float FIXED_TOP_TEXT_BACKGROUND_HEIGHT = 70;
-const float FIXED_BOTTOM_TEXT_VIEW_HEIGHT = 120; //100
+const float FIXED_BOTTOM_TEXT_VIEW_HEIGHT = 114; //100
 
 const float FIXED_TOP_MEDIA_BACKGROUND_HEIGHT = 250;
-const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
-
-
-
--(id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    
-    if(self)
-    {
-        
-    }
-    
-    return self;
-}
-
-- (void)awakeFromNib
-{
-
-}
+const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 
 #pragma mark - Modifiers
 
@@ -173,7 +159,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
     [_nameLbl setTextColor:[[GLPThemeManager sharedInstance] nameTintColour]];
     _nameLbl.tag = _post.author.remoteKey;
     
-    [self configureCountViewsLabel];
+    [_viewsCountView setViewsCount:_post.viewsCount];
     
     _viewPost = viewPost;
     
@@ -212,6 +198,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setNewViewsCount:) name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
     }
     
+    
+//    [ShapeFormatterHelper setBorderToView:_videoView withColour:[UIColor redColor] andWidth:1.0];
 //    [ShapeFormatterHelper setBorderToView:_wideCommentBtn withColour:[UIColor redColor]];
     
 //    [ShapeFormatterHelper setBorderToView:_socialView withColour:[UIColor blueColor]];
@@ -238,7 +226,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
     FLog(@"MainPostView : setNewViewsCount %@", viewsCountNotification);
 
     _post.viewsCount = viewsCount;
-    [self configureCountViewsLabel];
+    [_viewsCountView setViewsCount:viewsCount];
 }
 
 - (void)dealloc
@@ -267,11 +255,11 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
 {
     float distanceFromTop = 0.0f;
     float fixedBottomViewHeight = FIXED_BOTTOM_TEXT_VIEW_HEIGHT;
-    float backgroundImageViewHeight = 213.0f + height;
+    float backgroundImageViewHeight = 219.0f + height;
     
     if([self isCurrentPostEvent])
     {
-        distanceFromTop = 100.0f;
+        distanceFromTop = 111.0f;
         
         distanceFromTop = [self configureDistanceFromTopDependingOnFactor:17 withBasicValue:distanceFromTop];
         
@@ -282,8 +270,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
     }
     else
     {
-        distanceFromTop = 10.0f; //25
-        backgroundImageViewHeight -= 87.0f;
+        distanceFromTop = 28.0f;
+        backgroundImageViewHeight -= 80.0f;
     }
     
     //Set constrains.
@@ -304,14 +292,14 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
     float fixedBottomViewHeight = 0.0f;
     float distanceFromTop = 0.0f;
     
-    backgroundImageViewHeight = 388.0f + height;  //371 (+17)
+    backgroundImageViewHeight = 416.0f + height;  //388 //new 402 + 14
     fixedBottomViewHeight = FIXED_BOTTOM_MEDIA_VIEW_HEIGHT;
     
     if([self isCurrentPostEvent])
     {
         [_postImageDistanceFromTopConstrain setConstant:0];
 
-        distanceFromTop = 83;
+        distanceFromTop = 95; //83
 
         distanceFromTop = [self configureDistanceFromTopDependingOnFactor:15 withBasicValue:distanceFromTop];
 
@@ -331,10 +319,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
         
         [_postImageDistanceFromTopConstrain setConstant:0];
         
-//        [_postImageDistanceFromLeftConstrain setConstant:0];
-        
-        backgroundImageViewHeight -= 57.0f; //70
-        
+        backgroundImageViewHeight -= (90.0f - 22); //70
         distanceFromTop = 25.0f;
     }
     
@@ -351,8 +336,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
 
 -(void)setPositionsForVideoWithHeight:(float)height
 {
-    float fixedBottomViewHeight = 432.0f;
-    float backgroundImageViewHeight = 512.0f + height;
+    float fixedBottomViewHeight = 459.0f;
+    float backgroundImageViewHeight = 538.0f + height;
     float distanceFromTop = 0.0f;
     
     if([self isCurrentPostEvent])
@@ -634,7 +619,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
     
     [ShapeFormatterHelper setRoundedView:_userImageView toDiameter:_userImageView.frame.size.height];
 
-    [ShapeFormatterHelper setTopCornerRadius:_postImageView withViewFrame:_postImageView.frame withValue:0];
+//    [ShapeFormatterHelper setTopCornerRadius:_postImageView withViewFrame:_postImageView.frame withValue:0];
     
     [ShapeFormatterHelper setCornerRadiusWithView:_backgroundImageView andValue:5];
     
@@ -651,21 +636,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 315;
 {
     //Add the post's time.
     [_timePostLbl setText:[date timeAgo]];
-}
-
-- (void)configureCountViewsLabel
-{
-    if(_post.viewsCount == 0)
-    {
-        [_viewsCountLabel setHidden:YES];
-    }
-    else
-    {
-        [_viewsCountLabel setHidden:NO];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [_viewsCountLabel setText:[NSString stringWithFormat:@"%@ Views", @(_post.viewsCount)]];
-        });
-    }
 }
 
 -(void)setUserImage

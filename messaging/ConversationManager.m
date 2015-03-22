@@ -740,16 +740,19 @@ int const NumberMaxOfMessagesLoaded = 20;
 // Executed in background, from GLPNewMessageProcessorOperation
 + (void)sendMessage:(GLPMessage *)message
 {
-    DDLogInfo(@"Post message %@ to server, with key: %d", message.content, message.key);
+    DDLogInfo(@"Post message %@ to server, with key: %ld", message.content, (long)message.key);
     
     [[WebClient sharedInstance] createMessageSynchronously:message callback:^(BOOL success, NSInteger remoteKey) {
-        DDLogInfo(@"Message with key %d posted to server. Success: %d. New remote key: %d", message.key, success, remoteKey);
+        DDLogInfo(@"Message with key %ld posted to server. Success: %d. New remote key: %ld", (long)message.key, success, (long)remoteKey);
         
         if(success) {
             message.remoteKey = remoteKey;
             message.sendStatus = kSendStatusSent;
             
-            [[GLPReadReceiptsManager sharedInstance] removeReadReceiptWithConversationRemoteKey:message.conversation.remoteKey];
+            //We are not removing and read receipt entry because is removed after a new message
+            //is received.
+            
+//            [[GLPReadReceiptsManager sharedInstance] removeReadReceiptWithConversationRemoteKey:message.conversation.remoteKey];
             
         } else {
             message.sendStatus = kSendStatusFailure;

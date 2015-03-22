@@ -22,6 +22,9 @@
 @property (strong, nonatomic) NSMutableDictionary *categoriesSelectedImages;
 @property (weak, nonatomic) IBOutlet UIImageView *topImageView;
 @property (strong, nonatomic) GLPCategory *selectedCategory;
+
+@property (nonatomic, retain) IBOutletCollection(NSLayoutConstraint) NSArray *tableViewsHeights;
+
 @end
 
 @implementation GLPCategoriesViewController
@@ -32,28 +35,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self loadCategories];
-    
     [self configTableView];
-    
     [self configAppearance];
-    
-
-//    [self.backgroundView setImage:[self.screenshot stackBlur:3.0f]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self hideNetworkErrorViewIfNeeded];
+    [self configureTableViewHeightDependingOnConstrains];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [self showNetworkErrorViewIfNeeded];
-    
     [super viewDidDisappear:animated];
 }
 
@@ -68,6 +64,16 @@
     if([GLPiOSSupportHelper isIOS6])
     {
         [_topImageView setBackgroundColor:[UIColor clearColor]];
+    }
+}
+
+- (void)configureTableViewHeightDependingOnConstrains
+{
+    CGFloat tableViewHeight = _categories.count * [GLPCategoryCell height] + [GLPCategoryCell bottomPadding];
+    
+    for(NSLayoutConstraint *constraint in self.tableViewsHeights)
+    {
+        constraint.constant = tableViewHeight;
     }
 }
 
@@ -135,13 +141,8 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     GLPCategoryCell *cell = [tableView dequeueReusableCellWithIdentifier:kGLPCategoryCell forIndexPath:indexPath];
-    
-    
     GLPCategory *category = _categories[indexPath.row];
-    
-    
     [cell updateCategory:category withImage:[_categoriesImages objectForKey:category.tag]];
-    
     return cell;
 }
 
@@ -205,7 +206,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 60.0f;
+    return [GLPCategoryCell height];
 }
 
 

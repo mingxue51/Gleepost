@@ -49,8 +49,10 @@
 + (NSArray *)findRemoteGroupsdb:(FMDatabase *)db
 {
     NSMutableArray *groups = [[NSMutableArray alloc] init];
-    
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from groups where send_status = %d order by remoteKey asc", kSendStatusSent];
+
+//    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from groups where send_status = %d order by remoteKey asc", kSendStatusSent];
+
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from groups where send_status = %d order by last_activity desc", kSendStatusSent];
     
     while ([resultSet next])
     {
@@ -116,14 +118,17 @@
 
 + (void)save:(GLPGroup *)entity inDb:(FMDatabase *)db
 {
+    int date = [entity.lastActivity timeIntervalSince1970];
+    
     if(entity.remoteKey == 0)
     {
-        [db executeUpdateWithFormat:@"insert into groups (title, description, image_url, send_status, date, user_remote_key, loggedin_user_role_key, conversation_remote_key, privacy, members_count) values(%@, %@, %@, %d, %d, %d, %d, %d, %d, %d)",
+        [db executeUpdateWithFormat:@"insert into groups (title, description, image_url, send_status, date, last_activity, user_remote_key, loggedin_user_role_key, conversation_remote_key, privacy, members_count) values(%@, %@, %@, %d, %d, %d, %d, %d, %d, %d, %d)",
          entity.name,
          entity.groupDescription,
          entity.groupImageUrl,
          entity.sendStatus,
          0,
+         date,
          entity.author.remoteKey,
          entity.loggedInUser.roleLevel,
          entity.conversationRemoteKey,
@@ -132,13 +137,14 @@
     }
     else
     {
-        [db executeUpdateWithFormat:@"insert into groups (remoteKey, title, description, image_url, send_status, date, user_remote_key, loggedin_user_role_key, conversation_remote_key, privacy, members_count) values(%d, %@, %@, %@, %d, %d, %d, %d, %d, %d, %d)",
+        [db executeUpdateWithFormat:@"insert into groups (remoteKey, title, description, image_url, send_status, date, last_activity, user_remote_key, loggedin_user_role_key, conversation_remote_key, privacy, members_count) values(%d, %@, %@, %@, %d, %d, %d, %d, %d, %d, %d, %d)",
          entity.remoteKey,
          entity.name,
          entity.groupDescription,
          entity.groupImageUrl,
          entity.sendStatus,
          0,
+         date,
          entity.author.remoteKey,
          entity.loggedInUser.roleLevel,
          entity.conversationRemoteKey,
@@ -165,7 +171,7 @@
     
     [GLPPostDao deletePostsWithGroupRemoteKey:group.remoteKey db:db];
     
-    DDLogInfo(@"Group with key %d removed status %d.", group.remoteKey, removed);
+    DDLogInfo(@"Group with key %ld removed status %d.", (long)group.remoteKey, removed);
 }
 
 +(void)updateGroupSendingData:(GLPGroup *)entity db:(FMDatabase *)db

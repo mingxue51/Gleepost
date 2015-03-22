@@ -17,6 +17,7 @@
 #import "UIView+RoudedCorners.h"
 #import "UIView+Borders.h"
 #import "GLPImageHelper.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface CommentCell()
 
@@ -35,7 +36,7 @@
 static const float FixedSizeOfTextCell = 75.0; //Before was 90. 45
 static const float FollowingCellPadding = 0.0;
 static const float CommentContentViewPadding = 0.0;  //15 before.
-static const float CommentContentLabelMaxWidth = 280.0; //250 before
+static const float CommentContentLabelMargin = 40.0;
 
 
 @implementation CommentCell
@@ -88,6 +89,7 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
     [self.postDateLabel setText:[currentDate timeAgo]];
     
     
+    DDLogDebug(@"Comment Cell : content width %f", self.contentLabel.frame.size.width);
 
     
     //Add touch gesture to profile image.
@@ -95,8 +97,6 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
 //    [tap setNumberOfTapsRequired:1];
 //    [self.userImageView addGestureRecognizer:tap];
     
-    
-//    [ShapeFormatterHelper setBorderToView:_contentLabel withColour:[UIColor redColor] andWidth:1.0];
     
 //    [self formatCommentElements];
 }
@@ -198,7 +198,7 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
 
 -(void)setElement:(UIView*)element size:(CGSize)size
 {
-    [element setFrame:CGRectMake(element.frame.origin.x, element.frame.origin.y, CommentContentLabelMaxWidth, size.height)];
+    [element setFrame:CGRectMake(element.frame.origin.x, element.frame.origin.y, [CommentCell getMaxLabelContentWidth], size.height)];
 }
 
 #pragma mark - UI methods
@@ -263,11 +263,11 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
+    DDLogDebug(@"CommentCell content label size %f", [CommentCell getMaxLabelContentWidth]);
     
-    CGRect rect = [attributedText boundingRectWithSize:(CGSize){CommentContentLabelMaxWidth, CGFLOAT_MAX}
-                                               options:(NSStringDrawingUsesLineFragmentOrigin)
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){[CommentCell getMaxLabelContentWidth], CGFLOAT_MAX}
+                                               options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
                                                context:nil];
-    
     
     CGSize size = rect.size;
     
@@ -284,6 +284,11 @@ static const float CommentContentLabelMaxWidth = 280.0; //250 before
     height += [CommentCell getContentLabelSizeForContent:content].height + CommentContentViewPadding;
     
     return height + FollowingCellPadding;
+}
+
++ (CGFloat)getMaxLabelContentWidth
+{
+    return [GLPiOSSupportHelper screenWidth] - CommentContentLabelMargin;
 }
 
 @end

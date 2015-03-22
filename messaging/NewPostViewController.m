@@ -46,6 +46,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleCharactersLeftLbl;
 @property (weak, nonatomic) IBOutlet UIView *textFieldView;
 @property (weak, nonatomic) IBOutlet UIImageView *separatorLineImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceContentViewFromTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewHeight;
+
 
 /** Should be 2 categories (event and user's selected. */
 //@property (strong, nonatomic) NSArray *eventCategories;
@@ -121,8 +125,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [self configureTextViews];
     
     [self formatElements];
-    
-    [self formatTextView];
     
     [self loadDataIfNeeded];
     
@@ -245,14 +247,12 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
  */
 - (void)configureContents
 {
-    
     if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
     {
         [_titleTextField setHidden:YES];
         [_titleCharactersLeftLbl setHidden:YES];
         [_separatorLineImageView setHidden:YES];
-        CGRectSetY(_contentTextView, 10);
-        CGRectAddH(_contentTextView, 30);
+        [_distanceContentViewFromTop setConstant:-30];
     }
 }
 
@@ -266,11 +266,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     {
         [self.titleTextField becomeFirstResponder];
     }
-}
-
--(void)formatTextView
-{
-//    _contentTextView.placeholderColor = [UIColor colorWithRed:LIGHT_BLACK_RGB green:LIGHT_BLACK_RGB blue:LIGHT_BLACK_RGB alpha:1.0];
 }
 
 -(void)configureTextViews
@@ -932,17 +927,19 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     // Need to translate the bounds to account for rotation.
     keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
     
-    float newHeightOfContentTextView = [self findNewHeightForTheContentTextViewWithKeboardFrame:keyboardBounds];
-    
-    float newYDescriptionLbl = [self findNewYForDescriptionCharactersLeftWithKeboardFrame:keyboardBounds];
+    if(keyboardBounds.size.height == 0)
+    {
+        return;
+    }
     
     float newHeightOfTextFieldView = [self findNewHeightForTextFieldViewWithKeyboardFrame:keyboardBounds];
     
+    [_textFieldView layoutIfNeeded];
+    
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
-        
-        CGRectSetH(_textFieldView, newHeightOfTextFieldView);
-        CGRectSetH(_contentTextView, newHeightOfContentTextView);
-        CGRectSetY(_descriptionCharactersLeftLbl, newYDescriptionLbl);
+
+        [_textViewHeight setConstant:newHeightOfTextFieldView];
+        [_textFieldView layoutIfNeeded];
         
     } completion:^(BOOL finished) {
         

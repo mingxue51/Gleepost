@@ -20,7 +20,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
 @property (weak, nonatomic) IBOutlet UILabel *uploadingLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *progressViewDistanceFromTop;
-
 @end
 
 
@@ -63,6 +62,8 @@ const NSString *PROCESSING_TEXT = @"FINISHING UP...";
     {
         [_progressViewDistanceFromTop setConstant:6.0];
     }
+    
+    CGRectSetW(self, [GLPiOSSupportHelper screenWidth]);
     
 //    [ShapeFormatterHelper setCornerRadiusWithView:_thumbnailImageView andValue:5.0];
 

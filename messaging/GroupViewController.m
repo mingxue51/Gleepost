@@ -268,7 +268,7 @@ const float TOP_OFF_SET = -64.0;
     
     _strechedImageView = [array objectAtIndex:0];
     
-    _strechedImageView.frame = CGRectMake(0, -kStretchedImageHeight, self.tableView.frame.size.width, kStretchedImageHeight);
+    _strechedImageView.frame = CGRectMake(0, -kStretchedImageHeight, [GLPiOSSupportHelper screenWidth], kStretchedImageHeight);
     
     [self refreshTopImageView];
     
@@ -375,29 +375,18 @@ const float TOP_OFF_SET = -64.0;
     
     if([self isFakeNavigationBarVisible])
     {
-        //_fakeNavigationBarVisible = NO;
-//        [self.navigationController.navigationBar makeVisibleWithTitle:_group.name];
-//        [_fakeNavigationBar showNavigationBar];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
     }
     else
     {
-        //_fakeNavigationBarVisible = YES;
-//        [self.navigationController.navigationBar invisible];
-//        [_fakeNavigationBar hideNavigationBar];
         [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
     }
     
     [self.navigationController.navigationBar invisible];
-
-
     
     //Set title.
     self.navigationController.navigationBar.topItem.title = @"";
-    
-
 }
 
 - (void)configureViewDidLoadNotifications
@@ -517,8 +506,8 @@ const float TOP_OFF_SET = -64.0;
 {
     NSDictionary *dict = [notification userInfo];
     
-    int key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
-    int remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
+    NSInteger key = [(NSNumber*)[dict objectForKey:@"key"] integerValue];
+    NSInteger remoteKey = [(NSNumber*)[dict objectForKey:@"remoteKey"] integerValue];
     NSString * urlImage = [dict objectForKey:@"imageUrl"];
     
 
@@ -1612,7 +1601,7 @@ const float TOP_OFF_SET = -64.0;
 
 //-(void)viewPostImage:(UIImage*)postImage
 //{
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
 //    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
 //    vc.image = postImage;
 //    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
@@ -1783,7 +1772,7 @@ const float TOP_OFF_SET = -64.0;
 
 -(void)viewPostImage:(UIImage*)postImage
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
     viewImage.image = postImage;
     viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
@@ -1803,7 +1792,7 @@ const float TOP_OFF_SET = -64.0;
     _selectedPost = notification.userInfo[@"post"];
     
     //Show the pop up view.
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
@@ -1819,7 +1808,7 @@ const float TOP_OFF_SET = -64.0;
 - (void)showAfterJoiningPopUpView
 {
     //Show the pop up view.
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPPublicGroupPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPPublicGroupPopUpViewController"];
     
     [cvc setDelegate:self];
@@ -1970,7 +1959,7 @@ const float TOP_OFF_SET = -64.0;
 
 -(void)showImage
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
     viewImage.image = _groupImage;
     viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
@@ -1995,7 +1984,7 @@ const float TOP_OFF_SET = -64.0;
         return;
     }
 
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
 //    IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
 //    newPostVC.group = _group;
 //    [newPostVC setDelegate:self];
@@ -2004,7 +1993,7 @@ const float TOP_OFF_SET = -64.0;
 //    [self presentViewController:navigationController animated:YES completion:nil];
     
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
     newPostVC.groupPost = YES;
     newPostVC.group = _group;
@@ -2015,7 +2004,7 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)showSettings:(id)sender
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPGroupSettingsViewController *groupSettingsViewController = [storyboard instantiateViewControllerWithIdentifier:@"GLPGroupSettingsViewController"];
     groupSettingsViewController.group = _group;
     groupSettingsViewController.delegate = self;

@@ -12,6 +12,7 @@
 #import "FakeNavigationBarView.h"
 #import "ShapeFormatterHelper.h"
 #import "GLPThemeManager.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface FakeNavigationBarView ()
 
@@ -63,16 +64,9 @@
 - (void)configureView
 {
     FakeNavigationBarView *view = [[[NSBundle mainBundle] loadNibNamed:@"FakeNavigationBarView" owner:self options:nil] objectAtIndex:0];
-    
+    CGRectSetW(view, [GLPiOSSupportHelper screenWidth]);
     [self setFrame:view.frame];
-        
-//    CGRectSetY(self, -84);
-    
     [view setTitle:[_title uppercaseString]];
-
-    
-//    [self setHidden:NO];
-    
     [self addSubview:view];
 }
 

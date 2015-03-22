@@ -50,6 +50,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet HPGrowingTextView *commentGrowingTextView;
 @property (strong, nonatomic) IBOutlet UIView *commentFormView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *commentFormViewHeight;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *commentFormDistanceFromBottom;
+
 
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
@@ -59,6 +62,8 @@
 
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
 @property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
+
+
 
 @end
 
@@ -471,7 +476,7 @@ static BOOL likePushed;
     GLPPost *incomingPost = notification.userInfo[@"post"];
     
     //Show the pop up view.
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
@@ -619,7 +624,7 @@ static bool firstTime = YES;
 
 -(void)viewPostImage:(UIImage*)postImage
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
     viewImage.image = postImage;
     viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
@@ -635,7 +640,7 @@ static bool firstTime = YES;
 }
 
 
--(void) setBackgroundToNavigationBar
+- (void)setBackgroundToNavigationBar
 {
     if(firstTime)
     {
@@ -1063,21 +1068,36 @@ static bool firstTime = YES;
     keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
     
 	// get a rect for the textView frame
-	CGRect containerFrame = self.commentFormView.frame;
-    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
+//	CGRect containerFrame = self.commentFormView.frame;
+//    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
+//    
+//	CGRect tableViewFrame = self.tableView.frame;
+//    tableViewFrame.size.height = containerFrame.origin.y - self.tableView.frame.origin.y;
     
-	CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.size.height = containerFrame.origin.y - self.tableView.frame.origin.y;
+    if(keyboardBounds.size.height == 0)
+    {
+        return;
+    }
+    
+    [_commentFormView layoutIfNeeded];
+    [_tableView layoutIfNeeded];
     
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
-        self.commentFormView.frame = containerFrame;
-        self.tableView.frame = tableViewFrame;
+//        self.commentFormView.frame = containerFrame;
+//        self.tableView.frame = tableViewFrame;
         
-        [self scrollToTheEndAnimated:NO];
+        _commentFormDistanceFromBottom.constant = keyboardBounds.size.height;
+        [_commentFormView layoutIfNeeded];
+        [_tableView layoutIfNeeded];
+
         
     } completion:^(BOOL finished) {
-        [self.tableView setNeedsLayout];
+//        [self.tableView setNeedsLayout];
+        
+//        [_tableView layoutIfNeeded];
     }];
+    [self scrollToTheEndAnimated:YES];
+
 }
 
 - (void)keyboardWillHide:(NSNotification *)note{
@@ -1086,15 +1106,22 @@ static bool firstTime = YES;
     UIViewAnimationCurve animationCurve = curve.intValue;
 	
 	// get a rect for the textView frame
-	CGRect containerFrame = self.commentFormView.frame;
-    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
+//	CGRect containerFrame = self.commentFormView.frame;
+//    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
+//    
+//	CGRect tableViewFrame = self.tableView.frame;
+//    tableViewFrame.size.height = containerFrame.origin.y - self.tableView.frame.origin.y;
     
-	CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.size.height = containerFrame.origin.y - self.tableView.frame.origin.y;
-    
+    [_commentFormView layoutIfNeeded];
+    [_tableView layoutIfNeeded];
+
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
-        self.commentFormView.frame = containerFrame;
-        self.tableView.frame = tableViewFrame;
+//        self.commentFormView.frame = containerFrame;
+//        self.tableView.frame = tableViewFrame;
+        _commentFormDistanceFromBottom.constant = 0;
+        [_commentFormView layoutIfNeeded];
+        [_tableView layoutIfNeeded];
+
         
     } completion:^(BOOL finished) {
         [self.tableView setNeedsLayout];
@@ -1112,18 +1139,15 @@ static bool firstTime = YES;
 {
     float diff = (growingTextView.frame.size.height - height);
     
-	CGRect r = self.commentFormView.frame;
-    r.size.height -= diff;
-    r.origin.y += diff;
-	self.commentFormView.frame = r;
+//	CGRect r = self.commentFormView.frame;
+//    r.size.height -= diff;
+//    r.origin.y += diff;
+//	self.commentFormView.frame = r;
     
-    CGRect tableViewFrame = self.tableView.frame;
-    tableViewFrame.size.height += diff;
-    self.tableView.frame = tableViewFrame;
-
-    DDLogDebug(@"growingTextView: %f", height);
-    
-    
+//    CGRect tableViewFrame = self.tableView.frame;
+//    tableViewFrame.size.height += diff;
+//    self.tableView.frame = tableViewFrame;
+    _commentFormViewHeight.constant -= diff;
     [self scrollToTheEndAnimated:NO];
 }
 

@@ -75,7 +75,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
 - (void)showSignUpViewController
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPSignUpViewController *signUpVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSignUpViewController"];
     
     if(_fbLoginInfo)
@@ -103,7 +103,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
     [self.navigationController.navigationBar setTranslucent:YES];
     
     [AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar_trans" forBarMetrics:UIBarMetricsDefault];
-    
+
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];

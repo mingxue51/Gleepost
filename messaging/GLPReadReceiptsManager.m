@@ -67,9 +67,14 @@ static GLPReadReceiptsManager *instance = nil;
 
     GLPReadReceipt *existedReadReceipt = [_readReceipts objectForKey: @([readReceipt getConversationRemoteKey])];
     
-    if(existedReadReceipt)
+    if(existedReadReceipt && [readReceipt getMesssageRemoteKey] == [existedReadReceipt getMesssageRemoteKey])
     {
         [existedReadReceipt addUserWithUser: [readReceipt getLastUser]];
+    }
+    else if(existedReadReceipt && [readReceipt getMesssageRemoteKey] != [existedReadReceipt getMesssageRemoteKey])
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:self userInfo:@{@"message_remote_key" : @([existedReadReceipt getMesssageRemoteKey])}];
+        [_readReceipts setObject:readReceipt forKey:@([readReceipt getConversationRemoteKey])];
     }
     else
     {
@@ -143,7 +148,7 @@ static GLPReadReceiptsManager *instance = nil;
 #pragma mark - Updates
 
 /**
- Updates or add the conversation reads array (in conversation instances - either GLPLiveGroupConversationsManager
+ Updates or adds the conversation reads array (in conversation instances - either GLPLiveGroupConversationsManager
  or GLPLiveConversationsManager) and in local database in conversation_reads.
  
  @param readReceipt the new read receipt that just received from web socket.

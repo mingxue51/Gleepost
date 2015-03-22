@@ -253,6 +253,7 @@ static DatabaseManager *instance = nil;
              image_url text, \
              send_status integer, \
              date integer, \
+             last_activity integer, \
              user_remote_key integer, \
              loggedin_user_role_key integer, \
              conversation_remote_key integer, \

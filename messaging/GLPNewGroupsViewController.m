@@ -66,6 +66,11 @@
     self.tableView.contentInset = UIEdgeInsetsMake(5.0, 0, 5.0, 0);
 }
 
+- (void)configureSearchGroupsTableView
+{
+    self.tableView.contentInset = UIEdgeInsetsMake(-10.0, 0, 5.0, 0);
+}
+
 - (void)initialiseObjects
 {
     _groups = [[NSMutableArray alloc] init];
