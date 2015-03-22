@@ -201,10 +201,11 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         [participants addObject:user];
     }
     
-    if(participants.count < 2) {
-        DDLogError(@"Ignore conversation that does not contain at least 2 participants");
-        return nil;
-    }
+    //That is removed because there is a possibility of one participant in a group's conversation.
+//    if(participants.count < 2) {
+//        DDLogError(@"Ignore conversation that does not contain at least 2 participants");
+//        return nil;
+//    }
     
     GLPConversation *conversation;
     
@@ -214,6 +215,11 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         NSDate *expiryDate = [RemoteParser parseDateFromString:expiry[@"time"]];
         BOOL ended = [expiry[@"ended"] boolValue];
         conversation = [[GLPConversation alloc] initWithParticipants:participants expiryDate:expiryDate ended:ended];
+    }
+    else if(json[@"group"])
+    {
+        //group's conversation.
+        conversation = [[GLPConversation alloc] initGroupsConversationWithParticipants:participants];
     }
     // normal conversation
     else {

@@ -37,6 +37,7 @@
 
 
 - (id)initFromPushNotificationWithRemoteKey:(NSInteger)remoteKey;
+- (id)initGroupsConversationWithParticipants:(NSArray *)participants;
 - (id)initFromGroup:(NSInteger)groupRemoteKey withRemoteKey:(NSInteger)remoteKey;
 - (id)initWithParticipants:(NSArray *)participants;
 - (id)initWithParticipants:(NSArray *)participants expiryDate:(NSDate *)expiryDate ended:(BOOL)ended;

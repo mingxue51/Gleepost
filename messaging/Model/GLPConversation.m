@@ -70,6 +70,18 @@
     return self;
 }
 
+- (id)initGroupsConversationWithParticipants:(NSArray *)participants
+{
+    self = [self init];
+    
+    if(self)
+    {
+        _participants = participants;
+    }
+    
+    return self;
+}
+
 // Init new regular conversation
 - (id)initWithParticipants:(NSArray *)participants
 {
@@ -78,13 +90,12 @@
         return nil;
     }
     
-    // participants contains at least current user and another one
-    NSAssert(participants.count >= 2, @"Participants must contain at least current user and another one");
+    // participants contains at least current user and another one // there is no need for that.
+//    NSAssert(participants.count >= 2, @"Participants must contain at least current user and another one");
     
-    // remove the current user
+    // remove the current user // there is no need for that.
     _participants = [participants filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"remoteKey != %d", [SessionManager sharedInstance].user.remoteKey]];
     
-//    _isGroup = _participants.count > 1;
     _isGroup = _participants.count > 1;
     
     _title = _isGroup ? [self generateGroupTitle] : [self getUniqueParticipant].name;

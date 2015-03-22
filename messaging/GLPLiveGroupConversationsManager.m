@@ -127,11 +127,11 @@ static GLPLiveGroupConversationsManager *instance = nil;
                 
                 DDLogInfo(@"Load conversation success");
                 
-                //If the conversation has 1 participant (in case of one member) for now don't add conversation.
-                if(conversation)
-                {
-                    [self internalAddConversation:conversation isEmpty:NO];
-                }
+                //If the conversation has 1 participant (in case of one member) for now don't add conversation. //Now we don't want to use that for now.
+//                if(conversation)
+//                {
+                [self internalAddConversation:conversation isEmpty:NO];
+//                }
                 
                 _isSynchronizedWithRemote = YES;
                 

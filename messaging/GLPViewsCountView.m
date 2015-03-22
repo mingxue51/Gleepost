@@ -23,9 +23,7 @@
     
     if(viewsCount == 0)
     {
-//        [self setHidden:YES];
         labelText = @"1";
-        
     }
     else
     {
