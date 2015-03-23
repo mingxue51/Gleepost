@@ -231,6 +231,33 @@
     return [UIColor colorWithR:54.0 withG:47.0 andB:45.0];
 }
 
++ (UIColor *)firstColour
+{
+    return [UIColor colorWithR:0 withG:0 andB:0];
+}
+
++ (UIColor *)secondColour
+{
+    return [UIColor colorWithR:0 withG:0 andB:0];
+}
+
++ (UIColor *)thirdColour
+{
+    return [UIColor colorWithR:0 withG:0 andB:0];
+}
+
++ (UIColor *)fourthColour
+{
+    return [UIColor colorWithR:0 withG:0 andB:0];
+}
+
++ (UIColor *)fifthColour
+{
+    return [UIColor colorWithR:0 withG:0 andB:0];
+}
+
+
+
 + (UIColor *)colourForNotFocusedItems
 {
     return [UIColor colorWithR:227.0 withG:227.0 andB:227.0];
