@@ -6622,7 +6622,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = NerdNation;
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "84fbd3e2-99e4-43f6-af90-0b18899ef184";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1b7d7eae-d231-4947-b9ae-c3e4bdf24f11";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
