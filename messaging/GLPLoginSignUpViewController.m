@@ -18,6 +18,7 @@
 #import "UICKeyChainStore.h"
 #import "RegisterAnimationsView.h"
 #import "SessionManager.h"
+#import "UIImageVIew+GLPFormat.h"
 
 @interface GLPLoginSignUpViewController ()
 
@@ -26,6 +27,8 @@
 @property (strong, nonatomic) NSString *universityEmail;
 
 @property (weak, nonatomic) IBOutlet UIImageView *gleepostLogoImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *gradientImageView;
+
 
 @property (weak, nonatomic) IBOutlet RegisterAnimationsView *animationsView;
 
@@ -52,14 +55,19 @@ static NSString * const kOkButtonTitle       = @"Ok";
         [self configureGestures];
     }
     
-    
+    [self formatImageView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self formatStatusBar];
+}
+
+- (void)formatImageView
+{
+    [self.gradientImageView layoutIfNeeded];
+    [self.gradientImageView applyCradientEffect];
 }
 
 - (IBAction)facebookLogin:(id)sender

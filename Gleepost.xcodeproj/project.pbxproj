@@ -82,6 +82,7 @@
 		581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C9C4218044CD300279256 /* PullDownScrollView.m */; };
 		58204E781862061600702F4F /* GLPPostOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58204E771862061600702F4F /* GLPPostOperation.m */; };
 		58204E7B186207AF00702F4F /* GLPQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58204E7A186207AF00702F4F /* GLPQueueManager.m */; };
+		582064901AC0751600A596E4 /* UIImageView+GLPFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 5820648F1AC0751600A596E4 /* UIImageView+GLPFormat.m */; };
 		5821278F1891627D00BF36E5 /* VSScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5821278C1891627D00BF36E5 /* VSScrollView.m */; };
 		582127901891627D00BF36E5 /* VSScrollViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5821278E1891627D00BF36E5 /* VSScrollViewCell.m */; };
 		582127921891657100BF36E5 /* CampusWallHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 582127911891657100BF36E5 /* CampusWallHeaderCell.xib */; };
@@ -1033,6 +1034,8 @@
 		58204E771862061600702F4F /* GLPPostOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostOperation.m; sourceTree = "<group>"; };
 		58204E79186207AF00702F4F /* GLPQueueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPQueueManager.h; sourceTree = "<group>"; };
 		58204E7A186207AF00702F4F /* GLPQueueManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPQueueManager.m; sourceTree = "<group>"; };
+		5820648E1AC0751600A596E4 /* UIImageView+GLPFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+GLPFormat.h"; sourceTree = "<group>"; };
+		5820648F1AC0751600A596E4 /* UIImageView+GLPFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+GLPFormat.m"; sourceTree = "<group>"; };
 		5821278B1891627D00BF36E5 /* VSScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSScrollView.h; sourceTree = "<group>"; };
 		5821278C1891627D00BF36E5 /* VSScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSScrollView.m; sourceTree = "<group>"; };
 		5821278D1891627D00BF36E5 /* VSScrollViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSScrollViewCell.h; sourceTree = "<group>"; };
@@ -2385,6 +2388,13 @@
 				58119CC41947992700C2687B /* UIView+viewController.m */,
 			);
 			name = InfiniteScrollViewPicker;
+			sourceTree = "<group>";
+		};
+		5820648D1AC0744D00A596E4 /* Intro views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Intro views";
 			sourceTree = "<group>";
 		};
 		5821278A189161C800BF36E5 /* VSScroller */ = {
@@ -5084,6 +5094,7 @@
 		80AB898217C2A0560053E784 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				5820648D1AC0744D00A596E4 /* Intro views */,
 				58040E8E1A8CE7AA00B29247 /* Conversation */,
 				58273F1B1A26975900425605 /* Organisers */,
 				80AB898317C2A0660053E784 /* KeyboardHelper.h */,
@@ -5362,6 +5373,8 @@
 				58877A5F199A070700DAE461 /* UIView+RoudedCorners.m */,
 				586D5AF01A5EE8DC00FB0342 /* UIView+Utils.h */,
 				586D5AF11A5EE8DC00FB0342 /* UIView+Utils.m */,
+				5820648E1AC0751600A596E4 /* UIImageView+GLPFormat.h */,
+				5820648F1AC0751600A596E4 /* UIImageView+GLPFormat.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -6376,6 +6389,7 @@
 				80666C441806DA7A00E4E515 /* RemoteParser.m in Sources */,
 				80666C541806E11000E4E515 /* GLPMessage+CellLogic.m in Sources */,
 				58F9EC6719377E1000714432 /* PendingPost.m in Sources */,
+				582064901AC0751600A596E4 /* UIImageView+GLPFormat.m in Sources */,
 				5890D214184763E700E293DD /* GLPThemeManager.m in Sources */,
 				58119CC61947992700C2687B /* UIView+viewController.m in Sources */,
 				58774D331964972F0034A1C6 /* GLPRefreshControl.m in Sources */,
