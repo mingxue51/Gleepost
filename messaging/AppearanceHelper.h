@@ -35,6 +35,7 @@
 + (UIColor *)thirdColour;
 + (UIColor *)fourthColour;
 + (UIColor *)fifthColour;
++ (UIColor *)sixthColour;
 +(UIColor*)defaultGleepostColour;
 + (UIColor *)redGleepostColour;
 +(void)showTabBar:(UIViewController*)controller;

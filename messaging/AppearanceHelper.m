@@ -256,7 +256,10 @@
     return [UIColor colorWithR:0 withG:0 andB:0];
 }
 
-
++ (UIColor *) sixthColour
+{
+    return [UIColor colorWithR:0 withG:0 andB:0];
+}
 
 + (UIColor *)colourForNotFocusedItems
 {
