@@ -19,11 +19,13 @@
 #import "AppearanceHelper.h"
 #import "UIColor+GLPAdditions.h"
 #import "GLPiOSSupportHelper.h"
+#import "UIImageView+GLPFormat.h"
 
 @interface GLPRegisterViewController ()
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *simpleNavigationBar;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
+@property (weak, nonatomic) IBOutlet UIImageView *gradientImageView;
 
 @end
 
@@ -36,10 +38,11 @@
     [_emailTextField becomeFirstResponder];
     
     [self formatTextFields];
-    
+    [self formatStatusBar];
+
     [self configureNavigationBar];
     
-    [self formatStatusBar];
+    [self formatGradientImageView];
     
 }
 
@@ -225,16 +228,23 @@
     [self formatTextField:_passwordTextField];
 }
 
+- (void)formatGradientImageView
+{
+    [self.gradientImageView layoutIfNeeded];
+    [self.gradientImageView applyCradientEffect];
+}
+
 -(void)configureNavigationBar
 {
     
-//    [AppearanceHelper setNavigationBarFontForNavigationBar:_simpleNavigationBar];
+//    [_simpleNavigationBar setBackgroundImage:[UIImage imageNamed:@"navigation_bar_new_post"]
+//                       forBarPosition:UIBarPositionAny
+//                           barMetrics:UIBarMetricsDefault];
+//    
+//    [_simpleNavigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor colorWithR:227.0 withG:227.0 andB:227.0]]];
     
-    [_simpleNavigationBar setBackgroundImage:[UIImage imageNamed:@"navigation_bar_new_post"]
-                       forBarPosition:UIBarPositionAny
-                           barMetrics:UIBarMetricsDefault];
-    
-    [_simpleNavigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor colorWithR:227.0 withG:227.0 andB:227.0]]];
+//    [self.navigationController.navigationBar invisible];
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
 }
 
 - (void)configureNavigationBarForVerificationView
@@ -288,7 +298,7 @@
 
 -(void)formatStatusBar
 {
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 

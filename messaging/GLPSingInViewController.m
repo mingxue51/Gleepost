@@ -11,8 +11,9 @@
 #import "GLPLoginManager.h"
 #import "WebClient.h"
 #import "UICKeyChainStore.h"
+#import "UINavigationBar+Utils.h"
 
-@interface GLPSingInViewController ()
+@interface GLPSingInViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *simpleNavBar;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
@@ -33,13 +34,30 @@
 	
     [super setDefaultTextToEmailAndPassFields];
     
-//    if(!IS_IPHONE_5) {
-//        CGFloat offset = -88;
-//        CGRectMoveY(_submitButton, offset);
-//        CGRectMoveY(_forgotPasswordButton, offset);
-//    }
-    
     [self configureRememberMe];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    DDLogDebug(@"should return %@", textField);
+    
+    if(textField.tag == 1)
+    {
+        [self.passwordTextField becomeFirstResponder];
+    }
+    else if(textField.tag == 2)
+    {
+        [self login:textField];
+    }
+    
+    return NO;
+}
+
+- (void)configureNavigationBar
+{
+    [super configureNavigationBar];
+    
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"SIGN IN" withButtonSize:CGSizeMake(75, 17) withColour:[UIColor whiteColor] withSelector:@selector(login:) andTarget:self];
 }
 
 - (void)configureRememberMe

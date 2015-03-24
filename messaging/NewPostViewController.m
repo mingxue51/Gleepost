@@ -309,7 +309,9 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 -(void)configureRightBarButton
 {    
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"POST" withButtonSize:CGSizeMake(50, 17) withSelector:@selector(postButtonClick:) andTarget:self];
+//    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"POST" withButtonSize:CGSizeMake(50, 17) withSelector:@selector(postButtonClick:) andTarget:self];
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"POST" withButtonSize:CGSizeMake(50.0, 17.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(postButtonClick:) andTarget:self];
+
 }
 
 -(void)formatStatusBar

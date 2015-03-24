@@ -80,9 +80,9 @@
 
 - (void)configureNavigationBar
 {
-//    [self.navigationController.navigationBar setButton:kText withImageOrTitle:@"DONE" withButtonSize:CGSizeMake(60.0, 30.0) withSelector:@selector(donePickingLocation:) andTarget:self];
+//    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"DONE" withButtonSize:CGSizeMake(60.0, 30.0) withSelector:@selector(donePickingLocation:) andTarget:self];
     
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"DONE" withButtonSize:CGSizeMake(60.0, 30.0) withSelector:@selector(donePickingLocation:) andTarget:self];
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"DONE" withButtonSize:CGSizeMake(60.0, 30.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(donePickingLocation:) andTarget:self];
     
     self.title = @"PICK A LOCATION";
 }
