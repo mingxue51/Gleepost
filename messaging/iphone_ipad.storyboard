@@ -3602,9 +3602,9 @@
                                                 </constraints>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fbp-YV-e0I">
-                                                <rect key="frame" x="195" y="0.0" width="155" height="55"/>
+                                                <rect key="frame" x="193" y="0.0" width="125" height="55"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="155" id="Z04-8Q-bTG"/>
+                                                    <constraint firstAttribute="width" constant="125" id="Z04-8Q-bTG"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                                 <state key="normal" title="CONTINUE WITH">
@@ -3615,11 +3615,26 @@
                                                     <action selector="facebookLogin:" destination="lKu-Fj-Xm9" eventType="touchUpInside" id="g7u-N5-f8H"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s8T-R5-Wzy">
+                                                <rect key="frame" x="318" y="15" width="79" height="22"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="22" id="ICc-SS-J9M"/>
+                                                    <constraint firstAttribute="width" secondItem="s8T-R5-Wzy" secondAttribute="height" multiplier="29:8" id="lk9-hk-0Mm"/>
+                                                </constraints>
+                                                <state key="normal" image="fb_logo">
+                                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="facebookLogin:" destination="lKu-Fj-Xm9" eventType="touchUpInside" id="3gy-b1-qQF"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="centerX" secondItem="fbp-YV-e0I" secondAttribute="centerX" constant="27.5" id="AAc-K8-sBW"/>
+                                            <constraint firstAttribute="centerX" secondItem="fbp-YV-e0I" secondAttribute="centerX" constant="44.5" id="AAc-K8-sBW"/>
+                                            <constraint firstAttribute="centerY" secondItem="s8T-R5-Wzy" secondAttribute="centerY" constant="1.5" id="AkN-se-pFZ"/>
                                             <constraint firstItem="AeM-ao-Eg6" firstAttribute="leading" secondItem="UmO-JE-gTp" secondAttribute="leading" id="OdM-Wv-4W6"/>
+                                            <constraint firstItem="s8T-R5-Wzy" firstAttribute="leading" secondItem="fbp-YV-e0I" secondAttribute="trailing" id="WNc-h7-waz"/>
                                             <constraint firstAttribute="trailing" secondItem="AeM-ao-Eg6" secondAttribute="trailing" id="ZTT-aT-uYQ"/>
                                             <constraint firstItem="fbp-YV-e0I" firstAttribute="top" secondItem="UmO-JE-gTp" secondAttribute="top" id="a7M-em-m5o"/>
                                             <constraint firstAttribute="bottom" secondItem="fbp-YV-e0I" secondAttribute="bottom" id="mpm-gJ-gWh"/>
@@ -5041,6 +5056,7 @@
         <image name="down_arrow.png" width="23" height="14"/>
         <image name="edit_location_button_image.png" width="190" height="95"/>
         <image name="fb_login_bg.png" width="520" height="100"/>
+        <image name="fb_logo" width="128" height="35"/>
         <image name="go_to_preview.png" width="121" height="54"/>
         <image name="id-card-7.png" width="17" height="21"/>
         <image name="kind_of_event_music.png" width="600" height="110"/>
