@@ -37,22 +37,6 @@
     [self configureRememberMe];
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    DDLogDebug(@"should return %@", textField);
-    
-    if(textField.tag == 1)
-    {
-        [self.passwordTextField becomeFirstResponder];
-    }
-    else if(textField.tag == 2)
-    {
-        [self login:textField];
-    }
-    
-    return NO;
-}
-
 - (void)configureNavigationBar
 {
     [super configureNavigationBar];
@@ -99,6 +83,21 @@
     [_rememberMeButton setImage:opposite forState:UIControlStateHighlighted];
 }
 
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if(textField.tag == 1)
+    {
+        [self.passwordTextField becomeFirstResponder];
+    }
+    else if(textField.tag == 2)
+    {
+        [self login:textField];
+    }
+    
+    return NO;
+}
 
 #pragma mark - Actions
 

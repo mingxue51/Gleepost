@@ -14,8 +14,9 @@
 #import "GLPFacebookConnect.h"
 #import "ShapeFormatterHelper.h"
 #import "UIColor+GLPAdditions.h"
+#import "UINavigationBar+Utils.h"
 
-@interface GLPSignUpViewController ()
+@interface GLPSignUpViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 
@@ -58,7 +59,6 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController.navigationBar setHidden:YES];
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
                                                          forBarMetrics:UIBarMetricsDefault];
     [self configureViews];
@@ -74,6 +74,12 @@
     }
 }
 
+- (void)configureNavigationBar
+{
+    [super configureNavigationBar];
+    
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"NEXT" withButtonSize:CGSizeMake(50.0, 17.0) withColour:[UIColor whiteColor] withSelector:@selector(login:) andTarget:self];
+}
 
 -(void)setUpMessageLabels
 {
@@ -170,6 +176,26 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{    
+    if(textField.tag == 1)
+    {
+        [self.emailTextField becomeFirstResponder];
+    }
+    else if(textField.tag == 2)
+    {
+        [self.passwordTextField becomeFirstResponder];
+    }
+    else if (textField.tag == 3)
+    {
+        //TODO: Go to the next view.
+    }
+    
+    return NO;
 }
 
 #pragma mark - ImageSelectorViewControllerDelegate

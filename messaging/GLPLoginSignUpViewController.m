@@ -83,18 +83,21 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
 - (void)showSignUpViewController
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPSignUpViewController *signUpVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSignUpViewController"];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+//    GLPSignUpViewController *signUpVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSignUpViewController"];
     
-    if(_fbLoginInfo)
-    {
-        signUpVC.parentVC = self;
-        signUpVC.facebookLoginInfo = _fbLoginInfo;
-    }
+//    if(_fbLoginInfo)
+//    {
+//        signUpVC.parentVC = self;
+//        signUpVC.facebookLoginInfo = _fbLoginInfo;
+//    }
     
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:signUpVC];
-    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:navigationController animated:YES completion:nil];
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:signUpVC];
+//    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+//    [self presentViewController:navigationController animated:YES completion:nil];
+    
+    [self performSegueWithIdentifier:@"show sign up" sender:self];
+
 }
 
 - (IBAction)signIn:(id)sender
@@ -443,6 +446,23 @@ static NSString * const kOkButtonTitle       = @"Ok";
     }
     
 
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"show sign up"])
+    {
+        GLPSignUpViewController *signUpVC = segue.destinationViewController;
+        
+        if(_fbLoginInfo)
+        {
+            signUpVC.parentVC = self;
+            signUpVC.facebookLoginInfo = _fbLoginInfo;
+        }
+
+    }
 }
 
 - (void)didReceiveMemoryWarning
