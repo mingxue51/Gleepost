@@ -30,12 +30,12 @@
 + (UIColor *)greenGleepostColour;
 + (UIColor *)blackGleepostColour;
 + (UIColor *)mediumGrayGleepostColour;
-+ (UIColor *)firstColour;
-+ (UIColor *)secondColour;
-+ (UIColor *)thirdColour;
-+ (UIColor *)fourthColour;
-+ (UIColor *)fifthColour;
-+ (UIColor *)sixthColour;
++ (UIColor *)firstAutoColour;
++ (UIColor *)secondAutoColour;
++ (UIColor *)thirdAutoColour;
++ (UIColor *)fourthAutoColour;
++ (UIColor *)fifthAutoColour;
++ (UIColor *)sixthAutoColour;
 +(UIColor*)defaultGleepostColour;
 + (UIColor *)redGleepostColour;
 +(void)showTabBar:(UIViewController*)controller;
