@@ -19,6 +19,10 @@
 #import "RegisterAnimationsView.h"
 #import "SessionManager.h"
 #import "UIImageVIew+GLPFormat.h"
+#import "LoginView.h"
+#import "GLPIntroAnimationHelper.h"
+#import "GLPiOSSupportHelper.h"
+#import "UINavigationBar+Utils.h"
 
 @interface GLPLoginSignUpViewController ()
 
@@ -29,8 +33,18 @@
 @property (weak, nonatomic) IBOutlet UIImageView *gleepostLogoImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *gradientImageView;
 
-
 @property (weak, nonatomic) IBOutlet RegisterAnimationsView *animationsView;
+@property (strong, nonatomic) GLPIntroAnimationHelper *introAnimationHelper;
+
+
+@property (weak, nonatomic) IBOutlet UILabel *welcomeBackLabel;
+@property (weak, nonatomic) IBOutlet LoginView *loginView;
+@property (weak, nonatomic) IBOutlet UIImageView *subTitleImageView;
+
+//Constraints
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topLogoWidth;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceLogoFromTop;
 
 @end
 
@@ -56,6 +70,9 @@ static NSString * const kOkButtonTitle       = @"Ok";
     }
     
     [self formatImageView];
+    [self initialiseObjects];
+    [self configureConstraints];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -64,11 +81,40 @@ static NSString * const kOkButtonTitle       = @"Ok";
     [self formatStatusBar];
 }
 
+#pragma mark - Configuration
+
+- (void)configureConstraints
+{
+    [self.gleepostLogoImageView layoutIfNeeded];
+    [self.topLogoWidth setConstant:[GLPiOSSupportHelper screenWidth] * 0.45];
+}
+
 - (void)formatImageView
 {
     [self.gradientImageView layoutIfNeeded];
     [self.gradientImageView applyCradientEffect];
 }
+
+- (void)initialiseObjects
+{
+    self.introAnimationHelper = [[GLPIntroAnimationHelper alloc] init];
+}
+
+#pragma mark - Animation Selectors
+
+- (void)login
+{
+    DDLogDebug(@"GLPLoginSignUpViewController : Login selector");
+}
+
+- (void)backToMainView
+{
+    [self.introAnimationHelper moveTopImageBackToTheMiddle:self.gleepostLogoImageView withTopDistanceConstraint:self.distanceLogoFromTop withTopLogoWidth:self.topLogoWidth];
+    [self.introAnimationHelper hideLoginView:self.loginView withWelcomeLabel:self.welcomeBackLabel withSubTitleImageView:self.subTitleImageView];
+    [self.navigationController.navigationBar clearNavigationItemsWithNavigationController:self];
+}
+
+#pragma mark - Selectors
 
 - (IBAction)facebookLogin:(id)sender
 {
@@ -102,7 +148,14 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
 - (IBAction)signIn:(id)sender
 {
-    [self performSegueWithIdentifier:@"show signin" sender:self];
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"NEXT" withButtonSize:CGSizeMake(65.0, 22.0) withColour:[UIColor whiteColor] withSelector:@selector(login) andTarget:self];
+    
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kSimple withImageName:@"back_final" withButtonSize:CGSizeMake(33.0, 22.5) withSelector:@selector(backToMainView) andTarget:self];
+    
+    [self.introAnimationHelper showLoginView:self.loginView withWelcomeLabel:self.welcomeBackLabel withSubTitleImageView:self.subTitleImageView];
+    
+    [self.introAnimationHelper moveTopImageToTop:self.gleepostLogoImageView withTopDistanceConstraint:self.distanceLogoFromTop withTopLogoWidth:self.topLogoWidth];
+//    [self performSegueWithIdentifier:@"show signin" sender:self];
 }
 
 #pragma mark - Configuration

@@ -16,7 +16,8 @@ typedef NS_ENUM(NSInteger, GLPButtonType) {
 typedef NS_ENUM(NSUInteger, GLPSpecialButton) {
     kNoSpecial,
     kSettings,
-    kQuit
+    kQuit,
+    kSimple
 };
 
 @interface UINavigationBar (Utils)

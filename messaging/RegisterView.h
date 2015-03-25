@@ -12,20 +12,13 @@
 
 @interface RegisterView : UIView
 
-//-(id)initWithCoder:(NSCoder *)aDecoder withFirstTextField:(UITextField *)first andSecond:(UITextField *)second;
-
--(void)setUpTextFields;
--(NSString*)textFirstTextField;
--(NSString*)textSecondTextField;
--(void)setDelegate:(UIViewController<RegisterViewsProtocol> *)delegate;
--(UIViewController<RegisterViewsProtocol> *)getDelegate;
--(NSArray*)firstAndSecondFields;
--(void)login;
--(void)becomeFirstFieldFirstResponder;
--(void)resignFieldResponder;
--(void)setTextToFirst:(NSString*)firstText andToSecond:(NSString*)secondText;
--(void)nextView;
--(BOOL)areTheDetailsValid;
-
+- (NSString *)emailTextFieldText;
+- (NSString *)passwordTextFieldText;
+- (void)setDelegate:(UIViewController<RegisterViewsProtocol> *)delegate;
+- (UIViewController<RegisterViewsProtocol> *)getDelegate;
+- (void)login;
+- (void)resignFieldResponder;
+- (void)nextView;
+- (void)becomeEmailFieldFirstResponder;
 
 @end

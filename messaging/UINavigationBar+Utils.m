@@ -10,6 +10,7 @@
 #import "ShapeFormatterHelper.h"
 #import "AppearanceHelper.h"
 #import "GLPThemeManager.h"
+#import "UIColor+GLPAdditions.h"
 
 @implementation UINavigationBar (Utils)
 
@@ -28,7 +29,14 @@
     
     UIBarButtonItem *barButtonItem = nil;
     
-    [btn setBackgroundImage:[UIImage imageNamed:imageOrTitle] forState:UIControlStateNormal];
+    if(kind == kSimple)
+    {
+        [btn setBackgroundImage:[[UIColor whiteColor] filledImageFrom:[UIImage imageNamed:imageOrTitle]] forState:UIControlStateNormal];
+    }
+    else
+    {    [btn setBackgroundImage:[UIImage imageNamed:imageOrTitle] forState:UIControlStateNormal];
+    }
+    
     
     barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
 
@@ -169,6 +177,7 @@
 - (void)clearNavigationItemsWithNavigationController:(UIViewController *)navigationController
 {
     navigationController.navigationItem.rightBarButtonItems = nil;
+    navigationController.navigationItem.leftBarButtonItems = nil;
 
 }
 

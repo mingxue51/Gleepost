@@ -77,8 +77,7 @@
 - (void)configureNavigationBar
 {
     [super configureNavigationBar];
-    
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"NEXT" withButtonSize:CGSizeMake(50.0, 17.0) withColour:[UIColor whiteColor] withSelector:@selector(login:) andTarget:self];
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"NEXT" withButtonSize:CGSizeMake(50.0, 17.0) withColour:[UIColor whiteColor] withSelector:@selector(navigateToTheNextSignUpView) andTarget:self];
 }
 
 -(void)setUpMessageLabels
@@ -181,7 +180,7 @@
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
-{    
+{
     if(textField.tag == 1)
     {
         [self.emailTextField becomeFirstResponder];
@@ -473,6 +472,11 @@
 }
 
 #pragma mark - Navigation
+
+- (void)navigateToTheNextSignUpView
+{
+    [self performSegueWithIdentifier:@"show sign up second" sender:self];
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

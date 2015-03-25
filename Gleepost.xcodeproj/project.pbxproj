@@ -99,6 +99,8 @@
 		5823C27B18CA4BBB00288777 /* show_categories_old2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5823C27A18CA4BBB00288777 /* show_categories_old2.png */; };
 		5824C42A18E5B2EB006D4484 /* refresh_campus_live_new.png in Resources */ = {isa = PBXBuildFile; fileRef = 5824C42918E5B2EB006D4484 /* refresh_campus_live_new.png */; };
 		5824C42D18E5B4D8006D4484 /* TableViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5824C42C18E5B4D8006D4484 /* TableViewHelper.m */; };
+		5824F4561AC1BFBD0074A3EB /* GLPSignUpSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5824F4551AC1BFBD0074A3EB /* GLPSignUpSecondViewController.m */; };
+		5824F4591AC314510074A3EB /* GLPIntroAnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5824F4581AC314510074A3EB /* GLPIntroAnimationHelper.m */; };
 		58272F7D1896804300CD7522 /* FakeNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58272F7C1896804300CD7522 /* FakeNavigationBar.xib */; };
 		58272F801896807900CD7522 /* FakeNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 58272F7F1896807900CD7522 /* FakeNavigationBar.m */; };
 		58272F831896824500CD7522 /* fake_nav_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58272F821896824500CD7522 /* fake_nav_background.png */; };
@@ -1063,6 +1065,10 @@
 		5824C42918E5B2EB006D4484 /* refresh_campus_live_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = refresh_campus_live_new.png; sourceTree = "<group>"; };
 		5824C42B18E5B4D8006D4484 /* TableViewHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewHelper.h; sourceTree = "<group>"; };
 		5824C42C18E5B4D8006D4484 /* TableViewHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewHelper.m; sourceTree = "<group>"; };
+		5824F4541AC1BFBD0074A3EB /* GLPSignUpSecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSignUpSecondViewController.h; sourceTree = "<group>"; };
+		5824F4551AC1BFBD0074A3EB /* GLPSignUpSecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSignUpSecondViewController.m; sourceTree = "<group>"; };
+		5824F4571AC314510074A3EB /* GLPIntroAnimationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPIntroAnimationHelper.h; sourceTree = "<group>"; };
+		5824F4581AC314510074A3EB /* GLPIntroAnimationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPIntroAnimationHelper.m; sourceTree = "<group>"; };
 		58272F7C1896804300CD7522 /* FakeNavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FakeNavigationBar.xib; sourceTree = "<group>"; };
 		58272F7E1896807900CD7522 /* FakeNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeNavigationBar.h; sourceTree = "<group>"; };
 		58272F7F1896807900CD7522 /* FakeNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeNavigationBar.m; sourceTree = "<group>"; };
@@ -2393,6 +2399,8 @@
 		5820648D1AC0744D00A596E4 /* Intro views */ = {
 			isa = PBXGroup;
 			children = (
+				5824F4571AC314510074A3EB /* GLPIntroAnimationHelper.h */,
+				5824F4581AC314510074A3EB /* GLPIntroAnimationHelper.m */,
 			);
 			name = "Intro views";
 			sourceTree = "<group>";
@@ -2752,6 +2760,8 @@
 				58F8C32D18A4FB4B005EC7ED /* GLPSignUpViewController.m */,
 				58F8C32F18A4FC1E005EC7ED /* GLPRegisterViewController.h */,
 				58F8C33018A4FC1E005EC7ED /* GLPRegisterViewController.m */,
+				5824F4541AC1BFBD0074A3EB /* GLPSignUpSecondViewController.h */,
+				5824F4551AC1BFBD0074A3EB /* GLPSignUpSecondViewController.m */,
 			);
 			name = "Login Register Classes";
 			sourceTree = "<group>";
@@ -6037,6 +6047,7 @@
 				58F2950519355A1600A638BA /* ATNavigationCategories.m in Sources */,
 				80733471183BAD3B00C6D74A /* GLPPushManager.m in Sources */,
 				58BBD4231A93763700E2EBAC /* GLPReadReceipt.m in Sources */,
+				5824F4561AC1BFBD0074A3EB /* GLPSignUpSecondViewController.m in Sources */,
 				807C4D19180AF0F6003D67E6 /* GLPUser.m in Sources */,
 				80C8BA6618104177004F70DB /* GLPPost.m in Sources */,
 				585790D31A366DE300418528 /* GLPVideoPendingPostProgressManager.m in Sources */,
@@ -6285,6 +6296,7 @@
 				58BBACB01978796D00A8A265 /* ImageSelectorViewController.m in Sources */,
 				58E1E5EE19262851007ACB4F /* TopPostView.m in Sources */,
 				58F8C32E18A4FB4B005EC7ED /* GLPSignUpViewController.m in Sources */,
+				5824F4591AC314510074A3EB /* GLPIntroAnimationHelper.m in Sources */,
 				58A1D073199BF91200BA7980 /* GLPLabel.m in Sources */,
 				584CF66718227BA700EFABB8 /* GLPContactDaoParser.m in Sources */,
 				584D208E19534AC400E571DF /* GLPSegmentView.m in Sources */,

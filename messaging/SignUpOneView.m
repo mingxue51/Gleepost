@@ -23,7 +23,7 @@
 
 -(void)awakeFromNib
 {
-    [self becomeFirstFieldFirstResponder];
+    [self becomeEmailFieldFirstResponder];
 }
 
 - (IBAction)nextView:(id)sender
@@ -32,7 +32,7 @@
     //Check if e-mail and password are valid.
     if([self areDetailsValid])
     {
-        [[super getDelegate] emailAndPass:[super firstAndSecondFields]];
+//        [[super getDelegate] emailAndPass:[super firstAndSecondFields]];
         
         [super nextView];
 
@@ -53,7 +53,7 @@
 {
     [super drawRect:rect];
     
-    [self setUpTextFields];
+//    [self setUpTextFields];
     
     
     // Drawing code
@@ -63,7 +63,7 @@
 
 -(BOOL)areDetailsValid
 {
-    return ([ValidFields NSStringIsValidEmail:[super textFirstTextField]] && ![[super textSecondTextField] isEqualToString:@""]);
+    return ([ValidFields NSStringIsValidEmail:[super emailTextFieldText]] && ![[super passwordTextFieldText] isEqualToString:@""]);
 }
 
 

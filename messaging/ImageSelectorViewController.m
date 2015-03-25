@@ -60,15 +60,23 @@
     [self.navigationController.navigationBar setHidden:NO];
 
     
-    if(![self comesFromGroupViewController])
+    if([self comesFromGroupViewController])
+    {
+        [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES andView:self.view];
+        
+        
+        [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]]];
+    }
+    else
     {
         [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+       
+        [self.navigationController.navigationBar setTranslucent:YES];
+        
+     //   [self.navigationController.navigationBar invisible];
     }
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES andView:self.view];
 
-
-    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]]];
     
     [self.navigationController.navigationBar setFontFormatWithColour:kRed];
 }
