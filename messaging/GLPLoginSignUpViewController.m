@@ -24,7 +24,7 @@
 #import "GLPiOSSupportHelper.h"
 #import "UINavigationBar+Utils.h"
 
-@interface GLPLoginSignUpViewController ()
+@interface GLPLoginSignUpViewController () <RegisterViewsProtocol>
 
 @property (strong, nonatomic) UIAlertView *emailPromptAlertView;
 @property (strong, nonatomic) NSDictionary *fbLoginInfo;
@@ -98,6 +98,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
 - (void)initialiseObjects
 {
     self.introAnimationHelper = [[GLPIntroAnimationHelper alloc] init];
+    [self.loginView setDelegate:self];
 }
 
 #pragma mark - Animation Selectors
@@ -112,6 +113,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
     [self.introAnimationHelper moveTopImageBackToTheMiddle:self.gleepostLogoImageView withTopDistanceConstraint:self.distanceLogoFromTop withTopLogoWidth:self.topLogoWidth];
     [self.introAnimationHelper hideLoginView:self.loginView withWelcomeLabel:self.welcomeBackLabel withSubTitleImageView:self.subTitleImageView];
     [self.navigationController.navigationBar clearNavigationItemsWithNavigationController:self];
+    [self.loginView resignFieldResponder];
 }
 
 #pragma mark - Selectors
@@ -155,6 +157,9 @@ static NSString * const kOkButtonTitle       = @"Ok";
     [self.introAnimationHelper showLoginView:self.loginView withWelcomeLabel:self.welcomeBackLabel withSubTitleImageView:self.subTitleImageView];
     
     [self.introAnimationHelper moveTopImageToTop:self.gleepostLogoImageView withTopDistanceConstraint:self.distanceLogoFromTop withTopLogoWidth:self.topLogoWidth];
+    
+    [self.loginView becomeEmailFieldFirstResponder];
+    
 //    [self performSegueWithIdentifier:@"show signin" sender:self];
 }
 

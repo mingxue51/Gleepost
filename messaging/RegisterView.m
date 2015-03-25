@@ -8,7 +8,7 @@
 
 #import "RegisterView.h"
 
-@interface RegisterView ()
+@interface RegisterView () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
@@ -30,6 +30,13 @@
     return self;
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    [self.emailTextField setDelegate:self];
+    [self.passwordTextField setDelegate:self];
+}
+
 #pragma mark - Navigators
 
 -(void)login
@@ -37,10 +44,6 @@
     [_delegate login];
 }
 
--(void)nextView
-{
-    [_delegate navigateToNextView];
-}
 
 #pragma mark - Accessors
 
@@ -53,6 +56,22 @@
 -(NSString *)passwordTextFieldText
 {
     return self.passwordTextField.text;
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if(textField.tag == 1)
+    {
+        [self.passwordTextField becomeFirstResponder];
+    }
+    else if(textField.tag == 2)
+    {
+        [_delegate login];
+    }
+    
+    return NO;
 }
 
 //TODO: Apply the next approach. So when data are valid let the user to continue.
@@ -74,7 +93,7 @@
     [self.emailTextField becomeFirstResponder];
 }
 
--(void)resignFieldResponder
+- (void)resignFieldResponder
 {
     if([self.emailTextField isFirstResponder])
     {

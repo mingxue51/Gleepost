@@ -31,7 +31,7 @@
 
 -(void)awakeFromNib
 {
-//    [self becomeEmailFieldFirstResponder];
+    [super awakeFromNib];
 }
 
 - (IBAction)forgotPassword:(id)sender

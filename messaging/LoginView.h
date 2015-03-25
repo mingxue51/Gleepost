@@ -11,4 +11,5 @@
 
 @interface LoginView : RegisterView
 
+
 @end

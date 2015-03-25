@@ -7,8 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RegisterViewsProtocol.h"
 #import "WebClientHelper.h"
+
+@protocol RegisterViewsProtocol <NSObject>
+
+@required
+
+//-(void)navigateToNextView;
+- (void)login;
+//-(void)firstAndLastName:(NSArray*)firstLastName;
+//-(void)emailAndPass:(NSArray*)emailPass;
+//-(void)pickImage:(id)sender;
+
+@end
 
 @interface RegisterView : UIView
 
@@ -18,7 +29,6 @@
 - (UIViewController<RegisterViewsProtocol> *)getDelegate;
 - (void)login;
 - (void)resignFieldResponder;
-- (void)nextView;
 - (void)becomeEmailFieldFirstResponder;
 
 @end

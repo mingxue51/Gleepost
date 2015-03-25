@@ -34,7 +34,7 @@
     {
 //        [[super getDelegate] emailAndPass:[super firstAndSecondFields]];
         
-        [super nextView];
+//        [super nextView];
 
     }
     else

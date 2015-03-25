@@ -21,7 +21,7 @@
 
 - (IBAction)skip:(id)sender
 {
-    [super nextView];
+//    [super nextView];
 }
 
 /*

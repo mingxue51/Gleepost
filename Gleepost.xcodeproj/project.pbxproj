@@ -1215,7 +1215,6 @@
 		58428E2E18A27D9300B82E4B /* LoginView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginView.xib; sourceTree = "<group>"; };
 		58428E3118A27E0F00B82E4B /* LoginView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginView.h; sourceTree = "<group>"; };
 		58428E3218A27E0F00B82E4B /* LoginView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginView.m; sourceTree = "<group>"; };
-		58428E3718A283C000B82E4B /* RegisterViewsProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RegisterViewsProtocol.h; sourceTree = "<group>"; };
 		58428E3818A2867000B82E4B /* RegisterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterView.h; sourceTree = "<group>"; };
 		58428E3918A2867000B82E4B /* RegisterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterView.m; sourceTree = "<group>"; };
 		58428E4518A2ADA400B82E4B /* SignUpOneView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpOneView.xib; sourceTree = "<group>"; };
@@ -2732,7 +2731,6 @@
 				58973518193F82CD0048BA85 /* RegisterAnimationsView.m */,
 				58428E3118A27E0F00B82E4B /* LoginView.h */,
 				58428E3218A27E0F00B82E4B /* LoginView.m */,
-				58428E3718A283C000B82E4B /* RegisterViewsProtocol.h */,
 				58428E3818A2867000B82E4B /* RegisterView.h */,
 				58428E3918A2867000B82E4B /* RegisterView.m */,
 				58428E4718A2AE1900B82E4B /* SignUpOneView.h */,
