@@ -11,7 +11,7 @@
 #import "WebClientHelper.h"
 #import "GLPLoginManager.h"
 
-@interface LoginView ()
+@interface LoginView () <UITextFieldDelegate>
 
 
 @end
@@ -32,6 +32,8 @@
 -(void)awakeFromNib
 {
     [super awakeFromNib];
+    
+    
 }
 
 #pragma mark - UITextFieldDelegate
@@ -56,11 +58,11 @@
 {
     if (![self isEmalValid])
     {
-        [self.delegate loginError:kEmailInvalid];
+        [self.delegate loginSignUpError:kEmailInvalid];
     }
     else if([self areTextFieldsEmpty])
     {
-        [self.delegate loginError:kTextFieldsEmpty];
+        [self.delegate loginSignUpError:kTextFieldsEmpty];
     }
     else
     {

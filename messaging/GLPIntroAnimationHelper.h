@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LoginView.h"
+
+@class RegisterView;
 
 @interface GLPIntroAnimationHelper : NSObject
 
-- (void)showLoginView:(LoginView *)loginView withWelcomeLabel:(UILabel *)label withSubTitleImageView:(UIImageView *)subTitleImageView;
-- (void)hideLoginView:(LoginView *)loginView withWelcomeLabel:(UILabel *)label withSubTitleImageView:(UIImageView *)subTitleImageView;
+- (void)showRegisterView:(RegisterView *)loginView withWelcomeLabel:(UILabel *)label withSubTitleImageView:(UIImageView *)subTitleImageView;
+- (void)hideRegisterView:(RegisterView *)loginView withWelcomeLabel:(UILabel *)label withSubTitleImageView:(UIImageView *)subTitleImageView;
 - (void)moveTopImageToTop:(UIImageView *)topImageView withTopDistanceConstraint:(NSLayoutConstraint *)topDistance withTopLogoWidth:(NSLayoutConstraint *)topLogoWidth;
 - (void)moveTopImageBackToTheMiddle:(UIImageView *)topImageView withTopDistanceConstraint:(NSLayoutConstraint *)topDistance withTopLogoWidth:(NSLayoutConstraint *)topLogoWidth;
 

@@ -23,6 +23,7 @@
 #import "GLPIntroAnimationHelper.h"
 #import "GLPiOSSupportHelper.h"
 #import "UINavigationBar+Utils.h"
+#import "SignUpView.h"
 
 @interface GLPLoginSignUpViewController () <RegisterViewsProtocol>
 
@@ -39,6 +40,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *welcomeBackLabel;
 @property (weak, nonatomic) IBOutlet LoginView *loginView;
+@property (weak, nonatomic) IBOutlet SignUpView *signUpView;
 @property (weak, nonatomic) IBOutlet UIImageView *subTitleImageView;
 
 //Constraints
@@ -98,20 +100,20 @@ static NSString * const kOkButtonTitle       = @"Ok";
 {
     self.introAnimationHelper = [[GLPIntroAnimationHelper alloc] init];
     [self.loginView setDelegate:self];
+    [self.signUpView setDelegate:self];
 }
 
 #pragma mark - RegisterViewsProtocol
 
-- (void)loginError:(ErrorMessage)error
+- (void)loginSignUpError:(ErrorMessage)error
 {
-    DDLogDebug(@"Empty fields error.");
     switch (error) {
         case kEmailInvalid:
             [WebClientHelper showStandardEmailError];
             break;
             
             case kTextFieldsEmpty:
-            [WebClientHelper showStandardLoginErrorWithMessage:@"Email or password fields are empty."];
+            [WebClientHelper showStandardLoginErrorWithMessage:@"It looks like you have left an empty field!"];
             break;
             
         default:
@@ -121,18 +123,54 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
 - (void)login
 {
+    
     if (![self.loginView isEmalValid])
     {
-        [self loginError:kEmailInvalid];
+        [self loginSignUpError:kEmailInvalid];
     }
     else if([self.loginView areTextFieldsEmpty])
     {
-        [self loginError:kTextFieldsEmpty];
+        [self loginSignUpError:kTextFieldsEmpty];
     }
     else
     {
         DDLogDebug(@"GLPLoginSignUpViewController : Login selector");
         [self loginReady];
+    }
+    
+}
+
+- (void)signUp
+{
+    DDLogDebug(@"Sign up");
+    
+    if (![self.signUpView isEmalValid])
+    {
+        [self loginSignUpError:kEmailInvalid];
+    }
+    else if([self.signUpView areTextFieldsEmpty])
+    {
+        [self loginSignUpError:kTextFieldsEmpty];
+    }
+    else
+    {
+        DDLogDebug(@"GLPLoginSignUpViewController : SignUp selector");
+        [self signUpReady];
+    }
+}
+
+/**
+ Called only by the NEXT navigation button.
+ */
+- (void)loginOrSignUp
+{
+    if(!self.loginView.hidden)
+    {
+        [self login];
+    }
+    else if(!self.signUpView.hidden)
+    {
+        [self signUp];
     }
     
 }
@@ -158,14 +196,42 @@ static NSString * const kOkButtonTitle       = @"Ok";
     }];
 }
 
+- (void)signUpReady
+{
+    
+}
+
 #pragma mark - Animation Selectors
 
 - (void)backToMainView
 {
     [self.introAnimationHelper moveTopImageBackToTheMiddle:self.gleepostLogoImageView withTopDistanceConstraint:self.distanceLogoFromTop withTopLogoWidth:self.topLogoWidth];
-    [self.introAnimationHelper hideLoginView:self.loginView withWelcomeLabel:self.welcomeBackLabel withSubTitleImageView:self.subTitleImageView];
+    [self.introAnimationHelper hideRegisterView:self.loginView withWelcomeLabel:self.welcomeBackLabel withSubTitleImageView:self.subTitleImageView];
+    [self.introAnimationHelper hideRegisterView:self.signUpView withWelcomeLabel:self.welcomeBackLabel withSubTitleImageView:self.subTitleImageView];
     [self.navigationController.navigationBar clearNavigationItemsWithNavigationController:self];
     [self.loginView resignFieldResponder];
+    [self.signUpView resignFieldResponder];
+}
+
+- (void)showSignUpView
+{
+    [self showRegisterView];
+    [self.introAnimationHelper showRegisterView:self.signUpView withWelcomeLabel:self.welcomeBackLabel withSubTitleImageView:self.subTitleImageView];
+    [self.signUpView becomeFirstNameFirstResponder];
+}
+
+- (void)showLoginView
+{
+    [self showRegisterView];
+    [self.introAnimationHelper showRegisterView:self.loginView withWelcomeLabel:self.welcomeBackLabel withSubTitleImageView:self.subTitleImageView];
+    [self.loginView becomeEmailFieldFirstResponder];
+}
+
+- (void)showRegisterView
+{
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"NEXT" withButtonSize:CGSizeMake(65.0, 22.0) withColour:[UIColor whiteColor] withSelector:@selector(loginOrSignUp) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kSimple withImageName:@"back_final" withButtonSize:CGSizeMake(33.0, 22.5) withSelector:@selector(backToMainView) andTarget:self];
+    [self.introAnimationHelper moveTopImageToTop:self.gleepostLogoImageView withTopDistanceConstraint:self.distanceLogoFromTop withTopLogoWidth:self.topLogoWidth];
 }
 
 #pragma mark - Selectors
@@ -177,8 +243,9 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
 - (IBAction)signUp:(id)sender
 {
-    _fbLoginInfo = nil;
-    [self showSignUpViewController];
+//    _fbLoginInfo = nil;
+//    [self showSignUpViewController];
+    [self showSignUpView];
 }
 
 - (void)showSignUpViewController
@@ -202,15 +269,8 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
 - (IBAction)signIn:(id)sender
 {
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"NEXT" withButtonSize:CGSizeMake(65.0, 22.0) withColour:[UIColor whiteColor] withSelector:@selector(login) andTarget:self];
-    
-    [self.navigationController.navigationBar setButton:kLeft specialButton:kSimple withImageName:@"back_final" withButtonSize:CGSizeMake(33.0, 22.5) withSelector:@selector(backToMainView) andTarget:self];
-    
-    [self.introAnimationHelper showLoginView:self.loginView withWelcomeLabel:self.welcomeBackLabel withSubTitleImageView:self.subTitleImageView];
-    
-    [self.introAnimationHelper moveTopImageToTop:self.gleepostLogoImageView withTopDistanceConstraint:self.distanceLogoFromTop withTopLogoWidth:self.topLogoWidth];
-    
-    [self.loginView becomeEmailFieldFirstResponder];
+
+    [self showLoginView];
     
 //    [self performSegueWithIdentifier:@"show signin" sender:self];
 }

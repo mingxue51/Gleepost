@@ -9,6 +9,7 @@
 
 #import "GLPIntroAnimationHelper.h"
 #import "GLPiOSSupportHelper.h"
+#import "RegisterView.h"
 
 @interface GLPIntroAnimationHelper ()
 
@@ -44,7 +45,9 @@
     _topLogoWidthAfterNewSession = 100;
 }
 
-- (void)showLoginView:(LoginView *)loginView withWelcomeLabel:(UILabel *)label withSubTitleImageView:(UIImageView *)subTitleImageView
+#pragma mark - Login view
+
+- (void)showRegisterView:(RegisterView *)loginView withWelcomeLabel:(UILabel *)label withSubTitleImageView:(UIImageView *)subTitleImageView
 {
     [loginView setAlpha:0.0];
     [label setAlpha:0.0];
@@ -65,7 +68,7 @@
     }];
 }
 
-- (void)hideLoginView:(LoginView *)loginView withWelcomeLabel:(UILabel *)label withSubTitleImageView:(UIImageView *)subTitleImageView
+- (void)hideRegisterView:(RegisterView *)loginView withWelcomeLabel:(UILabel *)label withSubTitleImageView:(UIImageView *)subTitleImageView
 {
 
     [subTitleImageView setAlpha:0.0];
@@ -85,6 +88,10 @@
         
     }];
 }
+
+
+
+#pragma mark - Top image view
 
 - (void)moveTopImageToTop:(UIImageView *)topImageView withTopDistanceConstraint:(NSLayoutConstraint *)topDistance withTopLogoWidth:(NSLayoutConstraint *)topLogoWidth
 {

@@ -20,8 +20,8 @@ typedef NS_ENUM(NSUInteger, ErrorMessage) {
 
 //-(void)navigateToNextView;
 - (void)login;
-- (void)loginError:(ErrorMessage)error;
-
+- (void)loginSignUpError:(ErrorMessage)error;
+- (void)signUp;
 //-(void)firstAndLastName:(NSArray*)firstLastName;
 //-(void)emailAndPass:(NSArray*)emailPass;
 //-(void)pickImage:(id)sender;
