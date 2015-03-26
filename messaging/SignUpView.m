@@ -12,6 +12,10 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *firstNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *lastNameTextField;
+@property (weak, nonatomic) IBOutlet UIButton *selectImageButton;
+@property (weak, nonatomic) IBOutlet UIImageView *selectedImageImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *backSelectedImageView;
+
 
 @end
 
@@ -68,6 +72,13 @@
     }
 }
 
+#pragma mark - Selectors
+
+- (IBAction)selectImage:(id)sender
+{
+    [self.delegate selectImage];
+}
+
 #pragma mark - Accessors
 
 - (NSString *)firstNameTextFieldText
@@ -78,6 +89,14 @@
 - (NSString *)lastNameTextFieldText
 {
     return self.lastNameTextField.text;
+}
+
+#pragma mark - Modifiers
+
+- (void)selectedImage:(UIImage *)image
+{
+    [self.selectedImageImageView setImage:image];
+    [self.selectImageButton setImage:nil forState:UIControlStateNormal];
 }
 
 #pragma mark - Actions

@@ -25,7 +25,7 @@
 #import "UINavigationBar+Utils.h"
 #import "SignUpView.h"
 
-@interface GLPLoginSignUpViewController () <RegisterViewsProtocol>
+@interface GLPLoginSignUpViewController () <RegisterViewsProtocol, ImageSelectorViewControllerDelegate>
 
 @property (strong, nonatomic) UIAlertView *emailPromptAlertView;
 @property (strong, nonatomic) NSDictionary *fbLoginInfo;
@@ -158,6 +158,21 @@ static NSString * const kOkButtonTitle       = @"Ok";
         [self signUpReady];
     }
 }
+
+- (void)selectImage
+{
+    //Pick an image for sign up view.
+    [self performSegueWithIdentifier:@"pick image" sender:self];
+}
+
+#pragma mark - ImageSelectorViewControllerDelegate
+
+- (void)takeImage:(UIImage *)image
+{
+    [self.signUpView selectedImage:image];
+}
+
+#pragma mark - Operations
 
 /**
  Called only by the NEXT navigation button.
@@ -632,6 +647,12 @@ static NSString * const kOkButtonTitle       = @"Ok";
             signUpVC.facebookLoginInfo = _fbLoginInfo;
         }
 
+    }
+    else if ([segue.identifier isEqualToString:@"pick image"])
+    {
+        ImageSelectorViewController *imgSelectorVC = segue.destinationViewController;
+        imgSelectorVC.fromGroupViewController = NO;
+        [imgSelectorVC setDelegate:self];
     }
 }
 

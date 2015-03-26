@@ -22,6 +22,8 @@ typedef NS_ENUM(NSUInteger, ErrorMessage) {
 - (void)login;
 - (void)loginSignUpError:(ErrorMessage)error;
 - (void)signUp;
+- (void)selectImage;
+
 //-(void)firstAndLastName:(NSArray*)firstLastName;
 //-(void)emailAndPass:(NSArray*)emailPass;
 //-(void)pickImage:(id)sender;

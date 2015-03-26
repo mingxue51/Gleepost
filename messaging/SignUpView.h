@@ -13,5 +13,6 @@
 - (NSString *)firstNameTextFieldText;
 - (NSString *)lastNameTextFieldText;
 - (void)becomeFirstNameFirstResponder;
+- (void)selectedImage:(UIImage *)image;
 
 @end

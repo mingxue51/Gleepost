@@ -3919,18 +3919,28 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yCz-6e-WFk" userLabel="CameraView">
                                                 <rect key="frame" x="0.0" y="0.0" width="98" height="98"/>
                                                 <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="eRA-vM-ndl">
+                                                        <rect key="frame" x="15" y="15" width="68" height="68"/>
+                                                    </imageView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jff-dN-tHi">
                                                         <rect key="frame" x="0.0" y="0.0" width="98" height="98"/>
                                                         <state key="normal" image="camera_sign_up">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="selectImage:" destination="llr-o3-2Dl" eventType="touchUpInside" id="4hd-qC-LNd"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="jff-dN-tHi" secondAttribute="bottom" id="0WS-zg-Wqu"/>
                                                     <constraint firstAttribute="width" secondItem="yCz-6e-WFk" secondAttribute="height" multiplier="1:1" id="31D-o5-zp9"/>
+                                                    <constraint firstAttribute="trailing" secondItem="eRA-vM-ndl" secondAttribute="trailing" constant="15" id="9Q3-t9-s76"/>
+                                                    <constraint firstAttribute="bottom" secondItem="eRA-vM-ndl" secondAttribute="bottom" constant="15" id="FiJ-cJ-zSL"/>
                                                     <constraint firstItem="jff-dN-tHi" firstAttribute="top" secondItem="yCz-6e-WFk" secondAttribute="top" id="HHH-1q-j5n"/>
+                                                    <constraint firstItem="eRA-vM-ndl" firstAttribute="leading" secondItem="yCz-6e-WFk" secondAttribute="leading" constant="15" id="LQK-Zc-Jc6"/>
+                                                    <constraint firstItem="eRA-vM-ndl" firstAttribute="top" secondItem="yCz-6e-WFk" secondAttribute="top" constant="15" id="gs4-zH-bZK"/>
                                                     <constraint firstAttribute="trailing" secondItem="jff-dN-tHi" secondAttribute="trailing" id="oY1-SG-rTQ"/>
                                                     <constraint firstItem="jff-dN-tHi" firstAttribute="leading" secondItem="yCz-6e-WFk" secondAttribute="leading" id="ojQ-EI-yYK"/>
                                                 </constraints>
@@ -3984,6 +3994,8 @@
                                     <outlet property="firstNameTextField" destination="5wV-lV-QU6" id="xlj-iK-BGi"/>
                                     <outlet property="lastNameTextField" destination="Otw-qb-oKx" id="O4Z-f5-Zqd"/>
                                     <outlet property="passwordTextField" destination="seW-9i-T6L" id="OBZ-hQ-4n6"/>
+                                    <outlet property="selectImageButton" destination="jff-dN-tHi" id="8qH-rr-O7i"/>
+                                    <outlet property="selectedImageImageView" destination="eRA-vM-ndl" id="FdA-SL-CpT"/>
                                 </connections>
                             </view>
                         </subviews>
@@ -4034,6 +4046,7 @@
                         <segue destination="WY8-qT-L1O" kind="presentation" identifier="start" modalTransitionStyle="flipHorizontal" id="jrG-R0-ySl"/>
                         <segue destination="TQh-1F-BH0" kind="show" identifier="show signin" id="KTX-M6-QrM"/>
                         <segue destination="C3M-pb-rNg" kind="show" identifier="show sign up" id="DaC-Gq-njO"/>
+                        <segue destination="YKI-NX-LaO" kind="show" identifier="pick image" id="UmS-Hn-zSt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yzt-Ze-cta" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -5846,8 +5859,9 @@
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="GTC-XV-iI1"/>
-        <segue reference="mMc-o6-aUd"/>
+        <segue reference="jrG-R0-ySl"/>
+        <segue reference="sMz-ia-ebt"/>
+        <segue reference="UmS-Hn-zSt"/>
         <segue reference="XMX-SH-Gag"/>
         <segue reference="KgO-oz-Ivb"/>
         <segue reference="X2Z-pC-dgW"/>
@@ -5855,7 +5869,6 @@
         <segue reference="b0z-f7-UHU"/>
         <segue reference="Th4-GT-P8f"/>
         <segue reference="e05-vk-cei"/>
-        <segue reference="sMz-ia-ebt"/>
         <segue reference="83m-vO-5OC"/>
         <segue reference="NSy-Xb-H1O"/>
         <segue reference="FTW-m4-VDE"/>
