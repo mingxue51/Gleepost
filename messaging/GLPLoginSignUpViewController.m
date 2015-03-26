@@ -285,9 +285,9 @@ static NSString * const kOkButtonTitle       = @"Ok";
 - (IBAction)signIn:(id)sender
 {
 
-    [self showLoginView];
+//    [self showLoginView];
     
-//    [self performSegueWithIdentifier:@"show signin" sender:self];
+    [self performSegueWithIdentifier:@"show signin" sender:self];
 }
 
 #pragma mark - Configuration
