@@ -34,6 +34,40 @@
     [super awakeFromNib];
 }
 
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if(textField.tag == 1)
+    {
+        [self becomePasswordFieldFirstResponder];
+    }
+    else if(textField.tag == 2)
+    {
+        [self login];
+    }
+    
+    return NO;
+}
+
+#pragma mark - Navigators
+
+- (void)login
+{
+    if (![self isEmalValid])
+    {
+        [self.delegate loginError:kEmailInvalid];
+    }
+    else if([self areTextFieldsEmpty])
+    {
+        [self.delegate loginError:kTextFieldsEmpty];
+    }
+    else
+    {
+        [self.delegate login];
+    }
+}
+
 - (IBAction)forgotPassword:(id)sender
 {
     DDLogDebug(@"LoginView forgot password.");

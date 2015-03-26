@@ -9,12 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "WebClientHelper.h"
 
+typedef NS_ENUM(NSUInteger, ErrorMessage) {
+    kTextFieldsEmpty,
+    kEmailInvalid
+};
+
 @protocol RegisterViewsProtocol <NSObject>
 
 @required
 
 //-(void)navigateToNextView;
 - (void)login;
+- (void)loginError:(ErrorMessage)error;
+
 //-(void)firstAndLastName:(NSArray*)firstLastName;
 //-(void)emailAndPass:(NSArray*)emailPass;
 //-(void)pickImage:(id)sender;
@@ -23,12 +30,16 @@
 
 @interface RegisterView : UIView
 
+@property (weak, nonatomic) UIViewController <RegisterViewsProtocol> *delegate;
+
 - (NSString *)emailTextFieldText;
 - (NSString *)passwordTextFieldText;
-- (void)setDelegate:(UIViewController<RegisterViewsProtocol> *)delegate;
-- (UIViewController<RegisterViewsProtocol> *)getDelegate;
-- (void)login;
+- (BOOL)areTextFieldsEmpty;
+- (BOOL)isEmalValid;
+- (void)startLoading;
+- (void)stopLoading;
 - (void)resignFieldResponder;
 - (void)becomeEmailFieldFirstResponder;
+- (void)becomePasswordFieldFirstResponder;
 
 @end

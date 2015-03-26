@@ -72,7 +72,6 @@ static NSString * const kOkButtonTitle       = @"Ok";
     [self formatImageView];
     [self initialiseObjects];
     [self configureConstraints];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -101,12 +100,65 @@ static NSString * const kOkButtonTitle       = @"Ok";
     [self.loginView setDelegate:self];
 }
 
-#pragma mark - Animation Selectors
+#pragma mark - RegisterViewsProtocol
+
+- (void)loginError:(ErrorMessage)error
+{
+    DDLogDebug(@"Empty fields error.");
+    switch (error) {
+        case kEmailInvalid:
+            [WebClientHelper showStandardEmailError];
+            break;
+            
+            case kTextFieldsEmpty:
+            [WebClientHelper showStandardLoginErrorWithMessage:@"Email or password fields are empty."];
+            break;
+            
+        default:
+            break;
+    }
+}
 
 - (void)login
 {
-    DDLogDebug(@"GLPLoginSignUpViewController : Login selector");
+    if (![self.loginView isEmalValid])
+    {
+        [self loginError:kEmailInvalid];
+    }
+    else if([self.loginView areTextFieldsEmpty])
+    {
+        [self loginError:kTextFieldsEmpty];
+    }
+    else
+    {
+        DDLogDebug(@"GLPLoginSignUpViewController : Login selector");
+        [self loginReady];
+    }
+    
 }
+
+//TODO: Move that to a kind of login manager or improve the currnet one.
+
+- (void)loginReady
+{
+    [self.loginView startLoading];
+    
+    [GLPLoginManager loginWithIdentifier:self.loginView.emailTextFieldText andPassword:self.loginView.passwordTextFieldText shouldRemember:NO callback:^(BOOL success, NSString *errorMessage) {
+        
+        if(success)
+        {
+            [self performSegueWithIdentifier:@"start" sender:self];
+            
+        } else {
+            
+            [self.loginView stopLoading];
+            [self.loginView becomePasswordFieldFirstResponder];
+            [WebClientHelper showStandardLoginErrorWithMessage:errorMessage];
+        }
+    }];
+}
+
+#pragma mark - Animation Selectors
 
 - (void)backToMainView
 {

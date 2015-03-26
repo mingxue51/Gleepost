@@ -7,12 +7,13 @@
 //
 
 #import "RegisterView.h"
+#import "ValidFields.h"
 
 @interface RegisterView () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
-@property (strong, nonatomic) UIViewController <RegisterViewsProtocol> *delegate;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 
 @end
 
@@ -37,14 +38,6 @@
     [self.passwordTextField setDelegate:self];
 }
 
-#pragma mark - Navigators
-
--(void)login
-{
-    [_delegate login];
-}
-
-
 #pragma mark - Accessors
 
 -(NSString *)emailTextFieldText
@@ -58,39 +51,16 @@
     return self.passwordTextField.text;
 }
 
-#pragma mark - UITextFieldDelegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    if(textField.tag == 1)
-    {
-        [self.passwordTextField becomeFirstResponder];
-    }
-    else if(textField.tag == 2)
-    {
-        [_delegate login];
-    }
-    
-    return NO;
-}
-
-//TODO: Apply the next approach. So when data are valid let the user to continue.
-
-//-(BOOL)areTheDetailsValid
-//{
-//    return (![self.first.text isEqualToString:@""] && ![self.second.text isEqualToString:@""]);
-//}
-
--(UIViewController<RegisterViewsProtocol> *)getDelegate
-{
-    return _delegate;
-}
-
 #pragma mark - Modifiers
 
 -(void)becomeEmailFieldFirstResponder
 {
     [self.emailTextField becomeFirstResponder];
+}
+
+- (void)becomePasswordFieldFirstResponder
+{
+    [self.passwordTextField becomeFirstResponder];
 }
 
 - (void)resignFieldResponder
@@ -106,10 +76,51 @@
     }
 }
 
-
--(void)setDelegate:(UIViewController<RegisterViewsProtocol> *)delegate
+- (void)startLoading
 {
-    _delegate = delegate;
+    [self disableTextFields];
+    [self.activityIndicatorView startAnimating];
+}
+
+- (void)stopLoading
+{
+    [self enableTextFields];
+    [self.activityIndicatorView stopAnimating];
+}
+
+- (void)disableTextFields
+{
+    [self.emailTextField setEnabled:NO];
+    [self.passwordTextField setEnabled:NO];
+}
+
+- (void)enableTextFields
+{
+    [self.emailTextField setEnabled:YES];
+    [self.passwordTextField setEnabled:YES];
+}
+
+
+#pragma mark - Check
+
+- (BOOL)isEmalValid
+{
+    if ([self.emailTextField.text rangeOfString:@".edu"].location == NSNotFound && [self.emailTextField.text rangeOfString:@"gleepost.com"].location == NSNotFound)
+    {
+        return NO;
+        
+    } else
+    {
+        return [ValidFields NSStringIsValidEmail:self.emailTextField.text];
+    }
+    
+}
+
+//TODO: Apply the next approach. So when data are valid let the user to continue.
+
+- (BOOL)areTextFieldsEmpty
+{
+    return ([self.emailTextField.text isEqualToString:@""] || [self.passwordTextField.text isEqualToString:@""]);
 }
 
 
