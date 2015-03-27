@@ -3557,7 +3557,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LTX-Uu-1ka" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5118" y="2943"/>
+            <point key="canvasLocation" x="-5305" y="2948"/>
         </scene>
         <!--Login Sign Up View Controller-->
         <scene sceneID="5qZ-df-ArC">
@@ -3739,21 +3739,30 @@
                                     <constraint firstItem="uFq-aF-q6C" firstAttribute="top" secondItem="Ziv-Ej-dwf" secondAttribute="bottom" id="vkd-FU-yMg"/>
                                 </constraints>
                             </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="intro_tagline" translatesAutoresizingMaskIntoConstraints="NO" id="1Pg-pt-GUU">
+                                <rect key="frame" x="180" y="310" width="240" height="85"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="unv-YV-b9b"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="TVB-Bd-ABD" secondAttribute="trailing" id="0ys-eT-1Xh"/>
                             <constraint firstItem="TVB-Bd-ABD" firstAttribute="leading" secondItem="N2c-Bp-2yc" secondAttribute="leading" id="2jB-7Z-GzP"/>
                             <constraint firstItem="lCW-TT-WtC" firstAttribute="width" secondItem="N2c-Bp-2yc" secondAttribute="width" multiplier="0.9" constant="100" id="2mt-zO-Xht"/>
+                            <constraint firstAttribute="centerX" secondItem="1Pg-pt-GUU" secondAttribute="centerX" id="C4V-WA-ryp"/>
                             <constraint firstItem="3qz-w6-vLP" firstAttribute="leading" secondItem="N2c-Bp-2yc" secondAttribute="leading" id="HDj-Xa-U4T"/>
                             <constraint firstItem="h22-qs-gYh" firstAttribute="width" secondItem="N2c-Bp-2yc" secondAttribute="width" multiplier="0.47" id="K1s-OP-5Rs"/>
                             <constraint firstItem="TVB-Bd-ABD" firstAttribute="top" secondItem="N2c-Bp-2yc" secondAttribute="top" id="KbB-uD-pV8"/>
+                            <constraint firstItem="3qz-w6-vLP" firstAttribute="top" secondItem="1Pg-pt-GUU" secondAttribute="bottom" constant="37" id="NWy-kt-ke4"/>
                             <constraint firstItem="lCW-TT-WtC" firstAttribute="top" secondItem="h22-qs-gYh" secondAttribute="bottom" constant="10" id="VII-lX-CPa"/>
                             <constraint firstItem="V4C-qY-oVE" firstAttribute="leading" secondItem="N2c-Bp-2yc" secondAttribute="leading" id="W6l-JI-JgG"/>
                             <constraint firstItem="V4C-qY-oVE" firstAttribute="height" secondItem="N2c-Bp-2yc" secondAttribute="height" multiplier="0.72" id="aT1-Lg-XNa"/>
                             <constraint firstAttribute="centerX" secondItem="lCW-TT-WtC" secondAttribute="centerX" id="g5E-hc-qUV"/>
                             <constraint firstItem="TVB-Bd-ABD" firstAttribute="height" secondItem="N2c-Bp-2yc" secondAttribute="height" multiplier="0.72" id="k6d-Vv-KRd"/>
                             <constraint firstItem="RcC-FD-Bdl" firstAttribute="top" secondItem="3qz-w6-vLP" secondAttribute="bottom" id="kVq-SS-JWQ"/>
+                            <constraint firstItem="1Pg-pt-GUU" firstAttribute="top" secondItem="lCW-TT-WtC" secondAttribute="bottom" constant="8" id="kd8-dW-E5d"/>
                             <constraint firstItem="V4C-qY-oVE" firstAttribute="top" secondItem="N2c-Bp-2yc" secondAttribute="top" id="pGr-Aq-H1G"/>
                             <constraint firstAttribute="trailing" secondItem="3qz-w6-vLP" secondAttribute="trailing" id="tMl-ni-G91"/>
                             <constraint firstItem="h22-qs-gYh" firstAttribute="top" secondItem="6hp-sN-zR1" secondAttribute="bottom" constant="20" id="vAr-02-oeG"/>
@@ -4061,7 +4070,7 @@
                                     <outlet property="passwordTextField" destination="1ta-0G-8xQ" id="xl3-EJ-Rr9"/>
                                 </connections>
                             </view>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="llr-o3-2Dl" userLabel="SignUpView" customClass="SignUpView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="llr-o3-2Dl" userLabel="SignUpView" customClass="SignUpView">
                                 <rect key="frame" x="0.0" y="119" width="600" height="194"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6WZ-H2-9mH">
@@ -4647,16 +4656,17 @@
                         <outlet property="profileImage" destination="Kzr-Zc-6le" id="eZb-ZV-WGX"/>
                         <outlet property="surnameTextField" destination="Bca-CR-fco" id="Gyu-I8-jB9"/>
                         <segue destination="YKI-NX-LaO" kind="show" identifier="pick image" id="XtJ-UD-8CS"/>
+                        <segue destination="J9r-IS-Ujw" kind="show" identifier="show verification" id="HS8-YI-8pQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bpz-0u-6B7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2834" y="3702"/>
         </scene>
-        <!--Sign Up Second View Controller-->
+        <!--Verification View Controller-->
         <scene sceneID="VWd-fe-A7a">
             <objects>
-                <viewController id="J9r-IS-Ujw" customClass="GLPSignUpSecondViewController" sceneMemberID="viewController">
+                <viewController id="J9r-IS-Ujw" customClass="GLPVerificationViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ETl-2l-yxZ"/>
                         <viewControllerLayoutGuide type="bottom" id="UY6-9b-bjF"/>
@@ -4739,7 +4749,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V2l-4m-GAI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2139" y="3702"/>
+            <point key="canvasLocation" x="-2100" y="3702"/>
         </scene>
         <!--MY PROFILE-->
         <scene sceneID="pBQ-dT-hso">
@@ -6028,6 +6038,7 @@
         <image name="fb_logo" width="128" height="35"/>
         <image name="go_to_preview.png" width="121" height="54"/>
         <image name="id-card-7.png" width="17" height="21"/>
+        <image name="intro_tagline" width="213" height="39"/>
         <image name="kind_of_event_music.png" width="600" height="110"/>
         <image name="kind_of_event_no.png" width="600" height="110"/>
         <image name="kind_of_event_party.png" width="600" height="110"/>
@@ -6087,8 +6098,8 @@
         <segue reference="Nh6-Tl-qmR"/>
         <segue reference="OS5-6C-kqp"/>
         <segue reference="sMz-ia-ebt"/>
-        <segue reference="XtJ-UD-8CS"/>
-        <segue reference="CXU-cq-2uZ"/>
+        <segue reference="jrG-R0-ySl"/>
+        <segue reference="UmS-Hn-zSt"/>
         <segue reference="X2Z-pC-dgW"/>
         <segue reference="KgO-oz-Ivb"/>
         <segue reference="6aM-BE-RDh"/>

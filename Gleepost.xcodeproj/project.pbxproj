@@ -684,6 +684,7 @@
 		58DC0249180437A70008993A /* pull_down_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 58DC0241180437A70008993A /* pull_down_button.png */; };
 		58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DC024C18043DEE0008993A /* ChatViewAnimations.m */; };
 		58DE37D71889967A005DBF74 /* GLPNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DE37D61889967A005DBF74 /* GLPNetworkManager.m */; };
+		58DF0EE81AC5B8EF000AD545 /* GLPVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF0EE71AC5B8EF000AD545 /* GLPVerificationViewController.m */; };
 		58DF4158186463A900D53723 /* GLPPostOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF4157186463A900D53723 /* GLPPostOperationManager.m */; };
 		58DF415E186463E000D53723 /* GLPPostUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF415D186463E000D53723 /* GLPPostUploaderManager.m */; };
 		58DF4161186463F900D53723 /* GLPImageUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF4160186463F900D53723 /* GLPImageUploaderManager.m */; };
@@ -1887,6 +1888,8 @@
 		58DC024C18043DEE0008993A /* ChatViewAnimations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewAnimations.m; sourceTree = "<group>"; };
 		58DE37D51889967A005DBF74 /* GLPNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNetworkManager.h; sourceTree = "<group>"; };
 		58DE37D61889967A005DBF74 /* GLPNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNetworkManager.m; sourceTree = "<group>"; };
+		58DF0EE61AC5B8EF000AD545 /* GLPVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVerificationViewController.h; sourceTree = "<group>"; };
+		58DF0EE71AC5B8EF000AD545 /* GLPVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVerificationViewController.m; sourceTree = "<group>"; };
 		58DF4156186463A900D53723 /* GLPPostOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostOperationManager.h; sourceTree = "<group>"; };
 		58DF4157186463A900D53723 /* GLPPostOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostOperationManager.m; sourceTree = "<group>"; };
 		58DF415C186463E000D53723 /* GLPPostUploaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostUploaderManager.h; sourceTree = "<group>"; };
@@ -2769,6 +2772,8 @@
 				58F8C33018A4FC1E005EC7ED /* GLPRegisterViewController.m */,
 				5824F4541AC1BFBD0074A3EB /* GLPSignUpSecondViewController.h */,
 				5824F4551AC1BFBD0074A3EB /* GLPSignUpSecondViewController.m */,
+				58DF0EE61AC5B8EF000AD545 /* GLPVerificationViewController.h */,
+				58DF0EE71AC5B8EF000AD545 /* GLPVerificationViewController.m */,
 			);
 			name = "Login Register Classes";
 			sourceTree = "<group>";
@@ -6303,6 +6308,7 @@
 				58A75EBC1920EFA50082F316 /* GLPVideoViewController.m in Sources */,
 				807C4D12180AF0F6003D67E6 /* _LocalMessage.m in Sources */,
 				5879AC851964360E0053262A /* GLPNameCell.m in Sources */,
+				58DF0EE81AC5B8EF000AD545 /* GLPVerificationViewController.m in Sources */,
 				584FA5F419B5199C00FBA61F /* PBJMediaWriter.m in Sources */,
 				80E396381858D87600391922 /* GLPLiveConversation.m in Sources */,
 				58BBACB01978796D00A8A265 /* ImageSelectorViewController.m in Sources */,
