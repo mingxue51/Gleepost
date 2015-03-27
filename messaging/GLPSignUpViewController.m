@@ -22,11 +22,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 
 @property (weak, nonatomic) IBOutlet UITextField *surnameTextField;
-//@property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *profileImage;
-//@property (weak, nonatomic) IBOutlet UIButton *profileImageButton;
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundProfileImage;
+@property (weak, nonatomic) IBOutlet UIButton *cameraButton;
 
 @property (strong, nonatomic) UIImage *finalProfileImage;
 @property (weak, nonatomic) IBOutlet UIView *verifyView;
@@ -38,6 +37,7 @@
 @property (strong, nonatomic) NSString *fbName;
 @property (assign, nonatomic) BOOL facebookMode;
 @property (weak, nonatomic) IBOutlet UIButton *wrongEmailFbLogin;
+
 
 @end
 
@@ -73,13 +73,19 @@
         //        [_nameTextField resignFirstResponder];
         [[super emailTextField] resignFirstResponder];
     }
+    
+//    [self configureNavigationBar];
 }
 
 - (void)configureNavigationBar
 {
     [super configureNavigationBar];
+
+//    self.navigationController.navigationBar.topItem.title = @"SIGN UP";
     self.title = @"SIGN UP";
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"DONE" withButtonSize:CGSizeMake(50.0, 17.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(navigateToTheNextSignUpView) andTarget:self];
+    //    self.navigationController.navigationBar.topItem.title = @"PICK AN IMAGE";
+
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"DONE" withButtonSize:CGSizeMake(50.0, 17.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(registerUser:) andTarget:self];
 }
 
 -(void)setUpMessageLabels
@@ -99,32 +105,6 @@
     [_messageAgainLbl setTextColor:[UIColor blackColor]];
 
     [_messageAgainLbl setText:[NSString stringWithFormat:@"We've sent you another verification email to: %@",[super email]]];
-}
-
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    
-    
-//    if(![_nameTextField isFirstResponder] && !_facebookMode)
-//    {
-//        [_nameTextField becomeFirstResponder];
-//    }
-//    else
-//    {
-////        [self hideKeyboard];
-//    }
-    
-    
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-//    [_nameTextField becomeFirstResponder];
-
-    [super viewWillDisappear:animated];
 }
 
 -(void)configureViews
@@ -155,13 +135,10 @@
     _finalProfileImage = nil;
     
     //Add gesture recogniser to profile image view.
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pickTheImage:)];
-    [tap setNumberOfTapsRequired:1];
-    [_profileImage addGestureRecognizer:tap];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pickTheImage:)];
+//    [tap setNumberOfTapsRequired:1];
+//    [_profileImage addGestureRecognizer:tap];
     
-    tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pickTheImage:)];
-    [tap setNumberOfTapsRequired:1];
-    [_backgroundProfileImage addGestureRecognizer:tap];
 }
 
 -(void)formatElements
@@ -209,8 +186,8 @@
 - (void)takeImage:(UIImage *)image
 {
     _finalProfileImage = image;
-    [self.profileImage setImage:nil];
-    [self.backgroundProfileImage setImage:image];
+    [_profileImage setImage:image];
+    [self.cameraButton setImage:nil forState:UIControlStateNormal];
 }
 
 #pragma mark - Client
@@ -271,12 +248,13 @@
             {
                 //Navigate to home.
                 DDLogInfo(@"User register successful with remote Key: %d", remoteKey);
-//                [self performSegueWithIdentifier:@"verify" sender:self];
                 
                 //Update the image and the image in temporary user information manager.
                 [[GLPTemporaryUserInformationManager sharedInstance] setEmail:[super email] andImage:_finalProfileImage];
                 
-                [self hideSignUpViewAndShowVerification];
+                [self performSegueWithIdentifier:@"show verification" sender:self];
+
+//                [self hideSignUpViewAndShowVerification];
                 
                 //[self loginUser];
             }
@@ -352,7 +330,7 @@
 //    }];
 }
 
-- (void)pickTheImage:(id)sender
+- (IBAction)pickTheImage:(id)sender
 {
     [self performSegueWithIdentifier:@"pick image" sender:self];
 }
@@ -415,6 +393,9 @@
 {
     [ShapeFormatterHelper setBorderToView:_backgroundProfileImage withColour:[UIColor colorWithR:227.0 withG:227.0 andB:227.0] andWidth:1.5f];
     [ShapeFormatterHelper setCornerRadiusWithView:_backgroundProfileImage andValue:4];
+    
+    [self.profileImage layoutIfNeeded];
+    [ShapeFormatterHelper setRoundedView:self.profileImage toDiameter:self.profileImage.frame.size.width];
 }
 
 #pragma mark - UI methods

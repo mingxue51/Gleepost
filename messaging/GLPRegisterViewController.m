@@ -88,10 +88,6 @@
         
         if(success) {
             
-//            if(profileImage)
-//            {
-//                [self uploadImageAndSetUserImage:profileImage];
-//            }
             
             if([[GLPTemporaryUserInformationManager sharedInstance] informationExistWithEmail:_emailTextField.text])
             {
@@ -99,8 +95,6 @@
             }
 
             [self performSegueWithIdentifier:@"start" sender:self];
-//            [self navigateToMainView];
-
             
         } else {
             

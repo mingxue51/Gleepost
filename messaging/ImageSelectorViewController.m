@@ -58,7 +58,7 @@
 {
     [super viewWillDisappear:animated];
     
-    [self.navigationController.navigationBar invisible];
+//    [self.navigationController.navigationBar invisible];
 }
 
 - (void)configureNavigationBar
@@ -67,20 +67,22 @@
     [self.navigationController.navigationBar setHidden:NO];
 
     
-//    if([self comesFromGroupViewController])
-//    {
+    if([self comesFromGroupViewController])
+    {
         [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES andView:self.view];
         
         
         [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]]];
-//    }
-//    else
-//    {
+    }
+    else
+    {
 //        [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
 //       
 //        [self.navigationController.navigationBar setTranslucent:NO];
-//        
-//    }
+        
+        [self.navigationController.navigationBar whiteTranslucentBackgroundFormatWithShadow:YES andView:self.view];
+        
+    }
     
 
     

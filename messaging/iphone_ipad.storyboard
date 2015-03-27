@@ -4545,20 +4545,37 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q8U-e5-QEF" userLabel="CameraView">
                                                 <rect key="frame" x="0.0" y="1" width="95" height="95"/>
                                                 <subviews>
+                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Wew-E4-Qbo" userLabel="BackgroundImageView">
+                                                        <rect key="frame" x="10" y="10" width="75" height="75"/>
+                                                    </imageView>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kzr-Zc-6le" userLabel="SelectedUserImageView">
+                                                        <rect key="frame" x="10" y="10" width="75" height="75"/>
+                                                    </imageView>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pt6-sT-sTd">
                                                         <rect key="frame" x="0.0" y="0.0" width="95" height="95"/>
                                                         <state key="normal" image="camera_sign_up">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="pickTheImage:" destination="C3M-pb-rNg" eventType="touchUpInside" id="cgq-FC-HeW"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="Kzr-Zc-6le" secondAttribute="trailing" constant="10" id="0E4-wC-Ob1"/>
                                                     <constraint firstItem="pt6-sT-sTd" firstAttribute="leading" secondItem="Q8U-e5-QEF" secondAttribute="leading" id="2iQ-h3-xhZ"/>
+                                                    <constraint firstItem="Wew-E4-Qbo" firstAttribute="top" secondItem="Q8U-e5-QEF" secondAttribute="top" constant="10" id="9za-lw-6dM"/>
+                                                    <constraint firstItem="Wew-E4-Qbo" firstAttribute="leading" secondItem="Q8U-e5-QEF" secondAttribute="leading" constant="10" id="GIh-vg-tpp"/>
                                                     <constraint firstAttribute="width" secondItem="Q8U-e5-QEF" secondAttribute="height" multiplier="1:1" id="HYr-8Z-VKH"/>
+                                                    <constraint firstItem="Kzr-Zc-6le" firstAttribute="top" secondItem="Q8U-e5-QEF" secondAttribute="top" constant="10" id="LZq-l1-Gba"/>
                                                     <constraint firstItem="pt6-sT-sTd" firstAttribute="top" secondItem="Q8U-e5-QEF" secondAttribute="top" id="QVJ-Pq-He1"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Wew-E4-Qbo" secondAttribute="bottom" constant="10" id="Rt4-nj-eqK"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Wew-E4-Qbo" secondAttribute="trailing" constant="10" id="dpS-NE-FyL"/>
                                                     <constraint firstAttribute="trailing" secondItem="pt6-sT-sTd" secondAttribute="trailing" id="f7Y-Je-Xt9"/>
                                                     <constraint firstAttribute="bottom" secondItem="pt6-sT-sTd" secondAttribute="bottom" id="gcJ-Hq-5z1"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Kzr-Zc-6le" secondAttribute="bottom" constant="10" id="jDx-yw-jlc"/>
+                                                    <constraint firstItem="Kzr-Zc-6le" firstAttribute="leading" secondItem="Q8U-e5-QEF" secondAttribute="leading" constant="10" id="ob0-j7-iYI"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -4623,11 +4640,13 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="cameraButton" destination="pt6-sT-sTd" id="YqO-IL-olg"/>
                         <outlet property="emailTextField" destination="WcR-w6-eXZ" id="ARx-Af-1bz"/>
                         <outlet property="nameTextField" destination="ar0-Vs-R0E" id="qEr-tY-fLM"/>
                         <outlet property="passwordTextField" destination="RVp-c6-S3T" id="Nxx-s8-7Xm"/>
+                        <outlet property="profileImage" destination="Kzr-Zc-6le" id="eZb-ZV-WGX"/>
                         <outlet property="surnameTextField" destination="Bca-CR-fco" id="Gyu-I8-jB9"/>
-                        <segue destination="J9r-IS-Ujw" kind="show" identifier="show sign up second" id="fck-vq-iAe"/>
+                        <segue destination="YKI-NX-LaO" kind="show" identifier="pick image" id="XtJ-UD-8CS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bpz-0u-6B7" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4716,12 +4735,11 @@
                     </view>
                     <connections>
                         <outlet property="gradientImageView" destination="R9e-0T-s7m" id="05T-IZ-kqm"/>
-                        <segue destination="YKI-NX-LaO" kind="show" identifier="pick image" id="HZH-gI-ErF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V2l-4m-GAI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2139" y="3694"/>
+            <point key="canvasLocation" x="-2139" y="3702"/>
         </scene>
         <!--MY PROFILE-->
         <scene sceneID="pBQ-dT-hso">
@@ -6060,17 +6078,6 @@
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="CXU-cq-2uZ"/>
-        <segue reference="OS5-6C-kqp"/>
-        <segue reference="sMz-ia-ebt"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="KgO-oz-Ivb"/>
-        <segue reference="X2Z-pC-dgW"/>
-        <segue reference="6aM-BE-RDh"/>
-        <segue reference="b0z-f7-UHU"/>
-        <segue reference="Th4-GT-P8f"/>
-        <segue reference="e05-vk-cei"/>
-        <segue reference="HZH-gI-ErF"/>
         <segue reference="83m-vO-5OC"/>
         <segue reference="NSy-Xb-H1O"/>
         <segue reference="FTW-m4-VDE"/>
@@ -6078,5 +6085,16 @@
         <segue reference="NkQ-j5-6rL"/>
         <segue reference="PMB-JP-q3M"/>
         <segue reference="Nh6-Tl-qmR"/>
+        <segue reference="OS5-6C-kqp"/>
+        <segue reference="sMz-ia-ebt"/>
+        <segue reference="XtJ-UD-8CS"/>
+        <segue reference="CXU-cq-2uZ"/>
+        <segue reference="X2Z-pC-dgW"/>
+        <segue reference="KgO-oz-Ivb"/>
+        <segue reference="6aM-BE-RDh"/>
+        <segue reference="XMX-SH-Gag"/>
+        <segue reference="b0z-f7-UHU"/>
+        <segue reference="Th4-GT-P8f"/>
+        <segue reference="e05-vk-cei"/>
     </inferredMetricsTieBreakers>
 </document>
