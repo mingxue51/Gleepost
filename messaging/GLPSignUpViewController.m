@@ -185,15 +185,20 @@
 {
     if(textField.tag == 1)
     {
-        [self.emailTextField becomeFirstResponder];
+        [self.surnameTextField becomeFirstResponder];
     }
     else if(textField.tag == 2)
     {
-        [self.passwordTextField becomeFirstResponder];
+        [self.emailTextField becomeFirstResponder];
     }
     else if (textField.tag == 3)
     {
-        //TODO: Go to the next view.
+        [self.passwordTextField becomeFirstResponder];
+    }
+    else if(textField.tag == 4)
+    {
+        //TODO: Sign up and go to verification view if success.
+        [self registerUser:nil];
     }
     
     return NO;

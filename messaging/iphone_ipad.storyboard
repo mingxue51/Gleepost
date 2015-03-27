@@ -4492,11 +4492,14 @@
                                                     <constraint firstAttribute="height" constant="1" id="Pih-ay-49N"/>
                                                 </constraints>
                                             </imageView>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="LAST NAME" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bca-CR-fco" userLabel="LastNameTextField">
+                                            <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="LAST NAME" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bca-CR-fco" userLabel="LastNameTextField">
                                                 <rect key="frame" x="115" y="49" width="465" height="47"/>
                                                 <color key="textColor" red="0.74117647060000003" green="0.74117647060000003" blue="0.74117647060000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
+                                                <connections>
+                                                    <outlet property="delegate" destination="C3M-pb-rNg" id="083-0L-4r7"/>
+                                                </connections>
                                             </textField>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tF0-98-JDy">
                                                 <rect key="frame" x="0.0" y="96" width="600" height="1"/>
@@ -4505,7 +4508,7 @@
                                                     <constraint firstAttribute="height" constant="1" id="X9W-vY-FqT"/>
                                                 </constraints>
                                             </imageView>
-                                            <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="COLLEGE EMAIL" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WcR-w6-eXZ" userLabel="EmailTextField">
+                                            <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="COLLEGE EMAIL" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WcR-w6-eXZ" userLabel="EmailTextField">
                                                 <rect key="frame" x="20" y="97" width="560" height="47"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" red="0.74117647060000003" green="0.74117647060000003" blue="0.74117647060000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -4522,7 +4525,7 @@
                                                     <constraint firstAttribute="height" constant="1" id="UnV-vp-UYm"/>
                                                 </constraints>
                                             </imageView>
-                                            <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="PASSWORD" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="RVp-c6-S3T" userLabel="PasswordTextField">
+                                            <textField opaque="NO" clipsSubviews="YES" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="PASSWORD" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="RVp-c6-S3T" userLabel="PasswordTextField">
                                                 <rect key="frame" x="20" y="145" width="560" height="47"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" red="0.74117647060000003" green="0.74117647060000003" blue="0.74117647060000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -4623,6 +4626,7 @@
                         <outlet property="emailTextField" destination="WcR-w6-eXZ" id="ARx-Af-1bz"/>
                         <outlet property="nameTextField" destination="ar0-Vs-R0E" id="qEr-tY-fLM"/>
                         <outlet property="passwordTextField" destination="RVp-c6-S3T" id="Nxx-s8-7Xm"/>
+                        <outlet property="surnameTextField" destination="Bca-CR-fco" id="Gyu-I8-jB9"/>
                         <segue destination="J9r-IS-Ujw" kind="show" identifier="show sign up second" id="fck-vq-iAe"/>
                     </connections>
                 </viewController>
