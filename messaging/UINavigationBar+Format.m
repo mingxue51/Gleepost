@@ -63,17 +63,34 @@
 {
     [self whiteBackgroundFormatWithShadow:shadow];
     
-//    [self setTranslucent:YES];
-    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0.0, -64.0, 320.0, 64.0)];
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0.0, -64.0, [GLPiOSSupportHelper screenWidth], 64.0)];
     
     [topView setBackgroundColor:[UIColor whiteColor]];
     
-    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 63.0, 320.0, 1.0)];
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 63.0, [GLPiOSSupportHelper screenWidth], 1.0)];
     
     imgView.image = [ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]];
     
     [topView addSubview:imgView];
 
+    
+    [view addSubview:topView];
+}
+
+- (void)whiteTranslucentBackgroundFormatWithShadow:(BOOL)shadow andView:(UIView *)view
+{
+    [self setTranslucent:YES];
+    
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, [GLPiOSSupportHelper screenWidth], 64.0)];
+    
+    [topView setBackgroundColor:[UIColor whiteColor]];
+    
+    UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 63.0, [GLPiOSSupportHelper screenWidth], 1.0)];
+    
+    imgView.image = [ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]];
+    
+    [topView addSubview:imgView];
+    
     
     [view addSubview:topView];
 }

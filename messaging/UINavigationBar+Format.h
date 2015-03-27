@@ -19,6 +19,7 @@ typedef NS_ENUM(NSInteger, GLPColour) {
 
 - (void)whiteBackgroundFormatWithShadow:(BOOL)shadow;
 - (void)whiteBackgroundFormatWithShadow:(BOOL)shadow andView:(UIView *)view;
+- (void)whiteTranslucentBackgroundFormatWithShadow:(BOOL)shadow andView:(UIView *)view;
 - (void)invisible;
 - (void)makeVisibleWithTitle:(NSString *)title;
 - (void)setFontFormatWithColour:(GLPColour)colour;

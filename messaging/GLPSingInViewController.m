@@ -12,6 +12,8 @@
 #import "WebClient.h"
 #import "UICKeyChainStore.h"
 #import "UINavigationBar+Utils.h"
+#import "UINavigationBar+Format.h"
+#import "AppearanceHelper.h"
 
 @interface GLPSingInViewController () <UITextFieldDelegate>
 
@@ -37,11 +39,20 @@
     [self configureRememberMe];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
 - (void)configureNavigationBar
 {
-    [super configureNavigationBar];
+    self.title = @"LOG IN";
     
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"SIGN IN" withButtonSize:CGSizeMake(75, 17) withColour:[UIColor whiteColor] withSelector:@selector(login:) andTarget:self];
+    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+    
+    [self.navigationController.navigationBar whiteTranslucentBackgroundFormatWithShadow:YES andView:self.view];
+    
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"SIGN IN" withButtonSize:CGSizeMake(75, 17) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(login:) andTarget:self];
 }
 
 - (void)configureRememberMe

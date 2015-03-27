@@ -90,7 +90,7 @@
     
     [btn setTitleColor:colour forState:UIControlStateNormal];
     
-    [btn.titleLabel setFont:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:18.0]];
+    [btn.titleLabel setFont:[UIFont fontWithName:GLP_CAMPUS_WALL_TITLE_FONT size:15.0]];
     
     [fixedSpace setWidth:-7];
     

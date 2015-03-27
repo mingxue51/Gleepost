@@ -61,8 +61,6 @@ static NSString * const kOkButtonTitle       = @"Ok";
 {
     [super viewDidLoad];
     
-    [self configNavigationBar];
-    
     //If the mode is on development then make the secret change server gesture.
     //Otherwise the server will be on live by default.
     
@@ -80,6 +78,7 @@ static NSString * const kOkButtonTitle       = @"Ok";
 {
     [super viewWillAppear:animated];
     [self formatStatusBar];
+    [self configNavigationBar];
 }
 
 #pragma mark - Configuration
