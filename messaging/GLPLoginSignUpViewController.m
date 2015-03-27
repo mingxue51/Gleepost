@@ -258,8 +258,8 @@ static NSString * const kOkButtonTitle       = @"Ok";
 - (IBAction)signUp:(id)sender
 {
 //    _fbLoginInfo = nil;
-//    [self showSignUpViewController];
-    [self showSignUpView];
+    [self showSignUpViewController];
+//    [self showSignUpView];
 }
 
 - (void)showSignUpViewController

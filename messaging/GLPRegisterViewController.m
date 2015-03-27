@@ -20,6 +20,7 @@
 #import "UIColor+GLPAdditions.h"
 #import "GLPiOSSupportHelper.h"
 #import "UIImageView+GLPFormat.h"
+#import "UINavigationBar+Format.h"
 
 @interface GLPRegisterViewController ()
 
@@ -244,7 +245,10 @@
 //    [_simpleNavigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor colorWithR:227.0 withG:227.0 andB:227.0]]];
     
 //    [self.navigationController.navigationBar invisible];
-    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    
+    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
+    
+    [self.navigationController.navigationBar whiteTranslucentBackgroundFormatWithShadow:YES andView:self.view];
 }
 
 - (void)configureNavigationBarForVerificationView

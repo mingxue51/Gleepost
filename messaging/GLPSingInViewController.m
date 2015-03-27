@@ -12,7 +12,6 @@
 #import "WebClient.h"
 #import "UICKeyChainStore.h"
 #import "UINavigationBar+Utils.h"
-#import "UINavigationBar+Format.h"
 #import "AppearanceHelper.h"
 
 @interface GLPSingInViewController () <UITextFieldDelegate>
@@ -46,11 +45,9 @@
 
 - (void)configureNavigationBar
 {
+    [super configureNavigationBar];
+    
     self.title = @"LOG IN";
-    
-    [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
-    
-    [self.navigationController.navigationBar whiteTranslucentBackgroundFormatWithShadow:YES andView:self.view];
     
     [self.navigationController.navigationBar setTextButton:kRight withTitle:@"SIGN IN" withButtonSize:CGSizeMake(75, 17) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(login:) andTarget:self];
 }

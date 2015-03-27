@@ -15,6 +15,7 @@
 #import "ShapeFormatterHelper.h"
 #import "UIColor+GLPAdditions.h"
 #import "UINavigationBar+Utils.h"
+#import "AppearanceHelper.h"
 
 @interface GLPSignUpViewController () <UITextFieldDelegate>
 
@@ -77,7 +78,8 @@
 - (void)configureNavigationBar
 {
     [super configureNavigationBar];
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"NEXT" withButtonSize:CGSizeMake(50.0, 17.0) withColour:[UIColor whiteColor] withSelector:@selector(navigateToTheNextSignUpView) andTarget:self];
+    self.title = @"SIGN UP";
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"DONE" withButtonSize:CGSizeMake(50.0, 17.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(navigateToTheNextSignUpView) andTarget:self];
 }
 
 -(void)setUpMessageLabels
