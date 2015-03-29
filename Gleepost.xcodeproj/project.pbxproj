@@ -293,6 +293,12 @@
 		5851114219A83D9900488E79 /* progress_bar_cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851114119A83D9900488E79 /* progress_bar_cloud.png */; };
 		5851957D18CFA26E00F8CE46 /* GLPiOSSupportHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851957C18CFA26E00F8CE46 /* GLPiOSSupportHelper.m */; };
 		58536ED918BE77440036FD00 /* GLPTemporaryUserInformationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */; };
+		585625951AC89FA7006F5EA1 /* Montserrat-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 585625901AC89FA7006F5EA1 /* Montserrat-Black.otf */; };
+		585625961AC89FA7006F5EA1 /* Montserrat-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 585625911AC89FA7006F5EA1 /* Montserrat-Bold.otf */; };
+		585625971AC89FA7006F5EA1 /* Montserrat-Hairline.otf in Resources */ = {isa = PBXBuildFile; fileRef = 585625921AC89FA7006F5EA1 /* Montserrat-Hairline.otf */; };
+		585625981AC89FA7006F5EA1 /* Montserrat-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 585625931AC89FA7006F5EA1 /* Montserrat-Light.otf */; };
+		585625991AC89FA7006F5EA1 /* Montserrat-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 585625941AC89FA7006F5EA1 /* Montserrat-Regular.otf */; };
+		5856259B1AC8A0F3006F5EA1 /* login_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5856259A1AC8A0F3006F5EA1 /* login_bg.png */; };
 		585790D31A366DE300418528 /* GLPVideoPendingPostProgressManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585790D21A366DE300418528 /* GLPVideoPendingPostProgressManager.m */; };
 		585882CE190E8B49000BFBF9 /* thermometer_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = 585882CD190E8B49000BFBF9 /* thermometer_shadow.png */; };
 		585909A819D42E40006ACC64 /* GLPLiveGroupPostManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585909A719D42E40006ACC64 /* GLPLiveGroupPostManager.m */; };
@@ -359,7 +365,7 @@
 		586866E519B6B31900803512 /* GLPShowLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 586866E419B6B31900803512 /* GLPShowLocationViewController.m */; };
 		586866E819B6B7AB00803512 /* GLPMapViewAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 586866E719B6B7AB00803512 /* GLPMapViewAnnotation.m */; };
 		586866EA19B7284B00803512 /* fb_login_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 586866E919B7284B00803512 /* fb_login_bg.png */; };
-		586866EC19B72A6800803512 /* login_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 586866EB19B72A6800803512 /* login_bg.png */; };
+		586866EC19B72A6800803512 /* login_bg_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 586866EB19B72A6800803512 /* login_bg_old.png */; };
 		586866EE19B72AAF00803512 /* nerdnation_text_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 586866ED19B72AAF00803512 /* nerdnation_text_old.png */; };
 		586866F019B72AC000803512 /* nerdnation_tree_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 586866EF19B72AC000803512 /* nerdnation_tree_old.png */; };
 		586866F319B72E8D00803512 /* sign_up_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 586866F119B72E8D00803512 /* sign_up_bg.png */; };
@@ -535,7 +541,6 @@
 		589EAD2818A43A12005B2F4C /* campus_live_cell_bg_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD2718A43A12005B2F4C /* campus_live_cell_bg_old.png */; };
 		589EAD2B18A445A7005B2F4C /* GLPLoginSignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EAD2A18A445A7005B2F4C /* GLPLoginSignUpViewController.m */; };
 		589EAD2E18A4472D005B2F4C /* pick_pic_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD2D18A4472D005B2F4C /* pick_pic_old.png */; };
-		589EAD3018A44736005B2F4C /* login_bg_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD2F18A44736005B2F4C /* login_bg_old.png */; };
 		589EAD3318A449DF005B2F4C /* sign_in.png in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD3118A449DF005B2F4C /* sign_in.png */; };
 		589EAD3418A449DF005B2F4C /* sign_up.png in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD3218A449DF005B2F4C /* sign_up.png */; };
 		589EFD9C182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EFD9B182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.m */; };
@@ -1345,6 +1350,12 @@
 		5851957C18CFA26E00F8CE46 /* GLPiOSSupportHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPiOSSupportHelper.m; sourceTree = "<group>"; };
 		58536ED718BE77440036FD00 /* GLPTemporaryUserInformationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTemporaryUserInformationManager.h; sourceTree = "<group>"; };
 		58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTemporaryUserInformationManager.m; sourceTree = "<group>"; };
+		585625901AC89FA7006F5EA1 /* Montserrat-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Black.otf"; sourceTree = "<group>"; };
+		585625911AC89FA7006F5EA1 /* Montserrat-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.otf"; sourceTree = "<group>"; };
+		585625921AC89FA7006F5EA1 /* Montserrat-Hairline.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Hairline.otf"; sourceTree = "<group>"; };
+		585625931AC89FA7006F5EA1 /* Montserrat-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Light.otf"; sourceTree = "<group>"; };
+		585625941AC89FA7006F5EA1 /* Montserrat-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.otf"; sourceTree = "<group>"; };
+		5856259A1AC8A0F3006F5EA1 /* login_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_bg.png; sourceTree = "<group>"; };
 		585790D11A366DE300418528 /* GLPVideoPendingPostProgressManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoPendingPostProgressManager.h; sourceTree = "<group>"; };
 		585790D21A366DE300418528 /* GLPVideoPendingPostProgressManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideoPendingPostProgressManager.m; sourceTree = "<group>"; };
 		585882CD190E8B49000BFBF9 /* thermometer_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thermometer_shadow.png; sourceTree = "<group>"; };
@@ -1434,7 +1445,7 @@
 		586866E619B6B7AB00803512 /* GLPMapViewAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPMapViewAnnotation.h; sourceTree = "<group>"; };
 		586866E719B6B7AB00803512 /* GLPMapViewAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMapViewAnnotation.m; sourceTree = "<group>"; };
 		586866E919B7284B00803512 /* fb_login_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fb_login_bg.png; sourceTree = "<group>"; };
-		586866EB19B72A6800803512 /* login_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_bg.png; sourceTree = "<group>"; };
+		586866EB19B72A6800803512 /* login_bg_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_bg_old.png; sourceTree = "<group>"; };
 		586866ED19B72AAF00803512 /* nerdnation_text_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nerdnation_text_old.png; sourceTree = "<group>"; };
 		586866EF19B72AC000803512 /* nerdnation_tree_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nerdnation_tree_old.png; sourceTree = "<group>"; };
 		586866F119B72E8D00803512 /* sign_up_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sign_up_bg.png; sourceTree = "<group>"; };
@@ -1679,7 +1690,6 @@
 		589EAD2918A445A7005B2F4C /* GLPLoginSignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLoginSignUpViewController.h; sourceTree = "<group>"; };
 		589EAD2A18A445A7005B2F4C /* GLPLoginSignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLoginSignUpViewController.m; sourceTree = "<group>"; };
 		589EAD2D18A4472D005B2F4C /* pick_pic_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pick_pic_old.png; sourceTree = "<group>"; };
-		589EAD2F18A44736005B2F4C /* login_bg_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_bg_old.png; sourceTree = "<group>"; };
 		589EAD3118A449DF005B2F4C /* sign_in.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sign_in.png; sourceTree = "<group>"; };
 		589EAD3218A449DF005B2F4C /* sign_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sign_up.png; sourceTree = "<group>"; };
 		589EFD9A182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveConversationParticipantsDao.h; sourceTree = "<group>"; };
@@ -2524,6 +2534,11 @@
 		58272F841896D20800CD7522 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				585625901AC89FA7006F5EA1 /* Montserrat-Black.otf */,
+				585625911AC89FA7006F5EA1 /* Montserrat-Bold.otf */,
+				585625921AC89FA7006F5EA1 /* Montserrat-Hairline.otf */,
+				585625931AC89FA7006F5EA1 /* Montserrat-Light.otf */,
+				585625941AC89FA7006F5EA1 /* Montserrat-Regular.otf */,
 				5832C4BC18993547004FC4F6 /* Khmer-Sangam-MN.TTF */,
 				5832C4B018992049004FC4F6 /* KhmerUIb.TTF */,
 				5839CC8A18A5BE9600FA43A1 /* univers-45-light-bold.ttf */,
@@ -3717,6 +3732,7 @@
 		589EAD2C18A44695005B2F4C /* Registration */ = {
 			isa = PBXGroup;
 			children = (
+				5856259A1AC8A0F3006F5EA1 /* login_bg.png */,
 				58BAAE1C1AC4BECD0008F521 /* nerdnation_text.png */,
 				58BAAE1D1AC4BECD0008F521 /* nerdnation_tree.png */,
 				58D7B09D1A004DE300A9A48C /* gleepost_login_logo.png */,
@@ -3732,8 +3748,7 @@
 				5897350D193F775E0048BA85 /* sign_in_up.png */,
 				587F2DFD19431CE2001F0931 /* pick_pic.png */,
 				589EAD2D18A4472D005B2F4C /* pick_pic_old.png */,
-				586866EB19B72A6800803512 /* login_bg.png */,
-				589EAD2F18A44736005B2F4C /* login_bg_old.png */,
+				586866EB19B72A6800803512 /* login_bg_old.png */,
 				583CE33B18A019AC00E78C08 /* hoovertall.png */,
 				587F2DFF194362A7001F0931 /* verification_rocket.png */,
 				587F2E0119436773001F0931 /* verification_minimize.png */,
@@ -5587,6 +5602,8 @@
 				58E3DAC5188405DB00B9B048 /* blimp.png in Resources */,
 				5806C75C191BF603005C907E /* mypost_btn_selected.png in Resources */,
 				584FA61119B5268C00FBA61F /* my_location.png in Resources */,
+				585625981AC89FA7006F5EA1 /* Montserrat-Light.otf in Resources */,
+				585625971AC89FA7006F5EA1 /* Montserrat-Hairline.otf in Resources */,
 				806E3D811832B1960063AACE /* NotificationBackgroundWarning@2x.png in Resources */,
 				58D7F76719A2A9B500C39A4C /* camera_top_button.png in Resources */,
 				58AB7C39191CEFC500ADFD83 /* fb_invite.png in Resources */,
@@ -5605,6 +5622,7 @@
 				5895B3D817F58E900040535D /* navigationbar_trans.png in Resources */,
 				588CDF7819762A2A00373EE3 /* public_group.png in Resources */,
 				584F385C1817F50B00A1B742 /* default_group_image_old.png in Resources */,
+				585625961AC89FA7006F5EA1 /* Montserrat-Bold.otf in Resources */,
 				58B3A2FF1A254F180082AE81 /* GLPPendingCell.xib in Resources */,
 				58CFC76F19630CF800FF1E40 /* group_button.png in Resources */,
 				586866F319B72E8D00803512 /* sign_up_bg.png in Resources */,
@@ -5700,6 +5718,7 @@
 				58BEABA619BA890900A4F3F7 /* go_to_preview.png in Resources */,
 				587CEA67195CECE70043E5E2 /* GLPProfileSegmentView.xib in Resources */,
 				58BEABA019BA83C100A4F3F7 /* touch_to_record.png in Resources */,
+				5856259B1AC8A0F3006F5EA1 /* login_bg.png in Resources */,
 				58D30ADF18F6E4DF00A898EB /* notification_btn.png in Resources */,
 				802DCE4418AA32D000A23511 /* notification3.json in Resources */,
 				588F1DC619EDD21C00DB6D23 /* pop_up_background.png in Resources */,
@@ -5732,7 +5751,6 @@
 				581463321AA4FE8900907EC3 /* gleepost.cer in Resources */,
 				589EAD1818A41B37005B2F4C /* SignUpFiveView.xib in Resources */,
 				58D7F76D19A2ABB600C39A4C /* kind_of_post_general.png in Resources */,
-				589EAD3018A44736005B2F4C /* login_bg_old.png in Resources */,
 				5851113719A8206900488E79 /* progress_bar_border.png in Resources */,
 				58428E4618A2ADA400B82E4B /* SignUpOneView.xib in Resources */,
 				58E3DAB31884053600B9B048 /* blades.png in Resources */,
@@ -5775,6 +5793,7 @@
 				5890D22318478C5400E293DD /* chat_background_stanford.png in Resources */,
 				586866F419B72E8D00803512 /* sing_in_bg.png in Resources */,
 				586E2238180FE61700C0FA03 /* background_field.png in Resources */,
+				585625951AC89FA7006F5EA1 /* Montserrat-Black.otf in Resources */,
 				5897351C193FA0DB0048BA85 /* login_button_green.png in Resources */,
 				58AB404A18AE45D000DEED31 /* sports_category_old.png in Resources */,
 				58B1BC9818EB13E9000ECB6C /* more_old.png in Resources */,
@@ -5812,7 +5831,7 @@
 				584F1BF118DA3C2C00F43ABF /* nav_bar_title_button_old.png in Resources */,
 				58E1E5EA1926222F007ACB4F /* PostImageCell.xib in Resources */,
 				80E7478217CE958B001957E5 /* post_posts.json in Resources */,
-				586866EC19B72A6800803512 /* login_bg.png in Resources */,
+				586866EC19B72A6800803512 /* login_bg_old.png in Resources */,
 				584CBE8017F058E100CD756A /* chat_background@2x.png in Resources */,
 				582A664A18AC0ABC00006419 /* referesh_campus_live_old.png in Resources */,
 				5866F16218844869007484CF /* cloud2_night.png in Resources */,
@@ -5910,6 +5929,7 @@
 				585AE26C192BF1FD00174CED /* bird-house-7_old@2x.png in Resources */,
 				58350A6B198AF733000BB1CA /* GLPNetworkErrorView.xib in Resources */,
 				5829F48F18B1546300A7B871 /* pending_request.png in Resources */,
+				585625991AC89FA7006F5EA1 /* Montserrat-Regular.otf in Resources */,
 				588DE5D418A8FA40001D344D /* add_photo_btn.png in Resources */,
 				5887C7F219FF0C65004441B9 /* locker_private_group.png in Resources */,
 				5887C7E319FDB391004441B9 /* campus_live_placeholder.png in Resources */,

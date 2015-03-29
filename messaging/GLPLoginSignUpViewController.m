@@ -18,7 +18,7 @@
 #import "UICKeyChainStore.h"
 #import "RegisterAnimationsView.h"
 #import "SessionManager.h"
-#import "UIImageVIew+GLPFormat.h"
+#import "UIImageView+GLPFormat.h"
 #import "LoginView.h"
 #import "GLPIntroAnimationHelper.h"
 #import "GLPiOSSupportHelper.h"

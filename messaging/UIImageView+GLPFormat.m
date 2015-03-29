@@ -16,6 +16,8 @@
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = self.frame;
     
+    gradient.startPoint = CGPointMake(0.8, 0.0);
+    
     // Add colors to layer
     UIColor *startColor = [[GLPThemeManager sharedInstance] tabbarSelectedColour];
     UIColor *endColor = [UIColor clearColor];

@@ -203,7 +203,7 @@
 
 + (UIColor *)redGleepostColour
 {
-    return [UIColor colorWithR:241 withG:91 andB:104]; //221, 71, 84
+    return [UIColor colorWithR:205 withG:66 andB:77]; //241, 91, 104
 }
 
 + (UIColor *)blueGleepostColour
