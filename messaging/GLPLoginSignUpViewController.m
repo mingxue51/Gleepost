@@ -18,16 +18,35 @@
 #import "UICKeyChainStore.h"
 #import "RegisterAnimationsView.h"
 #import "SessionManager.h"
+#import "UIImageView+GLPFormat.h"
+#import "LoginView.h"
+#import "GLPIntroAnimationHelper.h"
+#import "GLPiOSSupportHelper.h"
+#import "UINavigationBar+Utils.h"
+#import "SignUpView.h"
 
-@interface GLPLoginSignUpViewController ()
+@interface GLPLoginSignUpViewController () <RegisterViewsProtocol, ImageSelectorViewControllerDelegate>
 
 @property (strong, nonatomic) UIAlertView *emailPromptAlertView;
 @property (strong, nonatomic) NSDictionary *fbLoginInfo;
 @property (strong, nonatomic) NSString *universityEmail;
 
 @property (weak, nonatomic) IBOutlet UIImageView *gleepostLogoImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *gradientImageView;
 
 @property (weak, nonatomic) IBOutlet RegisterAnimationsView *animationsView;
+@property (strong, nonatomic) GLPIntroAnimationHelper *introAnimationHelper;
+
+
+@property (weak, nonatomic) IBOutlet UILabel *welcomeBackLabel;
+@property (weak, nonatomic) IBOutlet LoginView *loginView;
+@property (weak, nonatomic) IBOutlet SignUpView *signUpView;
+@property (weak, nonatomic) IBOutlet UIImageView *subTitleImageView;
+
+//Constraints
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topLogoWidth;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceLogoFromTop;
 
 @end
 
@@ -42,8 +61,6 @@ static NSString * const kOkButtonTitle       = @"Ok";
 {
     [super viewDidLoad];
     
-    [self configNavigationBar];
-    
     //If the mode is on development then make the secret change server gesture.
     //Otherwise the server will be on live by default.
     
@@ -52,15 +69,186 @@ static NSString * const kOkButtonTitle       = @"Ok";
         [self configureGestures];
     }
     
-    
+    [self formatImageView];
+    [self initialiseObjects];
+    [self configureConstraints];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self formatStatusBar];
+    [self configNavigationBar];
 }
+
+#pragma mark - Configuration
+
+- (void)configureConstraints
+{
+    [self.gleepostLogoImageView layoutIfNeeded];
+    [self.topLogoWidth setConstant:[GLPiOSSupportHelper screenWidth] * 0.45];
+}
+
+- (void)formatImageView
+{
+    [self.gradientImageView layoutIfNeeded];
+    [self.gradientImageView applyCradientEffect];
+}
+
+- (void)initialiseObjects
+{
+    self.introAnimationHelper = [[GLPIntroAnimationHelper alloc] init];
+    [self.loginView setDelegate:self];
+    [self.signUpView setDelegate:self];
+}
+
+#pragma mark - RegisterViewsProtocol
+
+- (void)loginSignUpError:(ErrorMessage)error
+{
+    switch (error) {
+        case kEmailInvalid:
+            [WebClientHelper showStandardEmailError];
+            break;
+            
+            case kTextFieldsEmpty:
+            [WebClientHelper showStandardLoginErrorWithMessage:@"It looks like you have left an empty field!"];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)login
+{
+    
+    if (![self.loginView isEmalValid])
+    {
+        [self loginSignUpError:kEmailInvalid];
+    }
+    else if([self.loginView areTextFieldsEmpty])
+    {
+        [self loginSignUpError:kTextFieldsEmpty];
+    }
+    else
+    {
+        DDLogDebug(@"GLPLoginSignUpViewController : Login selector");
+        [self loginReady];
+    }
+    
+}
+
+- (void)signUp
+{
+    DDLogDebug(@"Sign up");
+    
+    if (![self.signUpView isEmalValid])
+    {
+        [self loginSignUpError:kEmailInvalid];
+    }
+    else if([self.signUpView areTextFieldsEmpty])
+    {
+        [self loginSignUpError:kTextFieldsEmpty];
+    }
+    else
+    {
+        DDLogDebug(@"GLPLoginSignUpViewController : SignUp selector");
+        [self signUpReady];
+    }
+}
+
+- (void)selectImage
+{
+    //Pick an image for sign up view.
+    [self performSegueWithIdentifier:@"pick image" sender:self];
+}
+
+#pragma mark - ImageSelectorViewControllerDelegate
+
+- (void)takeImage:(UIImage *)image
+{
+    [self.signUpView selectedImage:image];
+}
+
+#pragma mark - Operations
+
+/**
+ Called only by the NEXT navigation button.
+ */
+- (void)loginOrSignUp
+{
+    if(!self.loginView.hidden)
+    {
+        [self login];
+    }
+    else if(!self.signUpView.hidden)
+    {
+        [self signUp];
+    }
+    
+}
+
+//TODO: Move that to a kind of login manager or improve the currnet one.
+
+- (void)loginReady
+{
+    [self.loginView startLoading];
+    
+    [GLPLoginManager loginWithIdentifier:self.loginView.emailTextFieldText andPassword:self.loginView.passwordTextFieldText shouldRemember:NO callback:^(BOOL success, NSString *errorMessage) {
+        
+        if(success)
+        {
+            [self performSegueWithIdentifier:@"start" sender:self];
+            
+        } else {
+            
+            [self.loginView stopLoading];
+            [self.loginView becomePasswordFieldFirstResponder];
+            [WebClientHelper showStandardLoginErrorWithMessage:errorMessage];
+        }
+    }];
+}
+
+- (void)signUpReady
+{
+    
+}
+
+#pragma mark - Animation Selectors
+
+- (void)backToMainView
+{
+    [self.introAnimationHelper moveTopImageBackToTheMiddle:self.gleepostLogoImageView withTopDistanceConstraint:self.distanceLogoFromTop withTopLogoWidth:self.topLogoWidth];
+    [self.introAnimationHelper hideRegisterView:self.loginView withWelcomeLabel:self.welcomeBackLabel withSubTitleImageView:self.subTitleImageView];
+    [self.introAnimationHelper hideRegisterView:self.signUpView withWelcomeLabel:self.welcomeBackLabel withSubTitleImageView:self.subTitleImageView];
+    [self.navigationController.navigationBar clearNavigationItemsWithNavigationController:self];
+    [self.loginView resignFieldResponder];
+    [self.signUpView resignFieldResponder];
+}
+
+- (void)showSignUpView
+{
+    [self showRegisterView];
+    [self.introAnimationHelper showRegisterView:self.signUpView withWelcomeLabel:self.welcomeBackLabel withSubTitleImageView:self.subTitleImageView];
+    [self.signUpView becomeFirstNameFirstResponder];
+}
+
+- (void)showLoginView
+{
+    [self showRegisterView];
+    [self.introAnimationHelper showRegisterView:self.loginView withWelcomeLabel:self.welcomeBackLabel withSubTitleImageView:self.subTitleImageView];
+    [self.loginView becomeEmailFieldFirstResponder];
+}
+
+- (void)showRegisterView
+{
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"NEXT" withButtonSize:CGSizeMake(65.0, 22.0) withColour:[UIColor whiteColor] withSelector:@selector(loginOrSignUp) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kSimple withImageName:@"back_final" withButtonSize:CGSizeMake(33.0, 22.5) withSelector:@selector(backToMainView) andTarget:self];
+    [self.introAnimationHelper moveTopImageToTop:self.gleepostLogoImageView withTopDistanceConstraint:self.distanceLogoFromTop withTopLogoWidth:self.topLogoWidth];
+}
+
+#pragma mark - Selectors
 
 - (IBAction)facebookLogin:(id)sender
 {
@@ -69,28 +257,35 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
 - (IBAction)signUp:(id)sender
 {
-    _fbLoginInfo = nil;
+//    _fbLoginInfo = nil;
     [self showSignUpViewController];
+//    [self showSignUpView];
 }
 
 - (void)showSignUpViewController
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPSignUpViewController *signUpVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSignUpViewController"];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+//    GLPSignUpViewController *signUpVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSignUpViewController"];
     
-    if(_fbLoginInfo)
-    {
-        signUpVC.parentVC = self;
-        signUpVC.facebookLoginInfo = _fbLoginInfo;
-    }
+//    if(_fbLoginInfo)
+//    {
+//        signUpVC.parentVC = self;
+//        signUpVC.facebookLoginInfo = _fbLoginInfo;
+//    }
     
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:signUpVC];
-    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:navigationController animated:YES completion:nil];
+//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:signUpVC];
+//    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+//    [self presentViewController:navigationController animated:YES completion:nil];
+    
+    [self performSegueWithIdentifier:@"show sign up" sender:self];
+
 }
 
 - (IBAction)signIn:(id)sender
 {
+
+//    [self showLoginView];
+    
     [self performSegueWithIdentifier:@"show signin" sender:self];
 }
 
@@ -435,6 +630,29 @@ static NSString * const kOkButtonTitle       = @"Ok";
     }
     
 
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"show sign up"])
+    {
+        GLPSignUpViewController *signUpVC = segue.destinationViewController;
+        
+        if(_fbLoginInfo)
+        {
+            signUpVC.parentVC = self;
+            signUpVC.facebookLoginInfo = _fbLoginInfo;
+        }
+
+    }
+    else if ([segue.identifier isEqualToString:@"pick image"])
+    {
+        ImageSelectorViewController *imgSelectorVC = segue.destinationViewController;
+        imgSelectorVC.fromGroupViewController = NO;
+        [imgSelectorVC setDelegate:self];
+    }
 }
 
 - (void)didReceiveMemoryWarning

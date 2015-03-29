@@ -211,49 +211,14 @@
     [WebClientHelper showStandardErrorWithTitle:@"Failed to load post" andContent:@"Check your internet connection and try again"];
 }
 
-+ (void)accountVerificationError
-{
-    [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while verifying user account"];
-}
-
-+ (void)accountLoginError
-{
-    [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"An error occurred while logging in"];
-}
-
 + (void)loadingPostsError
 {
     [WebClientHelper showStandardErrorWithTitle:@"Error loading posts" andContent:@"Please ensure that you are connected to the internet"];
 }
 
-+ (void)facebookLoginErrorWithStatus:(NSString *)status
-{
-    [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:status];
-}
-
 + (void)uploadingImageError
 {
     [WebClientHelper showStandardErrorWithTitle:@"Error uploading the image" andContent:@"Please check your connection and try again"];
-}
-
-+ (void)showRecoveryEmailMessage:(NSString *)email
-{
-    [WebClientHelper showStandardErrorWithTitle:@"" andContent:[NSString stringWithFormat:@"No problem. We've just sent you a password recovery link at: %@", email]];
-}
-
-+ (void)errorRegisteringUserWithResponse:(NSString *)response
-{
-    [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:response];
-}
-
-+ (void)errorWrongCredentials
-{
-    [WebClientHelper showStandardErrorWithTitle:@"Please check your information" andContent:@"Please check your provided information and try again."];
-}
-
-+ (void)errorUnverifiedUser
-{
-    [WebClientHelper showStandardErrorWithTitle:@"Error" andContent:@"You still unverified."];
 }
 
 + (void)errorLoadingData
@@ -274,6 +239,48 @@
 + (void)showTaglineChangedWithNewTagline:(NSString *)tagline
 {
     [WebClientHelper showStandardErrorWithTitle:@"Tagline changed" andContent:[NSString stringWithFormat:@"Your new tagline is: %@.", tagline]];
+}
+
+#pragma mark - Registration
+
++ (void)showRecoveryEmailMessage:(NSString *)email
+{
+    [WebClientHelper showStandardErrorWithTitle:@"" andContent:[NSString stringWithFormat:@"No problem. We've just sent you a password recovery link at: %@", email]];
+}
+
++ (void)errorRegisteringUserWithResponse:(NSString *)response
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:response];
+}
+
++ (void)errorWrongCredentials
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Please check your information" andContent:@"Please check your provided information and try again."];
+}
+
++ (void)errorUnverifiedUser
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"You still unverified."];
+}
+
++ (void)verificationResent
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Verification resent" andContent:@"Please check your email."];
+}
+
++ (void)facebookLoginErrorWithStatus:(NSString *)status
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Facebook Login Error" andContent:status];
+}
+
++ (void)accountVerificationError
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"An error occurred while verifying user account"];
+}
+
++ (void)accountLoginError
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"An error occurred while logging in"];
 }
 
 #pragma mark - Location

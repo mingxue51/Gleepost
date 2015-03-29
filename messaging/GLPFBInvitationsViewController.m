@@ -66,7 +66,9 @@ static NSString * const kCellIdentifier = @"GLPCheckNameCell";
     
     [self.navigationController.navigationBar setButton:kLeft withImageName:@"cancel" withButtonSize:CGSizeMake(19, 21) withSelector:@selector(dismissModalView:) andTarget:self];
     
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"Invite" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(inviteFriends:) andTarget:self];
+//    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"Invite" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(inviteFriends:) andTarget:self];
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"Invite" withButtonSize:CGSizeMake(50.0, 20.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(inviteFriends:) andTarget:self];
+
 
 }
 

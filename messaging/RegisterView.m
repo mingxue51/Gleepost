@@ -7,12 +7,13 @@
 //
 
 #import "RegisterView.h"
+#import "ValidFields.h"
 
-@interface RegisterView ()
+@interface RegisterView () <UITextFieldDelegate>
 
-@property (weak, nonatomic) IBOutlet UITextField *first;
-@property (weak, nonatomic) IBOutlet UITextField *second;
-@property (strong, nonatomic) UIViewController <RegisterViewsProtocol> *delegate;
+@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
+@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 
 @end
 
@@ -30,107 +31,96 @@
     return self;
 }
 
-#pragma mark - Navigators
-
--(void)login
+- (void)awakeFromNib
 {
-    [_delegate login];
-}
-
--(void)nextView
-{
-    [_delegate navigateToNextView];
+    [super awakeFromNib];
+    [self.emailTextField setDelegate:self];
+    [self.passwordTextField setDelegate:self];
 }
 
 #pragma mark - Accessors
 
--(NSString*)textFirstTextField
+-(NSString *)emailTextFieldText
 {
-    return _first.text;
+    return self.emailTextField.text;
 }
 
 
--(NSString*)textSecondTextField
+-(NSString *)passwordTextFieldText
 {
-    return _second.text;
+    return self.passwordTextField.text;
 }
-
--(BOOL)areTheDetailsValid
-{
-    return (![self.first.text isEqualToString:@""] && ![self.second.text isEqualToString:@""]);
-}
-
--(UIViewController<RegisterViewsProtocol> *)getDelegate
-{
-    return _delegate;
-}
-
--(NSArray*)firstAndSecondFields
-{
-    NSArray *array = [[NSArray alloc] initWithObjects:_first.text, _second.text, nil];
-    
-    return array;
-}
-
 
 #pragma mark - Modifiers
 
--(void)setTextToFirst:(NSString*)firstText andToSecond:(NSString*)secondText
+-(void)becomeEmailFieldFirstResponder
 {
-    _first.text = firstText;
-    _second.text = secondText;
+    [self.emailTextField becomeFirstResponder];
 }
 
--(void)becomeFirstFieldFirstResponder
+- (void)becomePasswordFieldFirstResponder
 {
-    [_first becomeFirstResponder];
-
+    [self.passwordTextField becomeFirstResponder];
 }
 
--(void)resignFieldResponder
+- (void)resignFieldResponder
 {
-    if([_first isFirstResponder])
+    if([self.emailTextField isFirstResponder])
     {
-        [_first resignFirstResponder];
+        [self.emailTextField resignFirstResponder];
     }
     
-    if([_second isFirstResponder])
+    if([self.passwordTextField isFirstResponder])
     {
-        [_second resignFirstResponder];
+        [self.passwordTextField resignFirstResponder];
     }
 }
 
-
--(void)setDelegate:(UIViewController<RegisterViewsProtocol> *)delegate
+- (void)startLoading
 {
-    _delegate = delegate;
+    [self disableTextFields];
+    [self.activityIndicatorView startAnimating];
 }
 
--(void)setUpTextFields
+- (void)stopLoading
 {
-    CGRect textFielFrame = self.first.frame;
-    textFielFrame.size.height=40;
-    [self.first setFrame:textFielFrame];
-    [self.first setBackgroundColor:[UIColor whiteColor]];
-    [self.first setTextColor:[UIColor blackColor]];
-    self.first.layer.cornerRadius = 20;
-    self.first.layer.borderColor = [UIColor colorWithRed:28.0f/255.0f green:208.0f/255.0f blue:208.f/255.0f alpha:1.0f].CGColor;
-    self.first.layer.borderWidth = 3.0f;
-    self.first.clipsToBounds = YES;
-    
-    
-    textFielFrame = self.second.frame;
-    textFielFrame.size.height=40;
-    [self.second setFrame:textFielFrame];
-    [self.second setBackgroundColor:[UIColor whiteColor]];
-    [self.second setTextColor:[UIColor blackColor]];
-    self.second.layer.cornerRadius = 20;
-    self.second.layer.borderColor = [UIColor colorWithRed:28.0f/255.0f green:208.0f/255.0f blue:208.f/255.0f alpha:1.0f].CGColor;
-    self.second.layer.borderWidth = 3.0f;
-    self.second.clipsToBounds = YES;
-    
+    [self enableTextFields];
+    [self.activityIndicatorView stopAnimating];
+}
 
+- (void)disableTextFields
+{
+    [self.emailTextField setEnabled:NO];
+    [self.passwordTextField setEnabled:NO];
+}
+
+- (void)enableTextFields
+{
+    [self.emailTextField setEnabled:YES];
+    [self.passwordTextField setEnabled:YES];
+}
+
+
+#pragma mark - Check
+
+- (BOOL)isEmalValid
+{
+    if ([self.emailTextField.text rangeOfString:@".edu"].location == NSNotFound && [self.emailTextField.text rangeOfString:@"gleepost.com"].location == NSNotFound)
+    {
+        return NO;
+        
+    } else
+    {
+        return [ValidFields NSStringIsValidEmail:self.emailTextField.text];
+    }
     
+}
+
+//TODO: Apply the next approach. So when data are valid let the user to continue.
+
+- (BOOL)areTextFieldsEmpty
+{
+    return ([self.emailTextField.text isEqualToString:@""] || [self.passwordTextField.text isEqualToString:@""]);
 }
 
 

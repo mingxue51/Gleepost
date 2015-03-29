@@ -22,22 +22,22 @@
 
 -(void)awakeFromNib
 {
-    [self becomeFirstFieldFirstResponder];
+//    [self becomeFirstFieldFirstResponder];
 }
 
 - (IBAction)goNext:(id)sender
 {
-    if([self areTheDetailsValid])
-    {
-        [[super getDelegate] firstAndLastName:[super firstAndSecondFields]];
-        
-        [super nextView];
-    }
-    else
-    {
-//        [WebClientHelper showStandardErrorWithTitle:@"Please Check your details" andContent:@"Please check your details if are valid."];
-        
-    }
+//    if([self areTheDetailsValid])
+//    {
+//        [[super getDelegate] firstAndLastName:[super firstAndSecondFields]];
+//        
+//        [super nextView];
+//    }
+//    else
+//    {
+////        [WebClientHelper showStandardErrorWithTitle:@"Please Check your details" andContent:@"Please check your details if are valid."];
+//        
+//    }
     
 }
 
@@ -47,7 +47,7 @@
 {
     [super drawRect:rect];
     
-    [self setUpTextFields];
+//    [self setUpTextFields];
     
 }
 

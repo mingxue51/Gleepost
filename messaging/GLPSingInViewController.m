@@ -11,8 +11,10 @@
 #import "GLPLoginManager.h"
 #import "WebClient.h"
 #import "UICKeyChainStore.h"
+#import "UINavigationBar+Utils.h"
+#import "AppearanceHelper.h"
 
-@interface GLPSingInViewController ()
+@interface GLPSingInViewController () <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UINavigationBar *simpleNavBar;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
@@ -33,13 +35,21 @@
 	
     [super setDefaultTextToEmailAndPassFields];
     
-//    if(!IS_IPHONE_5) {
-//        CGFloat offset = -88;
-//        CGRectMoveY(_submitButton, offset);
-//        CGRectMoveY(_forgotPasswordButton, offset);
-//    }
-    
     [self configureRememberMe];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
+- (void)configureNavigationBar
+{
+    [super configureNavigationBar];
+    
+    self.title = @"LOG IN";
+    
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"DONE" withButtonSize:CGSizeMake(75, 17) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(login:) andTarget:self];
 }
 
 - (void)configureRememberMe
@@ -81,6 +91,21 @@
     [_rememberMeButton setImage:opposite forState:UIControlStateHighlighted];
 }
 
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if(textField.tag == 1)
+    {
+        [self.passwordTextField becomeFirstResponder];
+    }
+    else if(textField.tag == 2)
+    {
+        [self login:textField];
+    }
+    
+    return NO;
+}
 
 #pragma mark - Actions
 

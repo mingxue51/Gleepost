@@ -1,104 +1,93 @@
-////
-////  LoginView.m
-////  Gleepost
-////
-////  Created by Silouanos on 05/02/2014.
-////  Copyright (c) 2014 Gleepost. All rights reserved.
-////
 //
-//#import "LoginView.h"
-//#import "WebClient.h"
-//#import "WebClientHelper.h"
-//#import "GLPLoginManager.h"
+//  LoginView.m
+//  Gleepost
 //
-//@interface LoginView ()
+//  Created by Silouanos on 25/03/2015.
+//  Copyright (c) 2015 Gleepost. All rights reserved.
 //
-////@property (weak, nonatomic) IBOutlet UITextField *emailTextField;
-////@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
-//
-//
-//@end
-//
-//@implementation LoginView
-//
-//- (id)initWithCoder:(NSCoder *)aDecoder
-//{
-//    self = [super initWithCoder:aDecoder];
-//    
-//    if (self)
-//    {
-//        // Initialization code
-////        [self setUpTextFields];
-//
-//    }
-//    return self;
-//}
-//
-//
-//-(void)awakeFromNib
-//{
-//    [self becomeFirstFieldFirstResponder];
-//    
-//    if(DEV)
-//    {
-//        if(!ON_DEVICE)
-//        {
-//            
-//            [self setTextToFirst:@"fingolfin@leeds.ac.uk" andToSecond:@"ihatemorgoth"];
-//
-//            
-//        } else
-//        {
-//            [self setTextToFirst:@"sc11pm@leeds.ac.uk" andToSecond:@"TestingPass"];
-//
-//        }
-//    }
-//
-//}
-//
-//- (IBAction)forgotPassword:(id)sender
-//{
-//
-//}
-//
-//
-//- (IBAction)logIn:(id)sender
-//{
-//    [WebClientHelper showStandardLoaderWithTitle:@"Login" forView:self];
-//    
-//    [GLPLoginManager loginWithIdentifier:[self textFirstTextField] andPassword:[self textSecondTextField] callback:^(BOOL success, NSString *errorMessage) {
-//        
-//        [WebClientHelper hideStandardLoaderForView:self];
-//        
-//        if(success) {
-//            [self login];
-//            
-//        } else {
-//
-//            [WebClientHelper showStandardErrorWithTitle:@"Login failed" andContent:@"Check your credentials or your internet connection, dude."];
-//
-//
-//
-//        }
-//    }];
-//
-//    
-//}
-//
-//
-//// Only override drawRect: if you perform custom drawing.
-//// An empty implementation adversely affects performance during animation.
-//- (void)drawRect:(CGRect)rect
-//{
-//    [super drawRect:rect];
-//    
-//    [self setUpTextFields];
-//
-//    
-//    // Drawing code
-//    
-//
-//}
-//
-//
-//@end
+
+#import "LoginView.h"
+#import "WebClient.h"
+#import "WebClientHelper.h"
+#import "GLPLoginManager.h"
+
+@interface LoginView () <UITextFieldDelegate>
+
+
+@end
+
+@implementation LoginView
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    
+    if (self)
+    {
+    }
+    return self;
+}
+
+
+-(void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if(textField.tag == 1)
+    {
+        [self becomePasswordFieldFirstResponder];
+    }
+    else if(textField.tag == 2)
+    {
+        [self login];
+    }
+    
+    return NO;
+}
+
+#pragma mark - Navigators
+
+- (void)login
+{
+    if (![self isEmalValid])
+    {
+        [self.delegate loginSignUpError:kEmailInvalid];
+    }
+    else if([self areTextFieldsEmpty])
+    {
+        [self.delegate loginSignUpError:kTextFieldsEmpty];
+    }
+    else
+    {
+        [self.delegate login];
+    }
+}
+
+- (IBAction)forgotPassword:(id)sender
+{
+    DDLogDebug(@"LoginView forgot password.");
+}
+
+
+- (IBAction)logIn:(id)sender
+{
+    
+}
+
+
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+
+}
+
+@end

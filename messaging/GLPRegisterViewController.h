@@ -13,6 +13,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 
+- (void)configureNavigationBar;
+
 -(NSString *)email;
 
 -(NSString *)password;

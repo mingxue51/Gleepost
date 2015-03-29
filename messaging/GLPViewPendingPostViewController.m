@@ -19,6 +19,7 @@
 #import "GLPPrivateProfileViewController.h"
 #import "ContactsManager.h"
 #import "GLPTableActivityIndicator.h"
+#import "AppearanceHelper.h"
 
 @interface GLPViewPendingPostViewController () <UITableViewDataSource, UITabBarDelegate, GLPPostCellDelegate, GLPImageViewDelegate, GLPLabelDelegate>
 
@@ -86,7 +87,9 @@
 
 - (void)configureNavigationBar
 {
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"EDIT" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(editPendingPost) andTarget:self];
+//    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"EDIT" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(editPendingPost) andTarget:self];
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"EDIT" withButtonSize:CGSizeMake(50.0, 20.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(editPendingPost:) andTarget:self];
+
 }
 
 - (void)configureNotificationsAfterViewDidLoad

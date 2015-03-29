@@ -16,7 +16,8 @@ typedef NS_ENUM(NSInteger, GLPButtonType) {
 typedef NS_ENUM(NSUInteger, GLPSpecialButton) {
     kNoSpecial,
     kSettings,
-    kQuit
+    kQuit,
+    kSimple
 };
 
 @interface UINavigationBar (Utils)
@@ -34,8 +35,8 @@ typedef NS_ENUM(NSUInteger, GLPSpecialButton) {
 
 - (void)setButton:(GLPButtonType)type withImageName:(NSString *)imageOrTitle withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController;
 
-- (void)setTextButton:(GLPButtonType)type withTitle:(NSString *)title withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController;
-
+//- (void)setTextButton:(GLPButtonType)type withTitle:(NSString *)title withButtonSize:(CGSize)size withSelector:(SEL)selector andTarget:(UIViewController *)navController;
+- (void)setTextButton:(GLPButtonType)type withTitle:(NSString *)title withButtonSize:(CGSize)size withColour:(UIColor *)colour withSelector:(SEL)selector andTarget:(UIViewController *)navController;
 - (void)clearNavigationItemsWithNavigationController:(UIViewController *)navigationController;
 
 - (void)setButton:(GLPButtonType)type specialButton:(GLPSpecialButton)kind withImage:(NSString *)image withButtonSize:(CGSize)size withSelector:(SEL)selector withTarget:(UIViewController *)viewController andNavigationItem:(UINavigationItem *)navigationItem;

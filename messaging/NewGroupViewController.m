@@ -15,6 +15,7 @@
 #import "UIView+GLPDesign.h"
 #import "ShapeFormatterHelper.h"
 #import "GLPiOSSupportHelper.h"
+#import "AppearanceHelper.h"
 
 @interface NewGroupViewController ()
 
@@ -214,7 +215,10 @@
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
         
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"Done" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(createNewGroup:) andTarget:self];
+//    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"Done" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(createNewGroup:) andTarget:self];
+    
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"Done" withButtonSize:CGSizeMake(50.0, 20.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(createNewGroup:) andTarget:self];
+
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
