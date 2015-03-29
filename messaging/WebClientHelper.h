@@ -44,6 +44,7 @@
 + (void)errorWrongCredentials;
 + (void)errorUnverifiedUser;
 + (void)errorLoadingData;
++ (void)verificationResent;
 
 + (void)showNameChangedWithName:(NSString *)fullName andSurname:(NSString *)surname;
 + (void)showTaglineChangedWithNewTagline:(NSString *)tagline;

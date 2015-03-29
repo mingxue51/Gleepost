@@ -10,12 +10,13 @@
 
 @interface GLPTemporaryUserInformationManager : NSObject
 
-+(GLPTemporaryUserInformationManager*)sharedInstance;
++ (GLPTemporaryUserInformationManager*)sharedInstance;
 
--(void)setEmail:(NSString *)email andImage:(UIImage *)image;
+- (void)setEmail:(NSString *)email password:(NSString *)password andImage:(UIImage *)image;
 
--(NSString *)email;
--(UIImage *)image;
--(BOOL)informationExistWithEmail:(NSString *)otherEmail;
+- (NSString *)email;
+- (NSString *)password;
+- (UIImage *)image;
+- (BOOL)informationExistWithEmail:(NSString *)otherEmail;
 
 @end

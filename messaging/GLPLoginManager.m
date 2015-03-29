@@ -28,6 +28,7 @@
 #import "CategoryManager.h"
 #import "GLPLiveGroupManager.h"
 #import "GLPLiveGroupConversationsManager.h"
+#import "ImageFormatterHelper.h"
 
 @implementation GLPLoginManager
 
@@ -213,6 +214,53 @@
     [[WebClient sharedInstance] markNotificationsRead:nil];
     //That is removed because we are doing that by each message in conversation.
 //    [[WebClient sharedInstance] markConversationsRead:nil];
+}
+
+#pragma mark - User image
+
++ (void)uploadImageAndSetUserImage:(UIImage *)userImage
+{
+    UIImage* imageToUpload = [ImageFormatterHelper imageWithImage:userImage scaledToHeight:320];
+    
+    NSData *imageData = UIImagePNGRepresentation(imageToUpload);
+    
+    NSLog(@"Image register image size: %d",imageData.length);
+    
+    [[WebClient sharedInstance] uploadImage:imageData ForUserRemoteKey:0 callbackBlock:^(BOOL success, NSString* response) {
+        
+        if(success)
+        {
+            NSLog(@"IMAGE UPLOADED. URL: %@",response);
+            
+            //Set image to user's profile.
+            
+            [GLPLoginManager setImageToUserProfile:response];
+            
+            //Save user's image to database and add to SessionManager.
+            //TODO: REFACTOR / FACTORIZE THIS
+            GLPUser *user = [SessionManager sharedInstance].user;
+            user.profileImageUrl = response;
+            [GLPUserDao updateUserWithRemotKey:user.remoteKey andProfileImage:response];
+            
+        }
+    }];
+}
+
++ (void)setImageToUserProfile:(NSString*)url
+{
+    DDLogDebug(@"GLPLoginManager : image started to associating with  %@",url);
+    
+    [[WebClient sharedInstance] uploadImageToProfileUser:url callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            NSLog(@"GLPLoginManager : profile image associated.");
+        }
+        else
+        {
+            NSLog(@"GLPLoginManager : profile image could not be ");
+        }
+    }];
 }
 
 + (void)logout

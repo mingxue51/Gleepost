@@ -15,6 +15,7 @@
 + (BOOL)performAutoLogin;
 + (void)loginFacebookUserWithName:(NSString *)name withEmail:(NSString *)email response:(NSString *)response callback:(void (^)(BOOL success, NSString *status, NSString *email))callback;
 + (void)logout;
++ (void)uploadImageAndSetUserImage:(UIImage *)userImage;
 + (BOOL)isUserRemembered;
 + (BOOL)shouldAutoLogin;
 

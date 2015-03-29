@@ -250,7 +250,7 @@
                 DDLogInfo(@"User register successful with remote Key: %d", remoteKey);
                 
                 //Update the image and the image in temporary user information manager.
-                [[GLPTemporaryUserInformationManager sharedInstance] setEmail:[super email] andImage:_finalProfileImage];
+                [[GLPTemporaryUserInformationManager sharedInstance] setEmail:[super email] password:[super password] andImage:_finalProfileImage];
                 
                 [self performSegueWithIdentifier:@"show verification" sender:self];
 

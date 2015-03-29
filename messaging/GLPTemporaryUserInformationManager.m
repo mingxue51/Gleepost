@@ -15,6 +15,7 @@
 @interface GLPTemporaryUserInformationManager ()
 
 @property (strong, nonatomic) NSString *email;
+@property (strong, nonatomic) NSString *password;
 @property (strong, nonatomic) UIImage *image;
 @property (assign, nonatomic) BOOL informationExist;
 @end
@@ -47,17 +48,22 @@ static GLPTemporaryUserInformationManager *instance = nil;
     return self;
 }
 
--(void)setEmail:(NSString *)email andImage:(UIImage *)image
+- (void)setEmail:(NSString *)email password:(NSString *)password andImage:(UIImage *)image;
 {
     _email = email;
     _image = image;
-    
+    _password = password;
     _informationExist = YES;
 }
 
 -(NSString *)email
 {
     return _email;
+}
+
+- (NSString *)password
+{
+    return _password;
 }
 
 -(UIImage *)image

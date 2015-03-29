@@ -10,4 +10,7 @@
 
 @interface GLPVerificationViewController : UIViewController
 
+@property (assign, nonatomic) BOOL facebookMode;
+@property (strong, nonatomic) NSDictionary *facebookLoginInfo;
+
 @end
