@@ -32,12 +32,12 @@ NSString *CAMPUS_WALL_TITLE = @"STANFORD WALL";
 
 - (void)configureColours
 {
-    _primaryColour = [AppearanceHelper redGleepostColour];
-    _leftNavBarElementColour =[AppearanceHelper blueGleepostColour];
-    _rightNavBarElementColour = [AppearanceHelper greenGleepostColour];
-    _navBarBackgroundColour = [UIColor whiteColor];
-    _campusWallTitleColour = [AppearanceHelper redGleepostColour];
-    _generalNavBarTitleColour = [AppearanceHelper blackGleepostColour];
+    _primaryColour = [AppearanceHelper firstAutoColour];
+    _leftNavBarElementColour =[AppearanceHelper secondAutoColour];
+    _rightNavBarElementColour = [AppearanceHelper thirdAutoColour];
+    _navBarBackgroundColour = [AppearanceHelper fourthAutoColour];
+    _campusWallTitleColour = [AppearanceHelper fifthAutoColour];
+    _generalNavBarTitleColour = [AppearanceHelper sixthAutoColour];
 }
 
 - (UIImage *)navigationBarImage

@@ -231,6 +231,36 @@
     return [UIColor colorWithR:54.0 withG:47.0 andB:45.0];
 }
 
++ (UIColor *)firstAutoColour
+{
+    return [UIColor colorWithR:241 withG:91 andB:104];
+}
+
++ (UIColor *)secondAutoColour
+{
+    return [UIColor colorWithR:52 withG:152 andB:218];
+}
+
++ (UIColor *)thirdAutoColour
+{
+    return [UIColor colorWithR:63 withG:219 andB:188];
+}
+
++ (UIColor *)fourthAutoColour
+{
+    return [UIColor colorWithR:255 withG:255 andB:255];
+}
+
++ (UIColor *)fifthAutoColour
+{
+    return [UIColor colorWithR:241 withG:91 andB:104];
+}
+
++ (UIColor *)sixthAutoColour
+{
+    return [UIColor colorWithR:54 withG:47 andB:45];
+}
+
 + (UIColor *)colourForNotFocusedItems
 {
     return [UIColor colorWithR:227.0 withG:227.0 andB:227.0];
