@@ -103,6 +103,10 @@
     
     CGRect imageFrame = CGRectMake(0.0f, 0.0f, 50.0f, 50.0f);
     
+    [_groupImageView layoutIfNeeded];
+    
+    DDLogDebug(@"MembersViewController : configureTopView %f : %f %f %f", _groupImageView.frame.size.height, _groupImageView.frame.size.width, _groupImageView.frame.origin.x, _groupImageView.frame.origin.y);
+    
     [ShapeFormatterHelper setTwoLeftCornerRadius:_groupImageView withViewFrame:imageFrame withValue:8];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addNewMember:)];
