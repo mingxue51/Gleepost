@@ -208,7 +208,7 @@
                 <outlet property="smallSubtitleLbl" destination="0b1-ox-FLb" id="Te5-TW-76c"/>
                 <outlet property="subtitleLbl" destination="0Js-ka-wWS" id="7Ee-WO-FgX"/>
             </connections>
-            <point key="canvasLocation" x="-1086" y="173"/>
+            <point key="canvasLocation" x="-1244" y="142"/>
         </tableViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

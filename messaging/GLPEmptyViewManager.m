@@ -15,6 +15,7 @@
 #import "GLPProfilePostsEmptyView.h"
 #import "GLPGroupPostsEmptyView.h"
 #import "GLPiOSSupportHelper.h"
+#import "ProfileTopViewCell.h"
 
 @interface GLPEmptyViewManager ()
 
@@ -174,7 +175,7 @@ static GLPEmptyViewManager *instance = nil;
     
     CGRectSetW(_profilePostsEmptyView, [GLPiOSSupportHelper screenWidth]);
     CGRectSetH(_profilePostsEmptyView, [GLPiOSSupportHelper screenHeight]);
-    CGRectSetY(_profilePostsEmptyView, 235.0);
+    CGRectSetY(_profilePostsEmptyView, [ProfileTopViewCell profileTopViewHeight]);
     
     [view addSubview:_profilePostsEmptyView];
     
