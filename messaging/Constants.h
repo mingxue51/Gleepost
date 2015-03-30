@@ -116,6 +116,7 @@
 //NSNotification name that removes all the NSNotifications observers from view controllers. (Usually after logout).
 #define GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS         @"GLPRemoveVCNotifications"
 
+#define GLPNOTIFICATION_UPDATE_EMAIL_TO_VERIFICATION_VIEW   @"GLPUpdateEmailToVerificationView"
 
 #define GLP_WEBSERVICE_VERSION                      @"1"
 #define GLP_BASE_SERVER_URL                                ([NSString stringWithFormat:@"https://gleepost.com/api/v%@/", GLP_WEBSERVICE_VERSION])

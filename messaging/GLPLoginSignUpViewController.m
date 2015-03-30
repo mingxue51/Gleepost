@@ -24,11 +24,13 @@
 #import "GLPiOSSupportHelper.h"
 #import "UINavigationBar+Utils.h"
 #import "SignUpView.h"
+#import "GLPVerificationViewController.h"
+#import "GLPTemporaryUserInformationManager.h"
 
-@interface GLPLoginSignUpViewController () <RegisterViewsProtocol, ImageSelectorViewControllerDelegate>
+@interface GLPLoginSignUpViewController () <RegisterViewsProtocol, ImageSelectorViewControllerDelegate, GLPVerificationViewControllerDelegate>
 
 @property (strong, nonatomic) UIAlertView *emailPromptAlertView;
-@property (strong, nonatomic) NSDictionary *fbLoginInfo;
+//@property (strong, nonatomic) NSDictionary *fbLoginInfo;
 @property (strong, nonatomic) NSString *universityEmail;
 
 @property (weak, nonatomic) IBOutlet UIImageView *gleepostLogoImageView;
@@ -42,6 +44,7 @@
 @property (weak, nonatomic) IBOutlet LoginView *loginView;
 @property (weak, nonatomic) IBOutlet SignUpView *signUpView;
 @property (weak, nonatomic) IBOutlet UIImageView *subTitleImageView;
+@property (assign, nonatomic) BOOL changeEmailMode;
 
 //Constraints
 
@@ -51,9 +54,9 @@
 @end
 
 
-static NSString * const kCancelButtonTitle   = @"Cancel";
-static NSString * const kSignUpButtonTitle   = @"Login";
-static NSString * const kOkButtonTitle       = @"Ok";
+NSString * const kCancelButtonTitle   = @"Cancel";
+NSString * const kSignUpButtonTitle   = @"Login";
+NSString * const kOkButtonTitle       = @"Ok";
 
 @implementation GLPLoginSignUpViewController
 
@@ -100,7 +103,18 @@ static NSString * const kOkButtonTitle       = @"Ok";
     self.introAnimationHelper = [[GLPIntroAnimationHelper alloc] init];
     [self.loginView setDelegate:self];
     [self.signUpView setDelegate:self];
+    self.changeEmailMode = NO;
 }
+
+//- (void)configureNotifications
+//{
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeEmailAfterFacebookLoginWithNotification:) name:GLPNOTIFICATION_WRONG_EMAIL_DURIN_FB object:nil];
+//}
+//
+//- (void)removeNotifications
+//{
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_WRONG_EMAIL_DURIN_FB object:nil];
+//}
 
 #pragma mark - RegisterViewsProtocol
 
@@ -258,11 +272,12 @@ static NSString * const kOkButtonTitle       = @"Ok";
 - (IBAction)signUp:(id)sender
 {
 //    _fbLoginInfo = nil;
-    [self showSignUpViewController];
+    [self performSegueWithIdentifier:@"show sign up" sender:self];
+
 //    [self showSignUpView];
 }
 
-- (void)showSignUpViewController
+- (void)showVerificationViewController
 {
 //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
 //    GLPSignUpViewController *signUpVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSignUpViewController"];
@@ -277,7 +292,15 @@ static NSString * const kOkButtonTitle       = @"Ok";
 //    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
 //    [self presentViewController:navigationController animated:YES completion:nil];
     
-    [self performSegueWithIdentifier:@"show sign up" sender:self];
+    if(self.changeEmailMode)
+    {
+        //Post notification to verification view to update the email.
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_UPDATE_EMAIL_TO_VERIFICATION_VIEW object:self];
+    }
+    else
+    {
+        [self performSegueWithIdentifier:@"show verification" sender:self];
+    }
 
 }
 
@@ -393,7 +416,9 @@ static NSString * const kOkButtonTitle       = @"Ok";
     
     email = [self saveLocallyUniversityEmail:email];
     _universityEmail = email;
-//    
+    
+//    [GLPTemporaryUserInformationManager sharedInstance].email = _universityEmail;
+//
 //    //If user's email is not locally saved or user didn't type it prompt a window to add his email.
 //    if(!email)
 //    {
@@ -421,17 +446,18 @@ static NSString * const kOkButtonTitle       = @"Ok";
                 else if([status isEqualToString:@"registered"])
                 {
                     //Ask user to put his password.
-//                    [self askUserForPassword];
                     _universityEmail = [self saveLocallyUniversityEmail:email];
+                    [GLPTemporaryUserInformationManager sharedInstance].email = _universityEmail;
 
                     [self askUserForEmailAndPasswordAskAgain:NO];
                 }
                 else if(!success && [status isEqualToString:@"unverified"])
                 {
                     //Pop up the verification view.
-                    _fbLoginInfo = [NSDictionary dictionaryWithObjectsAndKeys:name, @"Name", email, @"Email", nil];
-                    [self showSignUpViewController];
-                    
+                    [GLPTemporaryUserInformationManager sharedInstance].name = name;
+                    [GLPTemporaryUserInformationManager sharedInstance].email = email;
+                    [GLPTemporaryUserInformationManager sharedInstance].facebookMode = YES;
+                    [self showVerificationViewController];
                 }
                 else
                 {
@@ -576,6 +602,20 @@ static NSString * const kOkButtonTitle       = @"Ok";
     [passwordPromptAlertView show];
 }
 
+#pragma mark - GLPVerificationViewControllerDelegate
+
+/**
+ This method should be called only from Verification view controller
+ only in case user decided that he made a mistake with his email.
+ 
+ @param email user's email.
+ */
+- (void)changeEmailAfterFacebookLogin:(NSString *)email
+{
+    self.changeEmailMode = YES;
+    [self registerViaFacebookWithEmailOrNil:email];
+}
+
 # pragma mark - UIAlertViewDelegate
 
 - (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView {
@@ -636,16 +676,15 @@ static NSString * const kOkButtonTitle       = @"Ok";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([segue.identifier isEqualToString:@"show sign up"])
+    if([segue.identifier isEqualToString:@"show verification"])
     {
-        GLPSignUpViewController *signUpVC = segue.destinationViewController;
-        
-        if(_fbLoginInfo)
-        {
-            signUpVC.parentVC = self;
-            signUpVC.facebookLoginInfo = _fbLoginInfo;
-        }
+        GLPVerificationViewController *verificationVC = segue.destinationViewController;
+        verificationVC.delegate = self;
 
+//        if(_fbLoginInfo)
+//        {
+//            verificationVC.facebookLoginInfo = _fbLoginInfo;
+//        }
     }
     else if ([segue.identifier isEqualToString:@"pick image"])
     {

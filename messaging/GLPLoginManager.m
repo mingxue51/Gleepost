@@ -288,6 +288,8 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:self];
     
     [[GLPPushManager sharedInstance] unregisterPushTokenWithAuthParams:authParams];
+    
+    [UICKeyChainStore removeItemForKey:@"facebook.email"];
 }
 
 

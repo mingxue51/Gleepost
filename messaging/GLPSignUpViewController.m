@@ -134,6 +134,8 @@
 {
     _finalProfileImage = nil;
     
+    [GLPTemporaryUserInformationManager sharedInstance].facebookMode = NO;
+    
     //Add gesture recogniser to profile image view.
 //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(pickTheImage:)];
 //    [tap setNumberOfTapsRequired:1];
