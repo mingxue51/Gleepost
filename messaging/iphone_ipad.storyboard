@@ -4669,6 +4669,7 @@
                     </view>
                     <connections>
                         <outlet property="cameraButton" destination="pt6-sT-sTd" id="YqO-IL-olg"/>
+                        <outlet property="distanceFromTop" destination="leO-jE-SW9" id="dgh-nQ-L1k"/>
                         <outlet property="emailTextField" destination="WcR-w6-eXZ" id="ARx-Af-1bz"/>
                         <outlet property="nameTextField" destination="ar0-Vs-R0E" id="qEr-tY-fLM"/>
                         <outlet property="passwordTextField" destination="RVp-c6-S3T" id="Nxx-s8-7Xm"/>
@@ -6153,24 +6154,24 @@
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="BTm-uo-9d6"/>
-        <segue reference="sMz-ia-ebt"/>
-        <segue reference="OS5-6C-kqp"/>
-        <segue reference="a3g-k4-yG4"/>
-        <segue reference="XtJ-UD-8CS"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="X2Z-pC-dgW"/>
-        <segue reference="KgO-oz-Ivb"/>
-        <segue reference="6aM-BE-RDh"/>
-        <segue reference="NSy-Xb-H1O"/>
-        <segue reference="83m-vO-5OC"/>
+        <segue reference="b0z-f7-UHU"/>
+        <segue reference="Th4-GT-P8f"/>
+        <segue reference="e05-vk-cei"/>
         <segue reference="Nh6-Tl-qmR"/>
-        <segue reference="PMB-JP-q3M"/>
+        <segue reference="83m-vO-5OC"/>
+        <segue reference="NSy-Xb-H1O"/>
         <segue reference="Hkg-hS-m49"/>
         <segue reference="FTW-m4-VDE"/>
         <segue reference="NkQ-j5-6rL"/>
-        <segue reference="e05-vk-cei"/>
-        <segue reference="Th4-GT-P8f"/>
-        <segue reference="b0z-f7-UHU"/>
+        <segue reference="PMB-JP-q3M"/>
+        <segue reference="BTm-uo-9d6"/>
+        <segue reference="sMz-ia-ebt"/>
+        <segue reference="OS5-6C-kqp"/>
+        <segue reference="XtJ-UD-8CS"/>
+        <segue reference="HS8-YI-8pQ"/>
+        <segue reference="KgO-oz-Ivb"/>
+        <segue reference="X2Z-pC-dgW"/>
+        <segue reference="6aM-BE-RDh"/>
+        <segue reference="XMX-SH-Gag"/>
     </inferredMetricsTieBreakers>
 </document>

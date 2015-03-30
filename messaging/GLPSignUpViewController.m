@@ -16,6 +16,7 @@
 #import "UIColor+GLPAdditions.h"
 #import "UINavigationBar+Utils.h"
 #import "AppearanceHelper.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPSignUpViewController () <UITextFieldDelegate>
 
@@ -38,6 +39,8 @@
 @property (assign, nonatomic) BOOL facebookMode;
 @property (weak, nonatomic) IBOutlet UIButton *wrongEmailFbLogin;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromTop;
+
 
 @end
 
@@ -54,6 +57,8 @@
     {
         [self formatElements];
     }
+    
+    [self configureViewsForSmallScreenSize];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -127,6 +132,15 @@
     else
     {
         _facebookMode = NO;
+    }
+}
+
+
+- (void)configureViewsForSmallScreenSize
+{
+    if([GLPiOSSupportHelper useShortConstrains])
+    {
+        _distanceFromTop.constant = 42.0;
     }
 }
 
