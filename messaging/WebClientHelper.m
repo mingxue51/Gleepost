@@ -370,6 +370,11 @@
     [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"There was a problem inviting your selected facebook friends"];
 }
 
++ (void)facebookLoginAuthendicationError
+{
+    [WebClientHelper facebookLoginErrorWithStatus:[NSString stringWithFormat:@"Ensure that you authorised %@ to access your Facebook account", [[GLPThemeManager sharedInstance] appNameWithString:@"%@"]]];
+}
+
 #pragma mark - Groups
 
 + (void)showFailedToJoinGroupWithName:(NSString *)groupName

@@ -353,6 +353,8 @@ static GLPVideoLoaderManager *instance = nil;
     
     FLog(@"GLPVideoLoaderManager : postNotificationWithVideoVC notifications name %@", notificationName);
     
+    //TODO: Sometimes the app crashes here.
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:videoViewData];
 }
 

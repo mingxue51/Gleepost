@@ -445,6 +445,8 @@ NSString * const kOkButtonTitle       = @"Ok";
                 }
                 else if([status isEqualToString:@"registered"])
                 {
+                    DDLogDebug(@"GLPLoginSignUpViewController : fb login registered");
+
                     //Ask user to put his password.
                     _universityEmail = [self saveLocallyUniversityEmail:email];
                     [GLPTemporaryUserInformationManager sharedInstance].email = _universityEmail;
@@ -453,6 +455,8 @@ NSString * const kOkButtonTitle       = @"Ok";
                 }
                 else if(!success && [status isEqualToString:@"unverified"])
                 {
+                    DDLogDebug(@"GLPLoginSignUpViewController : unverified");
+                    
                     //Pop up the verification view.
                     [GLPTemporaryUserInformationManager sharedInstance].name = name;
                     [GLPTemporaryUserInformationManager sharedInstance].email = email;
@@ -461,32 +465,40 @@ NSString * const kOkButtonTitle       = @"Ok";
                 }
                 else
                 {
+                    DDLogDebug(@"GLPLoginSignUpViewController : Error with status %@", status);
+                    
                     [WebClientHelper facebookLoginErrorWithStatus:status];
                 }
             }];
             
         } else
         {
-            DDLogDebug(@"logged in not successfully via facebook: %@", response);
+            DDLogDebug(@"GLPLoginSignUpViewController : logged in not successfully via facebook: %@", response);
+            
+            if(!response)
+            {
+                return;
+            }
             
             if ([response rangeOfString:@"Email is required"].location != NSNotFound)
             {
-                NSLog(@"University Email id required for Facebook Login");
+                NSLog(@"GLPLoginSignUpViewController : University Email id required for Facebook Login");
                 [self askUserForEmailAddressAgain:NO];
                 
             } else if ([response rangeOfString:@"Invalid email"].location != NSNotFound)
             {
-                NSLog(@"Wrong email address entered");
+                NSLog(@"GLPLoginSignUpViewController : Wrong email address entered");
                 [self askUserForEmailAddressAgain:YES];
                 
             } else if([response rangeOfString:@"To use your Facebook account"].location != NSNotFound)
             {
+                DDLogDebug(@"GLPLoginSignUpViewController : To use your Facebook account");
                 [WebClientHelper facebookLoginErrorWithStatus:response];
             }
             else
             {
-                NSLog(@"Cannot login through facebook");
-                [WebClientHelper showInternetConnectionErrorWithTitle:@"Failed to login with Facebook."];
+                NSLog(@"GLPLoginSignUpViewController : Cannot login through facebook");
+                [WebClientHelper facebookLoginErrorWithStatus:@"Unknown error occured."];
             }
         }
     }];
