@@ -103,7 +103,7 @@
 
 - (void)configureInformationLabel
 {
-    [_informationLabel setText:[NSString stringWithFormat:@"%@ %@ • %d %@",[[_groupData privacyToString] uppercaseString], _groupString, _groupData.membersCount, (_groupData.membersCount == 1) ? _memberString : _membersString]];
+    [_informationLabel setText:[NSString stringWithFormat:@"%@ %@ • %ld %@",[[_groupData privacyToString] uppercaseString], _groupString, (long)_groupData.membersCount, (_groupData.membersCount == 1) ? _memberString : _membersString]];
 }
 
 - (void)setGroupImage
@@ -152,6 +152,7 @@
 {
     if(_groupData.sendStatus == kSendStatusLocal)
     {
+        [self updateProgressBarIfNeeded];
         [self registerProgressViewNotification];
     }
     else
@@ -238,9 +239,20 @@
 
 - (void)updateProgressBar:(NSNotification *)notification
 {
-    DDLogDebug(@"GLPGroupCell : upldateProgressBar %@", notification.userInfo);
     float uploadedProgress = [notification.userInfo[@"uploaded_progress"] floatValue];
     [_uploadingImageProgressBar setProgress:uploadedProgress];
+}
+
+- (void)updateProgressBarIfNeeded
+{
+    CGFloat currentProgress = [[GLPLiveGroupManager sharedInstance] uploadingGroupProgress];
+    
+    if(currentProgress == -1.0)
+    {
+        return;
+    }
+    
+    [_uploadingImageProgressBar setProgress:currentProgress];
 }
 
 #pragma mark - Static

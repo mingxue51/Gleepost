@@ -20,6 +20,7 @@
 #import "GLPSearchGroups.h"
 #import "GLPMemberDao.h"
 #import "GLPLiveGroupConversationsManager.h"
+#import "GLPUploadingGroupStatusHelper.h"
 
 @interface GLPLiveGroupManager ()
 
@@ -39,6 +40,8 @@
 @property (strong, nonatomic) GLPSearchGroups *searchGroupsHelper;
 
 @property (assign, nonatomic) GroupsLoadedStatus groupsLoadedStatus;
+
+@property (strong, nonatomic) GLPUploadingGroupStatusHelper *uploadingGroupStatusHelper;
 
 //@property (strong, nonatomic) ChangeGroupImageProgressView *changeImageProgressView;
 
@@ -83,6 +86,7 @@ static GLPLiveGroupManager *instance = nil;
     _pendingGroups = [[NSMutableDictionary alloc] init];
     _searchGroupsHelper = [[GLPSearchGroups alloc] init];
     _groupsLoadedStatus = kNotLoaded;
+    _uploadingGroupStatusHelper = [[GLPUploadingGroupStatusHelper alloc] init];
 }
 
 /**
@@ -405,6 +409,23 @@ static GLPLiveGroupManager *instance = nil;
 - (void)notifyNewGroupToBeUploaded:(GLPGroup *)newGroup
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_NEW_GROUP_TO_BE_CREATED object:self userInfo:@{@"group": newGroup}];
+}
+
+#pragma mark - Uploading progress
+
+- (void)registerUploadingGroup
+{
+    [_uploadingGroupStatusHelper registerGroup];
+}
+
+- (void)unregisterUploadingGroup
+{
+    [_uploadingGroupStatusHelper unregisterGroup];
+}
+
+- (CGFloat)uploadingGroupProgress
+{
+    return [_uploadingGroupStatusHelper uploadingGroupProgress];
 }
 
 #pragma mark - Helpers

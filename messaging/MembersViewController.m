@@ -93,7 +93,7 @@
     if(_group.groupImageUrl)
     {
         [_groupImageView sd_setImageWithURL:[NSURL URLWithString:_group.groupImageUrl]];
-    }
+    } 
     
     [_addNewMembersBg setImage:[UIImage imageNamed:@"add_members_bg"]];
 
