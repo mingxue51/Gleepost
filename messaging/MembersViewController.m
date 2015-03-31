@@ -93,7 +93,7 @@
     if(_group.groupImageUrl)
     {
         [_groupImageView sd_setImageWithURL:[NSURL URLWithString:_group.groupImageUrl]];
-    }
+    } 
     
     [_addNewMembersBg setImage:[UIImage imageNamed:@"add_members_bg"]];
 
@@ -102,6 +102,10 @@
 //    [ShapeFormatterHelper setRoundedView:_groupImageView toDiameter:_groupImageView.frame.size.height];
     
     CGRect imageFrame = CGRectMake(0.0f, 0.0f, 50.0f, 50.0f);
+    
+    [_groupImageView layoutIfNeeded];
+    
+    DDLogDebug(@"MembersViewController : configureTopView %f : %f %f %f", _groupImageView.frame.size.height, _groupImageView.frame.size.width, _groupImageView.frame.origin.x, _groupImageView.frame.origin.y);
     
     [ShapeFormatterHelper setTwoLeftCornerRadius:_groupImageView withViewFrame:imageFrame withValue:8];
     

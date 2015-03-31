@@ -413,6 +413,7 @@
 		5879AC8D19643CEA0053262A /* user_selected_tick_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 5879AC8A19643CEA0053262A /* user_selected_tick_old.png */; };
 		5879AC90196442100053262A /* NewGroupMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5879AC8F196442100053262A /* NewGroupMessageViewController.m */; };
 		5879AC921964697E0053262A /* add_button_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 5879AC911964697E0053262A /* add_button_background.png */; };
+		587B87B51ACAB03300330434 /* GLPUploadingGroupStatusHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 587B87B41ACAB03300330434 /* GLPUploadingGroupStatusHelper.m */; };
 		587CEA58195C44750043E5E2 /* settings_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 587CEA57195C44750043E5E2 /* settings_btn.png */; };
 		587CEA67195CECE70043E5E2 /* GLPProfileSegmentView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 587CEA66195CECE70043E5E2 /* GLPProfileSegmentView.xib */; };
 		587D23CF17EA195D00E0DDFF /* imgbar.png in Resources */ = {isa = PBXBuildFile; fileRef = 587D23BE17EA195D00E0DDFF /* imgbar.png */; };
@@ -1509,6 +1510,8 @@
 		5879AC8E196442100053262A /* NewGroupMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewGroupMessageViewController.h; sourceTree = "<group>"; };
 		5879AC8F196442100053262A /* NewGroupMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewGroupMessageViewController.m; sourceTree = "<group>"; };
 		5879AC911964697E0053262A /* add_button_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_button_background.png; sourceTree = "<group>"; };
+		587B87B31ACAB03300330434 /* GLPUploadingGroupStatusHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPUploadingGroupStatusHelper.h; sourceTree = "<group>"; };
+		587B87B41ACAB03300330434 /* GLPUploadingGroupStatusHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPUploadingGroupStatusHelper.m; sourceTree = "<group>"; };
 		587CEA57195C44750043E5E2 /* settings_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_btn.png; sourceTree = "<group>"; };
 		587CEA66195CECE70043E5E2 /* GLPProfileSegmentView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPProfileSegmentView.xib; sourceTree = "<group>"; };
 		587D23BE17EA195D00E0DDFF /* imgbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = imgbar.png; sourceTree = "<group>"; };
@@ -2892,6 +2895,8 @@
 				586A6F9A19B1485500664017 /* GLPLiveGroupManager.m */,
 				584AC3C01A78FC3500590347 /* GLPSearchGroups.h */,
 				584AC3C11A78FC3500590347 /* GLPSearchGroups.m */,
+				587B87B31ACAB03300330434 /* GLPUploadingGroupStatusHelper.h */,
+				587B87B41ACAB03300330434 /* GLPUploadingGroupStatusHelper.m */,
 			);
 			name = "Live Group Manager";
 			sourceTree = "<group>";
@@ -6063,6 +6068,7 @@
 				80B2A42818338613002AB1F0 /* GLPGetNotificationsOperation.m in Sources */,
 				5887C7ED19FF09B7004441B9 /* GLPPrivateGroupPopUpViewController.m in Sources */,
 				586B1D2719E8D9D200E35A43 /* GLPImageLoader.m in Sources */,
+				587B87B51ACAB03300330434 /* GLPUploadingGroupStatusHelper.m in Sources */,
 				58ECE0CF1A24175E00B38FBA /* GLPReviewHistoryDaoParser.m in Sources */,
 				58DF4158186463A900D53723 /* GLPPostOperationManager.m in Sources */,
 				5892F10819FB080900B6778F /* GLPProfilePostsEmptyView.m in Sources */,

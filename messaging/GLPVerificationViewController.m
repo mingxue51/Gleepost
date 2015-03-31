@@ -17,7 +17,7 @@
 #import "GLPFacebookConnect.h"
 #import "ShapeFormatterHelper.h"
 
-@interface GLPVerificationViewController ()
+@interface GLPVerificationViewController () <UIAlertViewDelegate>
 
 //Read only variables.
 @property (strong, nonatomic, readonly) NSString *verificationTitle;
@@ -31,11 +31,15 @@
 @property (weak, nonatomic) IBOutlet UILabel *verificationTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *verificationSubtitleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *changeEmailActivityIndicator;
 
 @property (strong, nonatomic) NSString *fbName;
 
 
 @end
+
+NSString *kVerificationSignUpButtonTitle   = @"Login";
+NSString *kVerificationCancelButtonTitle = @"Cancel";
 
 @implementation GLPVerificationViewController
 
@@ -47,7 +51,21 @@
     [self configureTitles];
     [self formatElements];
     [self configureDataOnElements];
-    [self configureFBData];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(emailChanged) name:GLPNOTIFICATION_UPDATE_EMAIL_TO_VERIFICATION_VIEW object:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_UPDATE_EMAIL_TO_VERIFICATION_VIEW object:nil];
+    
+    [super viewDidDisappear:animated];
 }
 
 #pragma mark - Configuration
@@ -55,7 +73,7 @@
 - (void)configureNavigationBar
 {
     self.title = @"SIGN UP";
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"DONE" withButtonSize:CGSizeMake(75, 17) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(loginUserFromLoginScreen:) andTarget:self];
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"DONE" withButtonSize:CGSizeMake(75, 17) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(continueLogin:) andTarget:self];
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     [self.navigationController.navigationBar whiteTranslucentBackgroundFormatWithShadow:YES andView:self.view];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
@@ -78,6 +96,7 @@
 {
     [self.profileImageView setImage:[[GLPTemporaryUserInformationManager sharedInstance] image]];
     [self.verificationTitleLabel setText:[NSString stringWithFormat:@"%@%@", self.verificationTitle, [[GLPTemporaryUserInformationManager sharedInstance] email]]];
+    [self.verificationSubtitleLabel setText:[NSString stringWithFormat:@"%@%@", self.verificationSubtitle, [[GLPTemporaryUserInformationManager sharedInstance] university]]];
 }
 
 - (void)getPendingUsersData
@@ -85,35 +104,64 @@
     self.profileImage = [[GLPTemporaryUserInformationManager sharedInstance] image];
     self.email = [[GLPTemporaryUserInformationManager sharedInstance] email];
     self.password = [[GLPTemporaryUserInformationManager sharedInstance] password];
+    self.fbName = [[GLPTemporaryUserInformationManager sharedInstance] name];
 }
 
-- (void)configureFBData
+#pragma mark - UIAlertView
+
+- (void)askUserForEmailAddressAgain
 {
-    //Load verification view if the user needs to verified from facebook login.
-    if(_facebookLoginInfo)
+    NSString *alertMessage = @"Please enter your valid university email address to login";
+    
+     UIAlertView *emailPromptAlertView = [[UIAlertView alloc] initWithTitle:@"Email Required"
+                                                       message:alertMessage
+                                                      delegate:self
+                                             cancelButtonTitle:kVerificationCancelButtonTitle
+                                             otherButtonTitles:kVerificationSignUpButtonTitle, nil];
+    
+    
+    [emailPromptAlertView setAlertViewStyle:UIAlertViewStylePlainTextInput];
+    UITextField *textField = [emailPromptAlertView textFieldAtIndex:0];
+    textField.returnKeyType = UIReturnKeyDone;
+//    textField.delegate = self;
+    
+    [emailPromptAlertView show];
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [alertView dismissWithClickedButtonIndex:-1 animated:YES];
+    
+    NSString *buttonText = [alertView buttonTitleAtIndex:buttonIndex];
+
+    if([buttonText isEqualToString:kVerificationSignUpButtonTitle])
     {
-        _fbName = [_facebookLoginInfo objectForKey:@"Name"];
-        self.email = [_facebookLoginInfo objectForKey:@"Email"];
-        
-        _facebookMode = YES;
+        self.email = [alertView textFieldAtIndex:0].text;
+        [self.delegate changeEmailAfterFacebookLogin:self.email];
     }
-    else
-    {
-        _facebookMode = NO;
-    }
+}
+
+#pragma mark - NSNotification methods
+
+- (void)emailChanged
+{
+    [self showLabelsAndStopLoading];
+    [self configureDataOnElements];
 }
 
 #pragma mark - Selector
 
 - (IBAction)continueLogin:(id)sender
 {
-    if(_facebookMode)
+    if([GLPTemporaryUserInformationManager sharedInstance].facebookMode)
     {
         //        DDLogDebug(@"Facebook info: %@ : %@ :%@ Token: %@", _fbName, _fbResponse, [super emailTextField].text, [[GLPFacebookConnect sharedConnection] facebookLoginToken]);
         
         //Login user and get from server the token and the remote key.
         //If this code reached means that the user is unverified.
-        
+
         [[WebClient sharedInstance] registerViaFacebookToken:[[GLPFacebookConnect sharedConnection] facebookLoginToken] withEmailOrNil:self.email andCallbackBlock:^(BOOL success, NSString *responseObject) {
             
             if(success)
@@ -148,6 +196,41 @@
         }
         
     }];
+}
+
+/**
+ User send action to this method only in case he type wrong
+ credentials during facebook login or user put wrong password.
+ */
+- (IBAction)retypeEmailAndPass:(id)sender
+{
+    if(self.delegate)
+    {
+        [self hideLabelsAndStartLoading];
+        //Prompt a pop up and ask for email.
+        [self askUserForEmailAddressAgain];
+    }
+    else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+#pragma mark - Helpers
+
+- (void)hideLabelsAndStartLoading
+{
+    [self.verificationTitleLabel setHidden:YES];
+    [self.verificationSubtitleLabel setHidden:YES];
+    [self.changeEmailActivityIndicator startAnimating];
+
+}
+
+- (void)showLabelsAndStopLoading
+{
+    [self.verificationTitleLabel setHidden:NO];
+    [self.verificationSubtitleLabel setHidden:NO];
+    [self.changeEmailActivityIndicator stopAnimating];
 }
 
 #pragma mark - Login client

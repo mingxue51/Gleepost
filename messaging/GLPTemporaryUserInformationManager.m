@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
 //  This class is used in order to preserve user's credentials in case of verified and login from the
-//  regular log in screen and not from the registration screen.
+//  regular log in screen and not from the registration screen. Also is used to add communication between
+//  LoginSignup view and verification view during facebook login.
 //
 
 #import "GLPTemporaryUserInformationManager.h"
@@ -14,10 +15,8 @@
 
 @interface GLPTemporaryUserInformationManager ()
 
-@property (strong, nonatomic) NSString *email;
-@property (strong, nonatomic) NSString *password;
-@property (strong, nonatomic) UIImage *image;
 @property (assign, nonatomic) BOOL informationExist;
+
 @end
 
 static GLPTemporaryUserInformationManager *instance = nil;
@@ -71,6 +70,14 @@ static GLPTemporaryUserInformationManager *instance = nil;
     return _image;
 }
 
+- (NSString *)university
+{
+    NSArray *emailEduArray = [self.email componentsSeparatedByString:@"@"];
+    NSString *emailEdu = emailEduArray[1];
+    
+    return [[emailEdu componentsSeparatedByString:@"."] objectAtIndex:0];
+}
+
 -(BOOL)informationExistWithEmail:(NSString *)otherEmail
 {
     if(!_informationExist)
@@ -89,6 +96,5 @@ static GLPTemporaryUserInformationManager *instance = nil;
         }
     }
 }
-
 
 @end

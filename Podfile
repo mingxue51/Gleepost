@@ -24,3 +24,4 @@ pod 'FXPageControl', '1.3.2'
 pod 'TAPKeyboardPop', '~> 0.1.2'
 pod 'GPUImage'
 pod "URBMediaFocusViewController"
+pod 'pop', '~> 1.0'

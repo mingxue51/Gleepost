@@ -86,9 +86,7 @@
             completionHandler(NO, nil, errorMessage);
         } else
         {
-            [self sessionStateChanged:session
-                                state:status
-                                error:error friendList:NO];
+            [self sessionStateChanged:session state:status error:error friendList:NO];
         }
     }];
 }
@@ -118,15 +116,8 @@
             
             NSLog(@"Facebook state open.");
 
-            
             if(friends)
             {
-                //[self inviteFriends];
-                
-
-                
-                
-//                [self getFriends];
                 [self getFriendsWithSession:session];
                 [self associateCurrentAccountWithFacebook];
             }
@@ -142,15 +133,17 @@
 //            NSLog(@"Facebook login closed");
 //            [[SessionManager sharedInstance] cleanSession];
 //            break;
+            _openCompletionHandler(NO, nil, nil);
         }
         case FBSessionStateClosedLoginFailed: {
             
-        
+            _openCompletionHandler(NO, nil, nil);
             NSLog(@"Facebook login failed. %@", error);
             break;
         }
         case FBSessionStateCreatedTokenLoaded: {
             NSLog(@"FBSessionStateCreatedTokenLoaded");
+            _openCompletionHandler(NO, nil, @"Facebook Session State Created Token Loaded");
             break;
         }
         default:

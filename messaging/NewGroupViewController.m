@@ -217,7 +217,7 @@
         
 //    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"Done" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(createNewGroup:) andTarget:self];
     
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"Done" withButtonSize:CGSizeMake(50.0, 20.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(createNewGroup:) andTarget:self];
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"DONE" withButtonSize:CGSizeMake(50.0, 20.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(createNewGroup:) andTarget:self];
 
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
@@ -309,7 +309,7 @@
         [[GroupOperationManager sharedInstance] setGroup:group withTimestamp:_timestamp];
         
         
-        DDLogDebug(@"FINAL Group type: %u and key %ld", _groupType, (long)group.key);
+        DDLogDebug(@"FINAL Group type: %lu and key %ld", _groupType, (long)group.key);
 
         [_delegate groupCreatedWithData:group];
     }
@@ -452,10 +452,10 @@
     // Need to translate the bounds to account for rotation.
     keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
     
-    float newHeightOfMainView = [self findNewHeightForTheCentralViewWithKeboardFrame:keyboardBounds];
+//    float newHeightOfMainView = [self findNewHeightForTheCentralViewWithKeboardFrame:keyboardBounds];
+//    
+//    float newYSelectImageView = [self findNewYOfSelectImageViewWithKeyboardFrame:keyboardBounds];
     
-    float newYSelectImageView = [self findNewYOfSelectImageViewWithKeyboardFrame:keyboardBounds];
-        
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
         
 //        CGRectSetH(_mainView, newHeightOfMainView);

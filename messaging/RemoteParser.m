@@ -1419,7 +1419,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         return @"Facebook user does not have a Gleepost account assciated. Email is required.";
     else if ([error rangeOfString:@"unverified"].location != NSNotFound)
         return @"Facebook account is not verified.";
-    else if ([error rangeOfString:@"Invalid email"].location != NSNotFound)
+    else if ([error rangeOfString:@"Invalid Email"].location != NSNotFound)
         return @"Invalid email address entered. Valid university email required.";
     else
         return @"Unknown error occured";

@@ -59,4 +59,8 @@ typedef NS_ENUM(NSUInteger, GroupsLoadedStatus) {
 
 - (NSDate *)timestampWithGroupRemoteKey:(NSInteger)groupRemoteKey;
 
+- (void)registerUploadingGroup;
+- (void)unregisterUploadingGroup;
+- (CGFloat)uploadingGroupProgress;
+
 @end

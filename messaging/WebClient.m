@@ -1980,8 +1980,13 @@ static WebClient *instance = nil;
 
 - (void)uploadGroupImage:(NSData *)imageData withTimestamp:(NSDate *)timestamp callback:(void (^)(BOOL success, NSString *imageUrl))callback
 {
+
     
     NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"upload" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        
+        NSInteger groupKey = [[GLPLiveGroupManager sharedInstance] getPendingGroupKeyWithTimestamp:timestamp];
+        
+        [[GLPLiveGroupManager sharedInstance] registerUploadingGroup];
         
         [formData appendPartWithFileData:imageData name:@"image" fileName:[NSString stringWithFormat:@"user_id_%d_image.png", self.sessionManager.user.remoteKey] mimeType:@"image/png"];
     }];
@@ -2006,6 +2011,11 @@ static WebClient *instance = nil;
         NSString *response = [RemoteParser parseImageUrl:(NSDictionary*)operation.responseString];
         callback(YES, response);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSInteger groupKey = [[GLPLiveGroupManager sharedInstance] getPendingGroupKeyWithTimestamp:timestamp];
+
+        [[GLPLiveGroupManager sharedInstance] unregisterUploadingGroup];
+        
         callback(NO, nil);
     }];
     

@@ -193,6 +193,7 @@
 - (void)newGroupCreated:(NSNotification *)notification
 {
     GLPGroup *newGroup = notification.userInfo[@"group"];
+    [[GLPLiveGroupManager sharedInstance] unregisterUploadingGroup];
     [super reloadTableViewWithGroup:newGroup];
     [self hideEmptyView];
     [self stopLoading];

@@ -40,6 +40,7 @@
 + (void)accountLoginError;
 + (void)loadingPostsError;
 + (void)facebookLoginErrorWithStatus:(NSString *)status;
++ (void)facebookLoginAuthendicationError;
 + (void)errorRegisteringUserWithResponse:(NSString *)response;
 + (void)errorWrongCredentials;
 + (void)errorUnverifiedUser;
