@@ -177,6 +177,7 @@
 		58350A6B198AF733000BB1CA /* GLPNetworkErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58350A6A198AF733000BB1CA /* GLPNetworkErrorView.xib */; };
 		58350A6E198AF9C2000BB1CA /* GLPNetworkErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58350A6D198AF9C2000BB1CA /* GLPNetworkErrorView.m */; };
 		58361C33184CAE8D00FEFC49 /* ReflectedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58361C32184CAE8D00FEFC49 /* ReflectedImageView.m */; };
+		58363FEF1ACBCED500FE5F85 /* GLPNewCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58363FEE1ACBCED500FE5F85 /* GLPNewCategoriesViewController.m */; };
 		5837FD9218E1C54100776D0F /* pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 5837FD9118E1C54100776D0F /* pin.png */; };
 		583809F119DD9BF500275B4D /* snap_photo.png in Resources */ = {isa = PBXBuildFile; fileRef = 583809F019DD9BF500275B4D /* snap_photo.png */; };
 		583809F519DF0A3400275B4D /* ChangeGroupImageProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 583809F419DF0A3400275B4D /* ChangeGroupImageProgressView.m */; };
@@ -1186,6 +1187,8 @@
 		58350A6D198AF9C2000BB1CA /* GLPNetworkErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNetworkErrorView.m; sourceTree = "<group>"; };
 		58361C31184CAE8D00FEFC49 /* ReflectedImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReflectedImageView.h; sourceTree = "<group>"; };
 		58361C32184CAE8D00FEFC49 /* ReflectedImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReflectedImageView.m; sourceTree = "<group>"; };
+		58363FED1ACBCED500FE5F85 /* GLPNewCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPNewCategoriesViewController.h; sourceTree = "<group>"; };
+		58363FEE1ACBCED500FE5F85 /* GLPNewCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNewCategoriesViewController.m; sourceTree = "<group>"; };
 		5837FD9118E1C54100776D0F /* pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pin.png; sourceTree = "<group>"; };
 		583809F019DD9BF500275B4D /* snap_photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = snap_photo.png; sourceTree = "<group>"; };
 		583809F319DF0A3400275B4D /* ChangeGroupImageProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeGroupImageProgressView.h; sourceTree = "<group>"; };
@@ -4564,6 +4567,8 @@
 				58273F191A26895C00425605 /* GLPPendingPostsViewController.m */,
 				5890D03E1A2AA7D10088C302 /* GLPViewPendingPostViewController.h */,
 				5890D03F1A2AA7D10088C302 /* GLPViewPendingPostViewController.m */,
+				58363FED1ACBCED500FE5F85 /* GLPNewCategoriesViewController.h */,
+				58363FEE1ACBCED500FE5F85 /* GLPNewCategoriesViewController.m */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -6425,6 +6430,7 @@
 				58E8949E19DB2FBD005C1490 /* GLPGroupSettingsViewController.m in Sources */,
 				582BB38A1A202E3800497457 /* GLPCWProgressManager.m in Sources */,
 				808F6B65187D92DB0062FE39 /* GLPMessageProcessor.m in Sources */,
+				58363FEF1ACBCED500FE5F85 /* GLPNewCategoriesViewController.m in Sources */,
 				584DC5011922475A00CEE096 /* VideoCaptureView.m in Sources */,
 				5891F80F1977306700065FFC /* IntroSegue.m in Sources */,
 				58F2950119353C9300A638BA /* NewPostCategoriesView.m in Sources */,

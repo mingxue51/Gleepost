@@ -13,14 +13,14 @@
 
 @implementation AnimatedTransitioningViewCategories
 
-const float CATEGORIES_ANIMATION_TIME = 0.8;
+const float CATEGORIES_ANIMATION_TIME = 0.3;
 
 //===================================================================
 // - UIViewControllerAnimatedTransitioning
 //===================================================================
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext {
-    return 0.25f;
+    return CATEGORIES_ANIMATION_TIME;
 }
 
 - (void)animationEnded:(BOOL)transitionCompleted
@@ -50,45 +50,49 @@ const float CATEGORIES_ANIMATION_TIME = 0.8;
         [inView addSubview:toVC.view];
         
         
-        NSString *keyPath = @"position.y";
-//        id finalValue = [NSNumber numberWithFloat:350];
-        id finalValue = [NSNumber numberWithFloat:toVC.view.center.y];
+        [UIView animateWithDuration:CATEGORIES_ANIMATION_TIME animations:^{
+           
+            toVC.view.alpha = 1.0;
+            
+        } completion:^(BOOL finished) {
+            
+            [transitionContext completeTransition:YES];
+
+        }];
         
         
-        SKBounceAnimation *bounceAnimation = [SKBounceAnimation animationWithKeyPath:keyPath];
-        bounceAnimation.fromValue = [NSNumber numberWithFloat:toVC.view.center.x];
-        toVC.view.alpha = 1.0;
-        bounceAnimation.toValue = finalValue;
-        bounceAnimation.duration = CATEGORIES_ANIMATION_TIME;
-        bounceAnimation.numberOfBounces = 4;
-        bounceAnimation.stiffness = SKBounceAnimationStiffnessLight;
-        bounceAnimation.shouldOvershoot = YES;
+//        NSString *keyPath = @"position.y";
+////        id finalValue = [NSNumber numberWithFloat:350];
+//        id finalValue = [NSNumber numberWithFloat:toVC.view.center.y];
+//        
+//        
+//        SKBounceAnimation *bounceAnimation = [SKBounceAnimation animationWithKeyPath:keyPath];
+//        bounceAnimation.fromValue = [NSNumber numberWithFloat:toVC.view.center.x];
+//        toVC.view.alpha = 1.0;
+//        bounceAnimation.toValue = finalValue;
+//        bounceAnimation.duration = CATEGORIES_ANIMATION_TIME;
+//        bounceAnimation.numberOfBounces = 4;
+//        bounceAnimation.stiffness = SKBounceAnimationStiffnessLight;
+//        bounceAnimation.shouldOvershoot = YES;
+//        
+//        [toVC.view.layer addAnimation:bounceAnimation forKey:@"someKey"];
+//        
+//        [toVC.view.layer setValue:finalValue forKeyPath:keyPath];
         
-        [toVC.view.layer addAnimation:bounceAnimation forKey:@"someKey"];
-        
-        [toVC.view.layer setValue:finalValue forKeyPath:keyPath];
-        
-        [transitionContext completeTransition:YES];
     }
     else
     {
         //The transition is done in the view controller.
-        
-        [transitionContext completeTransition:YES];
 
+        [UIView animateWithDuration:CATEGORIES_ANIMATION_TIME animations:^{
         
-        
+            inView.alpha = 0.0;
 
-        
-//        [UIView animateWithDuration:2.0f animations:^{
-//        
-//            inView.alpha = 0.0;
-//
-//        } completion:^(BOOL finished) {
-//
-//            
-//            
-//        }];
+        } completion:^(BOOL finished) {
+
+            [transitionContext completeTransition:YES];
+            
+        }];
         
         
         

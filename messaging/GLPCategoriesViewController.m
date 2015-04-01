@@ -5,6 +5,8 @@
 //  Created by Silouanos on 22/01/2014.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
+//  TODO: This class is deprecated because we are using the new design with the new approach in GLPNewCategoriesViewController.
+//  Delete that class and rename the new one with that name. Do the same thing in storyboard.
 
 #import "GLPCategoriesViewController.h"
 #import "GLPCategoryCell.h"
@@ -168,40 +170,7 @@
     
     [self.delegate refreshPostsWithNewCategory];
 
-    
-//    NSString *keyPath = @"position.y";
-//    id finalValue = [NSNumber numberWithFloat:0];
-//    
-//    SKBounceAnimation *bounceAnimation = [SKBounceAnimation animationWithKeyPath:keyPath];
-//    bounceAnimation.fromValue = [NSNumber numberWithFloat:self.view.center.x];
-//    bounceAnimation.toValue = finalValue;
-//    bounceAnimation.duration = 3.5f;
-//    bounceAnimation.numberOfBounces = 4;
-//    bounceAnimation.stiffness = SKBounceAnimationStiffnessLight;
-//    bounceAnimation.shouldOvershoot = YES;
-//    
-//    [self.view.layer addAnimation:bounceAnimation forKey:@"someKey"];
-//    
-//    [self.view.layer setValue:finalValue forKeyPath:keyPath];
-
-    
     [self hideViewController:nil];
-    
-    
-
-    
-//    [UIView animateWithDuration:1.0 animations:^{
-//        
-//        //Inform campus wall that
-//        [self.delegate refreshPostsWithNewCategory];
-//        self.view.alpha = 0;
-//        
-//    } completion:^(BOOL b){
-//        
-//        [self dismissViewControllerAnimated:NO completion:^{
-//        }];
-//    }];
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -298,33 +267,17 @@
         
     };
     
-    
-    [UIView animateWithDuration:0.1 animations:firstAnimation
-     
-                     completion:^(BOOL finished) {
-                         
-                         [UIView animateWithDuration:1 animations:secondAnimation completion:^(BOOL finished) {
-                             
-                             
-                             //            [UIView animateWithDuration:0.5 animations:thirdAnimation];
-                             
-                             [self dismissViewControllerAnimated:YES completion:nil];
-                             
-                         }];
-                         
-                     }];
+    [UIView animateWithDuration:0.1 animations:firstAnimation completion:^(BOOL finished) {
+        
+        [UIView animateWithDuration:1 animations:secondAnimation completion:^(BOOL finished) {
+            
+            [self dismissViewControllerAnimated:YES completion:nil];
+            
+        }];
+        
+    }];
     
     
-//    [UIView animateWithDuration:0.25 animations:^{
-//        
-//        self.view.alpha = 0;
-//        
-//    } completion:^(BOOL b){
-//        
-//        //        self.view.alpha = 1;
-//        [self dismissViewControllerAnimated:NO completion:^{
-//        }];
-//    }];
 }
 
 

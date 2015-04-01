@@ -37,7 +37,7 @@
 #import "GLPPostImageLoader.h"
 #import "GLPMessagesLoader.h"
 #import "GLPProfileLoader.h"
-#import "GLPCategoriesViewController.h"
+#import "GLPNewCategoriesViewController.h"
 #import "TransitionDelegateViewCategories.h"
 #import "CampusWallHeader.h"
 #import "CampusWallHeaderSimpleView.h"
@@ -2632,7 +2632,7 @@ const float TOP_OFFSET = 180.0f;
 - (void)showCategoriesViewController
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"Categories"];
+    GLPNewCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPNewCategoriesViewController"];
     
     /**
      Takes screenshot from the current view controller to bring the sense of the transparency after the load
@@ -2646,29 +2646,20 @@ const float TOP_OFFSET = 180.0f;
     
     cvc.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
     cvc.modalPresentationStyle = UIModalPresentationCustom;
-    cvc.delegate = self;
-    //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
-    
-    if([GLPiOSSupportHelper isIOS6])
-    {
-        [cvc.blurBack setImage:[image stackBlur:10.0f]];
-        //Crop image to add it at the top image view.
-        UIImage *topImage = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 30, 320, 62)];
-        [cvc setImageToTopImage:[topImage stackBlur:10.0f]];
-        
-    }
-    else
-    {
+//    cvc.delegate = self;
+
 //        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 60, [GLPiOSSupportHelper screenWidth], 375)]; //0 63 320 302
         
         //
         
         //TODO: Fix that. Apply the new library and make a helper to do all the progress.
-        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 60, [GLPiOSSupportHelper screenWidth], ([[CategoryManager sharedInstance] categoriesNames].count - 1) * [GLPCategoryCell height] + [GLPCategoryCell bottomPadding])]; //0 63 320 302
+//        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 60, [GLPiOSSupportHelper screenWidth], ([[CategoryManager sharedInstance] categoriesNames].count - 1) * [GLPCategoryCell height] + [GLPCategoryCell bottomPadding])]; //0 63 320 302
 
-        [cvc.blurBack setImage:[image stackBlur:10.0f]];
-        [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
-    }
+//    [cvc.blurBack setImage:[image stackBlur:10.0f]];
+    
+    [cvc setCampusWallScreenshot:image];
+    [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
+    
     
     
     [self presentViewController:cvc animated:YES completion:nil];
