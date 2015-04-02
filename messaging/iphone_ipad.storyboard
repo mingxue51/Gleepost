@@ -1125,10 +1125,10 @@
                                 </connections>
                             </button>
                             <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNU-Zb-XfF" userLabel="AllPostsView">
-                                <rect key="frame" x="215" y="100" width="170" height="48"/>
+                                <rect key="frame" x="225" y="100" width="150" height="42"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ALL POSTS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dt5-5M-Cra">
-                                        <rect key="frame" x="8" y="13" width="154" height="21"/>
+                                        <rect key="frame" x="-2" y="10" width="154" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="bAu-16-qS3"/>
                                             <constraint firstAttribute="width" constant="154" id="kxk-h6-rAh"/>
@@ -1145,17 +1145,53 @@
                                     <constraint firstAttribute="centerY" secondItem="dt5-5M-Cra" secondAttribute="centerY" id="mMV-WR-SOR"/>
                                 </constraints>
                             </view>
+                            <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eQe-Pd-xOS" userLabel="FreeFoodView">
+                                <rect key="frame" x="262" y="172" width="84" height="95"/>
+                                <subviews>
+                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t1b-h8-VY2">
+                                        <rect key="frame" x="10" y="0.0" width="63" height="62"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="t1b-h8-VY2" secondAttribute="height" multiplier="1:1" constant="1" id="wlm-mA-btP"/>
+                                        </constraints>
+                                        <state key="normal" backgroundImage="cupcake">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="elementSelected:" destination="vOk-ku-NIW" eventType="touchUpInside" id="THn-9e-uu8"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FREE FOOD" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6be-u5-Ikb">
+                                        <rect key="frame" x="0.0" y="63" width="84" height="32"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="12"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="6be-u5-Ikb" secondAttribute="bottom" id="8wp-Ib-p6h"/>
+                                    <constraint firstItem="6be-u5-Ikb" firstAttribute="top" secondItem="t1b-h8-VY2" secondAttribute="bottom" constant="1" id="HQF-Ka-7t0"/>
+                                    <constraint firstAttribute="width" secondItem="eQe-Pd-xOS" secondAttribute="height" multiplier="4:5" constant="8" id="R11-2Z-JzS"/>
+                                    <constraint firstItem="t1b-h8-VY2" firstAttribute="top" secondItem="eQe-Pd-xOS" secondAttribute="top" id="gC7-Qa-1Bl"/>
+                                    <constraint firstAttribute="trailing" secondItem="6be-u5-Ikb" secondAttribute="trailing" id="jnc-UP-PEL"/>
+                                    <constraint firstItem="t1b-h8-VY2" firstAttribute="height" secondItem="eQe-Pd-xOS" secondAttribute="height" multiplier="0.65" id="oA8-Nn-NCY"/>
+                                    <constraint firstItem="6be-u5-Ikb" firstAttribute="leading" secondItem="eQe-Pd-xOS" secondAttribute="leading" id="oM6-4M-30P"/>
+                                    <constraint firstAttribute="centerX" secondItem="t1b-h8-VY2" secondAttribute="centerX" id="rEx-Ho-Aiz"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="x5f-R5-nAf" secondAttribute="trailing" id="0HD-kK-BvE"/>
                             <constraint firstItem="blD-nh-FEY" firstAttribute="leading" secondItem="rUv-EA-lB1" secondAttribute="leading" constant="12" id="Cgb-xk-Xun"/>
                             <constraint firstItem="g2E-x9-4Gi" firstAttribute="top" secondItem="x5f-R5-nAf" secondAttribute="bottom" id="EjE-AY-QUg"/>
+                            <constraint firstItem="eQe-Pd-xOS" firstAttribute="height" secondItem="rUv-EA-lB1" secondAttribute="height" multiplier="0.15" constant="5" id="GId-2O-gLV"/>
                             <constraint firstItem="blD-nh-FEY" firstAttribute="top" secondItem="ApJ-GL-af2" secondAttribute="bottom" constant="15" id="GNl-KZ-lB7"/>
                             <constraint firstItem="x5f-R5-nAf" firstAttribute="leading" secondItem="rUv-EA-lB1" secondAttribute="leading" id="HUs-Ub-xOl"/>
                             <constraint firstAttribute="trailing" secondItem="wGQ-bP-Yq6" secondAttribute="trailing" id="Qns-RE-7nS"/>
                             <constraint firstItem="yNU-Zb-XfF" firstAttribute="top" secondItem="ApJ-GL-af2" secondAttribute="bottom" constant="80" id="Qpj-RL-U88"/>
-                            <constraint firstItem="yNU-Zb-XfF" firstAttribute="height" secondItem="rUv-EA-lB1" secondAttribute="height" multiplier="0.08" id="TEU-iN-HYb"/>
+                            <constraint firstItem="eQe-Pd-xOS" firstAttribute="top" secondItem="yNU-Zb-XfF" secondAttribute="bottom" constant="30" id="RDW-li-iEJ"/>
+                            <constraint firstItem="yNU-Zb-XfF" firstAttribute="height" secondItem="rUv-EA-lB1" secondAttribute="height" multiplier="0.07" id="TEU-iN-HYb"/>
                             <constraint firstAttribute="centerX" secondItem="yNU-Zb-XfF" secondAttribute="centerX" id="V3B-d3-HRN"/>
                             <constraint firstItem="Aj7-De-TQR" firstAttribute="top" secondItem="rUv-EA-lB1" secondAttribute="top" id="bro-0T-zay"/>
                             <constraint firstItem="wGQ-bP-Yq6" firstAttribute="top" secondItem="rUv-EA-lB1" secondAttribute="top" id="h4y-TI-TVQ"/>
@@ -1164,12 +1200,14 @@
                             <constraint firstItem="g2E-x9-4Gi" firstAttribute="top" secondItem="Aj7-De-TQR" secondAttribute="bottom" id="nHe-nj-7A0"/>
                             <constraint firstAttribute="trailing" secondItem="Aj7-De-TQR" secondAttribute="trailing" id="qr6-Rm-wVY"/>
                             <constraint firstItem="wGQ-bP-Yq6" firstAttribute="leading" secondItem="rUv-EA-lB1" secondAttribute="leading" id="s19-fN-w5E"/>
+                            <constraint firstAttribute="centerX" secondItem="eQe-Pd-xOS" secondAttribute="centerX" constant="-4" id="zZM-pL-962"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="allPostsView" destination="yNU-Zb-XfF" id="4Ky-gK-d5G"/>
                         <outlet property="backgroundImageView" destination="x5f-R5-nAf" id="H6Y-VS-gw5"/>
-                        <outlet property="distanceAllPostsViewFromTop" destination="Qpj-RL-U88" id="pNI-oE-H7i"/>
+                        <outlet property="distanceAllPostsViewFromTop" destination="Qpj-RL-U88" id="xux-iD-C3g"/>
+                        <outlet property="distanceFreeFoodViewFromTop" destination="RDW-li-iEJ" id="koh-so-1tU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OgR-dz-ZnK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -6189,6 +6227,7 @@
         <image name="change_pass_name.png" width="600" height="100"/>
         <image name="chat_background_default.png" width="640" height="1136"/>
         <image name="conversation_new_notification.png" width="45" height="26"/>
+        <image name="cupcake" width="49" height="49"/>
         <image name="default_user_image3.png" width="300" height="300"/>
         <image name="dismiss_button_background.png" width="520" height="100"/>
         <image name="down_arrow.png" width="23" height="14"/>

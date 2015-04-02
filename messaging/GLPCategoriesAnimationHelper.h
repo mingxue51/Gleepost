@@ -11,6 +11,7 @@
 @interface GLPCategoriesAnimationHelper : NSObject
 
 - (void)animateAllPostsViewWithTopConstraint:(NSLayoutConstraint *)topConstrain;
+- (void)animateFreeFoodViewWithTopConstraint:(NSLayoutConstraint *)topConstraint;
 - (CGFloat)getInitialElementsPosition;
 
 @end

@@ -19,6 +19,8 @@
 @property (assign, nonatomic) CGFloat thirdRowY;
 @property (assign, nonatomic) CGFloat nevermindY;
 
+@property (assign, nonatomic) CGFloat secondColumnDelay;
+
 @end
 
 @implementation GLPCategoriesAnimationHelper
@@ -30,6 +32,7 @@
     if (self)
     {
         [self intialisePositions];
+        [self intialiseTiming];
     }
     return self;
 }
@@ -37,11 +40,17 @@
 - (void)intialisePositions
 {
     self.allPostsViewY = 80.0f;
+    self.firstRowY = 40.0f;
+}
+
+- (void)intialiseTiming
+{
+    self.secondColumnDelay = 0.2;
 }
 
 #pragma mark - Animations
 
-- (void)animateAllPostsViewWithTopConstraint:(NSLayoutConstraint *)topConstrain
+- (void)animateAllPostsViewWithTopConstraint:(NSLayoutConstraint *)topConstraint
 {
     // 1. Pick a Kind Of Animation //  POPBasicAnimation  POPSpringAnimation POPDecayAnimation
     POPSpringAnimation *basicAnimation = [POPSpringAnimation animation];
@@ -62,8 +71,33 @@
     basicAnimation.delegate=self;
     
     // 5. Add animation to View or Layer, we picked View so self.tableView and not layer which would have been self.tableView.layer
-    [topConstrain pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
+    [topConstraint pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
 }
+
+- (void)animateFreeFoodViewWithTopConstraint:(NSLayoutConstraint *)topConstraint
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, self.secondColumnDelay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+
+        // 1. Pick a Kind Of Animation //  POPBasicAnimation  POPSpringAnimation POPDecayAnimation
+        POPSpringAnimation *basicAnimation = [POPSpringAnimation animation];
+        basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
+        
+        // 3. Figure Out which of 3 ways to set toValue
+        basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPLayoutConstraintConstant];
+        basicAnimation.toValue = @(self.firstRowY);
+        basicAnimation.springSpeed = 10.0f;
+        basicAnimation.springBounciness = 4.0;
+        
+        // 4. Create Name For Animation & Set Delegate
+        basicAnimation.name=@"AnyAnimationNameYouWant";
+        basicAnimation.delegate=self;
+        
+        // 5. Add animation to View or Layer, we picked View so self.tableView and not layer which would have been self.tableView.layer
+        [topConstraint pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
+    });
+}
+
+#pragma mark - Helpers
 
 - (CGFloat)getInitialElementsPosition
 {

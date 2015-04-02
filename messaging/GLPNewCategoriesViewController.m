@@ -23,6 +23,7 @@
 
 //Constraints.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceAllPostsViewFromTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFreeFoodViewFromTop;
 
 @end
 
@@ -45,7 +46,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.animationHelper animateAllPostsViewWithTopConstraint:self.distanceAllPostsViewFromTop];
+    [self bringElementsWithAnimations];
 }
 
 - (void)initialiseObjects
@@ -55,7 +56,9 @@
 
 - (void)intialisePositions
 {
-    self.distanceAllPostsViewFromTop.constant = [self.animationHelper getInitialElementsPosition];
+    CGFloat initialPosition = [self.animationHelper getInitialElementsPosition];
+    self.distanceAllPostsViewFromTop.constant = initialPosition;
+    self.distanceFreeFoodViewFromTop.constant = initialPosition;
 }
 
 - (void)formatElements
@@ -69,13 +72,21 @@
     [self.allPostsView addGestureRecognizer:allPostsGesture];
 }
 
+#pragma mark - Actions
+
+- (void)bringElementsWithAnimations
+{
+    [self.animationHelper animateAllPostsViewWithTopConstraint:self.distanceAllPostsViewFromTop];
+    [self.animationHelper animateFreeFoodViewWithTopConstraint:self.distanceFreeFoodViewFromTop];
+}
+
 #pragma mark - Format
 
 - (void)formatAllPostsView
 {
     [self.allPostsView layoutIfNeeded];
-    [ShapeFormatterHelper setBorderToView:self.allPostsView withColour:[UIColor whiteColor] andWidth:2.0f];
-    [ShapeFormatterHelper setCornerRadiusWithView:self.allPostsView andValue:4];
+    [ShapeFormatterHelper setBorderToView:self.allPostsView withColour:[UIColor whiteColor] andWidth:3.0f];
+    [ShapeFormatterHelper setCornerRadiusWithView:self.allPostsView andValue:6];
 }
 
 #pragma mark - Image
@@ -113,7 +124,17 @@
 
 - (IBAction)elementSelected:(id)sender
 {
-    UIView *selectedView = [(UITapGestureRecognizer *)sender view];
+    UIView *selectedView = nil;
+    
+    if([sender isKindOfClass:[UITapGestureRecognizer class]])
+    {
+        selectedView = [(UITapGestureRecognizer *)sender view];
+    }
+    else
+    {
+        selectedView = (UIView *)sender;
+    }
+    
     GLPCategory *selectedCategory = [[CategoryManager sharedInstance] setSelectedCategoryWithOrderKey:selectedView.tag];
     [self informCampusLiveWithCategory:selectedCategory];
     [self.delegate refreshPostsWithNewCategory];
