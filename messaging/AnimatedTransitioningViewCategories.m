@@ -13,13 +13,14 @@
 
 @implementation AnimatedTransitioningViewCategories
 
-const float CATEGORIES_ANIMATION_TIME = 0.3;
+const float CATEGORIES_ANIMATION_TIME = 0.15;
 
 //===================================================================
 // - UIViewControllerAnimatedTransitioning
 //===================================================================
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext {
+    
     return CATEGORIES_ANIMATION_TIME;
 }
 

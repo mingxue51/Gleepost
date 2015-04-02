@@ -148,6 +148,7 @@
         stillImageFilter.excludeBlurSize = 0.0;
         stillImageFilter.excludeCircleRadius = 0.0;
         stillImageFilter.excludeCirclePoint = CGPointMake(0.0, 0.0);
+        stillImageFilter.blurRadiusInPixels = 4.0;
         [stillImageFilter useNextFrameForImageCapture];
         [stillImageSource processImage];
         
