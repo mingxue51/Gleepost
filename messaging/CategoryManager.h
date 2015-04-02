@@ -20,7 +20,7 @@ typedef enum
     kGLPAnnouncements = 14,
     kGLPOther = 15,
     kGLPAll = 16,
-    kGLPGeneral = 17,
+    kGLPGeneral = 1,
     kGLPQuestions = 18
     
 }GLPCategories;

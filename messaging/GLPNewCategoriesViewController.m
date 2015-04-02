@@ -26,10 +26,14 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFreeFoodViewFromTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distancePartiesViewFromTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceSportsViewFromTop;
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceSpeakersViewFromTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceMusicViewFromTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceTheaterViewFromTop;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceAnnouncementsViewFromTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceGeneralViewFromTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceQuestionsViewFromTop;
+
 
 @end
 
@@ -67,6 +71,9 @@
     self.distanceFreeFoodViewFromTop.constant = initialPosition;
     self.distancePartiesViewFromTop.constant = initialPosition;
     self.distanceSportsViewFromTop.constant = initialPosition;
+    self.distanceAnnouncementsViewFromTop.constant = initialPosition;
+    self.distanceGeneralViewFromTop.constant = initialPosition;
+    self.distanceQuestionsViewFromTop.constant = initialPosition;
 }
 
 - (void)formatElements
@@ -91,7 +98,9 @@
     [self.animationHelper animateElementWithTopConstraint:self.distanceSpeakersViewFromTop withKindOfView:kSpeakersOrder];
     [self.animationHelper animateElementWithTopConstraint:self.distanceMusicViewFromTop withKindOfView:kMusicOrder];
     [self.animationHelper animateElementWithTopConstraint:self.distanceTheaterViewFromTop withKindOfView:kTheaterOrder];
-
+    [self.animationHelper animateElementWithTopConstraint:self.distanceAnnouncementsViewFromTop withKindOfView:kAnnouncementsOrder];
+    [self.animationHelper animateElementWithTopConstraint:self.distanceGeneralViewFromTop withKindOfView:kGeneralOrder];
+    [self.animationHelper animateElementWithTopConstraint:self.distanceQuestionsViewFromTop withKindOfView:kQuestionsOrder];
 }
 
 #pragma mark - Format

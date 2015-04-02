@@ -67,15 +67,15 @@
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     
     [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:80.0 withDelay:0.0 withBounceLevel:10.0 withSpeedLevel:10.0] forKey:@(kAllOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:40.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kPartiesOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:40.0 withDelay:0.3 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kFreeFood)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:40.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kSportsOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:40.0 withDelay:0.4 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kSpeakersOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:40.0 withDelay:0.5 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kMusicOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:40.0 withDelay:0.4 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kTheaterOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:80.0 withDelay:0.5 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kAnnouncementsOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:80.0 withDelay:0.4 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kGeneralOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:80.0 withDelay:0.5 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kQuestionsOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:20.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kPartiesOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:20.0 withDelay:0.3 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kFreeFood)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:20.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kSportsOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:20.0 withDelay:0.4 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kSpeakersOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:20.0 withDelay:0.5 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kMusicOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:20.0 withDelay:0.4 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kTheaterOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:60.0 withDelay:0.6 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kAnnouncementsOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:60.0 withDelay:0.5 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kGeneralOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:60.0 withDelay:0.6 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kQuestionsOrder)];
     
     self.animationData = dictionary;
 }
