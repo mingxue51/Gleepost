@@ -154,14 +154,14 @@
     
     GLPCategory *selectedCategory = [_categories objectAtIndex:indexPath.row];
     
-    if([selectedCategory.tag isEqualToString:@"all"])
-    {
-        [[CategoryManager sharedInstance] setSelectedCategory:nil];
-    }
-    else
-    {
-        [[CategoryManager sharedInstance] setSelectedCategory:[_categories objectAtIndex:indexPath.row]];
-    }
+//    if([selectedCategory.tag isEqualToString:@"all"])
+//    {
+//        [[CategoryManager sharedInstance] setSelectedCategory:nil];
+//    }
+//    else
+//    {
+//        [[CategoryManager sharedInstance] setSelectedCategory:[_categories objectAtIndex:indexPath.row]];
+//    }
     
     [self informCampusLiveWithCategory:selectedCategory];
     

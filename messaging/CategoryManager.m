@@ -124,9 +124,31 @@ static CategoryManager *instance = nil;
     return nil;
 }
 
-- (GLPCategory*)categoryWithOrderKey:(NSInteger)remoteKey
+- (GLPCategory *)categoryWithOrderKey:(NSInteger)orderKey
 {
-    return [_categories objectForKey:[NSNumber numberWithInteger:remoteKey]];
+    return [_categories objectForKey:[NSNumber numberWithInteger:orderKey]];
+}
+
+/**
+ Sets the category and returns the category as a GLPCategory instance.
+ 
+ @param orderKey the category key that is defined in CategoryOrder enum.
+ 
+ */
+- (GLPCategory *)setSelectedCategoryWithOrderKey:(NSInteger)orderKey
+{
+    GLPCategory *selectedCategory = [self categoryWithOrderKey:orderKey];
+    
+    if([selectedCategory.tag isEqualToString:@"all"])
+    {
+        [self setSelectedCategory:nil];
+    }
+    else
+    {
+        [self setSelectedCategory:selectedCategory];
+    }
+    
+    return [_categories objectForKey:@(orderKey)];
 }
 
 -(NSArray*)categoriesNames

@@ -9,12 +9,17 @@
 #import "GLPNewCategoriesViewController.h"
 #import "UIImage+StackBlur.h"
 #import "GPUImage.h"
-#import <POP/POP.h>
+#import "GLPCategoriesAnimationHelper.h"
+#import "ShapeFormatterHelper.h"
+#import "CategoryManager.h"
 
 @interface GLPNewCategoriesViewController ()
 
+//IBOutlets.
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIView *allPostsView;
+
+@property (strong, nonatomic) GLPCategoriesAnimationHelper *animationHelper;
 
 //Constraints.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceAllPostsViewFromTop;
@@ -26,63 +31,57 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    
+    [self initialiseObjects];
+    [self formatElements];
+    [self configureGestures];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self.allPostsView layoutIfNeeded];
-    
-    self.distanceAllPostsViewFromTop.constant = -(self.distanceAllPostsViewFromTop.constant + self.allPostsView.frame.size.height);
+    [self intialisePositions];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    [self animateAllPostsView];
-    
+    [self.animationHelper animateAllPostsViewWithTopConstraint:self.distanceAllPostsViewFromTop];
 }
 
-#pragma mark - Animations
-
-- (void)animateAllPostsView
+- (void)initialiseObjects
 {
-    // 1. Pick a Kind Of Animation //  POPBasicAnimation  POPSpringAnimation POPDecayAnimation
-    POPSpringAnimation *basicAnimation = [POPSpringAnimation animation];
-    
-    // 2. Decide weather you will animate a view property or layer property, Lets pick a View Property and pick kPOPViewFrame
-    // View Properties - kPOPViewAlpha kPOPViewBackgroundColor kPOPViewBounds kPOPViewCenter kPOPViewFrame kPOPViewScaleXY kPOPViewSize
-    // Layer Properties - kPOPLayerBackgroundColor kPOPLayerBounds kPOPLayerScaleXY kPOPLayerSize kPOPLayerOpacity kPOPLayerPosition kPOPLayerPositionX kPOPLayerPositionY kPOPLayerRotation kPOPLayerBackgroundColor
-    basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
-    
-    // 3. Figure Out which of 3 ways to set toValue
-    basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPLayoutConstraintConstant];
-    basicAnimation.toValue = @(80.0);
-    basicAnimation.springSpeed = 10.0f;
-    basicAnimation.springBounciness = 10.0f;
-    
-    // 4. Create Name For Animation & Set Delegate
-    basicAnimation.name=@"AnyAnimationNameYouWant";
-    basicAnimation.delegate=self;
-    
-    // 5. Add animation to View or Layer, we picked View so self.tableView and not layer which would have been self.tableView.layer
-    [self.distanceAllPostsViewFromTop pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
+    self.animationHelper = [[GLPCategoriesAnimationHelper alloc] init];
 }
 
-- (void)didReceiveMemoryWarning
+- (void)intialisePositions
 {
-    [super didReceiveMemoryWarning];
+    self.distanceAllPostsViewFromTop.constant = [self.animationHelper getInitialElementsPosition];
+}
+
+- (void)formatElements
+{
+    [self formatAllPostsView];
+}
+
+- (void)configureGestures
+{
+    UITapGestureRecognizer *allPostsGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(elementSelected:)];
+    [self.allPostsView addGestureRecognizer:allPostsGesture];
+}
+
+#pragma mark - Format
+
+- (void)formatAllPostsView
+{
+    [self.allPostsView layoutIfNeeded];
+    [ShapeFormatterHelper setBorderToView:self.allPostsView withColour:[UIColor whiteColor] andWidth:2.0f];
+    [ShapeFormatterHelper setCornerRadiusWithView:self.allPostsView andValue:4];
 }
 
 #pragma mark - Image
 
 - (void)setCampusWallScreenshot:(UIImage *)campusWallImage
 {
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
         GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:campusWallImage];
@@ -103,16 +102,40 @@
             [self.backgroundImageView setImage:currentFilteredVideoFrame];
         });
     });
-    
 }
 
 #pragma mark - Selectors
 
 - (IBAction)hideViewController:(id)sender
 {
+    [self dismissViewController];
+}
+
+- (IBAction)elementSelected:(id)sender
+{
+    UIView *selectedView = [(UITapGestureRecognizer *)sender view];
+    GLPCategory *selectedCategory = [[CategoryManager sharedInstance] setSelectedCategoryWithOrderKey:selectedView.tag];
+    [self informCampusLiveWithCategory:selectedCategory];
+    [self.delegate refreshPostsWithNewCategory];
+    [self dismissViewController];
+}
+
+- (void)dismissViewController
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - Post notifications
+
+- (void)informCampusLiveWithCategory:(GLPCategory *)category
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_UPDATE_CATEGORY_LABEL object:nil userInfo:@{@"Category": category.name}];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
 /*
 #pragma mark - Navigation
 

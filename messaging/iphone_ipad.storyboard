@@ -1124,11 +1124,15 @@
                                     <action selector="hideViewController:" destination="vOk-ku-NIW" eventType="touchUpInside" id="A70-rU-2HZ"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNU-Zb-XfF" userLabel="AllPostsView">
+                            <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yNU-Zb-XfF" userLabel="AllPostsView">
                                 <rect key="frame" x="215" y="100" width="170" height="48"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="ALL POSTS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dt5-5M-Cra">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ALL POSTS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dt5-5M-Cra">
                                         <rect key="frame" x="8" y="13" width="154" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="21" id="bAu-16-qS3"/>
+                                            <constraint firstAttribute="width" constant="154" id="kxk-h6-rAh"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
@@ -1137,6 +1141,8 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="yNU-Zb-XfF" secondAttribute="height" multiplier="89:25" id="QIS-fd-zCx"/>
+                                    <constraint firstAttribute="centerX" secondItem="dt5-5M-Cra" secondAttribute="centerX" id="b32-Bt-jPo"/>
+                                    <constraint firstAttribute="centerY" secondItem="dt5-5M-Cra" secondAttribute="centerY" id="mMV-WR-SOR"/>
                                 </constraints>
                             </view>
                         </subviews>

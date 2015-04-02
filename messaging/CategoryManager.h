@@ -32,10 +32,11 @@ typedef enum
 +(CategoryManager*)sharedInstance;
 
 - (GLPCategory*)categoryWithOrderKey:(NSInteger)remoteKey;
+- (GLPCategory *)setSelectedCategoryWithOrderKey:(NSInteger)orderKey;
+- (void)setSelectedCategory:(GLPCategory *)category;
 -(NSArray*)getCategories;
 - (NSMutableArray *)getCategoriesForFilteringView;
 -(GLPCategory *)generateEventCategory;
-- (void)setSelectedCategory:(GLPCategory *)selectedCategory;
 - (NSString *)selectedCategoryName;
 - (GLPCategory *)selectedCategory;
 - (void)reset;
