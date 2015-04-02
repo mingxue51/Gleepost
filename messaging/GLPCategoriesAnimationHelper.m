@@ -80,6 +80,20 @@
     self.animationData = dictionary;
 }
 
+- (void)changeFinalYValueOfElements
+{
+    NSMutableDictionary *dictionary = self.animationData.mutableCopy;
+
+    for(NSNumber *categoryOrder in dictionary.keyEnumerator)
+    {
+        ConstraintAnimationData *constraintAnimationData = [dictionary objectForKey:categoryOrder];
+        constraintAnimationData.finalY = -100;
+    }
+    
+    self.animationData = dictionary;
+
+}
+
 #pragma mark - Animations
 
 - (void)animateElementWithTopConstraint:(NSLayoutConstraint *)topConstraint withKindOfView:(CategoryOrder)kindOfView
@@ -94,7 +108,6 @@
         // 2. Decide weather you will animate a view property or layer property, Lets pick a View Property and pick kPOPViewFrame
         // View Properties - kPOPViewAlpha kPOPViewBackgroundColor kPOPViewBounds kPOPViewCenter kPOPViewFrame kPOPViewScaleXY kPOPViewSize
         // Layer Properties - kPOPLayerBackgroundColor kPOPLayerBounds kPOPLayerScaleXY kPOPLayerSize kPOPLayerOpacity kPOPLayerPosition kPOPLayerPositionX kPOPLayerPositionY kPOPLayerRotation kPOPLayerBackgroundColor
-        basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
         
         // 3. Figure Out which of 3 ways to set toValue
         basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPLayoutConstraintConstant];
@@ -108,8 +121,79 @@
         
         // 5. Add animation to View or Layer, we picked View so self.tableView and not layer which would have been self.tableView.layer
         [topConstraint pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
+    });
+}
+
+- (void)dismissElementWithTopConstraint:(NSLayoutConstraint *)topConstraint withKindOfView:(CategoryOrder)kindOfView
+{
+    ConstraintAnimationData *constraintAnimationData = [self.animationData objectForKey:@(kindOfView)];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, constraintAnimationData.delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        
+        // 1. Pick a Kind Of Animation //  POPBasicAnimation  POPSpringAnimation POPDecayAnimation
+        POPBasicAnimation *basicAnimation = [POPBasicAnimation animation];
+        
+        // 2. Decide weather you will animate a view property or layer property, Lets pick a View Property and pick kPOPViewFrame
+        // View Properties - kPOPViewAlpha kPOPViewBackgroundColor kPOPViewBounds kPOPViewCenter kPOPViewFrame kPOPViewScaleXY kPOPViewSize
+        // Layer Properties - kPOPLayerBackgroundColor kPOPLayerBounds kPOPLayerScaleXY kPOPLayerSize kPOPLayerOpacity kPOPLayerPosition kPOPLayerPositionX kPOPLayerPositionY kPOPLayerRotation kPOPLayerBackgroundColor
+        
+        // 3. Figure Out which of 3 ways to set toValue
+        basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPLayoutConstraintConstant];
+        basicAnimation.toValue = @(-100.0);
+        
+        
+        // 4. Create Name For Animation & Set Delegate
+        basicAnimation.name=@"AnyAnimationNameYouWant";
+        basicAnimation.delegate=self;
+        
+        // 5. Add animation to View or Layer, we picked View so self.tableView and not layer which would have been self.tableView.layer
+        [topConstraint pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
         
     });
+}
+
+- (void)dismissElementWithView:(UIView *)view withKindOfView:(CategoryOrder)kindOfView
+{
+    [view layoutIfNeeded];
+    
+    CGRect currentFrame = view.frame;
+    
+    ConstraintAnimationData *constraintAnimationData = [self.animationData objectForKey:@(kindOfView)];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, constraintAnimationData.delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    
+    // 1. Pick a Kind Of Animation //  POPBasicAnimation  POPSpringAnimation POPDecayAnimation
+    POPBasicAnimation *basicAnimation = [POPBasicAnimation animation];
+    
+    // 2. Decide weather you will animate a view property or layer property, Lets pick a View Property and pick kPOPViewFrame
+    // View Properties - kPOPViewAlpha kPOPViewBackgroundColor kPOPViewBounds kPOPViewCenter kPOPViewFrame kPOPViewScaleXY kPOPViewSize
+    // Layer Properties - kPOPLayerBackgroundColor kPOPLayerBounds kPOPLayerScaleXY kPOPLayerSize kPOPLayerOpacity kPOPLayerPosition kPOPLayerPositionX kPOPLayerPositionY kPOPLayerRotation kPOPLayerBackgroundColor
+    
+    // 3. Figure Out which of 3 ways to set toValue
+    basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
+    basicAnimation.toValue = [NSValue valueWithCGRect:CGRectMake(currentFrame.origin.x, -currentFrame.size.height - 50, currentFrame.size.width, currentFrame.size.height)];
+
+//    basicAnimation.springSpeed = 1;
+//    basicAnimation.springBounciness = 0;
+    // 4. Create Name For Animation & Set Delegate
+    basicAnimation.name=[NSString stringWithFormat:@"%ld", view.tag];
+    basicAnimation.delegate=self;
+    
+    // 5. Add animation to View or Layer, we picked View so self.tableView and not layer which would have been self.tableView.layer
+    [view pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
+        
+    });
+}
+
+- (void)pop_animationDidStop:(POPAnimation *)anim finished:(BOOL)finished
+{
+    NSInteger viewTag = [anim.name integerValue];
+    
+    if(viewTag == 10 && finished)
+    {
+        DDLogDebug(@"GLPCategoriesAnimationHelper : pop_animationDidStop %@ - %d", anim.name, finished);
+        [self.delegate viewsDisappeared];
+    }
 }
 
 #pragma mark - Helpers

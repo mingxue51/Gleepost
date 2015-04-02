@@ -1176,7 +1176,7 @@
                                     <constraint firstAttribute="centerX" secondItem="t1b-h8-VY2" secondAttribute="centerX" id="rEx-Ho-Aiz"/>
                                 </constraints>
                             </view>
-                            <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BqR-aV-BKR" userLabel="SportsView">
+                            <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BqR-aV-BKR" userLabel="SportsView">
                                 <rect key="frame" x="467" y="156" width="93" height="78"/>
                                 <subviews>
                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QVd-5C-yQF">
@@ -1209,7 +1209,7 @@
                                     <constraint firstAttribute="centerX" secondItem="QVd-5C-yQF" secondAttribute="centerX" id="ytn-XA-QXE"/>
                                 </constraints>
                             </view>
-                            <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SZ5-fA-ltw" userLabel="PartiesView">
+                            <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SZ5-fA-ltw" userLabel="PartiesView">
                                 <rect key="frame" x="40" y="156" width="93" height="78"/>
                                 <subviews>
                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qkt-2d-Svh">
@@ -1242,7 +1242,7 @@
                                     <constraint firstItem="MJg-4b-9A2" firstAttribute="top" secondItem="Qkt-2d-Svh" secondAttribute="bottom" constant="2" id="wQc-ly-caM"/>
                                 </constraints>
                             </view>
-                            <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4GE-22-aYk" userLabel="SpeakerView">
+                            <view tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4GE-22-aYk" userLabel="SpeakerView">
                                 <rect key="frame" x="40" y="254" width="93" height="78"/>
                                 <subviews>
                                     <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CpK-N0-n9N">
@@ -1275,7 +1275,7 @@
                                     <constraint firstAttribute="centerX" secondItem="CpK-N0-n9N" secondAttribute="centerX" id="oAx-aB-aTA"/>
                                 </constraints>
                             </view>
-                            <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sez-od-Fto" userLabel="MusicView">
+                            <view tag="6" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sez-od-Fto" userLabel="MusicView">
                                 <rect key="frame" x="254" y="254" width="93" height="78"/>
                                 <subviews>
                                     <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bKk-9e-Wxi">
@@ -1308,7 +1308,7 @@
                                     <constraint firstAttribute="width" secondItem="sez-od-Fto" secondAttribute="height" multiplier="31:26" id="tkD-LI-JlC"/>
                                 </constraints>
                             </view>
-                            <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5ZQ-Gu-eGv" userLabel="TheaterView">
+                            <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5ZQ-Gu-eGv" userLabel="TheaterView">
                                 <rect key="frame" x="467" y="254" width="93" height="78"/>
                                 <subviews>
                                     <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1sd-b7-VK0">
@@ -1341,7 +1341,7 @@
                                     <constraint firstItem="1sd-b7-VK0" firstAttribute="height" secondItem="5ZQ-Gu-eGv" secondAttribute="height" multiplier="0.65" id="tKU-qc-POd"/>
                                 </constraints>
                             </view>
-                            <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lZ7-zY-Y2Y" userLabel="GeneralView">
+                            <view tag="9" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lZ7-zY-Y2Y" userLabel="GeneralView">
                                 <rect key="frame" x="243" y="392" width="115" height="90"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GENERAL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jpv-xJ-tqA">
@@ -1374,7 +1374,7 @@
                                     <constraint firstItem="Jpv-xJ-tqA" firstAttribute="leading" secondItem="lZ7-zY-Y2Y" secondAttribute="leading" id="mMn-BE-USf"/>
                                 </constraints>
                             </view>
-                            <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9sF-5s-rzJ" userLabel="QuestionslView">
+                            <view tag="10" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9sF-5s-rzJ" userLabel="QuestionslView">
                                 <rect key="frame" x="465" y="392" width="115" height="90"/>
                                 <subviews>
                                     <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5V7-li-5r7">
@@ -1407,7 +1407,7 @@
                                     <constraint firstItem="5V7-li-5r7" firstAttribute="top" secondItem="9sF-5s-rzJ" secondAttribute="top" id="ofm-bk-8Qk"/>
                                 </constraints>
                             </view>
-                            <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Xi-TD-f46" userLabel="AnnouncementsView">
+                            <view tag="8" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Xi-TD-f46" userLabel="AnnouncementsView">
                                 <rect key="frame" x="20" y="392" width="115" height="90"/>
                                 <subviews>
                                     <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WJY-0y-KeM">
@@ -1501,6 +1501,16 @@
                         <outlet property="distanceSpeakersViewFromTop" destination="mnC-3C-IRt" id="4v3-Bg-zwp"/>
                         <outlet property="distanceSportsViewFromTop" destination="8qM-wW-CXz" id="1Ou-ib-8C2"/>
                         <outlet property="distanceTheaterViewFromTop" destination="tRG-gY-cBO" id="Ikt-bN-prH"/>
+                        <outletCollection property="collectionViews" destination="yNU-Zb-XfF" id="hoI-SI-NkC"/>
+                        <outletCollection property="collectionViews" destination="eQe-Pd-xOS" id="taa-LH-RAE"/>
+                        <outletCollection property="collectionViews" destination="BqR-aV-BKR" id="3nF-WK-DlB"/>
+                        <outletCollection property="collectionViews" destination="SZ5-fA-ltw" id="GH9-ic-PJn"/>
+                        <outletCollection property="collectionViews" destination="4GE-22-aYk" id="OBy-Il-qgD"/>
+                        <outletCollection property="collectionViews" destination="sez-od-Fto" id="iDP-4G-Gl9"/>
+                        <outletCollection property="collectionViews" destination="5ZQ-Gu-eGv" id="EAB-XF-REc"/>
+                        <outletCollection property="collectionViews" destination="4Xi-TD-f46" id="Gqh-ba-wXN"/>
+                        <outletCollection property="collectionViews" destination="lZ7-zY-Y2Y" id="T6f-Rw-dou"/>
+                        <outletCollection property="collectionViews" destination="9sF-5s-rzJ" id="RGb-Bv-OTg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OgR-dz-ZnK" userLabel="First Responder" sceneMemberID="firstResponder"/>

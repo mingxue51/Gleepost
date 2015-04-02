@@ -9,9 +9,21 @@
 #import <Foundation/Foundation.h>
 #import "CategoryManager.h"
 
+@protocol GLPCategoriesAnimationHelperDelegate <NSObject>
+
+@required
+- (void)viewsDisappeared;
+
+@end
+
 @interface GLPCategoriesAnimationHelper : NSObject
 
+@property (weak, nonatomic) UIViewController <GLPCategoriesAnimationHelperDelegate> *delegate;
+
 - (void)animateElementWithTopConstraint:(NSLayoutConstraint *)topConstraint withKindOfView:(CategoryOrder)kindOfView;
+- (void)dismissElementWithTopConstraint:(NSLayoutConstraint *)topConstraint withKindOfView:(CategoryOrder)kindOfView;
+- (void)dismissElementWithView:(UIView *)view withKindOfView:(CategoryOrder)kindOfView;
+- (void)changeFinalYValueOfElements;
 - (CGFloat)getInitialElementsPosition;
 
 @end

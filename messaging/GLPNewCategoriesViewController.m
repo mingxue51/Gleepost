@@ -13,13 +13,15 @@
 #import "ShapeFormatterHelper.h"
 #import "CategoryManager.h"
 
-@interface GLPNewCategoriesViewController ()
+@interface GLPNewCategoriesViewController () <GLPCategoriesAnimationHelperDelegate>
 
 //IBOutlets.
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 @property (weak, nonatomic) IBOutlet UIView *allPostsView;
 
 @property (strong, nonatomic) GLPCategoriesAnimationHelper *animationHelper;
+
+@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *collectionViews;
 
 //Constraints.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceAllPostsViewFromTop;
@@ -62,6 +64,7 @@
 - (void)initialiseObjects
 {
     self.animationHelper = [[GLPCategoriesAnimationHelper alloc] init];
+    self.animationHelper.delegate = self;
 }
 
 - (void)intialisePositions
@@ -103,6 +106,25 @@
     [self.animationHelper animateElementWithTopConstraint:self.distanceQuestionsViewFromTop withKindOfView:kQuestionsOrder];
 }
 
+- (void)dismissElementsWithAnimations
+{
+//    [self.animationHelper dismissElementWithTopConstraint:self.distanceAllPostsViewFromTop withKindOfView:kAllOrder];
+//    [self.animationHelper dismissElementWithTopConstraint:self.distanceFreeFoodViewFromTop withKindOfView:kFreeFood];
+//    [self.animationHelper dismissElementWithTopConstraint:self.distancePartiesViewFromTop withKindOfView:kPartiesOrder];
+//    [self.animationHelper dismissElementWithTopConstraint:self.distanceSportsViewFromTop withKindOfView:kSportsOrder];
+//    [self.animationHelper dismissElementWithTopConstraint:self.distanceSpeakersViewFromTop withKindOfView:kSpeakersOrder];
+//    [self.animationHelper dismissElementWithTopConstraint:self.distanceMusicViewFromTop withKindOfView:kMusicOrder];
+//    [self.animationHelper dismissElementWithTopConstraint:self.distanceTheaterViewFromTop withKindOfView:kTheaterOrder];
+//    [self.animationHelper dismissElementWithTopConstraint:self.distanceAnnouncementsViewFromTop withKindOfView:kAnnouncementsOrder];
+//    [self.animationHelper dismissElementWithTopConstraint:self.distanceGeneralViewFromTop withKindOfView:kGeneralOrder];
+//    [self.animationHelper dismissElementWithTopConstraint:self.distanceQuestionsViewFromTop withKindOfView:kQuestionsOrder];
+    
+    for(UIView *v in self.collectionViews)
+    {        
+        [self.animationHelper dismissElementWithView:v withKindOfView:v.tag];
+    }
+}
+
 #pragma mark - Format
 
 - (void)formatAllPostsView
@@ -138,6 +160,13 @@
     });
 }
 
+#pragma mark - GLPCategoriesAnimationHelperDelegate
+
+- (void)viewsDisappeared
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - Selectors
 
 - (IBAction)hideViewController:(id)sender
@@ -166,7 +195,7 @@
 
 - (void)dismissViewController
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissElementsWithAnimations];
 }
 
 #pragma mark - Post notifications
