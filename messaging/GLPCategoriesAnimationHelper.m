@@ -11,15 +11,38 @@
 #import <POP/POP.h>
 #import "GLPiOSSupportHelper.h"
 
+@interface ConstraintAnimationData : NSObject
+
+@property (assign, nonatomic) CGFloat finalY;
+@property (assign, nonatomic) CGFloat delay;
+@property (assign, nonatomic) CGFloat bounce;
+@property (assign, nonatomic) CGFloat speed;
+
+@end
+
+@implementation ConstraintAnimationData
+
+- (instancetype)initWithFinalY:(CGFloat)finalY withDelay:(CGFloat)delay withBounceLevel:(CGFloat)bounce withSpeedLevel:(CGFloat)speed
+{
+    self = [super init];
+    
+    if (self)
+    {
+        self.finalY = finalY;
+        self.delay = delay;
+        self.bounce = bounce;
+        self.speed = speed;
+    }
+    
+    return self;
+}
+
+@end
+
 @interface GLPCategoriesAnimationHelper ()
 
-@property (assign, nonatomic) CGFloat allPostsViewY;
-@property (assign, nonatomic) CGFloat firstRowY;
-@property (assign, nonatomic) CGFloat secondRowY;
-@property (assign, nonatomic) CGFloat thirdRowY;
-@property (assign, nonatomic) CGFloat nevermindY;
-
-@property (assign, nonatomic) CGFloat secondColumnDelay;
+/** This data structure has a key, value: <KindOfElement enum, ConstraintAnimationData>. */
+@property (strong, nonatomic) NSDictionary *animationData;
 
 @end
 
@@ -31,62 +54,53 @@
     
     if (self)
     {
-        [self intialisePositions];
-        [self intialiseTiming];
+        [self configureData];
     }
     return self;
 }
 
-- (void)intialisePositions
+/**
+ Here we are configuring the NSDictionary that contains all the animation data of the elements.
+ */
+- (void)configureData
 {
-    self.allPostsViewY = 80.0f;
-    self.firstRowY = 40.0f;
-}
-
-- (void)intialiseTiming
-{
-    self.secondColumnDelay = 0.2;
+    NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
+    
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:80.0 withDelay:0.0 withBounceLevel:10.0 withSpeedLevel:10.0] forKey:@(kAllOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:40.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kPartiesOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:40.0 withDelay:0.3 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kFreeFood)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:40.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kSportsOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:40.0 withDelay:0.4 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kSpeakersOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:40.0 withDelay:0.5 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kMusicOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:40.0 withDelay:0.4 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kTheaterOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:80.0 withDelay:0.5 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kAnnouncementsOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:80.0 withDelay:0.4 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kGeneralOrder)];
+    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:80.0 withDelay:0.5 withBounceLevel:4.0 withSpeedLevel:10.0] forKey:@(kQuestionsOrder)];
+    
+    self.animationData = dictionary;
 }
 
 #pragma mark - Animations
 
-- (void)animateAllPostsViewWithTopConstraint:(NSLayoutConstraint *)topConstraint
+- (void)animateElementWithTopConstraint:(NSLayoutConstraint *)topConstraint withKindOfView:(CategoryOrder)kindOfView
 {
-    // 1. Pick a Kind Of Animation //  POPBasicAnimation  POPSpringAnimation POPDecayAnimation
-    POPSpringAnimation *basicAnimation = [POPSpringAnimation animation];
+    ConstraintAnimationData *constraintAnimationData = [self.animationData objectForKey:@(kindOfView)];
     
-    // 2. Decide weather you will animate a view property or layer property, Lets pick a View Property and pick kPOPViewFrame
-    // View Properties - kPOPViewAlpha kPOPViewBackgroundColor kPOPViewBounds kPOPViewCenter kPOPViewFrame kPOPViewScaleXY kPOPViewSize
-    // Layer Properties - kPOPLayerBackgroundColor kPOPLayerBounds kPOPLayerScaleXY kPOPLayerSize kPOPLayerOpacity kPOPLayerPosition kPOPLayerPositionX kPOPLayerPositionY kPOPLayerRotation kPOPLayerBackgroundColor
-    basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
-    
-    // 3. Figure Out which of 3 ways to set toValue
-    basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPLayoutConstraintConstant];
-    basicAnimation.toValue = @(self.allPostsViewY);
-    basicAnimation.springSpeed = 10.0f;
-    basicAnimation.springBounciness = 10.0f;
-    
-    // 4. Create Name For Animation & Set Delegate
-    basicAnimation.name=@"AnyAnimationNameYouWant";
-    basicAnimation.delegate=self;
-    
-    // 5. Add animation to View or Layer, we picked View so self.tableView and not layer which would have been self.tableView.layer
-    [topConstraint pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
-}
-
-- (void)animateFreeFoodViewWithTopConstraint:(NSLayoutConstraint *)topConstraint
-{
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, self.secondColumnDelay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, constraintAnimationData.delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 
         // 1. Pick a Kind Of Animation //  POPBasicAnimation  POPSpringAnimation POPDecayAnimation
         POPSpringAnimation *basicAnimation = [POPSpringAnimation animation];
+        
+        // 2. Decide weather you will animate a view property or layer property, Lets pick a View Property and pick kPOPViewFrame
+        // View Properties - kPOPViewAlpha kPOPViewBackgroundColor kPOPViewBounds kPOPViewCenter kPOPViewFrame kPOPViewScaleXY kPOPViewSize
+        // Layer Properties - kPOPLayerBackgroundColor kPOPLayerBounds kPOPLayerScaleXY kPOPLayerSize kPOPLayerOpacity kPOPLayerPosition kPOPLayerPositionX kPOPLayerPositionY kPOPLayerRotation kPOPLayerBackgroundColor
         basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
         
         // 3. Figure Out which of 3 ways to set toValue
         basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPLayoutConstraintConstant];
-        basicAnimation.toValue = @(self.firstRowY);
-        basicAnimation.springSpeed = 10.0f;
-        basicAnimation.springBounciness = 4.0;
+        basicAnimation.toValue = @(constraintAnimationData.finalY);
+        basicAnimation.springSpeed = constraintAnimationData.speed;
+        basicAnimation.springBounciness = constraintAnimationData.bounce;
         
         // 4. Create Name For Animation & Set Delegate
         basicAnimation.name=@"AnyAnimationNameYouWant";
@@ -94,6 +108,7 @@
         
         // 5. Add animation to View or Layer, we picked View so self.tableView and not layer which would have been self.tableView.layer
         [topConstraint pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
+        
     });
 }
 

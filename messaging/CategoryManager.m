@@ -8,21 +8,6 @@
 
 #import "CategoryManager.h"
 
-typedef NS_ENUM(NSInteger, CategoryOrder) {
-
-    kAllOrder = 1,
-    kPartiesOrder = 2,
-    kFreeFood = 3,
-    kSportsOrder = 4,
-    kSpeakersOrder = 5,
-    kMusicOrder = 6,
-    kTheaterOrder = 7,
-    kAnnouncementsOrder = 8,
-    kGeneralOrder = 9,
-    kQuestionsOrder = 10,
-    kOtherOrder = 11
-};
-
 @interface CategoryManager ()
 
 @property (strong, nonatomic) NSDictionary *categories;

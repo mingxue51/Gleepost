@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CategoryManager.h"
 
 @interface GLPCategoriesAnimationHelper : NSObject
 
-- (void)animateAllPostsViewWithTopConstraint:(NSLayoutConstraint *)topConstrain;
-- (void)animateFreeFoodViewWithTopConstraint:(NSLayoutConstraint *)topConstraint;
+- (void)animateElementWithTopConstraint:(NSLayoutConstraint *)topConstraint withKindOfView:(CategoryOrder)kindOfView;
 - (CGFloat)getInitialElementsPosition;
 
 @end

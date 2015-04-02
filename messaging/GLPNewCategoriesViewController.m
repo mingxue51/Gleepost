@@ -24,6 +24,12 @@
 //Constraints.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceAllPostsViewFromTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFreeFoodViewFromTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distancePartiesViewFromTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceSportsViewFromTop;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceSpeakersViewFromTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceMusicViewFromTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceTheaterViewFromTop;
 
 @end
 
@@ -59,6 +65,8 @@
     CGFloat initialPosition = [self.animationHelper getInitialElementsPosition];
     self.distanceAllPostsViewFromTop.constant = initialPosition;
     self.distanceFreeFoodViewFromTop.constant = initialPosition;
+    self.distancePartiesViewFromTop.constant = initialPosition;
+    self.distanceSportsViewFromTop.constant = initialPosition;
 }
 
 - (void)formatElements
@@ -76,8 +84,14 @@
 
 - (void)bringElementsWithAnimations
 {
-    [self.animationHelper animateAllPostsViewWithTopConstraint:self.distanceAllPostsViewFromTop];
-    [self.animationHelper animateFreeFoodViewWithTopConstraint:self.distanceFreeFoodViewFromTop];
+    [self.animationHelper animateElementWithTopConstraint:self.distanceAllPostsViewFromTop withKindOfView:kAllOrder];
+    [self.animationHelper animateElementWithTopConstraint:self.distanceFreeFoodViewFromTop withKindOfView:kFreeFood];
+    [self.animationHelper animateElementWithTopConstraint:self.distancePartiesViewFromTop withKindOfView:kPartiesOrder];
+    [self.animationHelper animateElementWithTopConstraint:self.distanceSportsViewFromTop withKindOfView:kSportsOrder];
+    [self.animationHelper animateElementWithTopConstraint:self.distanceSpeakersViewFromTop withKindOfView:kSpeakersOrder];
+    [self.animationHelper animateElementWithTopConstraint:self.distanceMusicViewFromTop withKindOfView:kMusicOrder];
+    [self.animationHelper animateElementWithTopConstraint:self.distanceTheaterViewFromTop withKindOfView:kTheaterOrder];
+
 }
 
 #pragma mark - Format
