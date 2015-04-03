@@ -14,10 +14,14 @@
 #import "AppearanceHelper.h"
 #import "GLPApprovalManager.h"
 #import "GLPiOSSupportHelper.h"
+#import "TDNavigationNewPost.h"
+#import "ATNavigationNewPost.h"
+#import "IntroKindOfEventViewController.h"
 
-@interface IntroKindOfNewPostViewController ()
+@interface IntroKindOfNewPostViewController () <UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleHeightConstrain;
+@property (strong, nonatomic) TDNavigationNewPost *tdNavigationNewPost;
 
 @end
 
@@ -34,6 +38,11 @@
     [[GLPApprovalManager sharedInstance] reloadApprovalLevel];
     
     [self configureConstrainsDependingOnScreenSize];
+    
+    [self intialiseObjects];
+    
+    //http://stackoverflow.com/questions/26569488/navigation-controller-custom-transition-animation
+    self.navigationController.delegate = self;
 }
 
 //- (void)viewDidDisappear:(BOOL)animated
@@ -42,6 +51,11 @@
 //    
 //    [super viewDidDisappear:animated];
 //}
+
+- (void)intialiseObjects
+{
+    self.tdNavigationNewPost = [[TDNavigationNewPost alloc] init];
+}
 
 - (void)dealloc
 {    
@@ -90,7 +104,19 @@
     
     [[PendingPostManager sharedInstance] setKindOfPost:kEventPost];
     
-    [self performSegueWithIdentifier:@"view event selector" sender:self];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
+    IntroKindOfEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfEventViewController"];
+    
+//    cvc.modalPresentationStyle = UIModalPresentationCustom;
+    
+//    [cvc setTransitioningDelegate:self.tdNavigationNewPost];
+    
+    [self.navigationController pushViewController:cvc animated:NO];
+    
+//    [self presentViewController:cvc animated:YES completion:nil];
+    
+//    [self performSegueWithIdentifier:@"view event selector" sender:self];
 }
 
 - (IBAction)selectAnnouncement:(id)sender
@@ -134,6 +160,20 @@
 - (IBAction)dismiss:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController*)fromVC
+                                                 toViewController:(UIViewController*)toVC
+{
+    if (operation == UINavigationControllerOperationPush)
+        return [[ATNavigationNewPost alloc] init];
+    
+    if (operation == UINavigationControllerOperationPop)
+        return [[ATNavigationNewPost alloc] init];
+    
+    return nil;
 }
 
 - (void)didReceiveMemoryWarning

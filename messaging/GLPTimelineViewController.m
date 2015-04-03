@@ -88,6 +88,7 @@
 @property (strong, nonatomic) NewPostView *postView;
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (strong, nonatomic) TransitionDelegateViewCategories *transitionCategoriesViewController;
+
 @property (strong, nonatomic) URBMediaFocusViewController *mediaFocusViewController;
 
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;

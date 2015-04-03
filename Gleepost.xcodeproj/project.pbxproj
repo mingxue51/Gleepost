@@ -596,7 +596,8 @@
 		58B3A3041A2552800082AE81 /* pending_cell_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58B3A3021A2552800082AE81 /* pending_cell_background.png */; };
 		58B3A3081A25CBCE0082AE81 /* GLPCategoryTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B3A3061A25CBCE0082AE81 /* GLPCategoryTitleCell.m */; };
 		58B3A3091A25CBCE0082AE81 /* GLPCategoryTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58B3A3071A25CBCE0082AE81 /* GLPCategoryTitleCell.xib */; };
-		58B53B2A1ACF2E5000BA4380 /* NewPostViewControllersSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B53B291ACF2E5000BA4380 /* NewPostViewControllersSegue.m */; };
+		58B53B2E1ACF3EFB00BA4380 /* ATNavigationNewPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B53B2D1ACF3EFB00BA4380 /* ATNavigationNewPost.m */; };
+		58B53B311ACF3F8B00BA4380 /* TDNavigationNewPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B53B301ACF3F8B00BA4380 /* TDNavigationNewPost.m */; };
 		58B6BF481A22963F00113DB7 /* Gleepost_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B6BF471A22963F00113DB7 /* Gleepost_Tests.m */; };
 		58B74A8719C01541007E3416 /* GLPNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B74A8619C01541007E3416 /* GLPNotificationCell.m */; };
 		58B74A8A19C037DA007E3416 /* NotificationsOrganiserHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B74A8919C037DA007E3416 /* NotificationsOrganiserHelper.m */; };
@@ -1774,8 +1775,10 @@
 		58B3A3051A25CBCE0082AE81 /* GLPCategoryTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCategoryTitleCell.h; sourceTree = "<group>"; };
 		58B3A3061A25CBCE0082AE81 /* GLPCategoryTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCategoryTitleCell.m; sourceTree = "<group>"; };
 		58B3A3071A25CBCE0082AE81 /* GLPCategoryTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPCategoryTitleCell.xib; sourceTree = "<group>"; };
-		58B53B281ACF2E5000BA4380 /* NewPostViewControllersSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPostViewControllersSegue.h; sourceTree = "<group>"; };
-		58B53B291ACF2E5000BA4380 /* NewPostViewControllersSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPostViewControllersSegue.m; sourceTree = "<group>"; };
+		58B53B2C1ACF3EFB00BA4380 /* ATNavigationNewPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ATNavigationNewPost.h; sourceTree = "<group>"; };
+		58B53B2D1ACF3EFB00BA4380 /* ATNavigationNewPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ATNavigationNewPost.m; sourceTree = "<group>"; };
+		58B53B2F1ACF3F8B00BA4380 /* TDNavigationNewPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDNavigationNewPost.h; sourceTree = "<group>"; };
+		58B53B301ACF3F8B00BA4380 /* TDNavigationNewPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDNavigationNewPost.m; sourceTree = "<group>"; };
 		58B6BF431A22963F00113DB7 /* Gleepost Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Gleepost Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		58B6BF461A22963F00113DB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		58B6BF471A22963F00113DB7 /* Gleepost_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Gleepost_Tests.m; sourceTree = "<group>"; };
@@ -3444,8 +3447,6 @@
 				58960EBE18A197E5005FC433 /* CustomPushTransitioningDelegate.m */,
 				5891F80D1977306700065FFC /* IntroSegue.h */,
 				5891F80E1977306700065FFC /* IntroSegue.m */,
-				58B53B281ACF2E5000BA4380 /* NewPostViewControllersSegue.h */,
-				58B53B291ACF2E5000BA4380 /* NewPostViewControllersSegue.m */,
 			);
 			name = Animations;
 			path = ..;
@@ -3936,6 +3937,17 @@
 				58B3A3071A25CBCE0082AE81 /* GLPCategoryTitleCell.xib */,
 			);
 			name = "Campus Wall";
+			sourceTree = "<group>";
+		};
+		58B53B2B1ACF3ECE00BA4380 /* New Post */ = {
+			isa = PBXGroup;
+			children = (
+				58B53B2C1ACF3EFB00BA4380 /* ATNavigationNewPost.h */,
+				58B53B2D1ACF3EFB00BA4380 /* ATNavigationNewPost.m */,
+				58B53B2F1ACF3F8B00BA4380 /* TDNavigationNewPost.h */,
+				58B53B301ACF3F8B00BA4380 /* TDNavigationNewPost.m */,
+			);
+			name = "New Post";
 			sourceTree = "<group>";
 		};
 		58B6BF441A22963F00113DB7 /* Gleepost Tests */ = {
@@ -4465,6 +4477,7 @@
 		58F2950219354A4400A638BA /* Animated Transitioning */ = {
 			isa = PBXGroup;
 			children = (
+				58B53B2B1ACF3ECE00BA4380 /* New Post */,
 				588F1DB519EDCD9200DB6D23 /* Event */,
 				58714DE019CC48BA00767487 /* Categories */,
 			);
@@ -6234,6 +6247,7 @@
 				58299B7319FA164500702381 /* GLPGroupsEmptyView.m in Sources */,
 				580C7AAD1897F030007495EE /* CategoryManager.m in Sources */,
 				58FD7072189009190024E8A1 /* TransitionDelegateViewCategories.m in Sources */,
+				58B53B2E1ACF3EFB00BA4380 /* ATNavigationNewPost.m in Sources */,
 				584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */,
 				806E3D871832B1960063AACE /* TSBlurView.m in Sources */,
 				5879235019E7926E007F3C20 /* GLPMember.m in Sources */,
@@ -6252,7 +6266,6 @@
 				58065F8619BF985A00892B6B /* ChangeImageProgressView.m in Sources */,
 				586317A3198746D7006D79E2 /* GLPImageView.m in Sources */,
 				5865813218059DAD005814B4 /* Bubbles.m in Sources */,
-				58B53B2A1ACF2E5000BA4380 /* NewPostViewControllersSegue.m in Sources */,
 				80AB896317C27AF50053E784 /* ViewPostViewController.m in Sources */,
 				587805B11920E2CE0002472B /* CaptureManager.m in Sources */,
 				581BD8651913D57A006F8BCD /* LevelView.m in Sources */,
@@ -6457,6 +6470,7 @@
 				58363FEF1ACBCED500FE5F85 /* GLPNewCategoriesViewController.m in Sources */,
 				584DC5011922475A00CEE096 /* VideoCaptureView.m in Sources */,
 				5891F80F1977306700065FFC /* IntroSegue.m in Sources */,
+				58B53B311ACF3F8B00BA4380 /* TDNavigationNewPost.m in Sources */,
 				58F2950119353C9300A638BA /* NewPostCategoriesView.m in Sources */,
 				58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */,
 				589EAD0C18A3C54E005B2F4C /* SignUpTwoView.m in Sources */,

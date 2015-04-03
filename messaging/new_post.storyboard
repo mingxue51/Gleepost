@@ -266,7 +266,7 @@
         <!--Intro Kind Of Event View Controller-->
         <scene sceneID="176-vW-cbG">
             <objects>
-                <viewController id="Xbv-3h-ojf" customClass="IntroKindOfEventViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="IntroKindOfEventViewController" id="Xbv-3h-ojf" customClass="IntroKindOfEventViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2Uj-8D-bWL"/>
                         <viewControllerLayoutGuide type="bottom" id="VgJ-He-Xa0"/>
@@ -585,7 +585,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XRC-N6-kUY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4286" y="-2050"/>
+            <point key="canvasLocation" x="4300" y="-2109"/>
         </scene>
         <!--New Post View Controller-->
         <scene sceneID="TE4-OX-5Mj">
