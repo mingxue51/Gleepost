@@ -7,11 +7,11 @@
 //
 
 #import "GLPNewCategoriesViewController.h"
-#import "UIImage+StackBlur.h"
-#import "GPUImage.h"
 #import "GLPCategoriesAnimationHelper.h"
 #import "ShapeFormatterHelper.h"
 #import "CategoryManager.h"
+#import "FXBlurView.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface GLPNewCategoriesViewController () <GLPCategoriesAnimationHelperDelegate>
 
@@ -22,7 +22,7 @@
 @property (strong, nonatomic) GLPCategoriesAnimationHelper *animationHelper;
 
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *collectionViews;
-
+@property (weak, nonatomic) IBOutlet UIButton *nevermindButton;
 //Constraints.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceAllPostsViewFromTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFreeFoodViewFromTop;
@@ -104,25 +104,16 @@
     [self.animationHelper animateElementWithTopConstraint:self.distanceAnnouncementsViewFromTop withKindOfView:kAnnouncementsOrder];
     [self.animationHelper animateElementWithTopConstraint:self.distanceGeneralViewFromTop withKindOfView:kGeneralOrder];
     [self.animationHelper animateElementWithTopConstraint:self.distanceQuestionsViewFromTop withKindOfView:kQuestionsOrder];
+    [self.animationHelper animateNevermindView:self.nevermindButton withAppearance:YES];
 }
 
 - (void)dismissElementsWithAnimations
 {
-//    [self.animationHelper dismissElementWithTopConstraint:self.distanceAllPostsViewFromTop withKindOfView:kAllOrder];
-//    [self.animationHelper dismissElementWithTopConstraint:self.distanceFreeFoodViewFromTop withKindOfView:kFreeFood];
-//    [self.animationHelper dismissElementWithTopConstraint:self.distancePartiesViewFromTop withKindOfView:kPartiesOrder];
-//    [self.animationHelper dismissElementWithTopConstraint:self.distanceSportsViewFromTop withKindOfView:kSportsOrder];
-//    [self.animationHelper dismissElementWithTopConstraint:self.distanceSpeakersViewFromTop withKindOfView:kSpeakersOrder];
-//    [self.animationHelper dismissElementWithTopConstraint:self.distanceMusicViewFromTop withKindOfView:kMusicOrder];
-//    [self.animationHelper dismissElementWithTopConstraint:self.distanceTheaterViewFromTop withKindOfView:kTheaterOrder];
-//    [self.animationHelper dismissElementWithTopConstraint:self.distanceAnnouncementsViewFromTop withKindOfView:kAnnouncementsOrder];
-//    [self.animationHelper dismissElementWithTopConstraint:self.distanceGeneralViewFromTop withKindOfView:kGeneralOrder];
-//    [self.animationHelper dismissElementWithTopConstraint:self.distanceQuestionsViewFromTop withKindOfView:kQuestionsOrder];
-    
     for(UIView *v in self.collectionViews)
     {        
         [self.animationHelper dismissElementWithView:v withKindOfView:v.tag];
     }
+    [self.animationHelper animateNevermindView:self.nevermindButton withAppearance:NO];
 }
 
 #pragma mark - Format
@@ -143,37 +134,13 @@
         
         UIImage *bluredImage = nil;
 
-        bluredImage = [campusWallImage stackBlur:10];
+        bluredImage = [campusWallImage blurredImageWithRadius:4.0 iterations:2 tintColor:nil];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.backgroundImageView setImage:bluredImage];
-
-        
         });
         
     });
-    
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-//
-//        GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:campusWallImage];
-//        
-//        GPUImageGaussianSelectiveBlurFilter *stillImageFilter = [[GPUImageGaussianSelectiveBlurFilter alloc] init];
-//        
-//        [stillImageSource addTarget:stillImageFilter];
-//        stillImageFilter.excludeBlurSize = 0.0;
-//        stillImageFilter.excludeCircleRadius = 0.0;
-//        stillImageFilter.excludeCirclePoint = CGPointMake(0.0, 0.0);
-//        stillImageFilter.blurRadiusInPixels = 4.0;
-//        [stillImageFilter useNextFrameForImageCapture];
-//        [stillImageSource processImage];
-//        
-//        UIImage *currentFilteredVideoFrame = [stillImageFilter imageFromCurrentFramebuffer];
-//        
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//
-//            [self.backgroundImageView setImage:currentFilteredVideoFrame];
-//        });
-//    });
 }
 
 #pragma mark - GLPCategoriesAnimationHelperDelegate

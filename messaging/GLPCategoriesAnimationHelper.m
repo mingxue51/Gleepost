@@ -124,8 +124,12 @@
     });
 }
 
-- (void)dismissElementWithTopConstraint:(NSLayoutConstraint *)topConstraint withKindOfView:(CategoryOrder)kindOfView
+- (void)dismissElementWithView:(UIView *)view withKindOfView:(CategoryOrder)kindOfView
 {
+    [view layoutIfNeeded];
+    
+    CGRect currentFrame = view.frame;
+    
     ConstraintAnimationData *constraintAnimationData = [self.animationData objectForKey:@(kindOfView)];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, constraintAnimationData.delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -138,30 +142,29 @@
         // Layer Properties - kPOPLayerBackgroundColor kPOPLayerBounds kPOPLayerScaleXY kPOPLayerSize kPOPLayerOpacity kPOPLayerPosition kPOPLayerPositionX kPOPLayerPositionY kPOPLayerRotation kPOPLayerBackgroundColor
         
         // 3. Figure Out which of 3 ways to set toValue
-        basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPLayoutConstraintConstant];
-        basicAnimation.toValue = @(-100.0);
+        basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
+        basicAnimation.toValue = [NSValue valueWithCGRect:CGRectMake(currentFrame.origin.x, -currentFrame.size.height - 50, currentFrame.size.width, currentFrame.size.height)];
         
-        
+        //    basicAnimation.springSpeed = 1;
+        //    basicAnimation.springBounciness = 0;
         // 4. Create Name For Animation & Set Delegate
-        basicAnimation.name=@"AnyAnimationNameYouWant";
+        basicAnimation.name=[NSString stringWithFormat:@"%ld", (long)view.tag];
         basicAnimation.delegate=self;
         
         // 5. Add animation to View or Layer, we picked View so self.tableView and not layer which would have been self.tableView.layer
-        [topConstraint pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
+        [view pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
         
     });
+
 }
 
-- (void)dismissElementWithView:(UIView *)view withKindOfView:(CategoryOrder)kindOfView
+- (void)dismissNevermindView:(UIView *)nevermindView;
 {
-    [view layoutIfNeeded];
     
-    CGRect currentFrame = view.frame;
-    
-    ConstraintAnimationData *constraintAnimationData = [self.animationData objectForKey:@(kindOfView)];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, constraintAnimationData.delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-    
+}
+
+- (void)animateNevermindView:(UIView *)nevermindView withAppearance:(BOOL)show
+{
     // 1. Pick a Kind Of Animation //  POPBasicAnimation  POPSpringAnimation POPDecayAnimation
     POPBasicAnimation *basicAnimation = [POPBasicAnimation animation];
     
@@ -170,19 +173,18 @@
     // Layer Properties - kPOPLayerBackgroundColor kPOPLayerBounds kPOPLayerScaleXY kPOPLayerSize kPOPLayerOpacity kPOPLayerPosition kPOPLayerPositionX kPOPLayerPositionY kPOPLayerRotation kPOPLayerBackgroundColor
     
     // 3. Figure Out which of 3 ways to set toValue
-    basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
-    basicAnimation.toValue = [NSValue valueWithCGRect:CGRectMake(currentFrame.origin.x, -currentFrame.size.height - 50, currentFrame.size.width, currentFrame.size.height)];
-
-//    basicAnimation.springSpeed = 1;
-//    basicAnimation.springBounciness = 0;
+    basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewAlpha];
+    basicAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    
+    basicAnimation.fromValue = (show) ? @(0.0) : @(1.0);
+    basicAnimation.toValue = (show) ? @(1.0) : @(0.0);
+    
     // 4. Create Name For Animation & Set Delegate
-    basicAnimation.name=[NSString stringWithFormat:@"%ld", view.tag];
+    basicAnimation.name=@"AnyAnimationNameYouWant";
     basicAnimation.delegate=self;
     
     // 5. Add animation to View or Layer, we picked View so self.tableView and not layer which would have been self.tableView.layer
-    [view pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
-        
-    });
+    [nevermindView pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
 }
 
 - (void)pop_animationDidStop:(POPAnimation *)anim finished:(BOOL)finished

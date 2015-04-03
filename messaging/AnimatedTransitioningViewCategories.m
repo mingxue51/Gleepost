@@ -42,6 +42,9 @@ const float CATEGORIES_ANIMATION_TIME = 0.15;
     
     UIView *inView = [transitionContext containerView];
     UIViewController *toVC = (UIViewController *)[transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    
+    UIViewController *fromVC = (UIViewController *)[transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
+
 
     
     if([self isPresenting])
@@ -87,7 +90,7 @@ const float CATEGORIES_ANIMATION_TIME = 0.15;
 
         [UIView animateWithDuration:CATEGORIES_ANIMATION_TIME animations:^{
         
-            inView.alpha = 0.0;
+            fromVC.view.alpha = 0.0;
 
         } completion:^(BOOL finished) {
 
