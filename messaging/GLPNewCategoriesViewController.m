@@ -12,6 +12,7 @@
 #import "CategoryManager.h"
 #import "FXBlurView.h"
 #import <QuartzCore/QuartzCore.h>
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPNewCategoriesViewController () <GLPCategoriesAnimationHelperDelegate>
 
@@ -31,10 +32,14 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceSpeakersViewFromTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceMusicViewFromTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceTheaterViewFromTop;
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceAnnouncementsViewFromTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceGeneralViewFromTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceQuestionsViewFromTop;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *announcementsDistanceFromLeft;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *questionsDistanceFromRight;
+
+@property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *bottomButtonsAspectRatio;
 
 
 @end
@@ -53,6 +58,7 @@
 {
     [super viewWillAppear:animated];
     [self intialisePositions];
+    [self configureNewPositionsIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -82,6 +88,20 @@
 - (void)formatElements
 {
     [self formatAllPostsView];
+}
+
+- (void)configureNewPositionsIfNeeded
+{
+    if([GLPiOSSupportHelper useShortScreenWidthConstrains])
+    {
+        for(NSLayoutConstraint *aspectRatio in self.bottomButtonsAspectRatio)
+        {
+            [aspectRatio setConstant:25.0];
+        }
+        
+        [self.announcementsDistanceFromLeft setConstant:self.announcementsDistanceFromLeft.constant - 25.0];
+        [self.questionsDistanceFromRight setConstant:self.questionsDistanceFromRight.constant - 25.0];
+    }
 }
 
 - (void)configureGestures

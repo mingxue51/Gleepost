@@ -1505,6 +1505,7 @@
                     </view>
                     <connections>
                         <outlet property="allPostsView" destination="yNU-Zb-XfF" id="4Ky-gK-d5G"/>
+                        <outlet property="announcementsDistanceFromLeft" destination="Qq4-dv-vib" id="HPA-Bm-UXY"/>
                         <outlet property="backgroundImageView" destination="x5f-R5-nAf" id="H6Y-VS-gw5"/>
                         <outlet property="distanceAllPostsViewFromTop" destination="Qpj-RL-U88" id="xux-iD-C3g"/>
                         <outlet property="distanceAnnouncementsViewFromTop" destination="Xcb-4O-i7y" id="xFQ-2e-QPR"/>
@@ -1517,6 +1518,7 @@
                         <outlet property="distanceSportsViewFromTop" destination="8qM-wW-CXz" id="1Ou-ib-8C2"/>
                         <outlet property="distanceTheaterViewFromTop" destination="tRG-gY-cBO" id="Ikt-bN-prH"/>
                         <outlet property="nevermindButton" destination="bHy-MG-zFE" id="0kb-Xk-3GI"/>
+                        <outlet property="questionsDistanceFromRight" destination="Zlc-KY-Qlj" id="eP3-sm-sJ5"/>
                         <outletCollection property="collectionViews" destination="yNU-Zb-XfF" id="hoI-SI-NkC"/>
                         <outletCollection property="collectionViews" destination="eQe-Pd-xOS" id="taa-LH-RAE"/>
                         <outletCollection property="collectionViews" destination="BqR-aV-BKR" id="3nF-WK-DlB"/>
@@ -1527,6 +1529,9 @@
                         <outletCollection property="collectionViews" destination="lZ7-zY-Y2Y" id="T6f-Rw-dou"/>
                         <outletCollection property="collectionViews" destination="9sF-5s-rzJ" id="RGb-Bv-OTg"/>
                         <outletCollection property="collectionViews" destination="SZ5-fA-ltw" id="GbM-nk-UNh"/>
+                        <outletCollection property="bottomButtonsAspectRatio" destination="aqz-5L-sbr" id="m2b-SW-lxn"/>
+                        <outletCollection property="bottomButtonsAspectRatio" destination="ZXY-sL-C3O" id="Dz1-Wr-Inw"/>
+                        <outletCollection property="bottomButtonsAspectRatio" destination="kwe-uz-ru5" id="bZJ-YB-ufa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OgR-dz-ZnK" userLabel="First Responder" sceneMemberID="firstResponder"/>
