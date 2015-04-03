@@ -138,27 +138,42 @@
 
 - (void)setCampusWallScreenshot:(UIImage *)campusWallImage
 {
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
-        GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:campusWallImage];
-        
-        GPUImageGaussianSelectiveBlurFilter *stillImageFilter = [[GPUImageGaussianSelectiveBlurFilter alloc] init];
-        
-        [stillImageSource addTarget:stillImageFilter];
-        stillImageFilter.excludeBlurSize = 0.0;
-        stillImageFilter.excludeCircleRadius = 0.0;
-        stillImageFilter.excludeCirclePoint = CGPointMake(0.0, 0.0);
-        stillImageFilter.blurRadiusInPixels = 4.0;
-        [stillImageFilter useNextFrameForImageCapture];
-        [stillImageSource processImage];
-        
-        UIImage *currentFilteredVideoFrame = [stillImageFilter imageFromCurrentFramebuffer];
+        UIImage *bluredImage = nil;
+
+        bluredImage = [campusWallImage stackBlur:10];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [self.backgroundImageView setImage:currentFilteredVideoFrame];
+            [self.backgroundImageView setImage:bluredImage];
+
+        
         });
+        
     });
+    
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//
+//        GPUImagePicture *stillImageSource = [[GPUImagePicture alloc] initWithImage:campusWallImage];
+//        
+//        GPUImageGaussianSelectiveBlurFilter *stillImageFilter = [[GPUImageGaussianSelectiveBlurFilter alloc] init];
+//        
+//        [stillImageSource addTarget:stillImageFilter];
+//        stillImageFilter.excludeBlurSize = 0.0;
+//        stillImageFilter.excludeCircleRadius = 0.0;
+//        stillImageFilter.excludeCirclePoint = CGPointMake(0.0, 0.0);
+//        stillImageFilter.blurRadiusInPixels = 4.0;
+//        [stillImageFilter useNextFrameForImageCapture];
+//        [stillImageSource processImage];
+//        
+//        UIImage *currentFilteredVideoFrame = [stillImageFilter imageFromCurrentFramebuffer];
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//
+//            [self.backgroundImageView setImage:currentFilteredVideoFrame];
+//        });
+//    });
 }
 
 #pragma mark - GLPCategoriesAnimationHelperDelegate
