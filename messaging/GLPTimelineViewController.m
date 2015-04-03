@@ -2538,7 +2538,7 @@ const float TOP_OFFSET = 180.0f;
 {
     if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
     {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
         IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         newPostVC.groupPost = NO;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
@@ -2560,7 +2560,7 @@ const float TOP_OFFSET = 180.0f;
         UIGraphicsEndImageContext();
         
         
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
         UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         
         // vc.view.backgroundColor = [UIColor clearColor];

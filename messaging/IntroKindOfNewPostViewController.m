@@ -54,7 +54,7 @@
     
     [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
-    [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismiss) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismiss:) andTarget:self];
     
     self.navigationController.navigationBar.tintColor = [AppearanceHelper blueGleepostColour];
 
@@ -131,7 +131,7 @@
     [self performSegueWithIdentifier:@"final new post" sender:self];
 }
 
-- (void)dismiss
+- (IBAction)dismiss:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }

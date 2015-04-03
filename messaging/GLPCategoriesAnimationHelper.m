@@ -80,20 +80,6 @@
     self.animationData = dictionary;
 }
 
-- (void)changeFinalYValueOfElements
-{
-    NSMutableDictionary *dictionary = self.animationData.mutableCopy;
-
-    for(NSNumber *categoryOrder in dictionary.keyEnumerator)
-    {
-        ConstraintAnimationData *constraintAnimationData = [dictionary objectForKey:categoryOrder];
-        constraintAnimationData.finalY = -100;
-    }
-    
-    self.animationData = dictionary;
-
-}
-
 #pragma mark - Animations
 
 - (void)animateElementWithTopConstraint:(NSLayoutConstraint *)topConstraint withKindOfView:(CategoryOrder)kindOfView
@@ -158,11 +144,6 @@
 
 }
 
-- (void)dismissNevermindView:(UIView *)nevermindView;
-{
-    
-}
-
 - (void)animateNevermindView:(UIView *)nevermindView withAppearance:(BOOL)show
 {
     // 1. Pick a Kind Of Animation //  POPBasicAnimation  POPSpringAnimation POPDecayAnimation
@@ -193,7 +174,6 @@
     
     if(viewTag == 10 && finished)
     {
-        DDLogDebug(@"GLPCategoriesAnimationHelper : pop_animationDidStop %@ - %d", anim.name, finished);
         [self.delegate viewsDisappeared];
     }
 }

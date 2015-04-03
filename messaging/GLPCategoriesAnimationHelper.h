@@ -22,9 +22,7 @@
 
 - (void)animateElementWithTopConstraint:(NSLayoutConstraint *)topConstraint withKindOfView:(CategoryOrder)kindOfView;
 - (void)dismissElementWithView:(UIView *)view withKindOfView:(CategoryOrder)kindOfView;
-- (void)dismissNevermindView:(UIView *)nevermindView;
 - (void)animateNevermindView:(UIView *)nevermindView withAppearance:(BOOL)show;
-- (void)changeFinalYValueOfElements;
 - (CGFloat)getInitialElementsPosition;
 
 @end

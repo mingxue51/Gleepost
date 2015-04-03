@@ -2551,7 +2551,7 @@
                                 </variation>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khp-62-GyN">
-                                <rect key="frame" x="18" y="492" width="564" height="94"/>
+                                <rect key="frame" x="13" y="492" width="564" height="94"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="khp-62-GyN" secondAttribute="height" multiplier="6:1" id="Vc7-QY-Vd4"/>
                                 </constraints>
@@ -2578,7 +2578,7 @@
                             <constraint firstItem="lH5-Rq-uh0" firstAttribute="width" secondItem="qag-Ya-uD7" secondAttribute="width" multiplier="0.8" id="jgV-wh-GZ4"/>
                             <constraint firstItem="khp-62-GyN" firstAttribute="width" secondItem="qag-Ya-uD7" secondAttribute="width" multiplier="0.94" id="nET-mk-9wE"/>
                             <constraint firstAttribute="centerX" secondItem="c3Y-EN-qPQ" secondAttribute="centerX" id="vhz-Oi-hRx"/>
-                            <constraint firstAttribute="centerX" secondItem="khp-62-GyN" secondAttribute="centerX" id="xsO-Vw-Rnf"/>
+                            <constraint firstAttribute="centerX" secondItem="khp-62-GyN" secondAttribute="centerX" constant="5" id="xsO-Vw-Rnf"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="cMZ-p3-Rqs">
@@ -6622,9 +6622,6 @@
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Hkg-hS-m49"/>
-        <segue reference="NSy-Xb-H1O"/>
-        <segue reference="0xq-5H-6eX"/>
         <segue reference="X2Z-pC-dgW"/>
         <segue reference="BTm-uo-9d6"/>
         <segue reference="sMz-ia-ebt"/>
@@ -6633,13 +6630,16 @@
         <segue reference="XMX-SH-Gag"/>
         <segue reference="t02-Sh-BtB"/>
         <segue reference="KgO-oz-Ivb"/>
+        <segue reference="0xq-5H-6eX"/>
         <segue reference="Vyz-Un-MGO"/>
         <segue reference="6aM-BE-RDh"/>
-        <segue reference="Th4-GT-P8f"/>
         <segue reference="PMB-JP-q3M"/>
+        <segue reference="NSy-Xb-H1O"/>
+        <segue reference="Hkg-hS-m49"/>
         <segue reference="FTW-m4-VDE"/>
         <segue reference="NkQ-j5-6rL"/>
-        <segue reference="YIa-ii-tw7"/>
+        <segue reference="Th4-GT-P8f"/>
         <segue reference="Af2-b2-Cbn"/>
+        <segue reference="FCS-Ek-fLH"/>
     </inferredMetricsTieBreakers>
 </document>

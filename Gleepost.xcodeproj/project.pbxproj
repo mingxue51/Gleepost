@@ -241,6 +241,7 @@
 		584AD53018576C5A006589BF /* in-contacts.png in Resources */ = {isa = PBXBuildFile; fileRef = 584AD52F18576C5A006589BF /* in-contacts.png */; };
 		584BB7F5198B0E18000B08BC /* cancel_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 584BB7F4198B0E18000B08BC /* cancel_white.png */; };
 		584C1EEA181AC53600862E81 /* GLPContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 584C1EE9181AC53600862E81 /* GLPContact.m */; };
+		584C69661ACEB6A600ADDC2A /* new_post.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 584C69651ACEB6A600ADDC2A /* new_post.storyboard */; };
 		584CBE8017F058E100CD756A /* chat_background@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 584CBE7F17F058E100CD756A /* chat_background@2x.png */; };
 		584CF662182274EE00EFABB8 /* send.png in Resources */ = {isa = PBXBuildFile; fileRef = 584CF661182274EE00EFABB8 /* send.png */; };
 		584CF664182274F300EFABB8 /* invitesent.png in Resources */ = {isa = PBXBuildFile; fileRef = 584CF663182274F300EFABB8 /* invitesent.png */; };
@@ -595,6 +596,7 @@
 		58B3A3041A2552800082AE81 /* pending_cell_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58B3A3021A2552800082AE81 /* pending_cell_background.png */; };
 		58B3A3081A25CBCE0082AE81 /* GLPCategoryTitleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B3A3061A25CBCE0082AE81 /* GLPCategoryTitleCell.m */; };
 		58B3A3091A25CBCE0082AE81 /* GLPCategoryTitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58B3A3071A25CBCE0082AE81 /* GLPCategoryTitleCell.xib */; };
+		58B53B2A1ACF2E5000BA4380 /* NewPostViewControllersSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B53B291ACF2E5000BA4380 /* NewPostViewControllersSegue.m */; };
 		58B6BF481A22963F00113DB7 /* Gleepost_Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B6BF471A22963F00113DB7 /* Gleepost_Tests.m */; };
 		58B74A8719C01541007E3416 /* GLPNotificationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B74A8619C01541007E3416 /* GLPNotificationCell.m */; };
 		58B74A8A19C037DA007E3416 /* NotificationsOrganiserHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58B74A8919C037DA007E3416 /* NotificationsOrganiserHelper.m */; };
@@ -1282,6 +1284,7 @@
 		584BB7F4198B0E18000B08BC /* cancel_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel_white.png; sourceTree = "<group>"; };
 		584C1EE8181AC53600862E81 /* GLPContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPContact.h; sourceTree = "<group>"; };
 		584C1EE9181AC53600862E81 /* GLPContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPContact.m; sourceTree = "<group>"; };
+		584C69651ACEB6A600ADDC2A /* new_post.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = new_post.storyboard; sourceTree = "<group>"; };
 		584CBE7F17F058E100CD756A /* chat_background@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat_background@2x.png"; sourceTree = "<group>"; };
 		584CF661182274EE00EFABB8 /* send.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send.png; sourceTree = "<group>"; };
 		584CF663182274F300EFABB8 /* invitesent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = invitesent.png; sourceTree = "<group>"; };
@@ -1771,6 +1774,8 @@
 		58B3A3051A25CBCE0082AE81 /* GLPCategoryTitleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCategoryTitleCell.h; sourceTree = "<group>"; };
 		58B3A3061A25CBCE0082AE81 /* GLPCategoryTitleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCategoryTitleCell.m; sourceTree = "<group>"; };
 		58B3A3071A25CBCE0082AE81 /* GLPCategoryTitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPCategoryTitleCell.xib; sourceTree = "<group>"; };
+		58B53B281ACF2E5000BA4380 /* NewPostViewControllersSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPostViewControllersSegue.h; sourceTree = "<group>"; };
+		58B53B291ACF2E5000BA4380 /* NewPostViewControllersSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPostViewControllersSegue.m; sourceTree = "<group>"; };
 		58B6BF431A22963F00113DB7 /* Gleepost Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Gleepost Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		58B6BF461A22963F00113DB7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		58B6BF471A22963F00113DB7 /* Gleepost_Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Gleepost_Tests.m; sourceTree = "<group>"; };
@@ -3439,6 +3444,8 @@
 				58960EBE18A197E5005FC433 /* CustomPushTransitioningDelegate.m */,
 				5891F80D1977306700065FFC /* IntroSegue.h */,
 				5891F80E1977306700065FFC /* IntroSegue.m */,
+				58B53B281ACF2E5000BA4380 /* NewPostViewControllersSegue.h */,
+				58B53B291ACF2E5000BA4380 /* NewPostViewControllersSegue.m */,
 			);
 			name = Animations;
 			path = ..;
@@ -3490,6 +3497,7 @@
 				58907DCB1A9FC12B00E8531A /* iphone_ipad.storyboard */,
 				80AB893C17C268440053E784 /* iphone.storyboard */,
 				58907DCD1A9FE22800E8531A /* Launch Screen.xib */,
+				584C69651ACEB6A600ADDC2A /* new_post.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -5721,6 +5729,7 @@
 				58E3DAC01884059100B9B048 /* cloud2.png in Resources */,
 				582A664418AB9BC400006419 /* bar2_selected.png in Resources */,
 				580DEFDE1961D88D008DF437 /* GroupTopViewCell.xib in Resources */,
+				584C69661ACEB6A600ADDC2A /* new_post.storyboard in Resources */,
 				58289EF218D7511B00228EFF /* icon_like_pushed_old.png in Resources */,
 				5861131019EF0541008220DC /* pad_icon_pop_up.png in Resources */,
 				58F8C33518A549E7005EC7ED /* email_field.png in Resources */,
@@ -6243,6 +6252,7 @@
 				58065F8619BF985A00892B6B /* ChangeImageProgressView.m in Sources */,
 				586317A3198746D7006D79E2 /* GLPImageView.m in Sources */,
 				5865813218059DAD005814B4 /* Bubbles.m in Sources */,
+				58B53B2A1ACF2E5000BA4380 /* NewPostViewControllersSegue.m in Sources */,
 				80AB896317C27AF50053E784 /* ViewPostViewController.m in Sources */,
 				587805B11920E2CE0002472B /* CaptureManager.m in Sources */,
 				581BD8651913D57A006F8BCD /* LevelView.m in Sources */,
