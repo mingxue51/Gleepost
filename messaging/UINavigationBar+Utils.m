@@ -29,12 +29,13 @@
     
     UIBarButtonItem *barButtonItem = nil;
     
-    if(kind == kSimple)
+    if(kind == kNoSpecial)
     {
         [btn setBackgroundImage:[[UIColor whiteColor] filledImageFrom:[UIImage imageNamed:imageOrTitle]] forState:UIControlStateNormal];
     }
     else
-    {    [btn setBackgroundImage:[UIImage imageNamed:imageOrTitle] forState:UIControlStateNormal];
+    {
+        [btn setBackgroundImage:[UIImage imageNamed:imageOrTitle] forState:UIControlStateNormal];
     }
     
     

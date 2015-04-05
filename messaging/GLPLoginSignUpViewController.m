@@ -258,7 +258,7 @@ NSString * const kOkButtonTitle       = @"Ok";
 - (void)showRegisterView
 {
     [self.navigationController.navigationBar setTextButton:kRight withTitle:@"NEXT" withButtonSize:CGSizeMake(65.0, 22.0) withColour:[UIColor whiteColor] withSelector:@selector(loginOrSignUp) andTarget:self];
-    [self.navigationController.navigationBar setButton:kLeft specialButton:kSimple withImageName:@"back_final" withButtonSize:CGSizeMake(33.0, 22.5) withSelector:@selector(backToMainView) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kNoSpecial withImageName:@"back_final" withButtonSize:CGSizeMake(33.0, 22.5) withSelector:@selector(backToMainView) andTarget:self];
     [self.introAnimationHelper moveTopImageToTop:self.gleepostLogoImageView withTopDistanceConstraint:self.distanceLogoFromTop withTopLogoWidth:self.topLogoWidth];
 }
 

@@ -87,9 +87,14 @@
     
 //    [self.navigationController.navigationBar setButton:kLeft specialButton:kNoSpecial withImage:@"search_groups_magnify_glass" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpSearchGroupsView) withTarget:self andNavigationItem:self.navItem];
     
-    [self.navigationController.navigationBar setButton:kRight specialButton:kNoSpecial withImageName:@"new_group" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpIntroView) andTarget:self];
+//    [self.navigationController.navigationBar setButton:kRight specialButton:kNoSpecial withImageName:@"new_group" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpIntroView) andTarget:self];
+//
+//    [self.navigationController.navigationBar setButton:kLeft specialButton:kNoSpecial withImageName:@"search_groups_magnify_glass" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpSearchGroupsView) andTarget:self];
+    
+    [self.navigationController.navigationBar setButton:kRight withImageName:@"new_group" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpIntroView) andTarget:self];
+    
+    [self.navigationController.navigationBar setButton:kLeft withImageName:@"search_groups_magnify_glass" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpSearchGroupsView) andTarget:self];
 
-    [self.navigationController.navigationBar setButton:kLeft specialButton:kNoSpecial withImageName:@"search_groups_magnify_glass" withButtonSize:CGSizeMake(22.5, 22.5) withSelector:@selector(popUpSearchGroupsView) andTarget:self];
 }
 
 - (void)configureViewDidLoadNotifications
