@@ -108,11 +108,12 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
     IntroKindOfEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfEventViewController"];
     
+    [self.navigationController pushViewController:cvc animated:NO];
+
 //    cvc.modalPresentationStyle = UIModalPresentationCustom;
     
 //    [cvc setTransitioningDelegate:self.tdNavigationNewPost];
     
-    [self.navigationController pushViewController:cvc animated:NO];
     
 //    [self presentViewController:cvc animated:YES completion:nil];
     
@@ -161,6 +162,8 @@
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma mark - UINavigationControllerDelegate
 
 - (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
                                   animationControllerForOperation:(UINavigationControllerOperation)operation

@@ -637,6 +637,7 @@
 		58C1698D19C26ED000F4C203 /* icon_comment.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C1698C19C26ED000F4C203 /* icon_comment.png */; };
 		58C1698F19C270C600F4C203 /* share.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C1698E19C270C600F4C203 /* share.png */; };
 		58C1699119C2781200F4C203 /* going_unpushed_back_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C1699019C2781200F4C203 /* going_unpushed_back_btn.png */; };
+		58C1E2D61ACFCEAE00A986F0 /* UINavigationBar+Animations.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C1E2D51ACFCEAE00A986F0 /* UINavigationBar+Animations.m */; };
 		58C45A74193C910A009FEE6E /* navigation_bar_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C45A73193C910A009FEE6E /* navigation_bar_new_post.png */; };
 		58C9E15719EC6A88008CB14A /* GLPConversationRead.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C9E15619EC6A88008CB14A /* GLPConversationRead.m */; };
 		58CB2728194B892800864C28 /* SKBounceAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58CB2726194B892800864C28 /* SKBounceAnimation.m */; };
@@ -1836,6 +1837,8 @@
 		58C1698C19C26ED000F4C203 /* icon_comment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_comment.png; sourceTree = "<group>"; };
 		58C1698E19C270C600F4C203 /* share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = share.png; sourceTree = "<group>"; };
 		58C1699019C2781200F4C203 /* going_unpushed_back_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = going_unpushed_back_btn.png; sourceTree = "<group>"; };
+		58C1E2D41ACFCEAE00A986F0 /* UINavigationBar+Animations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Animations.h"; sourceTree = "<group>"; };
+		58C1E2D51ACFCEAE00A986F0 /* UINavigationBar+Animations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Animations.m"; sourceTree = "<group>"; };
 		58C45A73193C910A009FEE6E /* navigation_bar_new_post.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar_new_post.png; sourceTree = "<group>"; };
 		58C9E15519EC6A88008CB14A /* GLPConversationRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPConversationRead.h; sourceTree = "<group>"; };
 		58C9E15619EC6A88008CB14A /* GLPConversationRead.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPConversationRead.m; sourceTree = "<group>"; };
@@ -2885,6 +2888,8 @@
 				583B567A194A40B900CC5D37 /* UINavigationBar+Utils.m */,
 				58465DF3195857190021B0FF /* UINavigationBar+Format.h */,
 				58465DF4195857190021B0FF /* UINavigationBar+Format.m */,
+				58C1E2D41ACFCEAE00A986F0 /* UINavigationBar+Animations.h */,
+				58C1E2D51ACFCEAE00A986F0 /* UINavigationBar+Animations.m */,
 			);
 			name = UINavigationBar;
 			sourceTree = "<group>";
@@ -4068,6 +4073,13 @@
 			name = Conversations;
 			sourceTree = "<group>";
 		};
+		58C1E2D31ACFCC9900A986F0 /* Subclassing */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Subclassing;
+			sourceTree = "<group>";
+		};
 		58C45A72193C9077009FEE6E /* Navigation bar */ = {
 			isa = PBXGroup;
 			children = (
@@ -4985,6 +4997,7 @@
 		80AB893E17C26D040053E784 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				58C1E2D31ACFCC9900A986F0 /* Subclassing */,
 				58F2950219354A4400A638BA /* Animated Transitioning */,
 				803FF9961897D921000B1955 /* Delegate */,
 				8057E33A1834C1040089F4D9 /* Processors */,
@@ -6508,6 +6521,7 @@
 				58ECE0C81A23DB0700B38FBA /* GLPApprovalManager.m in Sources */,
 				58272F801896807900CD7522 /* FakeNavigationBar.m in Sources */,
 				58350A6E198AF9C2000BB1CA /* GLPNetworkErrorView.m in Sources */,
+				58C1E2D61ACFCEAE00A986F0 /* UINavigationBar+Animations.m in Sources */,
 				58C9E15719EC6A88008CB14A /* GLPConversationRead.m in Sources */,
 				80B2A421183380CF002AB1F0 /* GLPNotificationDaoParser.m in Sources */,
 				58F9C64218C5306D004A237E /* GLPGroupManager.m in Sources */,

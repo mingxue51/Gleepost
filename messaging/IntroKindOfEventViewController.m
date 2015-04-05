@@ -11,8 +11,9 @@
 #import "CategoryManager.h"
 #import "UINavigationBar+Format.h"
 #import "GLPiOSSupportHelper.h"
+#import "ATNavigationNewPost.h"
 
-@interface IntroKindOfEventViewController ()
+@interface IntroKindOfEventViewController () <UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distancePartyButtonFromTop;
 @property (nonatomic, retain) IBOutletCollection(NSLayoutConstraint) NSArray *distancesBetweenButtons;
@@ -28,13 +29,38 @@
     [super viewDidLoad];
     [self configureNavigationBar];
     [self configureConstrainsDependingOnScreenSize];
+    self.navigationController.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.view layoutIfNeeded];
+    
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES andView:self.view];
+    
     self.distancePartyButtonFromTop.constant = (self.topButton.frame.origin.y / 2) - (self.titleLabel.frame.size.height / 2);
+    
+//    ((UIView*)[[self.navigationController.navigationBar subviews] objectAtIndex:1]).alpha = 0.0;
+
+    self.navigationController.navigationBar.alpha = 0.0;
+    
+    [UIView animateWithDuration:0.9 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+        
+        self.navigationController.navigationBar.alpha = 1.0;
+
+    } completion:^(BOOL finished) {
+        
+    }];
+    
+//    [UIView animateWithDuration:0.5 animations:^{
+//       
+////        [self.navigationController.navigationItem.titleView setAlpha:1.0];
+////        ((UIView*)[[self.navigationController.navigationBar subviews] objectAtIndex:1]).alpha = 1.0;
+//        self.navigationController.navigationBar.alpha = 1.0;
+//
+//
+//    }];
 }
 
 - (void)configureNavigationBar
@@ -93,8 +119,34 @@
     
     [[PendingPostManager sharedInstance] setCategory: [[CategoryManager sharedInstance] categoryWithOrderKey:senderButton.tag]];
     
-    [self performSegueWithIdentifier:@"pick date" sender:self];
+    
+    [self navigateToDatePickerView];
+//    [self performSegueWithIdentifier:@"pick date" sender:self];
 
+}
+
+- (void)navigateToDatePickerView
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
+    IntroKindOfEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"PickDateEventViewController"];
+    [self.navigationController pushViewController:cvc animated:NO];
+}
+
+
+#pragma mark - UINavigationControllerDelegate
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController*)fromVC
+                                                 toViewController:(UIViewController*)toVC
+{
+    if (operation == UINavigationControllerOperationPush)
+        return [[ATNavigationNewPost alloc] init];
+    
+    if (operation == UINavigationControllerOperationPop)
+        return [[ATNavigationNewPost alloc] init];
+    
+    return nil;
 }
 
 - (void)didReceiveMemoryWarning

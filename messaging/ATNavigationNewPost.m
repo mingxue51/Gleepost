@@ -32,7 +32,9 @@
     
     [[transitionContext containerView] insertSubview:toViewController.view belowSubview:fromViewController.view];
     
-    [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+//    [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+
+    [transitionContext completeTransition:YES];
 
 //    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
 //        fromViewController.view.alpha = 0.0;
