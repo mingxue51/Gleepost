@@ -29,6 +29,7 @@ typedef NS_ENUM(NSUInteger, IntroNewPostViewElement) {
 
 - (void)firstViewAnimationsWithView:(UIView *)view;
 - (void)viewDidLoadAnimationWithConstraint:(NSLayoutConstraint *)layoutConstraint andKindOfElement:(IntroNewPostViewElement)kindOfElement;
+- (void)viewDisappearingAnimationWithView:(UIView *)view andKindOfElement:(IntroNewPostViewElement)kindOfElement;
 - (CGFloat)getInitialElementsPosition;
 
 @end

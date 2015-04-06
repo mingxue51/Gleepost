@@ -45,7 +45,29 @@
         basicAnimation.name=@"AnyAnimationNameYouWant";
         basicAnimation.delegate=self;
         
-        [layoutConstraint pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
+        [layoutConstraint pop_addAnimation:basicAnimation forKey:@"Appearing"];
+    });
+}
+
+- (void)viewDisappearingAnimationWithView:(UIView *)view andKindOfElement:(IntroNewPostViewElement)kindOfElement
+{
+    [view layoutIfNeeded];
+    
+    CGRect currentFrame = view.frame;
+    
+    GLPConstraintAnimationData *constraintAnimationData = [self.animationData objectForKey:@(kindOfElement)];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, constraintAnimationData.delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        
+        POPBasicAnimation *basicAnimation = [POPBasicAnimation animation];
+        
+        basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
+        basicAnimation.toValue = [NSValue valueWithCGRect:CGRectMake(-currentFrame.origin.x - currentFrame.size.width, currentFrame.origin.y, currentFrame.size.width, currentFrame.size.height)];
+        
+        basicAnimation.name=[NSString stringWithFormat:@"%ld", (long)view.tag];;
+        basicAnimation.delegate=self;
+        
+        [view pop_addAnimation:basicAnimation forKey:@"Disappearing"];
     });
 }
 
@@ -72,6 +94,18 @@
     
     // 5. Add animation to View or Layer, we picked View so self.tableView and not layer which would have been self.tableView.layer
     [view pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
+}
+
+- (void)pop_animationDidStop:(POPAnimation *)anim finished:(BOOL)finished
+{
+    NSInteger viewTag = [anim.name integerValue];
+
+    //Tag = 99 is the Nevermind button.
+    
+    if(viewTag == 99 && finished)
+    {
+        [self.delegate viewsDisappeared];
+    }
 }
 
 #pragma mark - Helpers

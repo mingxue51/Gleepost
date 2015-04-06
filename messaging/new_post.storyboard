@@ -175,7 +175,7 @@
                                     <constraint firstAttribute="width" constant="1" id="YwD-Sb-4Gp"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Df6-gP-jEo">
+                            <button opaque="NO" tag="99" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Df6-gP-jEo">
                                 <rect key="frame" x="0.0" y="540" width="600" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="bJH-P7-sTC"/>
@@ -268,6 +268,12 @@
                         <outlet property="nevermindButton" destination="Df6-gP-jEo" id="THD-dq-MDC"/>
                         <outlet property="pencilDistanceFromTop" destination="a0C-9O-HPK" id="tsW-M0-qd2"/>
                         <outlet property="titleDistanceFromTop" destination="Az7-Gc-oFi" id="41y-T6-hZU"/>
+                        <outletCollection property="elements" destination="7n7-gc-vCp" id="Hh5-Ly-dnK"/>
+                        <outletCollection property="elements" destination="VCW-G1-gQP" id="uQz-gw-3VF"/>
+                        <outletCollection property="elements" destination="TCa-Gu-qr0" id="gYX-O8-odD"/>
+                        <outletCollection property="elements" destination="hZU-W6-OBn" id="VEI-g9-14d"/>
+                        <outletCollection property="elements" destination="DcR-8v-Kix" id="gaI-hp-LKe"/>
+                        <outletCollection property="elements" destination="WK3-0e-CHF" id="IvK-Gj-OKO"/>
                         <segue destination="q62-Na-WAe" kind="show" identifier="final new post" id="Tce-bA-hLN"/>
                         <segue destination="Xbv-3h-ojf" kind="show" identifier="view event selector" id="CMF-aX-gyW"/>
                     </connections>

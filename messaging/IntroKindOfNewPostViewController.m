@@ -20,7 +20,7 @@
 #import "FakeNavigationBarNewPostView.h"
 #import "GLPIntroNewPostAnimationHelper.h"
 
-@interface IntroKindOfNewPostViewController () <UINavigationControllerDelegate>
+@interface IntroKindOfNewPostViewController () <UINavigationControllerDelegate, GLPIntroNewPostAnimationHelperDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleHeightConstrain;
 
@@ -32,10 +32,14 @@
 
 //Views.
 @property (weak, nonatomic) IBOutlet UIButton *nevermindButton;
+@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *elements;
+
 
 @property (strong, nonatomic) TDNavigationNewPost *tdNavigationNewPost;
 @property (strong, nonatomic) FakeNavigationBarNewPostView *fakeNavigationBar;
 @property (strong, nonatomic) GLPIntroNewPostAnimationHelper *animationsHelper;
+
+@property (assign, nonatomic) BOOL readToGoToNextView;
 
 @end
 
@@ -73,6 +77,8 @@
 {
     self.tdNavigationNewPost = [[TDNavigationNewPost alloc] init];
     self.animationsHelper = [[GLPIntroNewPostAnimationHelper alloc] init];
+    self.animationsHelper.delegate = self;
+    self.readToGoToNextView = NO;
 }
 
 - (void)initialisePositions
@@ -125,6 +131,30 @@
     [self.animationsHelper animateNevermindView:self.nevermindButton withAppearance:YES];
 }
 
+- (void)animateElementsBeforeDisappearing
+{
+    for(UIView *view in self.elements)
+    {
+        [self.animationsHelper viewDisappearingAnimationWithView:view andKindOfElement:kTitleElement];
+    }
+    
+    [self.animationsHelper viewDisappearingAnimationWithView:self.nevermindButton andKindOfElement:kTitleElement];
+    
+}
+
+#pragma mark - GLPIntroNewPostAnimationHelperDelegate
+
+- (void)viewsDisappeared
+{
+    if(self.readToGoToNextView)
+    {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
+        IntroKindOfEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfEventViewController"];
+        [self.navigationController pushViewController:cvc animated:NO];
+    }
+    
+}
+
 #pragma mark - Selectors
 
 - (IBAction)selectEvent:(id)sender
@@ -135,17 +165,12 @@
     }
     
     [[PendingPostManager sharedInstance] setGroup:_group];
-    
     [[PendingPostManager sharedInstance] setGroupPost:_groupPost];
-    
-    
     [[PendingPostManager sharedInstance] setKindOfPost:kEventPost];
     
+    [self animateElementsBeforeDisappearing];
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
-    IntroKindOfEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfEventViewController"];
-    
-    [self.navigationController pushViewController:cvc animated:NO];
+    self.readToGoToNextView = YES;
 
 //    cvc.modalPresentationStyle = UIModalPresentationCustom;
     

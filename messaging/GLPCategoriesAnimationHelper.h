@@ -18,6 +18,5 @@
 
 - (void)animateElementWithTopConstraint:(NSLayoutConstraint *)topConstraint withKindOfView:(CategoryOrder)kindOfView;
 - (void)dismissElementWithView:(UIView *)view withKindOfView:(CategoryOrder)kindOfView;
-- (void)animateNevermindView:(UIView *)nevermindView withAppearance:(BOOL)show;
 
 @end
