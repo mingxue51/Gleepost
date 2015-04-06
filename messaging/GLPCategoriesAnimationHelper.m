@@ -10,54 +10,9 @@
 #import "GLPCategoriesAnimationHelper.h"
 #import <POP/POP.h>
 #import "GLPiOSSupportHelper.h"
-
-@interface ConstraintAnimationData : NSObject
-
-@property (assign, nonatomic) CGFloat finalY;
-@property (assign, nonatomic) CGFloat delay;
-@property (assign, nonatomic) CGFloat bounce;
-@property (assign, nonatomic) CGFloat speed;
-
-@end
-
-@implementation ConstraintAnimationData
-
-- (instancetype)initWithFinalY:(CGFloat)finalY withDelay:(CGFloat)delay withBounceLevel:(CGFloat)bounce withSpeedLevel:(CGFloat)speed
-{
-    self = [super init];
-    
-    if (self)
-    {
-        self.finalY = finalY;
-        self.delay = delay;
-        self.bounce = bounce;
-        self.speed = speed;
-    }
-    
-    return self;
-}
-
-@end
-
-@interface GLPCategoriesAnimationHelper ()
-
-/** This data structure has a key, value: <KindOfElement enum, ConstraintAnimationData>. */
-@property (strong, nonatomic) NSDictionary *animationData;
-
-@end
+#import "GLPConstraintAnimationData.h"
 
 @implementation GLPCategoriesAnimationHelper
-
-- (instancetype)init
-{
-    self = [super init];
-    
-    if (self)
-    {
-        [self configureData];
-    }
-    return self;
-}
 
 /**
  Here we are configuring the NSDictionary that contains all the animation data of the elements.
@@ -66,16 +21,16 @@
 {
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:80.0 withDelay:0.0 withBounceLevel:10.0 withSpeedLevel:20.0] forKey:@(kAllOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:55.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kPartiesOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:55.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kFreeFood)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:55.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kSportsOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:10.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kSpeakersOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:10.0 withDelay:0.25 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kMusicOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:10.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kTheaterOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:70.0 withDelay:0.3 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kAnnouncementsOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:70.0 withDelay:0.25 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kGeneralOrder)];
-    [dictionary setObject:[[ConstraintAnimationData alloc] initWithFinalY:70.0 withDelay:0.3 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kQuestionsOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:80.0 withDelay:0.0 withBounceLevel:10.0 withSpeedLevel:20.0] forKey:@(kAllOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:55.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kPartiesOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:55.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kFreeFood)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:55.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kSportsOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:10.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kSpeakersOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:10.0 withDelay:0.25 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kMusicOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:10.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kTheaterOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:70.0 withDelay:0.3 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kAnnouncementsOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:70.0 withDelay:0.25 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kGeneralOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:70.0 withDelay:0.3 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kQuestionsOrder)];
     
     self.animationData = dictionary;
 }
@@ -84,7 +39,7 @@
 
 - (void)animateElementWithTopConstraint:(NSLayoutConstraint *)topConstraint withKindOfView:(CategoryOrder)kindOfView
 {
-    ConstraintAnimationData *constraintAnimationData = [self.animationData objectForKey:@(kindOfView)];
+    GLPConstraintAnimationData *constraintAnimationData = [self.animationData objectForKey:@(kindOfView)];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, constraintAnimationData.delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
 
@@ -116,7 +71,7 @@
     
     CGRect currentFrame = view.frame;
     
-    ConstraintAnimationData *constraintAnimationData = [self.animationData objectForKey:@(kindOfView)];
+    GLPConstraintAnimationData *constraintAnimationData = [self.animationData objectForKey:@(kindOfView)];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, constraintAnimationData.delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         
@@ -176,13 +131,6 @@
     {
         [self.delegate viewsDisappeared];
     }
-}
-
-#pragma mark - Helpers
-
-- (CGFloat)getInitialElementsPosition
-{
-    return [GLPiOSSupportHelper screenHeight];
 }
 
 @end

@@ -53,6 +53,10 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" alpha="0.94999999999999996" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gXS-51-6l3">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get the word out..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VCW-G1-gQP">
                                 <rect key="frame" x="10" y="174" width="580" height="30"/>
                                 <constraints>
@@ -222,9 +226,10 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="DcR-8v-Kix" firstAttribute="height" secondItem="hZU-W6-OBn" secondAttribute="height" id="16s-hZ-7WO"/>
+                            <constraint firstItem="JL8-Ly-llw" firstAttribute="top" secondItem="gXS-51-6l3" secondAttribute="bottom" id="4F2-7X-YYb"/>
                             <constraint firstAttribute="trailing" secondItem="VCW-G1-gQP" secondAttribute="trailing" constant="10" id="7T4-Js-qtn"/>
                             <constraint firstItem="DcR-8v-Kix" firstAttribute="top" secondItem="TCa-Gu-qr0" secondAttribute="bottom" constant="25" id="8SL-67-FhE"/>
                             <constraint firstItem="SG7-87-o4d" firstAttribute="top" secondItem="6VX-XB-aaT" secondAttribute="top" constant="220" id="8cq-WO-96z"/>
@@ -233,10 +238,12 @@
                             <constraint firstItem="JL8-Ly-llw" firstAttribute="top" secondItem="WK3-0e-CHF" secondAttribute="bottom" constant="105" id="DQ0-d3-oik"/>
                             <constraint firstAttribute="centerX" secondItem="SG7-87-o4d" secondAttribute="centerX" id="Gvc-Tp-lcx"/>
                             <constraint firstItem="SG7-87-o4d" firstAttribute="leading" secondItem="TCa-Gu-qr0" secondAttribute="trailing" constant="-5" id="PoB-N6-dJu"/>
+                            <constraint firstAttribute="trailing" secondItem="gXS-51-6l3" secondAttribute="trailing" id="Rwk-Qx-XPQ"/>
                             <constraint firstItem="WK3-0e-CHF" firstAttribute="height" secondItem="6VX-XB-aaT" secondAttribute="height" multiplier="0.2" id="Tg4-Kz-nTH"/>
                             <constraint firstItem="JL8-Ly-llw" firstAttribute="top" secondItem="DcR-8v-Kix" secondAttribute="bottom" constant="105" id="VZA-3q-VM2"/>
                             <constraint firstItem="hZU-W6-OBn" firstAttribute="leading" secondItem="TCa-Gu-qr0" secondAttribute="trailing" constant="-5" id="WJR-IH-lzE"/>
                             <constraint firstItem="7n7-gc-vCp" firstAttribute="top" secondItem="PAl-x8-oxz" secondAttribute="bottom" constant="50" id="a0C-9O-HPK"/>
+                            <constraint firstItem="gXS-51-6l3" firstAttribute="top" secondItem="6VX-XB-aaT" secondAttribute="top" id="aqo-Y3-lEo"/>
                             <constraint firstItem="WK3-0e-CHF" firstAttribute="top" secondItem="hZU-W6-OBn" secondAttribute="bottom" constant="25" id="gD6-Ge-MYb"/>
                             <constraint firstItem="VCW-G1-gQP" firstAttribute="leading" secondItem="6VX-XB-aaT" secondAttribute="leading" constant="10" id="gcd-n0-muG"/>
                             <constraint firstAttribute="centerX" secondItem="7n7-gc-vCp" secondAttribute="centerX" id="lR9-mP-LNL"/>
@@ -244,6 +251,7 @@
                             <constraint firstAttribute="bottom" secondItem="SG7-87-o4d" secondAttribute="bottom" id="mf0-eP-UL3"/>
                             <constraint firstItem="DcR-8v-Kix" firstAttribute="height" secondItem="TCa-Gu-qr0" secondAttribute="height" id="oA2-gp-hEF"/>
                             <constraint firstItem="WK3-0e-CHF" firstAttribute="height" secondItem="DcR-8v-Kix" secondAttribute="height" id="qDU-RI-AIg"/>
+                            <constraint firstItem="gXS-51-6l3" firstAttribute="leading" secondItem="6VX-XB-aaT" secondAttribute="leading" id="qq2-GU-mzN"/>
                             <constraint firstAttribute="trailing" secondItem="Df6-gP-jEo" secondAttribute="trailing" id="qzr-lr-XWh"/>
                             <constraint firstItem="7n7-gc-vCp" firstAttribute="height" secondItem="6VX-XB-aaT" secondAttribute="height" multiplier="0.0484" id="rPq-Bt-eXI"/>
                             <constraint firstItem="SG7-87-o4d" firstAttribute="leading" secondItem="DcR-8v-Kix" secondAttribute="trailing" constant="-5" id="ray-QY-mJs"/>
@@ -255,6 +263,8 @@
                     </navigationItem>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="announcementDistanceFromBottom" destination="VZA-3q-VM2" id="WTD-yz-uNE"/>
+                        <outlet property="generalDistanceFromBottom" destination="DQ0-d3-oik" id="bNl-Td-YhW"/>
                         <segue destination="q62-Na-WAe" kind="show" identifier="final new post" id="Tce-bA-hLN"/>
                         <segue destination="Xbv-3h-ojf" kind="show" identifier="view event selector" id="CMF-aX-gyW"/>
                     </connections>
@@ -551,7 +561,7 @@
                                         </constraints>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="k8j-G5-RdS" firstAttribute="centerY" secondItem="hkZ-6l-1Y5" secondAttribute="centerY" multiplier="0.5" id="Poa-Az-Qq7"/>
                                     <constraint firstItem="B7z-el-BKK" firstAttribute="leading" secondItem="hkZ-6l-1Y5" secondAttribute="leading" id="iTk-0C-kfh"/>
@@ -561,7 +571,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="VgJ-He-Xa0" firstAttribute="top" secondItem="NXc-oh-Qza" secondAttribute="bottom" id="8gM-0C-LmE"/>
                             <constraint firstAttribute="trailing" secondItem="NXc-oh-Qza" secondAttribute="trailing" id="BjM-I9-l4B"/>
@@ -851,7 +861,7 @@
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="zRD-uG-oug" firstAttribute="width" secondItem="oIw-89-au2" secondAttribute="width" id="1xC-Gp-gmF"/>
                             <constraint firstAttribute="centerX" secondItem="zRD-uG-oug" secondAttribute="centerX" id="2V1-9o-hbs"/>
@@ -1466,6 +1476,6 @@
         <image name="video_top_button.png" width="190" height="95"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="HXm-2z-f7f"/>
+        <segue reference="Tce-bA-hLN"/>
     </inferredMetricsTieBreakers>
 </document>

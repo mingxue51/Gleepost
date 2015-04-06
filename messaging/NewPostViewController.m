@@ -26,7 +26,7 @@
 #import "GroupViewController.h"
 #import "GLPTimelineViewController.h"
 #import "ShapeFormatterHelper.h"
-#import "TDNavigationCategories.h"
+#import "TDFadeNavigation.h"
 #import "GLPiOSSupportHelper.h"
 #import "UINavigationBar+Utils.h"
 #import "UINavigationBar+Format.h"
@@ -36,6 +36,8 @@
 #import "GLPApprovalManager.h"
 #import "GLPPendingPostsManager.h"
 #import "GLPLocation.h"
+#import "GLPApplicationHelper.h"
+#import "FakeNavigationBarView.h"
 
 @interface NewPostViewController () <GLPImageViewDelegate>
 
@@ -69,7 +71,7 @@
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 @property (strong, nonatomic) PBJVideoPlayerController *previewVC;
 
-@property (strong, nonatomic) TDNavigationCategories *transitionViewCategories;
+@property (strong, nonatomic) TDFadeNavigation *transitionViewCategories;
 
 
 @property (assign, nonatomic) BOOL inCategorySelection;
@@ -81,6 +83,9 @@
  miltible same posts*/
 @property (assign, nonatomic, getter=isPostButtonClicked) BOOL postButttonClicked;
 
+
+@property (strong, nonatomic) FakeNavigationBarView *fakeNavigationBar;
+
 @end
 
 @implementation NewPostViewController
@@ -91,15 +96,10 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 @synthesize postUploader=_postUploader;
 
-- (void)backButtonTapped {
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 //    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
-    
     
     if(NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_6_1)
     {
@@ -139,6 +139,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
             
         }
     }
+    
+    [self configureCustomBackButton];
 }
 
 
@@ -150,6 +152,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
     [self formatStatusBar];
     
+    self.navigationController.delegate = nil;
 
 //    self.fdTakeController = [[FDTakeController alloc] init];
 //    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
@@ -180,33 +183,18 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         [self.titleTextField resignFirstResponder];
     }
     [self removeNotifications];
-
     
     [super viewWillDisappear:animated];
-}
-
--(void)viewDidDisappear:(BOOL)animated
-{
-    
-//    [self.contentTextView resignFirstResponder];
-    
-    
-    
-    [super viewDidDisappear:animated];
-
-//    [self.delegate.view setBackgroundColor:[UIColor whiteColor]];
 }
 
 -(void)hideKeyboard
 {
     [self.contentTextView resignFirstResponder];
-
 }
 
 -(void)showKeyboard
 {
     [self.contentTextView becomeFirstResponder];
-
 }
 
 #pragma mark - Configuration
@@ -231,7 +219,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 -(void)configureObjects
 {
-    _transitionViewCategories = [[TDNavigationCategories alloc] init];
+    _transitionViewCategories = [[TDFadeNavigation alloc] init];
     _postUploader = [[GLPPostUploader alloc] init];
     _eventDateStart = nil;
     _descriptionRemainingNoOfCharacters = MAX_DESCRIPTION_CHARACTERS;
@@ -239,6 +227,12 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     _selectedLocation = nil;
     _inSelectLocation = NO;
     _postButttonClicked = NO;
+}
+
+- (void)configureCustomBackButton
+{
+    // change the back button to cancel and add an event handler
+    self.navigationItem.leftBarButtonItem = [GLPApplicationHelper customBackButtonWithTarget:self];
 }
 
 /**
@@ -297,10 +291,14 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 -(void)configureNavigationBar
 {
-    [self.navigationController.navigationBar setTranslucent:NO];
-    self.title = @"NEW POST";
+    [self.navigationController.navigationBar invisible];
+
+    self.fakeNavigationBar = [[FakeNavigationBarView alloc] initWithTitle:@"NEW POST"];
+    [self.view addSubview:self.fakeNavigationBar];
+    
+    self.title = @"";
     [self configureRightBarButton];
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
 //    self.navigationController.navigationBar.tag = 2;
 //    
@@ -650,6 +648,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     _inSelectLocation = YES;
     
     [self performSegueWithIdentifier:@"pick location" sender:self];
+}
+
+- (void)backButtonTapped
+{
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 #pragma mark - ImageSelectorViewControllerDelegate

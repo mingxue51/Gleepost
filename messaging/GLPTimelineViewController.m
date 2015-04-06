@@ -2543,7 +2543,8 @@ const float TOP_OFFSET = 180.0f;
         IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         newPostVC.groupPost = NO;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
-        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        navigationController.modalPresentationStyle = UIModalPresentationCustom;
+        [navigationController setTransitioningDelegate:self.transitionCategoriesViewController];
         [self presentViewController:navigationController animated:YES completion:nil];
     }
     else

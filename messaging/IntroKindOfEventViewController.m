@@ -12,6 +12,7 @@
 #import "UINavigationBar+Format.h"
 #import "GLPiOSSupportHelper.h"
 #import "ATNavigationNewPost.h"
+#import "FakeNavigationBarNewPostView.h"
 
 @interface IntroKindOfEventViewController () <UINavigationControllerDelegate>
 
@@ -19,6 +20,8 @@
 @property (nonatomic, retain) IBOutletCollection(NSLayoutConstraint) NSArray *distancesBetweenButtons;
 @property (weak, nonatomic) IBOutlet UIButton *topButton;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+
+@property (strong, nonatomic) FakeNavigationBarNewPostView *fakeNavigationBar;
 
 @end
 
@@ -29,7 +32,6 @@
     [super viewDidLoad];
     [self configureNavigationBar];
     [self configureConstrainsDependingOnScreenSize];
-    self.navigationController.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -37,21 +39,22 @@
     [super viewWillAppear:animated];
     [self.view layoutIfNeeded];
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES andView:self.view];
+
+//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES andView:self.view];
     
     self.distancePartyButtonFromTop.constant = (self.topButton.frame.origin.y / 2) - (self.titleLabel.frame.size.height / 2);
     
 //    ((UIView*)[[self.navigationController.navigationBar subviews] objectAtIndex:1]).alpha = 0.0;
 
-    self.navigationController.navigationBar.alpha = 0.0;
-    
-    [UIView animateWithDuration:0.9 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-        
-        self.navigationController.navigationBar.alpha = 1.0;
-
-    } completion:^(BOOL finished) {
-        
-    }];
+//    self.navigationController.navigationBar.alpha = 0.0;
+//    
+//    [UIView animateWithDuration:0.9 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+//        
+//        self.navigationController.navigationBar.alpha = 1.0;
+//
+//    } completion:^(BOOL finished) {
+//        
+//    }];
     
 //    [UIView animateWithDuration:0.5 animations:^{
 //       
@@ -63,11 +66,25 @@
 //    }];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    self.navigationController.delegate = self;
+
+}
+
 - (void)configureNavigationBar
 {
-    self.title = @"NEW POST";
+    self.fakeNavigationBar = [[FakeNavigationBarNewPostView alloc] init];
+    [self.view addSubview:self.fakeNavigationBar];
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    [self.navigationController.navigationBar invisible];
+
+    
+//    self.title = @"NEW POST";
+    
+//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
 }
 
 - (void)configureConstrainsDependingOnScreenSize

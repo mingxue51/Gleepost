@@ -9,10 +9,14 @@
 #import "PickDateEventViewController.h"
 #import "WebClientHelper.h"
 #import "PendingPostManager.h"
+#import "ATNavigationNewPost.h"
+#import "UINavigationBar+Format.h"
+#import "FakeNavigationBarNewPostView.h"
 
-@interface PickDateEventViewController ()
+@interface PickDateEventViewController () <UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+@property (strong, nonatomic) FakeNavigationBarNewPostView *fakeNavigationBar;
 
 @end
 
@@ -25,9 +29,10 @@
     
     [self setUpDatePicker];
     
-    self.title = @"NEW POST";
-    
+//    self.title = @"NEW POST";
+
     [self loadDateIfNeeded];
+    [self cofigureNavigationBar];
     
 }
 
@@ -39,6 +44,22 @@
     [[PendingPostManager sharedInstance] setDate:_datePicker.date];
     
     [super viewWillDisappear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    self.navigationController.delegate = self;
+    
+}
+
+- (void)cofigureNavigationBar
+{
+    self.fakeNavigationBar = [[FakeNavigationBarNewPostView alloc] init];
+    [self.view addSubview:self.fakeNavigationBar];
+    
+    [self.navigationController.navigationBar invisible];
 }
 
 - (void)didReceiveMemoryWarning
@@ -129,7 +150,31 @@
 {
     [[PendingPostManager sharedInstance] setDate:_datePicker.date];
 
-    [self performSegueWithIdentifier:@"final new post" sender:self];
+//    [self performSegueWithIdentifier:@"final new post" sender:self];
+    [self navigateToNewPostView];
+}
+
+- (void)navigateToNewPostView
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
+    NewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+    [self.navigationController pushViewController:newPostVC animated:NO];
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController
+                                  animationControllerForOperation:(UINavigationControllerOperation)operation
+                                               fromViewController:(UIViewController*)fromVC
+                                                 toViewController:(UIViewController*)toVC
+{
+    if (operation == UINavigationControllerOperationPush)
+        return [[ATNavigationNewPost alloc] init];
+    
+    if (operation == UINavigationControllerOperationPop)
+        return [[ATNavigationNewPost alloc] init];
+    
+    return nil;
 }
 
 @end

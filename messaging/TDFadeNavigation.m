@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
 
-#import "TDNavigationCategories.h"
-#import "ATNavigationCategories.h"
+#import "TDFadeNavigation.h"
+#import "ATFadeNavigation.h"
 
-@implementation TDNavigationCategories
+@implementation TDFadeNavigation
 
 //===================================================================
 // - UIViewControllerTransitioningDelegate
@@ -17,7 +17,7 @@
 
 - (id <UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
 {
-    ATNavigationCategories *controller = [[ATNavigationCategories alloc]init];
+    ATFadeNavigation *controller = [[ATFadeNavigation alloc]init];
     controller.presenting = YES;
     return controller;
 }
@@ -33,7 +33,7 @@
     
     DDLogDebug(@"Finished new post animation");
     
-    ATNavigationCategories *controller = [[ATNavigationCategories alloc]init];
+    ATFadeNavigation *controller = [[ATFadeNavigation alloc]init];
     controller.presenting = NO;
     return controller;
     

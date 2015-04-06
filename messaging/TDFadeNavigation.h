@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TDNavigationCategories : NSObject <UIViewControllerTransitioningDelegate>
+@interface TDFadeNavigation : NSObject <UIViewControllerTransitioningDelegate>
 
 @end

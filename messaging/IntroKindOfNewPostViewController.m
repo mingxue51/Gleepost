@@ -17,11 +17,20 @@
 #import "TDNavigationNewPost.h"
 #import "ATNavigationNewPost.h"
 #import "IntroKindOfEventViewController.h"
+#import "FakeNavigationBarNewPostView.h"
+#import "GLPIntroNewPostAnimationHelper.h"
 
 @interface IntroKindOfNewPostViewController () <UINavigationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleHeightConstrain;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *announcementDistanceFromBottom;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *generalDistanceFromBottom;
+
+
 @property (strong, nonatomic) TDNavigationNewPost *tdNavigationNewPost;
+@property (strong, nonatomic) FakeNavigationBarNewPostView *fakeNavigationBar;
+@property (strong, nonatomic) GLPIntroNewPostAnimationHelper *animationsHelper;
 
 @end
 
@@ -30,19 +39,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self configureNavigationBar];
-    
     [self configureIsGroupPost];
-    
     [[GLPApprovalManager sharedInstance] reloadApprovalLevel];
-    
     [self configureConstrainsDependingOnScreenSize];
-    
     [self intialiseObjects];
+    [self initialisePositions];
     
     //http://stackoverflow.com/questions/26569488/navigation-controller-custom-transition-animation
     self.navigationController.delegate = self;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.navigationController.delegate = self;
+    [self animateElementsAfterViewDidLoad];
 }
 
 //- (void)viewDidDisappear:(BOOL)animated
@@ -55,6 +67,13 @@
 - (void)intialiseObjects
 {
     self.tdNavigationNewPost = [[TDNavigationNewPost alloc] init];
+    self.animationsHelper = [[GLPIntroNewPostAnimationHelper alloc] init];
+}
+
+- (void)initialisePositions
+{
+    self.announcementDistanceFromBottom.constant = -[self.animationsHelper getInitialElementsPosition];
+    self.generalDistanceFromBottom.constant = -[self.animationsHelper getInitialElementsPosition];
 }
 
 - (void)dealloc
@@ -64,14 +83,16 @@
 
 - (void)configureNavigationBar
 {
-    self.title = @"NEW POST";
+//    self.title = @"NEW POST";
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    [self.navigationController.navigationBar invisible];
+    
+    self.fakeNavigationBar = [[FakeNavigationBarNewPostView alloc] init];
+    [self.view addSubview:self.fakeNavigationBar];
+    
+//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
     [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismiss:) andTarget:self];
-    
-    self.navigationController.navigationBar.tintColor = [AppearanceHelper blueGleepostColour];
-
 }
 
 - (void)configureIsGroupPost
@@ -86,6 +107,14 @@
     {
         [_titleHeightConstrain setConstant:-60];
     }
+}
+
+#pragma mark - Animations
+
+- (void)animateElementsAfterViewDidLoad
+{
+    [self.animationsHelper viewDidLoadAnimationWithConstraint:self.announcementDistanceFromBottom];
+    [self.animationsHelper viewDidLoadAnimationWithConstraint:self.generalDistanceFromBottom];
 }
 
 #pragma mark - Selectors

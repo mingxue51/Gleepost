@@ -30,7 +30,11 @@
     UIViewController* toViewController   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     UIViewController* fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
-    [[transitionContext containerView] insertSubview:toViewController.view belowSubview:fromViewController.view];
+    if(!self.isPresenting)
+    {
+        [[transitionContext containerView] insertSubview:toViewController.view belowSubview:fromViewController.view];
+    }
+    
     
 //    [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
 
