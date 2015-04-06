@@ -18,24 +18,35 @@
 {
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:80.0 withDelay:0.0 withBounceLevel:10.0 withSpeedLevel:20.0] forKey:@(kGeneralPost)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:105.0 withDelay:0.25 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kGeneralElement)];
+    
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:105.0 withDelay:0.25 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kAnnouncementElement)];
+    
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:50.0 withDelay:0.0 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kPencilElement)];
+    
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:110.0 withDelay:0.0 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kTitleElement)];
     
     self.animationData = dictionary.mutableCopy;
 }
 
-- (void)viewDidLoadAnimationWithConstraint:(NSLayoutConstraint *)layoutConstraint
+- (void)viewDidLoadAnimationWithConstraint:(NSLayoutConstraint *)layoutConstraint andKindOfElement:(IntroNewPostViewElement)kindOfElement
 {
-    POPSpringAnimation *basicAnimation = [POPSpringAnimation animation];
- 
-    basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPLayoutConstraintConstant];
-    basicAnimation.toValue = @(105.0);
-//    basicAnimation.springSpeed = constraintAnimationData.speed;
-//    basicAnimation.springBounciness = constraintAnimationData.bounce;
+    GLPConstraintAnimationData *constraintAnimationData = [self.animationData objectForKey:@(kindOfElement)];
     
-    basicAnimation.name=@"AnyAnimationNameYouWant";
-    basicAnimation.delegate=self;
-    
-    [layoutConstraint pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, constraintAnimationData.delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        
+        POPSpringAnimation *basicAnimation = [POPSpringAnimation animation];
+        
+        basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPLayoutConstraintConstant];
+        basicAnimation.toValue = @(constraintAnimationData.finalY);
+        basicAnimation.springSpeed = constraintAnimationData.speed;
+        basicAnimation.springBounciness = constraintAnimationData.bounce;
+        
+        basicAnimation.name=@"AnyAnimationNameYouWant";
+        basicAnimation.delegate=self;
+        
+        [layoutConstraint pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
+    });
 }
 
 - (void)firstViewAnimationsWithView:(UIView *)view

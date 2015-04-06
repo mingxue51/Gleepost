@@ -265,6 +265,9 @@
                     <connections>
                         <outlet property="announcementDistanceFromBottom" destination="VZA-3q-VM2" id="WTD-yz-uNE"/>
                         <outlet property="generalDistanceFromBottom" destination="DQ0-d3-oik" id="bNl-Td-YhW"/>
+                        <outlet property="nevermindButton" destination="Df6-gP-jEo" id="THD-dq-MDC"/>
+                        <outlet property="pencilDistanceFromTop" destination="a0C-9O-HPK" id="tsW-M0-qd2"/>
+                        <outlet property="titleDistanceFromTop" destination="Az7-Gc-oFi" id="41y-T6-hZU"/>
                         <segue destination="q62-Na-WAe" kind="show" identifier="final new post" id="Tce-bA-hLN"/>
                         <segue destination="Xbv-3h-ojf" kind="show" identifier="view event selector" id="CMF-aX-gyW"/>
                     </connections>

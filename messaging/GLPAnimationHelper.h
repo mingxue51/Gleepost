@@ -22,6 +22,7 @@
 /** This data structure has a key, value: <KindOfElement enum, GLPConstraintAnimationData>. */
 @property (strong, nonatomic) NSDictionary *animationData;
 
+- (void)animateNevermindView:(UIView *)nevermindView withAppearance:(BOOL)show;
 - (CGFloat)getInitialElementsPosition;
 
 @end

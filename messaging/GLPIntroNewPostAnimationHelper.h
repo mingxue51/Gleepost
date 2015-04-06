@@ -8,7 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "GLPAnimationHelper.h"
-#import "PendingPostManager.h"
+
+typedef NS_ENUM(NSUInteger, IntroNewPostViewElement) {
+    kEventElement,
+    kQuestionElement,
+    kAnnouncementElement,
+    kGeneralElement,
+    kPencilElement,
+    kTitleElement
+};
 
 @protocol GLPIntroNewPostAnimationHelperDelegate <GLPAnimationHelperDelegate>
 
@@ -20,7 +28,7 @@
 
 
 - (void)firstViewAnimationsWithView:(UIView *)view;
-- (void)viewDidLoadAnimationWithConstraint:(NSLayoutConstraint *)layoutConstraint;
+- (void)viewDidLoadAnimationWithConstraint:(NSLayoutConstraint *)layoutConstraint andKindOfElement:(IntroNewPostViewElement)kindOfElement;
 - (CGFloat)getInitialElementsPosition;
 
 @end

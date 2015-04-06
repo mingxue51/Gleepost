@@ -24,9 +24,14 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleHeightConstrain;
 
+//Distances constraints.
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pencilDistanceFromTop;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleDistanceFromTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *announcementDistanceFromBottom;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *generalDistanceFromBottom;
 
+//Views.
+@property (weak, nonatomic) IBOutlet UIButton *nevermindButton;
 
 @property (strong, nonatomic) TDNavigationNewPost *tdNavigationNewPost;
 @property (strong, nonatomic) FakeNavigationBarNewPostView *fakeNavigationBar;
@@ -74,6 +79,8 @@
 {
     self.announcementDistanceFromBottom.constant = -[self.animationsHelper getInitialElementsPosition];
     self.generalDistanceFromBottom.constant = -[self.animationsHelper getInitialElementsPosition];
+    self.pencilDistanceFromTop.constant = [self.animationsHelper getInitialElementsPosition];
+    self.titleDistanceFromTop.constant = [self.animationsHelper getInitialElementsPosition];
 }
 
 - (void)dealloc
@@ -89,8 +96,6 @@
     
     self.fakeNavigationBar = [[FakeNavigationBarNewPostView alloc] init];
     [self.view addSubview:self.fakeNavigationBar];
-    
-//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
     [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismiss:) andTarget:self];
 }
@@ -113,8 +118,11 @@
 
 - (void)animateElementsAfterViewDidLoad
 {
-    [self.animationsHelper viewDidLoadAnimationWithConstraint:self.announcementDistanceFromBottom];
-    [self.animationsHelper viewDidLoadAnimationWithConstraint:self.generalDistanceFromBottom];
+    [self.animationsHelper viewDidLoadAnimationWithConstraint:self.announcementDistanceFromBottom andKindOfElement:kAnnouncementElement];
+    [self.animationsHelper viewDidLoadAnimationWithConstraint:self.generalDistanceFromBottom andKindOfElement:kGeneralElement];
+    [self.animationsHelper viewDidLoadAnimationWithConstraint:self.pencilDistanceFromTop andKindOfElement:kPencilElement];
+    [self.animationsHelper viewDidLoadAnimationWithConstraint:self.titleDistanceFromTop andKindOfElement:kTitleElement];
+    [self.animationsHelper animateNevermindView:self.nevermindButton withAppearance:YES];
 }
 
 #pragma mark - Selectors
