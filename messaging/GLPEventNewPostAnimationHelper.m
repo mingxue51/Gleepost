@@ -73,7 +73,7 @@
 }
 
 
-- (void)viewDidLoadAnimationWithView:(UIView *)view andKindOfElement:(EventNewPostViewElement)kindOfElement
+- (void)viewGoingBackDisappearingAnimationWithView:(UIView *)view andKindOfElement:(EventNewPostViewElement)kindOfElement
 {
     [view layoutIfNeeded];
     CGRect currentFrame = view.frame;
@@ -85,15 +85,23 @@
         POPSpringAnimation *basicAnimation = [POPSpringAnimation animation];
         
         basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
-        basicAnimation.toValue = [NSValue valueWithCGRect:CGRectMake(-currentFrame.origin.x - currentFrame.size.width, currentFrame.origin.y, currentFrame.size.width, currentFrame.size.height)];
+        basicAnimation.toValue = [NSValue valueWithCGRect:CGRectMake([GLPiOSSupportHelper screenWidth], currentFrame.origin.y, currentFrame.size.width, currentFrame.size.height)];
         basicAnimation.springSpeed = constraintAnimationData.speed;
         basicAnimation.springBounciness = constraintAnimationData.bounce;
         
-        basicAnimation.name=@"AnyAnimationNameYouWant";
+        basicAnimation.name = [NSString stringWithFormat:@"GoingBackDisappearing_%ld", (long)view.tag];
         basicAnimation.delegate=self;
         
-        [view pop_addAnimation:basicAnimation forKey:@"Appearing"];
+        [view pop_addAnimation:basicAnimation forKey:@"Disappearing"];
     });
+}
+
+- (void)pop_animationDidStop:(POPAnimation *)anim finished:(BOOL)finished
+{
+    if([anim.name isEqualToString:@"GoingBackDisappearing_1"] && finished)
+    {
+        [(id<GLPEventNewPostAnimationHelperDelegate>) self.delegate goingBackViewsDisappeared];
+    }
 }
 
 @end

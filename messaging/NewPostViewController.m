@@ -232,7 +232,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 - (void)configureCustomBackButton
 {
     // change the back button to cancel and add an event handler
-    self.navigationItem.leftBarButtonItem = [GLPApplicationHelper customBackButtonWithTarget:self];
+    self.navigationItem.leftBarButtonItems = [GLPApplicationHelper customBackButtonWithTarget:self];
 }
 
 /**

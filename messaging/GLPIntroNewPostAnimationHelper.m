@@ -31,6 +31,22 @@
     self.animationData = dictionary.mutableCopy;
 }
 
+#pragma mark - Positioning
+
+//- (void)setPositionsOnElementsAfterGoingForwardWithConstraint:(NSLayoutConstraint *)constraint andView:(UIView *)view
+//{
+//    [view layoutIfNeeded];
+//    
+//}
+
+- (void)renewFinalValueWithConstraint:(NSLayoutConstraint *)constraint forKindOfElement:(IntroNewPostViewElement)kindOfElement
+{
+    GLPConstraintAnimationData *animationData = [self.animationData objectForKey:@(kindOfElement)];
+    animationData.finalValue = constraint.constant;
+}
+
+#pragma mark - Animations
+
 - (void)viewDidLoadAnimationWithConstraint:(NSLayoutConstraint *)layoutConstraint andKindOfElement:(IntroNewPostViewElement)kindOfElement
 {
     GLPConstraintAnimationData *constraintAnimationData = [self.animationData objectForKey:@(kindOfElement)];
@@ -73,6 +89,11 @@
         
         [view pop_addAnimation:basicAnimation forKey:@"Disappearing"];
     });
+}
+
+- (void)animateElementAfterComingBackWithConstraint:(NSLayoutConstraint *)layoutConstraint andKindOfElement:(IntroNewPostViewElement)kindOfElement
+{
+    
 }
 
 - (void)pop_animationDidStop:(POPAnimation *)anim finished:(BOOL)finished

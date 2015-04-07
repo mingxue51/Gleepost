@@ -265,6 +265,8 @@
                     <connections>
                         <outlet property="announcementDistanceFromBottom" destination="VZA-3q-VM2" id="WTD-yz-uNE"/>
                         <outlet property="generalDistanceFromBottom" destination="DQ0-d3-oik" id="bNl-Td-YhW"/>
+                        <outlet property="generalDistanceFromCenter" destination="med-Re-IJN" id="3hV-aM-BDz"/>
+                        <outlet property="generalView" destination="WK3-0e-CHF" id="Pgl-H1-oCI"/>
                         <outlet property="nevermindButton" destination="Df6-gP-jEo" id="THD-dq-MDC"/>
                         <outlet property="pencilDistanceFromTop" destination="a0C-9O-HPK" id="tsW-M0-qd2"/>
                         <outlet property="titleDistanceFromTop" destination="Az7-Gc-oFi" id="41y-T6-hZU"/>
@@ -335,7 +337,7 @@
                                             <constraint firstAttribute="width" secondItem="4Ey-jY-u5m" secondAttribute="height" multiplier="31:26" id="oLl-UH-tNN"/>
                                         </constraints>
                                     </view>
-                                    <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SaB-T8-LXj" userLabel="FreeFoodView">
+                                    <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SaB-T8-LXj" userLabel="FreeFoodView">
                                         <rect key="frame" x="236" y="110" width="129" height="108"/>
                                         <subviews>
                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MDn-W9-437">
@@ -401,7 +403,7 @@
                                             <constraint firstAttribute="width" secondItem="GgH-PI-WLN" secondAttribute="height" multiplier="31:26" id="r2o-UH-TT9"/>
                                         </constraints>
                                     </view>
-                                    <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XIv-tT-t1p" userLabel="TheaterView">
+                                    <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XIv-tT-t1p" userLabel="TheaterView">
                                         <rect key="frame" x="336" y="35" width="128" height="108"/>
                                         <subviews>
                                             <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0XI-4t-f74">
@@ -434,7 +436,7 @@
                                             <constraint firstItem="f7D-mr-XFP" firstAttribute="leading" secondItem="XIv-tT-t1p" secondAttribute="leading" id="ygL-Qh-wUY"/>
                                         </constraints>
                                     </view>
-                                    <view tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WrI-DL-k6w" userLabel="SpeakerView">
+                                    <view tag="7" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WrI-DL-k6w" userLabel="SpeakerView">
                                         <rect key="frame" x="235" y="220" width="129" height="108"/>
                                         <subviews>
                                             <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gsO-p4-FzE">
@@ -467,7 +469,7 @@
                                             <constraint firstAttribute="centerX" secondItem="gsO-p4-FzE" secondAttribute="centerX" id="qGc-Ir-6BL"/>
                                         </constraints>
                                     </view>
-                                    <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cPc-zC-xDC" userLabel="SportsView">
+                                    <view tag="5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cPc-zC-xDC" userLabel="SportsView">
                                         <rect key="frame" x="136" y="175" width="129" height="108"/>
                                         <subviews>
                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O4d-jm-kzc">
@@ -500,7 +502,7 @@
                                             <constraint firstAttribute="width" secondItem="cPc-zC-xDC" secondAttribute="height" multiplier="31:26" id="zdX-av-zdT"/>
                                         </constraints>
                                     </view>
-                                    <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fGo-9U-LVC" userLabel="PartiesView">
+                                    <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fGo-9U-LVC" userLabel="PartiesView">
                                         <rect key="frame" x="136" y="35" width="129" height="108"/>
                                         <subviews>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Yv-N8-zf7">
@@ -561,14 +563,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hkZ-6l-1Y5">
                                 <rect key="frame" x="0.0" y="64" width="600" height="128"/>
                                 <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What kind of event do you want?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B7z-el-BKK">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="99" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What kind of event do you want?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B7z-el-BKK">
                                         <rect key="frame" x="0.0" y="75" width="600" height="22"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" name="Montserrat-Light" family="Montserrat" pointSize="18"/>
                                         <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar_top" translatesAutoresizingMaskIntoConstraints="NO" id="k8j-G5-RdS">
+                                    <imageView userInteractionEnabled="NO" tag="98" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar_top" translatesAutoresizingMaskIntoConstraints="NO" id="k8j-G5-RdS">
                                         <rect key="frame" x="280" y="12" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" secondItem="k8j-G5-RdS" secondAttribute="height" multiplier="1:1" id="fDo-9M-68c"/>

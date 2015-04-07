@@ -14,8 +14,9 @@
 #import "ATNavigationNewPost.h"
 #import "FakeNavigationBarNewPostView.h"
 #import "GLPEventNewPostAnimationHelper.h"
+#import "GLPApplicationHelper.h"
 
-@interface IntroKindOfEventViewController () <UINavigationControllerDelegate>
+@interface IntroKindOfEventViewController () <UINavigationControllerDelegate, GLPEventNewPostAnimationHelperDelegate>
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distancePartyButtonFromTop;
 @property (nonatomic, retain) IBOutletCollection(NSLayoutConstraint) NSArray *distancesBetweenButtons;
@@ -55,6 +56,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self configureCustomBackButton];
     [self initialiseObjects];
     [self initialisePositions];
     [self configureNavigationBar];
@@ -81,6 +83,7 @@
 - (void)initialiseObjects
 {
     self.animationHelper = [[GLPEventNewPostAnimationHelper alloc] init];
+    self.animationHelper.delegate = self;
 }
 
 - (void)initialisePositions
@@ -120,6 +123,12 @@
     }
 }
 
+- (void)configureCustomBackButton
+{
+    // change the back button to cancel and add an event handler
+    self.navigationItem.leftBarButtonItems = [GLPApplicationHelper customBackButtonWithTarget:self];
+}
+
 #pragma mark - Animations
 
 - (void)animateElementsAfterViewDidLoad
@@ -133,6 +142,38 @@
     [self.animationHelper viewDidLoadAnimationWithConstraint:self.speakerXAligment withKindOfElement:kSpeakersElement];
     [self.animationHelper viewDidLoadAnimationWithConstraint:self.otherXAligment withKindOfElement:kOtherElement];
     [self.animationHelper animateNevermindView:self.titleLabel withAppearance:YES];
+}
+
+- (void)animateElementsBeforeGoingBack
+{
+    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.calendarView andKindOfElement:kCalendarElement];
+    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.musicView andKindOfElement:kMusicElement];
+    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.partyView andKindOfElement:kPartiesElement];
+    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.theaterView andKindOfElement:kTheaterElement];
+    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.freeFoodView andKindOfElement:kFreeFoodElement];
+    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.sportsView andKindOfElement:kSportsElement];
+    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.otherView andKindOfElement:kOtherElement];
+    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.speakersView andKindOfElement:kSpeakersElement];
+
+    [self.animationHelper animateNevermindView:self.titleLabel withAppearance:NO];
+}
+
+- (void)animateElementsBeforeGoingNext
+{
+    
+    
+}
+
+#pragma mark - GLPEventNewPostAnimationHelperDelegate
+
+- (void)goingBackViewsDisappeared
+{
+    [self.navigationController popViewControllerAnimated:NO];
+}
+
+- (void)goingForwardViewsDisappeared
+{
+    
 }
 
 #pragma mark - Selectors
@@ -185,6 +226,10 @@
     [self.navigationController pushViewController:cvc animated:NO];
 }
 
+- (void)backButtonTapped
+{
+    [self animateElementsBeforeGoingBack];
+}
 
 #pragma mark - UINavigationControllerDelegate
 

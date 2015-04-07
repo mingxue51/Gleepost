@@ -30,8 +30,13 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *announcementDistanceFromBottom;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *generalDistanceFromBottom;
 
+//X Constraints.
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *generalDistanceFromCenter;
+
 //Views.
 @property (weak, nonatomic) IBOutlet UIButton *nevermindButton;
+@property (weak, nonatomic) IBOutlet UIView *generalView;
+
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *elements;
 
 
@@ -39,7 +44,8 @@
 @property (strong, nonatomic) FakeNavigationBarNewPostView *fakeNavigationBar;
 @property (strong, nonatomic) GLPIntroNewPostAnimationHelper *animationsHelper;
 
-@property (assign, nonatomic) BOOL readToGoToNextView;
+@property (assign, nonatomic) BOOL readyToGoToNextView;
+@property (assign, nonatomic) BOOL viewDidAppearFirstOccurrence;
 
 @end
 
@@ -63,7 +69,17 @@
 {
     [super viewDidAppear:animated];
     self.navigationController.delegate = self;
-    [self animateElementsAfterViewDidLoad];
+    
+    if(self.viewDidAppearFirstOccurrence)
+    {
+        [self animateElementsAfterViewDidLoad];
+    }
+    else
+    {
+        [self animateElementsAfterComingBack];
+    }
+    
+    self.viewDidAppearFirstOccurrence = NO;
 }
 
 //- (void)viewDidDisappear:(BOOL)animated
@@ -78,7 +94,8 @@
     self.tdNavigationNewPost = [[TDNavigationNewPost alloc] init];
     self.animationsHelper = [[GLPIntroNewPostAnimationHelper alloc] init];
     self.animationsHelper.delegate = self;
-    self.readToGoToNextView = NO;
+    self.readyToGoToNextView = NO;
+    self.viewDidAppearFirstOccurrence = YES;
 }
 
 - (void)initialisePositions
@@ -87,6 +104,17 @@
     self.generalDistanceFromBottom.constant = -[self.animationsHelper getInitialElementsPosition];
     self.pencilDistanceFromTop.constant = [self.animationsHelper getInitialElementsPosition];
     self.titleDistanceFromTop.constant = [self.animationsHelper getInitialElementsPosition];
+}
+
+- (void)setPositionsOnElementsAfterGoingForward
+{
+    [self.generalView layoutIfNeeded];
+    self.generalDistanceFromCenter.constant = -[GLPiOSSupportHelper screenWidth] - self.generalView.frame.size.width;
+}
+
+- (void)renewFinalValuesForElements
+{
+    [self.animationsHelper renewFinalValueWithConstraint:self.generalDistanceFromCenter forKindOfElement:kGeneralElement];
 }
 
 - (void)dealloc
@@ -118,6 +146,7 @@
     {
         [_titleHeightConstrain setConstant:-60];
     }
+
 }
 
 #pragma mark - Animations
@@ -131,7 +160,7 @@
     [self.animationsHelper animateNevermindView:self.nevermindButton withAppearance:YES];
 }
 
-- (void)animateElementsBeforeDisappearing
+- (void)animateElementsBeforeGoingForwardDisappearing
 {
     for(UIView *view in self.elements)
     {
@@ -139,11 +168,18 @@
     }
 }
 
+- (void)animateElementsAfterComingBack
+{
+    //[self.animationsHelper animateElementAfterComingBackWithConstraint:self.generalDistanceFromCenter andKindOfElement:kGeneralElement];
+    
+    [self.animationsHelper viewDidLoadAnimationWithConstraint:self.generalDistanceFromCenter andKindOfElement:kGeneralElement];
+}
+
 #pragma mark - GLPIntroNewPostAnimationHelperDelegate
 
 - (void)viewsDisappeared
 {
-    if(self.readToGoToNextView)
+    if(self.readyToGoToNextView)
     {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
         IntroKindOfEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfEventViewController"];
@@ -165,9 +201,11 @@
     [[PendingPostManager sharedInstance] setGroupPost:_groupPost];
     [[PendingPostManager sharedInstance] setKindOfPost:kEventPost];
     
-    [self animateElementsBeforeDisappearing];
+    [self animateElementsBeforeGoingForwardDisappearing];
+    [self renewFinalValuesForElements];
+    [self setPositionsOnElementsAfterGoingForward];
     
-    self.readToGoToNextView = YES;
+    self.readyToGoToNextView = YES;
 
 //    cvc.modalPresentationStyle = UIModalPresentationCustom;
     
