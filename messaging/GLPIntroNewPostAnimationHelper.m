@@ -85,7 +85,7 @@
     });
 }
 
-- (void)viewDisappearingAnimationWithView:(UIView *)view andKindOfElement:(IntroNewPostViewElement)kindOfElement
+- (void)viewDisappearingAnimationWithView:(UIView *)view withKindOfElement:(IntroNewPostViewElement)kindOfElement andViewDismiss:(BOOL)dismissedView
 {
     [view layoutIfNeeded];
     
@@ -98,11 +98,25 @@
         POPSpringAnimation *basicAnimation = [POPSpringAnimation animation];
         
         basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
-        basicAnimation.toValue = [NSValue valueWithCGRect:CGRectMake(-currentFrame.origin.x - currentFrame.size.width, currentFrame.origin.y, currentFrame.size.width, currentFrame.size.height)];
+        
+        NSValue *toValue = nil;
+        NSString *animationName = nil;
+        if(dismissedView)
+        {
+            toValue = [NSValue valueWithCGRect:CGRectMake(currentFrame.origin.x, -currentFrame.size.height, currentFrame.size.width, currentFrame.size.height)];
+            animationName = @"Dismiss";
+        }
+        else
+        {
+            toValue = [NSValue valueWithCGRect:CGRectMake(-currentFrame.origin.x - currentFrame.size.width, currentFrame.origin.y, currentFrame.size.width, currentFrame.size.height)];
+            animationName = @"GoForward";
+        }
+        
+        basicAnimation.toValue = toValue;
         basicAnimation.springSpeed = 10.0;
 //        basicAnimation.springBounciness = 0.0;
         
-        basicAnimation.name=[NSString stringWithFormat:@"%ld", (long)view.tag];
+        basicAnimation.name=[NSString stringWithFormat:@"%@_%ld", animationName, (long)view.tag];
         basicAnimation.delegate=self;
         
         [view pop_addAnimation:basicAnimation forKey:@"Disappearing"];
@@ -116,13 +130,17 @@
 
 - (void)pop_animationDidStop:(POPAnimation *)anim finished:(BOOL)finished
 {
-    NSInteger viewTag = [anim.name integerValue];
+    NSString *animationNameTag = anim.name;
 
     //Tag = 99 is the Nevermind button.
     
-    if(viewTag == 99 && finished)
+    if([animationNameTag isEqualToString:@"GoForward_99"] && finished)
     {
         [self.delegate viewsDisappeared];
+    }
+    else if([animationNameTag isEqualToString:@"Dismiss_99"] && finished)
+    {
+        [(id<GLPIntroNewPostAnimationHelperDelegate>) self.delegate viewReadyToBeDismissed];
     }
 }
 

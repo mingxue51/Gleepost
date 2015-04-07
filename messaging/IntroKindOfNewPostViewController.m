@@ -183,6 +183,16 @@
     [self.animationsHelper renewDelay:(appearing) ? 0.2 : 0.1 withKindOfElement:kEventElement];
 }
 
+- (void)renewDismissingAnimationDelays
+{
+    [self.animationsHelper renewDelay:0.15 withKindOfElement:kGeneralElement];
+    [self.animationsHelper renewDelay:0.05 withKindOfElement:kQuestionElement];
+    [self.animationsHelper renewDelay:0.15 withKindOfElement:kAnnouncementElement];
+    [self.animationsHelper renewDelay:0.05 withKindOfElement:kEventElement];
+    [self.animationsHelper renewDelay:0.05 withKindOfElement:kTitleElement];
+    [self.animationsHelper renewDelay:0.05 withKindOfElement:kPencilElement];
+}
+
 #pragma mark - Animations
 
 - (void)animateElementsAfterViewDidLoad
@@ -198,7 +208,17 @@
 {
     for(UIView *view in self.elements)
     {
-        [self.animationsHelper viewDisappearingAnimationWithView:view andKindOfElement:view.tag];
+        [self.animationsHelper viewDisappearingAnimationWithView:view withKindOfElement:view.tag andViewDismiss:NO];
+    }
+}
+
+- (void)animateElementsBeforeDismissing
+{
+    [self renewDismissingAnimationDelays];
+    
+    for(UIView *view in self.elements)
+    {
+        [self.animationsHelper viewDisappearingAnimationWithView:view withKindOfElement:view.tag andViewDismiss:YES];
     }
 }
 
@@ -229,7 +249,11 @@
         IntroKindOfEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfEventViewController"];
         [self.navigationController pushViewController:cvc animated:NO];
     }
-    
+}
+
+- (void)viewReadyToBeDismissed
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Selectors
@@ -264,6 +288,9 @@
     //TODO: Change that when announcements are ready to be implemented.
     [self selectGeneral:sender];
     
+    [self animateElementsBeforeGoingForwardDisappearing];
+
+    
 //    if([[PendingPostManager sharedInstance] kindOfPost] != kAnnouncementPost)
 //    {
 //        [[PendingPostManager sharedInstance] reset];
@@ -294,12 +321,14 @@
     
     [[PendingPostManager sharedInstance] setKindOfPost:kGeneralPost];
     
+    [self animateElementsBeforeGoingForwardDisappearing];
+    
     [self performSegueWithIdentifier:@"final new post" sender:self];
 }
 
 - (IBAction)dismiss:(id)sender
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self animateElementsBeforeDismissing];
 }
 
 #pragma mark - UINavigationControllerDelegate

@@ -866,6 +866,10 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" alpha="0.98999999999999999" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bRO-aO-nqf">
+                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </imageView>
                             <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="zRD-uG-oug">
                                 <rect key="frame" x="0.0" y="209" width="600" height="216"/>
                                 <constraints>
@@ -912,8 +916,12 @@
                             <constraint firstItem="44C-Ak-H9I" firstAttribute="width" secondItem="oIw-89-au2" secondAttribute="width" multiplier="0.8" id="7pl-wF-l1y"/>
                             <constraint firstAttribute="bottom" secondItem="tf3-nb-VH9" secondAttribute="bottom" constant="14" id="JUq-6H-JHD"/>
                             <constraint firstAttribute="centerX" secondItem="tf3-nb-VH9" secondAttribute="centerX" id="VGC-Uy-qwd"/>
+                            <constraint firstItem="2DH-Yt-Wd0" firstAttribute="top" secondItem="bRO-aO-nqf" secondAttribute="bottom" id="bap-o5-yHt"/>
                             <constraint firstItem="tf3-nb-VH9" firstAttribute="width" secondItem="oIw-89-au2" secondAttribute="width" multiplier="0.94" id="dCk-ex-DSs"/>
+                            <constraint firstItem="bRO-aO-nqf" firstAttribute="top" secondItem="S0b-Um-sFe" secondAttribute="bottom" id="fl8-z6-iEK"/>
                             <constraint firstItem="44C-Ak-H9I" firstAttribute="top" secondItem="S0b-Um-sFe" secondAttribute="bottom" constant="20" id="gKH-mm-ocU"/>
+                            <constraint firstAttribute="trailing" secondItem="bRO-aO-nqf" secondAttribute="trailing" id="jxZ-BD-ttq"/>
+                            <constraint firstItem="bRO-aO-nqf" firstAttribute="leading" secondItem="oIw-89-au2" secondAttribute="leading" id="uhg-25-dve"/>
                             <constraint firstAttribute="centerX" secondItem="44C-Ak-H9I" secondAttribute="centerX" id="vJj-Pq-DZk"/>
                             <constraint firstItem="zRD-uG-oug" firstAttribute="top" secondItem="44C-Ak-H9I" secondAttribute="bottom" constant="28" id="z3L-5R-Ko5"/>
                         </constraints>

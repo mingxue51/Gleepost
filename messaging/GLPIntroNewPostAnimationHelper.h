@@ -21,14 +21,14 @@ typedef NS_ENUM(NSUInteger, IntroNewPostViewElement) {
 
 @protocol GLPIntroNewPostAnimationHelperDelegate <GLPAnimationHelperDelegate>
 
-
+- (void)viewReadyToBeDismissed;
 
 @end
 
 @interface GLPIntroNewPostAnimationHelper : GLPAnimationHelper
 
 - (void)viewDidAppearAnimationWithConstraint:(NSLayoutConstraint *)layoutConstraint andKindOfElement:(IntroNewPostViewElement)kindOfElement;
-- (void)viewDisappearingAnimationWithView:(UIView *)view andKindOfElement:(IntroNewPostViewElement)kindOfElement;
+- (void)viewDisappearingAnimationWithView:(UIView *)view withKindOfElement:(IntroNewPostViewElement)kindOfElement andViewDismiss:(BOOL)dismissedView;
 - (void)animateElementAfterComingBackWithConstraint:(NSLayoutConstraint *)layoutConstraint andKindOfElement:(IntroNewPostViewElement)kindOfElement;
 - (void)renewFinalValueWithConstraint:(NSLayoutConstraint *)constraint forKindOfElement:(IntroNewPostViewElement)kindOfElement;
 - (void)renewDelay:(CGFloat)delay withKindOfElement:(IntroNewPostViewElement)kindOfElement;
