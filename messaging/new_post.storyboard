@@ -295,8 +295,9 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kRy-RT-fq8">
-                                <rect key="frame" x="180" y="236" width="240" height="128"/>
+                            <imageView userInteractionEnabled="NO" alpha="0.98999999999999999" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kRy-RT-fq8">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NXc-oh-Qza" userLabel="CategoriesView">
                                 <rect key="frame" x="0.0" y="192" width="600" height="408"/>
@@ -589,12 +590,16 @@
                             <constraint firstItem="VgJ-He-Xa0" firstAttribute="top" secondItem="NXc-oh-Qza" secondAttribute="bottom" id="8gM-0C-LmE"/>
                             <constraint firstAttribute="trailing" secondItem="NXc-oh-Qza" secondAttribute="trailing" id="BjM-I9-l4B"/>
                             <constraint firstItem="hkZ-6l-1Y5" firstAttribute="top" secondItem="2Uj-8D-bWL" secondAttribute="bottom" id="MPd-vN-P3i"/>
+                            <constraint firstItem="VgJ-He-Xa0" firstAttribute="top" secondItem="kRy-RT-fq8" secondAttribute="bottom" id="Mdl-Og-oCK"/>
                             <constraint firstItem="NXc-oh-Qza" firstAttribute="height" secondItem="iKH-oW-5dc" secondAttribute="height" multiplier="0.68" id="N0u-Ud-FtB"/>
+                            <constraint firstItem="kRy-RT-fq8" firstAttribute="leading" secondItem="iKH-oW-5dc" secondAttribute="leading" id="Ue6-Al-BZM"/>
                             <constraint firstItem="NXc-oh-Qza" firstAttribute="top" secondItem="hkZ-6l-1Y5" secondAttribute="bottom" id="cSI-eQ-jaX"/>
                             <constraint firstItem="SaB-T8-LXj" firstAttribute="height" secondItem="iKH-oW-5dc" secondAttribute="height" multiplier="0.18" id="e3z-Xp-bfq"/>
                             <constraint firstItem="k8j-G5-RdS" firstAttribute="height" secondItem="iKH-oW-5dc" secondAttribute="height" multiplier="0.066" id="ffF-3V-lZV"/>
                             <constraint firstItem="NXc-oh-Qza" firstAttribute="leading" secondItem="iKH-oW-5dc" secondAttribute="leading" id="fl6-8O-M90"/>
+                            <constraint firstItem="kRy-RT-fq8" firstAttribute="top" secondItem="iKH-oW-5dc" secondAttribute="top" id="jyd-g3-YgI"/>
                             <constraint firstAttribute="trailing" secondItem="hkZ-6l-1Y5" secondAttribute="trailing" id="mhz-AZ-iE4"/>
+                            <constraint firstAttribute="trailing" secondItem="kRy-RT-fq8" secondAttribute="trailing" id="s1a-yI-R2h"/>
                             <constraint firstItem="hkZ-6l-1Y5" firstAttribute="leading" secondItem="iKH-oW-5dc" secondAttribute="leading" id="vD2-Fh-Rug"/>
                         </constraints>
                     </view>
@@ -602,6 +607,22 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="TYa-73-TyE"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="calendarView" destination="k8j-G5-RdS" id="kbu-qx-y2c"/>
+                        <outlet property="calendarXAligment" destination="sLA-Pt-hOZ" id="vQ7-yd-tOC"/>
+                        <outlet property="freeFoodView" destination="SaB-T8-LXj" id="3nm-5m-a7z"/>
+                        <outlet property="freeFoodXAligment" destination="TrT-mc-6fM" id="Tgg-Nn-dNV"/>
+                        <outlet property="musicView" destination="4Ey-jY-u5m" id="Qha-eR-NUe"/>
+                        <outlet property="musicXAligment" destination="OGY-OG-vR8" id="FeF-ST-g4T"/>
+                        <outlet property="otherView" destination="GgH-PI-WLN" id="2JK-cb-9on"/>
+                        <outlet property="otherXAligment" destination="LFM-hR-c9K" id="3S7-mh-yBF"/>
+                        <outlet property="partyView" destination="fGo-9U-LVC" id="wzg-ex-o2S"/>
+                        <outlet property="partyXAligment" destination="tXp-4J-mqa" id="LKq-oc-uVh"/>
+                        <outlet property="speakerXAligment" destination="Xxi-up-ZA9" id="nPz-RB-ThC"/>
+                        <outlet property="speakersView" destination="WrI-DL-k6w" id="HiP-ry-3En"/>
+                        <outlet property="sportsView" destination="cPc-zC-xDC" id="7Kl-8L-VqX"/>
+                        <outlet property="sportsXAligment" destination="kGh-IC-Vum" id="G2q-mO-Otz"/>
+                        <outlet property="theaterView" destination="XIv-tT-t1p" id="QP9-5C-c6u"/>
+                        <outlet property="theaterXAligment" destination="3ls-tR-CJw" id="AUM-a4-GoO"/>
                         <outlet property="titleLabel" destination="B7z-el-BKK" id="Ryw-QS-HrF"/>
                         <segue destination="z9V-fp-bky" kind="show" identifier="pick date" id="8Gr-Ru-hxI"/>
                     </connections>

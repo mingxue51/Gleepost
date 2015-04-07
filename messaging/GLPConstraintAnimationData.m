@@ -12,13 +12,13 @@
 
 @implementation GLPConstraintAnimationData
 
-- (instancetype)initWithFinalY:(CGFloat)finalY withDelay:(CGFloat)delay withBounceLevel:(CGFloat)bounce withSpeedLevel:(CGFloat)speed
+- (instancetype)initWithFinalValue:(CGFloat)finalValue withDelay:(CGFloat)delay withBounceLevel:(CGFloat)bounce withSpeedLevel:(CGFloat)speed
 {
     self = [super init];
     
     if (self)
     {
-        self.finalY = finalY;
+        self.finalValue = finalValue;
         self.delay = delay;
         self.bounce = bounce;
         self.speed = speed;

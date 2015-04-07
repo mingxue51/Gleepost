@@ -18,15 +18,15 @@
 {
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:105.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kGeneralElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:105.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kGeneralElement)];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:105.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kAnnouncementElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:105.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kAnnouncementElement)];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:50.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kPencilElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:50.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kPencilElement)];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:110.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kTitleElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:110.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kTitleElement)];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:0.0 withDelay:0.3 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kNevermindElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:0.0 withDelay:0.0 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kNevermindElement)];
     
     self.animationData = dictionary.mutableCopy;
 }
@@ -40,7 +40,7 @@
         POPSpringAnimation *basicAnimation = [POPSpringAnimation animation];
         
         basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPLayoutConstraintConstant];
-        basicAnimation.toValue = @(constraintAnimationData.finalY);
+        basicAnimation.toValue = @(constraintAnimationData.finalValue);
         basicAnimation.springSpeed = constraintAnimationData.speed;
         basicAnimation.springBounciness = constraintAnimationData.bounce;
         

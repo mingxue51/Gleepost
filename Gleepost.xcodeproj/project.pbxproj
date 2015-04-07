@@ -540,6 +540,7 @@
 		589CE50C18D227910046DAD2 /* the_bar2.png in Resources */ = {isa = PBXBuildFile; fileRef = 589CE50818D227910046DAD2 /* the_bar2.png */; };
 		589CE50D18D227910046DAD2 /* the_bar3.png in Resources */ = {isa = PBXBuildFile; fileRef = 589CE50918D227910046DAD2 /* the_bar3.png */; };
 		589CE50E18D227910046DAD2 /* the_bar4.png in Resources */ = {isa = PBXBuildFile; fileRef = 589CE50A18D227910046DAD2 /* the_bar4.png */; };
+		589E9C241AD3CB970050C119 /* GLPEventNewPostAnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 589E9C231AD3CB970050C119 /* GLPEventNewPostAnimationHelper.m */; };
 		589EAD0918A3C4A4005B2F4C /* SignUpTwoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD0818A3C4A4005B2F4C /* SignUpTwoView.xib */; };
 		589EAD0C18A3C54E005B2F4C /* SignUpTwoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EAD0B18A3C54E005B2F4C /* SignUpTwoView.m */; };
 		589EAD0E18A403F8005B2F4C /* SignUpThreeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD0D18A403F8005B2F4C /* SignUpThreeView.xib */; };
@@ -1706,6 +1707,8 @@
 		589CE50818D227910046DAD2 /* the_bar2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = the_bar2.png; sourceTree = "<group>"; };
 		589CE50918D227910046DAD2 /* the_bar3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = the_bar3.png; sourceTree = "<group>"; };
 		589CE50A18D227910046DAD2 /* the_bar4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = the_bar4.png; sourceTree = "<group>"; };
+		589E9C221AD3CB970050C119 /* GLPEventNewPostAnimationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPEventNewPostAnimationHelper.h; sourceTree = "<group>"; };
+		589E9C231AD3CB970050C119 /* GLPEventNewPostAnimationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPEventNewPostAnimationHelper.m; sourceTree = "<group>"; };
 		589EAD0818A3C4A4005B2F4C /* SignUpTwoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUpTwoView.xib; sourceTree = "<group>"; };
 		589EAD0A18A3C54E005B2F4C /* SignUpTwoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpTwoView.h; sourceTree = "<group>"; };
 		589EAD0B18A3C54E005B2F4C /* SignUpTwoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpTwoView.m; sourceTree = "<group>"; };
@@ -2465,6 +2468,8 @@
 				588C68961AD2D8F400E00F48 /* GLPConstraintAnimationData.m */,
 				588C68981AD2D9AA00E00F48 /* GLPAnimationHelper.h */,
 				588C68991AD2D9AA00E00F48 /* GLPAnimationHelper.m */,
+				589E9C221AD3CB970050C119 /* GLPEventNewPostAnimationHelper.h */,
+				589E9C231AD3CB970050C119 /* GLPEventNewPostAnimationHelper.m */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -6428,6 +6433,7 @@
 				58F8C32E18A4FB4B005EC7ED /* GLPSignUpViewController.m in Sources */,
 				588C68941AD2D42C00E00F48 /* GLPIntroNewPostAnimationHelper.m in Sources */,
 				5824F4591AC314510074A3EB /* GLPIntroAnimationHelper.m in Sources */,
+				589E9C241AD3CB970050C119 /* GLPEventNewPostAnimationHelper.m in Sources */,
 				58A1D073199BF91200BA7980 /* GLPLabel.m in Sources */,
 				584CF66718227BA700EFABB8 /* GLPContactDaoParser.m in Sources */,
 				584D208E19534AC400E571DF /* GLPSegmentView.m in Sources */,

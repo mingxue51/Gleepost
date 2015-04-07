@@ -13,6 +13,7 @@
 #import "GLPiOSSupportHelper.h"
 #import "ATNavigationNewPost.h"
 #import "FakeNavigationBarNewPostView.h"
+#import "GLPEventNewPostAnimationHelper.h"
 
 @interface IntroKindOfEventViewController () <UINavigationControllerDelegate>
 
@@ -21,7 +22,31 @@
 @property (weak, nonatomic) IBOutlet UIButton *topButton;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
+//Constraints.
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *calendarXAligment;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleXAligment;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *partyXAligment;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *musicXAligment;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *theaterXAligment;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *freeFoodXAligment;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *sportsXAligment;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *speakerXAligment;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *otherXAligment;
+
+//Views.
+@property (weak, nonatomic) IBOutlet UIView *calendarView;
+@property (weak, nonatomic) IBOutlet UIView *partyView;
+@property (weak, nonatomic) IBOutlet UIView *musicView;
+@property (weak, nonatomic) IBOutlet UIView *theaterView;
+@property (weak, nonatomic) IBOutlet UIView *freeFoodView;
+@property (weak, nonatomic) IBOutlet UIView *sportsView;
+@property (weak, nonatomic) IBOutlet UIView *speakersView;
+@property (weak, nonatomic) IBOutlet UIView *otherView;
+
+
 @property (strong, nonatomic) FakeNavigationBarNewPostView *fakeNavigationBar;
+
+@property (strong, nonatomic) GLPEventNewPostAnimationHelper *animationHelper;
 
 @end
 
@@ -30,6 +55,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self initialiseObjects];
+    [self initialisePositions];
     [self configureNavigationBar];
     [self configureConstrainsDependingOnScreenSize];
 }
@@ -38,32 +65,7 @@
 {
     [super viewWillAppear:animated];
     [self.view layoutIfNeeded];
-    
-
-//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES andView:self.view];
-    
     self.distancePartyButtonFromTop.constant = (self.topButton.frame.origin.y / 2) - (self.titleLabel.frame.size.height / 2);
-    
-//    ((UIView*)[[self.navigationController.navigationBar subviews] objectAtIndex:1]).alpha = 0.0;
-
-//    self.navigationController.navigationBar.alpha = 0.0;
-//    
-//    [UIView animateWithDuration:0.9 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-//        
-//        self.navigationController.navigationBar.alpha = 1.0;
-//
-//    } completion:^(BOOL finished) {
-//        
-//    }];
-    
-//    [UIView animateWithDuration:0.5 animations:^{
-//       
-////        [self.navigationController.navigationItem.titleView setAlpha:1.0];
-////        ((UIView*)[[self.navigationController.navigationBar subviews] objectAtIndex:1]).alpha = 1.0;
-//        self.navigationController.navigationBar.alpha = 1.0;
-//
-//
-//    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -71,7 +73,27 @@
     [super viewDidAppear:animated];
     
     self.navigationController.delegate = self;
+    
+    [self animateElementsAfterViewDidLoad];
 
+}
+
+- (void)initialiseObjects
+{
+    self.animationHelper = [[GLPEventNewPostAnimationHelper alloc] init];
+}
+
+- (void)initialisePositions
+{
+    [self.animationHelper setInitialValueInConstraint:self.calendarXAligment forView:self.calendarView];
+    [self.animationHelper setInitialValueInConstraint:self.musicXAligment forView:self.musicView];
+    [self.animationHelper setInitialValueInConstraint:self.partyXAligment forView:self.partyView];
+    [self.animationHelper setInitialValueInConstraint:self.theaterXAligment forView:self.theaterView];
+    [self.animationHelper setInitialValueInConstraint:self.freeFoodXAligment forView:self.freeFoodView];
+    [self.animationHelper setInitialValueInConstraint:self.sportsXAligment forView:self.sportsView];
+    [self.animationHelper setInitialValueInConstraint:self.otherXAligment forView:self.otherView];
+    [self.animationHelper setInitialValueInConstraint:self.speakerXAligment forView:self.speakersView];
+    [self.titleLabel setAlpha:0.0];
 }
 
 - (void)configureNavigationBar
@@ -98,6 +120,20 @@
     }
 }
 
+#pragma mark - Animations
+
+- (void)animateElementsAfterViewDidLoad
+{
+    [self.animationHelper viewDidLoadAnimationWithConstraint:self.calendarXAligment withKindOfElement:kCalendarElement];
+    [self.animationHelper viewDidLoadAnimationWithConstraint:self.musicXAligment withKindOfElement:kMusicElement];
+    [self.animationHelper viewDidLoadAnimationWithConstraint:self.partyXAligment withKindOfElement:kPartiesElement];
+    [self.animationHelper viewDidLoadAnimationWithConstraint:self.theaterXAligment withKindOfElement:kTheaterElement];
+    [self.animationHelper viewDidLoadAnimationWithConstraint:self.freeFoodXAligment withKindOfElement:kFreeFoodElement];
+    [self.animationHelper viewDidLoadAnimationWithConstraint:self.sportsXAligment withKindOfElement:kSportsElement];
+    [self.animationHelper viewDidLoadAnimationWithConstraint:self.speakerXAligment withKindOfElement:kSpeakersElement];
+    [self.animationHelper viewDidLoadAnimationWithConstraint:self.otherXAligment withKindOfElement:kOtherElement];
+    [self.animationHelper animateNevermindView:self.titleLabel withAppearance:YES];
+}
 
 #pragma mark - Selectors
 

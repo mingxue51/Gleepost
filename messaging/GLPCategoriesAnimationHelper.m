@@ -21,16 +21,16 @@
 {
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:80.0 withDelay:0.0 withBounceLevel:10.0 withSpeedLevel:20.0] forKey:@(kAllOrder)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:55.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kPartiesOrder)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:55.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kFreeFood)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:55.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kSportsOrder)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:10.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kSpeakersOrder)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:10.0 withDelay:0.25 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kMusicOrder)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:10.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kTheaterOrder)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:70.0 withDelay:0.3 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kAnnouncementsOrder)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:70.0 withDelay:0.25 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kGeneralOrder)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:70.0 withDelay:0.3 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kQuestionsOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:80.0 withDelay:0.0 withBounceLevel:10.0 withSpeedLevel:20.0] forKey:@(kAllOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:55.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kPartiesOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:55.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kFreeFood)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:55.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kSportsOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:10.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kSpeakersOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:10.0 withDelay:0.25 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kMusicOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:10.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kTheaterOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:70.0 withDelay:0.3 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kAnnouncementsOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:70.0 withDelay:0.25 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kGeneralOrder)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:70.0 withDelay:0.3 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kQuestionsOrder)];
     
     self.animationData = dictionary;
 }
@@ -52,7 +52,7 @@
         
         // 3. Figure Out which of 3 ways to set toValue
         basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPLayoutConstraintConstant];
-        basicAnimation.toValue = @(constraintAnimationData.finalY);
+        basicAnimation.toValue = @(constraintAnimationData.finalValue);
         basicAnimation.springSpeed = constraintAnimationData.speed;
         basicAnimation.springBounciness = constraintAnimationData.bounce;
         

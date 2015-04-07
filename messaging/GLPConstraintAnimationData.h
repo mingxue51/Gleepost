@@ -10,9 +10,9 @@
 
 @interface GLPConstraintAnimationData : NSObject
 
-- (instancetype)initWithFinalY:(CGFloat)finalY withDelay:(CGFloat)delay withBounceLevel:(CGFloat)bounce withSpeedLevel:(CGFloat)speed;
+- (instancetype)initWithFinalValue:(CGFloat)finalValue withDelay:(CGFloat)delay withBounceLevel:(CGFloat)bounce withSpeedLevel:(CGFloat)speed;
 
-@property (assign, nonatomic) CGFloat finalY;
+@property (assign, nonatomic) CGFloat finalValue;
 @property (assign, nonatomic) CGFloat delay;
 @property (assign, nonatomic) CGFloat bounce;
 @property (assign, nonatomic) CGFloat speed;
