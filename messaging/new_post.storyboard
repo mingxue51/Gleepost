@@ -57,7 +57,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get the word out..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VCW-G1-gQP">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="6" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get the word out..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VCW-G1-gQP">
                                 <rect key="frame" x="10" y="174" width="580" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Dp7-Fg-RPX"/>
@@ -66,13 +66,13 @@
                                 <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pen" translatesAutoresizingMaskIntoConstraints="NO" id="7n7-gc-vCp">
+                            <imageView userInteractionEnabled="NO" tag="5" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pen" translatesAutoresizingMaskIntoConstraints="NO" id="7n7-gc-vCp">
                                 <rect key="frame" x="285" y="114" width="30" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="7n7-gc-vCp" secondAttribute="height" multiplier="1:1" id="Jst-Mz-muM"/>
                                 </constraints>
                             </imageView>
-                            <view tag="8" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DcR-8v-Kix" userLabel="AnnouncementsView">
+                            <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DcR-8v-Kix" userLabel="AnnouncementsView">
                                 <rect key="frame" x="152" y="375" width="153" height="120"/>
                                 <subviews>
                                     <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lh-sm-bO8">
@@ -105,7 +105,7 @@
                                     <constraint firstItem="5lh-sm-bO8" firstAttribute="height" secondItem="DcR-8v-Kix" secondAttribute="height" multiplier="0.7" id="rou-nC-LyY"/>
                                 </constraints>
                             </view>
-                            <view tag="8" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TCa-Gu-qr0" userLabel="EventsView">
+                            <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TCa-Gu-qr0" userLabel="EventsView">
                                 <rect key="frame" x="152" y="230" width="153" height="120"/>
                                 <subviews>
                                     <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hvj-Vh-Yu2">
@@ -138,7 +138,7 @@
                                     <constraint firstItem="73W-KA-Mfm" firstAttribute="top" secondItem="Hvj-Vh-Yu2" secondAttribute="bottom" constant="5" id="iJq-H1-FrB"/>
                                 </constraints>
                             </view>
-                            <view tag="10" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hZU-W6-OBn" userLabel="QuestionslView">
+                            <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hZU-W6-OBn" userLabel="QuestionslView">
                                 <rect key="frame" x="300" y="230" width="153" height="120"/>
                                 <subviews>
                                     <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4ec-BG-96e">
@@ -192,7 +192,7 @@
                                     <action selector="dismiss:" destination="XsW-KT-ERr" eventType="touchUpInside" id="2XG-t2-6N6"/>
                                 </connections>
                             </button>
-                            <view tag="9" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WK3-0e-CHF" userLabel="GeneralView">
+                            <view tag="4" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WK3-0e-CHF" userLabel="GeneralView">
                                 <rect key="frame" x="296" y="375" width="153" height="120"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GENERAL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C5X-P6-rlP">
@@ -274,6 +274,7 @@
                         <outletCollection property="elements" destination="hZU-W6-OBn" id="VEI-g9-14d"/>
                         <outletCollection property="elements" destination="DcR-8v-Kix" id="gaI-hp-LKe"/>
                         <outletCollection property="elements" destination="WK3-0e-CHF" id="IvK-Gj-OKO"/>
+                        <outletCollection property="elements" destination="Df6-gP-jEo" id="B8k-KC-idS"/>
                         <segue destination="q62-Na-WAe" kind="show" identifier="final new post" id="Tce-bA-hLN"/>
                         <segue destination="Xbv-3h-ojf" kind="show" identifier="view event selector" id="CMF-aX-gyW"/>
                     </connections>
@@ -294,6 +295,9 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kRy-RT-fq8">
+                                <rect key="frame" x="180" y="236" width="240" height="128"/>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NXc-oh-Qza" userLabel="CategoriesView">
                                 <rect key="frame" x="0.0" y="192" width="600" height="408"/>
                                 <subviews>

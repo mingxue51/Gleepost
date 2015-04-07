@@ -135,11 +135,8 @@
 {
     for(UIView *view in self.elements)
     {
-        [self.animationsHelper viewDisappearingAnimationWithView:view andKindOfElement:kTitleElement];
+        [self.animationsHelper viewDisappearingAnimationWithView:view andKindOfElement:view.tag];
     }
-    
-    [self.animationsHelper viewDisappearingAnimationWithView:self.nevermindButton andKindOfElement:kTitleElement];
-    
 }
 
 #pragma mark - GLPIntroNewPostAnimationHelperDelegate

@@ -18,13 +18,15 @@
 {
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:105.0 withDelay:0.25 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kGeneralElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:105.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kGeneralElement)];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:105.0 withDelay:0.25 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kAnnouncementElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:105.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kAnnouncementElement)];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:50.0 withDelay:0.0 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kPencilElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:50.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kPencilElement)];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:110.0 withDelay:0.0 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kTitleElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:110.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kTitleElement)];
+    
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalY:0.0 withDelay:0.3 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kNevermindElement)];
     
     self.animationData = dictionary.mutableCopy;
 }
@@ -59,41 +61,18 @@
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, constraintAnimationData.delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         
-        POPBasicAnimation *basicAnimation = [POPBasicAnimation animation];
+        POPSpringAnimation *basicAnimation = [POPSpringAnimation animation];
         
         basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
         basicAnimation.toValue = [NSValue valueWithCGRect:CGRectMake(-currentFrame.origin.x - currentFrame.size.width, currentFrame.origin.y, currentFrame.size.width, currentFrame.size.height)];
+        basicAnimation.springSpeed = 10.0;
+//        basicAnimation.springBounciness = 0.0;
         
-        basicAnimation.name=[NSString stringWithFormat:@"%ld", (long)view.tag];;
+        basicAnimation.name=[NSString stringWithFormat:@"%ld", (long)view.tag];
         basicAnimation.delegate=self;
         
         [view pop_addAnimation:basicAnimation forKey:@"Disappearing"];
     });
-}
-
-- (void)firstViewAnimationsWithView:(UIView *)view
-{
-    CGRect currentFrame = view.frame;
-
-    // 1. Pick a Kind Of Animation //  POPBasicAnimation  POPSpringAnimation POPDecayAnimation
-    POPBasicAnimation *basicAnimation = [POPBasicAnimation animation];
-    
-    // 2. Decide weather you will animate a view property or layer property, Lets pick a View Property and pick kPOPViewFrame
-    // View Properties - kPOPViewAlpha kPOPViewBackgroundColor kPOPViewBounds kPOPViewCenter kPOPViewFrame kPOPViewScaleXY kPOPViewSize
-    // Layer Properties - kPOPLayerBackgroundColor kPOPLayerBounds kPOPLayerScaleXY kPOPLayerSize kPOPLayerOpacity kPOPLayerPosition kPOPLayerPositionX kPOPLayerPositionY kPOPLayerRotation kPOPLayerBackgroundColor
-    
-    // 3. Figure Out which of 3 ways to set toValue
-    basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
-    basicAnimation.toValue = [NSValue valueWithCGRect:CGRectMake(currentFrame.origin.x, -currentFrame.size.height - 50, currentFrame.size.width, currentFrame.size.height)];
-    
-    //    basicAnimation.springSpeed = 1;
-    //    basicAnimation.springBounciness = 0;
-    // 4. Create Name For Animation & Set Delegate
-    basicAnimation.name=[NSString stringWithFormat:@"%ld", (long)view.tag];
-    basicAnimation.delegate=self;
-    
-    // 5. Add animation to View or Layer, we picked View so self.tableView and not layer which would have been self.tableView.layer
-    [view pop_addAnimation:basicAnimation forKey:@"WhatEverNameYouWant"];
 }
 
 - (void)pop_animationDidStop:(POPAnimation *)anim finished:(BOOL)finished

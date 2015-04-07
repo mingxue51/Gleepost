@@ -10,12 +10,13 @@
 #import "GLPAnimationHelper.h"
 
 typedef NS_ENUM(NSUInteger, IntroNewPostViewElement) {
-    kEventElement,
+    kEventElement = 1,
     kQuestionElement,
     kAnnouncementElement,
     kGeneralElement,
     kPencilElement,
-    kTitleElement
+    kTitleElement,
+    kNevermindElement = 99
 };
 
 @protocol GLPIntroNewPostAnimationHelperDelegate <GLPAnimationHelperDelegate>
@@ -26,8 +27,6 @@ typedef NS_ENUM(NSUInteger, IntroNewPostViewElement) {
 
 @interface GLPIntroNewPostAnimationHelper : GLPAnimationHelper
 
-
-- (void)firstViewAnimationsWithView:(UIView *)view;
 - (void)viewDidLoadAnimationWithConstraint:(NSLayoutConstraint *)layoutConstraint andKindOfElement:(IntroNewPostViewElement)kindOfElement;
 - (void)viewDisappearingAnimationWithView:(UIView *)view andKindOfElement:(IntroNewPostViewElement)kindOfElement;
 - (CGFloat)getInitialElementsPosition;
