@@ -86,19 +86,6 @@
     self.animationHelper.delegate = self;
 }
 
-- (void)initialisePositions
-{
-    [self.animationHelper setInitialValueInConstraint:self.calendarXAligment forView:self.calendarView];
-    [self.animationHelper setInitialValueInConstraint:self.musicXAligment forView:self.musicView];
-    [self.animationHelper setInitialValueInConstraint:self.partyXAligment forView:self.partyView];
-    [self.animationHelper setInitialValueInConstraint:self.theaterXAligment forView:self.theaterView];
-    [self.animationHelper setInitialValueInConstraint:self.freeFoodXAligment forView:self.freeFoodView];
-    [self.animationHelper setInitialValueInConstraint:self.sportsXAligment forView:self.sportsView];
-    [self.animationHelper setInitialValueInConstraint:self.otherXAligment forView:self.otherView];
-    [self.animationHelper setInitialValueInConstraint:self.speakerXAligment forView:self.speakersView];
-    [self.titleLabel setAlpha:0.0];
-}
-
 - (void)configureNavigationBar
 {
     self.fakeNavigationBar = [[FakeNavigationBarNewPostView alloc] init];
@@ -129,6 +116,32 @@
     self.navigationItem.leftBarButtonItems = [GLPApplicationHelper customBackButtonWithTarget:self];
 }
 
+#pragma mark - Animation configuration
+
+- (void)initialisePositions
+{
+    [self.animationHelper setInitialValueInConstraint:self.calendarXAligment forView:self.calendarView];
+    [self.animationHelper setInitialValueInConstraint:self.musicXAligment forView:self.musicView];
+    [self.animationHelper setInitialValueInConstraint:self.partyXAligment forView:self.partyView];
+    [self.animationHelper setInitialValueInConstraint:self.theaterXAligment forView:self.theaterView];
+    [self.animationHelper setInitialValueInConstraint:self.freeFoodXAligment forView:self.freeFoodView];
+    [self.animationHelper setInitialValueInConstraint:self.sportsXAligment forView:self.sportsView];
+    [self.animationHelper setInitialValueInConstraint:self.otherXAligment forView:self.otherView];
+    [self.animationHelper setInitialValueInConstraint:self.speakerXAligment forView:self.speakersView];
+    [self.titleLabel setAlpha:0.0];
+}
+
+- (void)renewDelaysBeforeGoingBack
+{
+    [self.animationHelper renewDelay:0.25 withKindOfElement:kPartiesElement];
+    [self.animationHelper renewDelay:0.25 withKindOfElement:kSportsElement];
+    [self.animationHelper renewDelay:0.2 withKindOfElement:kMusicElement];
+    [self.animationHelper renewDelay:0.2 withKindOfElement:kFreeFoodElement];
+    [self.animationHelper renewDelay:0.2 withKindOfElement:kSpeakersElement];
+    [self.animationHelper renewDelay:0.1 withKindOfElement:kOtherElement];
+    [self.animationHelper renewDelay:0.1 withKindOfElement:kTheaterElement];
+}
+
 #pragma mark - Animations
 
 - (void)animateElementsAfterViewDidLoad
@@ -141,7 +154,7 @@
     [self.animationHelper viewDidLoadAnimationWithConstraint:self.sportsXAligment withKindOfElement:kSportsElement];
     [self.animationHelper viewDidLoadAnimationWithConstraint:self.speakerXAligment withKindOfElement:kSpeakersElement];
     [self.animationHelper viewDidLoadAnimationWithConstraint:self.otherXAligment withKindOfElement:kOtherElement];
-    [self.animationHelper animateNevermindView:self.titleLabel withAppearance:YES];
+    [self.animationHelper fadeView:self.titleLabel withAppearance:YES];
 }
 
 - (void)animateElementsBeforeGoingBack
@@ -155,7 +168,7 @@
     [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.otherView andKindOfElement:kOtherElement];
     [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.speakersView andKindOfElement:kSpeakersElement];
 
-    [self.animationHelper animateNevermindView:self.titleLabel withAppearance:NO];
+    [self.animationHelper fadeView:self.titleLabel withAppearance:NO];
 }
 
 - (void)animateElementsBeforeGoingNext
@@ -228,6 +241,8 @@
 
 - (void)backButtonTapped
 {
+    
+    [self renewDelaysBeforeGoingBack];
     [self animateElementsBeforeGoingBack];
 }
 

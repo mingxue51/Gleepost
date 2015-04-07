@@ -45,9 +45,13 @@
 - (void)setInitialValueInConstraint:(NSLayoutConstraint *)constraint forView:(UIView *)view
 {
     [view layoutIfNeeded];
-
     constraint.constant = -[GLPiOSSupportHelper screenWidth] - view.frame.size.width / 2;
+}
 
+- (void)renewDelay:(CGFloat)delay withKindOfElement:(EventNewPostViewElement)kindOfElement
+{
+    GLPConstraintAnimationData *animationData = [self.animationData objectForKey:@(kindOfElement)];
+    animationData.delay = delay;
 }
 
 #pragma mark - Animations

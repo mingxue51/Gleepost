@@ -32,10 +32,18 @@
 
 //X Constraints.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *generalDistanceFromCenter;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *questionDistanceFromCenter;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *eventDistanceFromCenter;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *announcementDistanceFromCenter;
 
 //Views.
 @property (weak, nonatomic) IBOutlet UIButton *nevermindButton;
+@property (weak, nonatomic) IBOutlet UIView *titleLabel;
+@property (weak, nonatomic) IBOutlet UIView *pencilView;
 @property (weak, nonatomic) IBOutlet UIView *generalView;
+@property (weak, nonatomic) IBOutlet UIView *eventView;
+@property (weak, nonatomic) IBOutlet UIView *questionView;
+@property (weak, nonatomic) IBOutlet UIView *announcementView;
 
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *elements;
 
@@ -77,6 +85,7 @@
     else
     {
         [self animateElementsAfterComingBack];
+        [self renewAnimationDelaysForElementsForAppearing:NO];
     }
     
     self.viewDidAppearFirstOccurrence = NO;
@@ -96,25 +105,6 @@
     self.animationsHelper.delegate = self;
     self.readyToGoToNextView = NO;
     self.viewDidAppearFirstOccurrence = YES;
-}
-
-- (void)initialisePositions
-{
-    self.announcementDistanceFromBottom.constant = -[self.animationsHelper getInitialElementsPosition];
-    self.generalDistanceFromBottom.constant = -[self.animationsHelper getInitialElementsPosition];
-    self.pencilDistanceFromTop.constant = [self.animationsHelper getInitialElementsPosition];
-    self.titleDistanceFromTop.constant = [self.animationsHelper getInitialElementsPosition];
-}
-
-- (void)setPositionsOnElementsAfterGoingForward
-{
-    [self.generalView layoutIfNeeded];
-    self.generalDistanceFromCenter.constant = -[GLPiOSSupportHelper screenWidth] - self.generalView.frame.size.width;
-}
-
-- (void)renewFinalValuesForElements
-{
-    [self.animationsHelper renewFinalValueWithConstraint:self.generalDistanceFromCenter forKindOfElement:kGeneralElement];
 }
 
 - (void)dealloc
@@ -149,15 +139,59 @@
 
 }
 
+#pragma mark - Positioning
+
+- (void)initialisePositions
+{
+    self.announcementDistanceFromBottom.constant = -[self.animationsHelper getInitialElementsPosition];
+    self.generalDistanceFromBottom.constant = -[self.animationsHelper getInitialElementsPosition];
+    self.pencilDistanceFromTop.constant = [self.animationsHelper getInitialElementsPosition];
+    self.titleDistanceFromTop.constant = [self.animationsHelper getInitialElementsPosition];
+}
+
+- (void)setPositionsOnElementsAfterGoingForward
+{
+    [self.animationsHelper setPositionToView:self.eventView afterForwardingWithConstraint:self.eventDistanceFromCenter withMinusSign:NO];
+    [self.animationsHelper setPositionToView:self.questionView afterForwardingWithConstraint:self.questionDistanceFromCenter withMinusSign:YES];
+    [self.animationsHelper setPositionToView:self.announcementView afterForwardingWithConstraint:self.announcementDistanceFromCenter withMinusSign:NO];
+    [self.animationsHelper setPositionToView:self.generalView afterForwardingWithConstraint:self.generalDistanceFromCenter withMinusSign:YES];
+
+    self.nevermindButton.alpha = 0.0;
+    self.titleLabel.alpha = 0.0;
+    self.pencilView.alpha = 0.0;
+}
+
+- (void)renewFinalValuesForElements
+{
+    [self.animationsHelper renewFinalValueWithConstraint:self.generalDistanceFromCenter forKindOfElement:kGeneralElement];
+    [self.animationsHelper renewFinalValueWithConstraint:self.announcementDistanceFromCenter forKindOfElement:kAnnouncementElement];
+    [self.animationsHelper renewFinalValueWithConstraint:self.eventDistanceFromCenter forKindOfElement:kEventElement];
+    [self.animationsHelper renewFinalValueWithConstraint:self.questionDistanceFromCenter forKindOfElement:kQuestionElement];
+}
+
+/**
+ Renews the animation delays.
+ 
+ @param appearing variable is YES when the views are going to be appeared. NO if they are going
+ to be disappeared.
+ */
+- (void)renewAnimationDelaysForElementsForAppearing:(BOOL)appearing
+{
+    [self.animationsHelper renewDelay:(appearing) ? 0.1 : 0.2 withKindOfElement:kGeneralElement];
+    [self.animationsHelper renewDelay:(appearing) ? 0.1 : 0.2 withKindOfElement:kQuestionElement];
+    [self.animationsHelper renewDelay:(appearing) ? 0.2 : 0.1 withKindOfElement:kAnnouncementElement];
+    [self.animationsHelper renewDelay:(appearing) ? 0.2 : 0.1 withKindOfElement:kEventElement];
+}
+
 #pragma mark - Animations
 
 - (void)animateElementsAfterViewDidLoad
 {
-    [self.animationsHelper viewDidLoadAnimationWithConstraint:self.announcementDistanceFromBottom andKindOfElement:kAnnouncementElement];
-    [self.animationsHelper viewDidLoadAnimationWithConstraint:self.generalDistanceFromBottom andKindOfElement:kGeneralElement];
-    [self.animationsHelper viewDidLoadAnimationWithConstraint:self.pencilDistanceFromTop andKindOfElement:kPencilElement];
-    [self.animationsHelper viewDidLoadAnimationWithConstraint:self.titleDistanceFromTop andKindOfElement:kTitleElement];
-    [self.animationsHelper animateNevermindView:self.nevermindButton withAppearance:YES];
+    [self.animationsHelper viewDidAppearAnimationWithConstraint:self.announcementDistanceFromBottom andKindOfElement:kAnnouncementElement];
+    [self.animationsHelper viewDidAppearAnimationWithConstraint:self.generalDistanceFromBottom andKindOfElement:kGeneralElement];
+    [self.animationsHelper viewDidAppearAnimationWithConstraint:self.pencilDistanceFromTop andKindOfElement:kPencilElement];
+    [self.animationsHelper viewDidAppearAnimationWithConstraint:self.titleDistanceFromTop andKindOfElement:kTitleElement];
+    [self.animationsHelper fadeView:self.nevermindButton withAppearance:YES];
 }
 
 - (void)animateElementsBeforeGoingForwardDisappearing
@@ -172,7 +206,13 @@
 {
     //[self.animationsHelper animateElementAfterComingBackWithConstraint:self.generalDistanceFromCenter andKindOfElement:kGeneralElement];
     
-    [self.animationsHelper viewDidLoadAnimationWithConstraint:self.generalDistanceFromCenter andKindOfElement:kGeneralElement];
+    [self.animationsHelper viewDidAppearAnimationWithConstraint:self.questionDistanceFromCenter andKindOfElement:kQuestionElement];
+    [self.animationsHelper viewDidAppearAnimationWithConstraint:self.eventDistanceFromCenter andKindOfElement:kEventElement];
+    [self.animationsHelper viewDidAppearAnimationWithConstraint:self.announcementDistanceFromCenter andKindOfElement:kAnnouncementElement];
+    [self.animationsHelper viewDidAppearAnimationWithConstraint:self.generalDistanceFromCenter andKindOfElement:kGeneralElement];
+    [self.animationsHelper fadeView:self.nevermindButton withAppearance:YES];
+    [self.animationsHelper fadeView:self.titleLabel withAppearance:YES];
+    [self.animationsHelper fadeView:self.pencilView withAppearance:YES];
 }
 
 #pragma mark - GLPIntroNewPostAnimationHelperDelegate
@@ -181,6 +221,10 @@
 {
     if(self.readyToGoToNextView)
     {
+        [self renewFinalValuesForElements];
+        [self renewAnimationDelaysForElementsForAppearing:YES];
+        [self setPositionsOnElementsAfterGoingForward];
+        
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
         IntroKindOfEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfEventViewController"];
         [self.navigationController pushViewController:cvc animated:NO];
@@ -202,8 +246,6 @@
     [[PendingPostManager sharedInstance] setKindOfPost:kEventPost];
     
     [self animateElementsBeforeGoingForwardDisappearing];
-    [self renewFinalValuesForElements];
-    [self setPositionsOnElementsAfterGoingForward];
     
     self.readyToGoToNextView = YES;
 

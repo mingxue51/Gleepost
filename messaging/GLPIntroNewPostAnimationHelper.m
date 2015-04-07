@@ -18,9 +18,13 @@
 {
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:105.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kGeneralElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:105.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kGeneralElement)];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:105.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kAnnouncementElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:105.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kAnnouncementElement)];
+    
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:105.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kEventElement)];
+
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:105.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kQuestionElement)];
     
     [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:50.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kPencilElement)];
     
@@ -45,9 +49,23 @@
     animationData.finalValue = constraint.constant;
 }
 
+- (void)renewDelay:(CGFloat)delay withKindOfElement:(IntroNewPostViewElement)kindOfElement
+{
+    GLPConstraintAnimationData *animationData = [self.animationData objectForKey:@(kindOfElement)];
+    animationData.delay = delay;
+}
+
+- (void)setPositionToView:(UIView *)view afterForwardingWithConstraint:(NSLayoutConstraint *)constraint withMinusSign:(BOOL)minusSign
+{
+    [view layoutIfNeeded];
+    
+    CGFloat newConstant = [GLPiOSSupportHelper screenWidth] + view.frame.size.width;
+    constraint.constant = (minusSign) ? -newConstant : newConstant;
+}
+
 #pragma mark - Animations
 
-- (void)viewDidLoadAnimationWithConstraint:(NSLayoutConstraint *)layoutConstraint andKindOfElement:(IntroNewPostViewElement)kindOfElement
+- (void)viewDidAppearAnimationWithConstraint:(NSLayoutConstraint *)layoutConstraint andKindOfElement:(IntroNewPostViewElement)kindOfElement
 {
     GLPConstraintAnimationData *constraintAnimationData = [self.animationData objectForKey:@(kindOfElement)];
     

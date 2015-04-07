@@ -32,7 +32,7 @@
     
 }
 
-- (void)animateNevermindView:(UIView *)nevermindView withAppearance:(BOOL)show
+- (void)fadeView:(UIView *)nevermindView withAppearance:(BOOL)show
 {
     // 1. Pick a Kind Of Animation //  POPBasicAnimation  POPSpringAnimation POPDecayAnimation
     POPBasicAnimation *basicAnimation = [POPBasicAnimation animation];

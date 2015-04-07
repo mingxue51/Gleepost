@@ -124,7 +124,7 @@
     [self.animationHelper animateElementWithTopConstraint:self.distanceAnnouncementsViewFromTop withKindOfView:kAnnouncementsOrder];
     [self.animationHelper animateElementWithTopConstraint:self.distanceGeneralViewFromTop withKindOfView:kGeneralOrder];
     [self.animationHelper animateElementWithTopConstraint:self.distanceQuestionsViewFromTop withKindOfView:kQuestionsOrder];
-    [self.animationHelper animateNevermindView:self.nevermindButton withAppearance:YES];
+    [self.animationHelper fadeView:self.nevermindButton withAppearance:YES];
 }
 
 - (void)dismissElementsWithAnimations
@@ -133,7 +133,7 @@
     {        
         [self.animationHelper dismissElementWithView:v withKindOfView:v.tag];
     }
-    [self.animationHelper animateNevermindView:self.nevermindButton withAppearance:NO];
+    [self.animationHelper fadeView:self.nevermindButton withAppearance:NO];
 }
 
 #pragma mark - Format

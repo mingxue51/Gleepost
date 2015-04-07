@@ -264,12 +264,20 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="announcementDistanceFromBottom" destination="VZA-3q-VM2" id="WTD-yz-uNE"/>
+                        <outlet property="announcementDistanceFromCenter" destination="ray-QY-mJs" id="f3h-tj-Koc"/>
+                        <outlet property="announcementView" destination="DcR-8v-Kix" id="aeM-vD-jyM"/>
+                        <outlet property="eventDistanceFromCenter" destination="PoB-N6-dJu" id="GPl-hM-YCO"/>
+                        <outlet property="eventView" destination="TCa-Gu-qr0" id="EnM-4A-oed"/>
                         <outlet property="generalDistanceFromBottom" destination="DQ0-d3-oik" id="bNl-Td-YhW"/>
                         <outlet property="generalDistanceFromCenter" destination="med-Re-IJN" id="3hV-aM-BDz"/>
                         <outlet property="generalView" destination="WK3-0e-CHF" id="Pgl-H1-oCI"/>
                         <outlet property="nevermindButton" destination="Df6-gP-jEo" id="THD-dq-MDC"/>
                         <outlet property="pencilDistanceFromTop" destination="a0C-9O-HPK" id="tsW-M0-qd2"/>
+                        <outlet property="pencilView" destination="7n7-gc-vCp" id="54l-GT-p4x"/>
+                        <outlet property="questionDistanceFromCenter" destination="WJR-IH-lzE" id="LD0-Rc-IpZ"/>
+                        <outlet property="questionView" destination="hZU-W6-OBn" id="z9V-5k-qt3"/>
                         <outlet property="titleDistanceFromTop" destination="Az7-Gc-oFi" id="41y-T6-hZU"/>
+                        <outlet property="titleLabel" destination="VCW-G1-gQP" id="VuJ-tP-pdR"/>
                         <outletCollection property="elements" destination="7n7-gc-vCp" id="Hh5-Ly-dnK"/>
                         <outletCollection property="elements" destination="VCW-G1-gQP" id="uQz-gw-3VF"/>
                         <outletCollection property="elements" destination="TCa-Gu-qr0" id="gYX-O8-odD"/>
