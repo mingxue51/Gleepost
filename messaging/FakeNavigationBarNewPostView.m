@@ -36,7 +36,8 @@
 
 - (void)selectDotWithNumber:(NSInteger)number
 {
-    [self.pageController selectDotWithNumber:number];
+    FakeNavigationBarNewPostView *externalView = (FakeNavigationBarNewPostView*)self.externalView;
+    [externalView.pageController selectDotWithNumber:number];
 }
 
 - (void)formatNavigationBar

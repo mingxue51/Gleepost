@@ -66,6 +66,7 @@
 - (void)cofigureNavigationBar
 {
     self.fakeNavigationBar = [[FakeNavigationBarNewPostView alloc] init];
+    [self.fakeNavigationBar selectDotWithNumber:3];
     [self.view addSubview:self.fakeNavigationBar];
     
     [self.navigationController.navigationBar invisible];
