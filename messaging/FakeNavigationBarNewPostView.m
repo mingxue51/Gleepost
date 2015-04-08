@@ -7,6 +7,13 @@
 //
 
 #import "FakeNavigationBarNewPostView.h"
+#import "GLPFNBPageController.h"
+
+@interface FakeNavigationBarNewPostView ()
+
+@property (weak, nonatomic) IBOutlet GLPFNBPageController *pageController;
+
+@end
 
 @implementation FakeNavigationBarNewPostView
 
@@ -17,6 +24,7 @@
     
     if (self)
     {
+        
     }
     return self;
 }
@@ -24,7 +32,11 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+}
+
+- (void)selectDotWithNumber:(NSInteger)number
+{
+    [self.pageController selectDotWithNumber:number];
 }
 
 - (void)formatNavigationBar

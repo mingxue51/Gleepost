@@ -279,6 +279,7 @@
 		584FA61119B5268C00FBA61F /* my_location.png in Resources */ = {isa = PBXBuildFile; fileRef = 584FA60D19B5268C00FBA61F /* my_location.png */; };
 		584FA61319B531F300FBA61F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 584FA61219B531F300FBA61F /* MapKit.framework */; };
 		5850203C1AD5416800195520 /* GLPPickTimeAnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5850203B1AD5416800195520 /* GLPPickTimeAnimationHelper.m */; };
+		5850203F1AD57C7500195520 /* GLPFNBPageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5850203E1AD57C7500195520 /* GLPFNBPageController.m */; };
 		5850220C1A376547002F0C46 /* GLPEditingModePendingPosts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5850220B1A376547002F0C46 /* GLPEditingModePendingPosts.m */; };
 		585106C8199D85DB000F06BB /* IntroKindOfNewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106C7199D85DB000F06BB /* IntroKindOfNewPostViewController.m */; };
 		585106CB199D85FC000F06BB /* IntroKindOfEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106CA199D85FC000F06BB /* IntroKindOfEventViewController.m */; };
@@ -1345,6 +1346,8 @@
 		584FA61219B531F300FBA61F /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		5850203A1AD5416800195520 /* GLPPickTimeAnimationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPickTimeAnimationHelper.h; sourceTree = "<group>"; };
 		5850203B1AD5416800195520 /* GLPPickTimeAnimationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPickTimeAnimationHelper.m; sourceTree = "<group>"; };
+		5850203D1AD57C7500195520 /* GLPFNBPageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPFNBPageController.h; sourceTree = "<group>"; };
+		5850203E1AD57C7500195520 /* GLPFNBPageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPFNBPageController.m; sourceTree = "<group>"; };
 		5850220A1A376547002F0C46 /* GLPEditingModePendingPosts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPEditingModePendingPosts.h; sourceTree = "<group>"; };
 		5850220B1A376547002F0C46 /* GLPEditingModePendingPosts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPEditingModePendingPosts.m; sourceTree = "<group>"; };
 		585106C6199D85DB000F06BB /* IntroKindOfNewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroKindOfNewPostViewController.h; sourceTree = "<group>"; };
@@ -3544,6 +3547,8 @@
 				588C688B1AD2876200E00F48 /* GLPFakeNavigationBarView.m */,
 				588C688D1AD2927A00E00F48 /* FakeNavigationBarNewPostView.h */,
 				588C688E1AD2927A00E00F48 /* FakeNavigationBarNewPostView.m */,
+				5850203D1AD57C7500195520 /* GLPFNBPageController.h */,
+				5850203E1AD57C7500195520 /* GLPFNBPageController.m */,
 			);
 			name = "Fake Navigation Bar";
 			sourceTree = "<group>";
@@ -6468,6 +6473,7 @@
 				585C784E193DF3B2007E699B /* WTSecondScreenView.m in Sources */,
 				58FD706F189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m in Sources */,
 				80C92AA918C0CC6F001CB621 /* GLPDateFormatterHelper.m in Sources */,
+				5850203F1AD57C7500195520 /* GLPFNBPageController.m in Sources */,
 				58EDC5281A77F7D20042567C /* GLPImageCacheHelper.m in Sources */,
 				582A663618AB963700006419 /* EventBarView.m in Sources */,
 				58ECE0D21A2419B900B38FBA /* GLPReviewHistoryDao.m in Sources */,

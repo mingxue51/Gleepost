@@ -119,6 +119,7 @@
     [self.navigationController.navigationBar invisible];
     
     self.fakeNavigationBar = [[FakeNavigationBarNewPostView alloc] init];
+    [self.fakeNavigationBar selectDotWithNumber:1];
     [self.view addSubview:self.fakeNavigationBar];
     
     [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismiss:) andTarget:self];
