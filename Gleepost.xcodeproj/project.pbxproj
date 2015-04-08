@@ -280,6 +280,7 @@
 		584FA61319B531F300FBA61F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 584FA61219B531F300FBA61F /* MapKit.framework */; };
 		5850203C1AD5416800195520 /* GLPPickTimeAnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5850203B1AD5416800195520 /* GLPPickTimeAnimationHelper.m */; };
 		5850203F1AD57C7500195520 /* GLPFNBPageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5850203E1AD57C7500195520 /* GLPFNBPageController.m */; };
+		585020421AD5D12200195520 /* GLPFinalNewEventAnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 585020411AD5D12200195520 /* GLPFinalNewEventAnimationHelper.m */; };
 		5850220C1A376547002F0C46 /* GLPEditingModePendingPosts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5850220B1A376547002F0C46 /* GLPEditingModePendingPosts.m */; };
 		585106C8199D85DB000F06BB /* IntroKindOfNewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106C7199D85DB000F06BB /* IntroKindOfNewPostViewController.m */; };
 		585106CB199D85FC000F06BB /* IntroKindOfEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106CA199D85FC000F06BB /* IntroKindOfEventViewController.m */; };
@@ -1348,6 +1349,8 @@
 		5850203B1AD5416800195520 /* GLPPickTimeAnimationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPickTimeAnimationHelper.m; sourceTree = "<group>"; };
 		5850203D1AD57C7500195520 /* GLPFNBPageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPFNBPageController.h; sourceTree = "<group>"; };
 		5850203E1AD57C7500195520 /* GLPFNBPageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPFNBPageController.m; sourceTree = "<group>"; };
+		585020401AD5D12200195520 /* GLPFinalNewEventAnimationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPFinalNewEventAnimationHelper.h; sourceTree = "<group>"; };
+		585020411AD5D12200195520 /* GLPFinalNewEventAnimationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPFinalNewEventAnimationHelper.m; sourceTree = "<group>"; };
 		5850220A1A376547002F0C46 /* GLPEditingModePendingPosts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPEditingModePendingPosts.h; sourceTree = "<group>"; };
 		5850220B1A376547002F0C46 /* GLPEditingModePendingPosts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPEditingModePendingPosts.m; sourceTree = "<group>"; };
 		585106C6199D85DB000F06BB /* IntroKindOfNewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroKindOfNewPostViewController.h; sourceTree = "<group>"; };
@@ -2478,6 +2481,8 @@
 				588C68991AD2D9AA00E00F48 /* GLPAnimationHelper.m */,
 				589E9C221AD3CB970050C119 /* GLPEventNewPostAnimationHelper.h */,
 				589E9C231AD3CB970050C119 /* GLPEventNewPostAnimationHelper.m */,
+				585020401AD5D12200195520 /* GLPFinalNewEventAnimationHelper.h */,
+				585020411AD5D12200195520 /* GLPFinalNewEventAnimationHelper.m */,
 			);
 			name = Animations;
 			sourceTree = "<group>";
@@ -6598,6 +6603,7 @@
 				584EE2D019D5A1590049D7B2 /* GLPGroupProgressManager.m in Sources */,
 				58ACD1D318F599E200BD576B /* DCStatusBarOverlay.m in Sources */,
 				58498FD21A49879A00F1720F /* GLPTrackViewsCountProcessor.m in Sources */,
+				585020421AD5D12200195520 /* GLPFinalNewEventAnimationHelper.m in Sources */,
 				80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */,
 				5861575B193CAB7B009BAD33 /* GLPWalkthroughModelController.m in Sources */,
 			);

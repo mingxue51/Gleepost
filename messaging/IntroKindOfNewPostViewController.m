@@ -19,6 +19,7 @@
 #import "IntroKindOfEventViewController.h"
 #import "FakeNavigationBarNewPostView.h"
 #import "GLPIntroNewPostAnimationHelper.h"
+#import "NewPostViewController.h"
 
 @interface IntroKindOfNewPostViewController () <UINavigationControllerDelegate, GLPIntroNewPostAnimationHelperDelegate>
 
@@ -52,7 +53,9 @@
 @property (strong, nonatomic) FakeNavigationBarNewPostView *fakeNavigationBar;
 @property (strong, nonatomic) GLPIntroNewPostAnimationHelper *animationsHelper;
 
-@property (assign, nonatomic) BOOL readyToGoToNextView;
+@property (assign, nonatomic) BOOL readyToGoToEventsView;
+@property (assign, nonatomic) BOOL readyToGoToGeneralView;
+
 @property (assign, nonatomic) BOOL viewDidAppearFirstOccurrence;
 
 @end
@@ -77,6 +80,8 @@
 {
     [super viewDidAppear:animated];
     self.navigationController.delegate = self;
+    
+    [self resetReadyToGoBooleans];
     
     if(self.viewDidAppearFirstOccurrence)
     {
@@ -103,8 +108,13 @@
     self.tdNavigationNewPost = [[TDNavigationNewPost alloc] init];
     self.animationsHelper = [[GLPIntroNewPostAnimationHelper alloc] init];
     self.animationsHelper.delegate = self;
-    self.readyToGoToNextView = NO;
     self.viewDidAppearFirstOccurrence = YES;
+}
+
+- (void)resetReadyToGoBooleans
+{
+    self.readyToGoToEventsView = NO;
+    self.readyToGoToGeneralView = NO;
 }
 
 - (void)dealloc
@@ -240,15 +250,17 @@
 
 - (void)viewsDisappeared
 {
-    if(self.readyToGoToNextView)
+    [self renewFinalValuesForElements];
+    [self renewAnimationDelaysForElementsForAppearing:YES];
+    [self setPositionsOnElementsAfterGoingForward];
+    
+    if(self.readyToGoToEventsView)
     {
-        [self renewFinalValuesForElements];
-        [self renewAnimationDelaysForElementsForAppearing:YES];
-        [self setPositionsOnElementsAfterGoingForward];
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
-        IntroKindOfEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfEventViewController"];
-        [self.navigationController pushViewController:cvc animated:NO];
+        [self navigateToSelectEventView];
+    }
+    else if (self.readyToGoToGeneralView)
+    {
+        [self navigateToNewPostView];
     }
 }
 
@@ -272,7 +284,7 @@
     
     [self animateElementsBeforeGoingForwardDisappearing];
     
-    self.readyToGoToNextView = YES;
+    self.readyToGoToEventsView = YES;
 
 //    cvc.modalPresentationStyle = UIModalPresentationCustom;
     
@@ -288,9 +300,6 @@
 {
     //TODO: Change that when announcements are ready to be implemented.
     [self selectGeneral:sender];
-    
-    [self animateElementsBeforeGoingForwardDisappearing];
-
     
 //    if([[PendingPostManager sharedInstance] kindOfPost] != kAnnouncementPost)
 //    {
@@ -322,14 +331,30 @@
     
     [[PendingPostManager sharedInstance] setKindOfPost:kGeneralPost];
     
+    self.readyToGoToGeneralView = YES;
+
     [self animateElementsBeforeGoingForwardDisappearing];
-    
-    [self performSegueWithIdentifier:@"final new post" sender:self];
 }
 
 - (IBAction)dismiss:(id)sender
 {
     [self animateElementsBeforeDismissing];
+}
+
+#pragma mark - Navigation
+
+- (void)navigateToNewPostView
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
+    NewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+    [self.navigationController pushViewController:newPostVC animated:NO];
+}
+
+- (void)navigateToSelectEventView
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
+    IntroKindOfEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfEventViewController"];
+    [self.navigationController pushViewController:cvc animated:NO];
 }
 
 #pragma mark - UINavigationControllerDelegate

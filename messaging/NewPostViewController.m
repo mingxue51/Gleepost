@@ -86,6 +86,10 @@
 
 @property (strong, nonatomic) FakeNavigationBarView *fakeNavigationBar;
 
+//Constraints.
+
+
+
 @end
 
 @implementation NewPostViewController
@@ -153,10 +157,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [self formatStatusBar];
     
     self.navigationController.delegate = nil;
-
-//    self.fdTakeController = [[FDTakeController alloc] init];
-//    self.fdTakeController.viewControllerForPresentingImagePickerController = self;
-//    self.fdTakeController.delegate = self;
     
     [self becomeFirstResponderForTextField];
 }
