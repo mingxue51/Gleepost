@@ -278,6 +278,7 @@
 		584FA61019B5268C00FBA61F /* location_pin.png in Resources */ = {isa = PBXBuildFile; fileRef = 584FA60C19B5268C00FBA61F /* location_pin.png */; };
 		584FA61119B5268C00FBA61F /* my_location.png in Resources */ = {isa = PBXBuildFile; fileRef = 584FA60D19B5268C00FBA61F /* my_location.png */; };
 		584FA61319B531F300FBA61F /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 584FA61219B531F300FBA61F /* MapKit.framework */; };
+		5850203C1AD5416800195520 /* GLPPickTimeAnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5850203B1AD5416800195520 /* GLPPickTimeAnimationHelper.m */; };
 		5850220C1A376547002F0C46 /* GLPEditingModePendingPosts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5850220B1A376547002F0C46 /* GLPEditingModePendingPosts.m */; };
 		585106C8199D85DB000F06BB /* IntroKindOfNewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106C7199D85DB000F06BB /* IntroKindOfNewPostViewController.m */; };
 		585106CB199D85FC000F06BB /* IntroKindOfEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 585106CA199D85FC000F06BB /* IntroKindOfEventViewController.m */; };
@@ -1342,6 +1343,8 @@
 		584FA60C19B5268C00FBA61F /* location_pin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location_pin.png; sourceTree = "<group>"; };
 		584FA60D19B5268C00FBA61F /* my_location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = my_location.png; sourceTree = "<group>"; };
 		584FA61219B531F300FBA61F /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		5850203A1AD5416800195520 /* GLPPickTimeAnimationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPickTimeAnimationHelper.h; sourceTree = "<group>"; };
+		5850203B1AD5416800195520 /* GLPPickTimeAnimationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPickTimeAnimationHelper.m; sourceTree = "<group>"; };
 		5850220A1A376547002F0C46 /* GLPEditingModePendingPosts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPEditingModePendingPosts.h; sourceTree = "<group>"; };
 		5850220B1A376547002F0C46 /* GLPEditingModePendingPosts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPEditingModePendingPosts.m; sourceTree = "<group>"; };
 		585106C6199D85DB000F06BB /* IntroKindOfNewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroKindOfNewPostViewController.h; sourceTree = "<group>"; };
@@ -2458,6 +2461,8 @@
 		5820648D1AC0744D00A596E4 /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				5850203A1AD5416800195520 /* GLPPickTimeAnimationHelper.h */,
+				5850203B1AD5416800195520 /* GLPPickTimeAnimationHelper.m */,
 				58279F9A1ACD391700002A21 /* GLPCategoriesAnimationHelper.h */,
 				58279F9B1ACD391700002A21 /* GLPCategoriesAnimationHelper.m */,
 				5824F4571AC314510074A3EB /* GLPIntroAnimationHelper.h */,
@@ -6349,6 +6354,7 @@
 				8087E430180EC02E00938264 /* Post.m in Sources */,
 				580FF15618AA74400026B65B /* CampusLiveManager.m in Sources */,
 				589EAD1B18A41B95005B2F4C /* SignUpFiveView.m in Sources */,
+				5850203C1AD5416800195520 /* GLPPickTimeAnimationHelper.m in Sources */,
 				58FD707A189042A20024E8A1 /* CampusWallHeaderSimpleView.m in Sources */,
 				581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */,
 				5821CFA619A2DD6500274FE4 /* CommentCell.m in Sources */,

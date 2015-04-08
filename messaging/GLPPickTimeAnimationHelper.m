@@ -1,17 +1,17 @@
 //
-//  GLPEventNewPostAnimationHelper.m
+//  GLPPickTimeAnimationHelper.m
 //  Gleepost
 //
-//  Created by Silouanos on 07/04/15.
+//  Created by Silouanos on 08/04/15.
 //  Copyright (c) 2015 Gleepost. All rights reserved.
 //
 
-#import "GLPEventNewPostAnimationHelper.h"
+#import "GLPPickTimeAnimationHelper.h"
 #import "GLPConstraintAnimationData.h"
-#import <POP/POP.h>
 #import "GLPiOSSupportHelper.h"
+#import <POP/POP.h>
 
-@implementation GLPEventNewPostAnimationHelper
+@implementation GLPPickTimeAnimationHelper
 
 #pragma mark - Configuration
 
@@ -19,47 +19,23 @@
 {
     NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:100.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kPartiesElement)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:0.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kFreeFoodElement)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:100.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kSportsElement)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:0.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kSpeakersElement)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:0.0 withDelay:0.25 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kMusicElement)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:-100.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kTheaterElement)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:-100.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kOtherElement)];
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:0.0 withDelay:0.0 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kCalendarElement)];
-
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:0.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kTitleElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:0.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kButtonElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:0.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kTimeElement)];
+    
     self.animationData = dictionary;
 }
 
-/**
- Sets the X value for a view in order to know the final value of the view.
- @param view the animatable view.
- */
-- (void)setXValueForView:(UIView *)view withKindOfElement:(EventNewPostViewElement)kindOfElement
+- (void)setInitialValueInConstraint:(NSLayoutConstraint *)constraint forView:(UIView *)view comingFromRight:(BOOL)fromRight
 {
     [view layoutIfNeeded];
-    GLPConstraintAnimationData *animationData = [self.animationData objectForKey:@(kindOfElement)];
-    animationData.finalValue = view.frame.origin.x;
-}
-
-- (void)setInitialValueInConstraint:(NSLayoutConstraint *)constraint forView:(UIView *)view withMinusSign:(BOOL)minusSign
-{
-    [view layoutIfNeeded];
-    
     CGFloat newValue = [GLPiOSSupportHelper screenWidth] + view.frame.size.width / 2;
-    
-    constraint.constant = (minusSign) ? -newValue : newValue;
-}
-
-- (void)renewDelay:(CGFloat)delay withKindOfElement:(EventNewPostViewElement)kindOfElement
-{
-    GLPConstraintAnimationData *animationData = [self.animationData objectForKey:@(kindOfElement)];
-    animationData.delay = delay;
+    constraint.constant = (fromRight) ? -newValue : newValue;
 }
 
 #pragma mark - Animations
 
-- (void)viewDidLoadAnimationWithConstraint:(NSLayoutConstraint *)constraint withKindOfElement:(EventNewPostViewElement)kindOfElement
+- (void)viewDidLoadAnimationWithConstraint:(NSLayoutConstraint *)constraint withKindOfElement:(PickTimeNewPostViewElement)kindOfElement
 {
     GLPConstraintAnimationData *constraintAnimationData = [self.animationData objectForKey:@(kindOfElement)];
     
@@ -80,7 +56,7 @@
 }
 
 
-- (void)viewGoingBack:(BOOL)goingBack disappearingAnimationWithView:(UIView *)view andKindOfElement:(EventNewPostViewElement)kindOfElement
+- (void)viewGoingBack:(BOOL)goingBack disappearingAnimationWithView:(UIView *)view andKindOfElement:(PickTimeNewPostViewElement)kindOfElement
 {
     [view layoutIfNeeded];
     CGRect currentFrame = view.frame;
@@ -121,11 +97,11 @@
 {
     if([anim.name isEqualToString:@"GoingBackDisappearing_1"] && finished)
     {
-        [(id<GLPEventNewPostAnimationHelperDelegate>) self.delegate goingBackViewsDisappeared];
+        [(id<GLPPickTimeAnimationHelperDelegate>) self.delegate goingBackViewsDisappeared];
     }
     else if([anim.name isEqualToString:@"GoingForwardDisappearing_1"] && finished)
     {
-        [(id<GLPEventNewPostAnimationHelperDelegate>) self.delegate goingForwardViewsDisappeared];
+        [(id<GLPPickTimeAnimationHelperDelegate>) self.delegate goingForwardViewsDisappeared];
     }
 }
 

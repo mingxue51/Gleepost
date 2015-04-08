@@ -891,7 +891,7 @@
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="25"/>
                                 </variation>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tf3-nb-VH9">
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tf3-nb-VH9">
                                 <rect key="frame" x="18" y="492" width="564" height="94"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="tf3-nb-VH9" secondAttribute="height" multiplier="6:1" id="e8H-kr-29z"/>
@@ -930,7 +930,12 @@
                         <barButtonItem key="backBarButtonItem" title=" " id="EBa-QQ-ByU"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="buttonXAligment" destination="VGC-Uy-qwd" id="bpQ-hH-e7Q"/>
                         <outlet property="datePicker" destination="zRD-uG-oug" id="itv-6X-Amy"/>
+                        <outlet property="nextButton" destination="tf3-nb-VH9" id="O1z-Dk-nvC"/>
+                        <outlet property="timePickerXAligment" destination="2V1-9o-hbs" id="TqG-Ng-tFO"/>
+                        <outlet property="titleLabel" destination="44C-Ak-H9I" id="sMa-9N-GcE"/>
+                        <outlet property="titleXAligment" destination="vJj-Pq-DZk" id="ZPe-po-baT"/>
                         <segue destination="q62-Na-WAe" kind="show" identifier="final new post" id="HXm-2z-f7f"/>
                     </connections>
                 </viewController>
@@ -1528,6 +1533,6 @@
         <image name="video_top_button.png" width="190" height="95"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Tce-bA-hLN"/>
+        <segue reference="HXm-2z-f7f"/>
     </inferredMetricsTieBreakers>
 </document>

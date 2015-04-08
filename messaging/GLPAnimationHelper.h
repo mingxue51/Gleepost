@@ -10,6 +10,7 @@
 
 @protocol GLPAnimationHelperDelegate <NSObject>
 
+@optional
 - (void)viewsDisappeared;
 
 @end

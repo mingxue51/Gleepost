@@ -12,28 +12,38 @@
 #import "ATNavigationNewPost.h"
 #import "UINavigationBar+Format.h"
 #import "FakeNavigationBarNewPostView.h"
+#import "GLPPickTimeAnimationHelper.h"
+#import "GLPApplicationHelper.h"
 
-@interface PickDateEventViewController () <UINavigationControllerDelegate>
+@interface PickDateEventViewController () <UINavigationControllerDelegate, GLPPickTimeAnimationHelperDelegate>
 
 @property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
 @property (strong, nonatomic) FakeNavigationBarNewPostView *fakeNavigationBar;
+
+@property (strong, nonatomic) GLPPickTimeAnimationHelper *animationHelper;
+
+//Constraints.
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleXAligment;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *timePickerXAligment;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonXAligment;
+
+//Views.
+@property (weak, nonatomic) IBOutlet UIView *nextButton;
+@property (weak, nonatomic) IBOutlet UIView *titleLabel;
 
 @end
 
 @implementation PickDateEventViewController
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self initialiseObjects];
+    [self configureCustomBackButton];
     [self setUpDatePicker];
-    
-//    self.title = @"NEW POST";
-
     [self loadDateIfNeeded];
     [self cofigureNavigationBar];
-    
+    [self preparePositionsBeforeIntro:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -49,9 +59,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
     self.navigationController.delegate = self;
-    
+    [self animateElementsAfterViewDidLoad];
 }
 
 - (void)cofigureNavigationBar
@@ -62,10 +71,47 @@
     [self.navigationController.navigationBar invisible];
 }
 
+- (void)configureCustomBackButton
+{
+    // change the back button to cancel and add an event handler
+    self.navigationItem.leftBarButtonItems = [GLPApplicationHelper customBackButtonWithTarget:self];
+}
+
+- (void)initialiseObjects
+{
+    self.animationHelper = [[GLPPickTimeAnimationHelper alloc] init];
+    self.animationHelper.delegate = self;
+}
+
+#pragma mark - Animation configuration
+
+- (void)preparePositionsBeforeIntro:(BOOL)beforeIntro
+{
+    [self.animationHelper setInitialValueInConstraint:self.timePickerXAligment forView:self.datePicker comingFromRight:beforeIntro];
+    [self.animationHelper setInitialValueInConstraint:self.titleXAligment forView:self.titleLabel comingFromRight:beforeIntro];
+    [self.animationHelper setInitialValueInConstraint:self.buttonXAligment forView:self.nextButton comingFromRight:beforeIntro];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Animations
+
+- (void)animateElementsAfterViewDidLoad
+{
+    [self.animationHelper viewDidLoadAnimationWithConstraint:self.timePickerXAligment withKindOfElement:kTimeElement];
+    [self.animationHelper viewDidLoadAnimationWithConstraint:self.buttonXAligment withKindOfElement:kButtonElement];
+    [self.animationHelper viewDidLoadAnimationWithConstraint:self.titleXAligment withKindOfElement:kTitleElement];
+}
+
+- (void)animateElementsBeforeGoingBack:(BOOL)goingBack
+{
+    [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.datePicker andKindOfElement:kTimeElement];
+    [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.titleLabel andKindOfElement:kTitleElement];
+    [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.nextButton andKindOfElement:kButtonElement];
 }
 
 #pragma mark - Initialisations
@@ -106,52 +152,31 @@
     
 }
 
+#pragma mark - GLPPickTimeAnimationHelperDelegate
+
+- (void)goingBackViewsDisappeared
+{
+    [self.navigationController popViewControllerAnimated:NO];
+}
+
+- (void)goingForwardViewsDisappeared
+{
+    [self preparePositionsBeforeIntro:NO];
+    [self navigateToNewPostView];
+}
 
 #pragma mark - Actions
 
 -(IBAction)dismissViewController:(id)sender
 {
-//    UIBarButtonItem *button = (UIBarButtonItem *)sender;
-    
-    
-//    if(button.tag == 1)
-//    {
-//        if([_titleTextField.text isEqualToString:@""])
-//        {
-//            [WebClientHelper showStandardErrorWithTitle:@"Cannot continue" andContent:@"Please enter a title to continue"];
-//            
-//            return;
-//        }
-//        else if(_titleTextField.text.length > 50)
-//        {
-//            //Check for 50 characters.
-//
-//            [WebClientHelper showStandardErrorWithTitle:@"Title too long" andContent:@"The title should be less than 37 characters long"];
-//            
-//            return;
-//        }
-//        
-//        //Send the date to the parent view.
-//        [_delegate doneSelectingDateForEvent:_datePicker.date andTitle:_titleTextField.text];
-//    }
-//    else
-//    {
-//        [_delegate cancelSelectingDateForEvent];
-//    }
-    
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-
-        
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(IBAction)continueToTheFinalView:(id)sender
 {
     [[PendingPostManager sharedInstance] setDate:_datePicker.date];
 
-//    [self performSegueWithIdentifier:@"final new post" sender:self];
-    [self navigateToNewPostView];
+    [self animateElementsBeforeGoingBack:NO];
 }
 
 - (void)navigateToNewPostView
@@ -159,6 +184,11 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
     NewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
     [self.navigationController pushViewController:newPostVC animated:NO];
+}
+
+- (void)backButtonTapped
+{
+    [self animateElementsBeforeGoingBack:YES];
 }
 
 #pragma mark - UINavigationControllerDelegate
