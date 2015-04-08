@@ -58,7 +58,7 @@
     [super viewDidLoad];
     [self configureCustomBackButton];
     [self initialiseObjects];
-    [self initialisePositions];
+    [self preparePositionsBeforeIntro:YES];
     [self configureNavigationBar];
     [self configureConstrainsDependingOnScreenSize];
 }
@@ -118,20 +118,25 @@
 
 #pragma mark - Animation configuration
 
-- (void)initialisePositions
+- (void)preparePositionsBeforeIntro:(BOOL)beforeIntro
 {
-    [self.animationHelper setInitialValueInConstraint:self.calendarXAligment forView:self.calendarView];
-    [self.animationHelper setInitialValueInConstraint:self.musicXAligment forView:self.musicView];
-    [self.animationHelper setInitialValueInConstraint:self.partyXAligment forView:self.partyView];
-    [self.animationHelper setInitialValueInConstraint:self.theaterXAligment forView:self.theaterView];
-    [self.animationHelper setInitialValueInConstraint:self.freeFoodXAligment forView:self.freeFoodView];
-    [self.animationHelper setInitialValueInConstraint:self.sportsXAligment forView:self.sportsView];
-    [self.animationHelper setInitialValueInConstraint:self.otherXAligment forView:self.otherView];
-    [self.animationHelper setInitialValueInConstraint:self.speakerXAligment forView:self.speakersView];
+    [self.animationHelper setInitialValueInConstraint:self.calendarXAligment forView:self.calendarView withMinusSign:beforeIntro];
+    [self.animationHelper setInitialValueInConstraint:self.musicXAligment forView:self.musicView withMinusSign:beforeIntro];
+    [self.animationHelper setInitialValueInConstraint:self.partyXAligment forView:self.partyView withMinusSign:beforeIntro];
+    [self.animationHelper setInitialValueInConstraint:self.theaterXAligment forView:self.theaterView withMinusSign:beforeIntro];
+    [self.animationHelper setInitialValueInConstraint:self.freeFoodXAligment forView:self.freeFoodView withMinusSign:beforeIntro];
+    [self.animationHelper setInitialValueInConstraint:self.sportsXAligment forView:self.sportsView withMinusSign:beforeIntro];
+    [self.animationHelper setInitialValueInConstraint:self.otherXAligment forView:self.otherView withMinusSign:beforeIntro];
+    [self.animationHelper setInitialValueInConstraint:self.speakerXAligment forView:self.speakersView withMinusSign:beforeIntro];
     [self.titleLabel setAlpha:0.0];
 }
 
-- (void)renewDelaysBeforeGoingBack
+- (void)preparePositionsAfterGoingForward
+{
+    [self preparePositionsBeforeIntro:NO];
+}
+
+- (void)setDelayFromLeftToRight
 {
     [self.animationHelper renewDelay:0.25 withKindOfElement:kPartiesElement];
     [self.animationHelper renewDelay:0.25 withKindOfElement:kSportsElement];
@@ -140,6 +145,17 @@
     [self.animationHelper renewDelay:0.2 withKindOfElement:kSpeakersElement];
     [self.animationHelper renewDelay:0.1 withKindOfElement:kOtherElement];
     [self.animationHelper renewDelay:0.1 withKindOfElement:kTheaterElement];
+}
+
+- (void)setDelayFromRightToLeft
+{
+    [self.animationHelper renewDelay:0.1 withKindOfElement:kPartiesElement];
+    [self.animationHelper renewDelay:0.1 withKindOfElement:kSportsElement];
+    [self.animationHelper renewDelay:0.2 withKindOfElement:kMusicElement];
+    [self.animationHelper renewDelay:0.2 withKindOfElement:kFreeFoodElement];
+    [self.animationHelper renewDelay:0.2 withKindOfElement:kSpeakersElement];
+    [self.animationHelper renewDelay:0.25 withKindOfElement:kOtherElement];
+    [self.animationHelper renewDelay:0.25 withKindOfElement:kTheaterElement];
 }
 
 #pragma mark - Animations
@@ -157,24 +173,17 @@
     [self.animationHelper fadeView:self.titleLabel withAppearance:YES];
 }
 
-- (void)animateElementsBeforeGoingBack
+- (void)animateElementsBeforeGoingBack:(BOOL)goingBack
 {
-    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.calendarView andKindOfElement:kCalendarElement];
-    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.musicView andKindOfElement:kMusicElement];
-    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.partyView andKindOfElement:kPartiesElement];
-    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.theaterView andKindOfElement:kTheaterElement];
-    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.freeFoodView andKindOfElement:kFreeFoodElement];
-    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.sportsView andKindOfElement:kSportsElement];
-    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.otherView andKindOfElement:kOtherElement];
-    [self.animationHelper viewGoingBackDisappearingAnimationWithView:self.speakersView andKindOfElement:kSpeakersElement];
-
+    [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.calendarView andKindOfElement:kCalendarElement];
+    [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.musicView andKindOfElement:kMusicElement];
+    [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.partyView andKindOfElement:kPartiesElement];
+    [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.theaterView andKindOfElement:kTheaterElement];
+    [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.freeFoodView andKindOfElement:kFreeFoodElement];
+    [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.sportsView andKindOfElement:kSportsElement];
+    [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.otherView andKindOfElement:kOtherElement];
+    [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.speakersView andKindOfElement:kSpeakersElement];
     [self.animationHelper fadeView:self.titleLabel withAppearance:NO];
-}
-
-- (void)animateElementsBeforeGoingNext
-{
-    
-    
 }
 
 #pragma mark - GLPEventNewPostAnimationHelperDelegate
@@ -186,7 +195,9 @@
 
 - (void)goingForwardViewsDisappeared
 {
-    
+    [self preparePositionsAfterGoingForward];
+    [self setDelayFromLeftToRight];
+    [self navigateToDatePickerView];
 }
 
 #pragma mark - Selectors
@@ -226,8 +237,9 @@
     
     [[PendingPostManager sharedInstance] setCategory: [[CategoryManager sharedInstance] categoryWithOrderKey:senderButton.tag]];
     
+    [self setDelayFromRightToLeft];
+    [self animateElementsBeforeGoingBack:NO];
     
-    [self navigateToDatePickerView];
 //    [self performSegueWithIdentifier:@"pick date" sender:self];
 
 }
@@ -241,9 +253,8 @@
 
 - (void)backButtonTapped
 {
-    
-    [self renewDelaysBeforeGoingBack];
-    [self animateElementsBeforeGoingBack];
+    [self setDelayFromLeftToRight];
+    [self animateElementsBeforeGoingBack:YES];
 }
 
 #pragma mark - UINavigationControllerDelegate

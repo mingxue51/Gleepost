@@ -309,6 +309,32 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hkZ-6l-1Y5">
+                                <rect key="frame" x="0.0" y="64" width="600" height="128"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="99" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What kind of event do you want?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B7z-el-BKK">
+                                        <rect key="frame" x="0.0" y="75" width="600" height="22"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" name="Montserrat-Light" family="Montserrat" pointSize="18"/>
+                                        <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" tag="98" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar_top" translatesAutoresizingMaskIntoConstraints="NO" id="k8j-G5-RdS">
+                                        <rect key="frame" x="280" y="12" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="k8j-G5-RdS" secondAttribute="height" multiplier="1:1" id="fDo-9M-68c"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="k8j-G5-RdS" firstAttribute="centerY" secondItem="hkZ-6l-1Y5" secondAttribute="centerY" multiplier="0.5" id="Poa-Az-Qq7"/>
+                                    <constraint firstItem="B7z-el-BKK" firstAttribute="leading" secondItem="hkZ-6l-1Y5" secondAttribute="leading" id="iTk-0C-kfh"/>
+                                    <constraint firstAttribute="trailing" secondItem="B7z-el-BKK" secondAttribute="trailing" id="rLF-Ay-3vd"/>
+                                    <constraint firstAttribute="centerY" secondItem="B7z-el-BKK" secondAttribute="centerY" constant="-21.5" id="rZ9-N9-wxN"/>
+                                    <constraint firstAttribute="centerX" secondItem="k8j-G5-RdS" secondAttribute="centerX" id="sLA-Pt-hOZ"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NXc-oh-Qza" userLabel="CategoriesView">
                                 <rect key="frame" x="0.0" y="192" width="600" height="408"/>
                                 <subviews>
@@ -566,32 +592,6 @@
                                     <constraint firstAttribute="centerX" secondItem="cPc-zC-xDC" secondAttribute="centerX" constant="100" id="kGh-IC-Vum"/>
                                     <constraint firstAttribute="centerX" secondItem="fGo-9U-LVC" secondAttribute="centerX" constant="100" id="tXp-4J-mqa"/>
                                     <constraint firstAttribute="centerY" secondItem="SaB-T8-LXj" secondAttribute="centerY" constant="40" id="wrm-jC-RNA"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hkZ-6l-1Y5">
-                                <rect key="frame" x="0.0" y="64" width="600" height="128"/>
-                                <subviews>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="99" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What kind of event do you want?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B7z-el-BKK">
-                                        <rect key="frame" x="0.0" y="75" width="600" height="22"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <fontDescription key="fontDescription" name="Montserrat-Light" family="Montserrat" pointSize="18"/>
-                                        <color key="textColor" red="0.58823529409999997" green="0.58823529409999997" blue="0.58823529409999997" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView userInteractionEnabled="NO" tag="98" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar_top" translatesAutoresizingMaskIntoConstraints="NO" id="k8j-G5-RdS">
-                                        <rect key="frame" x="280" y="12" width="40" height="40"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" secondItem="k8j-G5-RdS" secondAttribute="height" multiplier="1:1" id="fDo-9M-68c"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="k8j-G5-RdS" firstAttribute="centerY" secondItem="hkZ-6l-1Y5" secondAttribute="centerY" multiplier="0.5" id="Poa-Az-Qq7"/>
-                                    <constraint firstItem="B7z-el-BKK" firstAttribute="leading" secondItem="hkZ-6l-1Y5" secondAttribute="leading" id="iTk-0C-kfh"/>
-                                    <constraint firstAttribute="trailing" secondItem="B7z-el-BKK" secondAttribute="trailing" id="rLF-Ay-3vd"/>
-                                    <constraint firstAttribute="centerY" secondItem="B7z-el-BKK" secondAttribute="centerY" constant="-21.5" id="rZ9-N9-wxN"/>
-                                    <constraint firstAttribute="centerX" secondItem="k8j-G5-RdS" secondAttribute="centerX" id="sLA-Pt-hOZ"/>
                                 </constraints>
                             </view>
                         </subviews>

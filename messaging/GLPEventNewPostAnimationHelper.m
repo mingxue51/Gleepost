@@ -42,10 +42,19 @@
     animationData.finalValue = view.frame.origin.x;
 }
 
-- (void)setInitialValueInConstraint:(NSLayoutConstraint *)constraint forView:(UIView *)view
+- (void)setInitialValueInConstraint:(NSLayoutConstraint *)constraint forView:(UIView *)view withMinusSign:(BOOL)minusSign
 {
     [view layoutIfNeeded];
-    constraint.constant = -[GLPiOSSupportHelper screenWidth] - view.frame.size.width / 2;
+    
+    CGFloat newValue = [GLPiOSSupportHelper screenWidth] + view.frame.size.width / 2;
+    
+    constraint.constant = (minusSign) ? -newValue : newValue;
+}
+
+- (void)setInitialValueBeforeGoingForwardInConstraint:(NSLayoutConstraint *)constraint forView:(UIView *)view
+{
+    [view layoutIfNeeded];
+    constraint.constant = [GLPiOSSupportHelper screenWidth];
 }
 
 - (void)renewDelay:(CGFloat)delay withKindOfElement:(EventNewPostViewElement)kindOfElement
@@ -77,7 +86,7 @@
 }
 
 
-- (void)viewGoingBackDisappearingAnimationWithView:(UIView *)view andKindOfElement:(EventNewPostViewElement)kindOfElement
+- (void)viewGoingBack:(BOOL)goingBack disappearingAnimationWithView:(UIView *)view andKindOfElement:(EventNewPostViewElement)kindOfElement
 {
     [view layoutIfNeeded];
     CGRect currentFrame = view.frame;
@@ -87,13 +96,27 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, constraintAnimationData.delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         
         POPSpringAnimation *basicAnimation = [POPSpringAnimation animation];
-        
         basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewFrame];
-        basicAnimation.toValue = [NSValue valueWithCGRect:CGRectMake([GLPiOSSupportHelper screenWidth], currentFrame.origin.y, currentFrame.size.width, currentFrame.size.height)];
+        
+        NSValue *toValue = nil;
+        NSString *animationName = nil;
+        
+        if(goingBack)
+        {
+            toValue = [NSValue valueWithCGRect:CGRectMake([GLPiOSSupportHelper screenWidth], currentFrame.origin.y, currentFrame.size.width, currentFrame.size.height)];
+            animationName = @"GoingBackDisappearing";
+        }
+        else
+        {
+            toValue = [NSValue valueWithCGRect:CGRectMake(-currentFrame.size.width, currentFrame.origin.y, currentFrame.size.width, currentFrame.size.height)];
+            animationName = @"GoingForwardDisappearing";
+        }
+        
+        basicAnimation.toValue = toValue;
         basicAnimation.springSpeed = constraintAnimationData.speed;
         basicAnimation.springBounciness = constraintAnimationData.bounce;
         
-        basicAnimation.name = [NSString stringWithFormat:@"GoingBackDisappearing_%ld", (long)view.tag];
+        basicAnimation.name = [NSString stringWithFormat:@"%@_%ld", animationName, (long)view.tag];
         basicAnimation.delegate=self;
         
         [view pop_addAnimation:basicAnimation forKey:@"Disappearing"];
@@ -105,6 +128,10 @@
     if([anim.name isEqualToString:@"GoingBackDisappearing_1"] && finished)
     {
         [(id<GLPEventNewPostAnimationHelperDelegate>) self.delegate goingBackViewsDisappeared];
+    }
+    else if([anim.name isEqualToString:@"GoingForwardDisappearing_1"] && finished)
+    {
+        [(id<GLPEventNewPostAnimationHelperDelegate>) self.delegate goingForwardViewsDisappeared];
     }
 }
 

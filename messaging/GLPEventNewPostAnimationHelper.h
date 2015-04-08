@@ -32,10 +32,11 @@ typedef NS_ENUM(NSInteger, EventNewPostViewElement) {
 
 @interface GLPEventNewPostAnimationHelper : GLPAnimationHelper
 
-- (void)setInitialValueInConstraint:(NSLayoutConstraint *)constraint forView:(UIView *)view;
+- (void)setInitialValueInConstraint:(NSLayoutConstraint *)constraint forView:(UIView *)view withMinusSign:(BOOL)minusSign;
+- (void)setInitialValueBeforeGoingForwardInConstraint:(NSLayoutConstraint *)constraint forView:(UIView *)view;
 - (void)setXValueForView:(UIView *)view withKindOfElement:(EventNewPostViewElement)kindOfElement;
 - (void)renewDelay:(CGFloat)delay withKindOfElement:(EventNewPostViewElement)kindOfElement;
 - (void)viewDidLoadAnimationWithConstraint:(NSLayoutConstraint *)constraint withKindOfElement:(EventNewPostViewElement)kindOfElement;
-- (void)viewGoingBackDisappearingAnimationWithView:(UIView *)view andKindOfElement:(EventNewPostViewElement)kindOfElement;
+- (void)viewGoingBack:(BOOL)goingBack disappearingAnimationWithView:(UIView *)view andKindOfElement:(EventNewPostViewElement)kindOfElement;
 
 @end
