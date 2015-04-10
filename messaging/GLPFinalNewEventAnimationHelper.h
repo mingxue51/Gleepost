@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger, FinalNewPostViewElement) {
     kTitleElement
 };
 
-@protocol GLPPickTimeAnimationHelperDelegate <GLPAnimationHelperDelegate>
+@protocol GLPFinalNewEventAnimationHelperDelegate <GLPAnimationHelperDelegate>
 
 @required
 - (void)goingBackViewsDisappeared;

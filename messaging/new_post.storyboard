@@ -653,6 +653,10 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Pe-qu-sAI">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                                <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                            </imageView>
                             <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jaK-ZM-7n4">
                                 <rect key="frame" x="10" y="1000" width="300" height="45"/>
                                 <subviews>
@@ -720,7 +724,7 @@
                                     <action selector="addImageOrImage:" destination="q62-Na-WAe" eventType="touchUpInside" id="t5f-1J-889"/>
                                 </connections>
                             </button>
-                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5aV-Fg-Vcn" userLabel="Camera Image View" customClass="GLPImageView">
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5aV-Fg-Vcn" userLabel="Camera Image View" customClass="GLPImageView">
                                 <rect key="frame" x="22" y="41" width="180" height="91"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -802,8 +806,9 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="ctE-dF-MbU" firstAttribute="top" secondItem="5Pe-qu-sAI" secondAttribute="bottom" id="06E-OA-P5E"/>
                             <constraint firstItem="mKj-46-UCI" firstAttribute="top" secondItem="aSd-Ze-vyv" secondAttribute="bottom" constant="14" id="0hO-el-sGu"/>
                             <constraint firstItem="SMf-ke-MCU" firstAttribute="leading" secondItem="M0r-yB-bAK" secondAttribute="trailing" constant="8" id="1Gf-EW-4r2"/>
                             <constraint firstItem="a9Z-x7-K2M" firstAttribute="top" secondItem="5aV-Fg-Vcn" secondAttribute="bottom" constant="8" id="2nV-fx-D0k"/>
@@ -813,8 +818,10 @@
                             <constraint firstItem="lx5-mR-gMd" firstAttribute="top" secondItem="mKj-46-UCI" secondAttribute="bottom" id="8Hz-sS-b2q"/>
                             <constraint firstItem="M0r-yB-bAK" firstAttribute="width" secondItem="j1w-sk-aDC" secondAttribute="width" multiplier="0.3" id="Hby-XJ-8sC"/>
                             <constraint firstItem="lx5-mR-gMd" firstAttribute="leading" secondItem="j1w-sk-aDC" secondAttribute="leading" id="JkI-CI-0SK"/>
+                            <constraint firstAttribute="trailing" secondItem="5Pe-qu-sAI" secondAttribute="trailing" id="MSW-cJ-amG"/>
                             <constraint firstItem="QRI-mM-QVZ" firstAttribute="width" secondItem="j1w-sk-aDC" secondAttribute="width" multiplier="0.3" id="Njz-w8-987"/>
                             <constraint firstItem="a9Z-x7-K2M" firstAttribute="width" secondItem="j1w-sk-aDC" secondAttribute="width" multiplier="0.94" id="a9Q-ph-9Qi"/>
+                            <constraint firstItem="5Pe-qu-sAI" firstAttribute="top" secondItem="aSd-Ze-vyv" secondAttribute="bottom" id="bB6-NI-zYq"/>
                             <constraint firstItem="M0r-yB-bAK" firstAttribute="leading" secondItem="QRI-mM-QVZ" secondAttribute="trailing" constant="8" id="bkD-Iz-3p4"/>
                             <constraint firstItem="SMf-ke-MCU" firstAttribute="width" secondItem="j1w-sk-aDC" secondAttribute="width" multiplier="0.3" id="cnA-WA-S68"/>
                             <constraint firstItem="5aV-Fg-Vcn" firstAttribute="width" secondItem="j1w-sk-aDC" secondAttribute="width" multiplier="0.3" id="e7r-0L-SXa"/>
@@ -824,6 +831,7 @@
                             <constraint firstAttribute="centerX" secondItem="a9Z-x7-K2M" secondAttribute="centerX" id="oIa-Ui-x89"/>
                             <constraint firstItem="QRI-mM-QVZ" firstAttribute="top" secondItem="lx5-mR-gMd" secondAttribute="bottom" constant="5" id="p20-gn-roL"/>
                             <constraint firstItem="5aV-Fg-Vcn" firstAttribute="top" secondItem="lx5-mR-gMd" secondAttribute="bottom" constant="5" id="p9r-vQ-CNd"/>
+                            <constraint firstItem="5Pe-qu-sAI" firstAttribute="leading" secondItem="j1w-sk-aDC" secondAttribute="leading" id="ta2-RS-Azj"/>
                             <constraint firstItem="mKj-46-UCI" firstAttribute="width" secondItem="j1w-sk-aDC" secondAttribute="width" multiplier="0.28" id="wnK-QC-gwV"/>
                         </constraints>
                     </view>
@@ -836,15 +844,20 @@
                         <outlet property="addImageButton" destination="QRI-mM-QVZ" id="pSG-Jt-LMv"/>
                         <outlet property="addLocationButton" destination="SMf-ke-MCU" id="Rdm-b1-blj"/>
                         <outlet property="addVideoButton" destination="M0r-yB-bAK" id="yRx-gy-gaF"/>
+                        <outlet property="backgroundImageView" destination="5Pe-qu-sAI" id="suR-gP-lQF"/>
                         <outlet property="contentTextView" destination="2hw-kY-C1S" id="3Lb-Be-202"/>
                         <outlet property="descriptionCharactersLeftLbl" destination="Cwm-WG-YaA" id="8R3-jm-bWk"/>
                         <outlet property="distanceContentViewFromTop" destination="aVZ-Q8-ZD9" id="imv-Eb-WFe"/>
+                        <outlet property="optionalExtras" destination="mKj-46-UCI" id="miT-O2-prR"/>
+                        <outlet property="optionalExtrasLabelXAligment" destination="gZW-zv-dfG" id="fBT-m1-XwG"/>
                         <outlet property="pendingImageView" destination="5aV-Fg-Vcn" id="9Hx-rz-vO9"/>
                         <outlet property="separatorLineImageView" destination="Sad-Fl-Qde" id="vBb-r2-Xa3"/>
                         <outlet property="textFieldView" destination="a9Z-x7-K2M" id="DqZ-tb-9ym"/>
                         <outlet property="textViewHeight" destination="3SH-tu-Djh" id="S9A-vF-oma"/>
+                        <outlet property="textViewXAligment" destination="oIa-Ui-x89" id="RSp-Qx-0JS"/>
                         <outlet property="titleCharactersLeftLbl" destination="eQh-ti-87M" id="jXb-eu-IJ2"/>
                         <outlet property="titleTextField" destination="wDI-t9-EAJ" id="uiu-pW-oos"/>
+                        <outlet property="videoButtonXAligment" destination="5PD-Ac-bHA" id="GyK-Md-u2v"/>
                         <segue destination="Fry-HK-ZDz" kind="presentation" identifier="capture video" modalPresentationStyle="currentContext" id="SXQ-Gd-L0J"/>
                         <segue destination="UyT-c2-lm4" kind="push" identifier="pick location" id="sCi-fw-WYP"/>
                         <segue destination="JVA-as-ED3" kind="show" identifier="show image selector" id="vg8-Xx-vUd"/>

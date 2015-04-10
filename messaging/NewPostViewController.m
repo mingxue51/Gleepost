@@ -38,8 +38,9 @@
 #import "GLPLocation.h"
 #import "GLPApplicationHelper.h"
 #import "FakeNavigationBarView.h"
+#import "GLPFinalNewEventAnimationHelper.h"
 
-@interface NewPostViewController () <GLPImageViewDelegate>
+@interface NewPostViewController () <GLPImageViewDelegate, GLPFinalNewEventAnimationHelperDelegate>
 
 
 @property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *contentTextView;
@@ -63,6 +64,8 @@
 @property (weak, nonatomic) IBOutlet GLPImageView *pendingImageView;
 @property (weak, nonatomic) IBOutlet UIButton *addVideoButton;
 @property (weak, nonatomic) IBOutlet UIButton *addLocationButton;
+@property (weak, nonatomic) IBOutlet UILabel *optionalExtras;
+@property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
 //@property (strong, nonatomic) NSMutableArray *categories;
 @property (strong, nonatomic) GLPPostUploader *postUploader;
@@ -85,9 +88,12 @@
 
 
 @property (strong, nonatomic) FakeNavigationBarView *fakeNavigationBar;
+@property (strong, nonatomic) GLPFinalNewEventAnimationHelper *animationHelper;
 
 //Constraints.
-
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoButtonXAligment;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewXAligment;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *optionalExtrasLabelXAligment;
 
 
 @end
@@ -103,23 +109,15 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    self.navigationItem.leftBarButtonItem = [AppDelegate customBackButtonWithTarget:self];
-    
-    if(NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_6_1)
-    {
-        //If iOS 6 add transparent black UIImageView.
-        UIImageView *imageViewBlack = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, self.contentTextView.frame.size.height+50)];
-        
-        imageViewBlack.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-        
-        [self.view addSubview:imageViewBlack];
-        [self.view sendSubviewToBack:imageViewBlack];
-    }
-    
+
     self.tabBarController.tabBar.hidden = NO;
 
     [self configureObjects];
-        
+    
+    [self preparePositionsBeforeIntro:YES];
+    
+    [self animateElementsAfterViewDidLoad];
+    
     [self configureNavigationBar];
     
     [self configureLabels];
@@ -221,6 +219,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 {
     _transitionViewCategories = [[TDFadeNavigation alloc] init];
     _postUploader = [[GLPPostUploader alloc] init];
+    self.animationHelper = [[GLPFinalNewEventAnimationHelper alloc] init];
+    self.animationHelper.delegate = self;
     _eventDateStart = nil;
     _descriptionRemainingNoOfCharacters = MAX_DESCRIPTION_CHARACTERS;
     _titleRemainingNoOfCharacters = MAX_TITLE_CHARACTERS;
@@ -265,16 +265,13 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 -(void)configureTextViews
 {
     _contentTextView.delegate = self;
-    
     [_titleTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-
     _titleTextField.delegate = self;
 }
 
 -(void)formatElements
 {
     [ShapeFormatterHelper setCornerRadiusWithView:_textFieldView andValue:4];
-
     [ShapeFormatterHelper setCornerRadiusWithView:_pendingImageView andValue:2];
 }
 
@@ -376,6 +373,36 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     DDLogDebug(@"Data loaded: %@", [[PendingPostManager sharedInstance] description]);
 }
 
+#pragma mark - Animation configuration
+
+- (void)preparePositionsBeforeIntro:(BOOL)beforeIntro
+{
+    [self.animationHelper setInitialValueInConstraint:self.textViewXAligment forView:self.textFieldView comingFromRight:beforeIntro];
+    [self.animationHelper setInitialValueInConstraint:self.videoButtonXAligment forView:self.textFieldView comingFromRight:beforeIntro];
+    [self.animationHelper setInitialValueInConstraint:self.optionalExtrasLabelXAligment forView:self.optionalExtras comingFromRight:beforeIntro];
+    [self.backgroundImageView setAlpha:0.0];
+}
+
+#pragma mark - Animations
+
+- (void)animateElementsAfterViewDidLoad
+{
+    [self.animationHelper viewDidLoadAnimationWithConstraint:self.textViewXAligment withKindOfElement:kTextElement];
+    [self.animationHelper viewDidLoadAnimationWithConstraint:self.videoButtonXAligment withKindOfElement:kVideoElement];
+    [self.animationHelper viewDidLoadAnimationWithConstraint:self.optionalExtrasLabelXAligment withKindOfElement:kTitleElement];
+    [self.animationHelper fadeView:self.backgroundImageView withAppearance:YES];
+}
+
+- (void)animateElementsBeforeGoingBack
+{
+    [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.textFieldView andKindOfElement:kTextElement];
+    [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.addImageButton andKindOfElement:kImageElement];
+    [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.pendingImageView andKindOfElement:kImageElement];
+    [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.addVideoButton andKindOfElement:kVideoElement];
+    [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.addLocationButton andKindOfElement:kLocationElement];
+    [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.optionalExtras andKindOfElement:kTitleElement];
+    [self.animationHelper fadeView:self.backgroundImageView withAppearance:NO];
+}
 
 #pragma mark - Selectors
 
@@ -439,6 +466,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         
         [[PendingPostManager sharedInstance] reset];
     }
+}
+
+- (void)backButtonTapped
+{
+    [self animateElementsBeforeGoingBack];
 }
 
 /**
@@ -650,7 +682,9 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [self performSegueWithIdentifier:@"pick location" sender:self];
 }
 
-- (void)backButtonTapped
+#pragma mark - GLPFinalNewEventAnimationHelperDelegate
+
+- (void)goingBackViewsDisappeared
 {
     [self.navigationController popViewControllerAnimated:NO];
 }
