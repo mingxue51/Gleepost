@@ -46,7 +46,7 @@
 {
     [view layoutIfNeeded];
     
-    CGFloat newValue = [GLPiOSSupportHelper screenWidth] + 1000 /*+ view.frame.size.width / 2*/;
+    CGFloat newValue = [GLPiOSSupportHelper screenWidth] + view.frame.size.width / 2;
     
     constraint.constant = (minusSign) ? -newValue : newValue;
 }
