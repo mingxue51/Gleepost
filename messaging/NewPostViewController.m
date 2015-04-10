@@ -971,9 +971,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         return;
     }
     
+    [_textFieldView layoutIfNeeded];
+
     float newHeightOfTextFieldView = [self findNewHeightForTextFieldViewWithKeyboardFrame:keyboardBounds];
     
-    [_textFieldView layoutIfNeeded];
+    DDLogDebug(@"keybardwillshow : new height %f", newHeightOfTextFieldView);
     
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
 
@@ -1004,12 +1006,13 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (float)findNewHeightForTextFieldViewWithKeyboardFrame:(CGRect)keyboardFrame
 {
-    float keyboardY = keyboardFrame.origin.y;
+    CGFloat keyboardY = keyboardFrame.origin.y;
     
-    //We are substracting with 135 because without it the position is wrong.
-    //So if we don't substract with that number the position of the button will be wrong.
+    CGFloat distanceFromKeyboard = 10.0;
     
-    return keyboardY - _textFieldView.frame.origin.y - 135;
+    DDLogDebug(@"Keboard Y %f - %f", keyboardY, _textFieldView.frame.origin.y);
+    
+    return keyboardY - _textFieldView.frame.origin.y - distanceFromKeyboard;
 }
 
 //- (float)findNewYOfSelectImageViewWithKeyboardFrame:(CGRect)keyboardFrame
