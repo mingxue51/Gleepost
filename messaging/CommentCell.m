@@ -33,7 +33,7 @@
 @end
 
 
-static const float FixedSizeOfTextCell = 75.0; //Before was 90. 45
+static const float FixedSizeOfTextCell = 53.0; //Before was 90. 75
 static const float FollowingCellPadding = 0.0;
 static const float CommentContentViewPadding = 0.0;  //15 before.
 static const float CommentContentLabelMargin = 40.0;
@@ -86,7 +86,7 @@ static const float CommentContentLabelMargin = 40.0;
     NSDate *currentDate = comment.date;
     
     //Set post's time.
-    [self.postDateLabel setText:[currentDate timeAgo]];
+    [self.postDateLabel setText:[[currentDate timeAgo] uppercaseString]];
     
     
     DDLogDebug(@"Comment Cell : content width %f", self.contentLabel.frame.size.width);
@@ -259,7 +259,7 @@ static const float CommentContentLabelMargin = 40.0;
 + (CGSize)getContentLabelSizeForContent:(NSString *)content
 {
     
-    UIFont *font = [UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:15.0];
+    UIFont *font = [UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:12.0];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
