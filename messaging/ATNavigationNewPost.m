@@ -26,19 +26,33 @@
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext {
     
-    
+    UIView *inView = [transitionContext containerView];
     UIViewController* toViewController   = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     UIViewController* fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     
     if(!self.isPresenting)
     {
-        [[transitionContext containerView] insertSubview:toViewController.view belowSubview:fromViewController.view];
+        CGRectSetX(toViewController.view, 320.0f);
+        
+        [inView addSubview:toViewController.view];
+        
+        [UIView animateWithDuration:0.1 animations:^{
+            
+            CGRectSetX(toViewController.view, 0.0f);
+            CGRectSetX(fromViewController.view, -320.0f);
+            
+        } completion:^(BOOL finished) {
+            [transitionContext completeTransition:YES];
+            
+        }];
+        
+//        [[transitionContext containerView] insertSubview:toViewController.view belowSubview:fromViewController.view];
     }
     
     
 //    [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
 
-    [transitionContext completeTransition:YES];
+    //[transitionContext completeTransition:YES];
 
 //    [UIView animateWithDuration:[self transitionDuration:transitionContext] animations:^{
 //        fromViewController.view.alpha = 0.0;
