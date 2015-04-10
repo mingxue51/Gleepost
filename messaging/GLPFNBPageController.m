@@ -16,9 +16,6 @@
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *dots;
 
-@property (weak, nonatomic) IBOutlet UIImageView *dot1;
-@property (weak, nonatomic) IBOutlet UIImageView *dot2;
-
 @end
 
 @implementation GLPFNBPageController
@@ -73,9 +70,17 @@
  Removes the 2 dots in the edges and acts as having 2 dots.
  @param shortMode if YES should turn to 2 dots otherwise should be regular.
  */
-- (void)setShortMode:(BOOL)shortMode
+- (void)setShortModeAndMakeSecondDotSelected
 {
+    for(UIImageView *dot in self.dots)
+    {
+        if(dot.tag == 1 || dot.tag == 4)
+        {
+            dot.hidden = YES;
+        }
+    }
     
+    [self selectDotWithNumber:3];
 }
 
 /*

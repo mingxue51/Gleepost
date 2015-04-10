@@ -37,7 +37,7 @@
 #import "GLPPendingPostsManager.h"
 #import "GLPLocation.h"
 #import "GLPApplicationHelper.h"
-#import "FakeNavigationBarView.h"
+#import "FakeNavigationBarNewPostView.h"
 #import "GLPFinalNewEventAnimationHelper.h"
 
 @interface NewPostViewController () <GLPImageViewDelegate, GLPFinalNewEventAnimationHelperDelegate>
@@ -87,14 +87,13 @@
 @property (assign, nonatomic, getter=isPostButtonClicked) BOOL postButttonClicked;
 
 
-@property (strong, nonatomic) FakeNavigationBarView *fakeNavigationBar;
+@property (strong, nonatomic) FakeNavigationBarNewPostView *fakeNavigationBar;
 @property (strong, nonatomic) GLPFinalNewEventAnimationHelper *animationHelper;
 
 //Constraints.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoButtonXAligment;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewXAligment;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *optionalExtrasLabelXAligment;
-
 
 @end
 
@@ -163,6 +162,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 {
     [super viewWillAppear:animated];
     
+    [self.navigationController.navigationBar invisible];
+
     [self configureContents];
 
     [self hideNetworkErrorViewIfNeeded];
@@ -290,7 +291,17 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 {
     [self.navigationController.navigationBar invisible];
 
-    self.fakeNavigationBar = [[FakeNavigationBarView alloc] initWithTitle:@"NEW POST"];
+    self.fakeNavigationBar = [[FakeNavigationBarNewPostView alloc] init];
+    
+    if(self.comesFromFirstView)
+    {
+        [self.fakeNavigationBar setShortModeAndMakeSecondDotSelected];
+    }
+    else
+    {
+        [self.fakeNavigationBar selectDotWithNumber:4];
+    }
+    
     [self.view addSubview:self.fakeNavigationBar];
     
     self.title = @"";

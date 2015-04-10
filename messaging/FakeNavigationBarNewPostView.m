@@ -40,6 +40,12 @@
     [externalView.pageController selectDotWithNumber:number];
 }
 
+- (void)setShortModeAndMakeSecondDotSelected
+{
+    FakeNavigationBarNewPostView *externalView = (FakeNavigationBarNewPostView*)self.externalView;
+    [externalView.pageController setShortModeAndMakeSecondDotSelected];
+}
+
 - (void)formatNavigationBar
 {
     DDLogDebug(@"FakeNavigationBarNewPostView : formatNavigationBar");

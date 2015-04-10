@@ -12,5 +12,6 @@
 @interface FakeNavigationBarNewPostView : GLPFakeNavigationBarView
 
 - (void)selectDotWithNumber:(NSInteger)number;
+- (void)setShortModeAndMakeSecondDotSelected;
 
 @end

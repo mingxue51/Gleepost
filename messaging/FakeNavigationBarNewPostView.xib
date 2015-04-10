@@ -78,8 +78,6 @@
                         <constraint firstItem="r6K-nB-Ibs" firstAttribute="top" secondItem="SAg-5R-Y2E" secondAttribute="top" id="mn8-eh-Pxd"/>
                     </constraints>
                     <connections>
-                        <outlet property="dot1" destination="TOu-93-bYi" id="Y39-4g-F2o"/>
-                        <outlet property="dot2" destination="r6K-nB-Ibs" id="xCv-hb-ceN"/>
                         <outletCollection property="dots" destination="TOu-93-bYi" id="Jcg-zq-rHX"/>
                         <outletCollection property="dots" destination="r6K-nB-Ibs" id="YQN-Pe-R4l"/>
                         <outletCollection property="dots" destination="ygO-N1-vHw" id="HYi-oI-Pa3"/>

@@ -11,5 +11,6 @@
 @interface GLPFNBPageController : UIView
 
 - (void)selectDotWithNumber:(NSInteger)number;
+- (void)setShortModeAndMakeSecondDotSelected;
 
 @end

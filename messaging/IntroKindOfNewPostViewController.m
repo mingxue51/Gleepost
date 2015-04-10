@@ -347,6 +347,7 @@
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
     NewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
+    newPostVC.comesFromFirstView = YES;
     [self.navigationController pushViewController:newPostVC animated:NO];
 }
 
