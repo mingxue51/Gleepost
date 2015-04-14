@@ -7,6 +7,8 @@
 //
 
 #import "ShapeFormatterHelper.h"
+#import "AppearanceHelper.h"
+#import "GLPiOSSupportHelper.h"
 
 @implementation ShapeFormatterHelper
 
@@ -150,6 +152,69 @@
     [view.layer setBorderWidth:2.0f];
 }
 
+#pragma mark - Comment cell
+
++ (void)formatTopCellWithBackgroundView:(UIImageView *)backgroundView andSuperView:(UIView *)superview
+{
+    [backgroundView layoutIfNeeded];
+    
+    CGRect bounds = backgroundView.bounds;
+    
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds
+                                                   byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerTopRight)
+                                                         cornerRadii:CGSizeMake(3.0, 3.0)];
+    
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = bounds;
+    maskLayer.path = maskPath.CGPath;
+    
+    backgroundView.layer.mask = maskLayer;
+    
+    CAShapeLayer*   frameLayer = [CAShapeLayer layer];
+    frameLayer.frame = bounds;
+    frameLayer.path = maskPath.CGPath;
+    frameLayer.strokeColor = [AppearanceHelper mediumGrayGleepostColour].CGColor;
+    frameLayer.fillColor = nil;
+    frameLayer.lineWidth = 1.0;
+    
+    [backgroundView.layer addSublayer:frameLayer];
+    
+    
+    CALayer *bottomBorder = [CALayer layer];
+    bottomBorder.borderColor = [UIColor whiteColor].CGColor;
+    bottomBorder.borderWidth = 2;
+    bottomBorder.frame = CGRectMake(10.5f, backgroundView.frame.size.height - 1, [GLPiOSSupportHelper screenWidth] - 21, 2.0);
+    
+    [superview.layer addSublayer:bottomBorder];
+}
+
++ (void)formatBottomCellWithBackgroundView:(UIImageView *)backgroundImageView
+{
+    [backgroundImageView layoutIfNeeded];
+    
+    CGRect bounds = backgroundImageView.bounds;
+    
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds
+                                                   byRoundingCorners:(UIRectCornerBottomLeft|UIRectCornerBottomRight)
+                                                         cornerRadii:CGSizeMake(3.0, 3.0)];
+    
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = bounds;
+    maskLayer.path = maskPath.CGPath;
+    backgroundImageView.layer.mask = maskLayer;
+    
+    CAShapeLayer*   frameLayer = [CAShapeLayer layer];
+    frameLayer.frame = bounds;
+    frameLayer.path = maskPath.CGPath;
+    frameLayer.strokeColor = [AppearanceHelper mediumGrayGleepostColour].CGColor;
+    frameLayer.fillColor = nil;
+    frameLayer.lineWidth = 1.0;
+    
+    [backgroundImageView.layer addSublayer:frameLayer];
+}
+
+
+#pragma mark - Helpers
 
 static inline UIImage* MTDContextCreateRoundedMask(CGRect rect, CGFloat radius_tl, CGFloat radius_tr, CGFloat radius_bl, CGFloat radius_br) {
     
