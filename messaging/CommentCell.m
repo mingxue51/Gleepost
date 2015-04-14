@@ -212,42 +212,11 @@ static const float CommentContentLabelMargin = 40.0;
 
 - (void)configureTopCell
 {
-    [_backgoundImageView layoutIfNeeded];
-    
-    CGRect bounds = _backgoundImageView.bounds;
-    
-    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds
-                                                   byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerTopRight)
-                                                         cornerRadii:CGSizeMake(3.0, 3.0)];
-    
-    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    maskLayer.frame = bounds;
-    maskLayer.path = maskPath.CGPath;
-    
-    _backgoundImageView.layer.mask = maskLayer;
-    
-    CAShapeLayer*   frameLayer = [CAShapeLayer layer];
-    frameLayer.frame = bounds;
-    frameLayer.path = maskPath.CGPath;
-    frameLayer.strokeColor = [AppearanceHelper mediumGrayGleepostColour].CGColor;
-    frameLayer.fillColor = nil;
-    frameLayer.lineWidth = 1.0;
-    
-    [_backgoundImageView.layer addSublayer:frameLayer];
-    
-    
-    CALayer *bottomBorder = [CALayer layer];
-    bottomBorder.borderColor = [UIColor whiteColor].CGColor;
-    bottomBorder.borderWidth = 2;
-    bottomBorder.frame = CGRectMake(10.5f, _backgoundImageView.frame.size.height - 1, [GLPiOSSupportHelper screenWidth] - 21, 2.0);
-    
-    [self.contentView.layer addSublayer:bottomBorder];
-
+    [ShapeFormatterHelper formatTopCellWithBackgroundView:_backgoundImageView andSuperView:self.contentView];
 }
 
 - (void)configureMiddleCell
 {
-//    [_backgoundImageView addBottomBorderWithHeight:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
     [_backgoundImageView addRightBorderWithWidth:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
     [_backgoundImageView addLeftBorderWithWidth:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
 }
@@ -278,37 +247,7 @@ static const float CommentContentLabelMargin = 40.0;
 //    
 //    [_backgoundImageView addTopBorderWithHeight:2.0 andColor:[UIColor whiteColor]];
     
-    
-    [_backgoundImageView layoutIfNeeded];
-    
-    CGRect bounds = _backgoundImageView.bounds;
-    
-    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds
-                                                   byRoundingCorners:(UIRectCornerBottomLeft|UIRectCornerBottomRight)
-                                                         cornerRadii:CGSizeMake(3.0, 3.0)];
-    
-    CAShapeLayer *maskLayer = [CAShapeLayer layer];
-    maskLayer.frame = bounds;
-    maskLayer.path = maskPath.CGPath;
-    
-    _backgoundImageView.layer.mask = maskLayer;
-    
-    CAShapeLayer*   frameLayer = [CAShapeLayer layer];
-    frameLayer.frame = bounds;
-    frameLayer.path = maskPath.CGPath;
-    frameLayer.strokeColor = [AppearanceHelper mediumGrayGleepostColour].CGColor;
-    frameLayer.fillColor = nil;
-    frameLayer.lineWidth = 1.0;
-    
-    [_backgoundImageView.layer addSublayer:frameLayer];
-    
-    
-//    CALayer *bottomBorder = [CALayer layer];
-//    bottomBorder.borderColor = [UIColor whiteColor].CGColor;
-//    bottomBorder.borderWidth = 2;
-//    bottomBorder.frame = CGRectMake(10, _backgoundImageView.frame.size.height - 1, [GLPiOSSupportHelper screenWidth] - 20, 2.0);
-//    
-//    [self.contentView.layer addSublayer:bottomBorder];
+    [ShapeFormatterHelper formatBottomCellWithBackgroundView:_backgoundImageView];
 }
 
 - (void)configureBackgroudViewHeight

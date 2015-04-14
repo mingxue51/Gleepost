@@ -36,4 +36,7 @@
 
 +(void)setBorderToView:(UIView *)view withColour:(UIColor *)colour;
 
++(void)formatTopCellWithBackgroundView:(UIImageView *)backgroundView andSuperView:(UIView *)superview;
++ (void)formatBottomCellWithBackgroundView:(UIImageView *)backgroundImageView;
+
 @end
