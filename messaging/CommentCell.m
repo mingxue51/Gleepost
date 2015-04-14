@@ -92,6 +92,9 @@ static const float CommentContentLabelMargin = 40.0;
     DDLogDebug(@"Comment Cell : content width %f", self.contentLabel.frame.size.width);
 
     
+//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor] andWidth:1.0];
+//    [ShapeFormatterHelper setBorderToView:self.postDateLabel withColour:[UIColor blackColor] andWidth:1.0];
+    
     //Add touch gesture to profile image.
 //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
 //    [tap setNumberOfTapsRequired:1];
@@ -139,8 +142,12 @@ static const float CommentContentLabelMargin = 40.0;
             [self configureTopBottomCommentCell];
             break;
             
-        default:
+        case kMiddleCommentCell:
             [self configureMiddleCell];
+            break;
+            
+        default:
+            DDLogDebug(@"Default");
             break;
     }
     
@@ -205,12 +212,42 @@ static const float CommentContentLabelMargin = 40.0;
 
 - (void)configureTopCell
 {
-    [_backgoundImageView setRoundedCorners:UIRectCornerTopLeft | UIRectCornerTopRight radius:4.0];
+    [_backgoundImageView layoutIfNeeded];
+    
+    CGRect bounds = _backgoundImageView.bounds;
+    
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds
+                                                   byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerTopRight)
+                                                         cornerRadii:CGSizeMake(3.0, 3.0)];
+    
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = bounds;
+    maskLayer.path = maskPath.CGPath;
+    
+    _backgoundImageView.layer.mask = maskLayer;
+    
+    CAShapeLayer*   frameLayer = [CAShapeLayer layer];
+    frameLayer.frame = bounds;
+    frameLayer.path = maskPath.CGPath;
+    frameLayer.strokeColor = [AppearanceHelper mediumGrayGleepostColour].CGColor;
+    frameLayer.fillColor = nil;
+    frameLayer.lineWidth = 1.0;
+    
+    [_backgoundImageView.layer addSublayer:frameLayer];
+    
+    
+    CALayer *bottomBorder = [CALayer layer];
+    bottomBorder.borderColor = [UIColor whiteColor].CGColor;
+    bottomBorder.borderWidth = 2;
+    bottomBorder.frame = CGRectMake(10.5f, _backgoundImageView.frame.size.height - 1, [GLPiOSSupportHelper screenWidth] - 21, 2.0);
+    
+    [self.contentView.layer addSublayer:bottomBorder];
+
 }
 
 - (void)configureMiddleCell
 {
-    [_backgoundImageView addBottomBorderWithHeight:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
+//    [_backgoundImageView addBottomBorderWithHeight:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
     [_backgoundImageView addRightBorderWithWidth:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
     [_backgoundImageView addLeftBorderWithWidth:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
 }
@@ -227,28 +264,58 @@ static const float CommentContentLabelMargin = 40.0;
      We are adding these 2 image views to the view because there was a problem
      with the 2 sides borders.
      */
-    UIImageView *im = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, 0.0, 1.0, 2.0)];
-    [im setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
+//    UIImageView *im = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, 0.0, 1.0, 2.0)];
+//    [im setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
+//    
+//    [self.contentView addSubview:im];
+//
+//    im = [[UIImageView alloc] initWithFrame:CGRectMake([GLPiOSSupportHelper screenWidth] - 11, 0.0, 1.0, 2.0)];
+//    [im setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
+//    
+//    [self.contentView addSubview:im];
+//
+//    [_backgoundImageView setRoundedCorners:UIRectCornerBottomRight | UIRectCornerBottomLeft radius:4.0];
+//    
+//    [_backgoundImageView addTopBorderWithHeight:2.0 andColor:[UIColor whiteColor]];
     
-    [self.contentView addSubview:im];
-
-    im = [[UIImageView alloc] initWithFrame:CGRectMake(309.0, 0.0, 1.0, 2.0)];
-    [im setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
     
-    [self.contentView addSubview:im];
+    [_backgoundImageView layoutIfNeeded];
     
-    [_backgoundImageView setRoundedCorners:UIRectCornerBottomRight | UIRectCornerBottomLeft radius:4.0];
+    CGRect bounds = _backgoundImageView.bounds;
     
-    [_backgoundImageView addTopBorderWithHeight:2.0 andColor:[UIColor whiteColor]];
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds
+                                                   byRoundingCorners:(UIRectCornerBottomLeft|UIRectCornerBottomRight)
+                                                         cornerRadii:CGSizeMake(3.0, 3.0)];
+    
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = bounds;
+    maskLayer.path = maskPath.CGPath;
+    
+    _backgoundImageView.layer.mask = maskLayer;
+    
+    CAShapeLayer*   frameLayer = [CAShapeLayer layer];
+    frameLayer.frame = bounds;
+    frameLayer.path = maskPath.CGPath;
+    frameLayer.strokeColor = [AppearanceHelper mediumGrayGleepostColour].CGColor;
+    frameLayer.fillColor = nil;
+    frameLayer.lineWidth = 1.0;
+    
+    [_backgoundImageView.layer addSublayer:frameLayer];
+    
+    
+//    CALayer *bottomBorder = [CALayer layer];
+//    bottomBorder.borderColor = [UIColor whiteColor].CGColor;
+//    bottomBorder.borderWidth = 2;
+//    bottomBorder.frame = CGRectMake(10, _backgoundImageView.frame.size.height - 1, [GLPiOSSupportHelper screenWidth] - 20, 2.0);
+//    
+//    [self.contentView.layer addSublayer:bottomBorder];
 }
 
 - (void)configureBackgroudViewHeight
 {
     float contentLabelHeight = _contentLabelHeight.constant;
     
-    [_backgroundViewHeight setConstant:contentLabelHeight + FixedSizeOfTextCell];
-    
-    CGRectSetH(_backgoundImageView, contentLabelHeight + FixedSizeOfTextCell);
+    [_backgroundViewHeight setConstant:contentLabelHeight + FixedSizeOfTextCell + 1];
 }
 
 - (void)formatBackgroundView

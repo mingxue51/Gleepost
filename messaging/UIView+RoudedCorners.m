@@ -25,6 +25,7 @@
 //    maskLayer.path = maskPath.CGPath;
 //
 //    self.layer.mask = maskLayer;
+    [self layoutIfNeeded];
     
     CGRect bounds = self.bounds;
     

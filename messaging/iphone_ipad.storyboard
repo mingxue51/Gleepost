@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="oTu-PD-f01">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="oTu-PD-f01">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -5404,7 +5404,7 @@
                         <viewControllerLayoutGuide type="bottom" id="bTl-Fg-qLB"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="uEE-Vl-Zdc">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -6622,24 +6622,24 @@
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="sMz-ia-ebt"/>
-        <segue reference="BTm-uo-9d6"/>
-        <segue reference="OS5-6C-kqp"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="rCT-Ex-vO8"/>
-        <segue reference="t02-Sh-BtB"/>
-        <segue reference="PMB-JP-q3M"/>
-        <segue reference="NSy-Xb-H1O"/>
-        <segue reference="Hkg-hS-m49"/>
+        <segue reference="b0z-f7-UHU"/>
+        <segue reference="Th4-GT-P8f"/>
+        <segue reference="J6b-Ty-4qO"/>
         <segue reference="FTW-m4-VDE"/>
+        <segue reference="NSy-Xb-H1O"/>
+        <segue reference="WK7-hw-eyD"/>
+        <segue reference="PMB-JP-q3M"/>
+        <segue reference="Ji2-Jv-WyQ"/>
         <segue reference="NkQ-j5-6rL"/>
+        <segue reference="Af2-b2-Cbn"/>
+        <segue reference="sMz-ia-ebt"/>
+        <segue reference="OS5-6C-kqp"/>
+        <segue reference="BTm-uo-9d6"/>
+        <segue reference="HS8-YI-8pQ"/>
         <segue reference="X2Z-pC-dgW"/>
         <segue reference="KgO-oz-Ivb"/>
-        <segue reference="Vyz-Un-MGO"/>
         <segue reference="6aM-BE-RDh"/>
-        <segue reference="Th4-GT-P8f"/>
-        <segue reference="b0z-f7-UHU"/>
-        <segue reference="Af2-b2-Cbn"/>
-        <segue reference="HS8-YI-8pQ"/>
+        <segue reference="XMX-SH-Gag"/>
+        <segue reference="t02-Sh-BtB"/>
     </inferredMetricsTieBreakers>
 </document>
