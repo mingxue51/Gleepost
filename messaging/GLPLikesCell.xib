@@ -21,42 +21,42 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="T6U-Oe-cK2" customClass="GLPImageView">
                                 <rect key="frame" x="0.0" y="37" width="38" height="38"/>
-                                <color key="backgroundColor" red="0.3411764706" green="0.85098039219999999" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="T6U-Oe-cK2" secondAttribute="height" multiplier="1:1" id="1mx-IQ-aYD"/>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="3" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8gT-wj-lhK" customClass="GLPImageView">
                                 <rect key="frame" x="86" y="37" width="38" height="38"/>
-                                <color key="backgroundColor" red="0.3411764706" green="0.85098039219999999" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="8gT-wj-lhK" secondAttribute="height" multiplier="1:1" id="NWL-E7-kbR"/>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="2" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UUQ-ND-oSt" customClass="GLPImageView">
                                 <rect key="frame" x="43" y="37" width="38" height="38"/>
-                                <color key="backgroundColor" red="0.3411764706" green="0.85098039219999999" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="UUQ-ND-oSt" secondAttribute="height" multiplier="1:1" id="yIi-gC-eGu"/>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="4" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ICP-L4-3jp" customClass="GLPImageView">
                                 <rect key="frame" x="129" y="37" width="38" height="38"/>
-                                <color key="backgroundColor" red="0.3411764706" green="0.85098039219999999" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="ICP-L4-3jp" secondAttribute="height" multiplier="1:1" id="IGA-sz-04q"/>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="5" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zbh-Hl-2NN" customClass="GLPImageView">
                                 <rect key="frame" x="172" y="37" width="38" height="38"/>
-                                <color key="backgroundColor" red="0.3411764706" green="0.85098039219999999" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Zbh-Hl-2NN" secondAttribute="height" multiplier="1:1" id="yMd-PV-BhX"/>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="6" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="XEe-qS-Ew2" customClass="GLPImageView">
                                 <rect key="frame" x="215" y="37" width="38" height="38"/>
-                                <color key="backgroundColor" red="0.3411764706" green="0.85098039219999999" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="XEe-qS-Ew2" secondAttribute="height" multiplier="1:1" id="WBj-NY-3jg"/>
                                 </constraints>
@@ -66,7 +66,7 @@
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="7" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="U0y-OU-YYl" customClass="GLPImageView">
                                         <rect key="frame" x="0.0" y="0.0" width="38" height="38"/>
-                                        <color key="backgroundColor" red="0.3411764706" green="0.85098039219999999" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </imageView>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+28" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alH-SU-0gW">
                                         <rect key="frame" x="0.0" y="0.0" width="38" height="38"/>
@@ -163,6 +163,7 @@
                 <outletCollection property="images" destination="ICP-L4-3jp" id="Fu6-JM-9Y8"/>
                 <outletCollection property="images" destination="Zbh-Hl-2NN" id="zsT-AX-hVG"/>
                 <outletCollection property="images" destination="XEe-qS-Ew2" id="sSa-It-lmU"/>
+                <outletCollection property="images" destination="U0y-OU-YYl" id="5aL-6Q-5Xr"/>
             </connections>
             <point key="canvasLocation" x="341.5" y="261"/>
         </tableViewCell>

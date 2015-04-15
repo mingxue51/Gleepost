@@ -9,6 +9,8 @@
 #import "GLPLikesCell.h"
 #import "GLPUser.h"
 #import "GLPImageView.h"
+#import "ShapeFormatterHelper.h"
+#import "UIColor+GLPAdditions.h"
 
 @interface GLPLikesCell ()
 
@@ -23,22 +25,35 @@
 
 @implementation GLPLikesCell
 
-- (void)awakeFromNib {
-    // Initialization code
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
 }
 
 - (void)setLikedUsers:(NSArray *)users
 {
+    [self formatImages];
     [self configureCellStyle];
     self.users = users;
     [self configureBubbles];
     [self hideAllUnnecessaryBubbles];
     [self addImagesToImageViews];
+    [self configureLastBubble];
+
 }
 
 - (void)configureCellStyle
 {
     self.selectionStyle = UITableViewCellSelectionStyleNone;
+}
+
+- (void)configureLastBubble
+{
+    if(self.usersMoreThanSeven)
+    {
+        self.leftNumberOfUsersLabel.text = [NSString stringWithFormat:@"+%ld", (long)self.users.count - 6];
+    }
 }
 
 - (void)addImagesToImageViews
@@ -63,7 +78,7 @@
     }
     else
     {
-        
+        self.usersMoreThanSeven = NO;
     }
 }
 
@@ -97,6 +112,18 @@
             image.hidden = YES;
             break;
         }
+    }
+}
+
+#pragma mark - Format
+
+- (void)formatImages
+{
+    for(UIImageView *imageView in self.images)
+    {
+        [imageView layoutIfNeeded];
+        [ShapeFormatterHelper setRoundedView:imageView toDiameter:imageView.frame.size.height];
+        [ShapeFormatterHelper setBorderToView:imageView withColour:[UIColor colorWithR:189.0 withG:189.0 andB:189.0] andWidth:1.0];
     }
 }
 
