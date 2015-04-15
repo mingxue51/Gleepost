@@ -123,7 +123,6 @@
     {
         [imageView layoutIfNeeded];
         [ShapeFormatterHelper setRoundedView:imageView toDiameter:imageView.frame.size.height];
-        [ShapeFormatterHelper setBorderToView:imageView withColour:[UIColor colorWithR:189.0 withG:189.0 andB:189.0] andWidth:1.0];
     }
 }
 

@@ -22,15 +22,15 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Labelg" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a3r-59-00Z" userLabel="Name" customClass="GLPLabel">
-                        <rect key="frame" x="61" y="10" width="229" height="15"/>
+                        <rect key="frame" x="61" y="10" width="229" height="17"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="15" id="21n-Nn-N6L"/>
+                            <constraint firstAttribute="height" constant="17" id="21n-Nn-N6L"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="12"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Labelg" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="30Z-0M-DB7" userLabel="Date">
-                        <rect key="frame" x="61" y="50" width="239" height="12"/>
+                        <rect key="frame" x="61" y="52" width="239" height="12"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="12" id="wgG-wo-k9l"/>
                         </constraints>
@@ -39,11 +39,11 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="250" placeholderIntrinsicHeight="56" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="w27-LX-izE" customClass="CopyLabel">
-                        <rect key="frame" x="61" y="28" width="239" height="19"/>
+                        <rect key="frame" x="61" y="30" width="239" height="19"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="19" id="KWo-Na-kNv"/>
                         </constraints>
-                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3Xl-hr-3LV" customClass="GLPImageView">

@@ -265,7 +265,7 @@ static const float CommentContentLabelMargin = 40.0;
 + (CGSize)getContentLabelSizeForContent:(NSString *)content
 {
     
-    UIFont *font = [UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:12.0];
+    UIFont *font = [UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:15.0];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
     
