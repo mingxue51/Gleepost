@@ -612,7 +612,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     {
         for(NSDictionary *userLiked in usersLiked)
         {
-            
             NSDictionary *dict = [userLiked objectForKey:@"by"];
             
             NSNumber *userRemoteKey = [dict objectForKey:@"id"];
@@ -620,9 +619,9 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
             if([userRemoteKey integerValue] == [[SessionManager sharedInstance]user].remoteKey)
             {
                 post.liked = YES;
-                break;
             }
             
+            [post addUserLikedThePost:[RemoteParser parseUserFromJson:dict]];
         }
     }
     

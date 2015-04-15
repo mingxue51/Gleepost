@@ -35,6 +35,8 @@
     _sendStatus = kSendStatusLocal;
     _pendingInEditMode = NO;
     _viewsCount = 0;
+    self.usersLikedThePost = [[NSMutableArray alloc] init];
+
     return self;
 }
 
@@ -47,6 +49,7 @@
         self.remoteKey = remoteKey;
         _pendingInEditMode = NO;
         _viewsCount = 0;
+        self.usersLikedThePost = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -147,6 +150,21 @@
     self.imagesUrls = newPost.imagesUrls;
     
     self.video = newPost.video;
+}
+
+- (BOOL)isPostLiked
+{
+    return self.likes > 0;
+}
+
+- (BOOL)isPostCommented
+{
+    return self.commentsCount > 0;
+}
+
+- (void)addUserLikedThePost:(GLPUser *)user
+{
+    [self.usersLikedThePost addObject:user];
 }
 
 - (NSDate *)generateDateEventEnds
