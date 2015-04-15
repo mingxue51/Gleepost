@@ -16,6 +16,7 @@
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *images;
 @property (weak, nonatomic) IBOutlet UILabel *leftNumberOfUsersLabel;
+@property (weak, nonatomic) IBOutlet UIView *lastView;
 
 @property (assign, nonatomic) BOOL usersMoreThanSeven;
 
@@ -74,6 +75,10 @@
     {
         self.usersMoreThanSeven = YES;
         [self hideImageWithTag:7];
+        [ShapeFormatterHelper setBorderToView:self.lastView withColour:[UIColor colorWithR:189 withG:189 andB:189] andWidth:1.0];
+        [self.lastView layoutIfNeeded];
+        [ShapeFormatterHelper setRoundedView:self.lastView toDiameter:self.lastView.frame.size.height];
+        [self.lastView setBackgroundColor:[UIColor whiteColor]];
         self.leftNumberOfUsersLabel.hidden = NO;
     }
     else
@@ -86,8 +91,6 @@
 {
     for(NSUInteger index = self.users.count + 1; index <= 7; ++index)
     {
-        DDLogDebug(@"-> index %ld", index);
-
         [self hideImageWithTag:index];
     }
 }

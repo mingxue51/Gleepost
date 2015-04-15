@@ -156,6 +156,7 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
+                <outlet property="lastView" destination="mXH-ec-Rd5" id="ZHx-0X-SFB"/>
                 <outlet property="leftNumberOfUsersLabel" destination="alH-SU-0gW" id="dqI-ce-991"/>
                 <outletCollection property="images" destination="T6U-Oe-cK2" id="qng-gt-Q4a"/>
                 <outletCollection property="images" destination="UUQ-ND-oSt" id="Fmb-rC-dQI"/>
