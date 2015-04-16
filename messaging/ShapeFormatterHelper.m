@@ -175,20 +175,20 @@
     frameLayer.path = maskPath.CGPath;
     frameLayer.strokeColor = [AppearanceHelper mediumGrayGleepostColour].CGColor;
     frameLayer.fillColor = nil;
-    frameLayer.lineWidth = 1.0;
+    frameLayer.lineWidth = 2.0;
     
     [backgroundView.layer addSublayer:frameLayer];
     
     
     CALayer *bottomBorder = [CALayer layer];
     bottomBorder.borderColor = [UIColor whiteColor].CGColor;
-    bottomBorder.borderWidth = 2;
-    bottomBorder.frame = CGRectMake(10.5f, backgroundView.frame.size.height - 1, [GLPiOSSupportHelper screenWidth] - 21, 2.0);
+    bottomBorder.borderWidth = 4;
+    bottomBorder.frame = CGRectMake(11.0f, backgroundView.frame.size.height - 2, [GLPiOSSupportHelper screenWidth] - 22, 4.0);
     
     [superview.layer addSublayer:bottomBorder];
 }
 
-+ (void)formatBottomCellWithBackgroundView:(UIImageView *)backgroundImageView
++ (void)formatBottomCellWithBackgroundView:(UIImageView *)backgroundImageView andSuperView:(UIView *)superview
 {
     [backgroundImageView layoutIfNeeded];
     
@@ -203,14 +203,36 @@
     maskLayer.path = maskPath.CGPath;
     backgroundImageView.layer.mask = maskLayer;
     
-    CAShapeLayer*   frameLayer = [CAShapeLayer layer];
-    frameLayer.frame = bounds;
-    frameLayer.path = maskPath.CGPath;
-    frameLayer.strokeColor = [AppearanceHelper mediumGrayGleepostColour].CGColor;
-    frameLayer.fillColor = nil;
-    frameLayer.lineWidth = 1.0;
+//    CAShapeLayer*   frameLayer = [CAShapeLayer layer];
+//    frameLayer.frame = bounds;
+//    frameLayer.path = maskPath.CGPath;
+//    frameLayer.strokeColor = [AppearanceHelper mediumGrayGleepostColour].CGColor;
+//    frameLayer.fillColor = nil;
+//    frameLayer.lineWidth = 2.0;
+//    
+//    [backgroundImageView.layer addSublayer:frameLayer];
     
-    [backgroundImageView.layer addSublayer:frameLayer];
+    CALayer *upperBorder = [CALayer layer];
+    upperBorder.backgroundColor = [[AppearanceHelper mediumGrayGleepostColour] CGColor];
+    upperBorder.frame = CGRectMake(0, bounds.size.height - 1, CGRectGetWidth(bounds), 1.0f);
+    [backgroundImageView.layer addSublayer:upperBorder];
+    
+    upperBorder = [CALayer layer];
+    upperBorder.backgroundColor = [[AppearanceHelper mediumGrayGleepostColour] CGColor];
+    upperBorder.frame = CGRectMake(CGRectGetWidth(bounds) - 1, 0.0, 1.0f, CGRectGetHeight(bounds));
+    [backgroundImageView.layer addSublayer:upperBorder];
+    
+    upperBorder = [CALayer layer];
+    upperBorder.backgroundColor = [[AppearanceHelper mediumGrayGleepostColour] CGColor];
+    upperBorder.frame = CGRectMake(0, 0, 1.0f, CGRectGetHeight(bounds));
+    [backgroundImageView.layer addSublayer:upperBorder];
+    
+//    CALayer *bottomBorder = [CALayer layer];
+//    bottomBorder.borderColor = [UIColor whiteColor].CGColor;
+//    bottomBorder.borderWidth = 1;
+//    bottomBorder.frame = CGRectMake(11.0f, 0.0, [GLPiOSSupportHelper screenWidth] - 22, 1.0);
+//    
+//    [superview.layer addSublayer:bottomBorder];
 }
 
 

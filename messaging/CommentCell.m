@@ -92,7 +92,7 @@ static const float CommentContentLabelMargin = 40.0;
     DDLogDebug(@"Comment Cell : content width %f", self.contentLabel.frame.size.width);
 
     
-//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor] andWidth:1.0];
+//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor] andWidth:0.5];
 //    [ShapeFormatterHelper setBorderToView:self.postDateLabel withColour:[UIColor blackColor] andWidth:1.0];
     
     //Add touch gesture to profile image.
@@ -247,7 +247,7 @@ static const float CommentContentLabelMargin = 40.0;
 //    
 //    [_backgoundImageView addTopBorderWithHeight:2.0 andColor:[UIColor whiteColor]];
     
-    [ShapeFormatterHelper formatBottomCellWithBackgroundView:_backgoundImageView];
+    [ShapeFormatterHelper formatBottomCellWithBackgroundView:_backgoundImageView andSuperView:self.contentView];
 }
 
 - (void)configureBackgroudViewHeight

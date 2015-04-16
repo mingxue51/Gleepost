@@ -17,9 +17,6 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Uah-fu-XDX">
                         <rect key="frame" x="10" y="0.0" width="300" height="95"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="95" id="FKM-Jq-RVa"/>
-                        </constraints>
                     </imageView>
                     <label opaque="NO" clipsSubviews="YES" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Labelg" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a3r-59-00Z" userLabel="Name" customClass="GLPLabel">
                         <rect key="frame" x="61" y="10" width="229" height="17"/>
@@ -56,6 +53,7 @@
                 </subviews>
                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Uah-fu-XDX" secondAttribute="bottom" constant="-1" id="942-Ue-xUq"/>
                     <constraint firstAttribute="trailing" secondItem="30Z-0M-DB7" secondAttribute="trailing" constant="20" id="9DB-aV-Xq1"/>
                     <constraint firstItem="a3r-59-00Z" firstAttribute="leading" secondItem="3Xl-hr-3LV" secondAttribute="trailing" constant="5" id="HJg-yz-f0J"/>
                     <constraint firstItem="Uah-fu-XDX" firstAttribute="top" secondItem="9Pj-FO-wfU" secondAttribute="top" id="HYW-8L-KsP"/>
@@ -75,7 +73,6 @@
             <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="backgoundImageView" destination="Uah-fu-XDX" id="akb-x2-hYm"/>
-                <outlet property="backgroundViewHeight" destination="FKM-Jq-RVa" id="EPu-Ce-VGf"/>
                 <outlet property="contentLabel" destination="w27-LX-izE" id="JGN-PH-FEb"/>
                 <outlet property="contentLabelHeight" destination="KWo-Na-kNv" id="Hvv-Qd-vjT"/>
                 <outlet property="postDateLabel" destination="30Z-0M-DB7" id="Ajg-49-iY2"/>

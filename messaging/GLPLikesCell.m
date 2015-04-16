@@ -29,7 +29,6 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
 }
 
 - (void)setLikedUsers:(NSArray *)users
@@ -76,9 +75,7 @@
         self.usersMoreThanSeven = YES;
         [self hideImageWithTag:7];
         [ShapeFormatterHelper setBorderToView:self.lastView withColour:[UIColor colorWithR:189 withG:189 andB:189] andWidth:1.0];
-        [self.lastView layoutIfNeeded];
-        [ShapeFormatterHelper setRoundedView:self.lastView toDiameter:self.lastView.frame.size.height];
-        [self.lastView setBackgroundColor:[UIColor whiteColor]];
+        [self formatPlusView];
         self.leftNumberOfUsersLabel.hidden = NO;
     }
     else
@@ -127,6 +124,13 @@
         [imageView layoutIfNeeded];
         [ShapeFormatterHelper setRoundedView:imageView toDiameter:imageView.frame.size.height];
     }
+}
+
+- (void)formatPlusView
+{
+    [self.lastView layoutIfNeeded];
+    [ShapeFormatterHelper setRoundedView:self.lastView toDiameter:self.lastView.frame.size.height];
+    [self.lastView setBackgroundColor:[UIColor whiteColor]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
