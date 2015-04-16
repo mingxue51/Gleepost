@@ -1240,7 +1240,7 @@ static bool firstTime = YES;
         
         DDLogDebug(@"growingTextViewDidBeginEditing: %@", growingTextView);
         
-        [self.tableView setContentOffset:offset animated:NO];
+//        [self.tableView setContentOffset:offset animated:NO];
     }
 }
 
@@ -1464,7 +1464,7 @@ static bool firstTime = YES;
     }
     else
     {
-//        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:animated];
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     }
 }
 
