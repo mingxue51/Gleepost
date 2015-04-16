@@ -608,7 +608,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     post.liked = NO;
     
-    if(usersLiked && usersLiked != (id)[NSNull null])
+    if(usersLiked && usersLiked != (id)[NSNull null] && post.usersLikedThePost.count == 0)
     {
         for(NSDictionary *userLiked in usersLiked)
         {

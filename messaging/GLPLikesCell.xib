@@ -91,7 +91,7 @@
                             <view tag="8" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HHg-jx-aOO">
                                 <rect key="frame" x="301" y="38" width="38" height="38"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="right_arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="MGs-iZ-oWH">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="right_arrow_likes_view" translatesAutoresizingMaskIntoConstraints="NO" id="MGs-iZ-oWH">
                                         <rect key="frame" x="14" y="8" width="24" height="22"/>
                                     </imageView>
                                 </subviews>
@@ -170,6 +170,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="right_arrow.png" width="14" height="23"/>
+        <image name="right_arrow_likes_view" width="9" height="15"/>
     </resources>
 </document>

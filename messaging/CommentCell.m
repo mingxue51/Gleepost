@@ -23,7 +23,6 @@
 
 @property (assign, nonatomic) float heightOfCell;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentLabelHeight;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *backgroundViewHeight;
 @property (weak, nonatomic) IBOutlet UIImageView *backgoundImageView;
 @property (assign, nonatomic) CommentCellType cellType;
 
@@ -190,10 +189,6 @@ static const float CommentContentLabelMargin = 40.0;
     
     [self.contentLabelHeight setConstant:heightSize.height];
     
-    
-    [self configureBackgroudViewHeight];
-    
-    
     [ShapeFormatterHelper resetAnyFormatOnView:_backgoundImageView];
 
     
@@ -250,13 +245,6 @@ static const float CommentContentLabelMargin = 40.0;
     [ShapeFormatterHelper formatBottomCellWithBackgroundView:_backgoundImageView andSuperView:self.contentView];
 }
 
-- (void)configureBackgroudViewHeight
-{
-    float contentLabelHeight = _contentLabelHeight.constant;
-    
-    [_backgroundViewHeight setConstant:contentLabelHeight + FixedSizeOfTextCell + 1];
-}
-
 - (void)formatBackgroundView
 {
     [ShapeFormatterHelper setBorderToView:_backgoundImageView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0f];
@@ -268,8 +256,6 @@ static const float CommentContentLabelMargin = 40.0;
     UIFont *font = [UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:15.0];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
-    
-    DDLogDebug(@"CommentCell content label size %f", [CommentCell getMaxLabelContentWidth]);
     
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){[CommentCell getMaxLabelContentWidth], CGFLOAT_MAX}
                                                options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)

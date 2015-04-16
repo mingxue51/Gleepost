@@ -1443,13 +1443,28 @@ static bool firstTime = YES;
 
 - (void)scrollToTheEndAnimated:(BOOL)animated
 {
-    if(self.comments.count > 0)
+    if(self.comments.count > 0 && [self.post isPostLiked])
+    {
+        NSUInteger numberOfRows = self.comments.count + 1;
+        
+        if([self.post isPostLiked])
+        {
+            numberOfRows += 1;
+        }
+        
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:numberOfRows inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    }
+    else if (self.comments.count == 0 && [self.post isPostLiked])
+    {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    }
+    else if(self.comments.count > 0 && ![self.post isPostLiked])
     {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.comments.count + 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     }
     else
     {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+//        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:animated];
     }
 }
 
