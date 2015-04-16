@@ -43,7 +43,7 @@
 #import "ViewPostTitleCell.h"
 #import "GLPLikesCell.h"
 
-@interface ViewPostViewController () <GLPAttendingPopUpViewControllerDelegate>
+@interface ViewPostViewController () <GLPAttendingPopUpViewControllerDelegate, GLPLikesCellDelegate>
 
 @property (strong, nonatomic) NSMutableArray *comments;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
@@ -61,6 +61,7 @@
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 
 @property (assign, nonatomic) BOOL postReadyToBeShown;
+@property (assign, nonatomic) BOOL showUsersLikedThePost;
 
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
 @property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
@@ -90,6 +91,8 @@ static BOOL likePushed;
     [self selfLoadPost];
     
     [self configureNavigationItems];
+    
+    self.tableView.delegate = self;
     
    // [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     
@@ -232,6 +235,8 @@ static BOOL likePushed;
     self.comments = [[NSMutableArray alloc] init];
     
     _selectedLocation = nil;
+    
+    self.showUsersLikedThePost = NO;
     
     if(_post.content)
     {
@@ -491,6 +496,7 @@ static BOOL likePushed;
 
 - (void)showAttendees
 {
+    self.showUsersLikedThePost = NO;
     [self performSegueWithIdentifier:@"show attendees" sender:self];
 }
 
@@ -908,6 +914,7 @@ static bool firstTime = YES;
         {
             likesCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierLikesCell forIndexPath:indexPath];
             [likesCell setLikedUsers:self.post.usersLikedThePost];
+            likesCell.delegate = self;
             return likesCell;
         }
         else
@@ -982,6 +989,8 @@ static bool firstTime = YES;
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+    
+
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -1117,6 +1126,14 @@ static bool firstTime = YES;
         // Pop-up view controller.
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+#pragma mark - GLPLikesCellDelegate
+
+- (void)likesCellTouched
+{
+    self.showUsersLikedThePost = YES;
+    [self performSegueWithIdentifier:@"show attendees" sender:self];
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -1523,9 +1540,16 @@ static bool firstTime = YES;
     {
         GLPShowUsersViewController *showUsersVC = segue.destinationViewController;
         
-        showUsersVC.postRemoteKey = _post.remoteKey;
-        
-        showUsersVC.selectedTitle = @"GUEST LIST";
+        if(self.showUsersLikedThePost)
+        {
+            showUsersVC.users = self.post.usersLikedThePost;
+            showUsersVC.selectedTitle = @"LIKED BY";
+        }
+        else
+        {
+            showUsersVC.postRemoteKey = _post.remoteKey;
+            showUsersVC.selectedTitle = @"GUEST LIST";
+        }
     }
 }
 

@@ -29,6 +29,7 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
+    [self configureGestures];
 }
 
 - (void)setLikedUsers:(NSArray *)users
@@ -54,6 +55,13 @@
     {
         self.leftNumberOfUsersLabel.text = [NSString stringWithFormat:@"+%ld", (long)self.users.count - 6];
     }
+}
+
+- (void)configureGestures
+{
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewTouched)];
+    
+    [self addGestureRecognizer:tapGesture];
 }
 
 - (void)addImagesToImageViews
@@ -139,6 +147,12 @@
     // Configure the view for the selected state
 }
 
+#pragma mark - Selectors
+
+- (void)viewTouched
+{
+    [self.delegate likesCellTouched];
+}
 
 #pragma mark - Static
 
