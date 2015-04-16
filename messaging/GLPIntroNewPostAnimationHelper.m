@@ -103,7 +103,7 @@
         NSString *animationName = nil;
         if(dismissedView)
         {
-            toValue = [NSValue valueWithCGRect:CGRectMake(currentFrame.origin.x, -currentFrame.size.height, currentFrame.size.width, currentFrame.size.height)];
+            toValue = [NSValue valueWithCGRect:CGRectMake(currentFrame.origin.x, [GLPiOSSupportHelper screenHeight] + currentFrame.size.height, currentFrame.size.width, currentFrame.size.height)];
             animationName = @"Dismiss";
         }
         else

@@ -196,12 +196,12 @@
 
 - (void)renewDismissingAnimationDelays
 {
-    [self.animationsHelper renewDelay:0.15 withKindOfElement:kGeneralElement];
-    [self.animationsHelper renewDelay:0.05 withKindOfElement:kQuestionElement];
-    [self.animationsHelper renewDelay:0.15 withKindOfElement:kAnnouncementElement];
-    [self.animationsHelper renewDelay:0.05 withKindOfElement:kEventElement];
-    [self.animationsHelper renewDelay:0.05 withKindOfElement:kTitleElement];
-    [self.animationsHelper renewDelay:0.05 withKindOfElement:kPencilElement];
+    [self.animationsHelper renewDelay:0.05 withKindOfElement:kGeneralElement];
+    [self.animationsHelper renewDelay:0.15 withKindOfElement:kQuestionElement];
+    [self.animationsHelper renewDelay:0.05 withKindOfElement:kAnnouncementElement];
+    [self.animationsHelper renewDelay:0.15 withKindOfElement:kEventElement];
+    [self.animationsHelper renewDelay:0.15 withKindOfElement:kTitleElement];
+    [self.animationsHelper renewDelay:0.15 withKindOfElement:kPencilElement];
 }
 
 #pragma mark - Animations
