@@ -285,6 +285,10 @@
                         <outletCollection property="elements" destination="DcR-8v-Kix" id="gaI-hp-LKe"/>
                         <outletCollection property="elements" destination="WK3-0e-CHF" id="IvK-Gj-OKO"/>
                         <outletCollection property="elements" destination="Df6-gP-jEo" id="B8k-KC-idS"/>
+                        <outletCollection property="labelsElements" destination="C5X-P6-rlP" id="EOl-HX-nZA"/>
+                        <outletCollection property="labelsElements" destination="iPQ-AG-eFG" id="aXq-aF-rb2"/>
+                        <outletCollection property="labelsElements" destination="73W-KA-Mfm" id="njl-0W-Ihe"/>
+                        <outletCollection property="labelsElements" destination="m8g-Xw-bKL" id="54L-VQ-QX5"/>
                         <segue destination="q62-Na-WAe" kind="show" identifier="final new post" id="Tce-bA-hLN"/>
                         <segue destination="Xbv-3h-ojf" kind="show" identifier="view event selector" id="CMF-aX-gyW"/>
                     </connections>

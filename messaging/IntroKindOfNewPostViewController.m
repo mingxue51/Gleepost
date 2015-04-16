@@ -48,6 +48,8 @@
 
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *elements;
 
+//Labels.
+@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labelsElements;
 
 @property (strong, nonatomic) TDNavigationNewPost *tdNavigationNewPost;
 @property (strong, nonatomic) FakeNavigationBarNewPostView *fakeNavigationBar;
@@ -145,7 +147,10 @@
 {
     if([GLPiOSSupportHelper useShortConstrains])
     {
-        [_titleHeightConstrain setConstant:-60];
+        for(UILabel *elementLabel in self.labelsElements)
+        {
+            [elementLabel setFont:[UIFont fontWithName:@"Montserrat-Regular" size:12.0]];
+        }
     }
 
 }

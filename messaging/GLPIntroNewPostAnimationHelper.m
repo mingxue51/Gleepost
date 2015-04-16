@@ -26,9 +26,9 @@
 
     [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:105.0 withDelay:0.2 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kQuestionElement)];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:50.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kPencilElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue: ([GLPiOSSupportHelper useShortConstrains]) ? 10.0 : 50.0 withDelay:0.15 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kPencilElement)];
     
-    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:110.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kTitleElement)];
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:([GLPiOSSupportHelper useShortConstrains]) ? 50.0 : 110.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kTitleElement)];
     
     [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:0.0 withDelay:0.0 withBounceLevel:4.0 withSpeedLevel:12.0] forKey:@(kNevermindElement)];
     
