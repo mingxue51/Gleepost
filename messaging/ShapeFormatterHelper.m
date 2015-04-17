@@ -180,12 +180,17 @@
     [backgroundView.layer addSublayer:frameLayer];
     
     
-    CALayer *bottomBorder = [CALayer layer];
-    bottomBorder.borderColor = [UIColor whiteColor].CGColor;
-    bottomBorder.borderWidth = 4;
-    bottomBorder.frame = CGRectMake(11.0f, backgroundView.frame.size.height - 2, [GLPiOSSupportHelper screenWidth] - 22, 4.0);
+//    CALayer *bottomBorder = [CALayer layer];
+//    bottomBorder.borderColor = [UIColor whiteColor].CGColor;
+//    bottomBorder.borderWidth = 4;
+//    bottomBorder.frame = CGRectMake(11.0f, backgroundView.frame.size.height - 2, [GLPiOSSupportHelper screenWidth] - 22, 4.0);
+//    
+//    [superview.layer addSublayer:bottomBorder];
     
-    [superview.layer addSublayer:bottomBorder];
+    UIImageView *bottomBorder = [[UIImageView alloc] initWithFrame:CGRectMake(11.0f, backgroundView.frame.size.height - 2, [GLPiOSSupportHelper screenWidth] - 22, 2.0)];
+    bottomBorder.tag = 100;
+    [bottomBorder setBackgroundColor:[UIColor whiteColor]];
+    [superview addSubview:bottomBorder];
 }
 
 + (void)formatBottomCellWithBackgroundView:(UIImageView *)backgroundImageView andSuperView:(UIView *)superview
@@ -227,6 +232,8 @@
     upperBorder.frame = CGRectMake(0, 0, 1.0f, CGRectGetHeight(bounds));
     [backgroundImageView.layer addSublayer:upperBorder];
     
+
+    
 //    CALayer *bottomBorder = [CALayer layer];
 //    bottomBorder.borderColor = [UIColor whiteColor].CGColor;
 //    bottomBorder.borderWidth = 1;
@@ -235,6 +242,21 @@
 //    [superview.layer addSublayer:bottomBorder];
 }
 
+/**
+ This method should be called only for every cell that is not top cell
+ so can remove the bottom line that is reused when is added in top cell
+ configuration.
+ */
++ (void)removeTopCellBottomLine:(UIView *)superview
+{
+    for(UIView *view in superview.subviews)
+    {
+        if(view.tag == 100)
+        {
+            [view removeFromSuperview];
+        }
+    }
+}
 
 #pragma mark - Helpers
 

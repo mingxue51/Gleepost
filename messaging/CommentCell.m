@@ -212,6 +212,9 @@ static const float CommentContentLabelMargin = 40.0;
 
 - (void)configureMiddleCell
 {
+    DDLogDebug(@"Middle cell sublayers %@", self.contentView.layer.sublayers);
+    
+    [ShapeFormatterHelper removeTopCellBottomLine:self.contentView];
     [_backgoundImageView addRightBorderWithWidth:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
     [_backgoundImageView addLeftBorderWithWidth:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
 }
@@ -242,6 +245,8 @@ static const float CommentContentLabelMargin = 40.0;
 //    
 //    [_backgoundImageView addTopBorderWithHeight:2.0 andColor:[UIColor whiteColor]];
     
+    [ShapeFormatterHelper removeTopCellBottomLine:self.contentView];
+
     [ShapeFormatterHelper formatBottomCellWithBackgroundView:_backgoundImageView andSuperView:self.contentView];
 }
 

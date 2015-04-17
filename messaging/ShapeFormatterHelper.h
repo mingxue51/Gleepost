@@ -38,5 +38,6 @@
 
 +(void)formatTopCellWithBackgroundView:(UIImageView *)backgroundView andSuperView:(UIView *)superview;
 + (void)formatBottomCellWithBackgroundView:(UIImageView *)backgroundImageView andSuperView:(UIView *)superview;
++ (void)removeTopCellBottomLine:(UIView *)superview;
 
 @end
