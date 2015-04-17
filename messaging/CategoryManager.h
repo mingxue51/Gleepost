@@ -16,25 +16,41 @@ typedef enum
     kGLPTheater = 10,
     kGLPSports = 11,
     kGLPParties = 12,
-    kGLPOther = 13,
-    kGLPAll = 14
+    kGLPFreeFood = 13,
+    kGLPAnnouncements = 14,
+    kGLPOther = 15,
+    kGLPAll = 16,
+    kGLPGeneral = 1,
+    kGLPQuestions = 18
     
 }GLPCategories;
 
+typedef NS_ENUM(NSInteger, CategoryOrder) {
+    
+    kAllOrder = 1,
+    kPartiesOrder = 2,
+    kFreeFood = 3,
+    kSportsOrder = 4,
+    kSpeakersOrder = 5,
+    kMusicOrder = 6,
+    kTheaterOrder = 7,
+    kAnnouncementsOrder = 8,
+    kGeneralOrder = 9,
+    kQuestionsOrder = 10,
+    kOtherOrder = 11
+};
 
 
 @interface CategoryManager : NSObject
 
 +(CategoryManager*)sharedInstance;
 
--(GLPCategory*)categoryWithTag:(NSString*)tag;
--(GLPCategory*)categoryWithOrderKey:(int)remoteKey;
--(NSArray*)categoriesNames;
--(NSArray*)categoriesTags;
+- (GLPCategory*)categoryWithOrderKey:(NSInteger)remoteKey;
+- (GLPCategory *)setSelectedCategoryWithOrderKey:(NSInteger)orderKey;
+- (void)setSelectedCategory:(GLPCategory *)category;
 -(NSArray*)getCategories;
 - (NSMutableArray *)getCategoriesForFilteringView;
 -(GLPCategory *)generateEventCategory;
-- (void)setSelectedCategory:(GLPCategory *)selectedCategory;
 - (NSString *)selectedCategoryName;
 - (GLPCategory *)selectedCategory;
 - (void)reset;

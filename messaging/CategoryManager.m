@@ -8,17 +8,6 @@
 
 #import "CategoryManager.h"
 
-typedef NS_ENUM(NSInteger, CategoryOrder) {
-
-    kPartiesOrder = 1,
-    kMusicOrder = 2,
-    kSportsOrder = 3,
-    kTheaterOrder = 4,
-    kSpeakersOrder = 5,
-    kOtherOrder = 6,
-    kAllOrder = 7
-};
-
 @interface CategoryManager ()
 
 @property (strong, nonatomic) NSDictionary *categories;
@@ -64,9 +53,19 @@ static CategoryManager *instance = nil;
         
         [tempDict setObject:[[GLPCategory alloc] initWithTag:@"party" name:@"Parties" postRemoteKey:0 andRemoteKey:kGLPParties] forKey:[NSNumber numberWithInt:kPartiesOrder]];
         
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"food" name:@"Free Food" postRemoteKey:0 andRemoteKey:kGLPFreeFood] forKey:[NSNumber numberWithInt:kFreeFood]];
+
+        
         [tempDict setObject:[[GLPCategory alloc] initWithTag:@"other" name:@"Other" postRemoteKey:0 andRemoteKey:kGLPOther] forKey:[NSNumber numberWithInt:kOtherOrder]];
         
         [tempDict setObject:[[GLPCategory alloc] initWithTag:@"all" name:@"All" postRemoteKey:0 andRemoteKey:kGLPAll] forKey:[NSNumber numberWithInt:kAllOrder]];
+
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"announcements" name:@"Announcements" postRemoteKey:0 andRemoteKey:kGLPAnnouncements]  forKey:@(kAnnouncementsOrder)];
+        
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"general" name:@"General" postRemoteKey:0 andRemoteKey:kGLPGeneral]  forKey:@(kGeneralOrder)];
+        
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"questions" name:@"Questions" postRemoteKey:0 andRemoteKey:kGLPQuestions]  forKey:@(kQuestionsOrder)];
+
 
         _categories = [[NSDictionary alloc] initWithDictionary:tempDict];
         
@@ -95,7 +94,6 @@ static CategoryManager *instance = nil;
     }
     
     _categoriesInOrder = array.mutableCopy;
-    
 }
 
 -(GLPCategory*)categoryWithTag:(NSString*)tag
@@ -111,9 +109,31 @@ static CategoryManager *instance = nil;
     return nil;
 }
 
--(GLPCategory*)categoryWithOrderKey:(int)remoteKey
+- (GLPCategory *)categoryWithOrderKey:(NSInteger)orderKey
 {
-    return [_categories objectForKey:[NSNumber numberWithInt:remoteKey]];
+    return [_categories objectForKey:[NSNumber numberWithInteger:orderKey]];
+}
+
+/**
+ Sets the category and returns the category as a GLPCategory instance.
+ 
+ @param orderKey the category key that is defined in CategoryOrder enum.
+ 
+ */
+- (GLPCategory *)setSelectedCategoryWithOrderKey:(NSInteger)orderKey
+{
+    GLPCategory *selectedCategory = [self categoryWithOrderKey:orderKey];
+    
+    if([selectedCategory.tag isEqualToString:@"all"])
+    {
+        [self setSelectedCategory:nil];
+    }
+    else
+    {
+        [self setSelectedCategory:selectedCategory];
+    }
+    
+    return [_categories objectForKey:@(orderKey)];
 }
 
 -(NSArray*)categoriesNames
@@ -171,44 +191,9 @@ static CategoryManager *instance = nil;
     _selectedCategory = nil;
 }
 
-#pragma mark - Accesssors
-
 - (NSString *)selectedCategoryName
 {
     return [_selectedCategory tag];
 }
-
-
-
-
-//-(NSString*)tagFromRemoteKey:(GLPCategories)remotekey
-//{
-//    switch(remotekey) {
-//        case kGLPNews:
-//            return ;
-//            break;
-//            
-//        case kGLPForSale:
-//            result = @"b";
-//            break;
-//            
-//        case kGLPQuestion:
-//            result = @"c";
-//            break;
-//            
-//        case kGLPEvent:
-//            result = @"c";
-//            break;
-//            
-//        case kGLPJobs:
-//            result = @"c";
-//            break;
-//            
-//        default:
-//            result = @"unknown";
-//    }
-//    
-//    return result;
-//}
 
 @end

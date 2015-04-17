@@ -9,7 +9,7 @@
 
 #import "GLPSelectCategoryViewController.h"
 #import "AppearanceHelper.h"
-#import "ATNavigationCategories.h"
+#import "ATFadeNavigation.h"
 #import "GLPCategoryCell.h"
 #import "SetEventInformationCell.h"
 #import "CategoryManager.h"

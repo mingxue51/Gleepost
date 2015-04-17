@@ -12,5 +12,6 @@
 
 + (NSString *)applicationStateToString:(UIApplicationState)applicationState;
 + (BOOL)isTheNextViewCampusWall:(NSArray *)viewControllersStuck;
++ (NSArray *)customBackButtonWithTarget:(id)target;
 
 @end

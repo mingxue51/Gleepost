@@ -71,6 +71,12 @@
 //    [self loadCurrentLocation];
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    
+    [super viewWillDisappear:animated];
+}
+
 - (void)initialiseObjects
 {
     _numberOfDetectionUsersLocation = 0;
@@ -81,6 +87,8 @@
 - (void)configureNavigationBar
 {
 //    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"DONE" withButtonSize:CGSizeMake(60.0, 30.0) withSelector:@selector(donePickingLocation:) andTarget:self];
+    
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
     [self.navigationController.navigationBar setTextButton:kRight withTitle:@"DONE" withButtonSize:CGSizeMake(60.0, 30.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(donePickingLocation:) andTarget:self];
     

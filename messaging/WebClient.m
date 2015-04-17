@@ -471,7 +471,7 @@ static WebClient *instance = nil;
 {
     NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
     if(post) {
-        params[@"before"] = [NSNumber numberWithInt:post.remoteKey];
+        params[@"before"] = [NSNumber numberWithInteger:post.remoteKey];
     }
     
     if(tag)

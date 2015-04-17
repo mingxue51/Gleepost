@@ -37,7 +37,7 @@
 #import "GLPPostImageLoader.h"
 #import "GLPMessagesLoader.h"
 #import "GLPProfileLoader.h"
-#import "GLPCategoriesViewController.h"
+#import "GLPNewCategoriesViewController.h"
 #import "TransitionDelegateViewCategories.h"
 #import "CampusWallHeader.h"
 #import "CampusWallHeaderSimpleView.h"
@@ -78,7 +78,7 @@
 #import "URBMediaFocusViewController.h"
 #import "GLPCategoryCell.h"
 
-@interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate>
+@interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate, GLPCategoriesViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *posts;
 @property (strong, nonatomic) GLPPost *selectedPost;
@@ -88,6 +88,7 @@
 @property (strong, nonatomic) NewPostView *postView;
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (strong, nonatomic) TransitionDelegateViewCategories *transitionCategoriesViewController;
+
 @property (strong, nonatomic) URBMediaFocusViewController *mediaFocusViewController;
 
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
@@ -779,7 +780,7 @@ const float TOP_OFFSET = 180.0f;
     //Set to all the application the status bar text white.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     
-    self.title = [[GLPThemeManager sharedInstance] campusWallTitle];
+    self.navigationController.navigationBar.topItem.title = [[GLPThemeManager sharedInstance] campusWallTitle];
 }
 
 - (void)addNavigationButtons
@@ -2236,7 +2237,7 @@ const float TOP_OFFSET = 180.0f;
     self.isLoading = NO;
 }
 
-#pragma mark - Change category
+#pragma mark - GLPCategoriesViewControllerDelegate
 
 -(void)refreshPostsWithNewCategory
 {
@@ -2538,11 +2539,12 @@ const float TOP_OFFSET = 180.0f;
 {
     if(NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1)
     {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
         IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         newPostVC.groupPost = NO;
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
-        navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+        navigationController.modalPresentationStyle = UIModalPresentationCustom;
+        [navigationController setTransitioningDelegate:self.transitionCategoriesViewController];
         [self presentViewController:navigationController animated:YES completion:nil];
     }
     else
@@ -2560,7 +2562,7 @@ const float TOP_OFFSET = 180.0f;
         UIGraphicsEndImageContext();
         
         
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
         UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         
         // vc.view.backgroundColor = [UIColor clearColor];
@@ -2592,47 +2594,13 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)showCategories:(id)sender
 {
-    //TODO: Remove unnecessary code.
-    
-//    if([self.reNavBar isHidden])
-//    {
-//        [self scrollToTheNavigationBar];
-//        
-//        [self performSelector:@selector(showCategoriesViewController) withObject:nil afterDelay:0.5];
-//        
-//    }
-//    else
-//    {
-//        [self showCategoriesViewController];
-//    }
-    
     [self showCategoriesViewController];
-
-    
-    
-    /**
-     Takes screenshot from the current view controller to bring the sense of the transparency after the load
-     of the NewPostViewController.
-     */
-//    UIGraphicsBeginImageContext(self.view.window.bounds.size);
-//    [self.view.window.layer renderInContext:UIGraphicsGetCurrentContext()];
-//    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
-//    
-//    
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-//    UIViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
-//    
-//    // vc.view.backgroundColor = [UIColor clearColor];
-//    vc.view.backgroundColor = [UIColor colorWithPatternImage:image];
-//    self.modalPresentationStyle = UIModalPresentationCurrentContext;
-//    [self presentViewController:vc animated:YES completion:nil];
 }
 
 - (void)showCategoriesViewController
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"Categories"];
+    GLPNewCategoriesViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPNewCategoriesViewController"];
     
     /**
      Takes screenshot from the current view controller to bring the sense of the transparency after the load
@@ -2643,34 +2611,11 @@ const float TOP_OFFSET = 180.0f;
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    
-    cvc.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0];
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     cvc.delegate = self;
-    //    [cvc.view setBackgroundColor:[UIColor colorWithPatternImage:[image stackBlur:10.0f]]];
     
-    if([GLPiOSSupportHelper isIOS6])
-    {
-        [cvc.blurBack setImage:[image stackBlur:10.0f]];
-        //Crop image to add it at the top image view.
-        UIImage *topImage = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 30, 320, 62)];
-        [cvc setImageToTopImage:[topImage stackBlur:10.0f]];
-        
-    }
-    else
-    {
-//        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 60, [GLPiOSSupportHelper screenWidth], 375)]; //0 63 320 302
-        
-        //
-        
-        //TODO: Fix that. Apply the new library and make a helper to do all the progress.
-        image = [ImageFormatterHelper cropImage:image withRect:CGRectMake(0, 60, [GLPiOSSupportHelper screenWidth], ([[CategoryManager sharedInstance] categoriesNames].count - 1) * [GLPCategoryCell height] + [GLPCategoryCell bottomPadding])]; //0 63 320 302
-
-        [cvc.blurBack setImage:[image stackBlur:10.0f]];
-        [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
-    }
-    
-    
+    [cvc setCampusWallScreenshot:image];
+    [cvc setTransitioningDelegate:self.transitionCategoriesViewController];
     [self presentViewController:cvc animated:YES completion:nil];
 }
 

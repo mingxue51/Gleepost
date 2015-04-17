@@ -6,12 +6,12 @@
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
 
-#import "ATNavigationCategories.h"
+#import "ATFadeNavigation.h"
 #import "NewPostViewController.h"
 #import "GLPSelectCategoryViewController.h"
 
 
-@implementation ATNavigationCategories
+@implementation ATFadeNavigation
 
 const float ANIMATION_TIME = 0.5;
 

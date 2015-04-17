@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface ATNavigationCategories : NSObject <UIViewControllerAnimatedTransitioning>
+@interface ATFadeNavigation : NSObject <UIViewControllerAnimatedTransitioning>
 
 @property (nonatomic, assign, getter = isPresenting) BOOL presenting;
 

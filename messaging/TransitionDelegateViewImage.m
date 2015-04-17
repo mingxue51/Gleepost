@@ -8,7 +8,7 @@
 
 #import "TransitionDelegateViewImage.h"
 #import "AnimatedTransitioningViewImage.h"
-#import "ATNavigationCategories.h"
+#import "ATFadeNavigation.h"
 
 @implementation TransitionDelegateViewImage
 

@@ -19,6 +19,14 @@
     return [UIScreen mainScreen].bounds.size.height == 480.0;
 }
 
+/**
+ @return YES if the app is running on iPhone 4(S) - iPhone 5(S).
+ */
++ (BOOL)useShortScreenWidthConstrains
+{    
+    return [UIScreen mainScreen].bounds.size.width == 320.0;
+}
+
 + (CGFloat)screenWidth
 {
     return [UIScreen mainScreen].bounds.size.width;

@@ -7,6 +7,8 @@
 //
 
 #import "ShapeFormatterHelper.h"
+#import "AppearanceHelper.h"
+#import "GLPiOSSupportHelper.h"
 
 @implementation ShapeFormatterHelper
 
@@ -150,6 +152,113 @@
     [view.layer setBorderWidth:2.0f];
 }
 
+#pragma mark - Comment cell
+
++ (void)formatTopCellWithBackgroundView:(UIImageView *)backgroundView andSuperView:(UIView *)superview
+{
+    [backgroundView layoutIfNeeded];
+    
+    CGRect bounds = backgroundView.bounds;
+    
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds
+                                                   byRoundingCorners:(UIRectCornerTopLeft|UIRectCornerTopRight)
+                                                         cornerRadii:CGSizeMake(3.0, 3.0)];
+    
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = bounds;
+    maskLayer.path = maskPath.CGPath;
+    
+    backgroundView.layer.mask = maskLayer;
+    
+    CAShapeLayer*   frameLayer = [CAShapeLayer layer];
+    frameLayer.frame = bounds;
+    frameLayer.path = maskPath.CGPath;
+    frameLayer.strokeColor = [AppearanceHelper mediumGrayGleepostColour].CGColor;
+    frameLayer.fillColor = nil;
+    frameLayer.lineWidth = 2.0;
+    
+    [backgroundView.layer addSublayer:frameLayer];
+    
+    
+//    CALayer *bottomBorder = [CALayer layer];
+//    bottomBorder.borderColor = [UIColor whiteColor].CGColor;
+//    bottomBorder.borderWidth = 4;
+//    bottomBorder.frame = CGRectMake(11.0f, backgroundView.frame.size.height - 2, [GLPiOSSupportHelper screenWidth] - 22, 4.0);
+//    
+//    [superview.layer addSublayer:bottomBorder];
+    
+    UIImageView *bottomBorder = [[UIImageView alloc] initWithFrame:CGRectMake(11.0f, backgroundView.frame.size.height - 2, [GLPiOSSupportHelper screenWidth] - 22, 2.0)];
+    bottomBorder.tag = 100;
+    [bottomBorder setBackgroundColor:[UIColor whiteColor]];
+    [superview addSubview:bottomBorder];
+}
+
++ (void)formatBottomCellWithBackgroundView:(UIImageView *)backgroundImageView andSuperView:(UIView *)superview
+{
+    [backgroundImageView layoutIfNeeded];
+    
+    CGRect bounds = backgroundImageView.bounds;
+    
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:bounds
+                                                   byRoundingCorners:(UIRectCornerBottomLeft|UIRectCornerBottomRight)
+                                                         cornerRadii:CGSizeMake(3.0, 3.0)];
+    
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = bounds;
+    maskLayer.path = maskPath.CGPath;
+    backgroundImageView.layer.mask = maskLayer;
+    
+//    CAShapeLayer*   frameLayer = [CAShapeLayer layer];
+//    frameLayer.frame = bounds;
+//    frameLayer.path = maskPath.CGPath;
+//    frameLayer.strokeColor = [AppearanceHelper mediumGrayGleepostColour].CGColor;
+//    frameLayer.fillColor = nil;
+//    frameLayer.lineWidth = 2.0;
+//    
+//    [backgroundImageView.layer addSublayer:frameLayer];
+    
+    CALayer *upperBorder = [CALayer layer];
+    upperBorder.backgroundColor = [[AppearanceHelper mediumGrayGleepostColour] CGColor];
+    upperBorder.frame = CGRectMake(0, bounds.size.height - 1, CGRectGetWidth(bounds), 1.0f);
+    [backgroundImageView.layer addSublayer:upperBorder];
+    
+    upperBorder = [CALayer layer];
+    upperBorder.backgroundColor = [[AppearanceHelper mediumGrayGleepostColour] CGColor];
+    upperBorder.frame = CGRectMake(CGRectGetWidth(bounds) - 1, 0.0, 1.0f, CGRectGetHeight(bounds));
+    [backgroundImageView.layer addSublayer:upperBorder];
+    
+    upperBorder = [CALayer layer];
+    upperBorder.backgroundColor = [[AppearanceHelper mediumGrayGleepostColour] CGColor];
+    upperBorder.frame = CGRectMake(0, 0, 1.0f, CGRectGetHeight(bounds));
+    [backgroundImageView.layer addSublayer:upperBorder];
+    
+
+    
+//    CALayer *bottomBorder = [CALayer layer];
+//    bottomBorder.borderColor = [UIColor whiteColor].CGColor;
+//    bottomBorder.borderWidth = 1;
+//    bottomBorder.frame = CGRectMake(11.0f, 0.0, [GLPiOSSupportHelper screenWidth] - 22, 1.0);
+//    
+//    [superview.layer addSublayer:bottomBorder];
+}
+
+/**
+ This method should be called only for every cell that is not top cell
+ so can remove the bottom line that is reused when is added in top cell
+ configuration.
+ */
++ (void)removeTopCellBottomLine:(UIView *)superview
+{
+    for(UIView *view in superview.subviews)
+    {
+        if(view.tag == 100)
+        {
+            [view removeFromSuperview];
+        }
+    }
+}
+
+#pragma mark - Helpers
 
 static inline UIImage* MTDContextCreateRoundedMask(CGRect rect, CGFloat radius_tl, CGFloat radius_tr, CGFloat radius_bl, CGFloat radius_br) {
     

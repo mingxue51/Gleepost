@@ -14,6 +14,8 @@
 
 @interface NewPostViewController : UIViewController <UINavigationControllerDelegate, PBJVideoPlayerControllerDelegate, UITextViewDelegate, UITextFieldDelegate, GLPSelectLocationViewControllerDelegate, ImageSelectorViewControllerDelegate>
 
+@property (assign, nonatomic) BOOL comesFromFirstView;
+
 -(void)hideKeyboard;
 -(void)showKeyboard;
 
