@@ -60,7 +60,7 @@
                                 <rect key="frame" x="0.0" y="328" width="292" height="40"/>
                                 <subviews>
                                     <button contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="fill" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YbX-YV-o5E">
-                                        <rect key="frame" x="164" y="0.0" width="40" height="39"/>
+                                        <rect key="frame" x="164" y="1" width="40" height="39"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="39" id="4Wd-Ct-odB"/>
                                             <constraint firstAttribute="width" constant="40" id="dG6-T8-ZK8"/>
@@ -113,7 +113,7 @@
                                         <color key="textColor" red="0.67450980390000004" green="0.67450980390000004" blue="0.67450980390000004" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="niS-f2-KGA" userLabel="DataView">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="niS-f2-KGA" userLabel="DataView" customClass="PollingDataView">
                                         <rect key="frame" x="10" y="0.0" width="60" height="40"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="25 h" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dva-eI-bQf">
@@ -151,6 +151,11 @@
                                             <constraint firstItem="Ijh-wj-08n" firstAttribute="leading" secondItem="niS-f2-KGA" secondAttribute="leading" id="lwV-YG-xzF"/>
                                             <constraint firstAttribute="trailing" secondItem="dva-eI-bQf" secondAttribute="trailing" id="uac-b4-qyv"/>
                                         </constraints>
+                                        <connections>
+                                            <outlet property="smallTimeLeftLabel" destination="Ijh-wj-08n" id="yjg-D5-ZUd"/>
+                                            <outlet property="timeLeftLabel" destination="dva-eI-bQf" id="vzK-zz-7ut"/>
+                                            <outlet property="votesLabel" destination="U5S-Lq-cEb" id="dcj-eB-IWY"/>
+                                        </connections>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m11-e5-ZiY">
                                         <rect key="frame" x="242" y="0.0" width="35" height="40"/>
@@ -188,7 +193,7 @@
                                     <constraint firstAttribute="centerY" secondItem="eIf-Bi-vWi" secondAttribute="centerY" id="hO1-a3-7wc"/>
                                     <constraint firstItem="eIf-Bi-vWi" firstAttribute="leading" secondItem="YbX-YV-o5E" secondAttribute="trailing" constant="-5" id="mef-lh-6E2"/>
                                     <constraint firstAttribute="bottom" secondItem="m11-e5-ZiY" secondAttribute="bottom" id="tqq-BD-jOk"/>
-                                    <constraint firstItem="YbX-YV-o5E" firstAttribute="top" secondItem="auX-Yb-DtT" secondAttribute="top" id="v7f-Mg-chH"/>
+                                    <constraint firstItem="YbX-YV-o5E" firstAttribute="top" secondItem="auX-Yb-DtT" secondAttribute="top" constant="1" id="v7f-Mg-chH"/>
                                 </constraints>
                             </view>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4th-RR-U6p">
@@ -220,6 +225,7 @@
                             <outlet property="pollImageViewHeight" destination="n9U-fm-k35" id="bt9-5o-0jW"/>
                             <outlet property="pollTitleLabel" destination="Gj2-jW-k6h" id="LYM-gU-5X0"/>
                             <outlet property="pollTitleLabelHeight" destination="1aB-oE-DwW" id="QKP-hL-AQe"/>
+                            <outlet property="pollingDataView" destination="niS-f2-KGA" id="tGn-55-nIX"/>
                             <outlet property="pollingView" destination="bJP-NZ-ihc" id="uj7-er-ZBg"/>
                             <outlet property="postImageView" destination="c1T-6P-9XI" id="BdS-z3-P4f"/>
                         </connections>

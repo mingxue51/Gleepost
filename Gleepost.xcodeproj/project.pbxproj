@@ -493,6 +493,8 @@
 		589024A0195DF1ED00084E2F /* message_button_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 5890249F195DF1ED00084E2F /* message_button_old.png */; };
 		589025271AE5369E00A3104D /* GLPPollingOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 589025251AE5369E00A3104D /* GLPPollingOptionCell.m */; };
 		589025281AE5369E00A3104D /* GLPPollingOptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 589025261AE5369E00A3104D /* GLPPollingOptionCell.xib */; };
+		5890252D1AE54EC500A3104D /* PollingDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890252C1AE54EC500A3104D /* PollingDataView.m */; };
+		589025311AE5537C00A3104D /* NSDate+Calculations.m in Sources */ = {isa = PBXBuildFile; fileRef = 589025301AE5537C00A3104D /* NSDate+Calculations.m */; };
 		58907DCC1A9FC12B00E8531A /* iphone_ipad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58907DCB1A9FC12B00E8531A /* iphone_ipad.storyboard */; };
 		58907DCE1A9FE22800E8531A /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58907DCD1A9FE22800E8531A /* Launch Screen.xib */; };
 		5890D0401A2AA7D10088C302 /* GLPViewPendingPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D03F1A2AA7D10088C302 /* GLPViewPendingPostViewController.m */; };
@@ -1660,6 +1662,10 @@
 		589025241AE5369E00A3104D /* GLPPollingOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPollingOptionCell.h; sourceTree = "<group>"; };
 		589025251AE5369E00A3104D /* GLPPollingOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPollingOptionCell.m; sourceTree = "<group>"; };
 		589025261AE5369E00A3104D /* GLPPollingOptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPPollingOptionCell.xib; sourceTree = "<group>"; };
+		5890252B1AE54EC500A3104D /* PollingDataView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollingDataView.h; sourceTree = "<group>"; };
+		5890252C1AE54EC500A3104D /* PollingDataView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollingDataView.m; sourceTree = "<group>"; };
+		5890252F1AE5537C00A3104D /* NSDate+Calculations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Calculations.h"; sourceTree = "<group>"; };
+		589025301AE5537C00A3104D /* NSDate+Calculations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Calculations.m"; sourceTree = "<group>"; };
 		58907DCB1A9FC12B00E8531A /* iphone_ipad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iphone_ipad.storyboard; sourceTree = "<group>"; };
 		58907DCD1A9FE22800E8531A /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		5890D03E1A2AA7D10088C302 /* GLPViewPendingPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPViewPendingPostViewController.h; sourceTree = "<group>"; };
@@ -3705,6 +3711,26 @@
 			name = Polling;
 			sourceTree = "<group>";
 		};
+		5890252A1AE54EA400A3104D /* Polling */ = {
+			isa = PBXGroup;
+			children = (
+				5890252B1AE54EC500A3104D /* PollingDataView.h */,
+				5890252C1AE54EC500A3104D /* PollingDataView.m */,
+			);
+			name = Polling;
+			sourceTree = "<group>";
+		};
+		5890252E1AE5535B00A3104D /* NSDate */ = {
+			isa = PBXGroup;
+			children = (
+				80112B99180F2494006A35AA /* NSDate+UTC.h */,
+				80112B9A180F2494006A35AA /* NSDate+UTC.m */,
+				5890252F1AE5537C00A3104D /* NSDate+Calculations.h */,
+				589025301AE5537C00A3104D /* NSDate+Calculations.m */,
+			);
+			name = NSDate;
+			sourceTree = "<group>";
+		};
 		5890D20E1847618F00E293DD /* Themes */ = {
 			isa = PBXGroup;
 			children = (
@@ -4306,6 +4332,7 @@
 		58D7ED141AB1C9AD0072FF25 /* UIViews */ = {
 			isa = PBXGroup;
 			children = (
+				5890252A1AE54EA400A3104D /* Polling */,
 				588C68891AD2873000E00F48 /* Fake Navigation Bar */,
 				58D7ED151AB1C9C30072FF25 /* GLPViewsCountView.h */,
 				58D7ED161AB1C9C30072FF25 /* GLPViewsCountView.m */,
@@ -5102,6 +5129,7 @@
 		80AB893E17C26D040053E784 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				5890252E1AE5535B00A3104D /* NSDate */,
 				58F2950219354A4400A638BA /* Animated Transitioning */,
 				803FF9961897D921000B1955 /* Delegate */,
 				8057E33A1834C1040089F4D9 /* Processors */,
@@ -5555,8 +5583,6 @@
 				80666C531806E11000E4E515 /* GLPMessage+CellLogic.m */,
 				80D2D0C9180ACD30007FB020 /* NSNumber+Enums.h */,
 				80D2D0CA180ACD30007FB020 /* NSNumber+Enums.m */,
-				80112B99180F2494006A35AA /* NSDate+UTC.h */,
-				80112B9A180F2494006A35AA /* NSDate+UTC.m */,
 				C04613951834E7D500B422A3 /* GoogleAnalytics */,
 				80B01E6A18428BAF00A1BA5F /* NSNotificationCenter+Utils.h */,
 				80B01E6B18428BAF00A1BA5F /* NSNotificationCenter+Utils.m */,
@@ -6364,6 +6390,7 @@
 				5861575F193CD162009BAD33 /* UIColor+GLPAdditions.m in Sources */,
 				58D0E52118D10E98004DF10D /* GLPMemberDao.m in Sources */,
 				5890D21E1847693600E293DD /* GLPDefaultTheme.m in Sources */,
+				589025311AE5537C00A3104D /* NSDate+Calculations.m in Sources */,
 				584906C517FDE8710045B65D /* GCPlaceholderTextView.m in Sources */,
 				586F9C5319882A400093A946 /* UILabel+Dimensions.m in Sources */,
 				588D859B195B5DB2002F516A /* ProfileTopViewCell.m in Sources */,
@@ -6559,6 +6586,7 @@
 				5819E65818C7C442003361B3 /* NewGroupViewController.m in Sources */,
 				585106CE199D8635000F06BB /* FinalNewPostViewController.m in Sources */,
 				803FF9991897D932000B1955 /* GLPLoadingCellDelegate.m in Sources */,
+				5890252D1AE54EC500A3104D /* PollingDataView.m in Sources */,
 				5821278F1891627D00BF36E5 /* VSScrollView.m in Sources */,
 				58F562A51923A5ED00841918 /* GLPVideoUploader.m in Sources */,
 				582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,

@@ -43,7 +43,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    DDLogDebug(@"Table view index path row %ld", (long)indexPath.row);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
