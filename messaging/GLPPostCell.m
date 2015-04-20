@@ -14,6 +14,7 @@
 #import "WebClientHelper.h"
 #import "GLPPostManager.h"
 #import "NewCommentView.h"
+#import "PollingPostView.h"
 
 @interface GLPPostCell ()
 
@@ -324,17 +325,7 @@ const float ONE_LINE_LIMIT = 18.0;
 
 +(CGFloat)getCellHeightWithContent:(GLPPost *)post cellType:(GLPCellType)cellType isViewPost:(BOOL)isViewPost
 {
-//    if([post isVideoPost])
-//    {
-//        return [GLPPostCell getVideoCellHeightWithPost:post isViewPost:isViewPost];
-//    }
-    
     float height = [GLPPostCell getConstantHeightOfCellWithType:cellType wihtPost:post];
-    
-    
-    // initial height
-//    float height = (isImage) ? IMAGE_CELL_HEIGHT : TEXT_CELL_HEIGHT;
-    
     
     if(cellType == kImageCell)
     {
@@ -356,6 +347,10 @@ const float ONE_LINE_LIMIT = 18.0;
         {
             height = FIXED_SIZE_OF_NON_EVENT_TEXT_CELL;
         }
+    }
+    else if(cellType == kPollCell)
+    {
+        return [PollingPostView cellHeightWithPostData:post];
     }
     
     // add content label height

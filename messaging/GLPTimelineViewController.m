@@ -730,6 +730,8 @@ const float TOP_OFFSET = 180.0f;
     [self.tableView registerNib:[UINib nibWithNibName:@"GLPPendingCell" bundle:nil] forCellReuseIdentifier:@"GLPPendingCell"];
     
     [self.tableView registerNib:[UINib nibWithNibName:@"GLPCategoryTitleCell" bundle:nil] forCellReuseIdentifier:@"GLPCategoryTitleCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostPollCell" bundle:nil] forCellReuseIdentifier:@"PollCell"];
 
     
 //    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderScrollView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"CampusWallHeaderSimple"];
@@ -1806,6 +1808,7 @@ const float TOP_OFFSET = 180.0f;
     static NSString *CellIdentifierWithImage = @"ImageCell";
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
+    static NSString *CellIdentifierPoll = @"PollCell";
     static NSString *CellIdentifierPendingCell = @"GLPPendingCell";
     static NSString *CellIdentifierCategoryTitle = @"GLPCategoryTitleCell";
     
@@ -1872,18 +1875,13 @@ const float TOP_OFFSET = 180.0f;
                 
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
     }
-//    else if ([post isVideoPost])
-//    {
-//        postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithVideo forIndexPath:indexPath];
-//        postCell.imageAvailable = YES;
-//2
-//    }
+    else if([post isPollPost])
+    {
+        postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierPoll forIndexPath:indexPath];
+    }
     else
     {
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithoutImage forIndexPath:indexPath];
-        
-//        postCell.imageAvailable = NO;
-        
     }
     
     postCell.delegate = self;
@@ -2024,6 +2022,10 @@ const float TOP_OFFSET = 180.0f;
     else if ([currentPost isVideoPost])
     {
         return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
+    }
+    else if ([currentPost isPollPost])
+    {
+        return [GLPPostCell getCellHeightWithContent:currentPost cellType:kPollCell isViewPost:NO];
     }
     else
     {

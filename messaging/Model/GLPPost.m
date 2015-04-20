@@ -91,6 +91,16 @@
     return YES;
 }
 
+- (BOOL)isPollPost
+{
+    if(_poll == nil)
+    {
+        return NO;
+    }
+    
+    return YES;
+}
+
 -(BOOL)isGroupPost
 {
     if(_group != nil)

@@ -18,10 +18,10 @@ typedef enum
     kGLPParties = 12,
     kGLPFreeFood = 13,
     kGLPAnnouncements = 14,
-    kGLPOther = 15,
+    kGLPOther = 17,
     kGLPAll = 16,
     kGLPGeneral = 1,
-    kGLPQuestions = 18
+    kGLPQuestions = 15
     
 }GLPCategories;
 

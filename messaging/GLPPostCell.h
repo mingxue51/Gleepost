@@ -15,7 +15,8 @@
 typedef NS_ENUM(NSInteger, GLPCellType) {
     kTextCell,
     kImageCell,
-    kVideoCell
+    kVideoCell,
+    kPollCell
 };
 
 @protocol RemovePostCellDelegate <NSObject>

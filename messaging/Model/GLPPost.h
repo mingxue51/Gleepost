@@ -11,6 +11,7 @@
 #import "SendStatus.h"
 #import "GLPGroup.h"
 #import "GLPReviewHistory.h"
+#import "GLPPoll.h"
 
 @class GLPVideo;
 @class GLPLocation;
@@ -36,12 +37,13 @@
 /** If we are going to support multible videos change that to an array. */
 @property (strong, nonatomic) GLPVideo *video;
 @property (strong, nonatomic) GLPLocation *location;
+@property (strong, nonatomic) GLPPoll *poll;
 @property (strong, nonatomic) UIImage *tempImage;
 @property (strong, nonatomic) UIImage *finalImage;
 @property (assign, nonatomic) BOOL liked;
 @property (assign, nonatomic) SendStatus sendStatus;
 @property (strong, nonatomic) NSArray *categories;
-@property (assign, nonatomic) int popularity;
+@property (assign, nonatomic) NSInteger popularity;
 @property (assign, nonatomic) NSInteger attendees;
 @property (assign, nonatomic) BOOL attended;
 @property (assign, nonatomic) NSInteger viewsCount;
@@ -53,10 +55,10 @@
 
 - (id)initWithRemoteKey:(NSInteger)remoteKey;
 - (void)addNewReviewHistory:(GLPReviewHistory *)reviewHistory;
-- (void)setNumberOfLikes:(NSInteger)numberOfLikes;
 -(BOOL)imagePost;
 -(BOOL)isGroupPost;
 -(BOOL)isVideoPost;
+- (BOOL)isPollPost;
 - (BOOL)isParty;
 - (BOOL)isPostLiked;
 - (BOOL)isPostCommented;

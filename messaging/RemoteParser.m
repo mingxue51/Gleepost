@@ -542,7 +542,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.author = [RemoteParser parseUserFromJson:json[@"by"]];
     post.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
     post.content = json[@"text"];
-
     post.commentsCount = [json[@"comment_count"] integerValue];
 
     post.likes = [json[@"like_count"] integerValue];
@@ -568,6 +567,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         if([attributes objectForKey:@"event-time"])
         {
             post.dateEventStarts = [RemoteParser parseDateFromString:[attributes objectForKey:@"event-time"]];
+            post.eventTitle = [attributes objectForKey:@"title"];
+        }
+        else
+        {
             post.eventTitle = [attributes objectForKey:@"title"];
         }
     }
@@ -639,8 +642,24 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     post.attended = [json[@"attending"] boolValue];
+    post.poll = [RemoteParser parsePollDataWithPollData:json[@"poll"]];
     
     return post;
+}
+
++ (GLPPoll *)parsePollDataWithPollData:(NSDictionary *)jsonData
+{
+    if(!jsonData)
+    {
+        return nil;
+    }
+    
+    GLPPoll *poll = [[GLPPoll alloc] init];
+    poll.expirationDate = [RemoteParser parseDateFromString:jsonData[@"expires-at"]];
+    poll.usersVote = jsonData[@"yout-vote"];
+    poll.options = jsonData[@"options"];
+    poll.votes = jsonData[@"votes"];
+    return poll;
 }
 
 + (GLPVideo *)parseVideosData:(NSArray *)jsonArray

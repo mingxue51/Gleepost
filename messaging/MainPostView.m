@@ -28,12 +28,19 @@
 #import "GLPImageHelper.h"
 #import "GLPThemeManager.h"
 #import "GLPViewsCountView.h"
+#import "PollingPostView.h"
 
 @interface MainPostView ()
 
 @property (weak, nonatomic) IBOutlet UIView *socialView;
 
 @property (weak, nonatomic) IBOutlet UILabel *likesLbl;
+
+@property (weak, nonatomic) IBOutlet UILabel *pollTitleLabel;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pollTitleLabelHeight;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pollImageViewHeight;
 
 @property (weak, nonatomic) IBOutlet UILabel *commentsLbl;
 
@@ -60,6 +67,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
 
 @property (weak, nonatomic) IBOutlet VideoView *videoView;
+
+@property (weak, nonatomic) IBOutlet PollingPostView *pollingView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *indicatorImageView;
 
@@ -178,6 +187,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     
     [self setVideo];
     
+    [self setPoll];
+    
 //    [self formatElements];
     
     [self updateIndicatorWithRemoteKey:post.remoteKey];
@@ -202,7 +213,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 //    [ShapeFormatterHelper setBorderToView:_videoView withColour:[UIColor redColor] andWidth:1.0];
 //    [ShapeFormatterHelper setBorderToView:_wideCommentBtn withColour:[UIColor redColor]];
     
-//    [ShapeFormatterHelper setBorderToView:_socialView withColour:[UIColor blueColor]];
+//    [ShapeFormatterHelper setBorderToView:self.pollTitleLabel withColour:[UIColor blueColor]];
     
 //    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blueColor] andWidth:1.0];
     
@@ -527,7 +538,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     }
 }
 
-
 -(void)showVideoView
 {
 //    if([_videoView isVideoLoading])
@@ -560,7 +570,27 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     [_postImageView setHidden:NO];
 }
 
+#pragma mark - Poll
 
+- (void)setPoll
+{
+    if([_post isPollPost])
+    {
+        self.pollTitleLabel.text = [NSString stringWithFormat:@"%@", _post.eventTitle];
+        self.pollTitleLabelHeight.constant = [PollingPostView pollingTitleHeightWithText:self.post.eventTitle];
+        [self.pollingView setPollData:self.post.poll];
+        [self configurePollImageView];
+    }
+}
+
+- (void)configurePollImageView
+{
+    if(![self.post imagePost])
+    {
+        self.pollImageViewHeight.constant = 0.0;
+        self.activityIndicator.hidden = YES;
+    }
+}
 
 #pragma mark - Online indicator
 

@@ -64,7 +64,7 @@ static CategoryManager *instance = nil;
         
         [tempDict setObject:[[GLPCategory alloc] initWithTag:@"general" name:@"General" postRemoteKey:0 andRemoteKey:kGLPGeneral]  forKey:@(kGeneralOrder)];
         
-        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"questions" name:@"Questions" postRemoteKey:0 andRemoteKey:kGLPQuestions]  forKey:@(kQuestionsOrder)];
+        [tempDict setObject:[[GLPCategory alloc] initWithTag:@"poll" name:@"Questions" postRemoteKey:0 andRemoteKey:kGLPQuestions]  forKey:@(kQuestionsOrder)];
 
 
         _categories = [[NSDictionary alloc] initWithDictionary:tempDict];

@@ -42,6 +42,9 @@
 		580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */; };
 		580B8D3B1857A52E00A84E0E /* NotificationsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D3A1857A52E00A84E0E /* NotificationsView.m */; };
 		580B8D3D1857A57B00A84E0E /* NotificationsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580B8D3C1857A57B00A84E0E /* NotificationsUIView.xib */; };
+		580C0DAE1AE11EFB00DA9522 /* GLPPoll.m in Sources */ = {isa = PBXBuildFile; fileRef = 580C0DAD1AE11EFB00DA9522 /* GLPPoll.m */; };
+		580C0DB21AE13CD100DA9522 /* PollingPostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 580C0DB11AE13CD100DA9522 /* PollingPostView.m */; };
+		580C0DB41AE13E8800DA9522 /* PostPollCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580C0DB31AE13E8800DA9522 /* PostPollCell.xib */; };
 		580C7AAD1897F030007495EE /* CategoryManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 580C7AAC1897F030007495EE /* CategoryManager.m */; };
 		580C7ABB18985059007495EE /* top_image_campus_wall_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7ABA18985059007495EE /* top_image_campus_wall_old.png */; };
 		580C7ACE189863F6007495EE /* background_day.png in Resources */ = {isa = PBXBuildFile; fileRef = 580C7ACD189863F6007495EE /* background_day.png */; };
@@ -488,6 +491,8 @@
 		5890249B195DF02700084E2F /* PrivateProfileTopViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5890249A195DF02700084E2F /* PrivateProfileTopViewCell.xib */; };
 		5890249E195DF05C00084E2F /* PrivateProfileTopViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890249D195DF05C00084E2F /* PrivateProfileTopViewCell.m */; };
 		589024A0195DF1ED00084E2F /* message_button_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 5890249F195DF1ED00084E2F /* message_button_old.png */; };
+		589025271AE5369E00A3104D /* GLPPollingOptionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 589025251AE5369E00A3104D /* GLPPollingOptionCell.m */; };
+		589025281AE5369E00A3104D /* GLPPollingOptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 589025261AE5369E00A3104D /* GLPPollingOptionCell.xib */; };
 		58907DCC1A9FC12B00E8531A /* iphone_ipad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 58907DCB1A9FC12B00E8531A /* iphone_ipad.storyboard */; };
 		58907DCE1A9FE22800E8531A /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58907DCD1A9FE22800E8531A /* Launch Screen.xib */; };
 		5890D0401A2AA7D10088C302 /* GLPViewPendingPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5890D03F1A2AA7D10088C302 /* GLPViewPendingPostViewController.m */; };
@@ -1001,6 +1006,11 @@
 		580B8D391857A52E00A84E0E /* NotificationsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsView.h; sourceTree = "<group>"; };
 		580B8D3A1857A52E00A84E0E /* NotificationsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsView.m; sourceTree = "<group>"; };
 		580B8D3C1857A57B00A84E0E /* NotificationsUIView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationsUIView.xib; sourceTree = "<group>"; };
+		580C0DAC1AE11EFB00DA9522 /* GLPPoll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPoll.h; sourceTree = "<group>"; };
+		580C0DAD1AE11EFB00DA9522 /* GLPPoll.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPoll.m; sourceTree = "<group>"; };
+		580C0DB01AE13CD100DA9522 /* PollingPostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollingPostView.h; sourceTree = "<group>"; };
+		580C0DB11AE13CD100DA9522 /* PollingPostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollingPostView.m; sourceTree = "<group>"; };
+		580C0DB31AE13E8800DA9522 /* PostPollCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostPollCell.xib; sourceTree = "<group>"; };
 		580C7AAB1897F030007495EE /* CategoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryManager.h; sourceTree = "<group>"; };
 		580C7AAC1897F030007495EE /* CategoryManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryManager.m; sourceTree = "<group>"; };
 		580C7ABA18985059007495EE /* top_image_campus_wall_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = top_image_campus_wall_old.png; sourceTree = "<group>"; };
@@ -1647,6 +1657,9 @@
 		5890249C195DF05C00084E2F /* PrivateProfileTopViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivateProfileTopViewCell.h; sourceTree = "<group>"; };
 		5890249D195DF05C00084E2F /* PrivateProfileTopViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivateProfileTopViewCell.m; sourceTree = "<group>"; };
 		5890249F195DF1ED00084E2F /* message_button_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = message_button_old.png; sourceTree = "<group>"; };
+		589025241AE5369E00A3104D /* GLPPollingOptionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPollingOptionCell.h; sourceTree = "<group>"; };
+		589025251AE5369E00A3104D /* GLPPollingOptionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPollingOptionCell.m; sourceTree = "<group>"; };
+		589025261AE5369E00A3104D /* GLPPollingOptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPPollingOptionCell.xib; sourceTree = "<group>"; };
 		58907DCB1A9FC12B00E8531A /* iphone_ipad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = iphone_ipad.storyboard; sourceTree = "<group>"; };
 		58907DCD1A9FE22800E8531A /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		5890D03E1A2AA7D10088C302 /* GLPViewPendingPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPViewPendingPostViewController.h; sourceTree = "<group>"; };
@@ -2452,6 +2465,15 @@
 			name = "Campus Live";
 			sourceTree = "<group>";
 		};
+		580C0DAF1AE13CC000DA9522 /* Polling */ = {
+			isa = PBXGroup;
+			children = (
+				580C0DB01AE13CD100DA9522 /* PollingPostView.h */,
+				580C0DB11AE13CD100DA9522 /* PollingPostView.m */,
+			);
+			name = Polling;
+			sourceTree = "<group>";
+		};
 		580FF15018AA6D810026B65B /* Time formatter */ = {
 			isa = PBXGroup;
 			children = (
@@ -2940,11 +2962,9 @@
 		584906B917FD945F0045B65D /* Post Classes */ = {
 			isa = PBXGroup;
 			children = (
-				805E91DA189B103B00ECD40F /* PostImageCellView.xib */,
 				58FD706C189008830024E8A1 /* Transition Delegate View Categories */,
 				58D3D732182ADA9A00DE2925 /* Transition Delegate View Image Post */,
 				5851B5D618258ECE00AA9103 /* Transition Delegate New Post */,
-				58433282180ED55900BD9F74 /* PostTextCellView.xib */,
 				5841315717FEDD8500A3278D /* AddCommentViewController.h */,
 				5841315817FEDD8500A3278D /* AddCommentViewController.m */,
 				80AB896117C27AF50053E784 /* ViewPostViewController.h */,
@@ -3304,9 +3324,12 @@
 		5871E43A192621D6009B5A74 /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				58433282180ED55900BD9F74 /* PostTextCellView.xib */,
 				585CAD7D1ADE70C500EF6FFA /* GLPLikesCell.xib */,
+				805E91DA189B103B00ECD40F /* PostImageCellView.xib */,
 				58E1E5E91926222F007ACB4F /* PostImageCell.xib */,
 				585AE267192B841900174CED /* PostVideoCell.xib */,
+				580C0DB31AE13E8800DA9522 /* PostPollCell.xib */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -3663,6 +3686,23 @@
 				588F1DBA19EDCEB100DB6D23 /* ATPopUpAfterGoingView.m */,
 			);
 			name = Event;
+			sourceTree = "<group>";
+		};
+		589025231AE5367700A3104D /* Polling */ = {
+			isa = PBXGroup;
+			children = (
+				589025241AE5369E00A3104D /* GLPPollingOptionCell.h */,
+				589025251AE5369E00A3104D /* GLPPollingOptionCell.m */,
+			);
+			name = Polling;
+			sourceTree = "<group>";
+		};
+		589025291AE536BF00A3104D /* Polling */ = {
+			isa = PBXGroup;
+			children = (
+				589025261AE5369E00A3104D /* GLPPollingOptionCell.xib */,
+			);
+			name = Polling;
 			sourceTree = "<group>";
 		};
 		5890D20E1847618F00E293DD /* Themes */ = {
@@ -4340,6 +4380,7 @@
 		58E1E5EB1926283C007ACB4F /* Post */ = {
 			isa = PBXGroup;
 			children = (
+				580C0DAF1AE13CC000DA9522 /* Polling */,
 				58E1E5EC19262851007ACB4F /* TopPostView.h */,
 				58E1E5ED19262851007ACB4F /* TopPostView.m */,
 				58E1E5EF1926285E007ACB4F /* MainPostView.h */,
@@ -4914,6 +4955,8 @@
 				585CCD2719B91F06004009D7 /* GLPPushNotification.m */,
 				5879234E19E7926E007F3C20 /* GLPMember.h */,
 				5879234F19E7926E007F3C20 /* GLPMember.m */,
+				580C0DAC1AE11EFB00DA9522 /* GLPPoll.h */,
+				580C0DAD1AE11EFB00DA9522 /* GLPPoll.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -4939,6 +4982,7 @@
 		8096E4E917C2CBEF00C7BF60 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				589025231AE5367700A3104D /* Polling */,
 				58E17EEB1A950CDB006A5552 /* Messenger */,
 				580004DA1A729D2300463276 /* Group */,
 				58B3A2FA1A254EEF0082AE81 /* CampusWall */,
@@ -5326,6 +5370,7 @@
 		80B2A42918339624002AB1F0 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				589025291AE536BF00A3104D /* Polling */,
 				580004E01A729D8400463276 /* Group */,
 				58B3A3001A254F3B0082AE81 /* Campus Wall */,
 				58299B7A19FA168500702381 /* Empty Views */,
@@ -5750,6 +5795,7 @@
 				586866DE19B695E600803512 /* going_pushed_back_btn.png in Resources */,
 				805E91DB189B103B00ECD40F /* PostImageCellView.xib in Resources */,
 				58919A451982EC770033E77A /* cancel.png in Resources */,
+				589025281AE5369E00A3104D /* GLPPollingOptionCell.xib in Resources */,
 				5892F10E19FB0D5800B6778F /* empty_profile_posts.png in Resources */,
 				5879AC8719643C1F0053262A /* GLPCheckNameCell.xib in Resources */,
 				584F38621818094A00A1B742 /* mychatbubble4.png in Resources */,
@@ -5782,6 +5828,7 @@
 				58AB404818AE45D000DEED31 /* all_category_old.png in Resources */,
 				58C1698719C26A6A00F4C203 /* cards.png in Resources */,
 				80A21D4718AD136200559BF6 /* internal_notification_cell_liked@2x.png in Resources */,
+				580C0DB41AE13E8800DA9522 /* PostPollCell.xib in Resources */,
 				5879AC8B19643CEA0053262A /* user_not_selected.png in Resources */,
 				58837D2F18CDEA5D00EB3435 /* contacts_background_main_2.png in Resources */,
 				80C8BA4A18101DF9004F70DB /* other_chat_background.png in Resources */,
@@ -6259,6 +6306,7 @@
 				58F2950819355A2F00A638BA /* TDFadeNavigation.m in Sources */,
 				58D0E51E18D10CE9004DF10D /* GLPMemberDaoParser.m in Sources */,
 				58CB2728194B892800864C28 /* SKBounceAnimation.m in Sources */,
+				580C0DAE1AE11EFB00DA9522 /* GLPPoll.m in Sources */,
 				586A6F9B19B1485500664017 /* GLPLiveGroupManager.m in Sources */,
 				58E1E5F11926285E007ACB4F /* MainPostView.m in Sources */,
 				80B2A41F18337D8B002AB1F0 /* GLPNotification.m in Sources */,
@@ -6273,6 +6321,7 @@
 				588C689A1AD2D9AA00E00F48 /* GLPAnimationHelper.m in Sources */,
 				5844293C18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m in Sources */,
 				58774D41196568350034A1C6 /* GLPSearchBar.m in Sources */,
+				580C0DB21AE13CD100DA9522 /* PollingPostView.m in Sources */,
 				58273F1E1A26977D00425605 /* GLPPostsOrganiserHelper.m in Sources */,
 				8087E42D180EC02E00938264 /* _Comment.m in Sources */,
 				58D113D618857D3A00C6B953 /* GLPPostImageLoader.m in Sources */,
@@ -6378,6 +6427,7 @@
 				807C4D16180AF0F6003D67E6 /* Conversation.m in Sources */,
 				8087E430180EC02E00938264 /* Post.m in Sources */,
 				580FF15618AA74400026B65B /* CampusLiveManager.m in Sources */,
+				589025271AE5369E00A3104D /* GLPPollingOptionCell.m in Sources */,
 				589EAD1B18A41B95005B2F4C /* SignUpFiveView.m in Sources */,
 				5850203C1AD5416800195520 /* GLPPickTimeAnimationHelper.m in Sources */,
 				58FD707A189042A20024E8A1 /* CampusWallHeaderSimpleView.m in Sources */,
