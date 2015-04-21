@@ -116,6 +116,9 @@
 //NSNotification name that removes all the NSNotifications observers from view controllers. (Usually after logout).
 #define GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS         @"GLPRemoveVCNotifications"
 
+//NSNotification name that is used for the messages between the GLPPollOperationManager and other poll objects.
+#define GLPNOTIFICATION_POLL_VIEW_STATUS_CHANGED        @"GLPPollViewStatusChanged"
+
 #define GLPNOTIFICATION_UPDATE_EMAIL_TO_VERIFICATION_VIEW   @"GLPUpdateEmailToVerificationView"
 
 #define GLP_WEBSERVICE_VERSION                      @"1"

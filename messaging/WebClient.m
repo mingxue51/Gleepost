@@ -805,7 +805,7 @@ static WebClient *instance = nil;
 {
     NSDictionary *params = [[NSDictionary alloc] initWithDictionary:self.sessionManager.authParameters];
 
-    NSString *path = [NSString stringWithFormat:@"posts/%d/attendees", postRemoteKey];
+    NSString *path = [NSString stringWithFormat:@"posts/%ld/attendees", (long)postRemoteKey];
     
     [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
        
@@ -817,6 +817,26 @@ static WebClient *instance = nil;
         
         callback(nil, NO);
 
+    }];
+}
+
+#pragma mark - Voting
+
+- (void)voteWithPostRemoteKey:(NSInteger)postRemoteKey andOption:(NSInteger)option callbackBlock:(void (^) (BOOL success))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"posts/%ld/votes", (long)postRemoteKey];
+    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:self.sessionManager.authParameters];
+    
+    [params setObject:@(option) forKey:@"option"];
+    
+    [self postPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        callbackBlock(YES);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO);
     }];
 }
 

@@ -135,6 +135,11 @@ static GLPMessageProcessor *instance = nil;
                 DDLogDebug(@"WebSocket event read %@ - %@", event.data[@"last_read"], user);
                 break;
             }
+            case kGLPWebSocketEventTypeVote: {
+                
+                //TODO: Update data structure, local database and UI if needed.
+                DDLogDebug(@"WebSocket event: event type vote received.");
+            }
            
             default:
                 DDLogInfo(@"Websocket event: Not recognised");

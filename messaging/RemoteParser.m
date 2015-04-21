@@ -656,7 +656,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     GLPPoll *poll = [[GLPPoll alloc] init];
     poll.expirationDate = [RemoteParser parseDateFromString:jsonData[@"expires-at"]];
-    poll.usersVote = jsonData[@"yout-vote"];
+    poll.usersVote = jsonData[@"your-vote"];
     poll.options = jsonData[@"options"];
     [poll setAndCalculateVotes:jsonData[@"votes"]];
     return poll;

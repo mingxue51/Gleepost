@@ -29,16 +29,6 @@
 
 - (void)setAndCalculateVotes:(NSMutableDictionary *)votes
 {
-    if(votes.count == 0)
-    {
-        for(NSString *option in self.options)
-        {
-            [self.votes setObject:option forKey:@(0.0)];
-        }
-        
-        return;
-    }
-    
     //Find the sum of votes.
     for(NSString *optionKey in votes)
     {
@@ -52,6 +42,29 @@
         NSInteger vote = [[votes objectForKey:optionKey] integerValue];
         [self.votes setObject:@((CGFloat)vote/self.sumVotes) forKey:optionKey];
     }
+    
+    
+    for(NSString *option in self.options)
+    {
+        if(![self.votes objectForKey:option])
+        {
+            [self.votes setObject:@(0.0) forKey:option];
+        }
+    }
+}
+
+- (void)userVotedWithOption:(NSString *)option
+{
+    [self.votes setObject:@(1.0) forKey:option];
+    self.usersVote = option;
+    self.sumVotes = 0;
+}
+
+- (void)revertVotingWithOption:(NSString *)option
+{
+    [self.votes setObject:@(0.0) forKey:option];
+    self.usersVote = nil;
+    self.sumVotes = 0;
 }
 
 - (void)setUsersVote:(NSString *)usersVote

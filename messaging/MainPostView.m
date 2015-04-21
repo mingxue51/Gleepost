@@ -227,6 +227,18 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 //    [ShapeFormatterHelper setBorderToView:_shareBtn withColour:[UIColor greenColor]];
 }
 
+- (void)willRemoveSubview:(UIView *)subview
+{
+    if([subview.class isSubclassOfClass:[PollingPostView class]])
+    {
+        DDLogDebug(@"MainPostView willRemoveSubview %@", [subview class]);
+
+        //Deregister ns notifications from polling post view.
+        [self.pollingView deregisterNotifications];
+    }
+}
+
+
 - (void)setNewViewsCount:(NSNotification *)viewsCountNotification
 {
     NSInteger postRemoteKey = [viewsCountNotification.userInfo[@"PostRemoteKey"] integerValue];
@@ -581,7 +593,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     {
         self.pollTitleLabel.text = [NSString stringWithFormat:@"%@", _post.eventTitle];
         self.pollTitleLabelHeight.constant = [PollingPostView pollingTitleHeightWithText:self.post.eventTitle];
-        [self.pollingView setPollData:self.post.poll];
+        [self.pollingView setPollData:self.post.poll withPostRemoteKey:self.post.remoteKey];
         [self.pollingDataView setPollData:self.post.poll];
         [self configurePollImageView];
     }

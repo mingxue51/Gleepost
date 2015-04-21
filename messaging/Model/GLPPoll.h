@@ -21,5 +21,7 @@
 
 
 - (void)setAndCalculateVotes:(NSMutableDictionary *)votes;
+- (void)userVotedWithOption:(NSString *)option;
+- (void)revertVotingWithOption:(NSString *)option;
 
 @end

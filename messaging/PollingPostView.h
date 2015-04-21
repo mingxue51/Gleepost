@@ -13,7 +13,8 @@
 
 @interface PollingPostView : UIView
 
-- (void)setPollData:(GLPPoll *)pollData;
+- (void)setPollData:(GLPPoll *)pollData withPostRemoteKey:(NSInteger)postRemoteKey;
+- (void)deregisterNotifications;
 + (CGFloat)pollingTitleHeightWithText:(NSString *)text;
 + (CGFloat)cellHeightWithPostData:(GLPPost *)postData;
 

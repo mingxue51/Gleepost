@@ -674,6 +674,7 @@
 		58D113D618857D3A00C6B953 /* GLPPostImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D113D518857D3A00C6B953 /* GLPPostImageLoader.m */; };
 		58D19D9418C7668000CB13CC /* CreateGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58D19D9318C7668000CB13CC /* CreateGroupCell.xib */; };
 		58D19D9618C766C000CB13CC /* create_new_group.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D19D9518C766C000CB13CC /* create_new_group.png */; };
+		58D1C12A1AE66B070018A3A9 /* GLPPollOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D1C1291AE66B070018A3A9 /* GLPPollOperationManager.m */; };
 		58D2809419294F15006AB7D7 /* post_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D2809319294F15006AB7D7 /* post_background.png */; };
 		58D28096192973D5006AB7D7 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D28095192973D5006AB7D7 /* clock.png */; };
 		58D301D61989BC37003EC08B /* back_final_glow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D301D51989BC37003EC08B /* back_final_glow@2x.png */; };
@@ -1918,6 +1919,8 @@
 		58D113D518857D3A00C6B953 /* GLPPostImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostImageLoader.m; sourceTree = "<group>"; };
 		58D19D9318C7668000CB13CC /* CreateGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateGroupCell.xib; sourceTree = "<group>"; };
 		58D19D9518C766C000CB13CC /* create_new_group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_new_group.png; sourceTree = "<group>"; };
+		58D1C1281AE66B070018A3A9 /* GLPPollOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPollOperationManager.h; sourceTree = "<group>"; };
+		58D1C1291AE66B070018A3A9 /* GLPPollOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPollOperationManager.m; sourceTree = "<group>"; };
 		58D2809319294F15006AB7D7 /* post_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = post_background.png; sourceTree = "<group>"; };
 		58D28095192973D5006AB7D7 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
 		58D301D51989BC37003EC08B /* back_final_glow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_final_glow@2x.png"; sourceTree = "<group>"; };
@@ -4290,6 +4293,15 @@
 			name = Back;
 			sourceTree = "<group>";
 		};
+		58D1C1271AE66AF20018A3A9 /* Polling */ = {
+			isa = PBXGroup;
+			children = (
+				58D1C1281AE66B070018A3A9 /* GLPPollOperationManager.h */,
+				58D1C1291AE66B070018A3A9 /* GLPPollOperationManager.m */,
+			);
+			name = Polling;
+			sourceTree = "<group>";
+		};
 		58D301D71989C0DF003EC08B /* Users */ = {
 			isa = PBXGroup;
 			children = (
@@ -5204,6 +5216,7 @@
 		80AB894A17C26EC10053E784 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				58D1C1271AE66AF20018A3A9 /* Polling */,
 				58BBD4241A937C0F00E2EBAC /* Conversation */,
 				58D70D551A85132C0023B478 /* Profile */,
 				58E97CF71A8111CA0076F990 /* Attending */,
@@ -6489,6 +6502,7 @@
 				581AAF08181D9E9D00F091A9 /* GLPNotificationManager.m in Sources */,
 				58BAAE1B1AC41DE20008F521 /* SignUpView.m in Sources */,
 				582143D017FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m in Sources */,
+				58D1C12A1AE66B070018A3A9 /* GLPPollOperationManager.m in Sources */,
 				585909A819D42E40006ACC64 /* GLPLiveGroupPostManager.m in Sources */,
 				5810F0BC18870C740066D4CE /* GLPProfileLoader.m in Sources */,
 				583809F519DF0A3400275B4D /* ChangeGroupImageProgressView.m in Sources */,

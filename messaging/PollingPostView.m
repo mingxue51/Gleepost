@@ -10,11 +10,13 @@
 #import "GLPPoll.h"
 #import "GLPPollingOptionCell.h"
 #import "GLPPost.h"
+#import "GLPPollOperationManager.h"
 
 @interface PollingPostView () <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) GLPPoll *pollData;
+@property (assign, nonatomic) NSInteger postRemoteKey;
 
 @end
 
@@ -28,8 +30,8 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
     [self registerCell];
+    [self registerNotifications];
 }
 
 #pragma mark - Configuration
@@ -39,11 +41,57 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
     [self.tableView registerNib:[UINib nibWithNibName:@"GLPPollingOptionCell" bundle:nil] forCellReuseIdentifier:@"GLPPollingOptionCell"];
 }
 
+- (void)registerNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(responseFromServer:) name:GLPNOTIFICATION_POLL_VIEW_STATUS_CHANGED object:nil];
+}
+
+- (void)deregisterNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POLL_VIEW_STATUS_CHANGED object:nil];
+}
+
+#pragma mark - NSNotification methods
+
+- (void)responseFromServer:(NSNotification *)notification
+{
+    DDLogDebug(@"PollingPostView response notification %@", notification.userInfo);
+    
+    NSDictionary *userInfo = notification.userInfo;
+    
+    PollOperationStatus operationStatus = [userInfo[@"kind_of_operation"] integerValue];
+    NSInteger postRemoteKey = [userInfo[@"post_remote_key"] integerValue];
+    NSInteger option = [userInfo[@"option"] integerValue];
+    
+    if(operationStatus == kFailedToVote && postRemoteKey == self.postRemoteKey)
+    {
+        //TODO: Revert only when there is only a network connection issue.
+        //Revert voting.
+        [self revertVoteWithOption:option];
+    }
+}
+
+#pragma mark - Modifiers
+
+- (void)setPollData:(GLPPoll *)pollData withPostRemoteKey:(NSInteger)postRemoteKey
+{
+    self.pollData = pollData;
+    self.postRemoteKey = postRemoteKey;
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DDLogDebug(@"Table view index path row %ld", (long)indexPath.row);
+    
+    if([self.pollData didUserVote])
+    {
+        return;
+    }
+    
+    [[GLPPollOperationManager sharedInstance] voteWithPollRemoteKey:self.postRemoteKey andOption:indexPath.row];
+    [self increaseVoteAndUnlockPollCellInOption:indexPath.row];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -72,6 +120,19 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
     return cell;
 }
 
+#pragma mark - UI & Data methods
+
+- (void)revertVoteWithOption:(NSInteger)option
+{
+    [self.pollData revertVotingWithOption:self.pollData.options[option]];
+    [self.tableView reloadData];
+}
+
+- (void)increaseVoteAndUnlockPollCellInOption:(NSInteger)option
+{
+    [self.pollData userVotedWithOption:self.pollData.options[option]];
+    [self.tableView reloadData];
+}
 
 
 /*

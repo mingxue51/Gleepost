@@ -36,6 +36,9 @@
     else if([string isEqualToString:@"views"]) {
         _type = kGLPWebSocketEventTypeViews;
     }
+    else if([string isEqualToString:@"vote"]) {
+        _type = kGLPWebSocketEventTypeVote;
+    }
     else {
         
         [WebClientHelper showWebSocketReceivedBadEvent:string];
