@@ -206,6 +206,11 @@
     return [UIColor colorWithR:205 withG:66 andB:77]; //241, 91, 104
 }
 
++ (UIColor *)lightRedGleepostColour
+{
+    return [UIColor colorWithR:234.0 withG:78.0 andB:60.0];
+}
+
 + (UIColor *)blueGleepostColour
 {
     return [UIColor colorWithR:52 withG:152 andB:218];
@@ -229,6 +234,11 @@
 + (UIColor *)blackGleepostColour
 {
     return [UIColor colorWithR:54.0 withG:47.0 andB:45.0];
+}
+
++ (UIColor *)yellowGleepostColour
+{
+    return [UIColor colorWithR:251.0 withG:204.0 andB:36.0];
 }
 
 + (UIColor *)firstAutoColour

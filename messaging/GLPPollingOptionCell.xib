@@ -14,6 +14,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xd9-Q8-MwR" customClass="YLProgressBar">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accelerating income inequality" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lff-H2-8ub">
                         <rect key="frame" x="50" y="10" width="220" height="23"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
@@ -39,20 +43,26 @@
                     </imageView>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="xd9-Q8-MwR" secondAttribute="trailing" id="5pR-Nr-DgS"/>
                     <constraint firstItem="Lff-H2-8ub" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="50" id="Mkd-AD-2aJ"/>
                     <constraint firstAttribute="bottom" secondItem="Lff-H2-8ub" secondAttribute="bottom" constant="11" id="Sh8-j6-Fn7"/>
                     <constraint firstAttribute="bottom" secondItem="z1w-RM-I5q" secondAttribute="bottom" id="YTH-4N-2Hr"/>
                     <constraint firstAttribute="centerY" secondItem="mwv-e7-FYm" secondAttribute="centerY" constant="1" id="ZHm-mc-AA3"/>
                     <constraint firstAttribute="trailing" secondItem="mwv-e7-FYm" secondAttribute="trailing" constant="10" id="a5e-Ap-pQ0"/>
                     <constraint firstAttribute="trailing" secondItem="Lff-H2-8ub" secondAttribute="trailing" constant="50" id="dBf-Qw-P3c"/>
+                    <constraint firstItem="xd9-Q8-MwR" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="oTI-rs-VOd"/>
+                    <constraint firstAttribute="bottom" secondItem="xd9-Q8-MwR" secondAttribute="bottom" id="sG7-6F-xoj"/>
                     <constraint firstAttribute="trailing" secondItem="z1w-RM-I5q" secondAttribute="trailing" id="sRI-1T-8WF"/>
                     <constraint firstItem="Lff-H2-8ub" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="u5e-Ri-AF2"/>
+                    <constraint firstItem="xd9-Q8-MwR" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ybW-dw-mG6"/>
                     <constraint firstItem="z1w-RM-I5q" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="zeI-2V-yyG"/>
                 </constraints>
             </tableViewCellContentView>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
                 <outlet property="percentageLabel" destination="mwv-e7-FYm" id="rwG-Zr-UKf"/>
+                <outlet property="progressBar" destination="xd9-Q8-MwR" id="yHf-i4-MOK"/>
+                <outlet property="separatorLineImageView" destination="z1w-RM-I5q" id="Ecv-s9-3jz"/>
                 <outlet property="titleLabel" destination="Lff-H2-8ub" id="I3I-Nc-VXw"/>
             </connections>
             <point key="canvasLocation" x="102" y="203.5"/>

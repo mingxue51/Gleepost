@@ -10,7 +10,7 @@
 
 @interface GLPPollingOptionCell : UITableViewCell
 
-- (void)setTitle:(NSString *)title withPercentage:(CGFloat)percentage enable:(BOOL)enable;
+- (void)setTitle:(NSString *)title withPercentage:(CGFloat)percentage withIndexRow:(NSInteger)indexRow enable:(BOOL)enable;
 
 + (CGFloat)height;
 

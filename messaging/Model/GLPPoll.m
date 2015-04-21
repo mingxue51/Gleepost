@@ -10,10 +10,54 @@
 
 @implementation GLPPoll
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        [self initialiseObjects];
+    }
+    return self;
+}
+
+- (void)initialiseObjects
+{
+    self.sumVotes = 0;
+    self.didUserVote = NO;
+    _votes = [[NSMutableDictionary alloc] init];
+}
+
 - (void)setAndCalculateVotes:(NSMutableDictionary *)votes
 {
-    //TODO: Implement that so we can calculate the sum of votes
-    //and for each individual vote we can calculate the percentage.
+    if(votes.count == 0)
+    {
+        for(NSString *option in self.options)
+        {
+            [self.votes setObject:option forKey:@(0.0)];
+        }
+        
+        return;
+    }
+    
+    //Find the sum of votes.
+    for(NSString *optionKey in votes)
+    {
+        NSInteger vote = [[votes objectForKey:optionKey] integerValue];
+        self.sumVotes += vote;
+    }
+    
+    //Calculate the percentage for each option.
+    for(NSString *optionKey in votes)
+    {
+        NSInteger vote = [[votes objectForKey:optionKey] integerValue];
+        [self.votes setObject:@((CGFloat)vote/self.sumVotes) forKey:optionKey];
+    }
+}
+
+- (void)setUsersVote:(NSString *)usersVote
+{
+    _usersVote = usersVote;
+    self.didUserVote = (_usersVote) ? YES : NO;
 }
 
 - (NSString *)description

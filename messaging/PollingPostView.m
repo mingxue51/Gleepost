@@ -48,7 +48,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50.0;
+    return [GLPPollingOptionCell height];
 }
 
 #pragma mark - Table view data source
@@ -66,8 +66,9 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     GLPPollingOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GLPPollingOptionCell" forIndexPath:indexPath];
-    NSString *pollTitle = self.pollData.options[indexPath.row];
-    [cell setTitle:pollTitle withPercentage:0.2 enable:NO];
+    NSString *optionTitle = self.pollData.options[indexPath.row];
+    CGFloat optionPercentage = [self.pollData.votes[optionTitle] floatValue];
+    [cell setTitle:optionTitle withPercentage:optionPercentage withIndexRow:indexPath.row enable:self.pollData.didUserVote];
     return cell;
 }
 
@@ -100,9 +101,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
     UIFont *font = [UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:19.0];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
-    
-    DDLogDebug(@"get content label %f content %@", [PollingPostView getMaxTitleLabelWidth], content);
-    
+        
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){[PollingPostView getMaxTitleLabelWidth], CGFLOAT_MAX}
                                                options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
                                                context:nil];

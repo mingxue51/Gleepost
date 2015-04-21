@@ -14,8 +14,11 @@
 @property (strong, nonatomic) NSArray *options;
 
 /** <Option (NSString), Vote (CGFloat)> as key value. */
-@property (strong, nonatomic) NSMutableDictionary *votes;
+@property (strong, nonatomic, readonly) NSMutableDictionary *votes;
 @property (strong, nonatomic) NSString *usersVote;
+@property (assign, nonatomic) NSInteger sumVotes;
+@property (assign, nonatomic) BOOL didUserVote;
+
 
 - (void)setAndCalculateVotes:(NSMutableDictionary *)votes;
 
