@@ -257,6 +257,7 @@ static BOOL likePushed;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
 
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostPollCell" bundle:nil] forCellReuseIdentifier:@"PollCell"];
     
     //Register nib files in table view.
     [self.tableView registerNib:[UINib nibWithNibName:@"CommentTextCellView" bundle:nil] forCellReuseIdentifier:@"CommentTextCell"];
@@ -318,7 +319,7 @@ static BOOL likePushed;
 
 - (void)configureNavigationItems
 {
-    if(_post.eventTitle)
+    if([_post isEvent])
     {
         [self.navigationController.navigationBar setButton:kRight withImageName:@"pad_icon" withButtonSize:CGSizeMake(25.0, 25.0) withSelector:@selector(showAttendees) andTarget:self];
     }
@@ -875,7 +876,8 @@ static bool firstTime = YES;
     static NSString *CellIdentifierComment = @"CommentTextCell";
     static NSString *CellIdentifierTitle = @"ViewPostTitleCell";
     static NSString *CellIdentifierLikesCell = @"GLPLikesCell";
-    
+    static NSString *CellIdentifierPoll = @"PollCell";
+
     GLPPostCell *postViewCell;
     CommentCell *cell;
     ViewPostTitleCell *titleCell;
@@ -894,6 +896,10 @@ static bool firstTime = YES;
         {
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
 //            [postViewCell reloadMedia:self.mediaNeedsToReload];
+        }
+        else if([_post isPollPost])
+        {
+            postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierPoll forIndexPath:indexPath];
         }
         else
         {
@@ -1008,6 +1014,10 @@ static bool firstTime = YES;
         else if([self.post isVideoPost])
         {
             return [GLPPostCell getCellHeightWithContent:self.post cellType:kVideoCell isViewPost:YES] + 10.0f;
+        }
+        else if ([self.post isPollPost])
+        {
+            return [GLPPostCell getCellHeightWithContent:self.post cellType:kPollCell isViewPost:NO] + 10.0f;
         }
         else
         {

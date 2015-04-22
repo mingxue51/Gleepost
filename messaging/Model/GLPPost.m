@@ -125,7 +125,7 @@
 
 - (BOOL)isEvent
 {
-    return self.eventTitle != nil;
+    return self.eventTitle != nil && self.dateEventStarts != nil;
 }
 
 - (Action)pendingPostStatus

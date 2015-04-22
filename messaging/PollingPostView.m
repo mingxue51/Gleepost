@@ -137,7 +137,33 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
 - (void)increaseVoteAndUnlockPollCellInOption:(NSInteger)option
 {
     [self.pollData userVotedWithOption:self.pollData.options[option]];
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
+    [self refreshTableViewAfterUserVoted];
+}
+
+- (void)refreshTableViewAfterUserVoted
+{
+    DDLogDebug(@"PollingPostView : refreshTableViewAfterUserVoted");
+    
+    NSInteger optionIndex = 0;
+    for(NSString *option in self.pollData.options)
+    {
+        if([option isEqualToString:self.pollData.usersVote])
+        {
+            [self refreshCellWithRow:optionIndex withRowAnimation:UITableViewRowAnimationLeft];
+        }
+        else
+        {
+            [self refreshCellWithRow:optionIndex withRowAnimation:UITableViewRowAnimationFade];
+        }
+        
+        ++optionIndex;
+    }
+}
+
+- (void)refreshCellWithRow:(NSInteger)row withRowAnimation:(UITableViewRowAnimation)rowAnimation
+{
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:0]] withRowAnimation:rowAnimation];
 }
 
 
