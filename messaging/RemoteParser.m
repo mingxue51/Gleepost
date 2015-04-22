@@ -1156,6 +1156,21 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
 }
 
++ (NSString *)parsePollVotingErrorMessage:(NSString *)error
+{
+    if(!error)
+    {
+        return @"network issue";
+    }
+    
+    if([error rangeOfString:@"You already voted"].location != NSNotFound)
+    {
+        return @"already voted";
+    }
+    
+    return @"unspecified error occurred";
+}
+
 #pragma mark - Images
 
 +(NSString*)parseImageUrl:(NSString*)url

@@ -55,8 +55,6 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
 
 - (void)responseFromServer:(NSNotification *)notification
 {
-    DDLogDebug(@"PollingPostView response notification %@", notification.userInfo);
-    
     NSDictionary *userInfo = notification.userInfo;
     
     PollOperationStatus operationStatus = [userInfo[@"kind_of_operation"] integerValue];
@@ -65,7 +63,6 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
     
     if(operationStatus == kFailedToVote && postRemoteKey == self.postRemoteKey)
     {
-        //TODO: Revert only when there is only a network connection issue.
         //Revert voting.
         [self revertVoteWithOption:option];
     }
@@ -83,8 +80,6 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DDLogDebug(@"Table view index path row %ld", (long)indexPath.row);
-    
     if([self.pollData didUserVote])
     {
         return;

@@ -822,7 +822,7 @@ static WebClient *instance = nil;
 
 #pragma mark - Voting
 
-- (void)voteWithPostRemoteKey:(NSInteger)postRemoteKey andOption:(NSInteger)option callbackBlock:(void (^) (BOOL success))callbackBlock
+- (void)voteWithPostRemoteKey:(NSInteger)postRemoteKey andOption:(NSInteger)option callbackBlock:(void (^) (BOOL success, NSString *statusMsg))callbackBlock
 {
     NSString *path = [NSString stringWithFormat:@"posts/%ld/votes", (long)postRemoteKey];
     
@@ -832,11 +832,12 @@ static WebClient *instance = nil;
     
     [self postPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
-        callbackBlock(YES);
+        callbackBlock(YES, @"success");
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
-        callbackBlock(NO);
+        NSString *errorMessage = [RemoteParser parsePollVotingErrorMessage:error.localizedRecoverySuggestion];
+        callbackBlock(NO, errorMessage);
     }];
 }
 

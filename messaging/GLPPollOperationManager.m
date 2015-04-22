@@ -29,9 +29,11 @@ static GLPPollOperationManager *instance = nil;
 
 - (void)voteWithPollRemoteKey:(NSInteger)pollRemoteKey andOption:(NSInteger)option
 {
-    [[WebClient sharedInstance] voteWithPostRemoteKey:pollRemoteKey andOption:option callbackBlock:^(BOOL success) {
+    [[WebClient sharedInstance] voteWithPostRemoteKey:pollRemoteKey andOption:option callbackBlock:^(BOOL success, NSString *statusMsg) {
        
-        if(!success)
+        //Revert only when there is only a network connection issue.
+        
+        if(!success && [statusMsg isEqualToString:@"network issue"])
         {
             [self failedToVoteWithPollRemoteKey:pollRemoteKey withOptionSelected:option];
         }
