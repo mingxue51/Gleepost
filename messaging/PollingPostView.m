@@ -59,12 +59,23 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
     
     PollOperationStatus operationStatus = [userInfo[@"kind_of_operation"] integerValue];
     NSInteger postRemoteKey = [userInfo[@"post_remote_key"] integerValue];
-    NSInteger option = [userInfo[@"option"] integerValue];
     
-    if(operationStatus == kFailedToVote && postRemoteKey == self.postRemoteKey)
+    if(postRemoteKey != self.postRemoteKey)
     {
+        return;
+    }
+    
+    if(operationStatus == kFailedToVote)
+    {
+        NSInteger option = [userInfo[@"option"] integerValue];
+
         //Revert voting.
         [self revertVoteWithOption:option];
+    }
+    else if(operationStatus == kPollUpdated)
+    {
+        self.pollData = userInfo[@"poll_updated_data"];
+        [self.tableView reloadData];
     }
 }
 

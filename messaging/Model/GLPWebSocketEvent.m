@@ -47,7 +47,7 @@
     }
 }
 
-- (int)conversationRemoteKeyFromLocation
+- (NSInteger)webSocketMessageRemoteKeyFromLocation
 {
     NSRange range = [_location rangeOfString:@"/" options:NSBackwardsSearch];
     return [[_location substringFromIndex:range.location + 1] intValue];

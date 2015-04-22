@@ -41,11 +41,24 @@ static GLPPollOperationManager *instance = nil;
     }];
 }
 
+#pragma mark - Web socket
+
+- (void)updatePollPostWithRemoteKey:(NSInteger)postRemoteKey withData:(GLPPoll *)pollData
+{
+    [self pollUpdatedWithPollRemoteKey:postRemoteKey withNewPollData:pollData];
+}
+
+
 #pragma mark - Post NSNotification
 
 - (void)failedToVoteWithPollRemoteKey:(NSInteger)pollRemoteKey withOptionSelected:(NSInteger)option
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_POLL_VIEW_STATUS_CHANGED object:self userInfo:@{@"poll_remote_key": @(pollRemoteKey), @"kind_of_operation" : @(kFailedToVote), @"option" : @(option)}];
+}
+
+- (void)pollUpdatedWithPollRemoteKey:(NSInteger)pollRemoteKey withNewPollData:(GLPPoll *)pollData
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_POLL_VIEW_STATUS_CHANGED object:self userInfo:@{@"poll_remote_key": @(pollRemoteKey), @"kind_of_operation" : @(kPollUpdated), @"poll_updated_data" : pollData}];
 }
 
 @end

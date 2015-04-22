@@ -54,6 +54,10 @@
 + (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments forPost:(GLPPost *)post;
 + (NSString*)parseCategoriesToTags:(NSArray*)categories;
 
+// polling
+
++ (GLPPoll *)parsePollDataWithPollData:(NSDictionary *)jsonData;
+
 // attendees
 
 +(NSInteger)parseNewPopularity:(NSDictionary *)json;

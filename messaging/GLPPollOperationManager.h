@@ -8,13 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+@class GLPPoll;
+
 typedef NS_ENUM(NSUInteger, PollOperationStatus) {
-    kFailedToVote
+    kFailedToVote,
+    kPollUpdated
 };
 
 @interface GLPPollOperationManager : NSObject
 
 + (GLPPollOperationManager *)sharedInstance;
 - (void)voteWithPollRemoteKey:(NSInteger)pollRemoteKey andOption:(NSInteger)option;
+- (void)updatePollPostWithRemoteKey:(NSInteger)postRemoteKey withData:(GLPPoll *)pollData;
 
 @end

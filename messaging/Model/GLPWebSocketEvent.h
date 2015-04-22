@@ -27,6 +27,6 @@ typedef enum {
 @property (strong, nonatomic) NSString *location;
 
 - (void)typeFromString:(NSString *)string;
-- (int)conversationRemoteKeyFromLocation;
+- (NSInteger)webSocketMessageRemoteKeyFromLocation;
 
 @end

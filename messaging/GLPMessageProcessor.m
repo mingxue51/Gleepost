@@ -21,6 +21,7 @@
 #import "GLPLiveGroupConversationsManager.h"
 #import "UserManager.h"
 #import "GLPReadReceiptsManager.h"
+#import "GLPPollOperationManager.h"
 
 @interface GLPMessageProcessor()
 
@@ -83,11 +84,11 @@ static GLPMessageProcessor *instance = nil;
                 
                 if(message.belongsToGroup)
                 {
-                    [[GLPLiveGroupConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event conversationRemoteKeyFromLocation]];
+                    [[GLPLiveGroupConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event webSocketMessageRemoteKeyFromLocation]];
                 }
                 else
                 {
-                    [[GLPLiveConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event conversationRemoteKeyFromLocation]];
+                    [[GLPLiveConversationsManager sharedInstance] addRemoteMessage:message toConversationWithRemoteKey:[event webSocketMessageRemoteKeyFromLocation]];
                 }
                 
                 break;
@@ -137,8 +138,10 @@ static GLPMessageProcessor *instance = nil;
             }
             case kGLPWebSocketEventTypeVote: {
                 
-                //TODO: Update data structure, local database and UI if needed.
-                DDLogDebug(@"WebSocket event: event type vote received.");
+                //Update data structure, local database and UI if needed.
+                [[GLPPollOperationManager sharedInstance] updatePollPostWithRemoteKey:[event webSocketMessageRemoteKeyFromLocation] withData:[RemoteParser parsePollDataWithPollData:event.data]];
+                DDLogDebug(@"WebSocket event: event type vote received %@",event.data);
+                break;
             }
            
             default:
