@@ -192,8 +192,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     
     [self setPoll];
     
-//    [self formatElements];
-    
     [self updateIndicatorWithRemoteKey:post.remoteKey];
     
     [self configureGoingButton];
@@ -659,6 +657,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     if(_contentLbl)
     {
        contentAttributeText = [[NSAttributedString alloc] initWithString:_contentLbl.text attributes:@{ NSKernAttributeName : @(0.3f)}];
+    }
+    
+    if([self.post isPollPost])
+    {
+        [ShapeFormatterHelper setCornerRadiusWithView:self andValue:5];
+        [ShapeFormatterHelper setBorderToView:self withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0f];
     }
     
     [ShapeFormatterHelper setRoundedView:_indicatorImageView toDiameter:_indicatorImageView.frame.size.height];

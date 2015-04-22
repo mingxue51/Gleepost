@@ -31,7 +31,7 @@
  @param comments number of comments.
  
  */
-+(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(int)remoteKey numberOfLikes:(int)likes andNumberOfComments:(int)comments;
++(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(NSInteger)remoteKey numberOfLikes:(NSInteger)likes andNumberOfComments:(NSInteger)comments;
 
 +(int)parsePost:(GLPPost **)post imageNotification:(NSNotification*)notification withPostsArray:(NSArray*)posts;
 

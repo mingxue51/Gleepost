@@ -298,9 +298,9 @@
     return -1;
 }
 
-+(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(int)remoteKey numberOfLikes:(int)likes andNumberOfComments:(int)comments
++(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(NSInteger)remoteKey numberOfLikes:(NSInteger)likes andNumberOfComments:(NSInteger)comments
 {
-    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:remoteKey],@"RemoteKey", [NSNumber numberWithInt:comments], @"NumberOfComments",[NSNumber numberWithInt:likes], @"NumberOfLikes", nil];
+    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:remoteKey],@"RemoteKey", [NSNumber numberWithInt:comments], @"NumberOfComments",[NSNumber numberWithInteger:likes], @"NumberOfLikes", nil];
     
     
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:dataDict];

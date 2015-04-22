@@ -24,8 +24,23 @@
 
 - (void)setPollData:(GLPPoll *)pollData
 {
-    
-    self.timeLeftLabel.text = [NSString stringWithFormat:@"%@", [pollData.expirationDate substractWithDate:[NSDate date]]];
+    [self configureElementsDependingOnUsersVote:pollData];
+    [self setDataToElementsWithPollData:pollData];
+}
+
+- (void)configureElementsDependingOnUsersVote:(GLPPoll *)pollData
+{
+    self.timeLeftLabel.hidden = [pollData didUserVote];
+    self.votesLabel.hidden = ![pollData didUserVote];
+    self.smallTimeLeftLabel.hidden = ![pollData didUserVote];
+}
+
+- (void)setDataToElementsWithPollData:(GLPPoll *)pollData
+{
+    NSString *formattedDate = [pollData.expirationDate substractWithDate:[NSDate date]];
+    self.timeLeftLabel.text = formattedDate;
+    self.smallTimeLeftLabel.text = formattedDate;
+    self.votesLabel.text =  [NSString stringWithFormat:@"%ld %@", (long)pollData.sumVotes, (pollData.sumVotes == 1) ? @"VOTE" : @"VOTES"];
 }
 
 /*
