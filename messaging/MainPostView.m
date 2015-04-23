@@ -29,7 +29,6 @@
 #import "GLPThemeManager.h"
 #import "GLPViewsCountView.h"
 #import "PollingPostView.h"
-#import "PollingDataView.h"
 
 @interface MainPostView ()
 
@@ -38,8 +37,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *likesLbl;
 
 @property (weak, nonatomic) IBOutlet UILabel *pollTitleLabel;
-
-@property (weak, nonatomic) IBOutlet PollingDataView *pollingDataView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *pollTitleLabelHeight;
 
@@ -592,7 +589,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
         self.pollTitleLabel.text = [NSString stringWithFormat:@"%@", _post.eventTitle];
         self.pollTitleLabelHeight.constant = [PollingPostView pollingTitleHeightWithText:self.post.eventTitle];
         [self.pollingView setPollData:self.post.poll withPostRemoteKey:self.post.remoteKey];
-        [self.pollingDataView setPollData:self.post.poll];
         [self configurePollImageView];
     }
 }

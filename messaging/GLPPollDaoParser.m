@@ -42,7 +42,7 @@
     }
     
     poll.options = options;
-    [poll setAndCalculateVotes: votes];
+    [poll setVotes:votes];
     
     return poll;
 }

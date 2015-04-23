@@ -53,6 +53,7 @@
                                     <constraint firstItem="SZf-rs-uh6" firstAttribute="top" secondItem="bJP-NZ-ihc" secondAttribute="top" id="nJ6-5C-WlZ"/>
                                 </constraints>
                                 <connections>
+                                    <outlet property="pollingDataView" destination="niS-f2-KGA" id="J85-HY-DvR"/>
                                     <outlet property="tableView" destination="SZf-rs-uh6" id="eVd-89-o9J"/>
                                 </connections>
                             </view>
@@ -227,7 +228,6 @@
                             <outlet property="pollImageViewHeight" destination="n9U-fm-k35" id="bt9-5o-0jW"/>
                             <outlet property="pollTitleLabel" destination="Gj2-jW-k6h" id="LYM-gU-5X0"/>
                             <outlet property="pollTitleLabelHeight" destination="1aB-oE-DwW" id="QKP-hL-AQe"/>
-                            <outlet property="pollingDataView" destination="niS-f2-KGA" id="tGn-55-nIX"/>
                             <outlet property="pollingView" destination="bJP-NZ-ihc" id="uj7-er-ZBg"/>
                             <outlet property="postImageView" destination="c1T-6P-9XI" id="BdS-z3-P4f"/>
                         </connections>

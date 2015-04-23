@@ -658,7 +658,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     poll.expirationDate = [RemoteParser parseDateFromString:jsonData[@"expires-at"]];
     poll.usersVote = jsonData[@"your-vote"];
     poll.options = jsonData[@"options"];
-    [poll setAndCalculateVotes:jsonData[@"votes"]];
+    [poll setVotes:jsonData[@"votes"]];
     return poll;
 }
 

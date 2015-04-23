@@ -14,15 +14,16 @@
 @property (strong, nonatomic) NSDate *expirationDate;
 @property (strong, nonatomic) NSArray *options;
 
-/** <Option (NSString), Vote (CGFloat)> as key value. */
+/** <Option (NSString), Vote Count (NSInteger)> as key value. */
 @property (strong, nonatomic, readonly) NSMutableDictionary *votes;
 @property (strong, nonatomic) NSString *usersVote;
 @property (assign, nonatomic) NSInteger sumVotes;
 @property (assign, nonatomic) BOOL didUserVote;
 
 - (id)initWithKey:(NSInteger)key;
-- (void)setAndCalculateVotes:(NSMutableDictionary *)votes;
+- (void)setVotes:(NSMutableDictionary *)votes;
 - (void)userVotedWithOption:(NSString *)option;
 - (void)revertVotingWithOption:(NSString *)option;
+- (CGFloat)voteInPercentageWithOption:(NSString *)option;
 
 @end

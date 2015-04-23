@@ -59,7 +59,7 @@
     poll.expirationDate = [NSDate date];
     
     poll.options = @[@"Hillary Clinton", @"Hellas Cyprus"];
-    [poll setAndCalculateVotes: @{@"Hillary Clinton" : @(1)}.mutableCopy];
+    [poll setVotes: @{@"Hillary Clinton" : @(1)}.mutableCopy];
     poll.usersVote = @"Hillary Clinton";
     
     return poll;

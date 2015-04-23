@@ -38,6 +38,10 @@ static GLPPollOperationManager *instance = nil;
         {
             [self failedToVoteWithPollRemoteKey:pollRemoteKey withOptionSelected:option];
         }
+        else
+        {
+            //TODO: Update the database.
+        }
         
     }];
 }

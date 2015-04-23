@@ -38,8 +38,21 @@
     _votes = [[NSMutableDictionary alloc] init];
 }
 
-- (void)setAndCalculateVotes:(NSMutableDictionary *)votes
+#pragma mark - Accessors
+
+- (CGFloat)voteInPercentageWithOption:(NSString *)option
 {
+    NSInteger vote = [[self.votes objectForKey:option] integerValue];
+
+    return (CGFloat)vote / self.sumVotes;
+}
+
+#pragma mark - Modifiers
+
+- (void)setVotes:(NSDictionary *)votes
+{
+    _votes = votes.mutableCopy;
+    
     //Find the sum of votes.
     for(NSString *optionKey in votes)
     {
@@ -47,35 +60,31 @@
         self.sumVotes += vote;
     }
     
-    //Calculate the percentage for each option.
-    for(NSString *optionKey in votes)
-    {
-        NSInteger vote = [[votes objectForKey:optionKey] integerValue];
-        [self.votes setObject:@((CGFloat)vote/self.sumVotes) forKey:optionKey];
-    }
-    
-    
     for(NSString *option in self.options)
     {
-        if(![self.votes objectForKey:option])
+        if(![_votes objectForKey:option])
         {
-            [self.votes setObject:@(0.0) forKey:option];
+            [_votes setObject:@(0) forKey:option];
         }
     }
 }
 
 - (void)userVotedWithOption:(NSString *)option
 {
-    [self.votes setObject:@(1.0) forKey:option];
+    NSInteger vote = [[self.votes objectForKey:option] integerValue];
+    ++vote;
+    [self.votes setObject:@(vote) forKey:option];
     self.usersVote = option;
-    self.sumVotes = 0;
+    self.sumVotes += 1;
 }
 
 - (void)revertVotingWithOption:(NSString *)option
 {
-    [self.votes setObject:@(0.0) forKey:option];
+    NSInteger vote = [[self.votes objectForKey:option] integerValue];
+    --vote;
+    [self.votes setObject:@(vote) forKey:option];
     self.usersVote = nil;
-    self.sumVotes = 0;
+    self.sumVotes -= 1;
 }
 
 - (void)setUsersVote:(NSString *)usersVote

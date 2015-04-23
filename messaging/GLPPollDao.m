@@ -177,6 +177,8 @@
      entity.usersVote,
      postRemoteKey];
     
+    entity.key = [GLPPollDao findPollKeyByPostRemoteKey:postRemoteKey db:db];
+    
     NSDictionary *optionsKeysNames = [GLPPollDao findOptionsKeysNamesWithPollKey:entity.key db:db];
     
     for(NSNumber *key in optionsKeysNames)

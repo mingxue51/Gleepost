@@ -11,10 +11,13 @@
 #import "GLPPollingOptionCell.h"
 #import "GLPPost.h"
 #import "GLPPollOperationManager.h"
+#import "PollingDataView.h"
 
 @interface PollingPostView () <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet PollingDataView *pollingDataView;
+
 @property (strong, nonatomic) GLPPoll *pollData;
 @property (assign, nonatomic) NSInteger postRemoteKey;
 
@@ -85,6 +88,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
 {
     self.pollData = pollData;
     self.postRemoteKey = postRemoteKey;
+    [self.pollingDataView setPollData:pollData];
 }
 
 #pragma mark - Table view delegate
@@ -93,8 +97,14 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
 {
     if([self.pollData didUserVote])
     {
+        DDLogDebug(@"PollingPostView : user already voted %ld", indexPath.row);
+        
         return;
     }
+    
+    
+    DDLogDebug(@"PollingPostView : didn't voted yet %ld", indexPath.row);
+
     
     [[GLPPollOperationManager sharedInstance] voteWithPollRemoteKey:self.postRemoteKey andOption:indexPath.row];
     [self increaseVoteAndUnlockPollCellInOption:indexPath.row];
@@ -121,7 +131,9 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
 {
     GLPPollingOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GLPPollingOptionCell" forIndexPath:indexPath];
     NSString *optionTitle = self.pollData.options[indexPath.row];
-    CGFloat optionPercentage = [self.pollData.votes[optionTitle] floatValue];
+    CGFloat optionPercentage = [self.pollData voteInPercentageWithOption:optionTitle];
+    DDLogDebug(@"PollingPostView : percentage %f option %@", optionPercentage, optionTitle);
+    
     [cell setTitle:optionTitle withPercentage:optionPercentage withIndexRow:indexPath.row enable:self.pollData.didUserVote];
     return cell;
 }
@@ -131,13 +143,16 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
 - (void)revertVoteWithOption:(NSInteger)option
 {
     [self.pollData revertVotingWithOption:self.pollData.options[option]];
+    [self.pollingDataView setPollData:self.pollData];
     [self.tableView reloadData];
 }
 
 - (void)increaseVoteAndUnlockPollCellInOption:(NSInteger)option
 {
+    DDLogDebug(@"PollingPostView : increaseVoteAndUnlockPollCellInOption option %ld %@ %@", (long)option, self.pollData.options[option], self.pollData.options);
+    
     [self.pollData userVotedWithOption:self.pollData.options[option]];
-//    [self.tableView reloadData];
+    [self.pollingDataView setPollData:self.pollData];
     [self refreshTableViewAfterUserVoted];
 }
 

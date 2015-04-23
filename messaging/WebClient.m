@@ -830,7 +830,9 @@ static WebClient *instance = nil;
     
     [params setObject:@(option) forKey:@"option"];
     
-    [self postPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    DDLogDebug(@"WebClient : voteWithPostRemoteKey params %@", params);
+    
+    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         callbackBlock(YES, @"success");
         
