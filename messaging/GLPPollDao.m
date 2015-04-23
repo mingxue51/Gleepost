@@ -154,7 +154,7 @@
 
 + (void)updatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db
 {
-    NSAssert(entity.key != 0, @"Update entity without key");
+    NSAssert(postRemoteKey != 0, @"Update entity without post remote key");
     
     NSInteger expirationDate = [entity.expirationDate timeIntervalSince1970];
     

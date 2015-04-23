@@ -835,7 +835,7 @@
     if([entity isPollPost])
     {
         DDLogDebug(@"GLPPostDao : updatePost");
-        [GLPPollDao saveOrUpdatePoll:entity withPostRemoteKey:entity.remoteKey db:db];
+        [GLPPollDao saveOrUpdatePoll:entity.poll withPostRemoteKey:entity.remoteKey db:db];
     }
     
     //TODO: Add operation to update video as well.
