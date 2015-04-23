@@ -204,8 +204,6 @@
     BOOL s2 = [db executeUpdateWithFormat:@"delete from polls_options where pollKey=%d",
      pollToBeDeletedKey];
     
-    DDLogDebug(@"GLPPollDao : deletePollWithPostRemoteKey %d, %d", s1, s2);
-    
     return (s1 && s2);
 }
 

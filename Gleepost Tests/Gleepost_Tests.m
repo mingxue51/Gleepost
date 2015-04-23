@@ -41,11 +41,14 @@
 {
     GLPPoll *poll = [self setUpPoll];
     poll.key = 1;
+    
+    XCTAssert([GLPPollDao saveOrUpdatePoll:poll withPostRemoteKey:99999991], @"Failed to save or update poll");
+    
     [poll.votes setObject:@(232) forKey:@"Hellas Cyprus"];
     
-//    XCTAssert([GLPPollDao saveOrUpdatePoll:poll withPostRemoteKey:99999991], @"Failed to save or update poll");
+    XCTAssert([GLPPollDao saveOrUpdatePoll:poll withPostRemoteKey:99999991], @"Failed to save or update poll");
     
-//    XCTAssert([GLPPollDao findPollWithPostRemoteKey:99999991], @"Failed to find poll");
+    XCTAssert([GLPPollDao findPollWithPostRemoteKey:99999991], @"Failed to find poll");
     
     XCTAssert([GLPPollDao deletePollWithPostRemoteKey:99999991], @"Failed to delete poll");
 }

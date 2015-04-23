@@ -237,8 +237,9 @@ const float TOP_OFF_SET = -64.0;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostPollCell" bundle:nil] forCellReuseIdentifier:@"PollCell"];
 
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
 }
 
 -(void)configureTableView
@@ -741,7 +742,8 @@ const float TOP_OFF_SET = -64.0;
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellVideoIdentifier = @"VideoCell";
     static NSString *CellDescriptionGroupIdentifier = @"DescriptionSegmentGroupCell";
-    
+    static NSString *CellIdentifierPoll = @"PollCell";
+
     GLPPostCell *postViewCell;
     DescriptionSegmentGroupCell *groupDescrViewCell;
     
@@ -767,6 +769,10 @@ const float TOP_OFF_SET = -64.0;
             else if ([post isVideoPost])
             {
                 postViewCell = [tableView dequeueReusableCellWithIdentifier:CellVideoIdentifier forIndexPath:indexPath];
+            }
+            else if([post isPollPost])
+            {
+                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierPoll forIndexPath:indexPath];
             }
             else
             {
@@ -837,6 +843,10 @@ const float TOP_OFF_SET = -64.0;
             else if ([currentPost isVideoPost])
             {
                 return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
+            }
+            else if([currentPost isPollPost])
+            {
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kPollCell isViewPost:NO];
             }
             else
             {

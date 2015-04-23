@@ -150,7 +150,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
     {
         if([option isEqualToString:self.pollData.usersVote])
         {
-            [self refreshCellWithRow:optionIndex withRowAnimation:UITableViewRowAnimationLeft];
+            [self refreshCellWithRow:optionIndex withRowAnimation:UITableViewRowAnimationRight];
         }
         else
         {

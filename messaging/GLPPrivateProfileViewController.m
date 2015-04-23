@@ -201,6 +201,8 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
     
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostPollCell" bundle:nil] forCellReuseIdentifier:@"PollCell"];
+    
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
 }
 
@@ -416,7 +418,8 @@
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
     static NSString *CellIdentifierProfile = @"PrivateProfileTopViewCell";
-    
+    static NSString *CellIdentifierPoll = @"PollCell";
+
     GLPPostCell *postViewCell;
     PrivateProfileTopViewCell *profileView;
     if(indexPath.row == 0)
@@ -437,6 +440,10 @@
             else if ([post isVideoPost])
             {
                 postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
+            }
+            else if([post isPollPost])
+            {
+                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierPoll forIndexPath:indexPath];
             }
             else
             {
@@ -502,6 +509,10 @@
             else if ([currentPost isVideoPost])
             {
                 return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
+            }
+            else if([currentPost isPollPost])
+            {
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kPollCell isViewPost:NO];
             }
             else
             {
