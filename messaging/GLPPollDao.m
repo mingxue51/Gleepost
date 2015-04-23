@@ -152,6 +152,15 @@
     //TODO: Implementation pending.
 }
 
++ (void)updatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        [GLPPollDao updatePoll:entity withPostRemoteKey:postRemoteKey db:db];
+        
+    }];
+}
+
 + (void)updatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db
 {
     NSAssert(postRemoteKey != 0, @"Update entity without post remote key");

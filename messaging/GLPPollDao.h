@@ -13,9 +13,8 @@
 
 @interface GLPPollDao : NSObject
 
-+ (GLPPoll *)findPollWithPostRemoteKey:(NSInteger)postRemoteKey;
 + (GLPPoll *)findPollWithPostRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db;
-+ (void)saveOrUpdatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey;
 + (void)saveOrUpdatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db;
++ (void)updatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey;
 
 @end
