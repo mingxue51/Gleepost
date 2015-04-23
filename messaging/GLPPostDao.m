@@ -659,7 +659,10 @@
         [GLPPostDao saveVideoWithEntity:entity inDb:db];
     }
     
-    [GLPPollDao saveOrUpdatePoll:entity.poll withPostRemoteKey:entity.remoteKey db:db];
+    if([entity isPollPost])
+    {
+        [GLPPollDao saveOrUpdatePoll:entity.poll withPostRemoteKey:entity.remoteKey db:db];
+    }
     
     //Save the author.
     [GLPUserDao saveIfNotExist:entity.author db:db];
@@ -881,6 +884,8 @@
     
     [db executeUpdateWithFormat:@"delete from review_history where post_remote_key=%d",
      entity.remoteKey];
+    
+    [GLPPollDao deletePollWithPostRemoteKey:entity.remoteKey db:db];
     
     DDLogDebug(@"GLPPostDao : deletePostWithPost %@ %ld - %d", entity.content, (long)entity.group.remoteKey, b);
 }

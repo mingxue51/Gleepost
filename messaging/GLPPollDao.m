@@ -91,30 +91,32 @@
 
 #pragma mark - Save operations
 
-+ (void)saveOrUpdatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey
++ (BOOL)saveOrUpdatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey
 {
+    __block BOOL success = NO;
+    
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         
-        [GLPPollDao saveOrUpdatePoll:entity withPostRemoteKey:postRemoteKey db:db];
+        success = [GLPPollDao saveOrUpdatePoll:entity withPostRemoteKey:postRemoteKey db:db];
         
     }];
+    
+    return success;
 }
 
-+ (void)saveOrUpdatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db
++ (BOOL)saveOrUpdatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db
 {
     NSInteger pollKey = [GLPPollDao findPollKeyByPostRemoteKey:postRemoteKey db:db];
     
     if(pollKey != -1)
     {
         //Update poll data.
-        [self updatePoll:entity withPostRemoteKey:postRemoteKey db:db];
-        
-        return;
+        return [self updatePoll:entity withPostRemoteKey:postRemoteKey db:db];
     }
     
     NSInteger expirationDate = [entity.expirationDate timeIntervalSince1970];
     
-    [db executeUpdateWithFormat:@"insert into polls (postRemoteKey, expiration, users_vote) values(%d, %d, %@)",
+    BOOL success = [db executeUpdateWithFormat:@"insert into polls (postRemoteKey, expiration, users_vote) values(%d, %d, %@)",
      postRemoteKey,
      expirationDate,
      entity.usersVote];
@@ -123,6 +125,7 @@
 
     [self savePollOptionsWithPoll:entity db:db];
     
+    return success;
 }
 
 + (void)savePollOptionsWithPoll:(GLPPoll *)poll db:(FMDatabase *)db
@@ -161,9 +164,11 @@
     }];
 }
 
-+ (void)updatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db
++ (BOOL)updatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db
 {
     NSAssert(postRemoteKey != 0, @"Update entity without post remote key");
+    
+    BOOL operationSuccess = NO;
     
     NSInteger expirationDate = [entity.expirationDate timeIntervalSince1970];
     
@@ -179,10 +184,42 @@
         NSString *name = [optionsKeysNames objectForKey:key];
         NSInteger vote = [[entity.votes objectForKey:name] integerValue];
                 
-        [db executeUpdateWithFormat:@"update polls_options set votes=%d where key=%d",
+        operationSuccess = [db executeUpdateWithFormat:@"update polls_options set votes=%d where key=%d",
          vote,
          [key integerValue]];
     }
+    
+    return operationSuccess;
+}
+
+#pragma mark - Delete
+
++ (BOOL)deletePollWithPostRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db
+{
+    NSInteger pollToBeDeletedKey = [GLPPollDao findPollKeyByPostRemoteKey:postRemoteKey db:db];
+    
+    BOOL s1 = [db executeUpdateWithFormat:@"delete from polls where postRemoteKey=%d",
+     postRemoteKey];
+    
+    BOOL s2 = [db executeUpdateWithFormat:@"delete from polls_options where pollKey=%d",
+     pollToBeDeletedKey];
+    
+    DDLogDebug(@"GLPPollDao : deletePollWithPostRemoteKey %d, %d", s1, s2);
+    
+    return (s1 && s2);
+}
+
++ (BOOL)deletePollWithPostRemoteKey:(NSInteger)postRemoteKey
+{
+    __block BOOL success = NO;
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+
+        success = [GLPPollDao deletePollWithPostRemoteKey:postRemoteKey db:db];
+        
+    }];
+    
+    return success;
 }
 
 @end

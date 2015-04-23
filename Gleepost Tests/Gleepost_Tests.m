@@ -34,16 +34,20 @@
 
 - (void)testFindPollDb {
     
-    NSLog(@"testFindPollDb %@", [GLPPollDao findPollWithPostRemoteKey:2891]);
     
 }
 
-- (void)testSavePollDb
+- (void)testPollDbOperations
 {
     GLPPoll *poll = [self setUpPoll];
     poll.key = 1;
     [poll.votes setObject:@(232) forKey:@"Hellas Cyprus"];
-    [GLPPollDao saveOrUpdatePoll:poll withPostRemoteKey:2891];
+    
+//    XCTAssert([GLPPollDao saveOrUpdatePoll:poll withPostRemoteKey:99999991], @"Failed to save or update poll");
+    
+//    XCTAssert([GLPPollDao findPollWithPostRemoteKey:99999991], @"Failed to find poll");
+    
+    XCTAssert([GLPPollDao deletePollWithPostRemoteKey:99999991], @"Failed to delete poll");
 }
 
 - (GLPPoll *)setUpPoll
