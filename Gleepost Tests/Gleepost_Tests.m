@@ -13,6 +13,8 @@
 #import "GLPReviewHistory.h"
 #import "GLPPost.h"
 #import "GLPPostManager.h"
+#import "GLPPoll.h"
+#import "GLPPollDao.h"
 
 @interface Gleepost_Tests : XCTestCase
 
@@ -30,9 +32,30 @@
     [super tearDown];
 }
 
-- (void)testExample {
+- (void)testFindPollDb {
     
+    NSLog(@"testFindPollDb %@", [GLPPollDao findPollWithPostRemoteKey:2891]);
+    
+}
 
+- (void)testSavePollDb
+{
+    GLPPoll *poll = [self setUpPoll];
+    poll.key = 1;
+    [poll.votes setObject:@(232) forKey:@"Hellas Cyprus"];
+    [GLPPollDao saveOrUpdatePoll:poll withPostRemoteKey:2891];
+}
+
+- (GLPPoll *)setUpPoll
+{
+    GLPPoll *poll = [[GLPPoll alloc] init];
+    poll.expirationDate = [NSDate date];
+    
+    poll.options = @[@"Hillary Clinton", @"Hellas Cyprus"];
+    [poll setAndCalculateVotes: @{@"Hillary Clinton" : @(1)}.mutableCopy];
+    poll.usersVote = @"Hillary Clinton";
+    
+    return poll;
 }
 
 - (void)testThemeManager

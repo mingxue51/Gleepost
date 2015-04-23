@@ -9,6 +9,7 @@
 
 #import "GLPPollOperationManager.h"
 #import "WebClient.h"
+#import "GLPPollDao.h"
 
 static GLPPollOperationManager *instance = nil;
 
@@ -46,6 +47,7 @@ static GLPPollOperationManager *instance = nil;
 - (void)updatePollPostWithRemoteKey:(NSInteger)postRemoteKey withData:(GLPPoll *)pollData
 {
     [self pollUpdatedWithPollRemoteKey:postRemoteKey withNewPollData:pollData];
+//    [GLPPollDao upd]
 }
 
 

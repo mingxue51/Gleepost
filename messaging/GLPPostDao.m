@@ -17,6 +17,7 @@
 #import "GLPLocation.h"
 #import "CategoryManager.h"
 #import "GLPReviewHistoryDaoParser.h"
+#import "GLPPollDao.h"
 
 @implementation GLPPostDao
 
@@ -48,6 +49,8 @@
     
     [GLPPostDao loadVideosWithPosts:result withDb:db];
     
+    [GLPPostDao loadPollPostDataIfNeededWithPosts:result db:db];
+    
     return result;
 }
 
@@ -75,6 +78,7 @@
     
     [GLPPostDao loadVideosWithPosts:result withDb:db];
 
+    [GLPPostDao loadPollPostDataIfNeededWithPosts:result db:db];
     
     return result;
 }
@@ -101,7 +105,7 @@
     
     [GLPPostDao loadVideosWithPosts:result withDb:db];
     
-    
+    [GLPPostDao loadPollPostDataIfNeededWithPosts:result db:db];
     
     return result;
 }
@@ -143,6 +147,8 @@
     
     [GLPPostDao loadVideosWithPosts:result withDb:db];
     
+    [GLPPostDao loadPollPostDataIfNeededWithPosts:result db:db];
+    
     return result;
 }
 
@@ -174,6 +180,8 @@
     
     [GLPPostDao loadVideosWithPosts:result withDb:db];
     
+    [GLPPostDao loadPollPostDataIfNeededWithPosts:result db:db];
+    
     return result;
 }
 
@@ -195,6 +203,8 @@
     [GLPPostDao loadImagesWithPosts:result withDb:db];
     
     [GLPPostDao loadVideosWithPosts:result withDb:db];
+    
+    [GLPPostDao loadPollPostDataIfNeededWithPosts:result db:db];
     
     return result;
 }
@@ -230,6 +240,8 @@
     [GLPPostDao loadImagesWithPosts:result withDb:db];
     
     [GLPPostDao loadVideosWithPosts:result withDb:db];
+    
+    [GLPPostDao loadPollPostDataIfNeededWithPosts:result db:db];
     
     return result;
 }
@@ -286,6 +298,14 @@
     for(GLPPost *currentPost in posts)
     {
         [GLPPostDao loadImagesWithPost:currentPost db:db];
+    }
+}
+
++ (void)loadPollPostDataIfNeededWithPosts:(NSMutableArray *)posts db:(FMDatabase *)db
+{
+    for(GLPPost *currentPost in posts)
+    {
+        currentPost.poll = [GLPPollDao findPollWithPostRemoteKey:currentPost.remoteKey db:db];
     }
 }
 
@@ -376,6 +396,7 @@
         
         [GLPPostDao loadImagesWithPosts:pendingPosts withDb:db];
         [GLPPostDao loadVideosWithPosts:pendingPosts withDb:db];
+        [GLPPostDao loadPollPostDataIfNeededWithPosts:pendingPosts db:db];
     }];
     
     return pendingPosts;
@@ -638,6 +659,8 @@
         [GLPPostDao saveVideoWithEntity:entity inDb:db];
     }
     
+    [GLPPollDao saveOrUpdatePoll:entity.poll withPostRemoteKey:entity.remoteKey db:db];
+    
     //Save the author.
     [GLPUserDao saveIfNotExist:entity.author db:db];
 }
@@ -807,6 +830,12 @@
     if([entity imagePost])
     {
         [GLPPostDao updateImagesWithEntity:entity db:db];
+    }
+    
+    if([entity isPollPost])
+    {
+        DDLogDebug(@"GLPPostDao : updatePost");
+        [GLPPollDao saveOrUpdatePoll:entity withPostRemoteKey:entity.remoteKey db:db];
     }
     
     //TODO: Add operation to update video as well.

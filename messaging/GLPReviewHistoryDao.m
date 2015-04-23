@@ -32,7 +32,7 @@
 {
     NSMutableArray *reviewHistories = [[NSMutableArray alloc] init];
     
-    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from review_history where post_remote_key=%d order by date desc", postRemoteKey];
+    FMResultSet *resultSet = [db executeQueryWithFormat:@"select * from polls p INNER JOIN  where post_remote_key=%d order by date desc", postRemoteKey];
     
     while ([resultSet next])
     {

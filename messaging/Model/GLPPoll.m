@@ -20,6 +20,17 @@
     return self;
 }
 
+- (id)initWithKey:(NSInteger)key
+{
+    self = [super init];
+    if (self)
+    {
+        [self initialiseObjects];
+        self.key = key;
+    }
+    return self;
+}
+
 - (void)initialiseObjects
 {
     self.sumVotes = 0;

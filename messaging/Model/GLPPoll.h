@@ -7,8 +7,9 @@
 //
 
 #import "GLPEntity.h"
+#import "GLPEntity.h"
 
-@interface GLPPoll : NSObject
+@interface GLPPoll : GLPEntity
 
 @property (strong, nonatomic) NSDate *expirationDate;
 @property (strong, nonatomic) NSArray *options;
@@ -19,7 +20,7 @@
 @property (assign, nonatomic) NSInteger sumVotes;
 @property (assign, nonatomic) BOOL didUserVote;
 
-
+- (id)initWithKey:(NSInteger)key;
 - (void)setAndCalculateVotes:(NSMutableDictionary *)votes;
 - (void)userVotedWithOption:(NSString *)option;
 - (void)revertVotingWithOption:(NSString *)option;

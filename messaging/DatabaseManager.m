@@ -192,6 +192,20 @@ static DatabaseManager *instance = nil;
              location_address text, \
              group_remote_key integer);"];
             
+            // poll
+            [db executeUpdate:@"create table polls ( \
+             key integer primary key autoincrement, \
+             postRemoteKey integer unique, \
+             expiration integer not null, \
+             users_vote text);"];
+
+            // poll options
+            [db executeUpdate:@"create table polls_options ( \
+             key integer primary key autoincrement, \
+             pollKey integer not null, \
+             option text not null, \
+             votes integer not null);"];
+            
             // post images
             [db executeUpdate:@"create table post_images ( \
              post_remote_key integer, \
