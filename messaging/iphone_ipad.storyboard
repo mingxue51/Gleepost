@@ -2095,10 +2095,10 @@
                         <viewControllerLayoutGuide type="bottom" id="JTN-ZV-y9M"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="huw-Qa-xzO">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SoY-OL-TmF">
+                            <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SoY-OL-TmF">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="551"/>
                                 <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mH5-mu-lir">
@@ -6623,24 +6623,24 @@
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="sMz-ia-ebt"/>
-        <segue reference="BTm-uo-9d6"/>
-        <segue reference="OS5-6C-kqp"/>
-        <segue reference="X2Z-pC-dgW"/>
-        <segue reference="KgO-oz-Ivb"/>
-        <segue reference="6aM-BE-RDh"/>
-        <segue reference="C5K-bl-yN1"/>
-        <segue reference="XMX-SH-Gag"/>
-        <segue reference="Ji2-Jv-WyQ"/>
-        <segue reference="NkQ-j5-6rL"/>
-        <segue reference="J6b-Ty-4qO"/>
         <segue reference="WK7-hw-eyD"/>
+        <segue reference="C5K-bl-yN1"/>
+        <segue reference="jrG-R0-ySl"/>
+        <segue reference="KTX-M6-QrM"/>
+        <segue reference="KgO-oz-Ivb"/>
+        <segue reference="X2Z-pC-dgW"/>
+        <segue reference="TeO-Fd-Ort"/>
+        <segue reference="6aM-BE-RDh"/>
+        <segue reference="XMX-SH-Gag"/>
+        <segue reference="t02-Sh-BtB"/>
+        <segue reference="Ji2-Jv-WyQ"/>
+        <segue reference="J6b-Ty-4qO"/>
+        <segue reference="NkQ-j5-6rL"/>
         <segue reference="Th4-GT-P8f"/>
         <segue reference="b0z-f7-UHU"/>
-        <segue reference="Af2-b2-Cbn"/>
         <segue reference="NSy-Xb-H1O"/>
         <segue reference="PMB-JP-q3M"/>
-        <segue reference="t02-Sh-BtB"/>
-        <segue reference="HS8-YI-8pQ"/>
+        <segue reference="sMz-ia-ebt"/>
+        <segue reference="a3g-k4-yG4"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -57,6 +57,7 @@
 
 @property (assign, nonatomic) BOOL readyToGoToEventsView;
 @property (assign, nonatomic) BOOL readyToGoToGeneralView;
+@property (assign, nonatomic) BOOL readyToGoToPollView;
 
 @property (assign, nonatomic) BOOL viewDidAppearFirstOccurrence;
 
@@ -117,6 +118,7 @@
 {
     self.readyToGoToEventsView = NO;
     self.readyToGoToGeneralView = NO;
+    self.readyToGoToPollView = NO;
 }
 
 - (void)dealloc
@@ -267,6 +269,10 @@
     {
         [self navigateToNewPostView];
     }
+    else if (self.readyToGoToPollView)
+    {
+        [self navigateToPollView];
+    }
 }
 
 - (void)viewReadyToBeDismissed
@@ -341,6 +347,23 @@
     [self animateElementsBeforeGoingForwardDisappearing];
 }
 
+- (IBAction)selectPoll:(id)sender
+{
+    if([[PendingPostManager sharedInstance] kindOfPost] != kPollPost)
+    {
+        [[PendingPostManager sharedInstance] reset];
+    }
+    
+    [[PendingPostManager sharedInstance] setGroup:_group];
+    
+    [[PendingPostManager sharedInstance] setGroupPost:_groupPost];
+    
+    [[PendingPostManager sharedInstance] setKindOfPost:kPollPost];
+    
+    self.readyToGoToPollView = YES;
+    [self animateElementsBeforeGoingForwardDisappearing];
+}
+
 - (IBAction)dismiss:(id)sender
 {
     [self animateElementsBeforeDismissing];
@@ -361,6 +384,14 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
     IntroKindOfEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfEventViewController"];
     [self.navigationController pushViewController:cvc animated:NO];
+}
+
+- (void)navigateToPollView
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
+    NewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewControllerPoll"];
+    newPostVC.comesFromFirstView = YES;
+    [self.navigationController pushViewController:newPostVC animated:NO];
 }
 
 #pragma mark - UINavigationControllerDelegate

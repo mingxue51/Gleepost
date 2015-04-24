@@ -2003,7 +2003,7 @@ const float TOP_OFF_SET = -64.0;
 //    [self presentViewController:navigationController animated:YES completion:nil];
     
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
     IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
     newPostVC.groupPost = YES;
     newPostVC.group = _group;

@@ -149,6 +149,8 @@ static PendingPostManager *instance = nil;
 
 - (void)findKindOfPendingPost:(GLPPost *)pendingPost
 {
+    //TODO: Implement that for Poll post.
+    
     if(pendingPost.eventTitle)
     {
         _kindOfPost = kEventPost;

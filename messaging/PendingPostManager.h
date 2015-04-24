@@ -14,7 +14,8 @@
 typedef NS_ENUM(NSUInteger, KindOfPost) {
     kEventPost,
     kAnnouncementPost,
-    kGeneralPost
+    kGeneralPost,
+    kPollPost
 };
 
 @class GLPCategory;

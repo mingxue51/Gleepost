@@ -99,7 +99,6 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
     if([self.pollData didUserVote])
     {
         DDLogDebug(@"PollingPostView : user already voted %ld", (long)indexPath.row);
-        
         return;
     }
     
