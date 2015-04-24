@@ -66,6 +66,8 @@
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
 @property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
+@property (weak, nonatomic) IBOutlet UITapGestureRecognizer *tapGesture;
+
 @end
 
 static BOOL likePushed;
@@ -93,6 +95,7 @@ static BOOL likePushed;
     [self configureNavigationItems];
     
     self.tableView.delegate = self;
+    
     
    // [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     
@@ -237,6 +240,7 @@ static BOOL likePushed;
     _selectedLocation = nil;
     
     self.showUsersLikedThePost = NO;
+    self.tapGesture.enabled = NO;
     
     if(_post.content)
     {
@@ -1256,6 +1260,8 @@ static bool firstTime = YES;
 
 - (void)growingTextViewDidBeginEditing:(HPGrowingTextView *)growingTextView
 {
+    self.tapGesture.enabled = YES;
+
     if(self.comments.count == 0)
     {
         CGPoint origin = growingTextView.frame.origin;
@@ -1334,8 +1340,10 @@ static bool firstTime = YES;
 
 - (IBAction)tableViewClicked:(id)sender
 {
-    NSLog(@"Table View Touched");
+    DDLogDebug(@"View Touched");
     [self hideKeyboardFromTextViewIfNeeded];
+    
+    self.tapGesture.enabled = NO;
 }
 
 

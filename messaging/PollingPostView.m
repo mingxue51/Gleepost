@@ -89,6 +89,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
     self.pollData = pollData;
     self.postRemoteKey = postRemoteKey;
     [self.pollingDataView setPollData:pollData];
+    [self.tableView setUserInteractionEnabled:YES];
 }
 
 #pragma mark - Table view delegate
@@ -97,13 +98,12 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
 {
     if([self.pollData didUserVote])
     {
-        DDLogDebug(@"PollingPostView : user already voted %ld", indexPath.row);
+        DDLogDebug(@"PollingPostView : user already voted %ld", (long)indexPath.row);
         
         return;
     }
     
-    
-    DDLogDebug(@"PollingPostView : didn't voted yet %ld", indexPath.row);
+    DDLogDebug(@"PollingPostView : didn't voted yet %ld", (long)indexPath.row);
 
     
     [[GLPPollOperationManager sharedInstance] voteWithPollRemoteKey:self.postRemoteKey andOption:indexPath.row];
@@ -153,27 +153,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
     
     [self.pollData userVotedWithOption:self.pollData.options[option]];
     [self.pollingDataView setPollData:self.pollData];
-    [self refreshTableViewAfterUserVoted];
-}
-
-- (void)refreshTableViewAfterUserVoted
-{
-    DDLogDebug(@"PollingPostView : refreshTableViewAfterUserVoted");
-    
-    NSInteger optionIndex = 0;
-    for(NSString *option in self.pollData.options)
-    {
-        if([option isEqualToString:self.pollData.usersVote])
-        {
-            [self refreshCellWithRow:optionIndex withRowAnimation:UITableViewRowAnimationRight];
-        }
-        else
-        {
-            [self refreshCellWithRow:optionIndex withRowAnimation:UITableViewRowAnimationFade];
-        }
-        
-        ++optionIndex;
-    }
+    [self.tableView reloadData];
 }
 
 - (void)refreshCellWithRow:(NSInteger)row withRowAnimation:(UITableViewRowAnimation)rowAnimation

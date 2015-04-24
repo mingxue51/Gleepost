@@ -37,9 +37,9 @@
 {
     self.titleLabel.text = title;
     self.percentageLabel.text = [NSString stringWithFormat:@"%ld%@", (long)(percentage * 100), @"%"];
-    self.progressBar.progress = percentage;
     [self enabledMode:enable];
     [self configureProgressBarWithIndexRow:indexRow];
+    [self.progressBar setProgress:percentage animated:YES];
 }
 
 - (void)enabledMode:(BOOL)enable
