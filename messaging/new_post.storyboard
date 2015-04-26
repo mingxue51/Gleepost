@@ -657,7 +657,7 @@
                         <viewControllerLayoutGuide type="top" id="l9h-I9-rlo"/>
                         <viewControllerLayoutGuide type="bottom" id="rBM-cm-9HB"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8lQ-yL-OPd">
+                    <view key="view" tag="1" contentMode="scaleToFill" id="8lQ-yL-OPd">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -665,12 +665,17 @@
                                 <rect key="frame" x="14" y="78" width="572" height="300"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V5T-ST-yZz" userLabel="TopView">
-                                        <rect key="frame" x="5" y="5" width="562" height="120"/>
+                                        <rect key="frame" x="5" y="5" width="562" height="105"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6I8-cp-LuU" customClass="UIPlaceHolderTextView">
-                                                <rect key="frame" x="0.0" y="0.0" width="490" height="120"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="499" height="105"/>
                                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                <string key="text">This is the question that I will be asking in my poll. How much wood would a wood-chuck chuck, if a wood-chuck could chuckwood? That is the ultimate question.</string>
+                                                <string key="text">This is the question that I will 
+be asking in my poll. How 
+much wood would a wood-
+chuck chuck, if a wood-chuck 
+could chuckwood? That is the 
+ultimate question.</string>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 <userDefinedRuntimeAttributes>
@@ -678,7 +683,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </textView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="22L-xn-Cqt">
-                                                <rect key="frame" x="490" y="0.0" width="72" height="72"/>
+                                                <rect key="frame" x="499" y="0.0" width="63" height="63"/>
                                                 <color key="backgroundColor" red="0.28627450980000002" green="0.85882352939999995" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="22L-xn-Cqt" secondAttribute="height" multiplier="1:1" id="TgW-wG-NC9"/>
@@ -688,7 +693,7 @@
                                                 </state>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(optional)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sp9-CT-tdN">
-                                                <rect key="frame" x="490" y="77" width="72" height="18"/>
+                                                <rect key="frame" x="499" y="68" width="63" height="18"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                 <color key="textColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -709,59 +714,59 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOT-YY-XaB" userLabel="BottomView">
-                                        <rect key="frame" x="5" y="140" width="562" height="156"/>
+                                        <rect key="frame" x="5" y="125" width="562" height="165"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Answer 1" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="C0D-MI-h5p">
-                                                <rect key="frame" x="0.0" y="0.0" width="562" height="37"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="562" height="41"/>
                                                 <color key="backgroundColor" red="0.3411764706" green="0.85098039219999999" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="textColor" red="0.20392156859999999" green="0.59607843140000005" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6ej-AW-X4j">
-                                                <rect key="frame" x="0.0" y="37" width="562" height="1"/>
+                                                <rect key="frame" x="0.0" y="41" width="562" height="1"/>
                                                 <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="pgI-5U-fJP"/>
                                                 </constraints>
                                             </imageView>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Answer 2" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EUe-O4-SwS">
-                                                <rect key="frame" x="0.0" y="38" width="562" height="37"/>
+                                                <rect key="frame" x="0.0" y="42" width="562" height="41"/>
                                                 <color key="backgroundColor" red="0.3411764706" green="0.85098039219999999" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="textColor" red="0.96862745100000003" green="0.85098039219999999" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5MK-yn-poy">
-                                                <rect key="frame" x="0.0" y="75" width="562" height="1"/>
+                                                <rect key="frame" x="0.0" y="83" width="562" height="1"/>
                                                 <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="OXI-cX-0s0"/>
                                                 </constraints>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fvj-by-jLq">
-                                                <rect key="frame" x="0.0" y="113" width="562" height="1"/>
+                                                <rect key="frame" x="0.0" y="125" width="562" height="1"/>
                                                 <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="2og-BL-SXP"/>
                                                 </constraints>
                                             </imageView>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Answer 3" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0ZV-kh-lgE">
-                                                <rect key="frame" x="0.0" y="76" width="562" height="37"/>
+                                                <rect key="frame" x="0.0" y="84" width="562" height="41"/>
                                                 <color key="backgroundColor" red="0.3411764706" green="0.85098039219999999" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="textColor" red="0.96862745100000003" green="0.85098039219999999" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="par-os-fhC">
-                                                <rect key="frame" x="0.0" y="151" width="562" height="1"/>
+                                                <rect key="frame" x="0.0" y="167" width="562" height="1"/>
                                                 <color key="backgroundColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="Tqt-ks-Mhk"/>
                                                 </constraints>
                                             </imageView>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Answer 4" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rVL-HK-azr">
-                                                <rect key="frame" x="0.0" y="114" width="562" height="37"/>
+                                                <rect key="frame" x="0.0" y="126" width="562" height="41"/>
                                                 <color key="backgroundColor" red="0.3411764706" green="0.85098039219999999" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <color key="textColor" red="0.20392156859999999" green="0.59607843140000005" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -795,7 +800,7 @@
                                             <constraint firstItem="Fvj-by-jLq" firstAttribute="leading" secondItem="IOT-YY-XaB" secondAttribute="leading" id="XME-fI-7ev"/>
                                             <constraint firstAttribute="trailing" secondItem="par-os-fhC" secondAttribute="trailing" id="clu-TR-bpJ"/>
                                             <constraint firstItem="rVL-HK-azr" firstAttribute="top" secondItem="Fvj-by-jLq" secondAttribute="bottom" id="fVw-bq-eiq"/>
-                                            <constraint firstItem="C0D-MI-h5p" firstAttribute="height" secondItem="IOT-YY-XaB" secondAttribute="height" multiplier="0.24" id="gTj-vm-Npk"/>
+                                            <constraint firstItem="C0D-MI-h5p" firstAttribute="height" secondItem="IOT-YY-XaB" secondAttribute="height" multiplier="0.25" id="gTj-vm-Npk"/>
                                             <constraint firstAttribute="trailing" secondItem="rVL-HK-azr" secondAttribute="trailing" id="gzE-kY-xCS"/>
                                             <constraint firstAttribute="trailing" secondItem="5MK-yn-poy" secondAttribute="trailing" id="mls-ST-pG5"/>
                                             <constraint firstAttribute="trailing" secondItem="0ZV-kh-lgE" secondAttribute="trailing" id="pcc-jX-4OT"/>
@@ -808,13 +813,13 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="V5T-ST-yZz" firstAttribute="leading" secondItem="RIf-n1-K8e" secondAttribute="leading" constant="5" id="1aL-Va-c2x"/>
-                                    <constraint firstItem="V5T-ST-yZz" firstAttribute="height" secondItem="RIf-n1-K8e" secondAttribute="height" multiplier="0.4" id="53g-bT-rim"/>
+                                    <constraint firstItem="V5T-ST-yZz" firstAttribute="height" secondItem="RIf-n1-K8e" secondAttribute="height" multiplier="0.35" id="53g-bT-rim"/>
                                     <constraint firstAttribute="trailing" secondItem="IOT-YY-XaB" secondAttribute="trailing" constant="5" id="EKA-Ya-1EE"/>
                                     <constraint firstItem="V5T-ST-yZz" firstAttribute="top" secondItem="RIf-n1-K8e" secondAttribute="top" constant="5" id="eB7-7e-Yow"/>
                                     <constraint firstItem="IOT-YY-XaB" firstAttribute="leading" secondItem="RIf-n1-K8e" secondAttribute="leading" constant="5" id="eP2-Aa-xDT"/>
                                     <constraint firstItem="IOT-YY-XaB" firstAttribute="top" secondItem="V5T-ST-yZz" secondAttribute="bottom" constant="15" id="k2V-1w-zI9"/>
                                     <constraint firstAttribute="height" constant="300" id="ltA-wv-www"/>
-                                    <constraint firstItem="IOT-YY-XaB" firstAttribute="height" secondItem="RIf-n1-K8e" secondAttribute="height" multiplier="0.52" id="oSX-Kx-81q"/>
+                                    <constraint firstItem="IOT-YY-XaB" firstAttribute="height" secondItem="RIf-n1-K8e" secondAttribute="height" multiplier="0.55" id="oSX-Kx-81q"/>
                                     <constraint firstAttribute="trailing" secondItem="V5T-ST-yZz" secondAttribute="trailing" constant="5" id="qee-4H-VtQ"/>
                                 </constraints>
                             </view>
@@ -827,7 +832,8 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="textViewHeight" destination="ltA-wv-www" id="EFK-UB-lNX"/>
+                        <outlet property="mainView" destination="RIf-n1-K8e" id="NH9-Ht-tUn"/>
+                        <outlet property="mainViewHeight" destination="ltA-wv-www" id="B6S-p3-Itx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Bv-9z-uAv" userLabel="First Responder" sceneMemberID="firstResponder"/>

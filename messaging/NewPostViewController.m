@@ -49,7 +49,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleCharactersLeftLbl;
 @property (weak, nonatomic) IBOutlet UIView *textFieldView;
 @property (weak, nonatomic) IBOutlet UIImageView *separatorLineImageView;
+@property (weak, nonatomic) IBOutlet UIView *mainView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceContentViewFromTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewHeight;
 
@@ -79,6 +81,7 @@
 
 @property (assign, nonatomic) BOOL inCategorySelection;
 @property (assign, nonatomic) BOOL inSelectLocation;
+@property (assign, nonatomic) BOOL isNewPoll;
 @property (assign, nonatomic) NSInteger descriptionRemainingNoOfCharacters;
 @property (assign, nonatomic) NSInteger titleRemainingNoOfCharacters;
 
@@ -228,6 +231,9 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     _selectedLocation = nil;
     _inSelectLocation = NO;
     _postButttonClicked = NO;
+    
+    //We added in the poll VC view tag 1 in order to distinguish the VC.
+    _isNewPoll = (self.view.tag == 1) ? YES : NO;
 }
 
 - (void)configureCustomBackButton
@@ -983,14 +989,27 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     }
     
     [_textFieldView layoutIfNeeded];
+    [_mainView layoutIfNeeded];
 
-    float newHeightOfTextFieldView = [self findNewHeightForTextFieldViewWithKeyboardFrame:keyboardBounds];
+    float newHeightOfTextFieldView = 0;
+    
+    if(self.isNewPoll)
+    {
+        newHeightOfTextFieldView = [self findNewHeithForPollViewWithKeyboardFrame:keyboardBounds];
+    }
+    else
+    {
+         newHeightOfTextFieldView = [self findNewHeightForTextFieldViewWithKeyboardFrame:keyboardBounds];
+    }
     
     DDLogDebug(@"keybardwillshow : new height %f", newHeightOfTextFieldView);
     
     [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
 
         [_textViewHeight setConstant:newHeightOfTextFieldView];
+        [_mainViewHeight setConstant:newHeightOfTextFieldView];
+        
+        [_mainView layoutIfNeeded];
         [_textFieldView layoutIfNeeded];
         
     } completion:^(BOOL finished) {
@@ -1024,6 +1043,17 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     DDLogDebug(@"Keboard Y %f - %f", keyboardY, _textFieldView.frame.origin.y);
     
     return keyboardY - _textFieldView.frame.origin.y - distanceFromKeyboard;
+}
+
+- (CGFloat)findNewHeithForPollViewWithKeyboardFrame:(CGRect)keyboardFrame
+{
+    CGFloat keyboardY = keyboardFrame.origin.y;
+    
+    CGFloat distanceFromKeyboard = 10.0;
+    
+    DDLogDebug(@"Keboard Y %f - %f", keyboardY, _textFieldView.frame.origin.y);
+    
+    return keyboardY - self.mainView.frame.origin.y - distanceFromKeyboard;
 }
 
 //- (float)findNewYOfSelectImageViewWithKeyboardFrame:(CGRect)keyboardFrame

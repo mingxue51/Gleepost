@@ -596,7 +596,7 @@
     
     int eventDate = [entity.dateEventStarts timeIntervalSince1970];
     
-    int groupRemoteKey = entity.group ? entity.group.remoteKey : 0;
+    NSInteger groupRemoteKey = entity.group ? entity.group.remoteKey : 0;
     
     BOOL postSaved;
     

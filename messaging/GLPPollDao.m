@@ -108,8 +108,14 @@
 {
     NSInteger pollKey = [GLPPollDao findPollKeyByPostRemoteKey:postRemoteKey db:db];
     
+    
     if(pollKey != -1)
     {
+        GLPPoll *oldPoll = [GLPPollDao findPollWithPostRemoteKey:postRemoteKey db:db];
+
+        DDLogDebug(@"GLPPollDao : old poll %@", oldPoll);
+        DDLogDebug(@"GLPPollDao : new poll %@", entity);
+
         //Update poll data.
         return [self updatePoll:entity withPostRemoteKey:postRemoteKey db:db];
     }
