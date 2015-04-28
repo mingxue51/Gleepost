@@ -292,7 +292,7 @@
     [[PendingPostManager sharedInstance] setGroup:_group];
     [[PendingPostManager sharedInstance] setGroupPost:_groupPost];
     [[PendingPostManager sharedInstance] setKindOfPost:kEventPost];
-    
+
     [self animateElementsBeforeGoingForwardDisappearing];
     
     self.readyToGoToEventsView = YES;
@@ -359,6 +359,7 @@
     [[PendingPostManager sharedInstance] setGroupPost:_groupPost];
     
     [[PendingPostManager sharedInstance] setKindOfPost:kPollPost];
+    
     
     self.readyToGoToPollView = YES;
     [self animateElementsBeforeGoingForwardDisappearing];

@@ -22,7 +22,7 @@
     [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:0.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kLocationElement)];
     [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:0.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kTextElement)];
     [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:0.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kTitleElement)];
-
+    [dictionary setObject:[[GLPConstraintAnimationData alloc] initWithFinalValue:0.0 withDelay:0.1 withBounceLevel:4.0 withSpeedLevel:20.0] forKey:@(kMainElement)];
 
     
     self.animationData = dictionary;

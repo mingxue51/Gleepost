@@ -139,6 +139,11 @@ typedef NS_ENUM(NSUInteger, GLPImageStatus) {
     return post;
 }
 
+- (void)uploadPollPostWithPost:(GLPPost *)post
+{
+    post = [self uploadPostWithPost:post];
+}
+
 -(GLPPost *)uploadPost:(NSString *)content withCategories:(NSArray *)categories eventTime:(NSDate *)eventDate title:(NSString *)title group:(GLPGroup *)group andLocation:(GLPLocation *)location
 {
     //Add information to a new post.

@@ -1857,7 +1857,7 @@ const float TOP_OFFSET = 180.0f;
     
     GLPPost *post = [self currentPostWithIndexPath:indexPath];
     
-    if([post imagePost])
+    if([post imagePost] && ![post isPollPost])
     {
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
         
@@ -2014,9 +2014,8 @@ const float TOP_OFFSET = 180.0f;
     
     GLPPost *currentPost = [self currentPostWithIndexPath:indexPath];
     
-    if([currentPost imagePost])
+    if([currentPost imagePost] && ![currentPost isPollPost])
     {
-
         return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
     }
     else if ([currentPost isVideoPost])

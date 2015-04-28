@@ -18,6 +18,9 @@
 + (void)updatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey;
 + (BOOL)deletePollWithPostRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db;
 
++ (void)savePollBeforeSent:(GLPPoll *)entity withPostKey:(NSInteger)postKey db:(FMDatabase *)db;
++ (void)updatePollAfterSent:(GLPPoll *)poll withPostKey:(NSInteger)postKey withRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db;
+
 + (GLPPoll *)findPollWithPostRemoteKey:(NSInteger)postRemoteKey;
 + (BOOL)saveOrUpdatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey;
 + (BOOL)deletePollWithPostRemoteKey:(NSInteger)postRemoteKey;

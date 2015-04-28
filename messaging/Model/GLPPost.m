@@ -22,7 +22,7 @@
 @synthesize date;
 @synthesize author;
 @synthesize imagesUrls;
-@synthesize sendStatus=_sendStatus; 
+@synthesize sendStatus=_sendStatus;
 //@synthesize liked=_liked;
 
 - (id)init
@@ -253,7 +253,7 @@
 {
 //    return [NSString stringWithFormat:@"Post id: %ld, Content: %@ Sending status: %d Date: %@, Group: %@, SendStatus %d, Event date: %@", (long)self.remoteKey, self.content, self.sendStatus, self.date, self.group, self.sendStatus, self.dateEventStarts];
     
-    return [NSString stringWithFormat:@"Post content %@, remote key %d Views count %d", self.content, self.remoteKey, self.viewsCount];
+    return [NSString stringWithFormat:@"Post content %@, Post title %@ remote key %ld", self.content, self.eventTitle, (long)self.remoteKey];
 }
 
 @end

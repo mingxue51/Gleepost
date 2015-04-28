@@ -53,6 +53,7 @@
 + (GLPComment *)parseCommentFromJson:(NSDictionary *)json forPost:(GLPPost *)post;
 + (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments forPost:(GLPPost *)post;
 + (NSString*)parseCategoriesToTags:(NSArray*)categories;
++ (NSString *)generatePollOptionsInCDFormatWithOptions:(NSArray *)options;
 
 // polling
 

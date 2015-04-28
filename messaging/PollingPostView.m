@@ -89,6 +89,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
     self.pollData = pollData;
     self.postRemoteKey = postRemoteKey;
     [self.pollingDataView setPollData:pollData];
+    [self.tableView reloadData];
     [self.tableView setUserInteractionEnabled:YES];
 }
 
@@ -131,7 +132,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
     GLPPollingOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GLPPollingOptionCell" forIndexPath:indexPath];
     NSString *optionTitle = self.pollData.options[indexPath.row];
     CGFloat optionPercentage = [self.pollData voteInPercentageWithOption:optionTitle];
-    DDLogDebug(@"PollingPostView : percentage %f option %@", optionPercentage, optionTitle);
+    DDLogDebug(@"PollingPostView : percentage %f option %@ user did vote %d", optionPercentage, optionTitle, self.pollData.didUserVote);
     
     [cell setTitle:optionTitle withPercentage:optionPercentage withIndexRow:indexPath.row enable:self.pollData.didUserVote];
     return cell;

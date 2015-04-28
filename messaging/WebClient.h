@@ -150,7 +150,7 @@ extern NSString * const kWebserviceBaseUrl;
 -(void)uploadImageUrl:(NSString *)imageUrl withGroupRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL success))callbackBlock;
 
 
--(void)postLike:(BOOL)like forPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock;
+-(void)postLike:(BOOL)like forPostRemoteKey:(NSInteger)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock;
 
 // pending posts
 

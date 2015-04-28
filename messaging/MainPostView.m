@@ -595,7 +595,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 
 - (void)configurePollImageView
 {
-    if(![self.post imagePost])
+    if([self.post imagePost])
+    {
+        self.pollImageViewHeight.constant = 130.0;
+        self.activityIndicator.hidden = YES;
+    }
+    else
     {
         self.pollImageViewHeight.constant = 0.0;
         self.activityIndicator.hidden = YES;
@@ -1057,17 +1062,17 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 
 #pragma mark - Client
 
--(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey
+-(void)postLike:(BOOL)like withPostRemoteKey:(NSInteger)postRemoteKey
 {
     [[WebClient sharedInstance] postLike:like forPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success) {
         
         if(success)
         {
-            DDLogInfo(@"Like %d for post %d succeed.",like, postRemoteKey);
+            DDLogInfo(@"Like %d for post %ld succeed.",like, (long)postRemoteKey);
         }
         else
         {
-            DDLogInfo(@"Like %d for post %d not succeed.",like, postRemoteKey);
+            DDLogInfo(@"Like %d for post %ld not succeed.",like, (long)postRemoteKey);
         }
         
         

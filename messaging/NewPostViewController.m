@@ -50,11 +50,17 @@
 @property (weak, nonatomic) IBOutlet UIView *textFieldView;
 @property (weak, nonatomic) IBOutlet UIImageView *separatorLineImageView;
 @property (weak, nonatomic) IBOutlet UIView *mainView;
+//@property (weak, nonatomic) IBOutlet UIPlaceHolderTextView *pollQuestionTextView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceContentViewFromTop;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewHeight;
 
+
+//Poll view elements.
+@property (weak, nonatomic) IBOutlet UIImageView *addImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *selectedImageView;
+@property (strong, nonatomic) IBOutletCollection(UITextField) NSArray *answersTextFields;
 
 /** Should be 2 categories (event and user's selected. */
 //@property (strong, nonatomic) NSArray *eventCategories;
@@ -96,6 +102,7 @@
 //Constraints.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *videoButtonXAligment;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewXAligment;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *mainViewXAligment;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *optionalExtrasLabelXAligment;
 
 @end
@@ -103,6 +110,7 @@
 @implementation NewPostViewController
 
 const NSInteger MAX_DESCRIPTION_CHARACTERS = 1001;
+const NSInteger MAX_QUESTION_CHARACTERS = 300;
 const NSInteger MAX_TITLE_CHARACTERS = 60;
 const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
@@ -115,6 +123,10 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     self.tabBarController.tabBar.hidden = NO;
 
     [self configureObjects];
+    
+    [self configureGestures];
+    
+    [self configurePollElements];
     
     [self preparePositionsBeforeIntro:YES];
     
@@ -236,6 +248,25 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     _isNewPoll = (self.view.tag == 1) ? YES : NO;
 }
 
+- (void)configureGestures
+{
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(addImageOrImage:)];
+    [self.addImageView addGestureRecognizer:tapGesture];
+}
+
+- (void)configurePollElements
+{
+    if(!self.isNewPoll)
+    {
+        return;
+    }
+    
+    for(UITextField *textField in self.answersTextFields)
+    {
+        textField.delegate = self;
+    }
+}
+
 - (void)configureCustomBackButton
 {
     // change the back button to cancel and add an event handler
@@ -259,14 +290,17 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)becomeFirstResponderForTextField
 {
-    if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
-    {
-        [_contentTextView becomeFirstResponder];
+    switch ([[PendingPostManager sharedInstance] kindOfPost]) {
+        case kGeneralPost:
+        case kPollPost:
+            [_contentTextView becomeFirstResponder];
+            break;
+            
+        default:
+            [self.titleTextField becomeFirstResponder];
+            break;
     }
-    else
-    {
-        [self.titleTextField becomeFirstResponder];
-    }
+    
 }
 
 -(void)configureTextViews
@@ -394,31 +428,52 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)preparePositionsBeforeIntro:(BOOL)beforeIntro
 {
-    [self.animationHelper setInitialValueInConstraint:self.textViewXAligment forView:self.textFieldView comingFromRight:beforeIntro];
-    [self.animationHelper setInitialValueInConstraint:self.videoButtonXAligment forView:self.textFieldView comingFromRight:beforeIntro];
-    [self.animationHelper setInitialValueInConstraint:self.optionalExtrasLabelXAligment forView:self.optionalExtras comingFromRight:beforeIntro];
-    [self.backgroundImageView setAlpha:0.0];
+    if(self.isNewPoll)
+    {
+        [self.animationHelper setInitialValueInConstraint:self.mainViewXAligment forView:self.mainView comingFromRight:beforeIntro];
+    }
+    else
+    {
+        [self.animationHelper setInitialValueInConstraint:self.textViewXAligment forView:self.textFieldView comingFromRight:beforeIntro];
+        [self.animationHelper setInitialValueInConstraint:self.videoButtonXAligment forView:self.textFieldView comingFromRight:beforeIntro];
+        [self.animationHelper setInitialValueInConstraint:self.optionalExtrasLabelXAligment forView:self.optionalExtras comingFromRight:beforeIntro];
+        [self.backgroundImageView setAlpha:0.0];
+    }
 }
 
 #pragma mark - Animations
 
 - (void)animateElementsAfterViewDidLoad
 {
-    [self.animationHelper viewDidLoadAnimationWithConstraint:self.textViewXAligment withKindOfElement:kTextElement];
-    [self.animationHelper viewDidLoadAnimationWithConstraint:self.videoButtonXAligment withKindOfElement:kVideoElement];
-    [self.animationHelper viewDidLoadAnimationWithConstraint:self.optionalExtrasLabelXAligment withKindOfElement:kTitleElement];
-    [self.animationHelper fadeView:self.backgroundImageView withAppearance:YES];
+    if(self.isNewPoll)
+    {
+        [self.animationHelper viewDidLoadAnimationWithConstraint:self.mainViewXAligment withKindOfElement:kMainElement];
+    }
+    else
+    {
+        [self.animationHelper viewDidLoadAnimationWithConstraint:self.textViewXAligment withKindOfElement:kTextElement];
+        [self.animationHelper viewDidLoadAnimationWithConstraint:self.videoButtonXAligment withKindOfElement:kVideoElement];
+        [self.animationHelper viewDidLoadAnimationWithConstraint:self.optionalExtrasLabelXAligment withKindOfElement:kTitleElement];
+        [self.animationHelper fadeView:self.backgroundImageView withAppearance:YES];
+    }
 }
 
 - (void)animateElementsBeforeGoingBack
 {
-    [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.textFieldView andKindOfElement:kTextElement];
-    [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.addImageButton andKindOfElement:kImageElement];
-    [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.pendingImageView andKindOfElement:kImageElement];
-    [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.addVideoButton andKindOfElement:kVideoElement];
-    [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.addLocationButton andKindOfElement:kLocationElement];
-    [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.optionalExtras andKindOfElement:kTitleElement];
-    [self.animationHelper fadeView:self.backgroundImageView withAppearance:NO];
+    if(self.isNewPoll)
+    {
+        [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.mainView andKindOfElement:kMainElement];
+    }
+    else
+    {
+        [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.textFieldView andKindOfElement:kTextElement];
+        [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.addImageButton andKindOfElement:kImageElement];
+        [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.pendingImageView andKindOfElement:kImageElement];
+        [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.addVideoButton andKindOfElement:kVideoElement];
+        [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.addLocationButton andKindOfElement:kLocationElement];
+        [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.optionalExtras andKindOfElement:kTitleElement];
+        [self.animationHelper fadeView:self.backgroundImageView withAppearance:NO];
+    }
 }
 
 #pragma mark - Selectors
@@ -583,11 +638,20 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     
     NSArray *eventCategories = [[PendingPostManager sharedInstance] categories];
     
+    DDLogDebug(@"NewPostViewController : createregularpost eventCategories %@", eventCategories);
+    
     if([[PendingPostManager sharedInstance] kindOfPost] == kGeneralPost)
     {
         FLog(@"GENERAL POST IS GOING TO BE CREATED");
         
         inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:nil eventTime:nil title:nil andLocation:_selectedLocation];
+    }
+    else if([[PendingPostManager sharedInstance] kindOfPost] == kPollPost)
+    {
+//        inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:nil title:nil andLocation:nil];
+        inPost = [self generatePollPostWithCurrentData];
+        [_postUploader uploadPollPostWithPost:inPost];
+
     }
     else
     {
@@ -610,6 +674,19 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     }
     
     return inPost;
+}
+
+- (GLPPost *)generatePollPostWithCurrentData
+{
+    GLPPost *currentPost = [[GLPPost alloc] init];
+    currentPost.eventTitle = self.contentTextView.text;
+    currentPost.categories = [[PendingPostManager sharedInstance] categories];
+    currentPost.poll = [[GLPPoll alloc] init];
+    currentPost.poll.options = [self generateOptionsFromAnswersFields];
+    currentPost.content = self.contentTextView.text;
+    currentPost.author = [SessionManager sharedInstance].user;
+    
+    return currentPost;
 }
 
 /**
@@ -723,6 +800,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     {
         [self.addImageButton setImage:image forState:UIControlStateNormal];
     }
+    
+    self.selectedImageView.image = image;
     
     self.imgToUpload = image;
     
@@ -853,6 +932,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)textFieldDidChange:(UITextField *)textField
 {
+    DDLogDebug(@"NewPostViewController : textFieldDidChange %ld", (long)textField.tag);
+    
     [[PendingPostManager sharedInstance] setEventTitle:textField.text];
 
     [self setNumberOfCharactersToTitle:textField.text.length];
@@ -861,11 +942,15 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    DDLogDebug(@"NewPostViewController : textFieldDidBeginEditing %ld", (long)textField.tag);
+
     [_titleCharactersLeftLbl setHidden:NO];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
+    DDLogDebug(@"NewPostViewController : textFieldDidEndEditing %ld", (long)textField.tag);
+
     [_titleCharactersLeftLbl setHidden:YES];
 }
 
@@ -961,11 +1046,49 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     {
         return ![NSString isStringEmpty:self.contentTextView.text] && ![self.contentTextView.text exceedsNumberOfCharacters:MAX_DESCRIPTION_CHARACTERS];
     }
+    else if([[PendingPostManager sharedInstance] kindOfPost] == kPollPost)
+    {
+        return ![NSString isStringEmpty:self.contentTextView.text] && ![self.contentTextView.text exceedsNumberOfCharacters:MAX_QUESTION_CHARACTERS] && [self answersCompleted];
+    }
     else
     {
         return ![NSString isStringEmpty:self.contentTextView.text] && ![NSString isStringEmpty:self.titleTextField.text] && ![self.titleTextField.text exceedsNumberOfCharacters:MAX_TITLE_CHARACTERS] && ![self.contentTextView.text exceedsNumberOfCharacters:MAX_DESCRIPTION_CHARACTERS];
     }
 
+}
+
+/**
+ Returns YES if the first 2 answers are completed.
+ */
+- (BOOL)answersCompleted
+{
+    for(UITextField *answerTextField in self.answersTextFields)
+    {
+        if(answerTextField.tag == 1 || answerTextField.tag == 2)
+        {
+            if([NSString isStringEmpty:answerTextField.text])
+            {
+                return NO;
+            }
+        }
+    }
+    
+    return YES;
+}
+
+- (NSArray *)generateOptionsFromAnswersFields
+{
+    NSMutableArray *options = [[NSMutableArray alloc] init];
+    
+    for(UITextField *answerTextField in self.answersTextFields)
+    {
+        if(![NSString isStringEmpty:answerTextField.text])
+        {
+            [options addObject:answerTextField.text];
+        }
+    }
+    
+    return options;
 }
 
 #pragma mark - Keyboard management

@@ -110,7 +110,7 @@
 
 @implementation GroupViewController
 
-const int NUMBER_OF_ROWS = 1;
+const NSInteger NUMBER_OF_ROWS = 1;
 const float OFFSET_START_ANIMATING = 300.0;
 const float TOP_OFF_SET = -64.0;
 
@@ -762,7 +762,7 @@ const float TOP_OFF_SET = -64.0;
         {
             GLPPost *post = self.posts[indexPath.row-1];
             
-            if([post imagePost])
+            if([post imagePost] && ![post isPollPost])
             {
                 postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
             }
@@ -836,7 +836,7 @@ const float TOP_OFF_SET = -64.0;
         {
             GLPPost *currentPost = [self.posts objectAtIndex:indexPath.row-1];
             
-            if([currentPost imagePost])
+            if([currentPost imagePost] && ![currentPost isPollPost])
             {
                 return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
             }
@@ -1121,8 +1121,6 @@ const float TOP_OFF_SET = -64.0;
     
     [GLPGroupManager loadInitialPostsWithGroupId:_group.remoteKey localCallback:^(NSArray *localPosts) {
         
-        FLog(@"Local group posts: %@", localPosts);
-        
         if(localPosts.count != 0)
         {
             [_tableActivityIndicator stopActivityIndicator];
@@ -1133,6 +1131,8 @@ const float TOP_OFF_SET = -64.0;
     } remoteCallback:^(BOOL success, BOOL remain, NSArray *remotePosts) {
         
         [_tableActivityIndicator stopActivityIndicator];
+
+        DDLogDebug(@"Remote group posts: %@", remotePosts);
 
         if(success)
         {

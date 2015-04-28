@@ -195,7 +195,8 @@ static DatabaseManager *instance = nil;
             // poll
             [db executeUpdate:@"create table polls ( \
              key integer primary key autoincrement, \
-             postRemoteKey integer unique, \
+             postRemoteKey integer, \
+             postKey integer unique, \
              expiration integer not null, \
              users_vote text);"];
 

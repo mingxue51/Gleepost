@@ -106,8 +106,8 @@ static PendingPostManager *instance = nil;
 - (void)setKindOfPost:(KindOfPost)kindOfPost
 {
     _pendingData = YES;
-
     _kindOfPost = kindOfPost;
+    [self setCategory:[[CategoryManager sharedInstance] categoryWithOrderKey:10]];
 }
 
 /**
@@ -176,6 +176,11 @@ static PendingPostManager *instance = nil;
 
 - (void)readyToSend
 {
+    if(self.kindOfPost == kPollPost)
+    {
+        return;
+    }
+    
     if(_categories.count == 1)
     {
         //An event post selected.

@@ -433,7 +433,7 @@
         {
             GLPPost *post = [_userProfileManager postWithIndex:indexPath.row - 1];
             
-            if([post imagePost])
+            if([post imagePost] && ![post isPollPost])
             {
                 postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
             }
@@ -502,7 +502,7 @@
         {
             GLPPost *currentPost = [_userProfileManager postWithIndex:indexPath.row - 1];
                         
-            if([currentPost imagePost])
+            if([currentPost imagePost] && ![currentPost isPollPost])
             {
                 return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
             }

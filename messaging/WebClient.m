@@ -508,7 +508,7 @@ static WebClient *instance = nil;
         [params setObject:post.video.pendingKey forKey:@"video"];
     }
     
-    if(post.eventTitle)
+    if(post.dateEventStarts)
     {
         [params setObject:[DateFormatterHelper dateUnixFormat:post.dateEventStarts] forKey:@"event-time"];
         [params setObject:post.eventTitle forKey:@"title"];
@@ -520,6 +520,13 @@ static WebClient *instance = nil;
         
         [params setObject:post.location.name forKey:@"location-name"];
         [params setObject:post.location.address forKey:@"location-desc"];
+    }
+    
+    if([post isPollPost])
+    {
+        [params setObject:[RemoteParser generatePollOptionsInCDFormatWithOptions:post.poll.options] forKey:@"poll-options"];
+        //TODO: Add the new time comes from poll.
+        [params setObject:[DateFormatterHelper dateUnixFormat:[DateFormatterHelper addHours:5 toDate:[NSDate date]]] forKey:@"poll-expiry"];
     }
     
     [self postPath:[self pathForPost:post] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -556,11 +563,11 @@ static WebClient *instance = nil;
     }];
 }
 
--(NSString *)pathForPost:(GLPPost *)post
+- (NSString *)pathForPost:(GLPPost *)post
 {
     if(post.group)
     {
-        return [NSString stringWithFormat:@"networks/%d/posts", post.group.remoteKey];
+        return [NSString stringWithFormat:@"networks/%ld/posts", (long)post.group.remoteKey];
     }
     else
     {
@@ -725,9 +732,9 @@ static WebClient *instance = nil;
     }];
 }
 
--(void)postLike:(BOOL)like forPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
+-(void)postLike:(BOOL)like forPostRemoteKey:(NSInteger)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"posts/%d/likes", postRemoteKey];
+    NSString *path = [NSString stringWithFormat:@"posts/%ld/likes", (long)postRemoteKey];
     
     NSString* liked = [NSString stringWithFormat:@"%@",(like?@"true":@"false")];
     

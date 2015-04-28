@@ -104,10 +104,12 @@
     return success;
 }
 
+/**
+ Should be called only from remote operations.
+ */
 + (BOOL)saveOrUpdatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db
 {
     NSInteger pollKey = [GLPPollDao findPollKeyByPostRemoteKey:postRemoteKey db:db];
-    
     
     if(pollKey != -1)
     {
@@ -134,6 +136,7 @@
     return success;
 }
 
+
 + (void)savePollOptionsWithPoll:(GLPPoll *)poll db:(FMDatabase *)db
 {    
     for(NSString *option in poll.options)
@@ -147,18 +150,51 @@
     }
 }
 
-+ (void)savePollBeforeSent:(GLPPoll *)poll
+/**
+ Should be called only from creation operations.
+ */
++ (void)savePollBeforeSent:(GLPPoll *)entity withPostKey:(NSInteger)postKey db:(FMDatabase *)db
 {
-    //TODO: Implementation pending.
+    NSInteger expirationDate = [entity.expirationDate timeIntervalSince1970];
+    
+    [db executeUpdateWithFormat:@"insert into polls (postKey, expiration, users_vote) values(%d, %d, %@)",
+     postKey,
+     expirationDate,
+     entity.usersVote];
+    
+    entity.key = [db lastInsertRowId];
+    
+    [self savePollOptionsWithPoll:entity db:db];
 }
 
++ (void)savePollBeforeSent:(GLPPoll *)entity withPostKey:(NSInteger)postKey
+{
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+
+        [GLPPollDao savePollBeforeSent:entity withPostKey:postKey db:db];
+        
+    }];
+}
 
 
 #pragma mark - Update operations
 
-+ (void)updatePollAfterSent:(GLPPoll *)poll
++ (void)updatePollAfterSent:(GLPPoll *)poll withPostKey:(NSInteger)postKey withRemoteKey:(NSInteger)postRemoteKey
 {
-    //TODO: Implementation pending.
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+
+        [GLPPollDao updatePollAfterSent:poll withPostKey:postKey withRemoteKey:postRemoteKey db:db];
+        
+    }];
+}
+
++ (void)updatePollAfterSent:(GLPPoll *)poll withPostKey:(NSInteger)postKey withRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db
+{
+    NSAssert(postRemoteKey != 0, @"Update entity without post remote key");
+
+    [db executeUpdateWithFormat:@"update polls set postRemoteKey=%d where postKey=%d",
+     postRemoteKey,
+     postKey];
 }
 
 + (void)updatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey

@@ -14,7 +14,8 @@ typedef NS_ENUM(NSInteger, FinalNewPostViewElement) {
     kVideoElement,
     kLocationElement,
     kTextElement,
-    kTitleElement
+    kTitleElement,
+    kMainElement
 };
 
 @protocol GLPFinalNewEventAnimationHelperDelegate <GLPAnimationHelperDelegate>

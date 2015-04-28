@@ -172,9 +172,9 @@
 
 #pragma mark - Posts methods
 
-+ (void)loadInitialPostsWithGroupId:(int)groupId localCallback:(void (^)(NSArray *localPosts))localCallback remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback
++ (void)loadInitialPostsWithGroupId:(NSInteger)groupId localCallback:(void (^)(NSArray *localPosts))localCallback remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback
 {
-    DDLogInfo(@"load initial group posts with id: %d", groupId);
+    DDLogInfo(@"load initial group posts with id: %ld", (long)groupId);
     
 //    __block NSArray *localEntities = nil;
 //    [DatabaseManager run:^(FMDatabase *db) {

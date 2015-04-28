@@ -659,7 +659,11 @@
         [GLPPostDao saveVideoWithEntity:entity inDb:db];
     }
     
-    if([entity isPollPost])
+    if([entity isPollPost] && entity.remoteKey == 0)
+    {
+        [GLPPollDao savePollBeforeSent:entity.poll withPostKey:entity.key db:db];
+    }
+    else if([entity isPollPost] && entity.remoteKey != 0)
     {
         [GLPPollDao saveOrUpdatePoll:entity.poll withPostRemoteKey:entity.remoteKey db:db];
     }
@@ -790,6 +794,9 @@
          entity.remoteKey,
          entity.sendStatus,
          entity.key];
+        
+        [GLPPollDao updatePollAfterSent:entity.poll withPostKey:entity.key withRemoteKey:entity.remoteKey db:db];
+
     } else
     {
         DDLogDebug(@"updatePostSendingData remote key zero");
@@ -797,7 +804,6 @@
          entity.sendStatus,
          entity.key];
     }
-    
     
     //Insert post's categories.
     for(GLPCategory *category in entity.categories)

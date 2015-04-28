@@ -499,7 +499,7 @@
             textPost.sendStatus = success ? kSendStatusSent : kSendStatusFailure;
             textPost.remoteKey = success ? remoteKey : 0;
             
-            DDLogInfo(@"Text post uploaded with success: %d and post remoteKey: %d", success, textPost.remoteKey);
+            DDLogInfo(@"Text post uploaded with success: %d and post remoteKey: %ld", success, (long)textPost.remoteKey);
             
             [GLPPostManager updatePostAfterSending:textPost];
             

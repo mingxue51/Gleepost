@@ -880,7 +880,29 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     return delimitedCommaTags;
+}
+
++ (NSString *)generatePollOptionsInCDFormatWithOptions:(NSArray *)options
+{
+    NSMutableString *delimitedCommaTags = [NSMutableString string];
+
+    NSInteger index = 0;
     
+    for(NSString *option in options)
+    {
+        if(index == options.count-1)
+        {
+            [delimitedCommaTags appendString:[NSString stringWithFormat:@"%@", option]];
+        }
+        else
+        {
+            [delimitedCommaTags appendString:[NSString stringWithFormat:@"%@,",option]];
+        }
+        
+        ++index;
+    }
+    
+    return delimitedCommaTags;
 }
 
 #pragma mark - Attendees
