@@ -586,8 +586,8 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 {
     if([_post isPollPost])
     {
-        self.pollTitleLabel.text = [NSString stringWithFormat:@"%@", _post.eventTitle];
-        self.pollTitleLabelHeight.constant = [PollingPostView pollingTitleHeightWithText:self.post.eventTitle];
+        self.pollTitleLabel.text = [NSString stringWithFormat:@"%@", _post.content];
+        self.pollTitleLabelHeight.constant = [PollingPostView pollingTitleHeightWithText:self.post.content];
         [self.pollingView setPollData:self.post.poll withPostRemoteKey:self.post.remoteKey];
         [self configurePollImageView];
     }

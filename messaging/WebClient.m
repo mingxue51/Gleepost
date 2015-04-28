@@ -524,7 +524,6 @@ static WebClient *instance = nil;
     
     if([post isPollPost])
     {
-        [params setObject:post.eventTitle forKey:@"title"];
         [params setObject:[RemoteParser generatePollOptionsInCDFormatWithOptions:post.poll.options] forKey:@"poll-options"];
         //TODO: Add the new time comes from poll.
         [params setObject:[DateFormatterHelper dateUnixFormat:[DateFormatterHelper addHours:5 toDate:[NSDate date]]] forKey:@"poll-expiry"];
