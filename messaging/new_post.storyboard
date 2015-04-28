@@ -664,12 +664,12 @@
                             <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RIf-n1-K8e">
                                 <rect key="frame" x="14" y="78" width="572" height="300"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V5T-ST-yZz" userLabel="TopView">
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V5T-ST-yZz" userLabel="TopView">
                                         <rect key="frame" x="5" y="5" width="562" height="105"/>
                                         <subviews>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6I8-cp-LuU" customClass="UIPlaceHolderTextView">
-                                                <rect key="frame" x="0.0" y="0.0" width="494" height="105"/>
-                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="489" height="105"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <string key="text">This is the question that I will 
 be asking in my poll. How 
 much wood would a wood-
@@ -683,19 +683,19 @@ ultimate question.</string>
                                                 </userDefinedRuntimeAttributes>
                                             </textView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pBz-Vk-MY9" userLabel="SelectedImageVIew">
-                                                <rect key="frame" x="499" y="0.0" width="63" height="63"/>
+                                                <rect key="frame" x="494" y="0.0" width="68" height="68"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="pBz-Vk-MY9" secondAttribute="height" multiplier="1:1" id="BdX-7t-oDO"/>
                                                 </constraints>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(optional)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sp9-CT-tdN">
-                                                <rect key="frame" x="499" y="68" width="63" height="14"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                                                <rect key="frame" x="494" y="73" width="68" height="12"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="10"/>
                                                 <color key="textColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView clipsSubviews="YES" alpha="0.29999999999999966" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="edT-JR-3aE" userLabel="CameraImageView">
-                                                <rect key="frame" x="499" y="0.0" width="63" height="63"/>
+                                                <rect key="frame" x="494" y="0.0" width="68" height="68"/>
                                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="edT-JR-3aE" secondAttribute="height" multiplier="1:1" id="01b-aA-22Q"/>
@@ -712,7 +712,7 @@ ultimate question.</string>
                                             <constraint firstAttribute="trailing" secondItem="Sp9-CT-tdN" secondAttribute="trailing" id="JnS-QM-g1b"/>
                                             <constraint firstItem="edT-JR-3aE" firstAttribute="leading" secondItem="6I8-cp-LuU" secondAttribute="trailing" constant="5" id="abi-sa-zn3"/>
                                             <constraint firstAttribute="bottom" secondItem="6I8-cp-LuU" secondAttribute="bottom" id="cdt-iS-V6l"/>
-                                            <constraint firstItem="pBz-Vk-MY9" firstAttribute="height" secondItem="V5T-ST-yZz" secondAttribute="height" multiplier="0.6" id="eqf-a3-kCr"/>
+                                            <constraint firstItem="pBz-Vk-MY9" firstAttribute="height" secondItem="V5T-ST-yZz" secondAttribute="height" multiplier="0.65" id="eqf-a3-kCr"/>
                                             <constraint firstItem="pBz-Vk-MY9" firstAttribute="leading" secondItem="6I8-cp-LuU" secondAttribute="trailing" constant="5" id="nd1-Ht-BmA"/>
                                             <constraint firstItem="Sp9-CT-tdN" firstAttribute="leading" secondItem="6I8-cp-LuU" secondAttribute="trailing" constant="5" id="qsJ-Y1-QDC"/>
                                             <constraint firstAttribute="trailing" secondItem="pBz-Vk-MY9" secondAttribute="trailing" id="u5j-5Y-aQP"/>
@@ -724,49 +724,49 @@ ultimate question.</string>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Answer 1" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="C0D-MI-h5p">
                                                 <rect key="frame" x="5" y="0.0" width="562" height="43"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" red="0.20392156859999999" green="0.59607843140000005" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6ej-AW-X4j">
                                                 <rect key="frame" x="0.0" y="43" width="572" height="1"/>
-                                                <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="pgI-5U-fJP"/>
                                                 </constraints>
                                             </imageView>
                                             <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Answer 2" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EUe-O4-SwS">
                                                 <rect key="frame" x="5" y="44" width="562" height="43"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" red="0.96862745100000003" green="0.85098039219999999" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5MK-yn-poy">
                                                 <rect key="frame" x="0.0" y="87" width="572" height="1"/>
-                                                <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="OXI-cX-0s0"/>
                                                 </constraints>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fvj-by-jLq">
                                                 <rect key="frame" x="0.0" y="131" width="572" height="1"/>
-                                                <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="1" id="2og-BL-SXP"/>
                                                 </constraints>
                                             </imageView>
                                             <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="(Optional)" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0ZV-kh-lgE">
                                                 <rect key="frame" x="5" y="88" width="562" height="43"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" red="0.96862745100000003" green="0.85098039219999999" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <textField opaque="NO" clipsSubviews="YES" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="(Optional)" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rVL-HK-azr">
                                                 <rect key="frame" x="5" y="132" width="562" height="43"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <color key="textColor" red="0.20392156859999999" green="0.59607843140000005" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>

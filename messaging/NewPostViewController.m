@@ -314,6 +314,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 {
     [ShapeFormatterHelper setCornerRadiusWithView:_textFieldView andValue:4];
     [ShapeFormatterHelper setCornerRadiusWithView:_pendingImageView andValue:2];
+    
+    [ShapeFormatterHelper setCornerRadiusWithView:_addImageView andValue:2];
+    [ShapeFormatterHelper setCornerRadiusWithView:_selectedImageView andValue:2];
+    [ShapeFormatterHelper setCornerRadiusWithView:_mainView andValue:4];
+    [ShapeFormatterHelper setBorderToView:_mainView withColour:[AppearanceHelper lightGrayGleepostColour] andWidth:1.0];
 }
 
 //TODO: Finish that for the other views.
