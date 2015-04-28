@@ -617,6 +617,12 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         FLog(@"GENERAL POST GROUP REMOTE KEY: %ld", (long)group.remoteKey);
         
     }
+    else if([[PendingPostManager sharedInstance] kindOfPost] == kPollPost)
+    {
+        inPost = [self generatePollPostWithCurrentData];
+        inPost.group = group;
+        [_postUploader uploadPollPostWithPost:inPost];
+    }
     else
     {
         inPost = [_postUploader uploadPost:self.contentTextView.text withCategories:eventCategories eventTime:_eventDateStart title:self.titleTextField.text group:group andLocation:_selectedLocation];

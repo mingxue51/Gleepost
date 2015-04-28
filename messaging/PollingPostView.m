@@ -209,9 +209,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
 {
     CGFloat finalHeight = POLLING_CELL_FIXED_HEIGHT + ([postData imagePost] ? 130.0 : 0) + postData.poll.options.count * [GLPPollingOptionCell height];
     finalHeight += [PollingPostView getContentLabelSizeForContent:postData.eventTitle];
-    
-    DDLogDebug(@"cell height post data %f", finalHeight);
-    
+        
     return finalHeight;
 }
 

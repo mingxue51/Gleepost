@@ -889,7 +889,7 @@ static bool firstTime = YES;
     
     if(indexPath.row == 0)
     {
-        if([_post imagePost])
+        if([_post imagePost] && ![_post isPollPost])
         {
             //If image.
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
@@ -1009,7 +1009,7 @@ static bool firstTime = YES;
     
     if(indexPath.row == 0)
     {
-        if([self.post imagePost])
+        if([self.post imagePost] && ![_post isPollPost])
         {
             return [GLPPostCell getCellHeightWithContent:self.post cellType:kImageCell isViewPost:YES] + 10.0f;
             
