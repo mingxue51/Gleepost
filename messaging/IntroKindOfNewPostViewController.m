@@ -137,6 +137,11 @@
     [self.view addSubview:self.fakeNavigationBar];
     
     [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismiss:) andTarget:self];
+    
+    if(self.groupPost)
+    {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    }
 }
 
 - (void)configureIsGroupPost

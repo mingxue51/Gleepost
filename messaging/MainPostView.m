@@ -598,12 +598,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     if([self.post imagePost])
     {
         self.pollImageViewHeight.constant = 130.0;
-        self.activityIndicator.hidden = YES;
+//        self.activityIndicator.hidden = YES;
     }
     else
     {
         self.pollImageViewHeight.constant = 0.0;
-        self.activityIndicator.hidden = YES;
+        [self.activityIndicator stopAnimating];
     }
 }
 

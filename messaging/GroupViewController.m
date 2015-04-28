@@ -54,6 +54,7 @@
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPCampusWallAsyncProcessor.h"
 #import "GLPLiveGroupConversationsManager.h"
+#import "TransitionDelegateViewCategories.h"
 
 
 @interface GroupViewController () <GLPAttendingPopUpViewControllerDelegate, GLPGroupSettingsViewControllerDelegate, GLPPublicGroupPopUpViewControllerDelegate>
@@ -65,6 +66,8 @@
 @property (assign, nonatomic) int currentNumberOfRows;
 @property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
+@property (strong, nonatomic) TransitionDelegateViewCategories *transitionNewPostViewController;
+
 @property (assign, nonatomic) int selectedUserId;
 //@property (assign, nonatomic) GLPSelectedTab selectedTabStatus;
 
@@ -328,6 +331,8 @@ const float TOP_OFF_SET = -64.0;
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.view];
     _trackViewsCountProcessor = [[GLPTrackViewsCountProcessor alloc] init];
     _campusWallAsyncProcessor = [[GLPCampusWallAsyncProcessor alloc] init];
+    
+    self.transitionNewPostViewController = [[TransitionDelegateViewCategories alloc] init];
 }
 
 - (void)configureNavigationItems
@@ -1993,22 +1998,14 @@ const float TOP_OFF_SET = -64.0;
         
         return;
     }
-
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-//    IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"NewPostViewController"];
-//    newPostVC.group = _group;
-//    [newPostVC setDelegate:self];
-//    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
-//    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-//    [self presentViewController:navigationController animated:YES completion:nil];
-    
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
     IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
     newPostVC.groupPost = YES;
     newPostVC.group = _group;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
-    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navigationController.modalPresentationStyle = UIModalPresentationCustom;
+    [navigationController setTransitioningDelegate:self.transitionNewPostViewController];
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
