@@ -25,7 +25,7 @@
 
 const CGFloat POLLING_TWO_LINES_HEIGHT = 45.0;
 const CGFloat POLLING_ONE_LINE_HEIGHT = 20.0;
-const CGFloat POLLING_CELL_FIXED_HEIGHT = 92.0;
+const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0;
 
 @implementation PollingPostView
 
