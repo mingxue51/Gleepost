@@ -352,9 +352,14 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     }
     
     
-    if(self.comesFromFirstView)
+    if(self.comesFromFirstView && !self.isNewPoll)
     {
         [self.fakeNavigationBar setShortModeAndMakeSecondDotSelected];
+    }
+    else if(self.comesFromFirstView && self.isNewPoll)
+    {
+        [self.fakeNavigationBar setThreeDotsMode];
+        [self.fakeNavigationBar selectDotWithNumber:2];
     }
     else
     {
@@ -375,8 +380,15 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 -(void)configureRightBarButton
 {    
 //    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"POST" withButtonSize:CGSizeMake(50, 17) withSelector:@selector(postButtonClick:) andTarget:self];
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"POST" withButtonSize:CGSizeMake(50.0, 17.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(postButtonClick:) andTarget:self];
-
+    
+    if(self.isNewPoll)
+    {
+        [self.navigationController.navigationBar setTextButton:kRight withTitle:@"NEXT" withButtonSize:CGSizeMake(50.0, 17.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(goToExpirationDatePicker) andTarget:self];
+    }
+    else
+    {
+        [self.navigationController.navigationBar setTextButton:kRight withTitle:@"POST" withButtonSize:CGSizeMake(50.0, 17.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(postButtonClick:) andTarget:self];
+    }
 }
 
 -(void)formatStatusBar
@@ -506,21 +518,20 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
             return;
         }
         
-        if(self.isNewPoll)
-        {
-            if([self tooShortData])
-            {
-                [WebClientHelper showTooShortDataMessageError];
-                return;
-            }
-            
-            if([self doesATextFieldExceedsTheLimitOfChars])
-            {
-                return;
-            }
-        }
+//        if(self.isNewPoll)
+//        {
+//            if([self tooShortData])
+//            {
+//                [WebClientHelper showTooShortDataMessageError];
+//                return;
+//            }
+//            
+//            if([self doesATextFieldExceedsTheLimitOfChars])
+//            {
+//                return;
+//            }
+//        }
 
-        
         _postButttonClicked = YES;
         
         [self.view endEditing:YES];
@@ -572,6 +583,30 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         
         [[PendingPostManager sharedInstance] reset];
     }
+}
+
+- (void)goToExpirationDatePicker
+{
+    if (![self isInformationValidInElements])
+    {
+        return;
+    }
+    
+    //TODO: Implementation pending.
+    if([self tooShortData])
+    {
+        [WebClientHelper showTooShortDataMessageError];
+        return;
+    }
+    
+    if([self doesATextFieldExceedsTheLimitOfChars])
+    {
+        return;
+    }
+    
+    [[PendingPostManager sharedInstance] setPollPost:[self generatePollPostWithCurrentData]];
+    
+    [self navigateToPickDateEventViewController];
 }
 
 - (void)backButtonTapped
@@ -1324,6 +1359,14 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         
         [imgSelectorVC setDelegate:self];
     }
+}
+
+- (void)navigateToPickDateEventViewController
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
+    PickDateEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"PickDateEventViewController"];
+    cvc.isNewPoll = YES;
+    [self.navigationController pushViewController:cvc animated:NO];
 }
 
 -(void)navigateToVideoController

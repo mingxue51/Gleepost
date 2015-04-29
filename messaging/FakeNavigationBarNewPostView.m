@@ -46,6 +46,12 @@
     [externalView.pageController setShortModeAndMakeSecondDotSelected];
 }
 
+- (void)setThreeDotsMode
+{
+    FakeNavigationBarNewPostView *externalView = (FakeNavigationBarNewPostView*)self.externalView;
+    [externalView.pageController setThreeDotsMode];
+}
+
 - (void)formatNavigationBar
 {
     DDLogDebug(@"FakeNavigationBarNewPostView : formatNavigationBar");

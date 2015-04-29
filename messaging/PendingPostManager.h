@@ -51,6 +51,9 @@ typedef NS_ENUM(NSUInteger, KindOfPost) {
 - (BOOL)doesPostNeedsApprove;
 - (void)postNeedsApprove;
 - (BOOL)arePendingData;
+- (void)setPollPost:(GLPPost *)pollPost;
+- (void)setPollExpirationDate:(NSDate *)pollExpirationDate;
+- (GLPPost *)getPendingPost;
 - (GLPGroup *)group;
 //- (void)setPendingData:(BOOL)pendingData;
 - (void)reset;

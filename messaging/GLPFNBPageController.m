@@ -83,6 +83,17 @@
     [self selectDotWithNumber:3];
 }
 
+- (void)setThreeDotsMode
+{
+    for(UIImageView *dot in self.dots)
+    {
+        if(dot.tag == 4)
+        {
+            dot.hidden = YES;
+        }
+    }
+}
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

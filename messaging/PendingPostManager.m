@@ -33,6 +33,8 @@
 @property (strong, nonatomic) GLPGroup *group;
 @property (assign, nonatomic, getter = doesPostNeedsApprove) BOOL postToBePostedPendingApprove;
 
+/** This instance is used only for new poll post. */
+@property (strong, nonatomic) GLPPost *pendingPollPost;
 @end
 
 static PendingPostManager *instance = nil;
@@ -68,13 +70,13 @@ static PendingPostManager *instance = nil;
 
 #pragma mark - Modifiers
 
-//- (void)setGroupPost:(BOOL)groupPost
-//{
-//    self.groupPost = groupPost;
-//}
-
 - (void)setDate:(NSDate *)date
 {
+    if(self.pendingPollPost)
+    {
+        self.pendingPollPost.poll.expirationDate = date;
+    }
+    
     _pendingData = YES;
 
     _date = date;
@@ -108,6 +110,27 @@ static PendingPostManager *instance = nil;
     _pendingData = YES;
     _kindOfPost = kindOfPost;
     [self setCategory:[[CategoryManager sharedInstance] categoryWithOrderKey:10]];
+}
+
+/**
+ This method should be used only in NewPostViewController when the user's selection
+ is poll.
+ 
+ @param pollPost the post that contains all the data except expiration date.
+ */
+- (void)setPollPost:(GLPPost *)pollPost
+{
+    self.pendingPollPost = pollPost;
+}
+
+- (void)setPollExpirationDate:(NSDate *)pollExpirationDate
+{
+    self.pendingPollPost.poll.expirationDate = pollExpirationDate;
+}
+
+- (GLPPost *)getPendingPost
+{
+    return self.pendingPollPost;
 }
 
 /**
@@ -222,7 +245,7 @@ static PendingPostManager *instance = nil;
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"Kind of post: %u, Event type: %@, Title: %@, Description: %@, Date: %@", _kindOfPost, _categories, _eventTitle, _eventDescription, _date];
+    return [NSString stringWithFormat:@"Kind of post: %lu, Event type: %@, Title: %@, Description: %@, Date: %@", (unsigned long)_kindOfPost, _categories, _eventTitle, _eventDescription, _date];
 }
 
 @end

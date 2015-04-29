@@ -15,6 +15,7 @@
 #import "FakeNavigationBarNewPostView.h"
 #import "GLPEventNewPostAnimationHelper.h"
 #import "GLPApplicationHelper.h"
+#import "PickDateEventViewController.h"
 
 @interface IntroKindOfEventViewController () <UINavigationControllerDelegate, GLPEventNewPostAnimationHelperDelegate>
 
@@ -245,7 +246,8 @@
 - (void)navigateToDatePickerView
 {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
-    IntroKindOfEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"PickDateEventViewController"];
+    PickDateEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"PickDateEventViewController"];
+    cvc.isNewPoll = NO;
     [self.navigationController pushViewController:cvc animated:NO];
 }
 

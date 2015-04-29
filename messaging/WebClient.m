@@ -499,7 +499,6 @@ static WebClient *instance = nil;
 //    }
 
     
-    DDLogDebug(@"Create Post params: %@, Categories: %@", params, post.categories);
     
     //TODO: add a new param url rather than call second method after the post request.
     
@@ -525,9 +524,14 @@ static WebClient *instance = nil;
     if([post isPollPost])
     {
         [params setObject:[RemoteParser generatePollOptionsInCDFormatWithOptions:post.poll.options] forKey:@"poll-options"];
-        //TODO: Add the new time comes from poll.
-        [params setObject:[DateFormatterHelper dateUnixFormat:[DateFormatterHelper addHours:5 toDate:[NSDate date]]] forKey:@"poll-expiry"];
+        //Add the new time comes from poll.
+        [params setObject:[DateFormatterHelper dateUnixFormat:post.poll.expirationDate] forKey:@"poll-expiry"];
+
+//        [params setObject:[DateFormatterHelper dateUnixFormat:[DateFormatterHelper addHours:5 toDate:[NSDate date]]] forKey:@"poll-expiry"];
     }
+    
+    DDLogDebug(@"Create Post params: %@, Categories: %@", params, post.categories);
+
     
     [self postPath:[self pathForPost:post] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

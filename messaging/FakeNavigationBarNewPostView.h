@@ -13,5 +13,6 @@
 
 - (void)selectDotWithNumber:(NSInteger)number;
 - (void)setShortModeAndMakeSecondDotSelected;
+- (void)setThreeDotsMode;
 
 @end

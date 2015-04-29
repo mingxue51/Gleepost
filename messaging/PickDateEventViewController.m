@@ -14,6 +14,7 @@
 #import "FakeNavigationBarNewPostView.h"
 #import "GLPPickTimeAnimationHelper.h"
 #import "GLPApplicationHelper.h"
+#import "GLPPostUploader.h"
 
 @interface PickDateEventViewController () <UINavigationControllerDelegate, GLPPickTimeAnimationHelperDelegate>
 
@@ -22,14 +23,17 @@
 
 @property (strong, nonatomic) GLPPickTimeAnimationHelper *animationHelper;
 
+/** Post uploader is used for uploading a poll post. */
+@property (strong, nonatomic) GLPPostUploader *postUploader;
+
 //Constraints.
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleXAligment;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *timePickerXAligment;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *buttonXAligment;
 
 //Views.
-@property (weak, nonatomic) IBOutlet UIView *nextButton;
-@property (weak, nonatomic) IBOutlet UIView *titleLabel;
+@property (weak, nonatomic) IBOutlet UIButton *nextButton;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
 
@@ -39,6 +43,7 @@
 {
     [super viewDidLoad];
     [self initialiseObjects];
+    [self configureElementsIfPoll];
     [self configureCustomBackButton];
     [self setUpDatePicker];
     [self loadDateIfNeeded];
@@ -66,6 +71,12 @@
 - (void)cofigureNavigationBar
 {
     self.fakeNavigationBar = [[FakeNavigationBarNewPostView alloc] init];
+    
+    if(self.isNewPoll)
+    {
+        [self.fakeNavigationBar setThreeDotsMode];
+    }
+    
     [self.fakeNavigationBar selectDotWithNumber:3];
     [self.view addSubview:self.fakeNavigationBar];
     
@@ -78,10 +89,24 @@
     self.navigationItem.leftBarButtonItems = [GLPApplicationHelper customBackButtonWithTarget:self];
 }
 
+- (void)configureElementsIfPoll
+{
+    if(self.isNewPoll)
+    {
+        self.titleLabel.text = @"When do you want this poll to end?";
+        [self.nextButton setTitle:@"FINISHED" forState:UIControlStateNormal];
+    }
+}
+
 - (void)initialiseObjects
 {
     self.animationHelper = [[GLPPickTimeAnimationHelper alloc] init];
     self.animationHelper.delegate = self;
+    
+    if(self.isNewPoll)
+    {
+        self.postUploader = [[GLPPostUploader alloc] init];
+    }
 }
 
 #pragma mark - Animation configuration
@@ -168,16 +193,40 @@
 
 #pragma mark - Actions
 
--(IBAction)dismissViewController:(id)sender
+-(IBAction)dismissViewController
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        
+        //Dismiss view controller and show immediately the post in the Campus Wall.
+        [self dismissViewControllerAnimated:YES completion:nil];
+    });
 }
 
 -(IBAction)continueToTheFinalView:(id)sender
 {
+    if(self.isNewPoll)
+    {
+        //Create the poll and dismiss the view controller.
+        [[PendingPostManager sharedInstance] setDate:_datePicker.date];
+        [self createPollPostAndDismissView];
+        return;
+    }
+    
     [[PendingPostManager sharedInstance] setDate:_datePicker.date];
-
     [self animateElementsBeforeGoingBack:NO];
+}
+
+- (void)createPollPostAndDismissView
+{
+    DDLogDebug(@"PickDateVC createPollPostAndDismissView post %@", [[PendingPostManager sharedInstance] getPendingPost]);
+    
+    [self.postUploader uploadPollPostWithPost:[[PendingPostManager sharedInstance] getPendingPost]];
+    [self informParentVCForNewPollPost:[[PendingPostManager sharedInstance] getPendingPost]];
+    [[PendingPostManager sharedInstance] reset];
+    [self dismissViewController];
 }
 
 - (void)navigateToNewPostView
@@ -191,6 +240,20 @@
 - (void)backButtonTapped
 {
     [self animateElementsBeforeGoingBack:YES];
+}
+
+- (void)informParentVCForNewPollPost:(GLPPost *)post
+{
+    if([[PendingPostManager sharedInstance] isGroupPost])
+    {
+        //Notify the group view controller.
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_RELOAD_DATA_IN_GVC object:nil userInfo:@{@"new_post": post}];
+    }
+    else
+    {
+        //Notify campus wall.
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_RELOAD_DATA_IN_CW object:nil userInfo:@{@"new_post": post}];
+    }
 }
 
 #pragma mark - UINavigationControllerDelegate

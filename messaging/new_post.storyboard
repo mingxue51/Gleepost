@@ -837,6 +837,7 @@ ultimate question.</string>
                         <outletCollection property="answersTextFields" destination="0ZV-kh-lgE" id="2t0-0I-OxQ"/>
                         <outletCollection property="answersTextFields" destination="rVL-HK-azr" id="8cq-Xc-cHn"/>
                         <segue destination="JVA-as-ED3" kind="show" identifier="show image selector" id="srQ-hN-xai"/>
+                        <segue destination="z9V-fp-bky" kind="show" identifier="select expiration date" id="s8G-tK-yrj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Bv-9z-uAv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1677,7 +1678,7 @@ ultimate question.</string>
                         <viewControllerLayoutGuide type="bottom" id="eiF-8Y-Wqs"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="GFb-yf-mpF">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9aP-RO-Zti">
@@ -1749,7 +1750,8 @@ ultimate question.</string>
         <image name="video_top_button.png" width="190" height="95"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Tce-bA-hLN"/>
-        <segue reference="vg8-Xx-vUd"/>
+        <segue reference="HXm-2z-f7f"/>
+        <segue reference="s8G-tK-yrj"/>
+        <segue reference="srQ-hN-xai"/>
     </inferredMetricsTieBreakers>
 </document>

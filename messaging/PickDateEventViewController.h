@@ -12,5 +12,6 @@
 @interface PickDateEventViewController : UIViewController <UITextFieldDelegate>
 
 @property (weak, nonatomic) NewPostViewController *delegate;
+@property (assign, nonatomic) BOOL isNewPoll;
 
 @end
