@@ -48,7 +48,7 @@
 - (void)configureConstants
 {
     _maximumCharsForAnswer = 50;
-    _maximumCharsForQuestion = 100;
+    _maximumCharsForQuestion = 50;
 }
 
 - (void)configureDictionaries
@@ -106,13 +106,20 @@
     for(NSNumber *elementNSNumber in self.elementsCharsLeft)
     {
         NSInteger charsLeft = [[self.elementsCharsLeft objectForKey:elementNSNumber] integerValue];
-
+        
         if(charsLeft < 0)
         {
             return YES;
         }
     }
     return NO;
+}
+
+- (BOOL)doesStringExceedsTheLimitOfChars:(NSString *)textElementString withKindOfElement:(PollViewElement)element
+{
+    NSInteger maxCharsNumber = [[self.maximumCharsForElements objectForKey:@(element)] integerValue];
+    
+    return (textElementString.length > maxCharsNumber);
 }
 
 - (void)awakeFromNib

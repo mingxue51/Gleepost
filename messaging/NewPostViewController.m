@@ -514,7 +514,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
                 return;
             }
             
-            if([(PollFakeNavigationBarNewPostView *)self.fakeNavigationBar doesATextFieldExceedsTheLimitOfChars])
+            if([self doesATextFieldExceedsTheLimitOfChars])
             {
                 return;
             }
@@ -1133,11 +1133,51 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
                 return YES;
             }
         }
+        else
+        {
+            if(![NSString isStringEmpty:answerTextField.text])
+            {
+                if(answerTextField.text.length < 3)
+                {
+                    return YES;
+                }
+            }
+        }
     }
     
     return self.contentTextView.text.length < 3;
 }
 
+/**
+ Returns YES if text count in question text view and in answers fields are more than the preset lenght limits.
+ */
+
+- (BOOL)doesATextFieldExceedsTheLimitOfChars
+{
+    
+    for(UITextField *answerTextField in self.answersTextFields)
+    {
+        if(answerTextField.tag == 1 || answerTextField.tag == 2)
+        {
+            if([(PollFakeNavigationBarNewPostView *)self.fakeNavigationBar doesStringExceedsTheLimitOfChars:answerTextField.text withKindOfElement:kAnswerTextField])
+            {
+                return YES;
+            }
+        }
+        else
+        {
+            if(![NSString isStringEmpty:answerTextField.text])
+            {
+                if([(PollFakeNavigationBarNewPostView *)self.fakeNavigationBar doesStringExceedsTheLimitOfChars:answerTextField.text withKindOfElement:kAnswerTextField])
+                {
+                    return YES;
+                }
+            }
+        }
+    }
+    
+    return [(PollFakeNavigationBarNewPostView *)self.fakeNavigationBar doesStringExceedsTheLimitOfChars:self.contentTextView.text withKindOfElement:kQuestionTextView];
+}
 
 /**
  Returns YES if the first 2 answers are completed.
