@@ -47,8 +47,8 @@
 
 - (void)configureConstants
 {
-    _maximumCharsForAnswer = 100;
-    _maximumCharsForQuestion = 300;
+    _maximumCharsForAnswer = 50;
+    _maximumCharsForQuestion = 100;
 }
 
 - (void)configureDictionaries
@@ -96,7 +96,24 @@
     externalView.charactersLeftLabel.text = [NSString stringWithFormat:@"%ld", (long)charsLeft];
 }
 
+#pragma mark - Accessors
 
+/**
+ Returns YES if text count in question text view and in answers fields are more than the preset lenght limits.
+ */
+- (BOOL)doesATextFieldExceedsTheLimitOfChars
+{
+    for(NSNumber *elementNSNumber in self.elementsCharsLeft)
+    {
+        NSInteger charsLeft = [[self.elementsCharsLeft objectForKey:elementNSNumber] integerValue];
+
+        if(charsLeft < 0)
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
 
 - (void)awakeFromNib
 {

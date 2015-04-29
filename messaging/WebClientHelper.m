@@ -403,6 +403,13 @@
     [WebClientHelper showStandardErrorWithTitle:@"Error loading group" andContent:@"It seems that you are not belonging to this group anymore"];
 }
 
+#pragma mark - New post
+
++ (void)showTooShortDataMessageError
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"Too short text in the required text fields!"];
+}
+
 #pragma mark - Testing
 
 + (void)showWebSocketReceivedBadEvent:(NSString *)socketEvent

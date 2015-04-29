@@ -18,5 +18,6 @@ typedef NS_ENUM(NSUInteger, PollViewElement) {
 
 - (void)setNumberOfCharacters:(NSInteger)charsNumber toElement:(PollViewElement)element;
 - (void)elementChangedFocus:(PollViewElement)element;
+- (BOOL)doesATextFieldExceedsTheLimitOfChars;
 
 @end

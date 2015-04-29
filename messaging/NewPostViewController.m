@@ -506,6 +506,21 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
             return;
         }
         
+        if(self.isNewPoll)
+        {
+            if([self tooShortData])
+            {
+                [WebClientHelper showTooShortDataMessageError];
+                return;
+            }
+            
+            if([(PollFakeNavigationBarNewPostView *)self.fakeNavigationBar doesATextFieldExceedsTheLimitOfChars])
+            {
+                return;
+            }
+        }
+
+        
         _postButttonClicked = YES;
         
         [self.view endEditing:YES];
@@ -1103,6 +1118,26 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     }
 
 }
+
+/**
+ Returns YES if text count in question text view and in answers fields is less than 3 characters.
+ */
+- (BOOL)tooShortData
+{
+    for(UITextField *answerTextField in self.answersTextFields)
+    {
+        if(answerTextField.tag == 1 || answerTextField.tag == 2)
+        {
+            if(answerTextField.text.length < 3)
+            {
+                return YES;
+            }
+        }
+    }
+    
+    return self.contentTextView.text.length < 3;
+}
+
 
 /**
  Returns YES if the first 2 answers are completed.
