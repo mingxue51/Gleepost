@@ -39,6 +39,7 @@
 #import "GLPApplicationHelper.h"
 #import "FakeNavigationBarNewPostView.h"
 #import "GLPFinalNewEventAnimationHelper.h"
+#import "PollFakeNavigationBarNewPostView.h"
 
 @interface NewPostViewController () <GLPImageViewDelegate, GLPFinalNewEventAnimationHelperDelegate>
 
@@ -308,6 +309,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     _contentTextView.delegate = self;
     [_titleTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     _titleTextField.delegate = self;
+    
+    for(UITextField *answerTextField in self.answersTextFields)
+    {
+        [answerTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    }
 }
 
 -(void)formatElements
@@ -336,7 +342,15 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 {
     [self.navigationController.navigationBar invisible];
 
-    self.fakeNavigationBar = [[FakeNavigationBarNewPostView alloc] init];
+    if(self.isNewPoll)
+    {
+        self.fakeNavigationBar = [[PollFakeNavigationBarNewPostView alloc] init];
+    }
+    else
+    {
+        self.fakeNavigationBar = [[FakeNavigationBarNewPostView alloc] init];
+    }
+    
     
     if(self.comesFromFirstView)
     {
@@ -924,6 +938,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)textViewDidChangeSelection:(UITextView *)textView
 {
+    if(self.isNewPoll)
+    {
+        [(PollFakeNavigationBarNewPostView *)self.fakeNavigationBar setNumberOfCharacters:textView.text.length toElement:kQuestionTextView];
+    }
+    
     [[PendingPostManager sharedInstance] setEventDescription:textView.text];
     
     [self setNumberOfCharactersToDescription:textView.text.length];
@@ -931,6 +950,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
+    if(self.isNewPoll)
+    {
+        [(PollFakeNavigationBarNewPostView *)self.fakeNavigationBar elementChangedFocus:kQuestionTextView];
+    }
+    
     [_descriptionCharactersLeftLbl setHidden:NO];
 }
 
@@ -945,6 +969,12 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 {
     DDLogDebug(@"NewPostViewController : textFieldDidChange %ld", (long)textField.tag);
     
+    if(self.isNewPoll)
+    {
+        [(PollFakeNavigationBarNewPostView *)self.fakeNavigationBar setNumberOfCharacters:textField.text.length toElement:kAnswerTextField];
+    }
+
+    
     [[PendingPostManager sharedInstance] setEventTitle:textField.text];
 
     [self setNumberOfCharactersToTitle:textField.text.length];
@@ -953,6 +983,12 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
+    if(self.isNewPoll)
+    {
+        [(PollFakeNavigationBarNewPostView *)self.fakeNavigationBar setNumberOfCharacters:textField.text.length toElement:kAnswerTextField];
+        [(PollFakeNavigationBarNewPostView *)self.fakeNavigationBar elementChangedFocus:kAnswerTextField];
+    }
+    
     DDLogDebug(@"NewPostViewController : textFieldDidBeginEditing %ld", (long)textField.tag);
 
     [_titleCharactersLeftLbl setHidden:NO];

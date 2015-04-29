@@ -106,6 +106,8 @@
 		5824C42D18E5B4D8006D4484 /* TableViewHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5824C42C18E5B4D8006D4484 /* TableViewHelper.m */; };
 		5824F4561AC1BFBD0074A3EB /* GLPSignUpSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5824F4551AC1BFBD0074A3EB /* GLPSignUpSecondViewController.m */; };
 		5824F4591AC314510074A3EB /* GLPIntroAnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5824F4581AC314510074A3EB /* GLPIntroAnimationHelper.m */; };
+		5825C30F1AF0F194000CC73B /* PollFakeNavigationBarNewPostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825C30E1AF0F194000CC73B /* PollFakeNavigationBarNewPostView.m */; };
+		5825C3111AF0F50A000CC73B /* PollFakeNavigationBarNewPostView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5825C3101AF0F50A000CC73B /* PollFakeNavigationBarNewPostView.xib */; };
 		58272F7D1896804300CD7522 /* FakeNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58272F7C1896804300CD7522 /* FakeNavigationBar.xib */; };
 		58272F801896807900CD7522 /* FakeNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 58272F7F1896807900CD7522 /* FakeNavigationBar.m */; };
 		58272F831896824500CD7522 /* fake_nav_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58272F821896824500CD7522 /* fake_nav_background.png */; };
@@ -1117,6 +1119,9 @@
 		5824F4551AC1BFBD0074A3EB /* GLPSignUpSecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSignUpSecondViewController.m; sourceTree = "<group>"; };
 		5824F4571AC314510074A3EB /* GLPIntroAnimationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPIntroAnimationHelper.h; sourceTree = "<group>"; };
 		5824F4581AC314510074A3EB /* GLPIntroAnimationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPIntroAnimationHelper.m; sourceTree = "<group>"; };
+		5825C30D1AF0F194000CC73B /* PollFakeNavigationBarNewPostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollFakeNavigationBarNewPostView.h; sourceTree = "<group>"; };
+		5825C30E1AF0F194000CC73B /* PollFakeNavigationBarNewPostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollFakeNavigationBarNewPostView.m; sourceTree = "<group>"; };
+		5825C3101AF0F50A000CC73B /* PollFakeNavigationBarNewPostView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PollFakeNavigationBarNewPostView.xib; sourceTree = "<group>"; };
 		58272F7C1896804300CD7522 /* FakeNavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FakeNavigationBar.xib; sourceTree = "<group>"; };
 		58272F7E1896807900CD7522 /* FakeNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeNavigationBar.h; sourceTree = "<group>"; };
 		58272F7F1896807900CD7522 /* FakeNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeNavigationBar.m; sourceTree = "<group>"; };
@@ -2957,6 +2962,7 @@
 			children = (
 				58459FB419901B2E00E7D3C2 /* FakeNavigationBarView.xib */,
 				588C68871AD286D500E00F48 /* FakeNavigationBarNewPostView.xib */,
+				5825C3101AF0F50A000CC73B /* PollFakeNavigationBarNewPostView.xib */,
 			);
 			name = UIView;
 			sourceTree = "<group>";
@@ -3601,6 +3607,8 @@
 				588C688E1AD2927A00E00F48 /* FakeNavigationBarNewPostView.m */,
 				5850203D1AD57C7500195520 /* GLPFNBPageController.h */,
 				5850203E1AD57C7500195520 /* GLPFNBPageController.m */,
+				5825C30D1AF0F194000CC73B /* PollFakeNavigationBarNewPostView.h */,
+				5825C30E1AF0F194000CC73B /* PollFakeNavigationBarNewPostView.m */,
 			);
 			name = "Fake Navigation Bar";
 			sourceTree = "<group>";
@@ -6177,6 +6185,7 @@
 				58907DCC1A9FC12B00E8531A /* iphone_ipad.storyboard in Resources */,
 				58F9EC641937580900714432 /* back_black.png in Resources */,
 				806E3D821832B1960063AACE /* NotificationBackgroundWarningIcon.png in Resources */,
+				5825C3111AF0F50A000CC73B /* PollFakeNavigationBarNewPostView.xib in Resources */,
 				58BAAE1E1AC4BECD0008F521 /* nerdnation_text.png in Resources */,
 				58CF2BD918EA130800EB786E /* campus_wall_background_main_old.png in Resources */,
 				583CE33D18A019AC00E78C08 /* hoovertall.png in Resources */,
@@ -6384,6 +6393,7 @@
 				586581371805F210005814B4 /* MessageTableViewCell.m in Sources */,
 				806E3D881832B1960063AACE /* TSMessageView.m in Sources */,
 				80C8BA591810340E004F70DB /* GLPUserDao.m in Sources */,
+				5825C30F1AF0F194000CC73B /* PollFakeNavigationBarNewPostView.m in Sources */,
 				58233BD61AE8D51100533370 /* GLPPollDaoParser.m in Sources */,
 				80809AF01895DAB90077D227 /* GLPTableViewController.m in Sources */,
 				5863179D19872E96006D79E2 /* GLPStretchedImageView.m in Sources */,
