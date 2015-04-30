@@ -44,7 +44,6 @@
             {
                 _scrollViewHeader = (CampusWallHeader*) v;
                 _scrollViewHeader.timeLineDelegate = _delegate;
-                _scrollViewHeader.paginationEnabled = YES;
                 break;
             }
         }

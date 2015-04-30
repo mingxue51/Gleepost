@@ -42,6 +42,8 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
 - (void)registerCell
 {
     [self.tableView registerNib:[UINib nibWithNibName:@"GLPPollingOptionCell" bundle:nil] forCellReuseIdentifier:@"GLPPollingOptionCell"];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
 }
 
 - (void)registerNotifications
