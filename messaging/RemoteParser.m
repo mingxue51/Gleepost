@@ -1290,6 +1290,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     {
         type = kGLPNotificationTypePostRejected;
     }
+    else if ([notificationsType isEqualToString:@"poll_vote"])
+    {
+        type = kGLPNotificationTypeSomeoneVoted;
+    }
     
     notification.notificationType = type;
     notification.seen = [json[@"seen"] boolValue];
