@@ -98,6 +98,10 @@
     {
         [(id<GLPFinalNewEventAnimationHelperDelegate>) self.delegate goingBackViewsDisappeared];
     }
+    if([anim.name isEqualToString:@"GoingForwardDisappearing_1"] && finished)
+    {
+        [(id<GLPFinalNewEventAnimationHelperDelegate>) self.delegate goingForwardViewsDisappeared];
+    }
 }
 
 @end

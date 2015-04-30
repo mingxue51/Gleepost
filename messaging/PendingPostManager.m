@@ -130,6 +130,7 @@ static PendingPostManager *instance = nil;
 
 - (GLPPost *)getPendingPost
 {
+    self.pendingPollPost.group = _group;
     return self.pendingPollPost;
 }
 

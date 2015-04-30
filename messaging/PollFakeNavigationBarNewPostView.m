@@ -47,8 +47,8 @@
 
 - (void)configureConstants
 {
-    _maximumCharsForAnswer = 50;
-    _maximumCharsForQuestion = 50;
+    _maximumCharsForAnswer = 36;
+    _maximumCharsForQuestion = 144;
 }
 
 - (void)configureDictionaries

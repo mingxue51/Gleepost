@@ -22,6 +22,7 @@ typedef NS_ENUM(NSInteger, FinalNewPostViewElement) {
 
 @required
 - (void)goingBackViewsDisappeared;
+- (void)goingForwardViewsDisappeared;
 
 @end
 

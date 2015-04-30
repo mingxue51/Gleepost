@@ -131,8 +131,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     
     [self preparePositionsBeforeIntro:YES];
     
-    [self animateElementsAfterViewDidLoad];
-    
     [self configureNavigationBar];
     
     [self configureLabels];
@@ -165,6 +163,8 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 {
     [super viewDidAppear:animated];
     
+    [self animateElementsAfterViewDidLoad];
+
     [self setUpNotifications];
 
     [self formatStatusBar];
@@ -489,20 +489,20 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     }
 }
 
-- (void)animateElementsBeforeGoingBack
+- (void)animateElementsBeforeGoingBack:(BOOL)goingBack
 {
     if(self.isNewPoll)
     {
-        [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.mainView andKindOfElement:kMainElement];
+        [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.mainView andKindOfElement:kMainElement];
     }
     else
     {
-        [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.textFieldView andKindOfElement:kTextElement];
-        [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.addImageButton andKindOfElement:kImageElement];
-        [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.pendingImageView andKindOfElement:kImageElement];
-        [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.addVideoButton andKindOfElement:kVideoElement];
-        [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.addLocationButton andKindOfElement:kLocationElement];
-        [self.animationHelper viewGoingBack:YES disappearingAnimationWithView:self.optionalExtras andKindOfElement:kTitleElement];
+        [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.textFieldView andKindOfElement:kTextElement];
+        [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.addImageButton andKindOfElement:kImageElement];
+        [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.pendingImageView andKindOfElement:kImageElement];
+        [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.addVideoButton andKindOfElement:kVideoElement];
+        [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.addLocationButton andKindOfElement:kLocationElement];
+        [self.animationHelper viewGoingBack:goingBack disappearingAnimationWithView:self.optionalExtras andKindOfElement:kTitleElement];
         [self.animationHelper fadeView:self.backgroundImageView withAppearance:NO];
     }
 }
@@ -517,20 +517,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         {
             return;
         }
-        
-//        if(self.isNewPoll)
-//        {
-//            if([self tooShortData])
-//            {
-//                [WebClientHelper showTooShortDataMessageError];
-//                return;
-//            }
-//            
-//            if([self doesATextFieldExceedsTheLimitOfChars])
-//            {
-//                return;
-//            }
-//        }
 
         _postButttonClicked = YES;
         
@@ -592,7 +578,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         return;
     }
     
-    //TODO: Implementation pending.
     if([self tooShortData])
     {
         [WebClientHelper showTooShortDataMessageError];
@@ -606,12 +591,14 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     
     [[PendingPostManager sharedInstance] setPollPost:[self generatePollPostWithCurrentData]];
     
-    [self navigateToPickDateEventViewController];
+//    [self navigateToPickDateEventViewController];
+    [self animateElementsBeforeGoingBack:NO];
+
 }
 
 - (void)backButtonTapped
 {
-    [self animateElementsBeforeGoingBack];
+    [self animateElementsBeforeGoingBack:YES];
 }
 
 /**
@@ -709,7 +696,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (GLPPost *)createRegularPost
 {
-    GLPPost* inPost = nil;
+    GLPPost *inPost = nil;
     
     NSArray *eventCategories = [[PendingPostManager sharedInstance] categories];
     
@@ -856,6 +843,12 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 - (void)goingBackViewsDisappeared
 {
     [self.navigationController popViewControllerAnimated:NO];
+}
+
+- (void)goingForwardViewsDisappeared
+{
+    [self preparePositionsBeforeIntro:NO];
+    [self navigateToPickDateEventViewController];
 }
 
 #pragma mark - ImageSelectorViewControllerDelegate
