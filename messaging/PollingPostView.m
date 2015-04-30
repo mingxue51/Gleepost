@@ -42,8 +42,8 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
 - (void)registerCell
 {
     [self.tableView registerNib:[UINib nibWithNibName:@"GLPPollingOptionCell" bundle:nil] forCellReuseIdentifier:@"GLPPollingOptionCell"];
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
+//    self.tableView.delegate = self;
+//    self.tableView.dataSource = self;
 }
 
 - (void)registerNotifications
@@ -88,6 +88,8 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
 
 - (void)setPollData:(GLPPoll *)pollData withPostRemoteKey:(NSInteger)postRemoteKey
 {
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     self.pollData = pollData;
     self.postRemoteKey = postRemoteKey;
     [self.pollingDataView setPollData:pollData];
@@ -117,6 +119,11 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
     [self increaseVoteAndUnlockPollCellInOption:indexPath.row];
 }
 
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    DDLogDebug(@"PollingPostView : didDeselectRowAtIndexPath");
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [GLPPollingOptionCell height];
@@ -142,7 +149,25 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
 //    DDLogDebug(@"PollingPostView : percentage %f option %@ user did vote %d", optionPercentage, optionTitle, self.pollData.didUserVote);
     
     [cell setTitle:optionTitle withPercentage:optionPercentage withIndexRow:indexPath.row enable:self.pollData.didUserVote];
+    cell.delegate = self;
     return cell;
+}
+
+#pragma mark - GLPPollingOptionCellDelegate
+
+- (void)titleTouchedWithIndexRow:(NSInteger)indexRow
+{
+    if([self.pollData didUserVote])
+    {
+        DDLogDebug(@"PollingPostView : titleTouchedWithIndexRow user already voted %ld", (long)indexRow);
+        return;
+    }
+    
+    DDLogDebug(@"PollingPostView : titleTouchedWithIndexRow didn't voted yet %ld", (long)indexRow);
+    
+    
+    [[GLPPollOperationManager sharedInstance] voteWithPollRemoteKey:self.postRemoteKey andOption:indexRow];
+    [self increaseVoteAndUnlockPollCellInOption:indexRow];
 }
 
 #pragma mark - UI & Data methods
@@ -206,9 +231,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
 }
 
 + (CGFloat)getMaxTitleLabelWidth
-{
-    DDLogDebug(@"PollingPostView : max title width %f", [[UIScreen mainScreen] bounds].size.width - (24 * 2));
-    
+{    
     return [[UIScreen mainScreen] bounds].size.width - (24 * 2);
 }
 
