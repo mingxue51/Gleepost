@@ -36,12 +36,26 @@
 - (void)setTitle:(NSString *)title withPercentage:(CGFloat)percentage withIndexRow:(NSInteger)indexRow enable:(BOOL)enable
 {
     self.titleLabel.text = title;
+    self.titleLabel.tag = indexRow;
     self.percentageLabel.text = [NSString stringWithFormat:@"%ld%@", (long)(percentage * 100), @"%"];
     [self enabledMode:enable];
     [self configureProgressBarWithIndexRow:indexRow];
     
     [self.progressBar setProgress:percentage animated:NO];
     
+}
+
+- (void)configureGestures
+{
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(titleTouched:)];
+    
+    [self.titleLabel addGestureRecognizer:tapGesture];
+    
+}
+
+- (void)titleTouched:(UITapGestureRecognizer *)gesture
+{
+    [self.delegate titleTouchedWithIndexRow:gesture.view.tag];
 }
 
 - (void)enabledMode:(BOOL)enable

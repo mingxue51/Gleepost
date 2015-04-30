@@ -13,7 +13,7 @@
 #import "GLPPollOperationManager.h"
 #import "PollingDataView.h"
 
-@interface PollingPostView () <UITableViewDataSource, UITableViewDelegate>
+@interface PollingPostView () <UITableViewDataSource, UITableViewDelegate, GLPPollingOptionCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet PollingDataView *pollingDataView;
@@ -25,7 +25,7 @@
 
 const CGFloat POLLING_TWO_LINES_HEIGHT = 45.0;
 const CGFloat POLLING_ONE_LINE_HEIGHT = 20.0;
-const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0;
+const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
 
 @implementation PollingPostView
 
@@ -91,6 +91,11 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0;
     [self.pollingDataView setPollData:pollData];
     [self.tableView reloadData];
     [self.tableView setUserInteractionEnabled:YES];
+    
+    if([self.pollData didUserVote])
+    {
+        DDLogDebug(@"PollingPostView : user voted %@", self.pollData.options[0]);
+    }
 }
 
 #pragma mark - Table view delegate
@@ -132,7 +137,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0;
     GLPPollingOptionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"GLPPollingOptionCell" forIndexPath:indexPath];
     NSString *optionTitle = self.pollData.options[indexPath.row];
     CGFloat optionPercentage = [self.pollData voteInPercentageWithOption:optionTitle];
-    DDLogDebug(@"PollingPostView : percentage %f option %@ user did vote %d", optionPercentage, optionTitle, self.pollData.didUserVote);
+//    DDLogDebug(@"PollingPostView : percentage %f option %@ user did vote %d", optionPercentage, optionTitle, self.pollData.didUserVote);
     
     [cell setTitle:optionTitle withPercentage:optionPercentage withIndexRow:indexPath.row enable:self.pollData.didUserVote];
     return cell;
@@ -200,6 +205,8 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0;
 
 + (CGFloat)getMaxTitleLabelWidth
 {
+    DDLogDebug(@"PollingPostView : max title width %f", [[UIScreen mainScreen] bounds].size.width - (24 * 2));
+    
     return [[UIScreen mainScreen] bounds].size.width - (24 * 2);
 }
 
@@ -208,7 +215,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0;
 + (CGFloat)cellHeightWithPostData:(GLPPost *)postData
 {
     CGFloat finalHeight = POLLING_CELL_FIXED_HEIGHT + ([postData imagePost] ? 130.0 : 0) + postData.poll.options.count * [GLPPollingOptionCell height];
-    finalHeight += [PollingPostView getContentLabelSizeForContent:postData.eventTitle];
+    finalHeight += [PollingPostView getContentLabelSizeForContent:postData.content];
         
     return finalHeight;
 }

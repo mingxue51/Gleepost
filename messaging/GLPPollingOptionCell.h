@@ -8,7 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol GLPPollingOptionCellDelegate <NSObject>
+
+@required
+- (void)titleTouchedWithIndexRow:(NSInteger)indexRow;
+
+@end
+
 @interface GLPPollingOptionCell : UITableViewCell
+
+@property (assign, nonatomic) UIView<GLPPollingOptionCellDelegate> *delegate;
 
 - (void)setTitle:(NSString *)title withPercentage:(CGFloat)percentage withIndexRow:(NSInteger)indexRow enable:(BOOL)enable;
 
