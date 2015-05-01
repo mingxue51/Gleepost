@@ -682,41 +682,49 @@ ultimate question.</string>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="placeholder" value="Enter your question"/>
                                                 </userDefinedRuntimeAttributes>
                                             </textView>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pBz-Vk-MY9" userLabel="SelectedImageVIew">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="J9b-yR-k0L" userLabel="PollImageView">
                                                 <rect key="frame" x="490" y="4" width="68" height="68"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pBz-Vk-MY9" userLabel="SelectedImageVIew">
+                                                        <rect key="frame" x="0.0" y="0.0" width="68" height="68"/>
+                                                    </imageView>
+                                                    <imageView clipsSubviews="YES" alpha="0.29999999999999966" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="edT-JR-3aE" userLabel="CameraImageView">
+                                                        <rect key="frame" x="0.0" y="0.0" width="68" height="68"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </imageView>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" secondItem="pBz-Vk-MY9" secondAttribute="height" multiplier="1:1" id="BdX-7t-oDO"/>
+                                                    <constraint firstAttribute="trailing" secondItem="edT-JR-3aE" secondAttribute="trailing" id="6em-em-5eN"/>
+                                                    <constraint firstAttribute="bottom" secondItem="edT-JR-3aE" secondAttribute="bottom" id="ZGJ-I8-M18"/>
+                                                    <constraint firstItem="pBz-Vk-MY9" firstAttribute="top" secondItem="J9b-yR-k0L" secondAttribute="top" id="bnu-Dv-LlW"/>
+                                                    <constraint firstItem="edT-JR-3aE" firstAttribute="top" secondItem="J9b-yR-k0L" secondAttribute="top" id="jFP-ac-80u"/>
+                                                    <constraint firstItem="pBz-Vk-MY9" firstAttribute="leading" secondItem="J9b-yR-k0L" secondAttribute="leading" id="jV6-jU-Yp5"/>
+                                                    <constraint firstAttribute="width" secondItem="J9b-yR-k0L" secondAttribute="height" multiplier="1:1" id="oGh-Lk-eAf"/>
+                                                    <constraint firstAttribute="trailing" secondItem="pBz-Vk-MY9" secondAttribute="trailing" id="pSU-Cz-6G7"/>
+                                                    <constraint firstAttribute="bottom" secondItem="pBz-Vk-MY9" secondAttribute="bottom" id="ryj-RG-rQk"/>
+                                                    <constraint firstItem="edT-JR-3aE" firstAttribute="leading" secondItem="J9b-yR-k0L" secondAttribute="leading" id="yB8-er-fZr"/>
                                                 </constraints>
-                                            </imageView>
+                                            </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(optional)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sp9-CT-tdN">
                                                 <rect key="frame" x="490" y="77" width="72" height="12"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="10"/>
                                                 <color key="textColor" red="0.80000000000000004" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <imageView clipsSubviews="YES" alpha="0.29999999999999966" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="camera_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="edT-JR-3aE" userLabel="CameraImageView">
-                                                <rect key="frame" x="490" y="4" width="68" height="68"/>
-                                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" secondItem="edT-JR-3aE" secondAttribute="height" multiplier="1:1" id="01b-aA-22Q"/>
-                                                </constraints>
-                                            </imageView>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="Sp9-CT-tdN" firstAttribute="top" secondItem="pBz-Vk-MY9" secondAttribute="bottom" constant="5" id="7bQ-PQ-FHN"/>
-                                            <constraint firstAttribute="trailing" secondItem="edT-JR-3aE" secondAttribute="trailing" constant="4" id="9bB-3n-qdX"/>
+                                            <constraint firstItem="J9b-yR-k0L" firstAttribute="top" secondItem="V5T-ST-yZz" secondAttribute="top" constant="4" id="63c-95-x2u"/>
                                             <constraint firstItem="6I8-cp-LuU" firstAttribute="top" secondItem="V5T-ST-yZz" secondAttribute="top" constant="-5" id="C0Y-hu-2HK"/>
-                                            <constraint firstItem="edT-JR-3aE" firstAttribute="top" secondItem="V5T-ST-yZz" secondAttribute="top" constant="4" id="C4L-Vt-gR5"/>
                                             <constraint firstItem="6I8-cp-LuU" firstAttribute="leading" secondItem="V5T-ST-yZz" secondAttribute="leading" id="HoJ-2Z-cMz"/>
+                                            <constraint firstItem="J9b-yR-k0L" firstAttribute="height" secondItem="V5T-ST-yZz" secondAttribute="height" multiplier="0.65" id="HqF-gJ-4Af"/>
                                             <constraint firstAttribute="trailing" secondItem="Sp9-CT-tdN" secondAttribute="trailing" id="JnS-QM-g1b"/>
-                                            <constraint firstItem="edT-JR-3aE" firstAttribute="leading" secondItem="6I8-cp-LuU" secondAttribute="trailing" constant="5" id="abi-sa-zn3"/>
+                                            <constraint firstAttribute="trailing" secondItem="J9b-yR-k0L" secondAttribute="trailing" constant="4" id="Kha-Qx-ONa"/>
+                                            <constraint firstItem="Sp9-CT-tdN" firstAttribute="top" secondItem="J9b-yR-k0L" secondAttribute="bottom" constant="5" id="Wgf-ra-NdK"/>
                                             <constraint firstAttribute="bottom" secondItem="6I8-cp-LuU" secondAttribute="bottom" id="cdt-iS-V6l"/>
-                                            <constraint firstItem="pBz-Vk-MY9" firstAttribute="height" secondItem="V5T-ST-yZz" secondAttribute="height" multiplier="0.65" id="eqf-a3-kCr"/>
-                                            <constraint firstItem="pBz-Vk-MY9" firstAttribute="leading" secondItem="6I8-cp-LuU" secondAttribute="trailing" constant="5" id="nd1-Ht-BmA"/>
+                                            <constraint firstItem="J9b-yR-k0L" firstAttribute="leading" secondItem="6I8-cp-LuU" secondAttribute="trailing" constant="5" id="ff9-qy-zez"/>
                                             <constraint firstItem="Sp9-CT-tdN" firstAttribute="leading" secondItem="6I8-cp-LuU" secondAttribute="trailing" constant="5" id="qsJ-Y1-QDC"/>
-                                            <constraint firstAttribute="trailing" secondItem="pBz-Vk-MY9" secondAttribute="trailing" constant="4" id="u5j-5Y-aQP"/>
-                                            <constraint firstItem="pBz-Vk-MY9" firstAttribute="top" secondItem="V5T-ST-yZz" secondAttribute="top" constant="4" id="xbI-nb-WC8"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IOT-YY-XaB" userLabel="BottomView">
