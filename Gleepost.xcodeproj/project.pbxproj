@@ -39,6 +39,7 @@
 		5806C761191BFA5D005C907E /* fb_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C760191BFA5D005C907E /* fb_login.png */; };
 		5809FF0A1A40376400AF7912 /* GLPCLPostImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5809FF091A40376400AF7912 /* GLPCLPostImageLoader.m */; };
 		5809FF0D1A403F7000AF7912 /* GLPPostImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5809FF0C1A403F7000AF7912 /* GLPPostImageOperation.m */; };
+		580A6FC61AF393380005A147 /* GLPCampusWellTopView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580A6FC51AF393380005A147 /* GLPCampusWellTopView.xib */; };
 		580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */; };
 		580B8D3B1857A52E00A84E0E /* NotificationsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 580B8D3A1857A52E00A84E0E /* NotificationsView.m */; };
 		580B8D3D1857A57B00A84E0E /* NotificationsUIView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 580B8D3C1857A57B00A84E0E /* NotificationsUIView.xib */; };
@@ -1007,6 +1008,7 @@
 		5809FF091A40376400AF7912 /* GLPCLPostImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCLPostImageLoader.m; sourceTree = "<group>"; };
 		5809FF0B1A403F7000AF7912 /* GLPPostImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostImageOperation.h; sourceTree = "<group>"; };
 		5809FF0C1A403F7000AF7912 /* GLPPostImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostImageOperation.m; sourceTree = "<group>"; };
+		580A6FC51AF393380005A147 /* GLPCampusWellTopView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPCampusWellTopView.xib; sourceTree = "<group>"; };
 		580B8D2918577A0E00A84E0E /* GLPProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileViewController.h; sourceTree = "<group>"; };
 		580B8D2A18577A0E00A84E0E /* GLPProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPProfileViewController.m; sourceTree = "<group>"; };
 		580B8D3818579C2700A84E0E /* NSObject_ProfileEnums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSObject_ProfileEnums.h; sourceTree = "<group>"; };
@@ -4093,6 +4095,7 @@
 			children = (
 				58B3A2FD1A254F180082AE81 /* GLPPendingCell.xib */,
 				58B3A3071A25CBCE0082AE81 /* GLPCategoryTitleCell.xib */,
+				580A6FC51AF393380005A147 /* GLPCampusWellTopView.xib */,
 			);
 			name = "Campus Wall";
 			sourceTree = "<group>";
@@ -5831,6 +5834,7 @@
 				5851114219A83D9900488E79 /* progress_bar_cloud.png in Resources */,
 				58BEAB9E19BA793300A4F3F7 /* id-card-7@2x.png in Resources */,
 				582A664618AB9BC400006419 /* bar4_selected.png in Resources */,
+				580A6FC61AF393380005A147 /* GLPCampusWellTopView.xib in Resources */,
 				585EBB3418E30E7400BDAE81 /* add_members_bg.png in Resources */,
 				584AD53018576C5A006589BF /* in-contacts.png in Resources */,
 				58940FBC18D218F800FED5AF /* campus_live_cell_bg.png in Resources */,
