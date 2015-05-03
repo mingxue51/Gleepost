@@ -14,9 +14,18 @@
 
 @interface GLPCampusWallStretchedView ()
 
-@property (strong, nonatomic) UIFont *font;
+@property (strong, nonatomic) UIFont *topTitleFont;
+@property (strong, nonatomic) UIFont *dataViewNumberFont;
+@property (strong, nonatomic) UIFont *dataViewTextFont;
+
 @property (strong, nonatomic) UIView *dataView;
 @property (strong, nonatomic) UILabel *topLabel;
+
+@property (strong, nonatomic) UILabel *leftNumberLabel;
+@property (strong, nonatomic) UILabel *leftTextLabel;
+
+@property (strong, nonatomic) UILabel *centerNumberLabel;
+@property (strong, nonatomic) UILabel *centerTextLabel;
 
 @end
 
@@ -34,7 +43,7 @@ const float kCWStretchedImageHeight = 350;
         [super setColourOverlay:[[GLPThemeManager sharedInstance] tabbarSelectedColour]];
         [super setAlphaOverlay:0.8];
         [super setHeightOfTransImage:kCWStretchedImageHeight];
-        [self configureFont];
+        [self configureFonts];
         [self configureTopLabel];
         [self configureDataView];
     }
@@ -44,9 +53,11 @@ const float kCWStretchedImageHeight = 350;
 
 #pragma mark - Configuration
 
-- (void)configureFont
+- (void)configureFonts
 {
-    self.font = [UIFont fontWithName:@"HelveticaNeue" size:24.0];
+    self.topTitleFont = [UIFont fontWithName:@"HelveticaNeue" size:24.0];
+    self.dataViewNumberFont = [UIFont fontWithName:GLP_HELV_NEUE_MEDIUM size:21.0];
+    self.dataViewTextFont = [UIFont fontWithName:GLP_HELV_NEUE_MEDIUM size:16.0];
 }
 
 - (void)configureTopLabel
@@ -55,7 +66,7 @@ const float kCWStretchedImageHeight = 350;
     
     self.topLabel.center = CGPointMake([GLPiOSSupportHelper screenWidth] / 2, self.topLabel.center.y);
     
-    self.topLabel.font = self.font;
+    self.topLabel.font = self.topTitleFont;
     
     self.topLabel.textColor = [UIColor whiteColor];
     
@@ -72,16 +83,92 @@ const float kCWStretchedImageHeight = 350;
 {
     CGFloat topLabelBottomEdge = CGRectGetMaxY(self.topLabel.frame);
     
-    self.dataView = [[UIView alloc] initWithFrame:CGRectMake(0.0, topLabelBottomEdge + 50.0, [GLPiOSSupportHelper screenWidth], 22.0)];
+    self.dataView = [[UIView alloc] initWithFrame:CGRectMake(0.0, topLabelBottomEdge + 10.0, [GLPiOSSupportHelper screenWidth], 50.0)];
     
     self.dataView.center = CGPointMake([GLPiOSSupportHelper screenWidth] / 2, self.dataView.center.y);
     
-    self.dataView.backgroundColor = [UIColor whiteColor];
+    self.dataView.backgroundColor = [UIColor clearColor];
 
-    [self addSubview:self.dataView];
+    [self addLeftNumberLabelToDataViewWithX:self.topLabel.frame.origin.x - 30 andNumber:50];
     
+    [self addLeftTextLabelToDataViewWithX:CGRectGetMaxX(self.leftNumberLabel.frame) andText:@"parties"];
+    
+    [self addCenterNumberLabelToDataViewWithX:self.dataView.center.x - 55 andNumber:10];
+    
+    [self addCenterTextLabelToDataViewWithX:CGRectGetMaxX(self.centerNumberLabel.frame) andText:@"speakers"];
+    
+    [self addSubview:self.dataView];
 }
 
+- (void)addCenterNumberLabelToDataViewWithX:(CGFloat)x andNumber:(NSInteger)number
+{
+    CGRect dataViewFrame = self.dataView.frame;
+
+    self.centerNumberLabel = [self generateLabelForDataViewWithText:[NSString stringWithFormat:@"%ld", (long)number]];
+    
+    //TODO: The width should change dynamically (depending on text length).
+    
+    self.centerNumberLabel.frame = CGRectMake(x, 0.0, 30.0, dataViewFrame.size.height);
+    
+    self.centerNumberLabel.font = self.dataViewNumberFont;
+    
+    [self.dataView addSubview:self.centerNumberLabel];
+}
+
+- (void)addCenterTextLabelToDataViewWithX:(CGFloat)x andText:(NSString *)text
+{
+    CGRect dataViewFrame = self.dataView.frame;
+    
+    self.centerTextLabel = [self generateLabelForDataViewWithText:text];
+    
+    self.centerTextLabel.frame = CGRectMake(x, 8.0, 70.0, dataViewFrame.size.height - 10);
+    
+    self.centerTextLabel.font = self.dataViewTextFont;
+    
+    [self.dataView addSubview:self.centerTextLabel];
+}
+
+- (void)addLeftNumberLabelToDataViewWithX:(CGFloat)x andNumber:(NSInteger)number
+{
+    CGRect dataViewFrame = self.dataView.frame;
+    
+    self.leftNumberLabel = [self generateLabelForDataViewWithText:[NSString stringWithFormat:@"%ld", (long)number]];
+    
+    self.leftNumberLabel.frame = CGRectMake(x, 0.0, 30.0, dataViewFrame.size.height);
+    
+    self.leftNumberLabel.font = self.dataViewNumberFont;
+    
+    [self.dataView addSubview:self.leftNumberLabel];
+}
+
+- (void)addLeftTextLabelToDataViewWithX:(CGFloat)x andText:(NSString *)text
+{
+    CGRect dataViewFrame = self.dataView.frame;
+
+    self.leftTextLabel = [self generateLabelForDataViewWithText:text];
+    
+    self.leftTextLabel.frame = CGRectMake(x, 8.0, 55.0, dataViewFrame.size.height - 10);
+    
+    self.leftTextLabel.font = self.dataViewTextFont;
+    
+    [self.dataView addSubview:self.leftTextLabel];
+}
+
+
+- (UILabel *)generateLabelForDataViewWithText:(NSString *)text
+{
+    UILabel *label = [[UILabel alloc] init];
+    
+    label.text = text;
+    
+    label.backgroundColor = [UIColor clearColor];
+    
+    label.textAlignment = NSTextAlignmentCenter;
+    
+    label.textColor = [UIColor whiteColor];
+    
+    return label;
+}
 
 /*
 // Only override drawRect: if you perform custom drawing.
