@@ -1,19 +1,18 @@
 //
-//  GLPStretchedImageView.h
+//  GLPGroupStretchedImageView.h
 //  Gleepost
 //
-//  Created by Σιλουανός on 28/7/14.
-//  Copyright (c) 2014 Gleepost. All rights reserved.
+//  Created by Silouanos on 02/05/15.
+//  Copyright (c) 2015 Gleepost. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "GLPImageView.h"
 
-@interface GLPStretchedImageView : GLPImageView <GLPImageViewDelegate>
+@interface GLPStretchedImageView : GLPImageView<GLPImageViewDelegate>
 
-extern const float kStretchedImageHeight;
-
-- (void)setTextInTitle:(NSString *)text;
+- (void)configureTransparentImageView;
 - (void)setHeightOfTransImage:(float)height;
+- (void)setColourOverlay:(UIColor *)colourOverlay;
+- (void)setAlphaOverlay:(CGFloat)alpha;
 
 @end

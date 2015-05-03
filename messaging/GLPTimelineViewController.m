@@ -77,6 +77,7 @@
 #import "GLPCampusWallAsyncProcessor.h"
 #import "URBMediaFocusViewController.h"
 #import "GLPCategoryCell.h"
+#import "GLPCampusWallStretchedView.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate, GLPCategoriesViewControllerDelegate>
 
@@ -161,6 +162,8 @@
 
 @property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
+@property (strong, nonatomic) GLPCampusWallStretchedView *strechedImageView;
+
 @end
 
 
@@ -186,6 +189,8 @@ const float TOP_OFFSET = 180.0f;
 {
     [super viewDidLoad];
     
+    [self configureTopImageView];
+
     [self configTableView];
 
     [self configHeader];
@@ -718,6 +723,23 @@ const float TOP_OFFSET = 180.0f;
     [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
 }
 
+- (void)configureTopImageView
+{
+    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPCampusWallStretchedImageView" owner:self options:nil];
+    
+    _strechedImageView = [array objectAtIndex:0];
+    
+    _strechedImageView.frame = CGRectMake(0, -kCWStretchedImageHeight, [GLPiOSSupportHelper screenWidth], kCWStretchedImageHeight);
+    
+    [self.strechedImageView setImage:[UIImage imageNamed:@"campus_wall_header_back.jpg"]];
+    
+//    [_strechedImageView setTextInTitle:_group.name];
+    
+//    [_strechedImageView setViewControllerDelegate:self];
+    
+    [_strechedImageView setGesture:YES];
+}
+
 - (void)configTableView
 {
     //Register nib files in table view.
@@ -733,6 +755,11 @@ const float TOP_OFFSET = 180.0f;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostPollCell" bundle:nil] forCellReuseIdentifier:@"PollCell"];
 
+    [self.tableView setTableFooterView:[[UIView alloc] init]];
+    
+    self.tableView.contentInset = UIEdgeInsetsMake(240, 0, 0, 0);
+
+    [self.tableView addSubview:self.strechedImageView];
     
 //    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderScrollView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"CampusWallHeaderSimple"];
 
@@ -750,16 +777,27 @@ const float TOP_OFFSET = 180.0f;
 {
     //Load the header of the table view.
     
-    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"CampusWallHeaderScrollView" owner:self options:nil];
+//    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"CampusWallHeaderScrollView" owner:self options:nil];
+//    
+//    //Set delegate.
+//    self.campusWallHeader = [array objectAtIndex:0];
+//    [self.campusWallHeader formatElements];
+//    [self.campusWallHeader setDelegate:self];
+//    
+//    self.tableView.tableHeaderView = self.campusWallHeader;
+//    
+//    [self.campusWallHeader reloadData];
     
-    //Set delegate.
-    self.campusWallHeader = [array objectAtIndex:0];
-    [self.campusWallHeader formatElements];
-    [self.campusWallHeader setDelegate:self];
     
-    self.tableView.tableHeaderView = self.campusWallHeader;
+//    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPCampusWallTopView" owner:self options:nil];
+//    
+//    //Set delegate.
+//    
+//    self.tableView.tableHeaderView = [array objectAtIndex:0];
     
-    [self.campusWallHeader reloadData];
+
+    
+    
     [self.navigationController.navigationBar addSubview:[[GLPVideoPostCWProgressManager sharedInstance] progressView]];
 }
 
@@ -777,12 +815,18 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)configNavigationBar
 {
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
-    [self.navigationController.navigationBar setCampusWallFontFormat];
+//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+//    [self.navigationController.navigationBar setCampusWallFontFormat];
+    
+    [self.navigationController.navigationBar invisible];
+    
     //Set to all the application the status bar text white.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
     
-    self.navigationController.navigationBar.topItem.title = [[GLPThemeManager sharedInstance] campusWallTitle];
+    self.navigationController.navigationBar.topItem.title = @"";
+
+    
+//    self.navigationController.navigationBar.topItem.title = [[GLPThemeManager sharedInstance] campusWallTitle];
 }
 
 - (void)addNavigationButtons
@@ -1585,6 +1629,12 @@ const float TOP_OFFSET = 180.0f;
     self.lastContentOffset = currentOffset;
     
     
+    CGFloat yOffset  = scrollView.contentOffset.y;
+    
+    [self configureStrechedImageViewWithOffset:yOffset];
+    
+    
+    
 //    [self.reNavBar setFrame:CGRectMake(0.0f, scrollView.contentOffset.y, 320.0f, 50.0f)];
     
     
@@ -1733,7 +1783,20 @@ const float TOP_OFFSET = 180.0f;
     return YES;
 }
 
-
+- (void)configureStrechedImageViewWithOffset:(CGFloat)offset
+{
+    if (offset < -kCWStretchedImageHeight)
+    {
+        CGRect f = _strechedImageView.frame;
+        f.origin.y = offset;
+        f.size.height =  -offset;
+        _strechedImageView.frame = f;
+        
+        [_strechedImageView setHeightOfTransImage:-offset];
+        
+        //        CGRectSetY(_lbl, -yOffset/2);
+    }
+}
 
 #pragma mark - Hidden navigation bar
 

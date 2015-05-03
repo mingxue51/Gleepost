@@ -88,7 +88,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (strong, nonatomic) GLPStretchedImageView *strechedImageView;
+@property (strong, nonatomic) GLPGroupStretchedImageView *strechedImageView;
 
 @property (strong, nonatomic) FakeNavigationBarView *fakeNavigationBar;
 
@@ -268,7 +268,7 @@ const float TOP_OFF_SET = -64.0;
 
 - (void)configureTopImageView
 {
-    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPStretchedImageView" owner:self options:nil];
+    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPGroupStretchedImageView" owner:self options:nil];
     
     _strechedImageView = [array objectAtIndex:0];
     
