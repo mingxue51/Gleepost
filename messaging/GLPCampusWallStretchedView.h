@@ -8,8 +8,17 @@
 
 #import "GLPStretchedImageView.h"
 
+@protocol GLPCampusWallStretchedViewDelegate <GLPImageViewDelegate>
+
+@required
+- (void)takeALookTouched;
+
+@end
+
 @interface GLPCampusWallStretchedView : GLPStretchedImageView
 
 extern const float kCWStretchedImageHeight;
+
+@property (weak, nonatomic) UIViewController<GLPCampusWallStretchedViewDelegate> *delegate;
 
 @end

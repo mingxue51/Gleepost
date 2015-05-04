@@ -79,7 +79,7 @@
 #import "GLPCategoryCell.h"
 #import "GLPCampusWallStretchedView.h"
 
-@interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate, GLPCategoriesViewControllerDelegate>
+@interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate, GLPCategoriesViewControllerDelegate, GLPCampusWallStretchedViewDelegate>
 
 @property (strong, nonatomic) NSMutableArray *posts;
 @property (strong, nonatomic) GLPPost *selectedPost;
@@ -732,6 +732,8 @@ const float TOP_OFFSET = 180.0f;
     _strechedImageView.frame = CGRectMake(0, -kCWStretchedImageHeight, [GLPiOSSupportHelper screenWidth], kCWStretchedImageHeight);
     
     [self.strechedImageView setImage:[UIImage imageNamed:@"campus_wall_header_back.jpg"]];
+    
+    self.strechedImageView.delegate = self;
     
 //    [_strechedImageView setTextInTitle:_group.name];
     
@@ -2299,6 +2301,13 @@ const float TOP_OFFSET = 180.0f;
     [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
     
     self.isLoading = NO;
+}
+
+#pragma mark - GLPCampusWallStretchedViewDelegate
+
+- (void)takeALookTouched
+{
+    DDLogDebug(@"GLPTimelineViewController : Navigate to campus live");
 }
 
 #pragma mark - GLPCategoriesViewControllerDelegate
