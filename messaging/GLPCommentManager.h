@@ -13,4 +13,6 @@
 
 + (void)loadCommentsWithLocalCallback:(void (^)(NSArray *comments))localCallback remoteCallback:(void (^)(BOOL success, NSArray *comments))remoteCallback withPost:(GLPPost *)post;
 
++ (void)loadCommentsWithPost:(GLPPost *)post localCallback:(void (^)(NSArray *))localCallback remoteCallback:(void (^)(BOOL, NSArray *))remoteCallback;
+
 @end

@@ -2308,6 +2308,7 @@ const float TOP_OFFSET = 180.0f;
 - (void)takeALookTouched
 {
     DDLogDebug(@"GLPTimelineViewController : Navigate to campus live");
+    [self performSegueWithIdentifier:@"show campus live" sender:self];
 }
 
 #pragma mark - GLPCategoriesViewControllerDelegate

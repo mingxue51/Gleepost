@@ -705,7 +705,7 @@ static WebClient *instance = nil;
 
 - (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"posts/%d/comments", post.remoteKey];
+    NSString *path = [NSString stringWithFormat:@"posts/%ld/comments", (long)post.remoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];

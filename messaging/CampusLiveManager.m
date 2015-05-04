@@ -10,6 +10,12 @@
 #import "WebClient.h"
 #import "DateFormatterHelper.h"
 
+@interface CampusLiveManager ()
+
+@property (strong, nonatomic) NSArray *liveEventPosts;
+
+@end
+
 @implementation CampusLiveManager
 
 static CampusLiveManager *instance = nil;
@@ -23,6 +29,38 @@ static CampusLiveManager *instance = nil;
     });
     
     return instance;
+}
+
+#pragma mark - Accessors
+
+/**
+ Informs the manager that the GLPCampusLiveViewController needs the posts.
+ The manager loads posts and sends them to the GLPCampusLiveViewController (via NSNotification).
+ */
+- (void)getLiveEventPosts
+{
+    [self loadCurrentLivePostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
+       
+        if(success)
+        {
+            self.liveEventPosts = posts;
+        }
+        
+        [self notifyCampusLiveForNewPostsWithStatus:success];
+        
+    }];
+}
+
+#pragma mark - Posts accessors
+
+- (GLPPost *)eventPostAtIndex:(NSInteger)index
+{
+    return [self.liveEventPosts objectAtIndex:index];
+}
+
+- (NSInteger)eventsCount
+{
+    return self.liveEventPosts.count;
 }
 
 #pragma mark - Client
@@ -149,6 +187,13 @@ static CampusLiveManager *instance = nil;
     }
     
     return finalPosts;
+}
+
+#pragma mark - Notifications
+
+- (void)notifyCampusLiveForNewPostsWithStatus:(BOOL)status
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CAMPUS_LIVE_POSTS_FETCHED object:self userInfo:@{@"posts_loaded_status" : @(status)}];
 }
 
 

@@ -60,6 +60,11 @@ static GLPThemeManager *instance = nil;
     return [self.selectedTheme rightItemColouredImage:rightImage];
 }
 
+- (UIImage *)topItemColouredImage:(UIImage *)topImage
+{
+    return [self.selectedTheme topItemColouredImage:topImage];
+}
+
 - (UIColor *)navigationBarColour
 {
     return [self.selectedTheme navBarBackgroundColour];

@@ -16,6 +16,43 @@
         </mutableArray>
     </customFonts>
     <scenes>
+        <!--Campus Live View Controller-->
+        <scene sceneID="ZAp-fy-Z9f">
+            <objects>
+                <viewController id="wi3-fG-KRs" customClass="GLPCampusLiveViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Oo5-HY-NEU"/>
+                        <viewControllerLayoutGuide type="bottom" id="jGq-5X-Bof"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bW4-pQ-YuZ">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="c6C-YH-LiX">
+                                <rect key="frame" x="0.0" y="-64" width="600" height="551"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="wi3-fG-KRs" id="4Wz-S6-dGa"/>
+                                    <outlet property="delegate" destination="wi3-fG-KRs" id="b4A-GW-ft2"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="c6C-YH-LiX" firstAttribute="leading" secondItem="bW4-pQ-YuZ" secondAttribute="leading" id="ADo-Xb-ZEY"/>
+                            <constraint firstAttribute="trailing" secondItem="c6C-YH-LiX" secondAttribute="trailing" id="QKl-0N-Pue"/>
+                            <constraint firstItem="c6C-YH-LiX" firstAttribute="top" secondItem="Oo5-HY-NEU" secondAttribute="bottom" constant="-64" id="fWJ-DO-nCc"/>
+                            <constraint firstItem="jGq-5X-Bof" firstAttribute="top" secondItem="c6C-YH-LiX" secondAttribute="bottom" id="wpJ-0W-JHy"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="c6C-YH-LiX" id="U1T-oD-DaZ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ybF-fL-Ayk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1382" y="-2463"/>
+        </scene>
         <!--STANFORD WALL-->
         <scene sceneID="lmt-qG-jWu">
             <objects>
@@ -41,11 +78,12 @@
                         <segue destination="gby-Gq-HqZ" kind="show" identifier="show location" id="2GR-ci-jSQ"/>
                         <segue destination="chq-8F-SBT" kind="show" identifier="show attendees" id="j6r-TK-6Al"/>
                         <segue destination="TES-vz-sdt" kind="show" identifier="view pending posts" id="uQS-T5-9ib"/>
+                        <segue destination="wi3-fG-KRs" kind="show" identifier="show campus live" id="Ovq-eP-Rrm"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9g7-c9-ph7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1548" y="-1793"/>
+            <point key="canvasLocation" x="1382" y="-1794"/>
         </scene>
         <!--VIEW POST-->
         <scene sceneID="pNu-aO-Cie">
@@ -6623,24 +6661,24 @@
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="WK7-hw-eyD"/>
-        <segue reference="C5K-bl-yN1"/>
+        <segue reference="sMz-ia-ebt"/>
+        <segue reference="a3g-k4-yG4"/>
+        <segue reference="b0z-f7-UHU"/>
+        <segue reference="Th4-GT-P8f"/>
+        <segue reference="uet-Cl-mZq"/>
         <segue reference="jrG-R0-ySl"/>
         <segue reference="KTX-M6-QrM"/>
         <segue reference="KgO-oz-Ivb"/>
         <segue reference="X2Z-pC-dgW"/>
         <segue reference="TeO-Fd-Ort"/>
         <segue reference="6aM-BE-RDh"/>
+        <segue reference="2GR-ci-jSQ"/>
+        <segue reference="j6r-TK-6Al"/>
+        <segue reference="C5K-bl-yN1"/>
+        <segue reference="rCT-Ex-vO8"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="t02-Sh-BtB"/>
-        <segue reference="Ji2-Jv-WyQ"/>
-        <segue reference="J6b-Ty-4qO"/>
-        <segue reference="NkQ-j5-6rL"/>
-        <segue reference="Th4-GT-P8f"/>
-        <segue reference="b0z-f7-UHU"/>
-        <segue reference="NSy-Xb-H1O"/>
         <segue reference="PMB-JP-q3M"/>
-        <segue reference="sMz-ia-ebt"/>
-        <segue reference="a3g-k4-yG4"/>
+        <segue reference="NSy-Xb-H1O"/>
+        <segue reference="t02-Sh-BtB"/>
     </inferredMetricsTieBreakers>
 </document>

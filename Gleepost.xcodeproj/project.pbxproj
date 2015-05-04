@@ -230,6 +230,12 @@
 		5844293618BCDC6900DFEAF4 /* GLPCommentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293518BCDC6900DFEAF4 /* GLPCommentManager.m */; };
 		5844293918BCDCBD00DFEAF4 /* GLPCommentDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293818BCDCBD00DFEAF4 /* GLPCommentDao.m */; };
 		5844293C18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */; };
+		584514C71AF79C340061B877 /* CLPostTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584514C61AF79C340061B877 /* CLPostTableView.xib */; };
+		584514CB1AF79C7F0061B877 /* CLPostTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584514CA1AF79C7F0061B877 /* CLPostTableView.m */; };
+		584514CF1AF7D92B0061B877 /* GLPCommentsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 584514CE1AF7D92B0061B877 /* GLPCommentsManager.m */; };
+		584514D31AF7FC220061B877 /* CampusLiveTableViewTopView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584514D21AF7FC220061B877 /* CampusLiveTableViewTopView.xib */; };
+		584514D51AF7FFC90061B877 /* PostImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584514D41AF7FFC90061B877 /* PostImageView.xib */; };
+		584514D81AF8025F0061B877 /* CampusLiveTableViewTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584514D71AF8025F0061B877 /* CampusLiveTableViewTopView.m */; };
 		58451BF3199B26C2003B94D2 /* GLPSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58451BF2199B26C2003B94D2 /* GLPSettingsViewController.m */; };
 		58451BF6199B2D28003B94D2 /* SettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58451BF5199B2D28003B94D2 /* SettingCell.xib */; };
 		58451BFB199B2DCF003B94D2 /* SettingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58451BFA199B2DCF003B94D2 /* SettingCell.m */; };
@@ -663,6 +669,9 @@
 		58C1698F19C270C600F4C203 /* share.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C1698E19C270C600F4C203 /* share.png */; };
 		58C1699119C2781200F4C203 /* going_unpushed_back_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C1699019C2781200F4C203 /* going_unpushed_back_btn.png */; };
 		58C1E2D61ACFCEAE00A986F0 /* UINavigationBar+Animations.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C1E2D51ACFCEAE00A986F0 /* UINavigationBar+Animations.m */; };
+		58C341E71AF78A2E0075D15C /* GLPCampusLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C341E61AF78A2E0075D15C /* GLPCampusLiveViewController.m */; };
+		58C341EA1AF78BE70075D15C /* CampusLiveFakeNavigationBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C341E91AF78BE70075D15C /* CampusLiveFakeNavigationBarView.m */; };
+		58C341EC1AF78C1B0075D15C /* CampusLiveFakeNavigationBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58C341EB1AF78C1B0075D15C /* CampusLiveFakeNavigationBarView.xib */; };
 		58C45A74193C910A009FEE6E /* navigation_bar_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C45A73193C910A009FEE6E /* navigation_bar_new_post.png */; };
 		58C9E15719EC6A88008CB14A /* GLPConversationRead.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C9E15619EC6A88008CB14A /* GLPConversationRead.m */; };
 		58CB2728194B892800864C28 /* SKBounceAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58CB2726194B892800864C28 /* SKBounceAnimation.m */; };
@@ -1301,6 +1310,15 @@
 		5844293818BCDCBD00DFEAF4 /* GLPCommentDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommentDao.m; sourceTree = "<group>"; };
 		5844293A18BCE1EE00DFEAF4 /* GLPCommentDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCommentDaoParser.h; sourceTree = "<group>"; };
 		5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommentDaoParser.m; sourceTree = "<group>"; };
+		584514C61AF79C340061B877 /* CLPostTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CLPostTableView.xib; sourceTree = "<group>"; };
+		584514C91AF79C7F0061B877 /* CLPostTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLPostTableView.h; sourceTree = "<group>"; };
+		584514CA1AF79C7F0061B877 /* CLPostTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLPostTableView.m; sourceTree = "<group>"; };
+		584514CD1AF7D92B0061B877 /* GLPCommentsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCommentsManager.h; sourceTree = "<group>"; };
+		584514CE1AF7D92B0061B877 /* GLPCommentsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommentsManager.m; sourceTree = "<group>"; };
+		584514D21AF7FC220061B877 /* CampusLiveTableViewTopView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CampusLiveTableViewTopView.xib; sourceTree = "<group>"; };
+		584514D41AF7FFC90061B877 /* PostImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostImageView.xib; sourceTree = "<group>"; };
+		584514D61AF8025F0061B877 /* CampusLiveTableViewTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusLiveTableViewTopView.h; sourceTree = "<group>"; };
+		584514D71AF8025F0061B877 /* CampusLiveTableViewTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusLiveTableViewTopView.m; sourceTree = "<group>"; };
 		58451BF1199B26C2003B94D2 /* GLPSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSettingsViewController.h; sourceTree = "<group>"; };
 		58451BF2199B26C2003B94D2 /* GLPSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSettingsViewController.m; sourceTree = "<group>"; };
 		58451BF5199B2D28003B94D2 /* SettingCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingCell.xib; sourceTree = "<group>"; };
@@ -1913,6 +1931,11 @@
 		58C1699019C2781200F4C203 /* going_unpushed_back_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = going_unpushed_back_btn.png; sourceTree = "<group>"; };
 		58C1E2D41ACFCEAE00A986F0 /* UINavigationBar+Animations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Animations.h"; sourceTree = "<group>"; };
 		58C1E2D51ACFCEAE00A986F0 /* UINavigationBar+Animations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Animations.m"; sourceTree = "<group>"; };
+		58C341E51AF78A2E0075D15C /* GLPCampusLiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCampusLiveViewController.h; sourceTree = "<group>"; };
+		58C341E61AF78A2E0075D15C /* GLPCampusLiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCampusLiveViewController.m; sourceTree = "<group>"; };
+		58C341E81AF78BE70075D15C /* CampusLiveFakeNavigationBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusLiveFakeNavigationBarView.h; sourceTree = "<group>"; };
+		58C341E91AF78BE70075D15C /* CampusLiveFakeNavigationBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusLiveFakeNavigationBarView.m; sourceTree = "<group>"; };
+		58C341EB1AF78C1B0075D15C /* CampusLiveFakeNavigationBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CampusLiveFakeNavigationBarView.xib; sourceTree = "<group>"; };
 		58C45A73193C910A009FEE6E /* navigation_bar_new_post.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navigation_bar_new_post.png; sourceTree = "<group>"; };
 		58C9E15519EC6A88008CB14A /* GLPConversationRead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPConversationRead.h; sourceTree = "<group>"; };
 		58C9E15619EC6A88008CB14A /* GLPConversationRead.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPConversationRead.m; sourceTree = "<group>"; };
@@ -2952,6 +2975,37 @@
 			name = "Register Images";
 			sourceTree = "<group>";
 		};
+		584514C81AF79C640061B877 /* Campus Live */ = {
+			isa = PBXGroup;
+			children = (
+				584514C91AF79C7F0061B877 /* CLPostTableView.h */,
+				584514CA1AF79C7F0061B877 /* CLPostTableView.m */,
+				584514D61AF8025F0061B877 /* CampusLiveTableViewTopView.h */,
+				584514D71AF8025F0061B877 /* CampusLiveTableViewTopView.m */,
+			);
+			name = "Campus Live";
+			sourceTree = "<group>";
+		};
+		584514CC1AF7D91A0061B877 /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				584514CD1AF7D92B0061B877 /* GLPCommentsManager.h */,
+				584514CE1AF7D92B0061B877 /* GLPCommentsManager.m */,
+			);
+			name = Posts;
+			sourceTree = "<group>";
+		};
+		584514D11AF7FBF00061B877 /* Fake Navigation Bars */ = {
+			isa = PBXGroup;
+			children = (
+				58459FB419901B2E00E7D3C2 /* FakeNavigationBarView.xib */,
+				588C68871AD286D500E00F48 /* FakeNavigationBarNewPostView.xib */,
+				5825C3101AF0F50A000CC73B /* PollFakeNavigationBarNewPostView.xib */,
+				58C341EB1AF78C1B0075D15C /* CampusLiveFakeNavigationBarView.xib */,
+			);
+			name = "Fake Navigation Bars";
+			sourceTree = "<group>";
+		};
 		58451BF4199B2CD2003B94D2 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -2982,9 +3036,9 @@
 		58459FB319901B0F00E7D3C2 /* UIView */ = {
 			isa = PBXGroup;
 			children = (
-				58459FB419901B2E00E7D3C2 /* FakeNavigationBarView.xib */,
-				588C68871AD286D500E00F48 /* FakeNavigationBarNewPostView.xib */,
-				5825C3101AF0F50A000CC73B /* PollFakeNavigationBarNewPostView.xib */,
+				584514D11AF7FBF00061B877 /* Fake Navigation Bars */,
+				584514C61AF79C340061B877 /* CLPostTableView.xib */,
+				584514D21AF7FC220061B877 /* CampusLiveTableViewTopView.xib */,
 			);
 			name = UIView;
 			sourceTree = "<group>";
@@ -3373,6 +3427,7 @@
 				58E1E5E91926222F007ACB4F /* PostImageCell.xib */,
 				585AE267192B841900174CED /* PostVideoCell.xib */,
 				580C0DB31AE13E8800DA9522 /* PostPollCell.xib */,
+				584514D41AF7FFC90061B877 /* PostImageView.xib */,
 			);
 			name = Post;
 			sourceTree = "<group>";
@@ -3631,6 +3686,8 @@
 				5850203E1AD57C7500195520 /* GLPFNBPageController.m */,
 				5825C30D1AF0F194000CC73B /* PollFakeNavigationBarNewPostView.h */,
 				5825C30E1AF0F194000CC73B /* PollFakeNavigationBarNewPostView.m */,
+				58C341E81AF78BE70075D15C /* CampusLiveFakeNavigationBarView.h */,
+				58C341E91AF78BE70075D15C /* CampusLiveFakeNavigationBarView.m */,
 			);
 			name = "Fake Navigation Bar";
 			sourceTree = "<group>";
@@ -4381,6 +4438,7 @@
 		58D7ED141AB1C9AD0072FF25 /* UIViews */ = {
 			isa = PBXGroup;
 			children = (
+				584514C81AF79C640061B877 /* Campus Live */,
 				580A6FC71AF3EBA90005A147 /* Campus Wall */,
 				5890252A1AE54EA400A3104D /* Polling */,
 				588C68891AD2873000E00F48 /* Fake Navigation Bar */,
@@ -4805,6 +4863,8 @@
 				58273F191A26895C00425605 /* GLPPendingPostsViewController.m */,
 				5890D03E1A2AA7D10088C302 /* GLPViewPendingPostViewController.h */,
 				5890D03F1A2AA7D10088C302 /* GLPViewPendingPostViewController.m */,
+				58C341E51AF78A2E0075D15C /* GLPCampusLiveViewController.h */,
+				58C341E61AF78A2E0075D15C /* GLPCampusLiveViewController.m */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -5267,6 +5327,7 @@
 		80AB894A17C26EC10053E784 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				584514CC1AF7D91A0061B877 /* Posts */,
 				58D1C1271AE66AF20018A3A9 /* Polling */,
 				58BBD4241A937C0F00E2EBAC /* Conversation */,
 				58D70D551A85132C0023B478 /* Profile */,
@@ -5833,6 +5894,7 @@
 				58AB404B18AE45D000DEED31 /* theater_category_old.png in Resources */,
 				58AB404C18AE45D000DEED31 /* music_category_old.png in Resources */,
 				58F0F0C41934F9320032450F /* right_arrow_navigation.png in Resources */,
+				584514C71AF79C340061B877 /* CLPostTableView.xib in Resources */,
 				58BEABAA19BAB92D00A4F3F7 /* touch_to_pause.png in Resources */,
 				58C1698B19C26CF900F4C203 /* icon_like.png in Resources */,
 				58FD706B189001D70024E8A1 /* GLPCategoryCell.xib in Resources */,
@@ -5848,6 +5910,7 @@
 				586F9C4D198818E30093A946 /* DescriptionSegmentGroupCell.xib in Resources */,
 				5831930319B592EB000E86D7 /* AddressCell.xib in Resources */,
 				582A664118AB9BC400006419 /* bar3.png in Resources */,
+				584514D51AF7FFC90061B877 /* PostImageView.xib in Resources */,
 				58C45A74193C910A009FEE6E /* navigation_bar_new_post.png in Resources */,
 				584D208B1953472200E571DF /* GLPSegmentView.xib in Resources */,
 				589EAD2818A43A12005B2F4C /* campus_live_cell_bg_old.png in Resources */,
@@ -6181,6 +6244,7 @@
 				80C8BA48181019B1004F70DB /* yourchatbubble2.png in Resources */,
 				806E3D7A1832B1960063AACE /* NotificationBackgroundMessage.png in Resources */,
 				5828D7AD181E94FA002D71F9 /* userchangeimg.png in Resources */,
+				584514D31AF7FC220061B877 /* CampusLiveTableViewTopView.xib in Resources */,
 				585AE273192BF35600174CED /* man-7_old@2x.png in Resources */,
 				586E2236180FE58900C0FA03 /* password2.png in Resources */,
 				58E18B9A1945CF3E0029C764 /* golf.png in Resources */,
@@ -6237,6 +6301,7 @@
 				580C7ACE189863F6007495EE /* background_day.png in Resources */,
 				58A75FC019523BC80060060D /* MessageCell.xib in Resources */,
 				58902497195DCA0A00084E2F /* speaker_category.png in Resources */,
+				58C341EC1AF78C1B0075D15C /* CampusLiveFakeNavigationBarView.xib in Resources */,
 				583D582719290A36003FAEC7 /* separator_line.png in Resources */,
 				587F2E0219436773001F0931 /* verification_minimize.png in Resources */,
 				58D70D501A83C9C70023B478 /* back_final_new_old@2x.png in Resources */,
@@ -6478,6 +6543,7 @@
 				584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */,
 				806E3D871832B1960063AACE /* TSBlurView.m in Sources */,
 				5879235019E7926E007F3C20 /* GLPMember.m in Sources */,
+				58C341EA1AF78BE70075D15C /* CampusLiveFakeNavigationBarView.m in Sources */,
 				58615758193CAB13009BAD33 /* GLPWalkthoughDataViewController.m in Sources */,
 				584FA60419B51B2B00FBA61F /* GLPVideoLoaderManager.m in Sources */,
 				58808EF61806F58400E415C1 /* PopUpMessage.m in Sources */,
@@ -6531,6 +6597,7 @@
 				8087E430180EC02E00938264 /* Post.m in Sources */,
 				580FF15618AA74400026B65B /* CampusLiveManager.m in Sources */,
 				589025271AE5369E00A3104D /* GLPPollingOptionCell.m in Sources */,
+				58C341E71AF78A2E0075D15C /* GLPCampusLiveViewController.m in Sources */,
 				589EAD1B18A41B95005B2F4C /* SignUpFiveView.m in Sources */,
 				5850203C1AD5416800195520 /* GLPPickTimeAnimationHelper.m in Sources */,
 				58FD707A189042A20024E8A1 /* CampusWallHeaderSimpleView.m in Sources */,
@@ -6543,6 +6610,7 @@
 				58361C33184CAE8D00FEFC49 /* ReflectedImageView.m in Sources */,
 				586866E519B6B31900803512 /* GLPShowLocationViewController.m in Sources */,
 				582143D117FC59F50032ECEB /* TPKeyboardAvoidingTableView.m in Sources */,
+				584514CF1AF7D92B0061B877 /* GLPCommentsManager.m in Sources */,
 				585C514519227006000910DA /* VideoPreviewView.m in Sources */,
 				580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */,
 				80AB897417C28C640053E784 /* MessagesViewController.m in Sources */,
@@ -6665,6 +6733,7 @@
 				585106CE199D8635000F06BB /* FinalNewPostViewController.m in Sources */,
 				803FF9991897D932000B1955 /* GLPLoadingCellDelegate.m in Sources */,
 				5890252D1AE54EC500A3104D /* PollingDataView.m in Sources */,
+				584514CB1AF79C7F0061B877 /* CLPostTableView.m in Sources */,
 				5821278F1891627D00BF36E5 /* VSScrollView.m in Sources */,
 				58F562A51923A5ED00841918 /* GLPVideoUploader.m in Sources */,
 				582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
@@ -6693,6 +6762,7 @@
 				58877A60199A070700DAE461 /* UIView+RoudedCorners.m in Sources */,
 				587805AF1920E2CE0002472B /* AVCamRecorder.m in Sources */,
 				585EDAEB183106DC008D29F6 /* ImageFormatterHelper.m in Sources */,
+				584514D81AF8025F0061B877 /* CampusLiveTableViewTopView.m in Sources */,
 				58FD7069189001AA0024E8A1 /* GLPCategoryCell.m in Sources */,
 				80CE307D17CE5092003007D0 /* DateFormatterManager.m in Sources */,
 				58774D3919649C980034A1C6 /* UIImage+animatedGIF.m in Sources */,

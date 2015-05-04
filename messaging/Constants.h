@@ -94,6 +94,8 @@
 #define GLPNOTIFICATION_GROUPS_LOADED                   @"GLPGroupsLoaded"
 #define GLPNOTIFICATION_POST_IMAGE_LOADED               @"GLPPostImageLoaded"
 
+#define GLPNOTIFICATION_CAMPUS_LIVE_POSTS_FETCHED       @"GLPCampusLivePostsFetched"
+#define GLPNOTIFICATION_COMMENTS_FETCHED                @"GLPCommentsFetched"
 
 #define GLPNOTIFICATION_GROUPS_FECTHED_AFTER_QUERY      @"GLPGroupsFetchedAfterQuery"
 #define GLPNOTIFICATION_USER_GROUPS_LOADED              @"GLPUserGroupsLoaded"

@@ -27,3 +27,4 @@ pod "URBMediaFocusViewController"
 pod 'pop', '~> 1.0'
 pod 'FXBlurView'
 pod 'YLProgressBar', '~> 3.5.2'
+pod 'SwipeView'
