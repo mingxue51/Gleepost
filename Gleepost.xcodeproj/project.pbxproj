@@ -233,7 +233,6 @@
 		584514C71AF79C340061B877 /* CLPostTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584514C61AF79C340061B877 /* CLPostTableView.xib */; };
 		584514CB1AF79C7F0061B877 /* CLPostTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584514CA1AF79C7F0061B877 /* CLPostTableView.m */; };
 		584514CF1AF7D92B0061B877 /* GLPCommentsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 584514CE1AF7D92B0061B877 /* GLPCommentsManager.m */; };
-		584514D31AF7FC220061B877 /* CampusLiveTableViewTopView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584514D21AF7FC220061B877 /* CampusLiveTableViewTopView.xib */; };
 		584514D51AF7FFC90061B877 /* PostImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584514D41AF7FFC90061B877 /* PostImageView.xib */; };
 		584514D81AF8025F0061B877 /* CampusLiveTableViewTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584514D71AF8025F0061B877 /* CampusLiveTableViewTopView.m */; };
 		58451BF3199B26C2003B94D2 /* GLPSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58451BF2199B26C2003B94D2 /* GLPSettingsViewController.m */; };
@@ -1315,7 +1314,6 @@
 		584514CA1AF79C7F0061B877 /* CLPostTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLPostTableView.m; sourceTree = "<group>"; };
 		584514CD1AF7D92B0061B877 /* GLPCommentsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCommentsManager.h; sourceTree = "<group>"; };
 		584514CE1AF7D92B0061B877 /* GLPCommentsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommentsManager.m; sourceTree = "<group>"; };
-		584514D21AF7FC220061B877 /* CampusLiveTableViewTopView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CampusLiveTableViewTopView.xib; sourceTree = "<group>"; };
 		584514D41AF7FFC90061B877 /* PostImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostImageView.xib; sourceTree = "<group>"; };
 		584514D61AF8025F0061B877 /* CampusLiveTableViewTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusLiveTableViewTopView.h; sourceTree = "<group>"; };
 		584514D71AF8025F0061B877 /* CampusLiveTableViewTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusLiveTableViewTopView.m; sourceTree = "<group>"; };
@@ -3038,7 +3036,6 @@
 			children = (
 				584514D11AF7FBF00061B877 /* Fake Navigation Bars */,
 				584514C61AF79C340061B877 /* CLPostTableView.xib */,
-				584514D21AF7FC220061B877 /* CampusLiveTableViewTopView.xib */,
 			);
 			name = UIView;
 			sourceTree = "<group>";
@@ -6244,7 +6241,6 @@
 				80C8BA48181019B1004F70DB /* yourchatbubble2.png in Resources */,
 				806E3D7A1832B1960063AACE /* NotificationBackgroundMessage.png in Resources */,
 				5828D7AD181E94FA002D71F9 /* userchangeimg.png in Resources */,
-				584514D31AF7FC220061B877 /* CampusLiveTableViewTopView.xib in Resources */,
 				585AE273192BF35600174CED /* man-7_old@2x.png in Resources */,
 				586E2236180FE58900C0FA03 /* password2.png in Resources */,
 				58E18B9A1945CF3E0029C764 /* golf.png in Resources */,

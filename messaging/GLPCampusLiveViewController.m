@@ -24,6 +24,8 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (weak, nonatomic) IBOutlet CampusLiveTableViewTopView *topView;
+
 @end
 
 @implementation GLPCampusLiveViewController
@@ -36,21 +38,21 @@
     [self configureNotifications];
     [self loadLiveEventPosts];
     
+    [self configureTableView];
     //TODO: Load the header view.
 //    [self sizeHeaderToFit];
     
-    CampusLiveTableViewTopView *topView = [[NSBundle mainBundle] loadNibNamed:@"CampusLiveTableViewTopView" owner:self options:nil][0];
-//
+//    self.topView = [[NSBundle mainBundle] loadNibNamed:@"CampusLiveTableViewTopView" owner:self options:nil][0];
 
-    CGRectSetH(topView, 100);
-    
-    self.tableView.tableHeaderView = topView;
-    
-    
-//    [self sizeHeaderToFit];
     
    
 }
+
+- (void)configureTableView
+{
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostImageCell" bundle:nil] forCellReuseIdentifier:@"ImageCell"];
+}
+
 
 - (void)sizeHeaderToFit
 {
@@ -218,7 +220,7 @@
     //
     //    return 0;
 
-    return 10;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

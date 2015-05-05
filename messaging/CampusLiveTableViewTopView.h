@@ -10,6 +10,4 @@
 
 @interface CampusLiveTableViewTopView : UIView
 
-- (instancetype)initWithFrame:(CGRect)frame;
-
 @end
