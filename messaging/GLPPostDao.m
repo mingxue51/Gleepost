@@ -535,7 +535,7 @@
 {
     [localPosts removeObjectsInArray:remotePosts];
     
-    DDLogDebug(@"GLPPostDao : subtractRemotePosts %d : %d", remotePosts.count, localPosts.count);
+    DDLogDebug(@"GLPPostDao : subtractRemotePosts %lu : %lu", (unsigned long)remotePosts.count, (unsigned long)localPosts.count);
 
     if(localPosts.count == remotePosts.count)
     {

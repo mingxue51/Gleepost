@@ -35,8 +35,8 @@
     [super viewDidLoad];
     [self configureNavigationBar];
     [self configureSwipeView];
-    [self configureNotifications];
-    [self loadLiveEventPosts];
+//    [self configureNotifications];
+//    [self loadLiveEventPosts];
     
     [self configureTableView];
     //TODO: Load the header view.

@@ -46,10 +46,10 @@
                                     </subviews>
                                     <color key="backgroundColor" red="0.3411764706" green="0.85098039219999999" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
-                                        <constraint firstItem="Jno-Hc-PSZ" firstAttribute="top" secondItem="oph-M8-bdD" secondAttribute="top" id="8jx-4g-Eb7"/>
-                                        <constraint firstItem="Jno-Hc-PSZ" firstAttribute="leading" secondItem="oph-M8-bdD" secondAttribute="leading" id="Fzd-1c-06T"/>
-                                        <constraint firstAttribute="bottom" secondItem="Jno-Hc-PSZ" secondAttribute="bottom" id="fVe-Ba-te3"/>
-                                        <constraint firstAttribute="trailing" secondItem="Jno-Hc-PSZ" secondAttribute="trailing" id="vMp-F5-R8h"/>
+                                        <constraint firstItem="Jno-Hc-PSZ" firstAttribute="leading" secondItem="oph-M8-bdD" secondAttribute="leading" id="Xao-pe-i1k"/>
+                                        <constraint firstAttribute="trailing" secondItem="Jno-Hc-PSZ" secondAttribute="trailing" id="h63-3Q-kKI"/>
+                                        <constraint firstAttribute="bottom" secondItem="Jno-Hc-PSZ" secondAttribute="bottom" id="hd4-kW-32V"/>
+                                        <constraint firstItem="Jno-Hc-PSZ" firstAttribute="top" secondItem="oph-M8-bdD" secondAttribute="top" id="rWI-K1-L2Z"/>
                                     </constraints>
                                     <connections>
                                         <outlet property="swipeView" destination="Jno-Hc-PSZ" id="PaH-uI-Cjs"/>

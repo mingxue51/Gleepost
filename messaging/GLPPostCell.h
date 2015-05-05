@@ -65,4 +65,6 @@ extern const float TEXT_CELL_HEIGHT;
 
 - (void)deregisterNotificationsInVideoView;
 
+- (GLPPost *)viewPost;
+
 @end

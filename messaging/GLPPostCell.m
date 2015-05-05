@@ -113,6 +113,11 @@ const float ONE_LINE_LIMIT = 18.0;
 //    [ShapeFormatterHelper setBorderToView:_topView withColour:[UIColor blackColor]];
 }
 
+- (GLPPost *)viewPost
+{
+    return self.post;
+}
+
 - (void)deregisterNotificationsInVideoView
 {
     [_mainView deregisterNotificationsForVideoView];

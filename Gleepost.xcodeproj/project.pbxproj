@@ -424,6 +424,7 @@
 		587805B01920E2CE0002472B /* AVCamUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 587805AA1920E2CE0002472B /* AVCamUtilities.m */; };
 		587805B11920E2CE0002472B /* CaptureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 587805AC1920E2CE0002472B /* CaptureManager.m */; };
 		587805B21920E2CE0002472B /* KZCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 587805AE1920E2CE0002472B /* KZCameraView.m */; };
+		58784B921AF8EB3E0031C3F4 /* CLPostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58784B911AF8EB3E0031C3F4 /* CLPostView.m */; };
 		5879234D19E76920007F3C20 /* more_member.png in Resources */ = {isa = PBXBuildFile; fileRef = 5879234C19E76920007F3C20 /* more_member.png */; };
 		5879235019E7926E007F3C20 /* GLPMember.m in Sources */ = {isa = PBXBuildFile; fileRef = 5879234F19E7926E007F3C20 /* GLPMember.m */; };
 		5879AC82196435C40053262A /* GLPCheckNameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5879AC81196435C40053262A /* GLPCheckNameCell.m */; };
@@ -1586,6 +1587,8 @@
 		587805AC1920E2CE0002472B /* CaptureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CaptureManager.m; sourceTree = "<group>"; };
 		587805AD1920E2CE0002472B /* KZCameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KZCameraView.h; sourceTree = "<group>"; };
 		587805AE1920E2CE0002472B /* KZCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KZCameraView.m; sourceTree = "<group>"; };
+		58784B901AF8EB3E0031C3F4 /* CLPostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLPostView.h; sourceTree = "<group>"; };
+		58784B911AF8EB3E0031C3F4 /* CLPostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLPostView.m; sourceTree = "<group>"; };
 		5879234C19E76920007F3C20 /* more_member.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = more_member.png; sourceTree = "<group>"; };
 		5879234E19E7926E007F3C20 /* GLPMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPMember.h; sourceTree = "<group>"; };
 		5879234F19E7926E007F3C20 /* GLPMember.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMember.m; sourceTree = "<group>"; };
@@ -2980,6 +2983,8 @@
 				584514CA1AF79C7F0061B877 /* CLPostTableView.m */,
 				584514D61AF8025F0061B877 /* CampusLiveTableViewTopView.h */,
 				584514D71AF8025F0061B877 /* CampusLiveTableViewTopView.m */,
+				58784B901AF8EB3E0031C3F4 /* CLPostView.h */,
+				58784B911AF8EB3E0031C3F4 /* CLPostView.m */,
 			);
 			name = "Campus Live";
 			sourceTree = "<group>";
@@ -6609,6 +6614,7 @@
 				584514CF1AF7D92B0061B877 /* GLPCommentsManager.m in Sources */,
 				585C514519227006000910DA /* VideoPreviewView.m in Sources */,
 				580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */,
+				58784B921AF8EB3E0031C3F4 /* CLPostView.m in Sources */,
 				80AB897417C28C640053E784 /* MessagesViewController.m in Sources */,
 				8087E439180EEAAA00938264 /* _GLPUser.m in Sources */,
 				58428E4918A2AE1900B82E4B /* SignUpOneView.m in Sources */,

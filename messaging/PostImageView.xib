@@ -504,6 +504,26 @@
             </connections>
             <point key="canvasLocation" x="-791" y="-85"/>
         </tableViewCell>
+        <view contentMode="scaleToFill" id="kLC-Br-XgS">
+            <rect key="frame" x="0.0" y="0.0" width="296" height="456"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="qoS-zF-gmC">
+                    <rect key="frame" x="15" y="0.0" width="271" height="456"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="separatorColor" red="0.066666666669999999" green="0.066666666669999999" blue="0.066666666669999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="qoS-zF-gmC" firstAttribute="leading" secondItem="kLC-Br-XgS" secondAttribute="leading" constant="15" id="KEx-oZ-tXL"/>
+                <constraint firstAttribute="trailing" secondItem="qoS-zF-gmC" secondAttribute="trailing" constant="10" id="LtA-BD-4lm"/>
+                <constraint firstItem="qoS-zF-gmC" firstAttribute="top" secondItem="kLC-Br-XgS" secondAttribute="top" id="aWK-tr-w8A"/>
+                <constraint firstAttribute="bottom" secondItem="qoS-zF-gmC" secondAttribute="bottom" id="fsQ-qC-Ivc"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="81" y="257"/>
+        </view>
     </objects>
     <resources>
         <image name="going_pushed_back_btn.png" width="145" height="73"/>
