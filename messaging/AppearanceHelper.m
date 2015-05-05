@@ -243,12 +243,16 @@
 
 + (UIColor *)firstAutoColour
 {
-    return [UIColor colorWithR:241 withG:91 andB:104];
+    //218,46,53
+    //old 241, 91, 104
+    return [UIColor colorWithR:218 withG:46 andB:53];
 }
 
 + (UIColor *)secondAutoColour
 {
-    return [UIColor colorWithR:52 withG:152 andB:218];
+    //58,182,151
+    //old 52, 152, 2182
+    return [UIColor colorWithR:58 withG:182 andB:151];
 }
 
 + (UIColor *)thirdAutoColour

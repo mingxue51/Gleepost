@@ -34,9 +34,9 @@ NSString *CAMPUS_WALL_TITLE = @"STANFORD WALL";
 {
     _primaryColour = [AppearanceHelper firstAutoColour];
     _leftNavBarElementColour =[AppearanceHelper secondAutoColour];
-    _rightNavBarElementColour = [AppearanceHelper thirdAutoColour];
+    _rightNavBarElementColour = [AppearanceHelper secondAutoColour];
     _navBarBackgroundColour = [AppearanceHelper fourthAutoColour];
-    _campusWallTitleColour = [AppearanceHelper fifthAutoColour];
+    _campusWallTitleColour = [AppearanceHelper firstAutoColour];
     _generalNavBarTitleColour = [AppearanceHelper sixthAutoColour];
 }
 
