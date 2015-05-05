@@ -8,6 +8,7 @@
 
 #import "ChangeGroupImageProgressView.h"
 #import "AppearanceHelper.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface ChangeGroupImageProgressView ()
 
@@ -52,7 +53,7 @@ const NSString *DATA_EXPECTED_GROUP_IMG = @"data_expected";
     
     CGRectSetY(self, 0.0);
     
-    CGRectSetW(self, 320);
+    CGRectSetW(self, [GLPiOSSupportHelper screenWidth]);
 }
 
 - (void)configureNotifications
