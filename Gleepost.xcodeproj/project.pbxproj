@@ -687,6 +687,7 @@
 		58D0E51E18D10CE9004DF10D /* GLPMemberDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D0E51D18D10CE9004DF10D /* GLPMemberDaoParser.m */; };
 		58D0E52118D10E98004DF10D /* GLPMemberDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D0E52018D10E98004DF10D /* GLPMemberDao.m */; };
 		58D113D618857D3A00C6B953 /* GLPPostImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D113D518857D3A00C6B953 /* GLPPostImageLoader.m */; };
+		58D165141AFA5DAA00C4622D /* CLPostTimeLocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D165131AFA5DAA00C4622D /* CLPostTimeLocationView.m */; };
 		58D19D9418C7668000CB13CC /* CreateGroupCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58D19D9318C7668000CB13CC /* CreateGroupCell.xib */; };
 		58D19D9618C766C000CB13CC /* create_new_group.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D19D9518C766C000CB13CC /* create_new_group.png */; };
 		58D1C12A1AE66B070018A3A9 /* GLPPollOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D1C1291AE66B070018A3A9 /* GLPPollOperationManager.m */; };
@@ -1960,6 +1961,8 @@
 		58D0E52018D10E98004DF10D /* GLPMemberDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMemberDao.m; sourceTree = "<group>"; };
 		58D113D418857D3A00C6B953 /* GLPPostImageLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostImageLoader.h; sourceTree = "<group>"; };
 		58D113D518857D3A00C6B953 /* GLPPostImageLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostImageLoader.m; sourceTree = "<group>"; };
+		58D165121AFA5DAA00C4622D /* CLPostTimeLocationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLPostTimeLocationView.h; sourceTree = "<group>"; };
+		58D165131AFA5DAA00C4622D /* CLPostTimeLocationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLPostTimeLocationView.m; sourceTree = "<group>"; };
 		58D19D9318C7668000CB13CC /* CreateGroupCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateGroupCell.xib; sourceTree = "<group>"; };
 		58D19D9518C766C000CB13CC /* create_new_group.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = create_new_group.png; sourceTree = "<group>"; };
 		58D1C1281AE66B070018A3A9 /* GLPPollOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPollOperationManager.h; sourceTree = "<group>"; };
@@ -2985,6 +2988,8 @@
 				584514D71AF8025F0061B877 /* CampusLiveTableViewTopView.m */,
 				58784B901AF8EB3E0031C3F4 /* CLPostView.h */,
 				58784B911AF8EB3E0031C3F4 /* CLPostView.m */,
+				58D165121AFA5DAA00C4622D /* CLPostTimeLocationView.h */,
+				58D165131AFA5DAA00C4622D /* CLPostTimeLocationView.m */,
 			);
 			name = "Campus Live";
 			sourceTree = "<group>";
@@ -6474,6 +6479,7 @@
 				58E1E5F11926285E007ACB4F /* MainPostView.m in Sources */,
 				58E26BF61AF546D400730C27 /* GLPCampusWallStretchedView.m in Sources */,
 				80B2A41F18337D8B002AB1F0 /* GLPNotification.m in Sources */,
+				58D165141AFA5DAA00C4622D /* CLPostTimeLocationView.m in Sources */,
 				5841316017FF0B4900A3278D /* ChatPanelView.m in Sources */,
 				58D3D731182ACC5400DE2925 /* ViewPostImageViewController.m in Sources */,
 				58065F8F19BFE55500892B6B /* GLPViewImageViewController.m in Sources */,

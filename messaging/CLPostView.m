@@ -5,9 +5,19 @@
 //  Created by Silouanos on 05/05/15.
 //  Copyright (c) 2015 Gleepost. All rights reserved.
 //
+//  This class represents the post cell view in the CampusLiveTableViewTopView class.
 
 #import "CLPostView.h"
 #import "GLPiOSSupportHelper.h"
+#import "GLPPost.h"
+
+@interface CLPostView ()
+
+@property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
+
+@property (strong, nonatomic) GLPPost *post;
+
+@end
 
 @implementation CLPostView
 
@@ -17,12 +27,41 @@
     
     if(self)
     {
-        DDLogDebug(@"CLPostView : initWithCoder");
-        
-        self.frame = CGRectMake(0.0, 0.0, [GLPiOSSupportHelper screenWidth], [GLPiOSSupportHelper screenHeight] - 64 - 49);
+        self.frame = CGRectMake(0.0, 0.0, [GLPiOSSupportHelper screenWidth] * 0.91, [GLPiOSSupportHelper screenHeight] * 0.72);
+        [self configureNotifications];
+
     }
     
     return self;
+}
+
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+}
+
+- (void)configureNotifications
+{
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notify:) name:@"GLPNotificationCatched" object:nil];
+}
+
+- (void)notify:(NSNotification *)notification
+{
+    DDLogDebug(@"CLPostView : notify post %@", self.post.eventTitle);
+}
+
+- (void)setPost:(GLPPost *)post
+{
+    _post = post;
+    self.eventTitleLabel.text = post.eventTitle;
+}
+
+#pragma mark - Selectors
+
+- (IBAction)moreOptions:(id)sender
+{
+    
 }
 
 /*

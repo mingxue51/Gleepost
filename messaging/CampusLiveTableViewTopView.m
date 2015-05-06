@@ -10,8 +10,8 @@
 #import "GLPiOSSupportHelper.h"
 #import "SwipeView.h"
 #import "CampusLiveManager.h"
-#import "GLPPostCell.h"
-#import "CLPostTableView.h"
+#import "CLPostView.h"
+#import "GLPPost.h"
 
 @interface CampusLiveTableViewTopView ()
 
@@ -28,8 +28,6 @@
     self = [super initWithCoder:coder];
     if (self) {
         
-        DDLogDebug(@"CampusLiveTableViewTopView : init with coder");
-
     }
     return self;
 }
@@ -47,10 +45,7 @@
     self.swipeView.alignment = SwipeViewAlignmentCenter;
     self.swipeView.pagingEnabled = YES;
     self.swipeView.itemsPerPage = 1;
-    
-//    CGFloat newContentOffsetX = (self.swipeView.frame.size.width/2) - (self.swipeView.bounds.size.width/2);
-//    
-//    self
+    self.swipeView.defersItemViewLoading = YES;
 
     [self.swipeView scrollToItemAtIndex:1 duration:0.0];
     [self.swipeView scrollToItemAtIndex:0 duration:0.0];
@@ -96,54 +91,9 @@
 
 - (void)swipeViewCurrentItemIndexDidChange:(SwipeView *)swipeView
 {
-    DDLogDebug(@"swipeViewCurrentItemIndexDidChange %ld %ld - %@", swipeView.currentItemIndex, swipeView.currentItemView.tag, swipeView.indexesForVisibleItems);
-    
-    //TODO: Here we need to just reload data on the CLPostTableView. (to focus on the first cell).
-//    [(GLPPostCell *)swipeView.currentItemView setPost:[[CampusLiveManager sharedInstance] eventPostAtIndex:swipeView.currentItemIndex]];
-    
-//    GLPPost *post = [[CampusLiveManager sharedInstance] eventPostAtIndex:swipeView.currentItemIndex];
-//    [(GLPPostCell *)swipeView.currentItemView setPost:post withPostIndexPath:[NSIndexPath indexPathForRow:swipeView.currentItemIndex inSection:0]];
-    
-//    CGFloat height = [GLPPostCell getCellHeightWithContent:post cellType:kImageCell isViewPost:NO];
-    
-    
-    
-}
-
-- (void)swipeViewDidScroll:(SwipeView *)swipeView
-{
-    DDLogDebug(@"swipeViewDidScroll visibles %@ %@", swipeView.indexesForVisibleItems, self.lastVisibleCells);
-    
-    if(!self.lastVisibleCells)
-    {
-        self.lastVisibleCells = swipeView.indexesForVisibleItems.mutableCopy;
-        
-
-    }
-    
-    DDLogDebug(@"swipeViewCurrentItemIndexDidChange views %@", swipeView.visibleItemViews);
-
-    
-//    for(NSNumber *visibleIndex in swipeView.indexesForVisibleItems)
-//    {
-//        GLPPost *post = [[CampusLiveManager sharedInstance] eventPostAtIndex:[visibleIndex integerValue]];
-//        
-//        
-//        if(post.remoteKey == [(GLPPostCell *)swipeView.currentItemView viewPost].remoteKey)
-//        {
-//            DDLogDebug(@"-> post found");
-//            
-//            continue;
-//        }
-//
-//        [(GLPPostCell *)swipeView.currentItemView setPost:post withPostIndexPath:[NSIndexPath indexPathForRow:[visibleIndex integerValue] inSection:0]];
-//    }
-    
-//    DDLogDebug(@"Left %@", [self newIndexesWithCurrentIndexes:swipeView.indexesForVisibleItems]);
-    
-    self.lastVisibleCells = swipeView.indexesForVisibleItems.mutableCopy;
-    
-
+    [self setPostToItemViewWithIndex:swipeView.currentItemIndex];
+    [self addDataToTheNextViewWithCurrentIndex:swipeView.currentItemIndex];
+    [self addDataToThePreviousViewWithCurrentIndex:swipeView.currentItemIndex];
 }
 
 - (NSArray *)newIndexesWithCurrentIndexes:(NSArray *)indexes
@@ -154,24 +104,6 @@
     
     return array;
 }
-
-
-//- (CGSize)swipeViewItemSize:(SwipeView *)swipeView
-//{
-//    if([[CampusLiveManager sharedInstance] eventsCount] == 0)
-//    {
-//        return CGSizeMake(0.0, 0.0);
-//    }
-//    
-//    GLPPost *post = [[CampusLiveManager sharedInstance] eventPostAtIndex:swipeView.currentItemIndex];
-//
-//    CGFloat height = [GLPPostCell getCellHeightWithContent:post cellType:kImageCell isViewPost:NO];
-//    
-//    DDLogDebug(@"CampusLiveTableViewTopView : index %ld height %f", swipeView.currentItemIndex, height);
-//    
-//    return CGSizeMake([GLPiOSSupportHelper screenWidth] * 0.91, 300.0);
-//    
-//}
 
 #pragma mark - SwipeViewDataSource
 
@@ -188,21 +120,52 @@
 
         view.tag = index;
         
-        GLPPost *post = [[CampusLiveManager sharedInstance] eventPostAtIndex:swipeView.currentItemIndex];
+        GLPPost *post = [[CampusLiveManager sharedInstance] eventPostAtIndex:index];
 
-//        [(CLPostTableView *)swipeView.currentItemView setPost:post];
-
-        
-        
-
-        
-//        [(GLPPostCell *)swipeView.currentItemView setPost:post withPostIndexPath:[NSIndexPath indexPathForRow:swipeView.currentItemIndex inSection:0]];
+        [(CLPostView *)view setPost:post];
     }
-    
     
     return view;
 }
 
+/**
+ Reloads the next view.
+ */
+- (void)addDataToTheNextViewWithCurrentIndex:(NSInteger)currentIndex
+{
+    if(currentIndex == [[CampusLiveManager sharedInstance] eventsCount] - 1)
+    {
+        DDLogDebug(@"CampusLiveTableViewTopView : reached last post abort");
+        
+        return;
+    }
+    
+    [self setPostToItemViewWithIndex:currentIndex + 1];
+
+}
+
+/**
+ Reloads the previous view.
+ */
+- (void)addDataToThePreviousViewWithCurrentIndex:(NSInteger)currentIndex
+{
+    if(currentIndex == 0)
+    {
+        return;
+    }
+    
+    [self setPostToItemViewWithIndex:currentIndex - 1];
+
+}
+
+- (void)setPostToItemViewWithIndex:(NSInteger)index
+{
+    GLPPost *post = [[CampusLiveManager sharedInstance] eventPostAtIndex:index];
+    
+    CLPostView *itemView = (CLPostView *)[self.swipeView itemViewAtIndex:index];
+    
+    [itemView setPost:post];
+}
 
 /*
 // Only override drawRect: if you perform custom drawing.

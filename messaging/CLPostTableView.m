@@ -5,6 +5,7 @@
 //  Created by Silouanos on 04/05/15.
 //  Copyright (c) 2015 Gleepost. All rights reserved.
 //
+//  Not used. To be removed.
 
 #import "CLPostTableView.h"
 #import "GLPiOSSupportHelper.h"
