@@ -10,10 +10,12 @@
 #import "CLPostView.h"
 #import "GLPiOSSupportHelper.h"
 #import "GLPPost.h"
+#import "CLPostTimeLocationView.h"
 
 @interface CLPostView ()
 
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
+@property (weak, nonatomic) IBOutlet CLPostTimeLocationView *timeLocationView;
 
 @property (strong, nonatomic) GLPPost *post;
 
@@ -55,6 +57,8 @@
 {
     _post = post;
     self.eventTitleLabel.text = post.eventTitle;
+    
+    [self.timeLocationView setLocation:post.location andTime:post.dateEventStarts];
 }
 
 #pragma mark - Selectors
@@ -62,6 +66,13 @@
 - (IBAction)moreOptions:(id)sender
 {
     
+}
+
+#pragma mark - Static
+
++ (CGFloat)width
+{
+    return [GLPiOSSupportHelper screenWidth] * 0.91;
 }
 
 /*

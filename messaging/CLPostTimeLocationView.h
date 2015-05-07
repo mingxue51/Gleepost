@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@class GLPLocation;
+
 @interface CLPostTimeLocationView : UIView
+
+- (void)setLocation:(GLPLocation *)location andTime:(NSDate *)time;
 
 @end

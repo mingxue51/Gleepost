@@ -521,24 +521,64 @@
                     </constraints>
                 </view>
                 <view alpha="0.49999999999999961" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bLr-3k-lHa" customClass="CLPostTimeLocationView">
-                    <rect key="frame" x="15" y="78" width="146" height="20"/>
+                    <rect key="frame" x="15" y="78" width="260" height="20"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock_icon" translatesAutoresizingMaskIntoConstraints="NO" id="AcA-Hr-XWF">
-                            <rect key="frame" x="20" y="0.0" width="20" height="20"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today at 5pm" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1dK-Yq-wqV">
+                            <rect key="frame" x="41" y="0.0" width="77" height="20"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="20" id="5ta-Ut-ZZx"/>
-                                <constraint firstAttribute="height" constant="20" id="oYe-U7-ezA"/>
+                                <constraint firstAttribute="width" constant="77" id="rPA-PD-Bif"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock_icon" translatesAutoresizingMaskIntoConstraints="NO" id="AcA-Hr-XWF">
+                            <rect key="frame" x="20" y="3" width="14" height="14"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="AcA-Hr-XWF" secondAttribute="height" multiplier="1:1" id="OlS-0v-Twd"/>
                             </constraints>
                         </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="location_icon" translatesAutoresizingMaskIntoConstraints="NO" id="cKO-va-aBy">
+                            <rect key="frame" x="143" y="3" width="14" height="14"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="cKO-va-aBy" secondAttribute="height" multiplier="1:1" id="5Se-RO-1M9"/>
+                            </constraints>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cEZ-2e-60Y">
+                            <rect key="frame" x="162" y="0.0" width="77" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="77" id="Z0o-0D-0Wr"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
+                            <state key="normal" title="Button">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="20" id="7g8-hr-g7a"/>
                         <constraint firstItem="AcA-Hr-XWF" firstAttribute="leading" secondItem="bLr-3k-lHa" secondAttribute="leading" constant="20" id="9hg-sT-F03"/>
-                        <constraint firstItem="AcA-Hr-XWF" firstAttribute="top" secondItem="bLr-3k-lHa" secondAttribute="top" id="qtj-BB-BtF"/>
-                        <constraint firstAttribute="width" constant="146" id="wlR-hU-jea"/>
+                        <constraint firstAttribute="bottom" secondItem="cKO-va-aBy" secondAttribute="bottom" constant="3" id="EuQ-xa-u31"/>
+                        <constraint firstItem="1dK-Yq-wqV" firstAttribute="top" secondItem="bLr-3k-lHa" secondAttribute="top" id="FvC-qV-hZp"/>
+                        <constraint firstItem="cKO-va-aBy" firstAttribute="leading" secondItem="1dK-Yq-wqV" secondAttribute="trailing" constant="25" id="KV4-y9-Amm"/>
+                        <constraint firstItem="cKO-va-aBy" firstAttribute="top" secondItem="bLr-3k-lHa" secondAttribute="top" constant="3" id="TT3-uX-XcW"/>
+                        <constraint firstAttribute="bottom" secondItem="AcA-Hr-XWF" secondAttribute="bottom" constant="3" id="WSA-QH-9dv"/>
+                        <constraint firstItem="1dK-Yq-wqV" firstAttribute="leading" secondItem="AcA-Hr-XWF" secondAttribute="trailing" constant="7" id="aR7-9A-tPP"/>
+                        <constraint firstAttribute="bottom" secondItem="1dK-Yq-wqV" secondAttribute="bottom" id="cez-He-e3W"/>
+                        <constraint firstItem="cEZ-2e-60Y" firstAttribute="top" secondItem="bLr-3k-lHa" secondAttribute="top" id="ldd-82-1EI"/>
+                        <constraint firstItem="AcA-Hr-XWF" firstAttribute="top" secondItem="bLr-3k-lHa" secondAttribute="top" constant="3" id="qtj-BB-BtF"/>
+                        <constraint firstItem="cEZ-2e-60Y" firstAttribute="leading" secondItem="cKO-va-aBy" secondAttribute="trailing" constant="5" id="sgZ-a5-5az"/>
+                        <constraint firstAttribute="width" constant="260" id="wlR-hU-jea"/>
+                        <constraint firstAttribute="bottom" secondItem="cEZ-2e-60Y" secondAttribute="bottom" id="zdq-xS-g17"/>
                     </constraints>
                     <connections>
+                        <outlet property="locationButton" destination="cEZ-2e-60Y" id="uWx-bj-BNb"/>
+                        <outlet property="locationImageView" destination="cKO-va-aBy" id="Cvw-oX-elz"/>
+                        <outlet property="locationWidthConstraint" destination="Z0o-0D-0Wr" id="xoa-oi-ENn"/>
+                        <outlet property="timeLabel" destination="1dK-Yq-wqV" id="Neh-Hr-HyI"/>
+                        <outlet property="timeWidthConstraint" destination="rPA-PD-Bif" id="xcN-RS-8JB"/>
                         <outlet property="widthConstraint" destination="wlR-hU-jea" id="knV-zY-3hW"/>
                     </connections>
                 </view>
@@ -558,16 +598,18 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="eventTitleLabel" destination="hts-yH-RyM" id="o4v-Iq-1Fg"/>
+                <outlet property="timeLocationView" destination="bLr-3k-lHa" id="6TI-Zi-1i6"/>
             </connections>
             <point key="canvasLocation" x="-435" y="-77"/>
         </view>
     </objects>
     <resources>
-        <image name="clock_icon" width="11" height="11"/>
+        <image name="clock_icon" width="23" height="23"/>
         <image name="going_pushed_back_btn.png" width="145" height="73"/>
         <image name="icon_comment.png" width="40" height="37"/>
         <image name="icon_like.png" width="40" height="33"/>
         <image name="location_blue_pin.png" width="20" height="28"/>
+        <image name="location_icon" width="7" height="11"/>
         <image name="more.png" width="11" height="43"/>
         <image name="share.png" width="40" height="36"/>
     </resources>

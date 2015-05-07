@@ -13,5 +13,6 @@
 @interface CLPostView : UIView
 
 - (void)setPost:(GLPPost *)post;
++ (CGFloat)width;
 
 @end

@@ -28,4 +28,6 @@
 + (NSDate *)generateDateBeforeDays:(NSInteger)days;
 + (NSDate *)addHours:(NSUInteger)hours toDate:(NSDate *)date;
 
++ (NSString *)generateStringTimeForPostEventWithTime:(NSDate *)date;
+
 @end

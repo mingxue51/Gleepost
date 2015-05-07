@@ -7,6 +7,8 @@
 //
 
 #import "DateFormatterHelper.h"
+#import "NSDate+TimeAgo.h"
+#import "NSDate+HumanizedTime.h"
 
 @implementation DateFormatterHelper
 
@@ -202,6 +204,25 @@
     NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comp];
     
     return date;
+}
+
+#pragma mark - For UI
+
++ (NSString *)generateStringTimeForPostEventWithTime:(NSDate *)date
+{
+    if ([[NSDate date] compare:date] == NSOrderedDescending)
+    {
+        return [date timeAgo];
+        
+    } else if ([[NSDate date] compare:date] == NSOrderedAscending)
+    {
+        
+        return [date stringWithHumanizedTimeDifference:NSDateHumanizedSuffixLeft withFullString:YES];
+    
+    } else
+    {
+        return [date timeAgo];
+    }
 }
 
 #pragma mark - Date as param
