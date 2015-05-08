@@ -13,6 +13,7 @@
 #import "GLPLocation.h"
 #import "DateFormatterHelper.h"
 #import "CLPostView.h"
+#import "ImageFormatterHelper.h"
 
 @interface CLPostTimeLocationView ()
 
@@ -28,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 @property (weak, nonatomic) IBOutlet UIButton *locationButton;
 @property (weak, nonatomic) IBOutlet UIImageView *locationImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *backImageView;
 
 @property (strong, nonatomic) GLPLocation *location;
 @property (strong, nonatomic) NSDate *dateEventStarts;
@@ -44,27 +46,17 @@
 }
 
 - (void)setLocation:(GLPLocation *)location andTime:(NSDate *)time
-{
-
+{    
+    self.backImageView.image = [ImageFormatterHelper generateOnePixelHeightImageWithColour:[UIColor blackColor]];
+    self.backImageView.alpha = 0.5;
+    
     self.location = location;
     self.dateEventStarts = time;
-    
-
     [self configureTimeLabel];
-    
     [self configureMaxWidths];
-    
     [self configureLocationButton];
-    
-    
-
-
-
-    
     [self configureViewWidth];
 }
-
-
 
 #pragma mark - Configuration
 
