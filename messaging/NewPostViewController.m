@@ -1115,7 +1115,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 {
     [_pendingImageView setGesture:YES];
     
-    _pendingImageView.viewControllerDelegate = self;
+    _pendingImageView.delegate = self;
     
     [_pendingImageView setHidden:NO];
     

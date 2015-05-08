@@ -13,13 +13,27 @@
 #import "CLPostTimeLocationView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
+#import "GLPImageView.h"
+#import "GLPLabel.h"
+#import "NSDate+TimeAgo.h"
+#import "GLPImageHelper.h"
+#import "GLPViewsCountView.h"
+#import "GLPPostCell.h"
 
-
-@interface CLPostView ()
+@interface CLPostView () <GLPLabelDelegate, GLPImageViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *eventTitleLabel;
 @property (weak, nonatomic) IBOutlet CLPostTimeLocationView *timeLocationView;
 @property (weak, nonatomic) IBOutlet UIImageView *postImageView;
+@property (weak, nonatomic) IBOutlet GLPImageView *userImageView;
+@property (weak, nonatomic) IBOutlet GLPLabel *userNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *datePostedLabel;
+@property (weak, nonatomic) IBOutlet UILabel *contentLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentLabelHeight;
+
+@property (weak, nonatomic) IBOutlet GLPViewsCountView *viewsCountView;
+
+
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (strong, nonatomic) GLPPost *post;
@@ -65,9 +79,27 @@
     
     [self.timeLocationView setLocation:post.location andTime:post.dateEventStarts];
     [self setPostImage];
+    
+    [self setUserViewData];
+    
+    [self.viewsCountView setViewsCount:self.post.viewsCount];
+    
+    [self configureContentLabel];
+    
+    
 }
 
--(void)setPostImage
+- (void)configureContentLabel
+{
+    self.contentLabel.text = self.post.content;
+    
+    //TODO: See if the 270 (in getContentLabelSizeForContent) max width is rigth.
+    self.contentLabelHeight.constant =  [GLPPostCell getContentLabelSizeForContent:self.post.content isViewPost:NO cellType:kImageCell].height;
+    
+    
+}
+
+- (void)setPostImage
 {
     NSURL *imageUrl = nil;
     
@@ -76,70 +108,56 @@
         imageUrl = [NSURL URLWithString:self.post.imagesUrls[0]];
 //        [self hideVideoView];
     }
-    
-//    if([self doesMediaNeedLoadAgain])
-//    {
-        [_activityIndicator stopAnimating];
-        [self.postImageView setImageWithURL:imageUrl placeholderImage:nil usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        
-        return;
-//    }
-    
-//    if(self.isViewPost && _postImageView.image != nil)
-//    {
-//        [_activityIndicator stopAnimating];
-//        return;
-//    }
-//    
-//    if(_postImageView.image != nil && self.post.remoteKey == _postImageView.tag)
-//    {
-//        [_activityIndicator stopAnimating];
-//        return;
-//    }
-//    
-//    _postImageView.tag = self.post.remoteKey;
-//    
-//    [_postImageView setImage:nil];
-//    
-//    
-//    //This happens only when the image is not fetched or is save in cache.
-//
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-//        
-//        // Look in cache and request for the image.
-//        [[GLPPostImageLoader sharedInstance] findImageWithUrl:imageUrl callback:^(UIImage *image, BOOL found) {
-//            
-//            if (found)
-//            {
-//                if([imageUrl.absoluteString isEqualToString:_post.imagesUrls[0]])
-//                {
-//                    dispatch_async(dispatch_get_main_queue(), ^{
-//                        
-//                        [_postImageView setImage:image];
-//                        [_activityIndicator stopAnimating];
-//                        
-//                    });
-//                }
-//                else
-//                {
-//                    dispatch_async(dispatch_get_main_queue(), ^{
-//                        
-//                        DDLogDebug(@"Image not the same, abord");
-//                        [_postImageView setImage:nil];
-//                    });
-//                }
-//            }
-//            
-//        }];
-//        
-//    });
 
+    [_activityIndicator stopAnimating];
+    [self.postImageView setImageWithURL:imageUrl placeholderImage:nil usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     
+    return;
+}
+
+- (void)setUserViewData
+{
+    [self setUserImage];
+    self.userNameLabel.text = self.post.author.name;
+    self.userNameLabel.tag = self.post.author.remoteKey;
+    self.userNameLabel.delegate = self;
+    self.datePostedLabel.text = [self.post.date timeAgo];
+}
+
+- (void)setUserImage
+{
+    [self.userImageView makeImageRounded];
+    [self.userImageView setGesture:YES];
+    self.userImageView.delegate = self;
+    [self.userImageView setImageUrl:self.post.author.profileImageUrl withPlaceholderImage:[GLPImageHelper placeholderUserImagePath]];
+    
+    //Add to the user's tag's image view the user id.
+    self.userImageView.tag = _post.author.remoteKey;
+}
+
+
+#pragma mark - GLPLabelDelegate
+
+- (void)labelTouchedWithTag:(NSInteger)tag
+{
+    DDLogDebug(@"CLPostView labelTouchedWithTag %ld", (long)tag);
+}
+
+#pragma mark - GLPImageViewDelegate
+
+- (void)imageTouchedWithImageView:(UIImageView *)imageView
+{
+    DDLogDebug(@"CLPostView imageTouchedWithImageView %ld", (long)imageView.tag);
 }
 
 #pragma mark - Selectors
 
 - (IBAction)moreOptions:(id)sender
+{
+    
+}
+
+- (IBAction)goingButtonTouched:(id)sender
 {
     
 }

@@ -278,7 +278,7 @@ const float TOP_OFF_SET = -64.0;
     
     [_strechedImageView setTextInTitle:_group.name];
     
-    [_strechedImageView setViewControllerDelegate:self];
+    _strechedImageView.delegate = self;
     
     [_strechedImageView setGesture:YES];
 }

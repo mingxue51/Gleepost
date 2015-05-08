@@ -68,7 +68,7 @@ static const float CommentContentLabelMargin = 40.0;
     
     [_userImageView setImageUrl:comment.author.profileImageUrl withPlaceholderImage:[GLPImageHelper placeholderUserImagePath]];
     [_userImageView setTag:comment.author.remoteKey];
-    [_userImageView setViewControllerDelegate:_delegate];
+    _userImageView.delegate = _delegate;
     [_userImageView setGesture:YES];
 
     
