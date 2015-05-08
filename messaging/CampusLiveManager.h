@@ -22,5 +22,6 @@
 -(void)loadCurrentLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock;
 
 -(int)findMostCloseToNowLivePostWithPosts:(NSArray *)posts;
+-(void)postLike:(BOOL)like withPostRemoteKey:(NSInteger)postRemoteKey;
 
 @end

@@ -65,6 +65,23 @@ static CampusLiveManager *instance = nil;
 
 #pragma mark - Client
 
+-(void)postLike:(BOOL)like withPostRemoteKey:(NSInteger)postRemoteKey
+{
+    [[WebClient sharedInstance] postLike:like forPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success) {
+        
+        if(success)
+        {
+            DDLogInfo(@"Like %d for post %ld succeed.",like, (long)postRemoteKey);
+        }
+        else
+        {
+            DDLogInfo(@"Like %d for post %ld not succeed.",like, (long)postRemoteKey);
+        }
+        
+        
+    }];
+}
+
 -(void)loadCurrentLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock
 {
     [[WebClient sharedInstance] getEventPostsAfterDate:[self currentTime] withCallbackBlock:^(BOOL success, NSArray *posts) {

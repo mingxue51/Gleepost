@@ -12,10 +12,9 @@
 #import "CLPostTableView.h"
 #import "CampusLiveManager.h"
 #import "CampusLiveTableViewTopView.h"
-
 #import "GLPiOSSupportHelper.h"
-
 #import "TableViewHelper.h"
+#import "URBMediaFocusViewController.h"
 
 @interface GLPCampusLiveViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -26,6 +25,9 @@
 
 @property (weak, nonatomic) IBOutlet CampusLiveTableViewTopView *topView;
 
+@property (strong, nonatomic) URBMediaFocusViewController *mediaFocusViewController;
+
+
 @end
 
 @implementation GLPCampusLiveViewController
@@ -33,9 +35,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self configureObjects];
     [self configureNavigationBar];
     [self configureSwipeView];
-//    [self configureNotifications];
+    [self configureNotifications];
 //    [self loadLiveEventPosts];
     
     [self configureTableView];
@@ -46,6 +49,16 @@
 
     
    
+}
+
+- (void)configureObjects
+{
+    self.mediaFocusViewController = [[URBMediaFocusViewController alloc] init];
+    
+    self.mediaFocusViewController.parallaxEnabled = NO;
+    self.mediaFocusViewController.shouldShowPhotoActions = YES;
+    self.mediaFocusViewController.shouldRotateToDeviceOrientation = NO;
+    self.mediaFocusViewController.shouldBlurBackground = NO;
 }
 
 - (void)configureTableView
@@ -72,12 +85,22 @@
 
 - (void)configureNotifications
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postsFetched:) name:GLPNOTIFICATION_CAMPUS_LIVE_POSTS_FETCHED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageViewTouched:) name:GLPNOTIFICATION_CL_IMAGE_SHOULD_VIEWED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMoreOptions:) name:GLPNOTIFICATION_CL_SHOW_MORE_OPTIONS object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showShareViewWithItems:) name:GLPNOTIFICATION_CL_SHOW_SHARE_OPTIONS object:nil];
+    
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postsFetched:) name:GLPNOTIFICATION_CAMPUS_LIVE_POSTS_FETCHED object:nil];
 }
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CAMPUS_LIVE_POSTS_FETCHED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CL_IMAGE_SHOULD_VIEWED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CL_SHOW_MORE_OPTIONS object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CL_SHOW_SHARE_OPTIONS object:nil];
+
+    //    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CAMPUS_LIVE_POSTS_FETCHED object:nil];
 }
 
 - (void)configureSwipeView
@@ -110,6 +133,24 @@
     DDLogDebug(@"GLPCampusLiveViewController : postsFetched %@", notification.userInfo);
     
 //    [self.swipeView reloadData];
+}
+
+- (void)imageViewTouched:(NSNotification *)notification
+{
+    UIImage *image = notification.userInfo[@"image"];
+    [_mediaFocusViewController showImage:image fromView:self.view];
+}
+
+- (void)showMoreOptions:(NSNotification *)notification
+{
+    UIActionSheet *actionSheet = notification.userInfo[@"action_sheet"];
+    [actionSheet showInView:[self.view window]];
+}
+
+- (void)showShareViewWithItems:(NSNotification *)notification
+{
+    UIActivityViewController *shareItems = notification.userInfo[@"share_items"];
+    [self presentViewController:shareItems animated:YES completion:nil];
 }
 
 #pragma mark - Table view delegate

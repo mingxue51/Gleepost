@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet SwipeView *swipeView;
 @property (strong, nonatomic) NSMutableArray *lastVisibleCells;
 
+
 @end
 
 @implementation CampusLiveTableViewTopView

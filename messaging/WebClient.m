@@ -856,9 +856,9 @@ static WebClient *instance = nil;
 
 #pragma mark - Campus Live
 
--(void)attendEvent:(BOOL)attend withPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success, NSInteger popularity))callbackBlock
+-(void)attendEvent:(BOOL)attend withPostRemoteKey:(NSInteger)postRemoteKey callbackBlock:(void (^) (BOOL success, NSInteger popularity))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"posts/%d/attendees", postRemoteKey];
+    NSString *path = [NSString stringWithFormat:@"posts/%ld/attendees", (long)postRemoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
     

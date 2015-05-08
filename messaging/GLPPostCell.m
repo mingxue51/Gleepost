@@ -15,6 +15,7 @@
 #import "GLPPostManager.h"
 #import "NewCommentView.h"
 #import "PollingPostView.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface GLPPostCell ()
 
@@ -53,7 +54,6 @@ const float TEXT_CELL_ONE_LINE_HEIGHT = TEXT_CELL_HEIGHT - 15;
 const float FIXED_SIZE_OF_NON_EVENT_VIDEO_CELL = VIDEO_CELL_HEIGHT - 75; //65
 const float FIXED_SIZE_OF_NON_EVENT_IMAGE_CELL = IMAGE_CELL_HEIGHT - 67; //70
 const float FIXED_SIZE_OF_NON_EVENT_TEXT_CELL = TEXT_CELL_HEIGHT - 80;
-const float POST_CONTENT_LABEL_MAX_WIDTH = 270;
 const float FIVE_LINES_LIMIT = 101.0;
 const float ONE_LINE_LIMIT = 18.0;
 
@@ -297,9 +297,8 @@ const float ONE_LINE_LIMIT = 18.0;
     int maxWidth = 0;
     
     font = [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0];
-    maxWidth = POST_CONTENT_LABEL_MAX_WIDTH;
-
-
+    
+    maxWidth = [GLPiOSSupportHelper screenWidth] - (2 * 25);
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font,
                                                                                                          NSKernAttributeName : @(0.3f)}];
