@@ -134,15 +134,8 @@
  */
 - (void)addDataToTheNextViewWithCurrentIndex:(NSInteger)currentIndex
 {
-    if(currentIndex == [[CampusLiveManager sharedInstance] eventsCount] - 1)
-    {
-        DDLogDebug(@"CampusLiveTableViewTopView : reached last post abort");
-        
-        return;
-    }
-    
     [self setPostToItemViewWithIndex:currentIndex + 1];
-
+    [self setPostToItemViewWithIndex:currentIndex + 2];
 }
 
 /**
@@ -156,11 +149,19 @@
     }
     
     [self setPostToItemViewWithIndex:currentIndex - 1];
+    [self setPostToItemViewWithIndex:currentIndex - 2];
 
 }
 
 - (void)setPostToItemViewWithIndex:(NSInteger)index
 {
+    if(index >= [[CampusLiveManager sharedInstance] eventsCount] - 1 || index < 0)
+    {
+        DDLogDebug(@"CampusLiveTableViewTopView : reached last or the first post abort");
+        
+        return;
+    }
+    
     GLPPost *post = [[CampusLiveManager sharedInstance] eventPostAtIndex:index];
     
     CLPostView *itemView = (CLPostView *)[self.swipeView itemViewAtIndex:index];
