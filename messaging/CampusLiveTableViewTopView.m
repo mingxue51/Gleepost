@@ -75,6 +75,8 @@
 {
     DDLogDebug(@"CampusLiveTableViewTopView : postsFetched %@", notification.userInfo);
     
+    [self reloadCampusLiveTableViewWithPostIndex:0];
+    
     [self.swipeView reloadData];
     
 }
@@ -92,6 +94,8 @@
 
 - (void)swipeViewCurrentItemIndexDidChange:(SwipeView *)swipeView
 {
+    [self reloadCampusLiveTableViewWithPostIndex:swipeView.currentItemIndex];
+    
     [self setPostToItemViewWithIndex:swipeView.currentItemIndex];
     [self addDataToTheNextViewWithCurrentIndex:swipeView.currentItemIndex];
     [self addDataToThePreviousViewWithCurrentIndex:swipeView.currentItemIndex];
@@ -128,6 +132,23 @@
     
     return view;
 }
+
+#pragma mark - Post NSNotification
+
+/**
+ Post an NSNotification to GLPCampusLiveViewController to reload the Likes and comments
+ data for the post with a specific index.
+ 
+ @param index the post index.
+ 
+ */
+- (void)reloadCampusLiveTableViewWithPostIndex:(NSInteger)index
+{
+    GLPPost *post = [[CampusLiveManager sharedInstance] eventPostAtIndex:index];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_RELOAD_CL_COMMENTS_LIKES object:self userInfo:@{@"post" : post}];
+}
+
+#pragma mark - Data operations
 
 /**
  Reloads the next view.

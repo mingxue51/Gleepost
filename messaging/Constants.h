@@ -99,6 +99,7 @@
 #define GLPNOTIFICATION_CL_IMAGE_SHOULD_VIEWED          @"GLPCLImageShouldViewed"
 #define GLPNOTIFICATION_CL_SHOW_MORE_OPTIONS            @"GLPCLShowMoreOptions"
 #define GLPNOTIFICATION_CL_SHOW_SHARE_OPTIONS            @"GLPCLShowShareOptions"
+#define GLPNOTIFICATION_RELOAD_CL_COMMENTS_LIKES        @"GLPReloadCLCommentsLikes"
 
 
 #define GLPNOTIFICATION_GROUPS_FECTHED_AFTER_QUERY      @"GLPGroupsFetchedAfterQuery"

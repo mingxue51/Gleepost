@@ -15,13 +15,13 @@
 #import "CommentCell.h"
 #import "ViewPostTitleCell.h"
 #import "GLPLikesCell.h"
-#import "GLPCommentsManager.h"
+#import "CLCommentsManager.h"
 
 @interface CLPostTableView () <UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) GLPPost *post;
-@property (strong, nonatomic) GLPCommentsManager *commentsManager;
+@property (strong, nonatomic) CLCommentsManager *commentsManager;
 
 @end
 
@@ -72,7 +72,7 @@
     _post = post;
     
     //TODO: Load comments for the post.
-    self.commentsManager = [[GLPCommentsManager alloc] initWithPost:self.post];
+//    self.commentsManager = [[CLCommentsManager alloc] initWithPost:self.post];
     
     DDLogDebug(@"CLPostTableView : post %@", self.post);
 }

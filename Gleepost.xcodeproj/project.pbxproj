@@ -232,7 +232,7 @@
 		5844293C18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5844293B18BCE1EE00DFEAF4 /* GLPCommentDaoParser.m */; };
 		584514C71AF79C340061B877 /* CLPostTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584514C61AF79C340061B877 /* CLPostTableView.xib */; };
 		584514CB1AF79C7F0061B877 /* CLPostTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584514CA1AF79C7F0061B877 /* CLPostTableView.m */; };
-		584514CF1AF7D92B0061B877 /* GLPCommentsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 584514CE1AF7D92B0061B877 /* GLPCommentsManager.m */; };
+		584514CF1AF7D92B0061B877 /* CLCommentsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 584514CE1AF7D92B0061B877 /* CLCommentsManager.m */; };
 		584514D51AF7FFC90061B877 /* PostImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 584514D41AF7FFC90061B877 /* PostImageView.xib */; };
 		584514D81AF8025F0061B877 /* CampusLiveTableViewTopView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584514D71AF8025F0061B877 /* CampusLiveTableViewTopView.m */; };
 		58451BF3199B26C2003B94D2 /* GLPSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58451BF2199B26C2003B94D2 /* GLPSettingsViewController.m */; };
@@ -675,6 +675,7 @@
 		58C45A74193C910A009FEE6E /* navigation_bar_new_post.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C45A73193C910A009FEE6E /* navigation_bar_new_post.png */; };
 		58C9E15719EC6A88008CB14A /* GLPConversationRead.m in Sources */ = {isa = PBXBuildFile; fileRef = 58C9E15619EC6A88008CB14A /* GLPConversationRead.m */; };
 		58CB2728194B892800864C28 /* SKBounceAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58CB2726194B892800864C28 /* SKBounceAnimation.m */; };
+		58CD30411B00B60B0032D25A /* GLPCLCommentsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58CD30401B00B60B0032D25A /* GLPCLCommentsOperation.m */; };
 		58CE8EA019D9B8010028DEB7 /* kind_of_event_no.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CE8E9F19D9B8010028DEB7 /* kind_of_event_no.png */; };
 		58CEA1E818C69560009FDF2C /* CampusWallGroupsPostsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58CEA1E718C69560009FDF2C /* CampusWallGroupsPostsManager.m */; };
 		58CF2BD918EA130800EB786E /* campus_wall_background_main_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CF2BD818EA130800EB786E /* campus_wall_background_main_old.png */; };
@@ -1314,8 +1315,8 @@
 		584514C61AF79C340061B877 /* CLPostTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CLPostTableView.xib; sourceTree = "<group>"; };
 		584514C91AF79C7F0061B877 /* CLPostTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLPostTableView.h; sourceTree = "<group>"; };
 		584514CA1AF79C7F0061B877 /* CLPostTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLPostTableView.m; sourceTree = "<group>"; };
-		584514CD1AF7D92B0061B877 /* GLPCommentsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCommentsManager.h; sourceTree = "<group>"; };
-		584514CE1AF7D92B0061B877 /* GLPCommentsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCommentsManager.m; sourceTree = "<group>"; };
+		584514CD1AF7D92B0061B877 /* CLCommentsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLCommentsManager.h; sourceTree = "<group>"; };
+		584514CE1AF7D92B0061B877 /* CLCommentsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLCommentsManager.m; sourceTree = "<group>"; };
 		584514D41AF7FFC90061B877 /* PostImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostImageView.xib; sourceTree = "<group>"; };
 		584514D61AF8025F0061B877 /* CampusLiveTableViewTopView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusLiveTableViewTopView.h; sourceTree = "<group>"; };
 		584514D71AF8025F0061B877 /* CampusLiveTableViewTopView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusLiveTableViewTopView.m; sourceTree = "<group>"; };
@@ -1943,6 +1944,8 @@
 		58C9E15619EC6A88008CB14A /* GLPConversationRead.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPConversationRead.m; sourceTree = "<group>"; };
 		58CB2726194B892800864C28 /* SKBounceAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKBounceAnimation.m; sourceTree = "<group>"; };
 		58CB2727194B892800864C28 /* SKBounceAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKBounceAnimation.h; sourceTree = "<group>"; };
+		58CD303F1B00B60B0032D25A /* GLPCLCommentsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPCLCommentsOperation.h; sourceTree = "<group>"; };
+		58CD30401B00B60B0032D25A /* GLPCLCommentsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCLCommentsOperation.m; sourceTree = "<group>"; };
 		58CE8E9F19D9B8010028DEB7 /* kind_of_event_no.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kind_of_event_no.png; sourceTree = "<group>"; };
 		58CEA1E618C69560009FDF2C /* CampusWallGroupsPostsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusWallGroupsPostsManager.h; sourceTree = "<group>"; };
 		58CEA1E718C69560009FDF2C /* CampusWallGroupsPostsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusWallGroupsPostsManager.m; sourceTree = "<group>"; };
@@ -2521,6 +2524,8 @@
 				5809FF091A40376400AF7912 /* GLPCLPostImageLoader.m */,
 				5809FF0B1A403F7000AF7912 /* GLPPostImageOperation.h */,
 				5809FF0C1A403F7000AF7912 /* GLPPostImageOperation.m */,
+				58CD303F1B00B60B0032D25A /* GLPCLCommentsOperation.h */,
+				58CD30401B00B60B0032D25A /* GLPCLCommentsOperation.m */,
 			);
 			name = "Campus Live";
 			sourceTree = "<group>";
@@ -2997,8 +3002,8 @@
 		584514CC1AF7D91A0061B877 /* Posts */ = {
 			isa = PBXGroup;
 			children = (
-				584514CD1AF7D92B0061B877 /* GLPCommentsManager.h */,
-				584514CE1AF7D92B0061B877 /* GLPCommentsManager.m */,
+				584514CD1AF7D92B0061B877 /* CLCommentsManager.h */,
+				584514CE1AF7D92B0061B877 /* CLCommentsManager.m */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -6485,6 +6490,7 @@
 				58065F8F19BFE55500892B6B /* GLPViewImageViewController.m in Sources */,
 				5827B8901945C85F00DFC76E /* GBInfiniteScrollView.m in Sources */,
 				58428E3318A27E0F00B82E4B /* LoginView.m in Sources */,
+				58CD30411B00B60B0032D25A /* GLPCLCommentsOperation.m in Sources */,
 				584906C217FDA57B0045B65D /* PostView.m in Sources */,
 				58AEF7EF19F887D500DDAE88 /* FileLogger.m in Sources */,
 				5851957D18CFA26E00F8CE46 /* GLPiOSSupportHelper.m in Sources */,
@@ -6617,7 +6623,7 @@
 				58361C33184CAE8D00FEFC49 /* ReflectedImageView.m in Sources */,
 				586866E519B6B31900803512 /* GLPShowLocationViewController.m in Sources */,
 				582143D117FC59F50032ECEB /* TPKeyboardAvoidingTableView.m in Sources */,
-				584514CF1AF7D92B0061B877 /* GLPCommentsManager.m in Sources */,
+				584514CF1AF7D92B0061B877 /* CLCommentsManager.m in Sources */,
 				585C514519227006000910DA /* VideoPreviewView.m in Sources */,
 				580B8D2B18577A0E00A84E0E /* GLPProfileViewController.m in Sources */,
 				58784B921AF8EB3E0031C3F4 /* CLPostView.m in Sources */,

@@ -11,6 +11,7 @@
 #import "GLPImageView.h"
 #import "ShapeFormatterHelper.h"
 #import "UIColor+GLPAdditions.h"
+#import "GLPImageHelper.h"
 
 @interface GLPLikesCell ()
 
@@ -34,13 +35,22 @@
 
 - (void)setLikedUsers:(NSArray *)users
 {
-    [self formatImages];
+    self.contentView.alpha = 0.0;
+    
+    [self formatAndInitialiseImages];
     [self configureCellStyle];
     self.users = users;
+    DDLogDebug(@"GLPLikesCell users %@", self.users);
+    
     [self configureBubbles];
     [self hideAllUnnecessaryBubbles];
     [self addImagesToImageViews];
     [self configureLastBubble];
+    
+    [UIView animateWithDuration:0.5 animations:^{
+       
+        self.contentView.alpha = 1.0;
+    }];
 
 }
 
@@ -69,7 +79,10 @@
     for(NSUInteger index = 0; index < self.users.count; ++index)
     {
         GLPUser *user = self.users[index];
+        
         [self setImageWithUrl:user.profileImageUrl toImageViewTag:index + 1];
+        DDLogDebug(@"User profile image %@", user.profileImageUrl);
+
     }
 }
 
@@ -106,7 +119,7 @@
     {
         if(image.tag == tag)
         {
-            [image setImageUrl:imageUrl withPlaceholderImage:@""];
+            [image setImageUrl:imageUrl withPlaceholderImage:[GLPImageHelper placeholderUserImagePath]];
         }
     }
 }
@@ -125,12 +138,13 @@
 
 #pragma mark - Format
 
-- (void)formatImages
+- (void)formatAndInitialiseImages
 {
     for(UIImageView *imageView in self.images)
     {
         [imageView layoutIfNeeded];
         [ShapeFormatterHelper setRoundedView:imageView toDiameter:imageView.frame.size.height];
+        imageView.hidden = NO;
     }
 }
 

@@ -28,23 +28,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="c6C-YH-LiX">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="c6C-YH-LiX">
                                 <rect key="frame" x="0.0" y="-64" width="600" height="551"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="oph-M8-bdD" customClass="CampusLiveTableViewTopView">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="500"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jno-Hc-PSZ" customClass="SwipeView">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="500"/>
-                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <connections>
                                                 <outlet property="dataSource" destination="oph-M8-bdD" id="YFh-j9-UG9"/>
                                                 <outlet property="delegate" destination="oph-M8-bdD" id="eq8-YT-Qiz"/>
                                             </connections>
                                         </view>
                                     </subviews>
-                                    <color key="backgroundColor" red="0.3411764706" green="0.85098039219999999" blue="0.73725490199999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstItem="Jno-Hc-PSZ" firstAttribute="leading" secondItem="oph-M8-bdD" secondAttribute="leading" id="Xao-pe-i1k"/>
                                         <constraint firstAttribute="trailing" secondItem="Jno-Hc-PSZ" secondAttribute="trailing" id="h63-3Q-kKI"/>
@@ -61,7 +61,7 @@
                                 </connections>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="c6C-YH-LiX" firstAttribute="leading" secondItem="bW4-pQ-YuZ" secondAttribute="leading" id="ADo-Xb-ZEY"/>
                             <constraint firstAttribute="trailing" secondItem="c6C-YH-LiX" secondAttribute="trailing" id="QKl-0N-Pue"/>

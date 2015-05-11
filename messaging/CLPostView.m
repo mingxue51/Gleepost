@@ -188,10 +188,9 @@
     }
     else
     {
-        
+        //TODO: Navigate to user's profile.
     }
     
-    DDLogDebug(@"CLPostView imageTouchedWithImageView %ld", (long)imageView.tag);
 }
 
 #pragma mark - Action Sheet delegate
@@ -290,7 +289,7 @@
         [self.post setLiked:YES];
         
         //Change the like status and send to server the change.
-        [[CampusLiveManager sharedInstance] postLike:NO withPostRemoteKey:self.post.remoteKey];
+        [[CampusLiveManager sharedInstance] postLike:YES withPostRemoteKey:self.post.remoteKey];
         
         //Increase the number of likes.
         ++self.post.likes;

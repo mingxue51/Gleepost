@@ -213,6 +213,7 @@ static const float CommentContentLabelMargin = 40.0;
 - (void)configureMiddleCell
 {
     DDLogDebug(@"Middle cell sublayers %@", self.contentView.layer.sublayers);
+    [self.backgoundImageView layoutIfNeeded];
     
     [ShapeFormatterHelper removeTopCellBottomLine:self.contentView];
     [_backgoundImageView addRightBorderWithWidth:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
