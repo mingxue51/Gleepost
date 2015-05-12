@@ -20,13 +20,15 @@
 #import "GLPLikesCell.h"
 #import "CommentCell.h"
 #import "ViewPostTitleCell.h"
+#import "GLPTableActivityIndicator.h"
+
 /**
  CommentCell *cell;
  ViewPostTitleCell *titleCell;
  GLPLikesCell *likesCell;
  */
 
-@interface GLPCampusLiveViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface GLPCampusLiveViewController () <UITableViewDataSource, UITableViewDelegate, GLPLikesCellDelegate, GLPImageViewDelegate, GLPLabelDelegate>
 
 @property (strong, nonatomic) CampusLiveFakeNavigationBarView *fakeNavigationBar;
 //@property (nonatomic, strong) IBOutlet SwipeView *swipeView;
@@ -40,6 +42,10 @@
 @property (strong, nonatomic) CLCommentsManager *commentsManager;
 
 @property (strong, nonatomic) GLPPost *selectedPost;
+
+@property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
+
+@property (assign, nonatomic) BOOL postChanged;
 
 @end
 
@@ -63,6 +69,10 @@
     self.mediaFocusViewController.shouldBlurBackground = NO;
     
     self.commentsManager = [[CLCommentsManager alloc] init];
+    
+    self.tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorMaxBottom withView:self.tableView];
+    
+    self.postChanged = YES;
 }
 
 - (void)configureTableView
@@ -150,14 +160,23 @@
 {
     self.selectedPost = notification.userInfo[@"post"];
     
-    DDLogDebug(@"GLPCampusLiveViewController postChanged %@", [self.selectedPost usersLikedThePost]);
+    [self.tableActivityIndicator startActivityIndicator];
+    self.postChanged = YES;
+    
+    [self performSelector:@selector(stopActivityIndicator) withObject:self afterDelay:1.0];
     
     [self.tableView reloadData];
-
-    //[self reloadCellsWithAnimation];
     
     [self.commentsManager loadCommentsWithPost:self.selectedPost];
+}
+
+- (void)stopActivityIndicator
+{
+    [self.tableActivityIndicator stopActivityIndicator];
     
+    self.postChanged = NO;
+    
+    [self.tableView reloadData];
 }
 
 - (void)commentsReceived:(NSNotification *)notification
@@ -166,16 +185,35 @@
     
     if(self.selectedPost.remoteKey == post.remoteKey)
     {
-        //TODO: Reload data to show the new comments.
-        DDLogDebug(@"GLPCampusLiveViewController comments received %@", notification.userInfo);
         [self.tableView reloadData];
     }
     
 }
 
+#pragma mark - GLPLikesCellDelegate
+
+- (void)likesCellTouched
+{
+    DDLogDebug(@"GLPCampusLiveViewController likesCellTouched");
+}
+
+#pragma mark - GLPLabelDelegate
+
+- (void)labelTouchedWithTag:(NSInteger)tag
+{
+    DDLogDebug(@"GLPCampusLiveViewController labelTouchedWithTag %ld", tag);
+}
+
+#pragma mark - GLPImageViewDelegate
+
+- (void)imageTouchedWithImageView:(UIImageView *)imageView
+{
+    DDLogDebug(@"GLPCampusLiveViewController imageTouchedWithImageView %ld", imageView.tag);
+}
+
 #pragma mark - Table view refresh cells
 
-- (void)reloadCellsWithAnimation
+- (void)reloadCommentsCells
 {
     NSInteger numberOfRows = 0;
     
@@ -191,10 +229,19 @@
     
     NSMutableArray *array = [[NSMutableArray alloc] init];
     
-    for(NSInteger index = 0; index < numberOfRows; ++index)
+    for(NSInteger index = 1; index < numberOfRows; ++index)
     {
         [array addObject:[NSIndexPath indexPathForRow:index inSection:0]];
     }
+    
+//    [self.tableView insertRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
+//    [self.tableView reloadData];
+    
+}
+
+- (void)reloadCellsWithAnimation
+{
+
     
 //    [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
@@ -268,6 +315,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if(self.postChanged)
+    {
+        return 0;
+    }
+    
     NSInteger numberOfRows = 0;
     
     if([self.selectedPost isPostLiked])
@@ -298,7 +350,6 @@
     {
         if([self.selectedPost isPostLiked])
         {
-            
             likesCell = [tableView dequeueReusableCellWithIdentifier:cellIdentifierLikesCell forIndexPath:indexPath];
             [likesCell setLikedUsers:self.selectedPost.usersLikedThePost];
             likesCell.delegate = self;
@@ -362,6 +413,14 @@
             
             return cell;
         }
+    }
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if([cell isKindOfClass:[GLPLikesCell class]])
+    {
+        
     }
 }
 

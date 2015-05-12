@@ -19,6 +19,7 @@
 
 @property (weak, nonatomic) UIViewController<GLPLikesCellDelegate> *delegate;
 
+- (void)setLikedUsers:(NSArray *)users withAnimation:(BOOL)animation;
 - (void)setLikedUsers:(NSArray *)users;
 + (CGFloat)height;
 

@@ -87,10 +87,6 @@ static const float CommentContentLabelMargin = 40.0;
     //Set post's time.
     [self.postDateLabel setText:[[currentDate timeAgo] uppercaseString]];
     
-    
-    DDLogDebug(@"Comment Cell : content width %f", self.contentLabel.frame.size.width);
-
-    
 //    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor] andWidth:0.5];
 //    [ShapeFormatterHelper setBorderToView:self.postDateLabel withColour:[UIColor blackColor] andWidth:1.0];
     
@@ -212,7 +208,6 @@ static const float CommentContentLabelMargin = 40.0;
 
 - (void)configureMiddleCell
 {
-    DDLogDebug(@"Middle cell sublayers %@", self.contentView.layer.sublayers);
     [self.backgoundImageView layoutIfNeeded];
     
     [ShapeFormatterHelper removeTopCellBottomLine:self.contentView];
