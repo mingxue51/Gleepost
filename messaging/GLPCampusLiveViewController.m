@@ -23,6 +23,7 @@
 #import "ViewPostTitleCell.h"
 #import "GLPTableActivityIndicator.h"
 #import "GLPShowUsersViewController.h"
+#import "ViewPostViewController.h"
 
 /**
  CommentCell *cell;
@@ -51,6 +52,8 @@
 
 @property (assign, nonatomic) BOOL postChanged;
 
+@property (assign, nonatomic) BOOL focusOnCommentInViewPostVC;
+
 @end
 
 @implementation GLPCampusLiveViewController
@@ -61,8 +64,6 @@
     [self configureObjects];
     [self configureNotifications];
     [self configureTableView];
-
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -86,6 +87,7 @@
     
     self.postChanged = YES;
     self.showUsersLikedThePost = NO;
+    self.focusOnCommentInViewPostVC = NO;
 }
 
 - (void)configureTableView
@@ -124,6 +126,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postChanged:) name:GLPNOTIFICATION_RELOAD_CL_COMMENTS_LIKES object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commentsReceived:) name:GLPNOTIFICATION_COMMENTS_FETCHED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postTouched:) name:GLPNOTIFICATION_CL_POST_TOUCHED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commentButtonTouched:) name:GLPNOTIFICATION_CL_COMMENT_BUTTON_TOUCHED object:nil];
 }
 
 - (void)dealloc
@@ -133,7 +139,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CL_SHOW_SHARE_OPTIONS object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_RELOAD_CL_COMMENTS_LIKES object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_COMMENTS_FETCHED object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CL_POST_TOUCHED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CL_COMMENT_BUTTON_TOUCHED object:nil];
 }
 
 - (void)configureNavigationBar
@@ -202,7 +209,18 @@
     {
         [self.tableView reloadData];
     }
-    
+}
+
+- (void)postTouched:(NSNotification *)notification
+{
+    self.focusOnCommentInViewPostVC = NO;
+    [self performSegueWithIdentifier:@"view post" sender:self];
+}
+
+- (void)commentButtonTouched:(NSNotification *)notification
+{
+    self.focusOnCommentInViewPostVC = YES;
+    [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
 #pragma mark - GLPLikesCellDelegate
@@ -227,99 +245,57 @@
     DDLogDebug(@"GLPCampusLiveViewController imageTouchedWithImageView %ld", (long)imageView.tag);
 }
 
-#pragma mark - Table view refresh cells
-
-- (void)reloadCommentsCells
-{
-    NSInteger numberOfRows = 0;
-    
-    if([self.selectedPost isPostLiked])
-    {
-        ++numberOfRows;
-    }
-    
-    if([self.commentsManager commentsCountWithPost:self.selectedPost] > 0)
-    {
-        numberOfRows += ([self.commentsManager commentsCountWithPost:self.selectedPost] + 1);
-    }
-    
-    NSMutableArray *array = [[NSMutableArray alloc] init];
-    
-    for(NSInteger index = 1; index < numberOfRows; ++index)
-    {
-        [array addObject:[NSIndexPath indexPathForRow:index inSection:0]];
-    }
-    
-//    [self.tableView insertRowsAtIndexPaths:array withRowAnimation:UITableViewRowAnimationFade];
-//    [self.tableView reloadData];
-    
-}
-
-- (void)reloadCellsWithAnimation
-{
-
-    
-//    [self.tableView beginUpdates];
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationFade];
- //   [self.tableView endUpdates];
-
-    
-//    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-}
-
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DDLogDebug(@"PollingPostView : didDeselectRowAtIndexPath %ld", (long)indexPath.row);
     
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-        if(indexPath.row == 0)
+
+    if(indexPath.row == 0)
+    {
+        if([self.selectedPost isPostLiked])
         {
-            if([self.selectedPost isPostLiked])
-            {
-                return [GLPLikesCell height];
-            }
-            else
-            {
-                return 30.0;
-            }
-        }
-        else if (indexPath.row == 1)
-        {
-            if([self.selectedPost isPostLiked])
-            {
-                return 30.0;
-            }
-            else
-            {
-                GLPComment *comment = [self.commentsManager commentAtIndex:indexPath.row - 1 withPost:self.selectedPost];
-                
-                return [CommentCell getCellHeightWithContent:comment.content image:NO];
-            }
+            return [GLPLikesCell height];
         }
         else
         {
-            if([self.selectedPost isPostLiked])
-            {
-                GLPComment *comment = [self.commentsManager commentAtIndex:indexPath.row-  2 withPost:self.selectedPost];
-    
-                return [CommentCell getCellHeightWithContent:comment.content image:NO];
-            }
-            else
-            {
-                GLPComment *comment = [self.commentsManager commentAtIndex:indexPath.row - 1 withPost:self.selectedPost];
-    
-                return [CommentCell getCellHeightWithContent:comment.content image:NO];
-            }
+            return 30.0;
         }
+    }
+    else if (indexPath.row == 1)
+    {
+        if([self.selectedPost isPostLiked])
+        {
+            return 30.0;
+        }
+        else
+        {
+            GLPComment *comment = [self.commentsManager commentAtIndex:indexPath.row - 1 withPost:self.selectedPost];
+            
+            return [CommentCell getCellHeightWithContent:comment.content image:NO];
+        }
+    }
+    else
+    {
+        if([self.selectedPost isPostLiked])
+        {
+            GLPComment *comment = [self.commentsManager commentAtIndex:indexPath.row-  2 withPost:self.selectedPost];
+            
+            return [CommentCell getCellHeightWithContent:comment.content image:NO];
+        }
+        else
+        {
+            GLPComment *comment = [self.commentsManager commentAtIndex:indexPath.row - 1 withPost:self.selectedPost];
+            
+            return [CommentCell getCellHeightWithContent:comment.content image:NO];
+        }
+    }
     
     return 100.0;
-    
 }
 
 #pragma mark - Table view data source
@@ -432,51 +408,6 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if([cell isKindOfClass:[GLPLikesCell class]])
-    {
-        
-    }
-}
-
-//#pragma mark - SwipeViewDelegate
-//
-//- (NSInteger)numberOfItemsInSwipeView:(SwipeView *)swipeView
-//{
-//    //generate 100 item views
-//    //normally we'd use a backing array
-//    //as shown in the basic iOS example
-//    //but for this example we haven't bothered
-//    return [[CampusLiveManager sharedInstance] eventsCount];
-//}
-//
-//- (void)swipeViewCurrentItemIndexDidChange:(SwipeView *)swipeView
-//{
-//    DDLogDebug(@"swipeViewCurrentItemIndexDidChange %ld %ld", swipeView.currentItemIndex, swipeView.currentItemView.tag);
-//    
-//    //TODO: Here we need to just reload data on the CLPostTableView. (to focus on the first cell).
-//    [(CLPostTableView *)swipeView.currentItemView setPost:[[CampusLiveManager sharedInstance] eventPostAtIndex:swipeView.currentItemIndex]];
-//}
-//
-//#pragma mark - SwipeViewDataSource
-//
-//- (UIView *)swipeView:(SwipeView *)swipeView viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view
-//{
-//    if (!view)
-//    {
-//        //load new item view instance from nib
-//        //control events are bound to view controller in nib file
-//        //note that it is only safe to use the reusingView if we return the same nib for each
-//        //item view, if different items have different contents, ignore the reusingView value
-//        
-//        view = [[NSBundle mainBundle] loadNibNamed:@"CLPostTableView" owner:self options:nil][0];
-//        view.tag = index;
-//        [(CLPostTableView *)swipeView.currentItemView setPost:[[CampusLiveManager sharedInstance] eventPostAtIndex:swipeView.currentItemIndex]];
-//    }
-//    return view;
-//}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -506,6 +437,21 @@
             showUsersVC.postRemoteKey = self.selectedPost.remoteKey;
             showUsersVC.selectedTitle = @"GUEST LIST";
         }
+    }
+    else if([segue.identifier isEqualToString:@"view post"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
+        
+        ViewPostViewController *vc = segue.destinationViewController;
+        
+        /**
+         Forward data of the post the to the view. Or in future just forward the post id
+         in order to fetch it from the server.
+         */
+        vc.commentJustCreated = nil;
+        vc.isFromCampusLive = NO;
+        vc.post = self.selectedPost;
+        vc.showComment = self.focusOnCommentInViewPostVC;
     }
 }
 

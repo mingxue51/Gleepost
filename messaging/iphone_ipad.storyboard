@@ -73,6 +73,7 @@
                         <outlet property="tableView" destination="c6C-YH-LiX" id="U1T-oD-DaZ"/>
                         <outlet property="topView" destination="oph-M8-bdD" id="q9g-fx-7Y6"/>
                         <segue destination="chq-8F-SBT" kind="show" identifier="show users" id="aSi-aN-x2E"/>
+                        <segue destination="Wkk-th-enz" kind="show" identifier="view post" id="YkP-mr-hDf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ybF-fL-Ayk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -6694,12 +6695,12 @@
         <segue reference="TeO-Fd-Ort"/>
         <segue reference="6aM-BE-RDh"/>
         <segue reference="XMX-SH-Gag"/>
-        <segue reference="2GR-ci-jSQ"/>
-        <segue reference="C5K-bl-yN1"/>
         <segue reference="t02-Sh-BtB"/>
         <segue reference="aSi-aN-x2E"/>
-        <segue reference="KpL-5K-Dn2"/>
-        <segue reference="Hvj-hh-KhY"/>
+        <segue reference="YkP-mr-hDf"/>
+        <segue reference="J6b-Ty-4qO"/>
+        <segue reference="WK7-hw-eyD"/>
+        <segue reference="Ji2-Jv-WyQ"/>
         <segue reference="Th4-GT-P8f"/>
         <segue reference="b0z-f7-UHU"/>
         <segue reference="PMB-JP-q3M"/>

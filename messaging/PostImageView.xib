@@ -775,7 +775,7 @@
                                 </fragment>
                             </attributedString>
                             <connections>
-                                <action selector="commentPost:" destination="O2J-7W-tPU" eventType="touchUpInside" id="ryU-MC-RlP"/>
+                                <action selector="commentPost:" destination="kLC-Br-XgS" eventType="touchUpInside" id="2wP-Wb-0eF"/>
                             </connections>
                         </button>
                         <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tec-az-qAK">

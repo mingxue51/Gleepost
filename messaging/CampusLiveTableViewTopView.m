@@ -110,6 +110,12 @@
     return array;
 }
 
+- (void)swipeView:(SwipeView *)swipeView didSelectItemAtIndex:(NSInteger)index
+{
+    GLPPost *post = [[CampusLiveManager sharedInstance] eventPostAtIndex:index];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CL_POST_TOUCHED object:self userInfo:@{@"post" : post}];
+}
+
 #pragma mark - SwipeViewDataSource
 
 - (UIView *)swipeView:(SwipeView *)swipeView viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view

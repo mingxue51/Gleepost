@@ -259,6 +259,11 @@
     
 }
 
+- (IBAction)commentPost:(id)sender
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CL_COMMENT_BUTTON_TOUCHED object:self userInfo:@{@"post" : self.post}];
+}
+
 -(IBAction)sharePost:(id)sender
 {
     UIActionSheet *actionSheet = nil;
