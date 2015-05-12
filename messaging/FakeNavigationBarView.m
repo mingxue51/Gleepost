@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
 //  This is a fake navigation bar and for now is used only in GroupViewController.
-//  It's created to avoid the so-called "black issue" during the navigation between
+//  It's created to avoid the so-called "black issue" during the navigation, for instance, between
 //  GroupViewController and GLPGroupsViewController.
-//  This navigatio bar could be used to any view controller needs more customisation
+//  This navigation bar could be used to any view controller needs more customisation
 //  on navigation bar's titles or any other kind of customisation.
 
 #import "FakeNavigationBarView.h"

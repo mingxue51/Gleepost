@@ -72,6 +72,7 @@
                     <connections>
                         <outlet property="tableView" destination="c6C-YH-LiX" id="U1T-oD-DaZ"/>
                         <outlet property="topView" destination="oph-M8-bdD" id="q9g-fx-7Y6"/>
+                        <segue destination="chq-8F-SBT" kind="show" identifier="show users" id="aSi-aN-x2E"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ybF-fL-Ayk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -6686,24 +6687,24 @@
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="sMz-ia-ebt"/>
-        <segue reference="a3g-k4-yG4"/>
-        <segue reference="b0z-f7-UHU"/>
-        <segue reference="Th4-GT-P8f"/>
-        <segue reference="uet-Cl-mZq"/>
         <segue reference="jrG-R0-ySl"/>
         <segue reference="KTX-M6-QrM"/>
         <segue reference="KgO-oz-Ivb"/>
         <segue reference="X2Z-pC-dgW"/>
         <segue reference="TeO-Fd-Ort"/>
         <segue reference="6aM-BE-RDh"/>
-        <segue reference="2GR-ci-jSQ"/>
-        <segue reference="j6r-TK-6Al"/>
-        <segue reference="C5K-bl-yN1"/>
-        <segue reference="rCT-Ex-vO8"/>
         <segue reference="XMX-SH-Gag"/>
+        <segue reference="2GR-ci-jSQ"/>
+        <segue reference="C5K-bl-yN1"/>
+        <segue reference="t02-Sh-BtB"/>
+        <segue reference="aSi-aN-x2E"/>
+        <segue reference="KpL-5K-Dn2"/>
+        <segue reference="Hvj-hh-KhY"/>
+        <segue reference="Th4-GT-P8f"/>
+        <segue reference="b0z-f7-UHU"/>
         <segue reference="PMB-JP-q3M"/>
         <segue reference="NSy-Xb-H1O"/>
-        <segue reference="t02-Sh-BtB"/>
+        <segue reference="sMz-ia-ebt"/>
+        <segue reference="a3g-k4-yG4"/>
     </inferredMetricsTieBreakers>
 </document>

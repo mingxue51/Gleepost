@@ -16,6 +16,7 @@
 
 @property (assign, nonatomic) NSInteger selectedUserId;
 @property (assign, nonatomic) BOOL showComment;
+@property (assign, nonatomic) BOOL transparentNavBar;
 
 -(void)viewSectionWithId:(GLPSelectedTab) selectedTab;
 -(void)viewConversation:(GLPConversation*)conversation;

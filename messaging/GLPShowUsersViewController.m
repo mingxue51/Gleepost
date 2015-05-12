@@ -14,6 +14,7 @@
 #import "GLPPrivateProfileViewController.h"
 #import "WebClient.h"
 #import "GLPTableActivityIndicator.h"
+#import "FakeNavigationBarView.h"
 
 @interface GLPShowUsersViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -23,6 +24,8 @@
 
 @property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
+@property (strong, nonatomic) FakeNavigationBarView *fakeNavigationBar;
+
 @end
 
 @implementation GLPShowUsersViewController
@@ -30,16 +33,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self initialiseObjects];
-    
+    [self configureView];
     [self configureNavigationBar];
-    
     [self configureTableView];
-    
     [self loadAttendeesIfNeeded];
-    
     [self showUsers];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
 }
 
@@ -48,13 +52,25 @@
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorCenter withView:_tableView];
 }
 
+- (void)configureView
+{
+    self.automaticallyAdjustsScrollViewInsets = NO;
+}
+
 - (void)configureNavigationBar
 {
-    self.title = _selectedTitle;
-    
-//    [self.navigationController.navigationBar.topItem setTitle:_selectedTitle];
-    
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    if(self.transparentNavBar)
+    {
+        [self.navigationController.navigationBar invisible];
+        self.fakeNavigationBar = [[FakeNavigationBarView alloc] initWithTitle:_selectedTitle];
+        [self.view addSubview:self.fakeNavigationBar];
+    }
+    else
+    {
+        [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+        self.title = _selectedTitle;
+    }
+
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
 }
 
@@ -169,7 +185,7 @@
     if([segue.identifier isEqualToString:@"view private profile"])
     {
         GLPPrivateProfileViewController *profileViewController = segue.destinationViewController;
-        
+        profileViewController.transparentNavBar = YES;
         profileViewController.selectedUserId = self.selectedUserId;
     }
 }

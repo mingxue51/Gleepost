@@ -246,15 +246,23 @@
 
 -(void)configureNavigationBar
 {
+    if(self.transparentNavBar)
+    {
+        [self.navigationController.navigationBar invisible];
+    }
+    else
+    {
+        [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    }
+    
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
     //We are not using the default method for formatting the navigation bar because was causing issues
     //with the navigation to GroupVC.
     
-    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]]];
+//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]]];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }

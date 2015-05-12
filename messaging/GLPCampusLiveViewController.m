@@ -7,6 +7,7 @@
 //
 
 #import "GLPCampusLiveViewController.h"
+#import "UINavigationBar+Format.h"
 #import "CampusLiveFakeNavigationBarView.h"
 #import "SwipeView.h"
 #import "CLPostTableView.h"
@@ -21,6 +22,7 @@
 #import "CommentCell.h"
 #import "ViewPostTitleCell.h"
 #import "GLPTableActivityIndicator.h"
+#import "GLPShowUsersViewController.h"
 
 /**
  CommentCell *cell;
@@ -45,6 +47,8 @@
 
 @property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
+@property (assign, nonatomic) BOOL showUsersLikedThePost;
+
 @property (assign, nonatomic) BOOL postChanged;
 
 @end
@@ -55,9 +59,17 @@
 {
     [super viewDidLoad];
     [self configureObjects];
-    [self configureNavigationBar];
     [self configureNotifications];
     [self configureTableView];
+
+
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self configureNavigationBar];
+    
 }
 
 - (void)configureObjects
@@ -66,13 +78,14 @@
     self.mediaFocusViewController.parallaxEnabled = NO;
     self.mediaFocusViewController.shouldShowPhotoActions = YES;
     self.mediaFocusViewController.shouldRotateToDeviceOrientation = NO;
-    self.mediaFocusViewController.shouldBlurBackground = NO;
+    self.mediaFocusViewController.shouldBlurBackground = YES;
     
     self.commentsManager = [[CLCommentsManager alloc] init];
     
     self.tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorMaxBottom withView:self.tableView];
     
     self.postChanged = YES;
+    self.showUsersLikedThePost = NO;
 }
 
 - (void)configureTableView
@@ -127,6 +140,8 @@
 {
     self.fakeNavigationBar = [[CampusLiveFakeNavigationBarView alloc] init];
     [self.view addSubview:self.fakeNavigationBar];
+    [self.navigationController.navigationBar invisible];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStyleBordered target:nil action:nil];
 }
 
 #pragma mark - Client
@@ -194,21 +209,22 @@
 
 - (void)likesCellTouched
 {
-    DDLogDebug(@"GLPCampusLiveViewController likesCellTouched");
+    self.showUsersLikedThePost = YES;
+    [self performSegueWithIdentifier:@"show users" sender:self];
 }
 
 #pragma mark - GLPLabelDelegate
 
 - (void)labelTouchedWithTag:(NSInteger)tag
 {
-    DDLogDebug(@"GLPCampusLiveViewController labelTouchedWithTag %ld", tag);
+    DDLogDebug(@"GLPCampusLiveViewController labelTouchedWithTag %ld", (long)tag);
 }
 
 #pragma mark - GLPImageViewDelegate
 
 - (void)imageTouchedWithImageView:(UIImageView *)imageView
 {
-    DDLogDebug(@"GLPCampusLiveViewController imageTouchedWithImageView %ld", imageView.tag);
+    DDLogDebug(@"GLPCampusLiveViewController imageTouchedWithImageView %ld", (long)imageView.tag);
 }
 
 #pragma mark - Table view refresh cells
@@ -467,14 +483,31 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
+    if ([segue.identifier isEqualToString:@"show users"])
+    {
+        GLPShowUsersViewController *showUsersVC = segue.destinationViewController;
+        showUsersVC.transparentNavBar = YES;
+        
+        if(self.showUsersLikedThePost)
+        {
+            showUsersVC.users = self.selectedPost.usersLikedThePost;
+            showUsersVC.selectedTitle = @"LIKED BY";
+        }
+        else
+        {
+            showUsersVC.postRemoteKey = self.selectedPost.remoteKey;
+            showUsersVC.selectedTitle = @"GUEST LIST";
+        }
+    }
 }
-*/
+
 
 @end
