@@ -29,7 +29,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="c6C-YH-LiX">
-                                <rect key="frame" x="0.0" y="-64" width="600" height="551"/>
+                                <rect key="frame" x="0.0" y="-64" width="600" height="501"/>
                                 <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="oph-M8-bdD" customClass="CampusLiveTableViewTopView">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="500"/>
@@ -60,16 +60,58 @@
                                     <outlet property="delegate" destination="wi3-fG-KRs" id="b4A-GW-ft2"/>
                                 </connections>
                             </tableView>
+                            <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sHa-5y-TXQ" customClass="GLPBottomTextView">
+                                <rect key="frame" x="0.0" y="437" width="600" height="50"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yos-Uw-vfK">
+                                        <rect key="frame" x="532" y="8" width="60" height="34"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="34" id="As8-Oi-kid"/>
+                                            <constraint firstAttribute="width" constant="60" id="V0C-CU-wtD"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="14"/>
+                                        <state key="normal" title="SEND">
+                                            <color key="titleColor" red="0.20392156859999999" green="0.59607843140000005" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleShadowColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="buttonTouched:" destination="sHa-5y-TXQ" eventType="touchUpInside" id="6lV-qd-WJQ"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kwy-Zt-Jro" customClass="HPGrowingTextView">
+                                        <rect key="frame" x="10" y="7" width="514" height="35"/>
+                                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="yos-Uw-vfK" firstAttribute="leading" secondItem="kwy-Zt-Jro" secondAttribute="trailing" constant="8" id="ASO-dl-sPF"/>
+                                    <constraint firstAttribute="bottom" secondItem="kwy-Zt-Jro" secondAttribute="bottom" constant="8" id="DrT-09-Xrp"/>
+                                    <constraint firstItem="kwy-Zt-Jro" firstAttribute="top" secondItem="sHa-5y-TXQ" secondAttribute="top" constant="7" id="bRD-xo-WXN"/>
+                                    <constraint firstAttribute="centerY" secondItem="yos-Uw-vfK" secondAttribute="centerY" id="bSe-NA-s7H"/>
+                                    <constraint firstAttribute="trailing" secondItem="yos-Uw-vfK" secondAttribute="trailing" constant="8" id="m4m-ow-xX6"/>
+                                    <constraint firstAttribute="height" constant="50" id="zHD-tE-Rxh"/>
+                                    <constraint firstItem="kwy-Zt-Jro" firstAttribute="leading" secondItem="sHa-5y-TXQ" secondAttribute="leading" constant="10" id="zZx-8R-gsb"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="growingTextView" destination="kwy-Zt-Jro" id="cVd-ds-Awl"/>
+                                </connections>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="c6C-YH-LiX" firstAttribute="leading" secondItem="bW4-pQ-YuZ" secondAttribute="leading" id="ADo-Xb-ZEY"/>
+                            <constraint firstItem="sHa-5y-TXQ" firstAttribute="leading" secondItem="bW4-pQ-YuZ" secondAttribute="leading" id="LiI-aQ-bnd"/>
+                            <constraint firstItem="sHa-5y-TXQ" firstAttribute="top" secondItem="c6C-YH-LiX" secondAttribute="bottom" id="O5y-Vp-Who"/>
                             <constraint firstAttribute="trailing" secondItem="c6C-YH-LiX" secondAttribute="trailing" id="QKl-0N-Pue"/>
                             <constraint firstItem="c6C-YH-LiX" firstAttribute="top" secondItem="Oo5-HY-NEU" secondAttribute="bottom" constant="-64" id="fWJ-DO-nCc"/>
-                            <constraint firstItem="jGq-5X-Bof" firstAttribute="top" secondItem="c6C-YH-LiX" secondAttribute="bottom" id="wpJ-0W-JHy"/>
+                            <constraint firstAttribute="trailing" secondItem="sHa-5y-TXQ" secondAttribute="trailing" id="lIn-Vo-Uih"/>
+                            <constraint firstItem="jGq-5X-Bof" firstAttribute="top" secondItem="sHa-5y-TXQ" secondAttribute="bottom" id="rej-zc-Ybg"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomTextView" destination="sHa-5y-TXQ" id="PkW-QR-yti"/>
+                        <outlet property="distanceTableViewFromBottom" destination="O5y-Vp-Who" id="ERR-60-PAH"/>
                         <outlet property="tableView" destination="c6C-YH-LiX" id="U1T-oD-DaZ"/>
                         <outlet property="topView" destination="oph-M8-bdD" id="q9g-fx-7Y6"/>
                         <segue destination="chq-8F-SBT" kind="show" identifier="show users" id="aSi-aN-x2E"/>

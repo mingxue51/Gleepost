@@ -24,21 +24,17 @@
 #import "GLPTableActivityIndicator.h"
 #import "GLPShowUsersViewController.h"
 #import "ViewPostViewController.h"
-
-/**
- CommentCell *cell;
- ViewPostTitleCell *titleCell;
- GLPLikesCell *likesCell;
- */
+#import "GLPBottomTextView.h"
 
 @interface GLPCampusLiveViewController () <UITableViewDataSource, UITableViewDelegate, GLPLikesCellDelegate, GLPImageViewDelegate, GLPLabelDelegate>
 
 @property (strong, nonatomic) CampusLiveFakeNavigationBarView *fakeNavigationBar;
-//@property (nonatomic, strong) IBOutlet SwipeView *swipeView;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (weak, nonatomic) IBOutlet CampusLiveTableViewTopView *topView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceTableViewFromBottom;
 
 @property (strong, nonatomic) URBMediaFocusViewController *mediaFocusViewController;
 
@@ -53,6 +49,12 @@
 @property (assign, nonatomic) BOOL postChanged;
 
 @property (assign, nonatomic) BOOL focusOnCommentInViewPostVC;
+
+@property (assign, nonatomic) BOOL reachedTheLastCell;
+
+@property (assign, nonatomic) CGFloat lastContentOffset;
+
+@property (weak, nonatomic) IBOutlet GLPBottomTextView *bottomTextView;
 
 @end
 
@@ -158,6 +160,37 @@
     [[CampusLiveManager sharedInstance] getLiveEventPosts];
 }
 
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    DDLogDebug(@"scroll view content offset %f", scrollView.contentOffset.y);
+    
+    DDLogDebug(@"GLPCampusLiveViewController table view cells %f", [self heightOfRows]);
+    
+    CGFloat currentOffset = scrollView.contentOffset.y;
+    
+    if(self.postChanged)
+    {
+        return;
+    }
+    
+    if([self heightOfRows] - 170.0f < currentOffset)
+    {
+        [self.bottomTextView show];
+        [self makeDistanceOfTableViewFromBottomFitWithTextView];
+    }
+    else
+    {
+        [self.bottomTextView hide];
+        [self makeDistanceOfTableViewFromBottomFitWithBottom];
+    }
+    
+    self.lastContentOffset = currentOffset;
+}
+
+
+
 #pragma mark - NSNotification methods
 
 - (void)imageViewTouched:(NSNotification *)notification
@@ -185,20 +218,26 @@
     [self.tableActivityIndicator startActivityIndicator];
     self.postChanged = YES;
     
-    [self performSelector:@selector(stopActivityIndicator) withObject:self afterDelay:1.0];
+    [self performSelector:@selector(stopActivityIndicatorAndReloadData) withObject:self afterDelay:1.0];
     
     [self.tableView reloadData];
     
     [self.commentsManager loadCommentsWithPost:self.selectedPost];
+    
+    [self.bottomTextView hide];
+    [self makeDistanceOfTableViewFromBottomFitWithBottom];
 }
 
-- (void)stopActivityIndicator
+- (void)stopActivityIndicatorAndReloadData
 {
     [self.tableActivityIndicator stopActivityIndicator];
     
     self.postChanged = NO;
     
     [self.tableView reloadData];
+    
+    [self.bottomTextView hide];
+    [self makeDistanceOfTableViewFromBottomFitWithBottom];
 }
 
 - (void)commentsReceived:(NSNotification *)notification
@@ -325,7 +364,6 @@
     }
     
     return numberOfRows;
-
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -412,6 +450,52 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Positioning management
+
+- (void)makeDistanceOfTableViewFromBottomFitWithBottom
+{
+    self.distanceTableViewFromBottom.constant = -50.0;
+}
+
+- (void)makeDistanceOfTableViewFromBottomFitWithTextView
+{
+    self.distanceTableViewFromBottom.constant = 0.0;
+
+}
+
+#pragma mark - Helpers
+
+- (NSInteger)numberOfRows
+{
+    NSInteger numberOfRows = 0;
+    
+    if([self.selectedPost isPostLiked])
+    {
+        ++numberOfRows;
+    }
+    
+    if([self.commentsManager commentsCountWithPost:self.selectedPost] > 0)
+    {
+        numberOfRows += ([self.commentsManager commentsCountWithPost:self.selectedPost] + 1);
+    }
+    
+    return numberOfRows;
+}
+
+- (CGFloat)heightOfRows
+{
+    CGFloat heightOfRows = 0.0;
+    
+    if([self.selectedPost isPostLiked])
+    {
+        heightOfRows += [GLPLikesCell height];
+    }
+    
+    heightOfRows += [self.commentsManager commentCellsHeightWithPost:self.selectedPost];
+    
+    return heightOfRows;
 }
 
 

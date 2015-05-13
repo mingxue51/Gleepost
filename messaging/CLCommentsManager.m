@@ -13,6 +13,7 @@
 #import "GLPCommentManager.h"
 #import "GLPiOSSupportHelper.h"
 #import "GLPCLCommentsOperation.h"
+#import "CommentCell.h"
 
 @class GLPPost;
 
@@ -99,6 +100,27 @@
 {
     NSArray *comments = self.postComments[@(post.remoteKey)];
     return comments.count;
+}
+
+
+/**
+ Calculates and returns the height of all the comment cells.
+ 
+ @param post The selected post.
+ 
+ */
+- (CGFloat)commentCellsHeightWithPost:(GLPPost *)post
+{
+    NSArray *comments = self.postComments[@(post.remoteKey)];
+    
+    CGFloat totalHeight = 0.0;
+    
+    for(GLPComment *comment in comments)
+    {
+        totalHeight += [CommentCell getCellHeightWithContent:comment.content image:NO];
+    }
+    
+    return totalHeight;
 }
 
 #pragma mark - GLPCLCommentsOpeation

@@ -1701,14 +1701,14 @@ const float TOP_OFFSET = 180.0f;
     if((differenceFromStart) < 0)
     {
         // scroll up
-        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+        if(scrollView.isTracking && (fabs(differenceFromLast)>1))
         {
             
         }
             //[self expand];
     }
     else {
-        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+        if(scrollView.isTracking && (fabs(differenceFromLast)>1))
         {
             
         }
@@ -2812,6 +2812,10 @@ const float TOP_OFFSET = 180.0f;
         showUsersVC.postRemoteKey = _selectedPost.remoteKey;
         
         showUsersVC.selectedTitle = @"GUEST LIST";
+    }
+    else if ([segue.identifier isEqualToString:@"show campus live"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
     }
 }
 
