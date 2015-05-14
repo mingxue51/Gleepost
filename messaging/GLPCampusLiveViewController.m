@@ -27,6 +27,7 @@
 #import "GLPBottomTextView.h"
 #import "GLPCommentUploader.h"
 #import "GLPPostNotificationHelper.h"
+#import "JTSImageViewController.h"
 
 @interface GLPCampusLiveViewController () <UITableViewDataSource, UITableViewDelegate, GLPLikesCellDelegate, GLPImageViewDelegate, GLPLabelDelegate, GLPBottomTextViewDelegate>
 
@@ -208,7 +209,25 @@
 - (void)imageViewTouched:(NSNotification *)notification
 {
     UIImage *image = notification.userInfo[@"image"];
-    [_mediaFocusViewController showImage:image fromView:self.view];
+    UIImageView *imageView = notification.userInfo[@"current_image_view"];
+    
+    
+    // Create image info
+    JTSImageInfo *imageInfo = [[JTSImageInfo alloc] init];
+    imageInfo.image = image;
+    imageInfo.referenceRect = imageView.frame;
+    imageInfo.referenceView = imageView.superview;
+    
+    // Setup view controller
+    JTSImageViewController *imageViewer = [[JTSImageViewController alloc]
+                                           initWithImageInfo:imageInfo
+                                           mode:JTSImageViewControllerMode_Image
+                                           backgroundStyle:JTSImageViewControllerBackgroundOption_Blurred];
+    
+    // Present the view controller.
+    [imageViewer showFromViewController:self transition:JTSImageViewControllerTransition_FromOriginalPosition];
+    
+//    [_mediaFocusViewController showImage:image fromView:self.view];
 }
 
 - (void)showMoreOptions:(NSNotification *)notification

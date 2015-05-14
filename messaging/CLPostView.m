@@ -184,7 +184,7 @@
     
     if(imageView.tag == -1)
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CL_IMAGE_SHOULD_VIEWED object:self userInfo:@{@"image" : imageView.image}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CL_IMAGE_SHOULD_VIEWED object:self userInfo:@{@"image" : imageView.image, @"current_image_view" : self.postImageView}];
     }
     else
     {

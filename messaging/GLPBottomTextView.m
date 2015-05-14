@@ -138,18 +138,6 @@
     }
 }
 
-#pragma mark - HPGrowingTextViewDelegate
-
-- (void)growingTextViewDidBeginEditing:(HPGrowingTextView *)growingTextView
-{
-    
-}
-
-- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView
-{
-    DDLogDebug(@"GLPBottomTextView text %@", growingTextView.text);
-}
-
 #pragma mark - Selectors
 
 - (IBAction)buttonTouched:(id)sender
