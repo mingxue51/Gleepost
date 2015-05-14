@@ -17,5 +17,6 @@
 - (GLPComment *)commentAtIndex:(NSInteger)index withPost:(GLPPost *)post;
 - (NSInteger)commentsCountWithPost:(GLPPost *)post;
 - (CGFloat)commentCellsHeightWithPost:(GLPPost *)post;
+- (void)addNewComment:(GLPComment *)comment toTheListWithPost:(GLPPost *)post;
 
 @end

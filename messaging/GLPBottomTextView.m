@@ -89,6 +89,11 @@
         return;
     }
     
+    if(![self.growingTextView.text isEqualToString:@""])
+    {
+        return;
+    }
+    
     [self hideKeyboardFromTextViewIfNeeded];
     
     [UIView animateWithDuration:0.6 animations:^{
@@ -133,11 +138,30 @@
     }
 }
 
+#pragma mark - HPGrowingTextViewDelegate
+
+- (void)growingTextViewDidBeginEditing:(HPGrowingTextView *)growingTextView
+{
+    
+}
+
+- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView
+{
+    DDLogDebug(@"GLPBottomTextView text %@", growingTextView.text);
+}
+
 #pragma mark - Selectors
 
 - (IBAction)buttonTouched:(id)sender
 {
-    DDLogDebug(@"GLPBottomTextView buttonTouched");
+    if([self.growingTextView.text isEqualToString:@""])
+    {
+        return;
+    }
+    
+    [self.delegate userHitsSendButtonWithText:self.growingTextView.text];
+    self.growingTextView.text = @"";
+    [self hide];
 }
 
 @end

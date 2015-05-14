@@ -9,6 +9,7 @@
 #import "CampusLiveManager.h"
 #import "WebClient.h"
 #import "DateFormatterHelper.h"
+#import "GLPPostDao.h"
 
 @interface CampusLiveManager ()
 
@@ -91,6 +92,8 @@ static CampusLiveManager *instance = nil;
         
         if(success)
         {
+            [self savePostsInLocalDatabaseIfNotExist:posts];
+            
             callbackBlock(YES, posts);
         }
         else
@@ -99,6 +102,14 @@ static CampusLiveManager *instance = nil;
         }
         
     }];
+}
+
+- (void)savePostsInLocalDatabaseIfNotExist:(NSArray *)posts
+{
+    for(GLPPost *post in posts)
+    {
+        [GLPPostDao saveOrUpdatePost:post];
+    }
 }
 
 -(void)formatLivePosts:(NSArray *)posts withPostIds:(NSArray *)postsIds

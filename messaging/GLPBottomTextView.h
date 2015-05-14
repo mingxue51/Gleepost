@@ -8,7 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol GLPBottomTextViewDelegate <NSObject>
+
+- (void)userHitsSendButtonWithText:(NSString *)text;
+
+
+@end
+
 @interface GLPBottomTextView : UIView
+
+@property (assign, nonatomic) UIViewController <GLPBottomTextViewDelegate> *delegate;
 
 - (void)becomeTextViewFirstResponder;
 - (void)resignTextViewFirstResponder;

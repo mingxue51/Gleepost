@@ -25,8 +25,10 @@
 #import "GLPShowUsersViewController.h"
 #import "ViewPostViewController.h"
 #import "GLPBottomTextView.h"
+#import "GLPCommentUploader.h"
+#import "GLPPostNotificationHelper.h"
 
-@interface GLPCampusLiveViewController () <UITableViewDataSource, UITableViewDelegate, GLPLikesCellDelegate, GLPImageViewDelegate, GLPLabelDelegate>
+@interface GLPCampusLiveViewController () <UITableViewDataSource, UITableViewDelegate, GLPLikesCellDelegate, GLPImageViewDelegate, GLPLabelDelegate, GLPBottomTextViewDelegate>
 
 @property (strong, nonatomic) CampusLiveFakeNavigationBarView *fakeNavigationBar;
 
@@ -92,6 +94,8 @@
     self.postChanged = YES;
     self.showUsersLikedThePost = NO;
     self.focusOnCommentInViewPostVC = NO;
+    
+    self.bottomTextView.delegate = self;
 }
 
 - (void)configureTableView
@@ -292,6 +296,21 @@
     DDLogDebug(@"GLPCampusLiveViewController imageTouchedWithImageView %ld", (long)imageView.tag);
 }
 
+#pragma mark - GLPBottomTextViewDelegate
+
+- (void)userHitsSendButtonWithText:(NSString *)text
+{
+    DDLogDebug(@"GLPCampusLiveViewController userHitsSendButtonWithText %@", text);
+    
+    GLPCommentUploader *commentUploader = [[GLPCommentUploader alloc] init];
+    
+    GLPComment *comment = [commentUploader uploadCommentWithContent:text andPost:self.selectedPost];
+    
+    [self reloadNewComment:comment];
+    
+    [self updatePostWithNewComment];
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -470,12 +489,42 @@
 - (void)makeDistanceOfTableViewFromBottomFitWithTextView
 {
     self.distanceTableViewFromBottom.constant = 0.0;
-
 }
+
+#pragma mark - Table view UI
 
 - (void)scrollToTheEndAnimated:(BOOL)animated
 {
     [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self numberOfRows] - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+}
+
+- (void)reloadNewComment:(GLPComment *)comment
+{
+    [self.commentsManager addNewComment:comment toTheListWithPost:self.selectedPost];
+    [self scrollToBottomAndUpdateTableViewWithNewComment];
+}
+
+- (void)scrollToBottomAndUpdateTableViewWithNewComment
+{
+    NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
+
+    NSInteger commentsCount = [self.commentsManager commentsCountWithPost:self.selectedPost];
+    
+    for(NSInteger i = commentsCount; i < commentsCount + 1; ++i)
+    {
+        [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+    }
+    
+    [self.tableView reloadData];
+}
+
+- (void)updatePostWithNewComment
+{
+    //Increase the number of comments to the post.
+    ++self.selectedPost.commentsCount;
+    
+    //Notify timeline view controller.
+    [GLPPostNotificationHelper updatePostWithNotifiationName:@"GLPPostUpdated" withObject:self remoteKey:self.selectedPost.remoteKey numberOfLikes:self.selectedPost.likes andNumberOfComments:self.selectedPost.commentsCount];
 }
 
 #pragma mark - Keyboard management

@@ -41,13 +41,15 @@
 {
     [GLPCommentManager loadCommentsWithPost:self.post localCallback:^(NSArray *localComments) {
         
-        [self.delegate comments:localComments forPost:self.post];
+        NSArray *reversedComments = [[localComments reverseObjectEnumerator] allObjects];
+        [self.delegate comments:reversedComments forPost:self.post];
         
     } remoteCallback:^(BOOL success, NSArray *remoteComments){
         
         if(success)
         {
-            [self.delegate comments:remoteComments forPost:self.post];
+            NSArray *reversedComments = [[remoteComments reverseObjectEnumerator] allObjects];
+            [self.delegate comments:reversedComments forPost:self.post];
         }
         
     }];

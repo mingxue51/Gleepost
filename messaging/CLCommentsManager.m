@@ -102,6 +102,14 @@
     return comments.count;
 }
 
+- (void)addNewComment:(GLPComment *)comment toTheListWithPost:(GLPPost *)post
+{
+    NSMutableArray *comments = [self.postComments[@(post.remoteKey)] mutableCopy];
+    
+    [comments addObject:comment];
+    
+    self.postComments[@(post.remoteKey)] = comments;
+}
 
 /**
  Calculates and returns the height of all the comment cells.

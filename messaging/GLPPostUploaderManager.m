@@ -122,7 +122,7 @@
  */
 -(void)addComment:(GLPComment *)comment
 {
-    int postKey = comment.post.key;
+    NSInteger postKey = comment.post.key;
     
     NSAssert(postKey != 0, @"Key post should not be 0");
     
