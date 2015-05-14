@@ -847,14 +847,15 @@ const float TOP_OFFSET = 180.0f;
     
     [self.view addSubview:self.fakeNavigationBar];
     
+    
 //    self.navigationController.navigationBar.topItem.title = [[GLPThemeManager sharedInstance] campusWallTitle];
 }
 
 - (void)addNavigationButtons
 {
-//    [self.navigationController.navigationBar setButton:kLeft withImageName:@"cards" withButtonSize:CGSizeMake(29.0, 24.0) withSelector:@selector(showCategories:) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft withImageName:@"navigationbar_trans" withButtonSize:CGSizeMake(29.0, 24.0) withSelector:@selector(showCategoriesViewController) andTarget:self];
 //    
-//    [self.navigationController.navigationBar setButton:kRight withImageName:@"pen" withButtonSize:CGSizeMake(23.0, 23.0) withSelector:@selector(newPostButtonClick) andTarget:self];
+    [self.navigationController.navigationBar setButton:kRight withImageName:@"navigationbar_trans" withButtonSize:CGSizeMake(23.0, 23.0) withSelector:@selector(newPostButtonClick) andTarget:self];
 }
 
 //- (void)showProgressView
@@ -1654,7 +1655,7 @@ const float TOP_OFFSET = 180.0f;
     
     [self configureStrechedImageViewWithOffset:yOffset];
     
-    if(yOffset > 0)
+    if(yOffset > -64)
     {
         //Set coloured mode.
         [self.fakeNavigationBar colourMode];
@@ -2693,11 +2694,6 @@ const float TOP_OFFSET = 180.0f;
     [self updateTitleView];
 
     [self loadInitialPosts];
-}
-
--(void)showCategories:(id)sender
-{
-    [self showCategoriesViewController];
 }
 
 - (void)showCategoriesViewController
