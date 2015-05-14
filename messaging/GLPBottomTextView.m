@@ -60,8 +60,24 @@
     self.alpha = 0.0;
 }
 
-#pragma mark - Modifiers
+#pragma mark - Keyboard
 
+- (void)becomeTextViewFirstResponder
+{
+    [self.growingTextView becomeFirstResponder];
+}
+
+- (void)resignTextViewFirstResponder
+{
+    [self.growingTextView resignFirstResponder];
+}
+
+- (BOOL)isTextViewFirstResponder
+{
+    return [self.growingTextView isFirstResponder];
+}
+
+#pragma mark - Modifiers
 
 /**
  Hides the view using a fade out animation.
@@ -72,6 +88,8 @@
     {
         return;
     }
+    
+    [self hideKeyboardFromTextViewIfNeeded];
     
     [UIView animateWithDuration:0.6 animations:^{
         
@@ -105,6 +123,14 @@
         
         
     }];
+}
+
+- (void)hideKeyboardFromTextViewIfNeeded
+{
+    if([self isTextViewFirstResponder])
+    {
+        [self resignTextViewFirstResponder];
+    }
 }
 
 #pragma mark - Selectors

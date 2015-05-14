@@ -36,6 +36,8 @@
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceTableViewFromBottom;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomViewDistanceFromBottom;
+
 @property (strong, nonatomic) URBMediaFocusViewController *mediaFocusViewController;
 
 @property (strong, nonatomic) CLCommentsManager *commentsManager;
@@ -120,6 +122,9 @@
 
 - (void)configureNotifications
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageViewTouched:) name:GLPNOTIFICATION_CL_IMAGE_SHOULD_VIEWED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showMoreOptions:) name:GLPNOTIFICATION_CL_SHOW_MORE_OPTIONS object:nil];
     
@@ -143,6 +148,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_COMMENTS_FETCHED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CL_POST_TOUCHED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CL_COMMENT_BUTTON_TOUCHED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)configureNavigationBar
@@ -463,6 +471,66 @@
 {
     self.distanceTableViewFromBottom.constant = 0.0;
 
+}
+
+- (void)scrollToTheEndAnimated:(BOOL)animated
+{
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self numberOfRows] - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+}
+
+#pragma mark - Keyboard management
+
+- (void)keyboardWillShow:(NSNotification *)note
+{
+    CGRect keyboardBounds;
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
+    
+    if(keyboardBounds.size.height == 0)
+    {
+        return;
+    }
+    
+    [self.tableView layoutIfNeeded];
+    [self.bottomTextView layoutIfNeeded];
+    
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+
+        self.bottomViewDistanceFromBottom.constant = keyboardBounds.size.height;
+        [self.bottomTextView layoutIfNeeded];
+        [self.tableView layoutIfNeeded];
+    
+    } completion:^(BOOL finished) {
+
+    }];
+    
+    [self scrollToTheEndAnimated:YES];
+}
+
+- (void)keyboardWillHide:(NSNotification *)note
+{
+    CGRect keyboardBounds;
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    UIViewAnimationCurve animationCurve = curve.intValue;
+    
+    [self.tableView layoutIfNeeded];
+    [self.bottomTextView layoutIfNeeded];
+    
+    [UIView animateWithDuration:[duration doubleValue] delay:0 options:(UIViewAnimationOptionBeginFromCurrentState|(animationCurve << 16)) animations:^{
+        
+        self.bottomViewDistanceFromBottom.constant = 0;
+        [self.bottomTextView layoutIfNeeded];
+        [self.tableView layoutIfNeeded];
+        
+    } completion:^(BOOL finished) {
+        [self.tableView setNeedsLayout];
+    }];
 }
 
 #pragma mark - Helpers

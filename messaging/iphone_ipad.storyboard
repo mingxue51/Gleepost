@@ -111,6 +111,7 @@
                     </view>
                     <connections>
                         <outlet property="bottomTextView" destination="sHa-5y-TXQ" id="PkW-QR-yti"/>
+                        <outlet property="bottomViewDistanceFromBottom" destination="rej-zc-Ybg" id="PF5-l7-AfF"/>
                         <outlet property="distanceTableViewFromBottom" destination="O5y-Vp-Who" id="ERR-60-PAH"/>
                         <outlet property="tableView" destination="c6C-YH-LiX" id="U1T-oD-DaZ"/>
                         <outlet property="topView" destination="oph-M8-bdD" id="q9g-fx-7Y6"/>

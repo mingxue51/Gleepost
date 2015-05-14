@@ -10,6 +10,9 @@
 
 @interface GLPBottomTextView : UIView
 
+- (void)becomeTextViewFirstResponder;
+- (void)resignTextViewFirstResponder;
+- (BOOL)isTextViewFirstResponder;
 - (void)hide;
 - (void)show;
 
