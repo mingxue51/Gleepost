@@ -214,6 +214,9 @@ const float TOP_OFFSET = 180.0f;
     
     [self startBackgroundOperations];
     
+    [self configNavigationBar];
+
+    
     //Find the sunset sunrise for preparation of the new chat.
     //TODO: That's will be used in GleepostSD app.
 //    [AnimationDayController sharedInstance];
@@ -227,11 +230,12 @@ const float TOP_OFFSET = 180.0f;
     
     [self configureRefreshControl];
     
-    [self configNavigationBar];
+    [self configureNavigationBarBackground];
     
     [self showNetworkErrorViewIfNeeded];
-    
 }
+
+
 
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -820,15 +824,20 @@ const float TOP_OFFSET = 180.0f;
 
 #pragma mark - Navigation bar
 
+- (void)configureNavigationBarBackground
+{
+    [self.navigationController.navigationBar invisible];
+}
+
 -(void)configNavigationBar
 {
 //    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
 //    [self.navigationController.navigationBar setCampusWallFontFormat];
     
-    [self.navigationController.navigationBar invisible];
+//    [self.navigationController.navigationBar invisible];
     
     //Set to all the application the status bar text white.
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     self.navigationController.navigationBar.topItem.title = @"";
 
@@ -1644,7 +1653,7 @@ const float TOP_OFFSET = 180.0f;
     CGFloat yOffset  = scrollView.contentOffset.y;
     
     [self configureStrechedImageViewWithOffset:yOffset];
-        
+    
     if(yOffset > 0)
     {
         //Set coloured mode.

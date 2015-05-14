@@ -10,6 +10,13 @@
 
 #import "FakeNavigationBarView.h"
 
+@protocol CampusWallFakeNavigationBar <NSObject>
+
+- (void)leftButtonTouched;
+- (void)rightButtonTouched;
+
+@end
+
 @interface CampusWallFakeNavigationBar : FakeNavigationBarView
 
 - (BOOL)isTransparentMode;
