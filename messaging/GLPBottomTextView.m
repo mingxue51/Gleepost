@@ -143,13 +143,8 @@
 
 - (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
 {
-//    self.viewHeight.constant -= (self.viewHeight.constant - height);
-    
     CGFloat diff = (growingTextView.frame.size.height - height);
-
      self.viewHeight.constant -= diff;
-    
-//    [self.delegate textViewWillGrowWithDiff:(self.growingTextView.frame.size.height - height)];
 }
 
 #pragma mark - Selectors

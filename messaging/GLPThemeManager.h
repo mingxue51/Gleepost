@@ -16,6 +16,8 @@
 - (UIImage *)navigationBarImage;
 - (UIImage *)leftItemColouredImage:(UIImage *)leftImage;
 - (UIImage *)rightItemColouredImage:(UIImage *)rightImage;
+- (UIColor *)rightItemColour;
+- (UIColor *)leftItemColour;
 - (UIImage *)topItemColouredImage:(UIImage *)topImage;
 - (UIColor *)navigationBarColour;
 - (UIColor *)navigationBarTitleColour;

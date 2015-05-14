@@ -41,7 +41,6 @@
 #import "TransitionDelegateViewCategories.h"
 #import "CampusWallHeader.h"
 #import "CampusWallHeaderSimpleView.h"
-#import "FakeNavigationBar.h"
 #import "UIImage+StackBlur.h"
 #import "ConversationManager.h"
 #import "AnimationDayController.h"
@@ -78,6 +77,7 @@
 #import "URBMediaFocusViewController.h"
 #import "GLPCategoryCell.h"
 #import "GLPCampusWallStretchedView.h"
+#import "CampusWallFakeNavigationBar.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate, GLPCategoriesViewControllerDelegate, GLPCampusWallStretchedViewDelegate>
 
@@ -163,6 +163,10 @@
 @property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
 @property (strong, nonatomic) GLPCampusWallStretchedView *strechedImageView;
+
+@property (strong, nonatomic) CampusWallFakeNavigationBar *fakeNavigationBar;
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -273,6 +277,7 @@ const float TOP_OFFSET = 180.0f;
     //Show navigation bar.
 //    [self contract];
 
+    [super viewWillDisappear:animated];
     
 }
 
@@ -719,8 +724,8 @@ const float TOP_OFFSET = 180.0f;
 - (void)configureRefreshControl
 {
     // refresh control
-    self.refreshControl = [[UIRefreshControl alloc] initWithCustomLoader];
-    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
+//    self.refreshControl = [[UIRefreshControl alloc] initWithCustomLoader];
+//    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void)configureTopImageView
@@ -827,15 +832,20 @@ const float TOP_OFFSET = 180.0f;
     
     self.navigationController.navigationBar.topItem.title = @"";
 
+    //TODO: Set to fake navigation bar the title.
+    
+    self.fakeNavigationBar = [[CampusWallFakeNavigationBar alloc] initWithTitle:[[GLPThemeManager sharedInstance] campusWallTitle]];
+    
+    [self.view addSubview:self.fakeNavigationBar];
     
 //    self.navigationController.navigationBar.topItem.title = [[GLPThemeManager sharedInstance] campusWallTitle];
 }
 
 - (void)addNavigationButtons
 {
-    [self.navigationController.navigationBar setButton:kLeft withImageName:@"cards" withButtonSize:CGSizeMake(29.0, 24.0) withSelector:@selector(showCategories:) andTarget:self];
-    
-    [self.navigationController.navigationBar setButton:kRight withImageName:@"pen" withButtonSize:CGSizeMake(23.0, 23.0) withSelector:@selector(newPostButtonClick) andTarget:self];
+//    [self.navigationController.navigationBar setButton:kLeft withImageName:@"cards" withButtonSize:CGSizeMake(29.0, 24.0) withSelector:@selector(showCategories:) andTarget:self];
+//    
+//    [self.navigationController.navigationBar setButton:kRight withImageName:@"pen" withButtonSize:CGSizeMake(23.0, 23.0) withSelector:@selector(newPostButtonClick) andTarget:self];
 }
 
 //- (void)showProgressView
@@ -1579,7 +1589,7 @@ const float TOP_OFFSET = 180.0f;
 {
     self.isLoading = YES;
     
-    [self.refreshControl beginRefreshing];
+    //[self.refreshControl beginRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
@@ -1587,7 +1597,7 @@ const float TOP_OFFSET = 180.0f;
 {
     self.isLoading = NO;
     
-    [self.refreshControl endRefreshing];
+    //[self.refreshControl endRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
@@ -1634,7 +1644,17 @@ const float TOP_OFFSET = 180.0f;
     CGFloat yOffset  = scrollView.contentOffset.y;
     
     [self configureStrechedImageViewWithOffset:yOffset];
-    
+        
+    if(yOffset > 0)
+    {
+        //Set coloured mode.
+        [self.fakeNavigationBar colourMode];
+    }
+    else
+    {
+        //Set transparent mode.
+        [self.fakeNavigationBar transparentMode];
+    }
     
     
 //    [self.reNavBar setFrame:CGRectMake(0.0f, scrollView.contentOffset.y, 320.0f, 50.0f)];

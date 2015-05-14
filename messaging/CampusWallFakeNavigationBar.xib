@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="bk5-3S-N6H" customClass="CampusWallFakeNavigationBar">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w8y-Vb-jFw">
+                    <rect key="frame" x="85" y="31" width="150" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="HAi-vO-vLT"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fk2-He-7tl">
+                    <rect key="frame" x="0.0" y="63" width="320" height="1"/>
+                    <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="XRc-b0-SYW"/>
+                    </constraints>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d3a-Is-LRs">
+                    <rect key="frame" x="14" y="30" width="29" height="24"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="1ED-xQ-TWY"/>
+                        <constraint firstAttribute="width" constant="29" id="ikE-K3-aK9"/>
+                    </constraints>
+                    <state key="normal" image="cards.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ujd-1O-gt7">
+                    <rect key="frame" x="282" y="31" width="23" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="23" id="bkh-Tl-swb"/>
+                        <constraint firstAttribute="width" constant="23" id="k8c-BN-0YH"/>
+                    </constraints>
+                    <state key="normal" image="pen.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="Fk2-He-7tl" secondAttribute="bottom" id="5JV-g3-oPw"/>
+                <constraint firstItem="Fk2-He-7tl" firstAttribute="top" secondItem="d3a-Is-LRs" secondAttribute="bottom" constant="9" id="Bzc-aC-Jyh"/>
+                <constraint firstItem="w8y-Vb-jFw" firstAttribute="width" secondItem="Fk2-He-7tl" secondAttribute="width" multiplier="0.47" id="DU5-Hy-KRs"/>
+                <constraint firstItem="d3a-Is-LRs" firstAttribute="leading" secondItem="bk5-3S-N6H" secondAttribute="leading" constant="14" id="F0J-V6-yis"/>
+                <constraint firstAttribute="centerX" secondItem="w8y-Vb-jFw" secondAttribute="centerX" id="GU2-FN-r2q"/>
+                <constraint firstItem="w8y-Vb-jFw" firstAttribute="top" secondItem="bk5-3S-N6H" secondAttribute="top" constant="31" id="Nly-Z5-psu"/>
+                <constraint firstAttribute="trailing" secondItem="Fk2-He-7tl" secondAttribute="trailing" id="QJf-Ha-eiA"/>
+                <constraint firstItem="Fk2-He-7tl" firstAttribute="top" secondItem="Ujd-1O-gt7" secondAttribute="bottom" constant="9" id="Zfs-qK-9zK"/>
+                <constraint firstItem="Fk2-He-7tl" firstAttribute="leading" secondItem="bk5-3S-N6H" secondAttribute="leading" id="cWK-D5-nug"/>
+                <constraint firstAttribute="trailing" secondItem="Ujd-1O-gt7" secondAttribute="trailing" constant="15" id="jtB-BN-RjI"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="bottomLineImageView" destination="Fk2-He-7tl" id="wOj-4v-Yg9"/>
+                <outlet property="leftButton" destination="d3a-Is-LRs" id="Spa-WR-mIy"/>
+                <outlet property="rightButton" destination="Ujd-1O-gt7" id="xfL-mb-5CU"/>
+                <outlet property="titleLbl" destination="w8y-Vb-jFw" id="HUz-iz-1GJ"/>
+            </connections>
+            <point key="canvasLocation" x="255" y="255"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="cards.png" width="50" height="41"/>
+        <image name="pen.png" width="50" height="50"/>
+    </resources>
+</document>

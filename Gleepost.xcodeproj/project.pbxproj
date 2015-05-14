@@ -410,6 +410,8 @@
 		58729ACA189BFC430041022C /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58729AC9189BFC430041022C /* ChangePasswordViewController.m */; };
 		58729ACD189BFE110041022C /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 58729ACC189BFE110041022C /* back.png */; };
 		58729ACF189C1A4A0041022C /* settings_btn_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 58729ACE189C1A4A0041022C /* settings_btn_old.png */; };
+		5872A3341B04EF97000CE39B /* CampusWallFakeNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5872A3331B04EF97000CE39B /* CampusWallFakeNavigationBar.xib */; };
+		5872A3371B04EFC1000CE39B /* CampusWallFakeNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5872A3361B04EFC1000CE39B /* CampusWallFakeNavigationBar.m */; };
 		587433EB18A6951F0000DAA0 /* univers-ce-45-light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 587433EA18A694800000DAA0 /* univers-ce-45-light.ttf */; };
 		58752FDF18A44BC100F6F09B /* GLPSingInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58752FDE18A44BC100F6F09B /* GLPSingInViewController.m */; };
 		58774D2F196494CD0034A1C6 /* BOZPongRefreshControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 58774D2E196494CD0034A1C6 /* BOZPongRefreshControl.m */; };
@@ -1566,6 +1568,9 @@
 		58729AC9189BFC430041022C /* ChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordViewController.m; sourceTree = "<group>"; };
 		58729ACC189BFE110041022C /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		58729ACE189C1A4A0041022C /* settings_btn_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_btn_old.png; sourceTree = "<group>"; };
+		5872A3331B04EF97000CE39B /* CampusWallFakeNavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CampusWallFakeNavigationBar.xib; sourceTree = "<group>"; };
+		5872A3351B04EFC1000CE39B /* CampusWallFakeNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusWallFakeNavigationBar.h; sourceTree = "<group>"; };
+		5872A3361B04EFC1000CE39B /* CampusWallFakeNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusWallFakeNavigationBar.m; sourceTree = "<group>"; };
 		587433EA18A694800000DAA0 /* univers-ce-45-light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "univers-ce-45-light.ttf"; sourceTree = "<group>"; };
 		58752FDD18A44BC100F6F09B /* GLPSingInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSingInViewController.h; sourceTree = "<group>"; };
 		58752FDE18A44BC100F6F09B /* GLPSingInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSingInViewController.m; sourceTree = "<group>"; };
@@ -3020,6 +3025,7 @@
 				588C68871AD286D500E00F48 /* FakeNavigationBarNewPostView.xib */,
 				5825C3101AF0F50A000CC73B /* PollFakeNavigationBarNewPostView.xib */,
 				58C341EB1AF78C1B0075D15C /* CampusLiveFakeNavigationBarView.xib */,
+				5872A3331B04EF97000CE39B /* CampusWallFakeNavigationBar.xib */,
 			);
 			name = "Fake Navigation Bars";
 			sourceTree = "<group>";
@@ -3705,6 +3711,8 @@
 				5825C30E1AF0F194000CC73B /* PollFakeNavigationBarNewPostView.m */,
 				58C341E81AF78BE70075D15C /* CampusLiveFakeNavigationBarView.h */,
 				58C341E91AF78BE70075D15C /* CampusLiveFakeNavigationBarView.m */,
+				5872A3351B04EFC1000CE39B /* CampusWallFakeNavigationBar.h */,
+				5872A3361B04EFC1000CE39B /* CampusWallFakeNavigationBar.m */,
 			);
 			name = "Fake Navigation Bar";
 			sourceTree = "<group>";
@@ -5958,6 +5966,7 @@
 				588D8594195B26C4002F516A /* new_group_old.png in Resources */,
 				58433299180F181700BD9F74 /* email.png in Resources */,
 				583CE326189FFFBA00E78C08 /* loginbg.png in Resources */,
+				5872A3341B04EF97000CE39B /* CampusWallFakeNavigationBar.xib in Resources */,
 				5895B3D817F58E900040535D /* navigationbar_trans.png in Resources */,
 				588CDF7819762A2A00373EE3 /* public_group.png in Resources */,
 				584F385C1817F50B00A1B742 /* default_group_image_old.png in Resources */,
@@ -6590,6 +6599,7 @@
 				80D2D0CB180ACD30007FB020 /* NSNumber+Enums.m in Sources */,
 				80DDDF39180FDCC8009E17BD /* DateFormatterHelper.m in Sources */,
 				588F1DBE19EDCFBE00DB6D23 /* GLPAttendingPopUpViewController.m in Sources */,
+				5872A3371B04EFC1000CE39B /* CampusWallFakeNavigationBar.m in Sources */,
 				581AC4251A40789400385553 /* UIImageView+Animations.m in Sources */,
 				581AAF0E181DA88700F091A9 /* InvitationSentView.m in Sources */,
 				5809FF0A1A40376400AF7912 /* GLPCLPostImageLoader.m in Sources */,

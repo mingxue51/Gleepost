@@ -95,7 +95,17 @@ static GLPThemeManager *instance = nil;
     return [AppearanceHelper colourForRegisterTextFields];
 }
 
-- (NSString *)campusWallTitle
+- (UIColor *)rightItemColour;
+{
+    return [self.selectedTheme rightNavBarElementColour];
+}
+
+- (UIColor *)leftItemColour
+{
+    return [self.selectedTheme leftNavBarElementColour];
+}
+
+-(NSString *)campusWallTitle
 {
     return  [self.selectedTheme campusWallTitle];
 }

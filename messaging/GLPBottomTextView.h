@@ -11,7 +11,6 @@
 @protocol GLPBottomTextViewDelegate <NSObject>
 
 - (void)userHitsSendButtonWithText:(NSString *)text;
-- (void)textViewWillGrowWithDiff:(CGFloat)diff;
 
 @end
 

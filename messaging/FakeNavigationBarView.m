@@ -62,13 +62,31 @@
 
 - (void)initiliaseObjects
 {
-    _animationDuration = 0.3 ;
+    _animationDuration = 0.3;
 }
 
 - (void)setTitle:(NSString *)title
 {
     [_titleLbl setText:title];
 }
+
+#pragma mark - Used from subclasses
+
+- (void)setTitleToLabel:(NSString *)title
+{
+    [(FakeNavigationBarView *)self.externalView setTitle:[title uppercaseString]];
+}
+
+- (void)setTitleColour:(UIColor *)colour
+{
+    [self.titleLbl setTextColor:colour];
+}
+
+- (void)setAlphaToTitle:(CGFloat)alpha
+{
+    self.titleLbl.alpha = alpha;
+}
+
 
 - (void)hideNavigationBar
 {

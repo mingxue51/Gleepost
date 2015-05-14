@@ -311,17 +311,8 @@
     [self updatePostWithNewComment];
 }
 
-- (void)textViewWillGrowWithDiff:(CGFloat)diff
-{
-    
-}
 
 #pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
