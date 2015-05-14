@@ -15,7 +15,6 @@
 #import "CampusLiveTableViewTopView.h"
 #import "GLPiOSSupportHelper.h"
 #import "TableViewHelper.h"
-#import "URBMediaFocusViewController.h"
 #import "GLPPost.h"
 #import "CLCommentsManager.h"
 #import "GLPLikesCell.h"
@@ -40,8 +39,6 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceTableViewFromBottom;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomViewDistanceFromBottom;
-
-@property (strong, nonatomic) URBMediaFocusViewController *mediaFocusViewController;
 
 @property (strong, nonatomic) CLCommentsManager *commentsManager;
 
@@ -82,20 +79,11 @@
 
 - (void)configureObjects
 {
-    self.mediaFocusViewController = [[URBMediaFocusViewController alloc] init];
-    self.mediaFocusViewController.parallaxEnabled = NO;
-    self.mediaFocusViewController.shouldShowPhotoActions = YES;
-    self.mediaFocusViewController.shouldRotateToDeviceOrientation = NO;
-    self.mediaFocusViewController.shouldBlurBackground = YES;
-    
     self.commentsManager = [[CLCommentsManager alloc] init];
-    
     self.tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorMaxBottom withView:self.tableView];
-    
     self.postChanged = YES;
     self.showUsersLikedThePost = NO;
     self.focusOnCommentInViewPostVC = NO;
-    
     self.bottomTextView.delegate = self;
 }
 
@@ -177,10 +165,6 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    DDLogDebug(@"scroll view content offset %f", scrollView.contentOffset.y);
-    
-    DDLogDebug(@"GLPCampusLiveViewController table view cells %f", [self heightOfRows]);
-    
     CGFloat currentOffset = scrollView.contentOffset.y;
     
     if(self.postChanged)
@@ -211,7 +195,6 @@
     UIImage *image = notification.userInfo[@"image"];
     UIImageView *imageView = notification.userInfo[@"current_image_view"];
     
-    
     // Create image info
     JTSImageInfo *imageInfo = [[JTSImageInfo alloc] init];
     imageInfo.image = image;
@@ -226,8 +209,6 @@
     
     // Present the view controller.
     [imageViewer showFromViewController:self transition:JTSImageViewControllerTransition_FromOriginalPosition];
-    
-//    [_mediaFocusViewController showImage:image fromView:self.view];
 }
 
 - (void)showMoreOptions:(NSNotification *)notification
@@ -328,6 +309,11 @@
     [self reloadNewComment:comment];
     
     [self updatePostWithNewComment];
+}
+
+- (void)textViewWillGrowWithDiff:(CGFloat)diff
+{
+    
 }
 
 #pragma mark - Table view delegate
@@ -507,7 +493,7 @@
 
 - (void)makeDistanceOfTableViewFromBottomFitWithTextView
 {
-    self.distanceTableViewFromBottom.constant = 0.0;
+    self.distanceTableViewFromBottom.constant = 5.0;
 }
 
 #pragma mark - Table view UI

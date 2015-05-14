@@ -95,6 +95,7 @@
                                 </constraints>
                                 <connections>
                                     <outlet property="growingTextView" destination="kwy-Zt-Jro" id="cVd-ds-Awl"/>
+                                    <outlet property="viewHeight" destination="zHD-tE-Rxh" id="hOE-MG-ZfY"/>
                                 </connections>
                             </view>
                         </subviews>

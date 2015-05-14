@@ -35,7 +35,7 @@
 static const float FixedSizeOfTextCell = 53.0; //Before was 90. 75
 static const float FollowingCellPadding = 0.0;
 static const float CommentContentViewPadding = 0.0;  //15 before.
-static const float CommentContentLabelMargin = 40.0;
+static const float CommentContentLabelMargin = 20 + 36 + 5 + 20;
 
 
 @implementation CommentCell
@@ -257,6 +257,8 @@ static const float CommentContentLabelMargin = 40.0;
     UIFont *font = [UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:15.0];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
+    
+    DDLogDebug(@"getContentLabelSizeForContent %f", [CommentCell getMaxLabelContentWidth]);
     
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){[CommentCell getMaxLabelContentWidth], CGFLOAT_MAX}
                                                options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
