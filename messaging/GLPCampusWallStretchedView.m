@@ -306,17 +306,14 @@ const float kCWStretchedImageHeight = 350;
 - (void)liveSummaryFetched:(NSNotification *)notification
 {
     DDLogDebug(@"Live summary fetched %@", notification.userInfo);
-    self.leftNumberLabel.text =  [NSString stringWithFormat:@"%ld", [[CampusLiveManager sharedInstance] liveSummaryPartiesCount]];
-    self.centerNumberLabel.text = [NSString stringWithFormat:@"%ld", [[CampusLiveManager sharedInstance] liveSummarySpeakersCount]];
-    self.rightNumberLabel.text = [NSString stringWithFormat:@"+%ld", [[CampusLiveManager sharedInstance] liveSummaryPostsLeftCount]];
+    self.leftNumberLabel.text =  [NSString stringWithFormat:@"%ld", (long)[[CampusLiveManager sharedInstance] liveSummaryPartiesCount]];
+    self.centerNumberLabel.text = [NSString stringWithFormat:@"%ld", (long)[[CampusLiveManager sharedInstance] liveSummarySpeakersCount]];
+    self.rightNumberLabel.text = [NSString stringWithFormat:@"+%ld", (long)[[CampusLiveManager sharedInstance] liveSummaryPostsLeftCount]];
 
     [UIView animateWithDuration:0.3 animations:^{
         [self refreshPositioningOnElements];
-
     }];
-
 }
-
 
 #pragma mark - Selectors
 

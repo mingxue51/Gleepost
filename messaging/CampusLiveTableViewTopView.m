@@ -27,8 +27,9 @@
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
-    if (self) {
-        
+    if (self)
+    {
+        CGRectSetH(self, [CLPostView height]);
     }
     return self;
 }
@@ -92,6 +93,11 @@
     return [[CampusLiveManager sharedInstance] eventsCount];
 }
 
+//- (CGSize)swipeViewItemSize:(SwipeView *)swipeView
+//{
+//    return CGSizeMake(100.0, 100.0);
+//}
+
 - (void)swipeViewCurrentItemIndexDidChange:(SwipeView *)swipeView
 {
     [self reloadCampusLiveTableViewWithPostIndex:swipeView.currentItemIndex];
@@ -129,6 +135,9 @@
         
         view = [[NSBundle mainBundle] loadNibNamed:@"PostImageView" owner:self options:nil][0];
 
+        DDLogDebug(@"view y %f", view.frame.origin.y);
+        CGRectSetY(view, -60);
+        
         view.tag = index;
         
         GLPPost *post = [[CampusLiveManager sharedInstance] eventPostAtIndex:index];

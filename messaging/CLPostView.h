@@ -14,5 +14,6 @@
 
 - (void)setPost:(GLPPost *)post;
 + (CGFloat)width;
++ (CGFloat)height;
 
 @end

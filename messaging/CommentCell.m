@@ -257,9 +257,7 @@ static const float CommentContentLabelMargin = 20 + 36 + 5 + 20;
     UIFont *font = [UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:15.0];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
-    
-    DDLogDebug(@"getContentLabelSizeForContent %f", [CommentCell getMaxLabelContentWidth]);
-    
+        
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){[CommentCell getMaxLabelContentWidth], CGFLOAT_MAX}
                                                options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
                                                context:nil];

@@ -60,9 +60,8 @@
     
     if(self)
     {
-        self.frame = CGRectMake(0.0, 0.0, [GLPiOSSupportHelper screenWidth] * 0.91, [GLPiOSSupportHelper screenHeight] * 0.75);
+        self.frame = CGRectMake(0.0, 0.0, [GLPiOSSupportHelper screenWidth] * 0.91, [CLPostView height]);
         [self configureNotifications];
-
     }
     
     return self;
@@ -114,8 +113,7 @@
 - (void)configureContentLabel
 {
     self.contentLabel.text = self.post.content;
-    
-    self.contentLabelHeight.constant =  [GLPPostCell getContentLabelSizeForContent:self.post.content isViewPost:NO cellType:kImageCell].height;
+    self.contentLabelHeight.constant =  [self getContentLabelSizeForContent:self.post.content].height;
 }
 
 - (void)configureCommentsAndLikesLabels
@@ -123,8 +121,8 @@
     self.commentsLabel.hidden = (self.post.commentsCount == 0);
     self.likesLabel.hidden = (self.post.likes == 0);
     
-    self.commentsLabel.text = [NSString stringWithFormat:@"%ld", self.post.commentsCount];
-    self.likesLabel.text = [NSString stringWithFormat:@"%ld", self.post.likes];
+    self.commentsLabel.text = [NSString stringWithFormat:@"%ld", (long)self.post.commentsCount];
+    self.likesLabel.text = [NSString stringWithFormat:@"%ld", (long)self.post.likes];
 }
 
 - (void)configurePostImage
@@ -432,6 +430,42 @@
 + (CGFloat)width
 {
     return [GLPiOSSupportHelper screenWidth] * 0.91;
+}
+
++ (CGFloat)height
+{
+    if([GLPiOSSupportHelper useShortConstrains])
+    {
+        return 500 - 70;
+    }
+    
+    return 500;
+}
+
+- (CGSize)getContentLabelSizeForContent:(NSString *)content
+{
+    UIFont *font = nil;
+    
+    
+    
+    font = [UIFont fontWithName:@"HelveticaNeue-Light" size:15.0];
+    
+    CGFloat maxWidth = [GLPiOSSupportHelper screenWidth] - (2 * 25);
+    CGFloat maxHeight = [GLPiOSSupportHelper screenHeight] * 0.16;
+  
+    if([GLPiOSSupportHelper useShortConstrains])
+    {
+        maxHeight = [GLPiOSSupportHelper screenHeight] * 0.09;
+    }
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font,
+                                                                                                         NSKernAttributeName : @(0.3f)}];
+    
+    CGRect rect = [attributedText boundingRectWithSize:(CGSize){maxWidth, maxHeight}
+                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
+                                               context:nil];
+    
+    return rect.size;
 }
 
 /*
