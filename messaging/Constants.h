@@ -95,6 +95,7 @@
 #define GLPNOTIFICATION_POST_IMAGE_LOADED               @"GLPPostImageLoaded"
 
 #define GLPNOTIFICATION_CAMPUS_LIVE_POSTS_FETCHED       @"GLPCampusLivePostsFetched"
+#define GLPNOTIFICATION_CAMPUS_LIVE_SUMMARY_FETCHED     @"GLPCampusLiveSummaryFetched"
 #define GLPNOTIFICATION_COMMENTS_FETCHED                @"GLPCommentsFetched"
 #define GLPNOTIFICATION_CL_IMAGE_SHOULD_VIEWED          @"GLPCLImageShouldViewed"
 #define GLPNOTIFICATION_CL_SHOW_MORE_OPTIONS            @"GLPCLShowMoreOptions"

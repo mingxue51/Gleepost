@@ -24,6 +24,7 @@
 #import "GLPLiveGroupPostManager.h"
 #import "GLPLiveGroupManager.h"
 #import "GLPPendingPostsManager.h"
+#import "GLPLiveSummary.h"
 
 @interface WebClient()
 
@@ -877,6 +878,26 @@ static WebClient *instance = nil;
        
         callbackBlock(NO, 0);
     }];
+}
+
+- (void)campusLiveSummaryUntil:(NSDate *)until callbackBlock:(void (^) (BOOL success, GLPLiveSummary *liveSummary))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"live_summary"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+
+    [params setObject:[DateFormatterHelper dateUnixFormat:until] forKey:@"until"];
+    [params setObject:[DateFormatterHelper dateUnixFormat:[NSDate date]] forKey:@"after"];
+    
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+       
+        callbackBlock(YES, [RemoteParser parseLiveSummaryWithJson:responseObject]);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+        
+    }];
+    
 }
 
 //TODO: DEPRECATED.

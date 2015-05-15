@@ -10,10 +10,13 @@
 #import "WebClient.h"
 #import "DateFormatterHelper.h"
 #import "GLPPostDao.h"
+#import "GLPLiveSummary.h"
+#import "DateFormatterHelper.h"
 
 @interface CampusLiveManager ()
 
 @property (strong, nonatomic) NSArray *liveEventPosts;
+@property (strong, nonatomic) GLPLiveSummary *liveSummary;
 
 @end
 
@@ -52,7 +55,25 @@ static CampusLiveManager *instance = nil;
     }];
 }
 
-#pragma mark - Posts accessors
+- (void)getLiveSummary
+{
+    NSDate *tomorrow = [DateFormatterHelper generateDateWithLastMinutePlusDates:1];
+    
+    [[WebClient sharedInstance] campusLiveSummaryUntil:tomorrow callbackBlock:^(BOOL success, GLPLiveSummary *liveSummary) {
+       
+        if(success)
+        {
+            DDLogDebug(@"CampusLiveManager getLiveSummary");
+            
+            self.liveSummary = liveSummary;
+        }
+        
+        [self notifyCampusWallTopViewWithStatus:success];
+        
+    }];
+}
+
+#pragma mark - Accessors
 
 - (GLPPost *)eventPostAtIndex:(NSInteger)index
 {
@@ -63,6 +84,22 @@ static CampusLiveManager *instance = nil;
 {
     return self.liveEventPosts.count;
 }
+
+- (NSInteger)liveSummaryPartiesCount
+{
+    return [self.liveSummary partiesPostCount];
+}
+
+- (NSInteger)liveSummarySpeakersCount
+{
+    return [self.liveSummary speakersPostCount];
+}
+
+- (NSInteger)liveSummaryPostsLeftCount
+{
+    return [self.liveSummary eventsLeftCount];
+}
+
 
 #pragma mark - Client
 
@@ -222,6 +259,11 @@ static CampusLiveManager *instance = nil;
 - (void)notifyCampusLiveForNewPostsWithStatus:(BOOL)status
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CAMPUS_LIVE_POSTS_FETCHED object:self userInfo:@{@"posts_loaded_status" : @(status)}];
+}
+
+- (void)notifyCampusWallTopViewWithStatus:(BOOL)status
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_CAMPUS_LIVE_SUMMARY_FETCHED object:self userInfo:@{@"campus_live_summary_status" : @(status)}];
 }
 
 

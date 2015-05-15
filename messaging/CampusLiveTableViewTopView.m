@@ -127,7 +127,7 @@
         //note that it is only safe to use the reusingView if we return the same nib for each
         //item view, if different items have different contents, ignore the reusingView value
         
-        view = [[NSBundle mainBundle] loadNibNamed:@"PostImageView" owner:self options:nil][1];
+        view = [[NSBundle mainBundle] loadNibNamed:@"PostImageView" owner:self options:nil][0];
 
         view.tag = index;
         

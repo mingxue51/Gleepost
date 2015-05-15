@@ -312,6 +312,7 @@
 		5851114219A83D9900488E79 /* progress_bar_cloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 5851114119A83D9900488E79 /* progress_bar_cloud.png */; };
 		5851957D18CFA26E00F8CE46 /* GLPiOSSupportHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5851957C18CFA26E00F8CE46 /* GLPiOSSupportHelper.m */; };
 		58536ED918BE77440036FD00 /* GLPTemporaryUserInformationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */; };
+		5855CDA41B0600380006D278 /* GLPLiveSummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 5855CDA31B0600380006D278 /* GLPLiveSummary.m */; };
 		585625951AC89FA7006F5EA1 /* Montserrat-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 585625901AC89FA7006F5EA1 /* Montserrat-Black.otf */; };
 		585625961AC89FA7006F5EA1 /* Montserrat-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 585625911AC89FA7006F5EA1 /* Montserrat-Bold.otf */; };
 		585625971AC89FA7006F5EA1 /* Montserrat-Hairline.otf in Resources */ = {isa = PBXBuildFile; fileRef = 585625921AC89FA7006F5EA1 /* Montserrat-Hairline.otf */; };
@@ -1433,6 +1434,8 @@
 		5851957C18CFA26E00F8CE46 /* GLPiOSSupportHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPiOSSupportHelper.m; sourceTree = "<group>"; };
 		58536ED718BE77440036FD00 /* GLPTemporaryUserInformationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTemporaryUserInformationManager.h; sourceTree = "<group>"; };
 		58536ED818BE77440036FD00 /* GLPTemporaryUserInformationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTemporaryUserInformationManager.m; sourceTree = "<group>"; };
+		5855CDA21B0600370006D278 /* GLPLiveSummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveSummary.h; sourceTree = "<group>"; };
+		5855CDA31B0600380006D278 /* GLPLiveSummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveSummary.m; sourceTree = "<group>"; };
 		585625901AC89FA7006F5EA1 /* Montserrat-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Black.otf"; sourceTree = "<group>"; };
 		585625911AC89FA7006F5EA1 /* Montserrat-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.otf"; sourceTree = "<group>"; };
 		585625921AC89FA7006F5EA1 /* Montserrat-Hairline.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Hairline.otf"; sourceTree = "<group>"; };
@@ -5132,6 +5135,8 @@
 				5879234F19E7926E007F3C20 /* GLPMember.m */,
 				580C0DAC1AE11EFB00DA9522 /* GLPPoll.h */,
 				580C0DAD1AE11EFB00DA9522 /* GLPPoll.m */,
+				5855CDA21B0600370006D278 /* GLPLiveSummary.h */,
+				5855CDA31B0600380006D278 /* GLPLiveSummary.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -6861,6 +6866,7 @@
 				58BB77FD1924F0600046885B /* VideoView.m in Sources */,
 				5844293318BCD17600DFEAF4 /* GLPCommentUploader.m in Sources */,
 				58A855C11949BA8C0059CF57 /* GLPButton.m in Sources */,
+				5855CDA41B0600380006D278 /* GLPLiveSummary.m in Sources */,
 				8087E42F180EC02E00938264 /* Comment.m in Sources */,
 				5887C7E119FDA52A004441B9 /* AttendingPostsOrganiserHelper.m in Sources */,
 				58D70D581A8513400023B478 /* ProfileManager.m in Sources */,

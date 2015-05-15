@@ -18,6 +18,7 @@
 #import "GLPConversationRead.h"
 #import "GLPReviewHistory.h"
 #import "GLPSystemMessage.h"
+#import "GLPLiveSummary.h"
 
 @interface RemoteParser()
 
@@ -908,6 +909,15 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     return delimitedCommaTags;
+}
+
+#pragma mark - Campus Live
+
++ (GLPLiveSummary *)parseLiveSummaryWithJson:(NSDictionary *)json
+{
+    DDLogDebug(@"Remote parser parseLiveSummaryWithJson %@", json);
+    
+    return [[GLPLiveSummary alloc] initWithTotalPosts:[json[@"total-posts"] integerValue] andByCategoryData:json[@"by-category"]];
 }
 
 #pragma mark - Attendees

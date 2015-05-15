@@ -96,13 +96,15 @@ static CategoryManager *instance = nil;
     _categoriesInOrder = array.mutableCopy;
 }
 
--(GLPCategory*)categoryWithTag:(NSString*)tag
+- (GLPCategory *)categoryWithTag:(NSString *)tag
 {
-    for(GLPCategory *c in _categories)
+    for(NSNumber *categoryOrder in _categories)
     {
-        if([c.tag isEqualToString:tag])
+        GLPCategory *category = [self.categories objectForKey:categoryOrder];
+        
+        if([category.tag isEqualToString:tag])
         {
-            return c;
+            return category;
         }
     }
     

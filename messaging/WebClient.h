@@ -17,6 +17,8 @@
 #import "SRWebSocket.h"
 #import "GLPGroup.h"
 
+@class GLPLiveSummary;
+
 @interface WebClient : AFHTTPClient
 
 extern NSString * const kWebserviceBaseUrl;
@@ -155,6 +157,9 @@ extern NSString * const kWebserviceBaseUrl;
 // pending posts
 
 - (void)getPostsWaitingForApprovalCallbackBlock:(void (^) (BOOL success, NSArray *pendingPosts))callbackBlock;
+
+// campus live
+- (void)campusLiveSummaryUntil:(NSDate *)until callbackBlock:(void (^) (BOOL success, GLPLiveSummary *liveSummary))callbackBlock;
 
 // approval
 - (void)getApprovalStatusCallbackBlock:(void (^) (BOOL success, NSInteger level))callbackBlock;

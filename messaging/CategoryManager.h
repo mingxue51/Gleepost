@@ -48,11 +48,12 @@ typedef NS_ENUM(NSInteger, CategoryOrder) {
 - (GLPCategory*)categoryWithOrderKey:(NSInteger)remoteKey;
 - (GLPCategory *)setSelectedCategoryWithOrderKey:(NSInteger)orderKey;
 - (void)setSelectedCategory:(GLPCategory *)category;
--(NSArray*)getCategories;
+- (NSArray*)getCategories;
 - (NSMutableArray *)getCategoriesForFilteringView;
--(GLPCategory *)generateEventCategory;
+- (GLPCategory *)generateEventCategory;
 - (NSString *)selectedCategoryName;
 - (GLPCategory *)selectedCategory;
+- (GLPCategory *)categoryWithTag:(NSString *)tag;
 - (void)reset;
 
 @end

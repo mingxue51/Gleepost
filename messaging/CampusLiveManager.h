@@ -9,12 +9,17 @@
 #import <Foundation/Foundation.h>
 
 @class GLPPost;
+@class GLPLiveSummary;
 
 @interface CampusLiveManager : NSObject
 
 + (CampusLiveManager *)sharedInstance;
 
 - (void)getLiveEventPosts;
+- (void)getLiveSummary;
+- (NSInteger)liveSummaryPartiesCount;
+- (NSInteger)liveSummarySpeakersCount;
+- (NSInteger)liveSummaryPostsLeftCount;
 
 - (GLPPost *)eventPostAtIndex:(NSInteger)index;
 - (NSInteger)eventsCount;

@@ -12,6 +12,8 @@
 #import "GLPThemeManager.h"
 #import "GLPiOSSupportHelper.h"
 #import "ShapeFormatterHelper.h"
+#import "CampusLiveManager.h"
+#import "GLPLiveSummary.h"
 
 @interface GLPCampusWallStretchedView ()
 
@@ -31,10 +33,15 @@
 @property (strong, nonatomic) UILabel *rightNumberLabel;
 @property (strong, nonatomic) UILabel *rightTextLabel;
 
+@property (assign, nonatomic, readonly) NSInteger distanceBetweenNumberAndText;
+
 
 @end
 
 @implementation GLPCampusWallStretchedView
+
+// We are using dynamic to avoid overriding the delegate from classe's super class.
+@dynamic delegate;
 
 const float kCWStretchedImageHeight = 350;
 
@@ -44,19 +51,47 @@ const float kCWStretchedImageHeight = 350;
     
     if (self)
     {
-//        [super setColourOverlay:[UIColor colorWithR:245.0 withG:183.0 andB:40.0]];
+        [self configureNotifications];
         [super setColourOverlay:[[GLPThemeManager sharedInstance] tabbarSelectedColour]];
         [super setAlphaOverlay:0.8];
         [super setHeightOfTransImage:kCWStretchedImageHeight];
+        [self intialiseObjects];
         [self configureFonts];
         [self configureTopLabel];
         [self configureDataView];
+        [self loadLiveData];
     }
     
     return self;
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+}
+
+- (void)dealloc
+{
+    DDLogInfo(@"GLPCampusWallStretchedView dealloc");
+    [self removeNotifications];
+}
+
+- (void)removeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CAMPUS_LIVE_SUMMARY_FETCHED object:nil];
+}
+
 #pragma mark - Configuration
+
+- (void)intialiseObjects
+{
+    _distanceBetweenNumberAndText = 3;
+}
+
+- (void)configureNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(liveSummaryFetched:) name:GLPNOTIFICATION_CAMPUS_LIVE_SUMMARY_FETCHED object:nil];
+}
 
 - (void)configureFonts
 {
@@ -108,6 +143,25 @@ const float kCWStretchedImageHeight = 350;
     [self addBottomButton];
     
     [self addSubview:self.dataView];
+    
+}
+
+- (void)refreshPositioningOnElements
+{
+    //Left elements.
+    CGRectSetX(self.leftTextLabel, CGRectGetMinX(self.topLabel.frame) - 10);
+    CGRectSetW(self.leftNumberLabel, [self labelWidthWithText:self.leftNumberLabel.text containsNumber:YES]);
+    CGRectSetX(self.leftNumberLabel, CGRectGetMinX(self.leftTextLabel.frame) - CGRectGetWidth(self.leftNumberLabel.frame) - self.distanceBetweenNumberAndText);
+
+    //Center elements.
+    CGRectSetX(self.centerTextLabel, self.dataView.center.x - 30);
+    CGRectSetW(self.centerNumberLabel, [self labelWidthWithText:self.centerNumberLabel.text containsNumber:YES]);
+    CGRectSetX(self.centerNumberLabel, CGRectGetMinX(self.centerTextLabel.frame) - CGRectGetWidth(self.centerNumberLabel.frame) - self.distanceBetweenNumberAndText);
+    
+    //Right elements.
+    CGRectSetX(self.rightTextLabel, CGRectGetMaxX(self.topLabel.frame) - 20);
+    CGRectSetW(self.rightNumberLabel, [self labelWidthWithText:self.rightNumberLabel.text containsNumber:YES]);
+    CGRectSetX(self.rightNumberLabel, CGRectGetMinX(self.rightTextLabel.frame) - CGRectGetWidth(self.rightNumberLabel.frame) - self.distanceBetweenNumberAndText);
 }
 
 - (void)addBottomButton
@@ -241,6 +295,28 @@ const float kCWStretchedImageHeight = 350;
     
     return label;
 }
+
+#pragma mark - Client
+
+- (void)loadLiveData
+{
+    [[CampusLiveManager sharedInstance] getLiveSummary];
+}
+
+- (void)liveSummaryFetched:(NSNotification *)notification
+{
+    DDLogDebug(@"Live summary fetched %@", notification.userInfo);
+    self.leftNumberLabel.text =  [NSString stringWithFormat:@"%ld", [[CampusLiveManager sharedInstance] liveSummaryPartiesCount]];
+    self.centerNumberLabel.text = [NSString stringWithFormat:@"%ld", [[CampusLiveManager sharedInstance] liveSummarySpeakersCount]];
+    self.rightNumberLabel.text = [NSString stringWithFormat:@"+%ld", [[CampusLiveManager sharedInstance] liveSummaryPostsLeftCount]];
+
+    [UIView animateWithDuration:0.3 animations:^{
+        [self refreshPositioningOnElements];
+
+    }];
+
+}
+
 
 #pragma mark - Selectors
 
