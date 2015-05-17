@@ -175,6 +175,7 @@
 
 //Constants.
 const float TOP_OFFSET = 180.0f;
+const float OFFSET_START_ANIMATING_CW = 360.0;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -840,13 +841,10 @@ const float TOP_OFFSET = 180.0f;
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     self.navigationController.navigationBar.topItem.title = @"";
-
-    //TODO: Set to fake navigation bar the title.
     
     self.fakeNavigationBar = [[CampusWallFakeNavigationBar alloc] initWithTitle:[[GLPThemeManager sharedInstance] campusWallTitle]];
     
     [self.view addSubview:self.fakeNavigationBar];
-    
     
 //    self.navigationController.navigationBar.topItem.title = [[GLPThemeManager sharedInstance] campusWallTitle];
 }
@@ -1598,7 +1596,7 @@ const float TOP_OFFSET = 180.0f;
 - (void)startLoading
 {
     self.isLoading = YES;
-    
+    [self.fakeNavigationBar startLoading];
     //[self.refreshControl beginRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
@@ -1606,7 +1604,7 @@ const float TOP_OFFSET = 180.0f;
 - (void)stopLoading
 {
     self.isLoading = NO;
-    
+    [self.fakeNavigationBar stopLoading];
     //[self.refreshControl endRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
@@ -1638,9 +1636,20 @@ const float TOP_OFFSET = 180.0f;
     self.startContentOffset = self.lastContentOffset = scrollView.contentOffset.y;
 }
 
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if(scrollView.contentOffset.y < (-OFFSET_START_ANIMATING_CW))
+    {
+        [self.fakeNavigationBar setHiddenLoader:NO];
+    }
+    else if(!self.isLoading)
+    {
+        [self.fakeNavigationBar setHiddenLoader:YES];
+    }
+    
+    
+    
+    
     [_flurryVisibleProcessor resetVisibleCells];
     [_trackViewsCountProcessor resetVisibleCells];
     
@@ -1806,6 +1815,16 @@ const float TOP_OFFSET = 180.0f;
         [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
         
         _tableViewFirstTimeScrolled = YES;
+    }
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    CGFloat yOffset  = scrollView.contentOffset.y;
+
+    if(yOffset < (-OFFSET_START_ANIMATING_CW) && !self.isLoading)
+    {
+        [self loadEarlierPostsFromPullToRefresh];
     }
 }
 

@@ -15,5 +15,8 @@
 - (BOOL)isTransparentMode;
 - (void)transparentMode;
 - (void)colourMode;
+- (void)startLoading;
+- (void)stopLoading;
+- (void)setHiddenLoader:(BOOL)hidden;
 
 @end

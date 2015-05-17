@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *bottomLineImageView;
 @property (weak, nonatomic) IBOutlet UIButton *leftButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingView;
+@property (assign, nonatomic) BOOL isLoading;
 
 @property (assign, nonatomic) CGFloat animationDuration;
 @property (assign, nonatomic) BOOL isTransparentMode;
@@ -42,6 +44,7 @@
 - (void)initiliaseObjects
 {
     self.animationDuration = 0.3;
+    self.isLoading = NO;
 }
 
 - (void)formatNavigationBar
@@ -79,6 +82,12 @@
 
 - (void)transparentMode
 {
+    if(self.isLoading)
+    {
+        [self startLoading];
+        return;
+    }
+    
     [UIView animateWithDuration:self.animationDuration delay:0.0 options:UIViewAnimationCurveEaseOut | UIViewAnimationCurveEaseOut  animations:^{
         
         [self makeBackgroundViewTransparent:YES];
@@ -93,6 +102,11 @@
 
 - (void)colourMode
 {
+    
+    CampusWallFakeNavigationBar *externalView = (CampusWallFakeNavigationBar *)self.externalView;
+
+    [externalView.loadingView stopAnimating];
+    
     [UIView animateWithDuration:self.animationDuration delay:0.0 options:UIViewAnimationCurveEaseOut | UIViewAnimationCurveEaseOut  animations:^{
 
         [self makeBackgroundViewTransparent:NO];
@@ -102,6 +116,37 @@
     }];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
+
+- (void)startLoading
+{
+    DDLogDebug(@"CampusWallFakeNavigationBar startLoading");
+    
+    CampusWallFakeNavigationBar *externalView = (CampusWallFakeNavigationBar *)self.externalView;
+
+    self.isLoading = YES;
+    [externalView.loadingView startAnimating];
+}
+
+- (void)stopLoading
+{
+    DDLogDebug(@"CampusWallFakeNavigationBar stopLoading");
+
+    CampusWallFakeNavigationBar *externalView = (CampusWallFakeNavigationBar *)self.externalView;
+
+    self.isLoading = NO;
+    [externalView.loadingView stopAnimating];
+}
+
+- (void)setHiddenLoader:(BOOL)hidden
+{
+    if(hidden && self.isLoading)
+    {
+        return;
+    }
+    
+    CampusWallFakeNavigationBar *externalView = (CampusWallFakeNavigationBar *)self.externalView;
+    externalView.loadingView.hidden = hidden;
 }
 
 /*

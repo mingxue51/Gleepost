@@ -48,9 +48,16 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="3Xr-Qx-ium">
+                    <rect key="frame" x="150" y="34" width="20" height="20"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="color" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstAttribute="centerX" secondItem="3Xr-Qx-ium" secondAttribute="centerX" id="2IF-BH-KZB"/>
                 <constraint firstAttribute="bottom" secondItem="Fk2-He-7tl" secondAttribute="bottom" id="5JV-g3-oPw"/>
                 <constraint firstItem="Fk2-He-7tl" firstAttribute="top" secondItem="d3a-Is-LRs" secondAttribute="bottom" constant="9" id="Bzc-aC-Jyh"/>
                 <constraint firstItem="w8y-Vb-jFw" firstAttribute="width" secondItem="Fk2-He-7tl" secondAttribute="width" multiplier="0.47" id="DU5-Hy-KRs"/>
@@ -58,6 +65,7 @@
                 <constraint firstAttribute="centerX" secondItem="w8y-Vb-jFw" secondAttribute="centerX" id="GU2-FN-r2q"/>
                 <constraint firstItem="w8y-Vb-jFw" firstAttribute="top" secondItem="bk5-3S-N6H" secondAttribute="top" constant="31" id="Nly-Z5-psu"/>
                 <constraint firstAttribute="trailing" secondItem="Fk2-He-7tl" secondAttribute="trailing" id="QJf-Ha-eiA"/>
+                <constraint firstItem="Fk2-He-7tl" firstAttribute="top" secondItem="3Xr-Qx-ium" secondAttribute="bottom" constant="9" id="XDV-1p-566"/>
                 <constraint firstItem="Fk2-He-7tl" firstAttribute="top" secondItem="Ujd-1O-gt7" secondAttribute="bottom" constant="9" id="Zfs-qK-9zK"/>
                 <constraint firstItem="Fk2-He-7tl" firstAttribute="leading" secondItem="bk5-3S-N6H" secondAttribute="leading" id="cWK-D5-nug"/>
                 <constraint firstAttribute="trailing" secondItem="Ujd-1O-gt7" secondAttribute="trailing" constant="15" id="jtB-BN-RjI"/>
@@ -66,6 +74,7 @@
             <connections>
                 <outlet property="bottomLineImageView" destination="Fk2-He-7tl" id="wOj-4v-Yg9"/>
                 <outlet property="leftButton" destination="d3a-Is-LRs" id="Spa-WR-mIy"/>
+                <outlet property="loadingView" destination="3Xr-Qx-ium" id="5kD-RM-OMk"/>
                 <outlet property="rightButton" destination="Ujd-1O-gt7" id="xfL-mb-5CU"/>
                 <outlet property="titleLbl" destination="w8y-Vb-jFw" id="HUz-iz-1GJ"/>
             </connections>
