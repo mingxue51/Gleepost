@@ -78,6 +78,7 @@
 #import "GLPCategoryCell.h"
 #import "GLPCampusWallStretchedView.h"
 #import "CampusWallFakeNavigationBar.h"
+#import "GLPCampusLiveViewController.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate, GLPCategoriesViewControllerDelegate, GLPCampusWallStretchedViewDelegate>
 
@@ -646,6 +647,9 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     [AppearanceHelper setSelectedColourForTabbarItem:self.homeTabbarItem withColour:tabColour];
     
     [self setCustomBackgroundToTableView];
+    
+    //Set to all the application the status bar text white.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 -(void)setCustomBackgroundToTableView
@@ -836,9 +840,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 //    [self.navigationController.navigationBar setCampusWallFontFormat];
     
 //    [self.navigationController.navigationBar invisible];
-    
-    //Set to all the application the status bar text white.
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     self.navigationController.navigationBar.topItem.title = @"";
     
@@ -1638,21 +1639,10 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if(scrollView.contentOffset.y < (-OFFSET_START_ANIMATING_CW))
-    {
-        [self.fakeNavigationBar setHiddenLoader:NO];
-    }
-    else if(!self.isLoading)
-    {
-        [self.fakeNavigationBar setHiddenLoader:YES];
-    }
-    
-    
-    
+    [self makeVisibleOrInvisibleActivityIndicatorWithOffset:scrollView.contentOffset.y];
     
     [_flurryVisibleProcessor resetVisibleCells];
     [_trackViewsCountProcessor resetVisibleCells];
-    
     
     CGFloat currentOffset = scrollView.contentOffset.y;
     CGFloat differenceFromStart = self.startContentOffset - currentOffset;
@@ -1846,6 +1836,18 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
         [_strechedImageView setHeightOfTransImage:-offset];
         
         //        CGRectSetY(_lbl, -yOffset/2);
+    }
+}
+
+- (void)makeVisibleOrInvisibleActivityIndicatorWithOffset:(float)offset
+{
+    if(offset < (-OFFSET_START_ANIMATING_CW))
+    {
+        [self.fakeNavigationBar setHiddenLoader:NO];
+    }
+    else if(!self.isLoading)
+    {
+        [self.fakeNavigationBar setHiddenLoader:YES];
     }
 }
 
@@ -2357,7 +2359,13 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 - (void)takeALookTouched
 {
     DDLogDebug(@"GLPTimelineViewController : Navigate to campus live");
-    [self performSegueWithIdentifier:@"show campus live" sender:self];
+//    [self performSegueWithIdentifier:@"show campus live" sender:self];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+    GLPCampusLiveViewController *campusLiveVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPCampusLiveViewController"];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:campusLiveVC];
+    navigationController.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - GLPCategoriesViewControllerDelegate

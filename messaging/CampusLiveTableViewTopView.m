@@ -48,9 +48,9 @@
     self.swipeView.pagingEnabled = YES;
     self.swipeView.itemsPerPage = 1;
     self.swipeView.defersItemViewLoading = YES;
-
-    [self.swipeView scrollToItemAtIndex:1 duration:0.0];
-    [self.swipeView scrollToItemAtIndex:0 duration:0.0];
+//
+//    [self.swipeView scrollToItemAtIndex:1 duration:0.0];
+//    [self.swipeView scrollToItemAtIndex:0 duration:0.0];
 }
 
 - (void)configureNotifications
@@ -68,6 +68,8 @@
 - (void)loadLiveEventPosts
 {
     [[CampusLiveManager sharedInstance] getLiveEventPosts];
+    
+    DDLogDebug(@"CampusLiveTableViewTopView loadLiveEventPosts");
 }
 
 #pragma mark - NSNotification methods

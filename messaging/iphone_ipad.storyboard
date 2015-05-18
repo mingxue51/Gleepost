@@ -19,7 +19,7 @@
         <!--Campus Live View Controller-->
         <scene sceneID="ZAp-fy-Z9f">
             <objects>
-                <viewController id="wi3-fG-KRs" customClass="GLPCampusLiveViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GLPCampusLiveViewController" id="wi3-fG-KRs" customClass="GLPCampusLiveViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Oo5-HY-NEU"/>
                         <viewControllerLayoutGuide type="bottom" id="jGq-5X-Bof"/>

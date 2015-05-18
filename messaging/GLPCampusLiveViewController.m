@@ -8,6 +8,7 @@
 
 #import "GLPCampusLiveViewController.h"
 #import "UINavigationBar+Format.h"
+#import "UINavigationBar+Utils.h"
 #import "CampusLiveFakeNavigationBarView.h"
 #import "SwipeView.h"
 #import "CLPostTableView.h"
@@ -152,6 +153,11 @@
     [self.view addSubview:self.fakeNavigationBar];
     [self.navigationController.navigationBar invisible];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStyleBordered target:nil action:nil];
+    
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismissViewController) andTarget:self];
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+
 }
 
 #pragma mark - Client
@@ -611,6 +617,14 @@
     return heightOfRows;
 }
 
+#pragma mark - Selectors
+
+- (void)dismissViewController
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
 
 #pragma mark - Navigation
 

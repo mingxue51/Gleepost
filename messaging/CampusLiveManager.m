@@ -17,6 +17,7 @@
 
 @property (strong, nonatomic) NSArray *liveEventPosts;
 @property (strong, nonatomic) GLPLiveSummary *liveSummary;
+@property (strong, nonatomic) dispatch_queue_t queue;
 
 @end
 
@@ -35,6 +36,18 @@ static CampusLiveManager *instance = nil;
     return instance;
 }
 
+- (id)init
+{
+    self = [super init];
+    
+    if(self)
+    {
+        self.queue = dispatch_queue_create("com.gleepost.queue.campuslivemanager", DISPATCH_QUEUE_CONCURRENT);
+    }
+    
+    return self;
+}
+
 #pragma mark - Accessors
 
 /**
@@ -43,16 +56,21 @@ static CampusLiveManager *instance = nil;
  */
 - (void)getLiveEventPosts
 {
-    [self loadCurrentLivePostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
-       
-        if(success)
-        {
-            self.liveEventPosts = posts;
-        }
+    dispatch_sync(_queue, ^{
+
+        [self loadCurrentLivePostsWithCallbackBlock:^(BOOL success, NSArray *posts) {
+            
+            if(success)
+            {
+                self.liveEventPosts = posts;
+            }
+            
+            [self notifyCampusLiveForNewPostsWithStatus:success];
+            
+        }];
         
-        [self notifyCampusLiveForNewPostsWithStatus:success];
-        
-    }];
+    });
+
 }
 
 - (void)getLiveSummary

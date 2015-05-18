@@ -319,6 +319,8 @@ const float kCWStretchedImageHeight = 350;
 
 - (void)takeALookTouched:(id)sender
 {
+    DDLogDebug(@"GLPCampusWallStretchedView takeALookTouched");
+    
     [self.delegate takeALookTouched];
 }
 
