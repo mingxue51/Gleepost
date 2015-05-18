@@ -169,6 +169,8 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (assign, nonatomic) BOOL viewDisappeared;
+
 @end
 
 
@@ -235,6 +237,8 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     [self configureNavigationBarBackground];
     
     [self showNetworkErrorViewIfNeeded];
+    
+    self.viewDisappeared = NO;
 }
 
 
@@ -282,6 +286,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     
     //Show navigation bar.
 //    [self contract];
+    self.viewDisappeared = YES;
 
     [super viewWillDisappear:animated];
     
@@ -362,6 +367,8 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     _mediaFocusViewController.shouldShowPhotoActions = YES;
     _mediaFocusViewController.shouldRotateToDeviceOrientation = NO;
     _mediaFocusViewController.shouldBlurBackground = NO;
+    
+    self.viewDisappeared = NO;
 }
 
 - (void)startBackgroundOperations
@@ -1653,6 +1660,12 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     CGFloat yOffset  = scrollView.contentOffset.y;
     
     [self configureStrechedImageViewWithOffset:yOffset];
+    
+    
+    if(self.viewDisappeared)
+    {
+        return;
+    }
     
     if(yOffset > -64)
     {
