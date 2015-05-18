@@ -1010,14 +1010,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
 
 - (void)textFieldDidChange:(UITextField *)textField
 {
-    DDLogDebug(@"NewPostViewController : textFieldDidChange %ld", (long)textField.tag);
-    
     if(self.isNewPoll)
     {
         [(PollFakeNavigationBarNewPostView *)self.fakeNavigationBar setNumberOfCharacters:textField.text.length toElement:kAnswerTextField];
     }
 
-    
     [[PendingPostManager sharedInstance] setEventTitle:textField.text];
 
     [self setNumberOfCharactersToTitle:textField.text.length];
@@ -1032,7 +1029,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         [(PollFakeNavigationBarNewPostView *)self.fakeNavigationBar elementChangedFocus:kAnswerTextField];
     }
     
-    DDLogDebug(@"NewPostViewController : textFieldDidBeginEditing %ld", (long)textField.tag);
 
     [_titleCharactersLeftLbl setHidden:NO];
 }

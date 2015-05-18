@@ -20,5 +20,6 @@ typedef NS_ENUM(NSUInteger, PollOperationStatus) {
 + (GLPPollOperationManager *)sharedInstance;
 - (void)voteWithPollRemoteKey:(NSInteger)pollRemoteKey andOption:(NSInteger)option;
 - (void)updatePollPostWithRemoteKey:(NSInteger)postRemoteKey withData:(GLPPoll *)pollData;
+- (void)setVoteToDatabaseWithPostRemoteKey:(NSInteger)postRemoteKey withOption:(NSString *)option;
 
 @end

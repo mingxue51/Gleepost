@@ -186,6 +186,8 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
     [self.pollData userVotedWithOption:self.pollData.options[option]];
     [self.pollingDataView setPollData:self.pollData];
     [self.tableView reloadData];
+    
+    [[GLPPollOperationManager sharedInstance] setVoteToDatabaseWithPostRemoteKey:option withOption:self.pollData.options[option]];
 }
 
 - (void)refreshCellWithRow:(NSInteger)row withRowAnimation:(UITableViewRowAnimation)rowAnimation

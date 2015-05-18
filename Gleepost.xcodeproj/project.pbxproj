@@ -809,6 +809,7 @@
 		58F8C33118A4FC1E005EC7ED /* GLPRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F8C33018A4FC1E005EC7ED /* GLPRegisterViewController.m */; };
 		58F8C33318A50184005EC7ED /* finished.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F8C33218A50184005EC7ED /* finished.png */; };
 		58F8C33518A549E7005EC7ED /* email_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F8C33418A549E7005EC7ED /* email_field.png */; };
+		58F8DA221B0A3A0C000E6F04 /* GLPVoteOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F8DA211B0A3A0C000E6F04 /* GLPVoteOperation.m */; };
 		58F9C63F18C522CA004A237E /* GLPGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F9C63E18C522CA004A237E /* GLPGroup.m */; };
 		58F9C64218C5306D004A237E /* GLPGroupManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58F9C64118C5306D004A237E /* GLPGroupManager.m */; };
 		58F9EC641937580900714432 /* back_black.png in Resources */ = {isa = PBXBuildFile; fileRef = 58F9EC631937580900714432 /* back_black.png */; };
@@ -2141,6 +2142,8 @@
 		58F8C33018A4FC1E005EC7ED /* GLPRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPRegisterViewController.m; sourceTree = "<group>"; };
 		58F8C33218A50184005EC7ED /* finished.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = finished.png; sourceTree = "<group>"; };
 		58F8C33418A549E7005EC7ED /* email_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = email_field.png; sourceTree = "<group>"; };
+		58F8DA201B0A3A0C000E6F04 /* GLPVoteOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVoteOperation.h; sourceTree = "<group>"; };
+		58F8DA211B0A3A0C000E6F04 /* GLPVoteOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVoteOperation.m; sourceTree = "<group>"; };
 		58F9C63D18C522CA004A237E /* GLPGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGroup.h; sourceTree = "<group>"; };
 		58F9C63E18C522CA004A237E /* GLPGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPGroup.m; sourceTree = "<group>"; };
 		58F9C64018C5306D004A237E /* GLPGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPGroupManager.h; sourceTree = "<group>"; };
@@ -4420,6 +4423,8 @@
 			children = (
 				58D1C1281AE66B070018A3A9 /* GLPPollOperationManager.h */,
 				58D1C1291AE66B070018A3A9 /* GLPPollOperationManager.m */,
+				58F8DA201B0A3A0C000E6F04 /* GLPVoteOperation.h */,
+				58F8DA211B0A3A0C000E6F04 /* GLPVoteOperation.m */,
 			);
 			name = Polling;
 			sourceTree = "<group>";
@@ -6732,6 +6737,7 @@
 				80B2A4351833C9DF002AB1F0 /* GLPNewElementsIndicatorView.m in Sources */,
 				588D858B1959F8FD002F516A /* GLPGroupsViewController.m in Sources */,
 				58143D771821762600B76E5D /* ValidFields.m in Sources */,
+				58F8DA221B0A3A0C000E6F04 /* GLPVoteOperation.m in Sources */,
 				58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */,
 				580DEFE11961D92C008DF437 /* GroupTopViewCell.m in Sources */,
 				80DDDF42180FEAC4009E17BD /* GLPNavigationController.m in Sources */,

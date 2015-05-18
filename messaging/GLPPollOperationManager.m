@@ -10,6 +10,17 @@
 #import "GLPPollOperationManager.h"
 #import "WebClient.h"
 #import "GLPPollDao.h"
+#import "GLPiOSSupportHelper.h"
+#import "GLPVoteOperation.h"
+
+@interface GLPPollOperationManager () <GLPVoteOperationDelegate>
+
+/** Will hold all the user's pending votes. <post_remote_key, option> */
+@property (strong, nonatomic) NSMutableDictionary *pendingVotes;
+
+@property (strong, nonatomic) NSOperationQueue *operationQueue;
+
+@end
 
 static GLPPollOperationManager *instance = nil;
 
@@ -26,24 +37,71 @@ static GLPPollOperationManager *instance = nil;
     return instance;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    
+    if (self)
+    {
+        self.pendingVotes = [[NSMutableDictionary alloc] init];
+        self.operationQueue = [[NSOperationQueue alloc] init];
+        
+        if(![GLPiOSSupportHelper isIOS7])
+        {
+            self.operationQueue.qualityOfService =  NSQualityOfServiceUtility;
+        }
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNetworkStatus:) name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NETWORK_UPDATE object:nil];
+}
+
+#pragma mark - NSNotification
+
+- (void)updateNetworkStatus:(NSNotification *)notification
+{
+    BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
+    
+    DDLogDebug(@"GLPPollOperationManager updateNetworkStatus pending votes %@", self.pendingVotes);
+    
+    if(isNetwork)
+    {
+        for(NSNumber *postRemoteKey in self.pendingVotes)
+        {
+            NSInteger pollOption = [[self.pendingVotes objectForKey:postRemoteKey] integerValue];
+            [self voteWithPollRemoteKey:[postRemoteKey integerValue] andOption:pollOption];
+        }
+    }
+}
+
 #pragma mark - Client
 
 - (void)voteWithPollRemoteKey:(NSInteger)pollRemoteKey andOption:(NSInteger)option
 {
-    [[WebClient sharedInstance] voteWithPostRemoteKey:pollRemoteKey andOption:option callbackBlock:^(BOOL success, NSString *statusMsg) {
-       
-        //Revert only when there is only a network connection issue.
-        
-        if(!success && [statusMsg isEqualToString:@"network issue"])
-        {
-            [self failedToVoteWithPollRemoteKey:pollRemoteKey withOptionSelected:option];
-        }
-        else
-        {
-            //TODO: Update the database.
-        }
-        
-    }];
+    [self.pendingVotes setObject:@(option) forKey:@(pollRemoteKey)];
+    
+    GLPVoteOperation *voteOperation = [[GLPVoteOperation alloc] initWithPostRemoteKey:pollRemoteKey withUsersOption:option];
+    voteOperation.delegate = self;
+    [self.operationQueue addOperation:voteOperation];
+}
+
+#pragma mark - GLPVoteOpearationDelegate
+
+- (void)voteFailedWithPostRemoteKey:(NSInteger)postRemoteKey
+{
+    
+    DDLogDebug(@"Vote failed with post remote key %ld", (long)postRemoteKey);
+}
+
+- (void)voteSuccessfulWithPostRemoteKey:(NSInteger)postRemoteKey
+{
+    [self.pendingVotes removeObjectForKey:@(postRemoteKey)];
+    DDLogInfo(@"Vote successful with post remote key %ld", (long)postRemoteKey);
 }
 
 #pragma mark - Web socket
@@ -54,6 +112,12 @@ static GLPPollOperationManager *instance = nil;
     [GLPPollDao updatePoll:pollData withPostRemoteKey:postRemoteKey];
 }
 
+#pragma mark - Database operations
+
+- (void)setVoteToDatabaseWithPostRemoteKey:(NSInteger)postRemoteKey withOption:(NSString *)option
+{
+    [GLPPollDao userHasVotedWithPostRemoteKey:postRemoteKey withOption:option];
+}
 
 #pragma mark - Post NSNotification
 

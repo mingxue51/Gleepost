@@ -50,7 +50,7 @@
     
     if(![GLPiOSSupportHelper isIOS7])
     {
-        _operationQueue.qualityOfService =  NSQualityOfServiceUtility;
+        self.operationQueue.qualityOfService =  NSQualityOfServiceUtility;
     }
 }
 

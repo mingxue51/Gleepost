@@ -60,7 +60,7 @@ static GLPCLPostImageLoader *instance = nil;
     BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
     DDLogInfo(@"GLPCLPostImageLoader network status: %d", isNetwork);
     
-    DDLogDebug(@"GLPCLPostImageLoader operation queue count %d %d", _operationQueue.operationCount, _pendingOperations.count);
+    DDLogDebug(@"GLPCLPostImageLoader operation queue count %lu %lu", (unsigned long)_operationQueue.operationCount, (unsigned long)_pendingOperations.count);
 
     if(isNetwork)
     {
