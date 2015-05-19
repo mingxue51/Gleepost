@@ -78,6 +78,14 @@
 {
     DDLogDebug(@"CampusLiveTableViewTopView : postsFetched %@", notification.userInfo);
     
+    BOOL success = [notification.userInfo[@"posts_loaded_status"] boolValue];
+    
+    if(!success)
+    {
+        DDLogError(@"CampusLiveTableViewTopView Failed to load campus live posts.");
+        return;
+    }
+    
     [self reloadCampusLiveTableViewWithPostIndex:0];
     
     [self.swipeView reloadData];
