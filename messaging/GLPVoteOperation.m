@@ -36,7 +36,7 @@
     
     @autoreleasepool {
         
-        DDLogInfo(@"GLPVoteOperation started %ld : %ld", self.usersOption, self.postRemoteKey);
+        DDLogInfo(@"GLPVoteOperation started %ld : %ld", (long)self.usersOption, (long)self.postRemoteKey);
         
         [self executeTask];
     }

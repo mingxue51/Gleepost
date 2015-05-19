@@ -98,7 +98,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
     
     if([self.pollData didUserVote])
     {
-        DDLogDebug(@"PollingPostView : user voted %@", self.pollData.options[0]);
+        DDLogDebug(@"PollingPostView : user voted %@", self.pollData.options);
     }
 }
 
@@ -186,7 +186,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
     [self.pollingDataView setPollData:self.pollData];
     [self.tableView reloadData];
     
-    [[GLPPollOperationManager sharedInstance] setVoteToDatabaseWithPostRemoteKey:option withOption:self.pollData.options[option]];
+    [[GLPPollOperationManager sharedInstance] updatePollLocallyWithNewData:self.pollData withPostRemoteKey:self.postRemoteKey];
 }
 
 - (void)refreshCellWithRow:(NSInteger)row withRowAnimation:(UITableViewRowAnimation)rowAnimation

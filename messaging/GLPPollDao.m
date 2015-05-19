@@ -203,28 +203,6 @@
     }];
 }
 
-+ (void)userHasVotedWithPostRemoteKey:(NSInteger)postRemoteKey withOption:(NSString *)optionString
-{
-    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-        
-//        [GLPPollDao updatePoll:entity withPostRemoteKey:postRemoteKey db:db];
-        
-        [GLPPollDao updateUsersVotePollWithPostRemoteKey:postRemoteKey withOption:optionString db:db];
-        
-    }];
-}
-
-+ (BOOL)updateUsersVotePollWithPostRemoteKey:(NSInteger)postRemoteKey withOption:(NSString *)optionString db:(FMDatabase *)db
-{
-    BOOL operationSuccess = [db executeUpdateWithFormat:@"update polls set users_vote=%@ where postRemoteKey=%d",
-     optionString,
-     postRemoteKey];
-    
-    DDLogDebug(@"updateUsersVotePollWithPostRemoteKey %d", operationSuccess);
-    
-    return operationSuccess;
-}
-
 + (BOOL)updatePoll:(GLPPoll *)entity withPostRemoteKey:(NSInteger)postRemoteKey db:(FMDatabase *)db
 {
     NSAssert(postRemoteKey != 0, @"Update entity without post remote key");

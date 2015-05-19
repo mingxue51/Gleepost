@@ -114,9 +114,9 @@ static GLPPollOperationManager *instance = nil;
 
 #pragma mark - Database operations
 
-- (void)setVoteToDatabaseWithPostRemoteKey:(NSInteger)postRemoteKey withOption:(NSString *)option
+- (void)updatePollLocallyWithNewData:(GLPPoll *)pollData withPostRemoteKey:(NSInteger)postRemoteKey
 {
-    [GLPPollDao userHasVotedWithPostRemoteKey:postRemoteKey withOption:option];
+    [GLPPollDao updatePoll:pollData withPostRemoteKey:postRemoteKey];
 }
 
 #pragma mark - Post NSNotification
