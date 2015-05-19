@@ -25,5 +25,6 @@
 - (void)userVotedWithOption:(NSString *)option;
 - (void)revertVotingWithOption:(NSString *)option;
 - (CGFloat)voteInPercentageWithOption:(NSString *)option;
+- (BOOL)pollEnded;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "GLPPoll.h"
+#import "NSDate+Calculations.h"
 
 @implementation GLPPoll
 
@@ -91,6 +92,11 @@
 {
     _usersVote = usersVote;
     self.didUserVote = (_usersVote) ? YES : NO;
+}
+
+- (BOOL)pollEnded
+{
+    return ([[self.expirationDate substractWithDate:[NSDate date]] isEqualToString:@"ENDED"]);
 }
 
 - (NSString *)description

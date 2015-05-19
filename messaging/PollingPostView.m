@@ -147,8 +147,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
     NSString *optionTitle = self.pollData.options[indexPath.row];
     CGFloat optionPercentage = [self.pollData voteInPercentageWithOption:optionTitle];
 //    DDLogDebug(@"PollingPostView : percentage %f option %@ user did vote %d", optionPercentage, optionTitle, self.pollData.didUserVote);
-    
-    [cell setTitle:optionTitle withPercentage:optionPercentage withIndexRow:indexPath.row enable:self.pollData.didUserVote];
+    [cell setTitle:optionTitle withPercentage:optionPercentage withIndexRow:indexPath.row enable:self.pollData.didUserVote || [self.pollData pollEnded]];
     cell.delegate = self;
     return cell;
 }
