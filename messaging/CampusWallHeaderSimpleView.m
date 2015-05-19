@@ -100,7 +100,7 @@
 
 - (IBAction)showTags:(id)sender
 {
-    [self.delegate showCategories:sender];
+//    [self.delegate showCategories:sender];
 
 }
 

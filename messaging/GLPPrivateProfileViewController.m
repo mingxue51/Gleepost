@@ -9,7 +9,6 @@
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
 #import "GLPPrivateProfileViewController.h"
-#import "TransitionDelegateViewImage.h"
 #import "ContactsManager.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
@@ -27,7 +26,6 @@
 #import "GLPBadgesViewController.h"
 #import "ImageFormatterHelper.h"
 #import "GLPShowLocationViewController.h"
-#import "GLPViewImageViewController.h"
 #import "GLPCalendarManager.h"
 #import "GLPAttendingPopUpViewController.h"
 #import "TDPopUpAfterGoingView.h"
@@ -37,6 +35,7 @@
 #import "GLPTrackViewsCountProcessor.h"
 #import "UserProfileManager.h"
 #import "TableViewHelper.h"
+#import "GLPViewImageHelper.h"
 
 @interface GLPPrivateProfileViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -46,9 +45,6 @@
 
 @property (assign, nonatomic) NSInteger numberOfRows;
 @property (assign, nonatomic) NSInteger currentNumberOfRows;
-
-
-@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
 @property (assign, nonatomic) GLPSelectedTab selectedTabStatus;
 
@@ -145,7 +141,6 @@
     self.numberOfRows = 1;
     self.profileImage = nil;
     self.isLoading = NO;
-    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     _emptyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     _selectedLocation = nil;
     _transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
@@ -362,19 +357,19 @@
 
 - (void)viewProfileImage:(UIImage *)image
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = image;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+//    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
+//    viewImage.image = image;
+//    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
+//    viewImage.modalPresentationStyle = UIModalPresentationCustom;
+//    
+//    if(![GLPiOSSupportHelper isIOS6])
+//    {
+//        [viewImage setTransitioningDelegate:self.transitionViewImageController];
+//    }
+//    
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:viewImage animated:YES completion:nil];
 }
 
 - (void)badgeTouched
@@ -745,21 +740,9 @@
 
 #pragma mark - View image delegate
 
--(void)viewPostImage:(UIImage*)postImage
+-(void)viewPostImageView:(UIImageView *)postImageView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = postImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+    [GLPViewImageHelper showImageInViewController:self withImageView:postImageView];
 }
 
 #pragma mark - New comment delegate

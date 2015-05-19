@@ -6020,70 +6020,6 @@
             </objects>
             <point key="canvasLocation" x="-341.25" y="-200.70422535211267"/>
         </scene>
-        <!--View Image View Controller-->
-        <scene sceneID="sNL-LS-RfL">
-            <objects>
-                <viewController storyboardIdentifier="GLPViewImageViewController" id="W6N-4D-41b" customClass="GLPViewImageViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="QDz-we-64t"/>
-                        <viewControllerLayoutGuide type="bottom" id="3mT-zd-OIP"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="blh-vW-h8a">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Maw-1D-9pB">
-                                <rect key="frame" x="15" y="25" width="19" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="31z-bH-han"/>
-                                    <constraint firstAttribute="width" constant="19" id="FAa-aR-as4"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="15"/>
-                                <state key="normal" backgroundImage="cancel_white.png">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="dismissViewController:" destination="W6N-4D-41b" eventType="touchUpInside" id="fsm-DV-YVX"/>
-                                </connections>
-                            </button>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RVC-2D-fnj" customClass="GLPViewImageScrollView">
-                                <rect key="frame" x="0.0" y="81" width="600" height="406"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8lD-WU-C03">
-                                <rect key="frame" x="0.0" y="0.0" width="102" height="51"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="51" id="Cui-vj-k7q"/>
-                                    <constraint firstAttribute="width" constant="102" id="vXe-u1-2MJ"/>
-                                </constraints>
-                                <state key="normal">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="dismissViewController:" destination="W6N-4D-41b" eventType="touchUpInside" id="fpG-BK-Wdt"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailing" secondItem="RVC-2D-fnj" secondAttribute="trailing" id="5mH-NR-zA7"/>
-                            <constraint firstAttribute="centerY" secondItem="RVC-2D-fnj" secondAttribute="centerY" constant="16" id="89U-jT-AGC"/>
-                            <constraint firstItem="8lD-WU-C03" firstAttribute="leading" secondItem="blh-vW-h8a" secondAttribute="leading" id="CXm-Yz-z4h"/>
-                            <constraint firstItem="Maw-1D-9pB" firstAttribute="top" secondItem="QDz-we-64t" secondAttribute="bottom" constant="5" id="Gse-ug-Wo4"/>
-                            <constraint firstItem="Maw-1D-9pB" firstAttribute="leading" secondItem="blh-vW-h8a" secondAttribute="leading" constant="15" id="OcR-Hg-a85"/>
-                            <constraint firstItem="RVC-2D-fnj" firstAttribute="leading" secondItem="blh-vW-h8a" secondAttribute="leading" id="hVa-eB-hE2"/>
-                            <constraint firstItem="8lD-WU-C03" firstAttribute="top" secondItem="blh-vW-h8a" secondAttribute="top" id="pTh-6m-o4h"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="scrollView" destination="RVC-2D-fnj" id="2kK-9e-s4F"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="M50-Wl-H8n" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="628" y="-4237"/>
-        </scene>
         <!--INVITE FRIENDS-->
         <scene sceneID="p9q-C9-Csf">
             <objects>
@@ -6703,7 +6639,6 @@
         <image name="camera_sign_up" width="31" height="23"/>
         <image name="camera_top_button.png" width="190" height="95"/>
         <image name="cancel.png" width="100" height="111"/>
-        <image name="cancel_white.png" width="100" height="111"/>
         <image name="categories_image.png" width="44" height="39"/>
         <image name="change_pass_name.png" width="600" height="100"/>
         <image name="chat_background_default.png" width="640" height="1136"/>

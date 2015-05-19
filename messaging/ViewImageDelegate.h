@@ -11,6 +11,6 @@
 
 @protocol ViewImageDelegate <NSObject>
 
--(void)viewPostImage:(UIImage*)postImage;
+- (void)viewPostImageView:(UIImageView *)postImageView;
 
 @end

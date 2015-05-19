@@ -14,7 +14,6 @@
 #import "GLPPostImageLoader.h"
 #import "GLPPostNotificationHelper.h"
 #import "ViewPostViewController.h"
-#import "TransitionDelegateViewImage.h"
 #import "MemberCell.h"
 #import "GLPPrivateProfileViewController.h"
 #import "WebClient.h"
@@ -38,7 +37,6 @@
 #import "GLPShowLocationViewController.h"
 #import "GLPLiveGroupManager.h"
 #import "GLPLiveGroupPostManager.h"
-#import "GLPViewImageViewController.h"
 #import "GLPGroupSettingsViewController.h"
 #import "ChangeGroupImageProgressView.h"
 #import "GLPCalendarManager.h"
@@ -55,7 +53,7 @@
 #import "GLPCampusWallAsyncProcessor.h"
 #import "GLPLiveGroupConversationsManager.h"
 #import "TransitionDelegateViewCategories.h"
-
+#import "GLPViewImageHelper.h"
 
 @interface GroupViewController () <GLPAttendingPopUpViewControllerDelegate, GLPGroupSettingsViewControllerDelegate, GLPPublicGroupPopUpViewControllerDelegate>
 
@@ -64,7 +62,6 @@
 @property (assign, nonatomic) BOOL commentCreated;
 @property (strong, nonatomic) GLPPost *selectedPost;
 @property (assign, nonatomic) int currentNumberOfRows;
-@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
 @property (strong, nonatomic) TransitionDelegateViewCategories *transitionNewPostViewController;
 
@@ -311,9 +308,7 @@ const float TOP_OFF_SET = -64.0;
     self.isLoading = NO;
 //    self.firstLoadSuccessful = NO;
     self.loadingCellStatus = kGLPLoadingCellStatusFinished;
-    
-    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
-    
+
     self.transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
     
     _fakeNavigationBar = [[FakeNavigationBarView alloc] initWithTitle:_group.name];
@@ -1614,21 +1609,6 @@ const float TOP_OFF_SET = -64.0;
     }
 }
 
-//-(void)viewPostImage:(UIImage*)postImage
-//{
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-//    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-//    vc.image = postImage;
-//    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-//    vc.modalPresentationStyle = UIModalPresentationCustom;
-//    
-//    [vc setTransitioningDelegate:self.transitionViewImageController];
-//    
-//    [self.view setBackgroundColor:[UIColor whiteColor]];
-//    [self presentViewController:vc animated:YES completion:nil];
-//}
-
-
 #pragma mark - New comment delegate
 
 -(void)setPreviousViewToNavigationBar
@@ -1785,21 +1765,9 @@ const float TOP_OFF_SET = -64.0;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
--(void)viewPostImage:(UIImage*)postImage
+-(void)viewPostImageView:(UIImageView *)postImageView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = postImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+    [GLPViewImageHelper showImageInViewController:self withImageView:postImageView];
 }
 
 - (void)goingButtonTouchedWithNotification:(NSNotification *)notification
@@ -1974,19 +1942,19 @@ const float TOP_OFF_SET = -64.0;
 
 -(void)showImage
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = _groupImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+//    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
+//    viewImage.image = _groupImage;
+//    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
+//    viewImage.modalPresentationStyle = UIModalPresentationCustom;
+//    
+//    if(![GLPiOSSupportHelper isIOS6])
+//    {
+//        [viewImage setTransitioningDelegate:self.transitionViewImageController];
+//    }
+//    
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:viewImage animated:YES completion:nil];
 }
 
 

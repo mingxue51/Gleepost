@@ -32,8 +32,6 @@
 		58040E911A8CE7CA00B29247 /* GLPConversationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58040E901A8CE7CA00B29247 /* GLPConversationHelper.m */; };
 		58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58056BEB18632DEA0089EB09 /* GLPImageOperation.m */; };
 		58065F8619BF985A00892B6B /* ChangeImageProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58065F8519BF985A00892B6B /* ChangeImageProgressView.m */; };
-		58065F8C19BFE4BC00892B6B /* GLPViewImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58065F8B19BFE4BC00892B6B /* GLPViewImageScrollView.m */; };
-		58065F8F19BFE55500892B6B /* GLPViewImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58065F8E19BFE55500892B6B /* GLPViewImageViewController.m */; };
 		5806C75C191BF603005C907E /* mypost_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C75A191BF603005C907E /* mypost_btn_selected.png */; };
 		5806C75D191BF603005C907E /* notification_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C75B191BF603005C907E /* notification_btn_selected.png */; };
 		5806C761191BFA5D005C907E /* fb_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C760191BFA5D005C907E /* fb_login.png */; };
@@ -251,6 +249,7 @@
 		584906C517FDE8710045B65D /* GCPlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906C417FDE8710045B65D /* GCPlaceholderTextView.m */; };
 		584906C817FDEE4C0045B65D /* TypeTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 584906C717FDEE4C0045B65D /* TypeTextView.m */; };
 		58498FD21A49879A00F1720F /* GLPTrackViewsCountProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 58498FD11A49879A00F1720F /* GLPTrackViewsCountProcessor.m */; };
+		584AC00E1B0B48A7001C7C1B /* GLPViewImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 584AC00D1B0B48A7001C7C1B /* GLPViewImageHelper.m */; };
 		584AC3C21A78FC3500590347 /* GLPSearchGroups.m in Sources */ = {isa = PBXBuildFile; fileRef = 584AC3C11A78FC3500590347 /* GLPSearchGroups.m */; };
 		584AD53018576C5A006589BF /* in-contacts.png in Resources */ = {isa = PBXBuildFile; fileRef = 584AD52F18576C5A006589BF /* in-contacts.png */; };
 		584BB7F5198B0E18000B08BC /* cancel_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 584BB7F4198B0E18000B08BC /* cancel_white.png */; };
@@ -703,9 +702,6 @@
 		58D301DD1989C570003EC08B /* GLPSelectUsersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D301DC1989C570003EC08B /* GLPSelectUsersViewController.m */; };
 		58D30ADE18F6E4DF00A898EB /* mypost_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D30ADA18F6E4DF00A898EB /* mypost_btn.png */; };
 		58D30ADF18F6E4DF00A898EB /* notification_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D30ADB18F6E4DF00A898EB /* notification_btn.png */; };
-		58D3D731182ACC5400DE2925 /* ViewPostImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D730182ACC5400DE2925 /* ViewPostImageViewController.m */; };
-		58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D734182ADB4200DE2925 /* AnimatedTransitioningViewImage.m */; };
-		58D3D738182ADB4200DE2925 /* TransitionDelegateViewImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */; };
 		58D4FF3219A53093006E7AC8 /* GLPVideo.m in Sources */ = {isa = PBXBuildFile; fileRef = 58D4FF3119A53093006E7AC8 /* GLPVideo.m */; };
 		58D612B4184E63C100915B51 /* mascot_stanford.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D612B3184E63C100915B51 /* mascot_stanford.png */; };
 		58D70D501A83C9C70023B478 /* back_final_new_old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58D70D4F1A83C9C70023B478 /* back_final_new_old@2x.png */; };
@@ -1017,10 +1013,6 @@
 		58056BEB18632DEA0089EB09 /* GLPImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageOperation.m; sourceTree = "<group>"; };
 		58065F8419BF985A00892B6B /* ChangeImageProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeImageProgressView.h; sourceTree = "<group>"; };
 		58065F8519BF985A00892B6B /* ChangeImageProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeImageProgressView.m; sourceTree = "<group>"; };
-		58065F8A19BFE4BC00892B6B /* GLPViewImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPViewImageScrollView.h; sourceTree = "<group>"; };
-		58065F8B19BFE4BC00892B6B /* GLPViewImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPViewImageScrollView.m; sourceTree = "<group>"; };
-		58065F8D19BFE55500892B6B /* GLPViewImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPViewImageViewController.h; sourceTree = "<group>"; };
-		58065F8E19BFE55500892B6B /* GLPViewImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPViewImageViewController.m; sourceTree = "<group>"; };
 		5806C75A191BF603005C907E /* mypost_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn_selected.png; sourceTree = "<group>"; };
 		5806C75B191BF603005C907E /* notification_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_btn_selected.png; sourceTree = "<group>"; };
 		5806C760191BFA5D005C907E /* fb_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fb_login.png; sourceTree = "<group>"; };
@@ -1349,6 +1341,8 @@
 		584906C717FDEE4C0045B65D /* TypeTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TypeTextView.m; sourceTree = "<group>"; };
 		58498FD01A49879A00F1720F /* GLPTrackViewsCountProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPTrackViewsCountProcessor.h; sourceTree = "<group>"; };
 		58498FD11A49879A00F1720F /* GLPTrackViewsCountProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPTrackViewsCountProcessor.m; sourceTree = "<group>"; };
+		584AC00C1B0B48A7001C7C1B /* GLPViewImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPViewImageHelper.h; sourceTree = "<group>"; };
+		584AC00D1B0B48A7001C7C1B /* GLPViewImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPViewImageHelper.m; sourceTree = "<group>"; };
 		584AC3C01A78FC3500590347 /* GLPSearchGroups.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPSearchGroups.h; sourceTree = "<group>"; };
 		584AC3C11A78FC3500590347 /* GLPSearchGroups.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSearchGroups.m; sourceTree = "<group>"; };
 		584AD52F18576C5A006589BF /* in-contacts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "in-contacts.png"; sourceTree = "<group>"; };
@@ -1991,12 +1985,6 @@
 		58D301DC1989C570003EC08B /* GLPSelectUsersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPSelectUsersViewController.m; sourceTree = "<group>"; };
 		58D30ADA18F6E4DF00A898EB /* mypost_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn.png; sourceTree = "<group>"; };
 		58D30ADB18F6E4DF00A898EB /* notification_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notification_btn.png; sourceTree = "<group>"; };
-		58D3D72F182ACC5400DE2925 /* ViewPostImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewPostImageViewController.h; sourceTree = "<group>"; };
-		58D3D730182ACC5400DE2925 /* ViewPostImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewPostImageViewController.m; sourceTree = "<group>"; };
-		58D3D733182ADB4200DE2925 /* AnimatedTransitioningViewImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnimatedTransitioningViewImage.h; sourceTree = "<group>"; };
-		58D3D734182ADB4200DE2925 /* AnimatedTransitioningViewImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioningViewImage.m; sourceTree = "<group>"; };
-		58D3D735182ADB4200DE2925 /* TransitionDelegateViewImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegateViewImage.h; sourceTree = "<group>"; };
-		58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegateViewImage.m; sourceTree = "<group>"; };
 		58D4FF3019A53093006E7AC8 /* GLPVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideo.h; sourceTree = "<group>"; };
 		58D4FF3119A53093006E7AC8 /* GLPVideo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVideo.m; sourceTree = "<group>"; };
 		58D612B3184E63C100915B51 /* mascot_stanford.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mascot_stanford.png; sourceTree = "<group>"; };
@@ -3089,7 +3077,6 @@
 			isa = PBXGroup;
 			children = (
 				58FD706C189008830024E8A1 /* Transition Delegate View Categories */,
-				58D3D732182ADA9A00DE2925 /* Transition Delegate View Image Post */,
 				5851B5D618258ECE00AA9103 /* Transition Delegate New Post */,
 				5841315717FEDD8500A3278D /* AddCommentViewController.h */,
 				5841315817FEDD8500A3278D /* AddCommentViewController.m */,
@@ -3122,6 +3109,15 @@
 				586D5AEE1A5E9A0400FB0342 /* GLPCampusWallAsyncProcessor.m */,
 			);
 			name = "Campus Wall";
+			sourceTree = "<group>";
+		};
+		584AC00B1B0B4899001C7C1B /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				584AC00C1B0B48A7001C7C1B /* GLPViewImageHelper.h */,
+				584AC00D1B0B48A7001C7C1B /* GLPViewImageHelper.m */,
+			);
+			name = Image;
 			sourceTree = "<group>";
 		};
 		584AC3BF1A78FBA400590347 /* Live Group Manager */ = {
@@ -4286,12 +4282,6 @@
 			children = (
 				58BBACAE1978796D00A8A265 /* ImageSelectorViewController.h */,
 				58BBACAF1978796D00A8A265 /* ImageSelectorViewController.m */,
-				58D3D72F182ACC5400DE2925 /* ViewPostImageViewController.h */,
-				58D3D730182ACC5400DE2925 /* ViewPostImageViewController.m */,
-				58065F8A19BFE4BC00892B6B /* GLPViewImageScrollView.h */,
-				58065F8B19BFE4BC00892B6B /* GLPViewImageScrollView.m */,
-				58065F8D19BFE55500892B6B /* GLPViewImageViewController.h */,
-				58065F8E19BFE55500892B6B /* GLPViewImageViewController.m */,
 			);
 			name = "Custom media";
 			sourceTree = "<group>";
@@ -4442,17 +4432,6 @@
 				5843AC4019F77D9600957FD5 /* GLPShowUsersGroupsViewController.m */,
 			);
 			name = Users;
-			sourceTree = "<group>";
-		};
-		58D3D732182ADA9A00DE2925 /* Transition Delegate View Image Post */ = {
-			isa = PBXGroup;
-			children = (
-				58D3D733182ADB4200DE2925 /* AnimatedTransitioningViewImage.h */,
-				58D3D734182ADB4200DE2925 /* AnimatedTransitioningViewImage.m */,
-				58D3D735182ADB4200DE2925 /* TransitionDelegateViewImage.h */,
-				58D3D736182ADB4200DE2925 /* TransitionDelegateViewImage.m */,
-			);
-			name = "Transition Delegate View Image Post";
 			sourceTree = "<group>";
 		};
 		58D70D551A85132C0023B478 /* Profile */ = {
@@ -5479,6 +5458,7 @@
 		80AB898217C2A0560053E784 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				584AC00B1B0B4899001C7C1B /* Image */,
 				5820648D1AC0744D00A596E4 /* Animations */,
 				58040E8E1A8CE7AA00B29247 /* Conversation */,
 				58273F1B1A26975900425605 /* Organisers */,
@@ -6452,7 +6432,6 @@
 				807C4D19180AF0F6003D67E6 /* GLPUser.m in Sources */,
 				80C8BA6618104177004F70DB /* GLPPost.m in Sources */,
 				585790D31A366DE300418528 /* GLPVideoPendingPostProgressManager.m in Sources */,
-				58065F8C19BFE4BC00892B6B /* GLPViewImageScrollView.m in Sources */,
 				585106C8199D85DB000F06BB /* IntroKindOfNewPostViewController.m in Sources */,
 				58F284DC1A71514D0018ADAB /* PostImageLoader.m in Sources */,
 				58EA127019FA1079003D264E /* GLPEmptyViewManager.m in Sources */,
@@ -6462,7 +6441,6 @@
 				584FA5FA19B519FD00FBA61F /* GLPCustomProgressView.m in Sources */,
 				58299B7919FA166A00702381 /* GLPMessengerEmptyView.m in Sources */,
 				80C8BA6C18104400004F70DB /* GLPConversationDaoParser.m in Sources */,
-				58D3D738182ADB4200DE2925 /* TransitionDelegateViewImage.m in Sources */,
 				80AB893617C267F50053E784 /* messaging.xcdatamodeld in Sources */,
 				581C311A188EFE0400BAA082 /* GLPCategoryDaoParser.m in Sources */,
 				58D70D5E1A8525C90023B478 /* UserProfileManager.m in Sources */,
@@ -6474,6 +6452,7 @@
 				80C8BA5018103203004F70DB /* GLPEntity.m in Sources */,
 				806E3D8D1832B2380063AACE /* HexColor.m in Sources */,
 				80112B98180F03B9006A35AA /* HPTextViewInternal.m in Sources */,
+				584AC00E1B0B48A7001C7C1B /* GLPViewImageHelper.m in Sources */,
 				80C8BA69181043D5004F70DB /* GLPConversationDao.m in Sources */,
 				8067E6CC18152AA800A343EF /* GLPBackgroundRequestsManager.m in Sources */,
 				58403532182FF5FB00499488 /* GLPTimelineViewController.m in Sources */,
@@ -6510,8 +6489,6 @@
 				80B2A41F18337D8B002AB1F0 /* GLPNotification.m in Sources */,
 				58D165141AFA5DAA00C4622D /* CLPostTimeLocationView.m in Sources */,
 				5841316017FF0B4900A3278D /* ChatPanelView.m in Sources */,
-				58D3D731182ACC5400DE2925 /* ViewPostImageViewController.m in Sources */,
-				58065F8F19BFE55500892B6B /* GLPViewImageViewController.m in Sources */,
 				5827B8901945C85F00DFC76E /* GBInfiniteScrollView.m in Sources */,
 				58428E3318A27E0F00B82E4B /* LoginView.m in Sources */,
 				58CD30411B00B60B0032D25A /* GLPCLCommentsOperation.m in Sources */,
@@ -6822,7 +6799,6 @@
 				5891F80F1977306700065FFC /* IntroSegue.m in Sources */,
 				58B53B311ACF3F8B00BA4380 /* TDNavigationNewPost.m in Sources */,
 				58F2950119353C9300A638BA /* NewPostCategoriesView.m in Sources */,
-				58D3D737182ADB4200DE2925 /* AnimatedTransitioningViewImage.m in Sources */,
 				589EAD0C18A3C54E005B2F4C /* SignUpTwoView.m in Sources */,
 				58DE37D71889967A005DBF74 /* GLPNetworkManager.m in Sources */,
 				80C4CABD17CFE65200AFA80C /* ChatViewController.m in Sources */,

@@ -66,10 +66,6 @@ static GLPCLPostImageLoader *instance = nil;
     {
         [self retryLoadImagesAfterLostConnection];
     }
-    else
-    {
-        
-    }
 }
 
 

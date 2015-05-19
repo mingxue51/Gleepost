@@ -26,7 +26,6 @@
 #import "GLPPostImageLoader.h"
 #import "GLPProfileLoader.h"
 #import "GLPInvitationManager.h"
-#import "TransitionDelegateViewImage.h"
 #import "GLPSettingsViewController.h"
 #import "GLPiOSSupportHelper.h"
 #import "GroupViewController.h"
@@ -39,7 +38,6 @@
 #import "GLPVideoLoaderManager.h"
 #import "GLPShowLocationViewController.h"
 #import "ChangeImageProgressView.h"
-#import "GLPViewImageViewController.h"
 #import "NotificationsOrganiserHelper.h"
 #import "GLPLiveGroupManager.h"
 #import "GLPCalendarManager.h"
@@ -53,6 +51,7 @@
 #import "GLPTableActivityIndicator.h"
 #import "LoggedInUserProfileManager.h"
 #import "GLPLoadingCell.h"
+#import "GLPViewImageHelper.h"
 
 @interface GLPProfileViewController () <MFMessageComposeViewControllerDelegate, UIActionSheetDelegate, GLPAttendingPopUpViewControllerDelegate>
 
@@ -75,8 +74,6 @@
 @property (strong, nonatomic) MFMessageComposeViewController *messageComposeViewController;
 
 @property (assign, nonatomic) BOOL commentCreated;
-
-@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
 @property (strong, nonatomic) NSDate *commentNotificationDate;
 
@@ -407,12 +404,8 @@
     
     self.numberOfRows = 1;
     
-    //Used for viewing post image.
-    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
-    
     _transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
 
-    
     // internal notifications
     _notifications = [NSMutableArray array];
     _unreadNotificationsCount = 0;
@@ -594,19 +587,19 @@
 
 -(void)showImage
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = _user.profileImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+//    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
+//    viewImage.image = _user.profileImage;
+//    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
+//    viewImage.modalPresentationStyle = UIModalPresentationCustom;
+//    
+//    if(![GLPiOSSupportHelper isIOS6])
+//    {
+//        [viewImage setTransitioningDelegate:self.transitionViewImageController];
+//    }
+//    
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:viewImage animated:YES completion:nil];
 }
 
 #pragma mark - ImageSelectorViewControllerDelegate
@@ -1302,34 +1295,9 @@
 
 #pragma mark - View image delegate
 
--(void)viewPostImage:(UIImage*)postImage
+-(void)viewPostImageView:(UIImageView *)postImageView
 {
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-//    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-//    vc.image = postImage;
-//    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-//    vc.modalPresentationStyle = UIModalPresentationCustom;
-//    
-//    [vc setTransitioningDelegate:self.transitionViewImageController];
-//    
-//    [self.view setBackgroundColor:[UIColor whiteColor]];
-//    [self presentViewController:vc animated:YES completion:nil];
-    
-    
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = postImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+    [GLPViewImageHelper showImageInViewController:self withImageView:postImageView];
 }
 
 #pragma mark - GLPPostCellDelegate

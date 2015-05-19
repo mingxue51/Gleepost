@@ -19,8 +19,6 @@
 #import "NewPostView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppearanceHelper.h"
-#import "ViewPostImageViewController.h"
-#import "TransitionDelegateViewImage.h"
 #import "GLPPostManager.h"
 #import "GLPLoadingCell.h"
 #import "SessionManager.h"
@@ -61,7 +59,6 @@
 #import "UploadingProgressView.h"
 #import "NewPostViewController.h"
 #import "GLPShowLocationViewController.h"
-#import "GLPViewImageViewController.h"
 #import "CategoryManager.h"
 #import "GLPAttendingPopUpViewController.h"
 #import "TDPopUpAfterGoingView.h"
@@ -74,11 +71,11 @@
 #import "GLPCategoryTitleCell.h"
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPCampusWallAsyncProcessor.h"
-#import "URBMediaFocusViewController.h"
 #import "GLPCategoryCell.h"
 #import "GLPCampusWallStretchedView.h"
 #import "CampusWallFakeNavigationBar.h"
 #import "GLPCampusLiveViewController.h"
+#import "GLPViewImageHelper.h"
 
 @interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate, GLPCategoriesViewControllerDelegate, GLPCampusWallStretchedViewDelegate>
 
@@ -88,10 +85,7 @@
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSMutableArray *shownCells;
 @property (strong, nonatomic) NewPostView *postView;
-@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (strong, nonatomic) TransitionDelegateViewCategories *transitionCategoriesViewController;
-
-@property (strong, nonatomic) URBMediaFocusViewController *mediaFocusViewController;
 
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
 @property (strong, nonatomic) UIImage *imageToBeView;
@@ -313,9 +307,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     
     //Create the array and initialise.
     self.shownCells = [[NSMutableArray alloc] init];
-    
-    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
-    
+        
     self.transitionCategoriesViewController = [[TransitionDelegateViewCategories alloc] init];
     
     self.transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
@@ -361,12 +353,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     _showComment = NO;
     
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.tableView];
-    _mediaFocusViewController = [[URBMediaFocusViewController alloc] init];
-    
-    _mediaFocusViewController.parallaxEnabled = NO;
-    _mediaFocusViewController.shouldShowPhotoActions = YES;
-    _mediaFocusViewController.shouldRotateToDeviceOrientation = NO;
-    _mediaFocusViewController.shouldBlurBackground = NO;
     
     self.viewDisappeared = NO;
 }
@@ -655,8 +641,14 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     
     [self setCustomBackgroundToTableView];
     
-    //Set to all the application the status bar text white.
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    if([self.fakeNavigationBar isTransparentMode])
+    {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    }
+    else
+    {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    }
 }
 
 -(void)setCustomBackgroundToTableView
@@ -2460,24 +2452,9 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 #pragma mark - View image delegate
 
 
--(void)viewPostImage:(UIImage*)postImage
+-(void)viewPostImageView:(UIImageView *)postImageView
 {
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-//    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-//    viewImage.image = postImage;
-//    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-//    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-//    
-//    if(![GLPiOSSupportHelper isIOS6])
-//    {
-//        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-//    }
-//    
-//    [self.view setBackgroundColor:[UIColor whiteColor]];
-//    [self presentViewController:viewImage animated:YES completion:nil];
-    
-    [_mediaFocusViewController showImage:postImage fromView:self.view];
-    
+    [GLPViewImageHelper showImageInViewController:self withImageView:postImageView];
 }
 
 
@@ -2496,7 +2473,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 -(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle
 {
     [self.navigationItem setTitle:newTitle];
-//    self.navigationItem.rightBarButtonItem = nil;
 }
 
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
@@ -2848,15 +2824,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
         
         privateProfileViewController.selectedUserId = self.selectedUserId;
 
-    }
-    else if([segue.identifier isEqualToString:@"show image"])
-    {
-        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-        
-        ViewPostImageViewController *viewPostImageViewController = segue.destinationViewController;
-        
-        viewPostImageViewController.image = self.imageToBeView;
-        
     }
     else if([segue.identifier isEqualToString:@"view profile"])
     {

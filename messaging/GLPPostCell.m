@@ -227,7 +227,7 @@ const float ONE_LINE_LIMIT = 18.0;
     
     UIImageView *clickedImageView = (UIImageView*)incomingImage.view;
     
-    [self.delegate viewPostImage:clickedImageView.image];
+    [self.delegate viewPostImageView:clickedImageView];
 }
 
 -(void)navigateToProfile:(id)sender

@@ -27,7 +27,4 @@
 
 @property (weak, nonatomic) UIViewController <RemovePostCellDelegate> *groupController;
 
-//-(float) calculateCommentSize: (NSString*) content;
--(void)viewPostImage:(UIImage*)postImage;
-
 @end

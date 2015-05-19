@@ -13,8 +13,6 @@
 #import "GLPPost.h"
 #import "AppearanceHelper.h"
 #import "GLPPostManager.h"
-#import "GLPViewImageViewController.h"
-#import "TransitionDelegateViewImage.h"
 #import "TableViewHelper.h"
 #import "SessionManager.h"
 #import "GLPPrivateProfileViewController.h"
@@ -24,14 +22,13 @@
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPAttendingPostsManager.h"
 #import "GLPShowLocationViewController.h"
+#import "GLPViewImageHelper.h"
 
 @interface GLPAttendingPostsViewController () <RemovePostCellDelegate, NewCommentDelegate, ViewImageDelegate, GLPPostCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (strong, nonatomic) GLPPost *selectedPost;
-
-@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
 @property (assign, nonatomic) NSInteger selectedUserId;
 
@@ -104,9 +101,7 @@
 }
 
 - (void)initialiseObjects
-{
-    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
-    
+{    
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorCenter withView:self.tableView];
     
     _showComment = NO;
@@ -474,19 +469,9 @@
 
 #pragma mark - ViewImageDelegate
 
--(void)viewPostImage:(UIImage*)postImage
+-(void)viewPostImageView:(UIImageView *)postImageView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = postImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
-
+    [GLPViewImageHelper showImageInViewController:self withImageView:postImageView];
 }
 
 #pragma mark - Notifications

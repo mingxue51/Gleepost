@@ -19,8 +19,6 @@
 #import "ContactsManager.h"
 #import "UIViewController+Flurry.h"
 #import "GLPPostNotificationHelper.h"
-#import "ViewPostImageViewController.h"
-#import "TransitionDelegateViewImage.h"
 #import "AppearanceHelper.h"
 #import "GLPCommentUploader.h"
 #import "GLPCommentManager.h"
@@ -32,7 +30,6 @@
 #import "ShapeFormatterHelper.h"
 #import "UIColor+GLPAdditions.h"
 #import "GLPShowLocationViewController.h"
-#import "GLPViewImageViewController.h"
 #import "GLPiOSSupportHelper.h"
 #import "GLPCategory.h"
 #import "TDPopUpAfterGoingView.h"
@@ -42,6 +39,7 @@
 #import "GLPTableActivityIndicator.h"
 #import "ViewPostTitleCell.h"
 #import "GLPLikesCell.h"
+#import "GLPViewImageHelper.h"
 
 @interface ViewPostViewController () <GLPAttendingPopUpViewControllerDelegate, GLPLikesCellDelegate>
 
@@ -54,9 +52,6 @@
 @property (strong, nonatomic) IBOutlet UIView *commentFormView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *commentFormViewHeight;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *commentFormDistanceFromBottom;
-
-
-@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 
@@ -223,7 +218,6 @@ static BOOL likePushed;
 
 -(void)initialiseElements
 {
-    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     self.transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorCenter withView:self.tableView];
     
@@ -630,24 +624,10 @@ static bool firstTime = YES;
     
 }
 
-
--(void)viewPostImage:(UIImage*)postImage
+- (void)viewPostImageView:(UIImageView *)postImageView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = postImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+    [GLPViewImageHelper showImageInViewController:self withImageView:postImageView];
 }
-
 
 - (void)setBackgroundToNavigationBar
 {

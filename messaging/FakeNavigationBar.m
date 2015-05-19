@@ -62,7 +62,7 @@ const CGFloat HEIGH_FAKE = 64.0f;
 
 - (IBAction)showTags:(id)sender
 {
-    [self.delegate showCategories:sender];
+//    [self.delegate showCategories:sender];
 }
 
 -(void)loadGroupsFeed:(id)sender

@@ -22,8 +22,6 @@
 -(void)reloadNewImagePostWithPost:(GLPPost*)inPost;
 -(void)refreshPostsWithNewCategory;
 -(void)newPostButtonClick;
--(void)showCategories:(id)sender;
-
 -(void)loadGroupsFeed;
 
 -(void)loadRegularPosts;
