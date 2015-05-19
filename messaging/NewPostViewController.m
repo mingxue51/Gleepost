@@ -1152,7 +1152,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     {
         if(answerTextField.tag == 1 || answerTextField.tag == 2)
         {
-            if(answerTextField.text.length < 3)
+            if(answerTextField.text.length < 2)
             {
                 return YES;
             }
@@ -1161,7 +1161,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
         {
             if(![NSString isStringEmpty:answerTextField.text])
             {
-                if(answerTextField.text.length < 3)
+                if(answerTextField.text.length < 2)
                 {
                     return YES;
                 }
