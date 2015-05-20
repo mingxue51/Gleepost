@@ -158,7 +158,7 @@
     
     [self.delegate userHitsSendButtonWithText:self.growingTextView.text];
     self.growingTextView.text = @"";
-    [self hide];
+//    [self hide];
 }
 
 @end

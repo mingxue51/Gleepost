@@ -23,6 +23,7 @@
 
 @property (assign, nonatomic) float heightOfCell;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentLabelHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromBottom;
 @property (weak, nonatomic) IBOutlet UIImageView *backgoundImageView;
 @property (assign, nonatomic) CommentCellType cellType;
 
@@ -124,12 +125,15 @@ static const float CommentContentLabelMargin = 20 + 36 + 5 + 20;
 
 - (void)configureCommentCell
 {
+    self.distanceFromBottom.constant = -1.0;
+    
     switch (_cellType) {
         case kTopCommentCell:
             [self configureTopCell];
             break;
             
         case kBottomCommentCell:
+            self.distanceFromBottom.constant = 0.0;
             [self configureBottomCell];
             break;
             

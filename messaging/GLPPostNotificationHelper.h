@@ -45,7 +45,7 @@
 
 +(int)parseNotificationAndFindIndexWithNotification:(NSNotification *)notification withPostsArray:(NSMutableArray *)posts;
 
-+(void)deletePostNotificationWithPostRemoteKey:(int)remoteKey inCampusLive:(BOOL)postInCampusLive;
++(void)deletePostNotificationWithPostRemoteKey:(NSInteger)remoteKey inCampusLive:(BOOL)postInCampusLive;
 
 + (NSInteger)findPostIndexWithKey:(NSInteger)key inPosts:(NSArray *)posts;
 

@@ -75,6 +75,7 @@
                 <outlet property="backgoundImageView" destination="Uah-fu-XDX" id="akb-x2-hYm"/>
                 <outlet property="contentLabel" destination="w27-LX-izE" id="JGN-PH-FEb"/>
                 <outlet property="contentLabelHeight" destination="KWo-Na-kNv" id="Hvv-Qd-vjT"/>
+                <outlet property="distanceFromBottom" destination="942-Ue-xUq" id="ugc-hr-0fx"/>
                 <outlet property="postDateLabel" destination="30Z-0M-DB7" id="Ajg-49-iY2"/>
                 <outlet property="userImageView" destination="3Xl-hr-3LV" id="dqV-nh-8dQ"/>
                 <outlet property="userNameLabel" destination="a3r-59-00Z" id="Zqp-rm-7pN"/>

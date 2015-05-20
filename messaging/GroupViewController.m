@@ -1940,21 +1940,9 @@ const float TOP_OFF_SET = -64.0;
 
 #pragma mark - Navigation
 
--(void)showImage
+- (void)showImage
 {
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-//    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-//    viewImage.image = _groupImage;
-//    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-//    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-//    
-//    if(![GLPiOSSupportHelper isIOS6])
-//    {
-//        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-//    }
-//    
-//    [self.view setBackgroundColor:[UIColor whiteColor]];
-//    [self presentViewController:viewImage animated:YES completion:nil];
+    [GLPViewImageHelper showImageInViewController:self withImageView:self.strechedImageView];
 }
 
 

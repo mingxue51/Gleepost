@@ -11,7 +11,7 @@
 #import "GLPConversation.h"
 #import "GLPPostCell.h"
 #import "PrivateProfileTopViewCell.h"
-@interface GLPPrivateProfileViewController : UITableViewController<NewCommentDelegate, GLPPostCellDelegate, PrivateProfileTopViewCellDelegate, ViewImageDelegate>
+@interface GLPPrivateProfileViewController : UIViewController<NewCommentDelegate, GLPPostCellDelegate, PrivateProfileTopViewCellDelegate, ViewImageDelegate>
 
 
 @property (assign, nonatomic) NSInteger selectedUserId;

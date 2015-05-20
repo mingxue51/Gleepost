@@ -27,7 +27,7 @@
 #import "GLPBottomTextView.h"
 #import "GLPCommentUploader.h"
 #import "GLPPostNotificationHelper.h"
-#import "JTSImageViewController.h"
+#import "GLPViewImageHelper.h"
 
 @interface GLPCampusLiveViewController () <UITableViewDataSource, UITableViewDelegate, GLPLikesCellDelegate, GLPImageViewDelegate, GLPLabelDelegate, GLPBottomTextViewDelegate>
 
@@ -69,6 +69,11 @@
     [self configureObjects];
     [self configureNotifications];
     [self configureTableView];
+    [self configureNavigationItems];
+    
+    //For now we show the bottom text view.
+    [self.bottomTextView show];
+    [self makeDistanceOfTableViewFromBottomFitWithTextView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -153,11 +158,12 @@
     [self.view addSubview:self.fakeNavigationBar];
     [self.navigationController.navigationBar invisible];
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStyleBordered target:nil action:nil];
-    
-    [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismissViewController) andTarget:self];
-    
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+}
 
+- (void)configureNavigationItems
+{
+    [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismissViewController) andTarget:self];
 }
 
 #pragma mark - Client
@@ -178,16 +184,16 @@
         return;
     }
     
-    if([self heightOfRows] - 170.0f < currentOffset)
-    {
-        [self.bottomTextView show];
-        [self makeDistanceOfTableViewFromBottomFitWithTextView];
-    }
-    else
-    {
-        [self.bottomTextView hide];
-        [self makeDistanceOfTableViewFromBottomFitWithBottom];
-    }
+//    if([self heightOfRows] - 170.0f < currentOffset)
+//    {
+//        [self.bottomTextView show];
+//        [self makeDistanceOfTableViewFromBottomFitWithTextView];
+//    }
+//    else
+//    {
+//        [self.bottomTextView hide];
+//        [self makeDistanceOfTableViewFromBottomFitWithBottom];
+//    }
     
     self.lastContentOffset = currentOffset;
 }
@@ -200,21 +206,8 @@
 {
     UIImage *image = notification.userInfo[@"image"];
     UIImageView *imageView = notification.userInfo[@"current_image_view"];
-    
-    // Create image info
-    JTSImageInfo *imageInfo = [[JTSImageInfo alloc] init];
-    imageInfo.image = image;
-    imageInfo.referenceRect = imageView.frame;
-    imageInfo.referenceView = imageView.superview;
-    
-    // Setup view controller
-    JTSImageViewController *imageViewer = [[JTSImageViewController alloc]
-                                           initWithImageInfo:imageInfo
-                                           mode:JTSImageViewControllerMode_Image
-                                           backgroundStyle:JTSImageViewControllerBackgroundOption_Blurred];
-    
-    // Present the view controller.
-    [imageViewer showFromViewController:self transition:JTSImageViewControllerTransition_FromOriginalPosition];
+    imageView.image = image;
+    [GLPViewImageHelper showImageInViewController:self withImageView:imageView];
 }
 
 - (void)showMoreOptions:(NSNotification *)notification
@@ -242,8 +235,8 @@
     
     [self.commentsManager loadCommentsWithPost:self.selectedPost];
     
-    [self.bottomTextView hide];
-    [self makeDistanceOfTableViewFromBottomFitWithBottom];
+//    [self.bottomTextView hide];
+//    [self makeDistanceOfTableViewFromBottomFitWithBottom];
 }
 
 - (void)stopActivityIndicatorAndReloadData
@@ -254,8 +247,8 @@
     
     [self.tableView reloadData];
     
-    [self.bottomTextView hide];
-    [self makeDistanceOfTableViewFromBottomFitWithBottom];
+//    [self.bottomTextView hide];
+//    [self makeDistanceOfTableViewFromBottomFitWithBottom];
 }
 
 - (void)commentsReceived:(NSNotification *)notification

@@ -102,7 +102,7 @@ const float kCWStretchedImageHeight = 350;
 
 - (void)configureTopLabel
 {
-    self.topLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 125.0, 243.0, 70.0)];
+    self.topLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 125.0, 240.0, 70.0)];
     
     self.topLabel.center = CGPointMake([GLPiOSSupportHelper screenWidth] / 2, self.topLabel.center.y);
     

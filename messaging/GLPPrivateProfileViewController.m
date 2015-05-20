@@ -53,7 +53,7 @@
 
 @property (strong, nonatomic) GLPPost *selectedPost;
 
-@property (assign, nonatomic) int postIndexToReload;
+@property (assign, nonatomic) NSInteger postIndexToReload;
 
 @property (strong, nonatomic) GLPConversation *conversation;
 @property (strong, nonatomic) GLPUser *emptyConversationUser;
@@ -72,6 +72,8 @@
 /** Properties for loading previous posts. */
 @property (assign, nonatomic) BOOL isLoading;
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -244,6 +246,7 @@
     if(self.transparentNavBar)
     {
         [self.navigationController.navigationBar invisible];
+        [self.navigationController.navigationBar whiteTranslucentBackgroundFormatWithShadow:YES andView:self.view];
     }
     else
     {
