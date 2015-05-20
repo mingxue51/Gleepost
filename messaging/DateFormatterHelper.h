@@ -21,6 +21,7 @@
 + (NSString *)dateUnixFormat:(NSDate *)date;
 +(NSDate *)generateDateAfterDays:(int)days;
 +(NSDate *)generateDateAfterHours:(int)hours;
++ (NSDate *)generateDateAfterMinutes:(NSInteger)minutes;
 +(NSDate *)generateTodayDateWhenItStarts;
 +(NSDate *)generateDateWithLastMinutePlusDates:(int)dates;
 +(NSArray *)generateTheNextDayStartAndEnd;

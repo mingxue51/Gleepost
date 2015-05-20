@@ -144,6 +144,18 @@
     return date;
 }
 
++ (NSDate *)generateDateAfterMinutes:(NSInteger)minutes
+{
+    NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
+    
+    [comp setDay:comp.day];
+    [comp setHour:comp.hour];
+    [comp setMinute:comp.minute+minutes];
+    NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comp];
+    
+    return date;
+}
+
 +(NSDate *)generateDateWithLastMinutePlusDates:(int)dates
 {
     NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
