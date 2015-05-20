@@ -154,7 +154,19 @@
     self.postImageView.delegate = self;
     [self.postImageView setGesture:YES];
     self.postImageView.tag = -1;
-    [self.postImageView setImageWithURL:imageUrl placeholderImage:nil usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    
+    if(imageUrl)
+    {
+        [self.postImageView setImageWithURL:imageUrl placeholderImage:nil usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    }
+    else if([self.post isVideoPost])
+    {
+        
+    }
+    else
+    {
+        self.postImageView.image = [GLPImageHelper placeholderLiveEventImage];
+    }
     
     return;
 }

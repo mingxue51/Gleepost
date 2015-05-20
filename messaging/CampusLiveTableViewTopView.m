@@ -102,17 +102,8 @@
 
 - (NSInteger)numberOfItemsInSwipeView:(SwipeView *)swipeView
 {
-    //generate 100 item views
-    //normally we'd use a backing array
-    //as shown in the basic iOS example
-    //but for this example we haven't bothered
     return [[CampusLiveManager sharedInstance] eventsCount];
 }
-
-//- (CGSize)swipeViewItemSize:(SwipeView *)swipeView
-//{
-//    return CGSizeMake(100.0, 100.0);
-//}
 
 - (void)swipeViewCurrentItemIndexDidChange:(SwipeView *)swipeView
 {
