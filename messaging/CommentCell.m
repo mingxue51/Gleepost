@@ -149,9 +149,6 @@ static const float CommentContentLabelMargin = 20 + 36 + 5 + 20;
             DDLogDebug(@"Default");
             break;
     }
-    
-//    [self formatBackgroundView];
-
 }
 
 -(void)setCellHeight:(NSString*)content

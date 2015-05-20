@@ -1039,17 +1039,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 
 - (void)notifyViewPostAfterGoingPressed
 {
-    if(!_post.finalImage && !_post.tempImage)
-    {
-        _post.finalImage = _postImageView.image;
-    }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post" : _post}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post" : _post, @"attend" : @(YES), @"post_image" : _postImageView.image}];
 }
 
 - (void)sendNotificationGoingUnpressed
-{    
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_UNTOUCHED object:self userInfo:@{@"post" : _post}];
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_UNTOUCHED object:self userInfo:@{@"post" : _post, @"attend" : @(NO), @"post_image" : _postImageView.image}];
 }
 
 - (void)notifyToRefreshThePostInCampusWall

@@ -476,13 +476,14 @@ static BOOL likePushed;
 - (void)goingButtonTouchedWithNotification:(NSNotification *)notification
 {    
     GLPPost *incomingPost = notification.userInfo[@"post"];
-    
+    UIImage *image = notification.userInfo[@"post_image"];
+
     //Show the pop up view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
-    [cvc setEventPost:incomingPost];
+    [cvc setEventPost:incomingPost withImage:image];
     
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     

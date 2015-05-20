@@ -12,6 +12,7 @@
 #import "GLPPostDao.h"
 #import "GLPLiveSummary.h"
 #import "DateFormatterHelper.h"
+#import "GLPPostManager.h"
 
 @interface CampusLiveManager ()
 
@@ -48,7 +49,7 @@ static CampusLiveManager *instance = nil;
     return self;
 }
 
-#pragma mark - Accessors
+#pragma mark - Client accessors
 
 /**
  Informs the manager that the GLPCampusLiveViewController needs the posts.
@@ -91,7 +92,7 @@ static CampusLiveManager *instance = nil;
     }];
 }
 
-#pragma mark - Accessors
+#pragma mark - Simple accessors
 
 - (GLPPost *)eventPostAtIndex:(NSInteger)index
 {
@@ -159,6 +160,48 @@ static CampusLiveManager *instance = nil;
     }];
 }
 
+- (void)attendToEvent:(BOOL)attend withPostRemoteKey:(NSInteger)postRemoteKey withImage:(UIImage *)postImage
+{
+    GLPPost *post = [self findPostWithRemoteKey:postRemoteKey];
+    
+    if(!post)
+    {
+        DDLogError(@"CampusLiveManager attend to event failed. Post could not be found.");
+        return;
+    }
+    
+    DDLogDebug(@"CampusLiveManager attend to event post %@", post);
+    post.attended = attend;
+    
+    [[WebClient sharedInstance] attendEvent:attend withPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success, NSInteger popularity) {
+        
+        if(success)
+        {
+            //Update local database.
+            [GLPPostManager updatePostAttending:post];
+        }
+        else
+        {
+            //TODO: If failed retry. (manager that will manage attending background operations).
+            
+//            [self makeButtonSelected];
+//            
+//            [WebClientHelper showInternetConnectionErrorWithTitle:@"Not attending to the event failed."];
+        }
+        
+    }];
+    
+    if(attend)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post" : post, @"attend" : @(attend), @"post_image" : postImage}];
+    }
+    else
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_UNTOUCHED object:self userInfo:@{@"post" : post, @"attend" : @(attend)}];
+    }
+    
+}
+
 - (void)savePostsInLocalDatabaseIfNotExist:(NSArray *)posts
 {
     for(GLPPost *post in posts)
@@ -179,6 +222,20 @@ static CampusLiveManager *instance = nil;
             }
         }
     }
+}
+
+- (GLPPost *)findPostWithRemoteKey:(NSInteger)postRemoteKey
+{
+    NSPredicate *postPredicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"remoteKey = %ld", (long)postRemoteKey]];
+    
+    NSArray *post = [self.liveEventPosts filteredArrayUsingPredicate:postPredicate];
+
+    if(!post)
+    {
+        return nil;
+    }
+    
+    return post[0];
 }
 
 -(void)loadRemotePosts:(GLPPost *)post callback:(void (^)(BOOL success, NSArray *posts))callbackBlock

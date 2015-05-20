@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol GLPCampusLiveViewControllerDelegate <NSObject>
+
+@required
+- (void)campusLiveDisappeared;
+
+@end
+
 @interface GLPCampusLiveViewController : UIViewController
+
+@property (weak, nonatomic) UIViewController<GLPCampusLiveViewControllerDelegate> *delegate;
 
 @end

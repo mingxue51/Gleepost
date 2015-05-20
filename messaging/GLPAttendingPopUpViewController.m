@@ -78,18 +78,18 @@
 
 #pragma mark - Modifiers
 
-- (void)setEventPost:(GLPPost *)eventPost
+- (void)setEventPost:(GLPPost *)eventPost withImage:(UIImage *)image
 {
-    UIImage *topImage = eventPost.finalImage ? eventPost.finalImage : eventPost.tempImage;
+//    UIImage *topImage = eventPost.finalImage ? eventPost.finalImage : eventPost.tempImage;
     
     //Detach the a thread if the delay is not satisfiable.
     
-    if(!topImage)
+    if(!image)
     {
         return;
     }
     
-    [super setTopImage:topImage];
+    [super setTopImage:image];
 //    _postImage = [self blurImage:topImage];
     
 //    [NSThread detachNewThreadSelector:@selector(blurImage:) toTarget:self withObject:topImage];

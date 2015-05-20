@@ -395,6 +395,7 @@
                 <outlet property="contentLabelHeight" destination="eqZ-4H-hIv" id="1gt-aM-WoZ"/>
                 <outlet property="datePostedLabel" destination="u07-oS-3j6" id="QKG-bP-moS"/>
                 <outlet property="eventTitleLabel" destination="hts-yH-RyM" id="o4v-Iq-1Fg"/>
+                <outlet property="goingButton" destination="b29-6i-eah" id="iKb-8j-t8N"/>
                 <outlet property="likeButton" destination="QNT-xA-SbJ" id="Ra5-ux-fuD"/>
                 <outlet property="likesLabel" destination="57C-dL-tKb" id="dFC-jj-wXM"/>
                 <outlet property="postImageView" destination="a6u-Rl-3oH" id="H8W-wl-bIc"/>

@@ -306,9 +306,9 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:dataDict];
 }
 
-+(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(int)remoteKey withLiked:(BOOL)liked
++ (void)updatePostWithNotifiationName:(NSString *)notificationName withObject:(id)object remoteKey:(NSInteger)remoteKey withLiked:(BOOL)liked
 {
-    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:remoteKey],@"RemoteKey", [NSNumber numberWithBool:liked], @"Liked", nil];
+    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:remoteKey],@"RemoteKey", [NSNumber numberWithBool:liked], @"Liked", nil];
     
     
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:dataDict];

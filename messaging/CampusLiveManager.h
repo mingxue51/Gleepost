@@ -23,6 +23,7 @@
 
 - (GLPPost *)eventPostAtIndex:(NSInteger)index;
 - (NSInteger)eventsCount;
+- (void)attendToEvent:(BOOL)attend withPostRemoteKey:(NSInteger)postRemoteKey withImage:(UIImage *)postImage;
 
 -(void)loadCurrentLivePostsWithCallbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock;
 

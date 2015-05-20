@@ -27,6 +27,7 @@
 #import "CampusLiveManager.h"
 #import "GLPPostManager.h"
 #import "GLPPostNotificationHelper.h"
+#import "UIColor+GLPAdditions.h"
 
 @interface CLPostView () <GLPLabelDelegate, GLPImageViewDelegate, UIActionSheetDelegate>
 
@@ -41,6 +42,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *likesLabel;
 @property (weak, nonatomic) IBOutlet UILabel *commentsLabel;
 @property (weak, nonatomic) IBOutlet UIButton *likeButton;
+@property (weak, nonatomic) IBOutlet UIButton *goingButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentLabelHeight;
 
 @property (weak, nonatomic) IBOutlet GLPViewsCountView *viewsCountView;
@@ -107,7 +109,19 @@
     
     [self configureContentLabel];
     
-    
+    [self configureGoingButton];
+}
+
+- (void)configureGoingButton
+{
+    if([self.post.dateEventStarts compare:[NSDate date]] == NSOrderedAscending)
+    {
+        [self.goingButton setHidden:YES];
+    }
+    else
+    {
+        [self makeGoingButtonSelected:self.post.attended];
+    }
 }
 
 - (void)configureContentLabel
@@ -254,7 +268,13 @@
 
 - (IBAction)goingButtonTouched:(id)sender
 {
+    DDLogDebug(@"CLPostView goingButtonTouched tag %ld", self.goingButton.tag);
     
+    BOOL attend = (self.goingButton.tag == 1) ? NO : YES;
+    
+    [[CampusLiveManager sharedInstance] attendToEvent:attend withPostRemoteKey:self.post.remoteKey withImage:self.postImageView.image];
+
+    [self makeGoingButtonSelected:attend];
 }
 
 - (IBAction)commentPost:(id)sender
@@ -314,6 +334,15 @@
 }
 
 #pragma mark - Actions
+
+- (void)makeGoingButtonSelected:(BOOL)selected
+{
+    UIImage *backgroundImage = (selected) ? [UIImage imageNamed:@"going_pushed_back_btn"] : [UIImage imageNamed:@"going_unpushed_back_btn"];
+    UIColor *titleColour = (selected) ? [UIColor whiteColor] : [UIColor colorWithR:70.0 withG:70.0 andB:70.0];
+    [self.goingButton setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+    [self.goingButton setTitleColor:titleColour forState:UIControlStateNormal];
+    self.goingButton.tag = (selected) ? 1 : 2;
+}
 
 -(void)setLikeImageToButton
 {

@@ -77,7 +77,7 @@
 #import "GLPCampusLiveViewController.h"
 #import "GLPViewImageHelper.h"
 
-@interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate, GLPCategoriesViewControllerDelegate, GLPCampusWallStretchedViewDelegate>
+@interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate, GLPCategoriesViewControllerDelegate, GLPCampusWallStretchedViewDelegate, GLPCampusLiveViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *posts;
 @property (strong, nonatomic) GLPPost *selectedPost;
@@ -164,6 +164,11 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (assign, nonatomic) BOOL viewDisappeared;
+
+/** This variable helps us to identify when the campus live is visible.
+ we need that because there is unexcected behaviour when campus live 
+ is visible. That happens because viewDidDisappear is not called.*/
+@property (assign, nonatomic) BOOL campusLiveVisible;
 
 @end
 
@@ -355,6 +360,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.tableView];
     
     self.viewDisappeared = NO;
+    self.campusLiveVisible = NO;
 }
 
 - (void)startBackgroundOperations
@@ -2365,12 +2371,21 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 {
     DDLogDebug(@"GLPTimelineViewController : Navigate to campus live");
 //    [self performSegueWithIdentifier:@"show campus live" sender:self];
+    self.campusLiveVisible = YES;
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPCampusLiveViewController *campusLiveVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPCampusLiveViewController"];
+    campusLiveVC.delegate = self;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:campusLiveVC];
     navigationController.modalPresentationStyle = UIModalPresentationCustom;
     [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+#pragma mark - GLPCampusLiveViewControllerDelegate
+
+- (void)campusLiveDisappeared
+{
+    self.campusLiveVisible = NO;
 }
 
 #pragma mark - GLPCategoriesViewControllerDelegate
@@ -2598,14 +2613,20 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 
 - (void)goingButtonTouchedWithNotification:(NSNotification *)notification
 {
-    _selectedPost = notification.userInfo[@"post"];
+    if(self.campusLiveVisible)
+    {
+        return;
+    }
     
+    _selectedPost = notification.userInfo[@"post"];
+    UIImage *image = notification.userInfo[@"post_image"];
+
     //Show the pop up view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
-    [cvc setEventPost:_selectedPost];
+    [cvc setEventPost:_selectedPost withImage:image];
     
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     

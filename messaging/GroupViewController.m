@@ -1773,13 +1773,14 @@ const float TOP_OFF_SET = -64.0;
 - (void)goingButtonTouchedWithNotification:(NSNotification *)notification
 {
     _selectedPost = notification.userInfo[@"post"];
-    
+    UIImage *image = notification.userInfo[@"post_image"];
+
     //Show the pop up view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
-    [cvc setEventPost:_selectedPost];
+    [cvc setEventPost:_selectedPost withImage:image];
     
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     

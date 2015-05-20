@@ -33,13 +33,14 @@
  */
 +(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(NSInteger)remoteKey numberOfLikes:(NSInteger)likes andNumberOfComments:(NSInteger)comments;
 
+
 +(int)parsePost:(GLPPost **)post imageNotification:(NSNotification*)notification withPostsArray:(NSArray*)posts;
 
 + (NSInteger)parsePostWithImageUrlNotification:(NSNotification *)notification withPostsArray:(NSArray *)posts;
 
 +(int)parseLikedPostNotification:(NSNotification*)notification withPostsArray:(NSArray *)posts;
 
-+(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(int)remoteKey withLiked:(BOOL)liked;
++ (void)updatePostWithNotifiationName:(NSString *)notificationName withObject:(id)object remoteKey:(NSInteger)remoteKey withLiked:(BOOL)liked;
 
 +(NSArray *)parseNotification:(NSNotification *)notification withPostsArrayForNewProfileImage:(NSArray *)posts;
 

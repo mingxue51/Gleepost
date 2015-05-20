@@ -24,6 +24,6 @@
 
 @property (weak, nonatomic) UIViewController<GLPAttendingPopUpViewControllerDelegate> *delegate;
 
-- (void)setEventPost:(GLPPost *)eventPost;
+- (void)setEventPost:(GLPPost *)eventPost withImage:(UIImage *)image;
 
 @end

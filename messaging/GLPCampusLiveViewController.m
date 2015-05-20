@@ -28,8 +28,12 @@
 #import "GLPCommentUploader.h"
 #import "GLPPostNotificationHelper.h"
 #import "GLPViewImageHelper.h"
+#import "GLPAttendingPopUpViewController.h"
+#import "TDPopUpAfterGoingView.h"
+#import "GLPCalendarManager.h"
+#import "WebClientHelper.h"
 
-@interface GLPCampusLiveViewController () <UITableViewDataSource, UITableViewDelegate, GLPLikesCellDelegate, GLPImageViewDelegate, GLPLabelDelegate, GLPBottomTextViewDelegate>
+@interface GLPCampusLiveViewController () <UITableViewDataSource, UITableViewDelegate, GLPLikesCellDelegate, GLPImageViewDelegate, GLPLabelDelegate, GLPBottomTextViewDelegate, GLPAttendingPopUpViewControllerDelegate>
 
 @property (strong, nonatomic) CampusLiveFakeNavigationBarView *fakeNavigationBar;
 
@@ -59,6 +63,8 @@
 
 @property (weak, nonatomic) IBOutlet GLPBottomTextView *bottomTextView;
 
+@property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
+
 @end
 
 @implementation GLPCampusLiveViewController
@@ -83,6 +89,12 @@
     
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.delegate campusLiveDisappeared];
+    [super viewWillDisappear:animated];
+}
+
 - (void)configureObjects
 {
     self.commentsManager = [[CLCommentsManager alloc] init];
@@ -91,6 +103,7 @@
     self.showUsersLikedThePost = NO;
     self.focusOnCommentInViewPostVC = NO;
     self.bottomTextView.delegate = self;
+    self.transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
 }
 
 - (void)configureTableView
@@ -136,6 +149,9 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postTouched:) name:GLPNOTIFICATION_CL_POST_TOUCHED object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(commentButtonTouched:) name:GLPNOTIFICATION_CL_COMMENT_BUTTON_TOUCHED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goingButtonTouchedWithNotification:) name:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:nil];
+
 }
 
 - (void)dealloc
@@ -147,7 +163,8 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_COMMENTS_FETCHED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CL_POST_TOUCHED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CL_COMMENT_BUTTON_TOUCHED object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:nil];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
@@ -271,6 +288,64 @@
 {
     self.focusOnCommentInViewPostVC = YES;
     [self performSegueWithIdentifier:@"view post" sender:self];
+}
+
+- (void)goingButtonTouchedWithNotification:(NSNotification *)notification
+{
+    GLPPost *post = notification.userInfo[@"post"];
+    
+    UIImage *image = notification.userInfo[@"post_image"];
+    
+    //Show the pop up view.
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+    GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
+    [cvc setDelegate:self];
+    [cvc setEventPost:post withImage:image];
+    
+    cvc.modalPresentationStyle = UIModalPresentationCustom;
+    [cvc setTransitioningDelegate:self.transitionViewPopUpAttend];
+    [self presentViewController:cvc animated:YES completion:nil];
+}
+
+#pragma mark - GLPPopUpDialogViewControllerDelegate
+
+- (void)showAttendees
+{
+    [self performSegueWithIdentifier:@"show attendees" sender:self];
+}
+
+- (void)addEventToCalendar
+{
+    [[GLPCalendarManager sharedInstance] addEventPostToCalendar:_selectedPost withCallback:^(CalendarEventStatus resultStatus) {
+        
+        switch (resultStatus) {
+            case kSuccess:
+                
+                dispatch_async (dispatch_get_main_queue(), ^{
+                    [WebClientHelper showEventSuccessfullyAddedToCalendar];
+                });
+                
+                break;
+                
+            case kPermissionsError:
+                
+                dispatch_async (dispatch_get_main_queue(), ^{
+                    [WebClientHelper showErrorPermissionsToCalendar];
+                });
+                break;
+                
+            case kOtherError:
+                
+                dispatch_async (dispatch_get_main_queue(), ^{
+                    [WebClientHelper showErrorSavingEventToCalendar];
+                });
+                break;
+                
+            default:
+                break;
+        }
+        
+    }];
 }
 
 #pragma mark - GLPLikesCellDelegate
