@@ -143,10 +143,7 @@ static CampusLiveManager *instance = nil;
     }
     
     self.liveEventPosts = liveEventPostsMutable;
-    
-    
     [self deletePostFromServerWithPost:postToBeDeleted];
-
 }
 
 #pragma mark - Client

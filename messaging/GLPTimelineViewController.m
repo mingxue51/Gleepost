@@ -560,17 +560,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 
 - (void)deletePost:(NSNotification *)notification
 {
-//    NSDictionary *notificationDic = notification.userInfo;
-    
-//    BOOL postFromCampusLive = [notificationDic[@"ComesFromCampusLive"] boolValue];
-//    
-//    if(postFromCampusLive)
-//    {
-//        //Refresh campus live.
-//        [_campusWallHeader reloadData];
-//        return;
-//    }
-    
     NSInteger index = -1;
     
     index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
