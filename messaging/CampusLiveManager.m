@@ -13,6 +13,7 @@
 #import "GLPLiveSummary.h"
 #import "DateFormatterHelper.h"
 #import "GLPPostManager.h"
+#import "GLPPostNotificationHelper.h"
 
 @interface CampusLiveManager ()
 
@@ -96,11 +97,15 @@ static CampusLiveManager *instance = nil;
 
 - (GLPPost *)eventPostAtIndex:(NSInteger)index
 {
+    DDLogDebug(@"CampusLiveManager eventPostAtIndex %@", [self.liveEventPosts objectAtIndex:index]);
+    
     return [self.liveEventPosts objectAtIndex:index];
 }
 
 - (NSInteger)eventsCount
 {
+    DDLogDebug(@"CampusLiveManager eventsCount %lu", (unsigned long)self.liveEventPosts.count);
+    
     return self.liveEventPosts.count;
 }
 
@@ -119,8 +124,45 @@ static CampusLiveManager *instance = nil;
     return [self.liveSummary eventsLeftCount];
 }
 
+#pragma mark - Modifiers
+
+- (void)deletePostWithPost:(GLPPost *)postToBeDeleted
+{
+    NSMutableArray *liveEventPostsMutable = self.liveEventPosts.mutableCopy;
+    
+    NSInteger index = 0;
+    
+    for(GLPPost *post in self.liveEventPosts)
+    {
+        if(post.remoteKey == postToBeDeleted.remoteKey)
+        {
+            [liveEventPostsMutable removeObjectAtIndex:index];
+            break;
+        }
+        ++index;
+    }
+    
+    self.liveEventPosts = liveEventPostsMutable;
+    
+    
+    [self deletePostFromServerWithPost:postToBeDeleted];
+
+}
 
 #pragma mark - Client
+
+- (void)deletePostFromServerWithPost:(GLPPost *)post
+{
+    [[WebClient sharedInstance] deletePostWithRemoteKey:post.remoteKey callbackBlock:^(BOOL success) {
+       
+        if(success)
+        {
+            [GLPPostManager deletePostWithPost:post];
+            [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:YES];
+        }
+        
+    }];
+}
 
 -(void)postLike:(BOOL)like withPostRemoteKey:(NSInteger)postRemoteKey
 {

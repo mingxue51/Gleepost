@@ -56,11 +56,13 @@
 - (void)configureNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postsFetched:) name:GLPNOTIFICATION_CAMPUS_LIVE_POSTS_FETCHED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postDeleted:) name:GLPNOTIFICATION_POST_DELETED object:nil];
 }
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CAMPUS_LIVE_POSTS_FETCHED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
 }
 
 #pragma mark - Client
@@ -89,7 +91,11 @@
     [self reloadCampusLiveTableViewWithPostIndex:0];
     
     [self.swipeView reloadData];
-    
+}
+
+- (void)postDeleted:(NSNotification *)notification
+{
+    [self.swipeView reloadData];
 }
 
 #pragma mark - SwipeViewDelegate
@@ -201,9 +207,9 @@
 
 - (void)setPostToItemViewWithIndex:(NSInteger)index
 {
-    if(index >= [[CampusLiveManager sharedInstance] eventsCount] - 1 || index < 0)
+    if(index >= [[CampusLiveManager sharedInstance] eventsCount] || index < 0)
     {
-        DDLogDebug(@"CampusLiveTableViewTopView : reached last or the first post abort");
+        DDLogDebug(@"CampusLiveTableViewTopView : reached last or the first post abort.");
         
         return;
     }

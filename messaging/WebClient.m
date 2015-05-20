@@ -667,7 +667,7 @@ static WebClient *instance = nil;
 
 - (void)getAttendingEventsForUserWithRemoteKey:(NSInteger)userRemoteKey callback:(void (^) (BOOL success, NSArray *posts))callback
 {
-    NSString *path = [NSString stringWithFormat:@"user/%d/attending", userRemoteKey];
+    NSString *path = [NSString stringWithFormat:@"user/%ld/attending", (long)userRemoteKey];
     
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -779,10 +779,10 @@ static WebClient *instance = nil;
 }
 
 
--(void)deletePostWithRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
+- (void)deletePostWithRemoteKey:(NSInteger)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
 {
     
-    NSString *path = [NSString stringWithFormat:@"posts/%d", postRemoteKey];
+    NSString *path = [NSString stringWithFormat:@"posts/%ld", (long)postRemoteKey];
     
     [self deletePath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

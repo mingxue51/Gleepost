@@ -650,6 +650,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         DDLogDebug(@"RemoteParser : poll %@", post);
     }
     
+    post.sendStatus = kSendStatusSent;
+    
     return post;
 }
 

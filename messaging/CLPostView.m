@@ -225,8 +225,7 @@
     else if ([selectedButtonTitle isEqualToString:@"Delete"])
     {
         //Delete post.
-        //TODO: Implement that later.
-        //[_delegate deleteCurrentPost];
+        [[CampusLiveManager sharedInstance] deletePostWithPost:self.post];
     }
     else if ([selectedButtonTitle isEqualToString:@"Save image"])
     {

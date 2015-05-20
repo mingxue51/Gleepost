@@ -183,13 +183,6 @@
     [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismissViewController) andTarget:self];
 }
 
-#pragma mark - Client
-
-- (void)loadLiveEventPosts
-{
-    [[CampusLiveManager sharedInstance] getLiveEventPosts];
-}
-
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

@@ -10,6 +10,4 @@
 
 @interface CampusLiveTableViewTopView : UIView
 
-- (void)loadLiveEventPosts;
-
 @end

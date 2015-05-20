@@ -165,11 +165,6 @@
 
 @property (assign, nonatomic) BOOL viewDisappeared;
 
-/** This variable helps us to identify when the campus live is visible.
- we need that because there is unexcected behaviour when campus live 
- is visible. That happens because viewDidDisappear is not called.*/
-@property (assign, nonatomic) BOOL campusLiveVisible;
-
 @end
 
 
@@ -360,7 +355,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.tableView];
     
     self.viewDisappeared = NO;
-    self.campusLiveVisible = NO;
 }
 
 - (void)startBackgroundOperations
@@ -512,8 +506,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
  */
 - (void)updateViewsCounter:(NSNotification *)notification
 {
-    DDLogDebug(@"GLPTimelineViewController : notification %@", notification.userInfo);
-    
     NSInteger postRemoteKey = [notification.userInfo[@"PostRemoteKey"] integerValue];
     NSInteger viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
     
@@ -566,20 +558,20 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     }
 }
 
--(void)deletePost:(NSNotification *)notification
+- (void)deletePost:(NSNotification *)notification
 {
-    NSDictionary *notificationDic = notification.userInfo;
+//    NSDictionary *notificationDic = notification.userInfo;
     
-    BOOL postFromCampusLive = [notificationDic[@"ComesFromCampusLive"] boolValue];
+//    BOOL postFromCampusLive = [notificationDic[@"ComesFromCampusLive"] boolValue];
+//    
+//    if(postFromCampusLive)
+//    {
+//        //Refresh campus live.
+//        [_campusWallHeader reloadData];
+//        return;
+//    }
     
-    if(postFromCampusLive)
-    {
-        //Refresh campus live.
-        [_campusWallHeader reloadData];
-        return;
-    }
-    
-    int index = -1;
+    NSInteger index = -1;
     
     index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
     
@@ -2345,7 +2337,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 }
 
 
--(void)removeTableViewPostWithIndex:(int)index
+- (void)removeTableViewPostWithIndex:(NSInteger)index
 {
     NSMutableArray *rowsDeleteIndexPath = [[NSMutableArray alloc] init];
     
@@ -2369,10 +2361,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 
 - (void)takeALookTouched
 {
-    DDLogDebug(@"GLPTimelineViewController : Navigate to campus live");
-//    [self performSegueWithIdentifier:@"show campus live" sender:self];
-    self.campusLiveVisible = YES;
-    
+    [self removeGoingButtonNotification];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPCampusLiveViewController *campusLiveVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPCampusLiveViewController"];
     campusLiveVC.delegate = self;
@@ -2383,9 +2372,12 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 
 #pragma mark - GLPCampusLiveViewControllerDelegate
 
+/** This delegate helps us to identify when the campus live is visible.
+ we need that because there is unexcected behaviour when campus live
+ is visible. That happens because viewDidDisappear is not called.*/
 - (void)campusLiveDisappeared
 {
-    self.campusLiveVisible = NO;
+    [self configureGoingButtonNotification];
 }
 
 #pragma mark - GLPCategoriesViewControllerDelegate
@@ -2613,10 +2605,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 
 - (void)goingButtonTouchedWithNotification:(NSNotification *)notification
 {
-    if(self.campusLiveVisible)
-    {
-        return;
-    }
     
     _selectedPost = notification.userInfo[@"post"];
     UIImage *image = notification.userInfo[@"post_image"];
