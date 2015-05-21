@@ -14,5 +14,7 @@
 
 @property (assign, nonatomic) BOOL groupPost;
 @property (strong, nonatomic) GLPGroup *group;
+/** We are going to change the status bar colour depending on the variable (comes from the previous VC). */
+@property (assign, nonatomic) BOOL navBarTransparentMode;
 
 @end

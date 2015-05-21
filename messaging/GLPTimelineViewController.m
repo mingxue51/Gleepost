@@ -204,9 +204,11 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     [self initialiseObjects];
     
     [self addNavigationButtons];
+
     
-    NSTimer *t = [NSTimer timerWithTimeInterval:0.5f target:self selector:@selector(startLoadingContents:) userInfo:nil repeats:NO];
-    [t fire];
+     //Moved to GLPNetworkManager.
+//    NSTimer *t = [NSTimer timerWithTimeInterval:0.5f target:self selector:@selector(startLoadingContents:) userInfo:nil repeats:NO];
+//    [t fire];
     
     [self loadInitialPosts];
     
@@ -583,45 +585,12 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 
 #pragma mark - Init config
 
-/**
- Starts loading in the background some basic contents of the app like messages, profiles etc.
- 
- //Moved to GLPNetworkManager.
- */
-
--(void)startLoadingContents:(id)sender
-{
-    
-    //[[GLPMessagesLoader sharedInstance] loadLiveConversations];
-    //[[GLPMessagesLoader sharedInstance] loadConversations];
-//    [[GLPProfileLoader sharedInstance] loadUserData];
-    
-    //TODO: Remove this later.
-//    [[ContactsManager sharedInstance] refreshContacts];
-    
-    
-    
-    //Load groups' posts.
-//    [[CampusWallGroupsPostsManager sharedInstance] loadGroupPosts];
-
-}
-
 - (void)configAppearance
 {
-    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-
-    //[AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:nil];
-    
-    
-//    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
-
     UIColor *tabColour = [[GLPThemeManager sharedInstance] tabbarSelectedColour];
 
     [AppearanceHelper showTabBar:self];
 
-    
-    
-//    UIColor *tabColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     self.tabBarController.tabBar.tintColor = tabColour;
     
     [AppearanceHelper setSelectedColourForTabbarItem:self.homeTabbarItem withColour:tabColour];
@@ -2351,6 +2320,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 - (void)takeALookTouched
 {
     [self removeGoingButtonNotification];
+    [[GLPVideoLoaderManager sharedInstance] enableTimelineJustFetched];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPCampusLiveViewController *campusLiveVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPCampusLiveViewController"];
     campusLiveVC.delegate = self;
@@ -2366,6 +2336,8 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
  is visible. That happens because viewDidDisappear is not called.*/
 - (void)campusLiveDisappeared
 {
+    [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
+
     [self configureGoingButtonNotification];
 }
 
@@ -2660,6 +2632,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
         IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         newPostVC.groupPost = NO;
+        newPostVC.navBarTransparentMode = [self.fakeNavigationBar isTransparentMode];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
         navigationController.modalPresentationStyle = UIModalPresentationCustom;
         [navigationController setTransitioningDelegate:self.transitionCategoriesViewController];

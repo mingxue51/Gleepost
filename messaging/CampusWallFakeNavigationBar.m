@@ -119,9 +119,7 @@
 }
 
 - (void)startLoading
-{
-    DDLogDebug(@"CampusWallFakeNavigationBar startLoading");
-    
+{    
     CampusWallFakeNavigationBar *externalView = (CampusWallFakeNavigationBar *)self.externalView;
 
     self.isLoading = YES;
@@ -130,8 +128,6 @@
 
 - (void)stopLoading
 {
-    DDLogDebug(@"CampusWallFakeNavigationBar stopLoading");
-
     CampusWallFakeNavigationBar *externalView = (CampusWallFakeNavigationBar *)self.externalView;
 
     self.isLoading = NO;

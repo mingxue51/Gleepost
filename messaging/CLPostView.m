@@ -28,6 +28,7 @@
 #import "GLPPostManager.h"
 #import "GLPPostNotificationHelper.h"
 #import "UIColor+GLPAdditions.h"
+#import "VideoView.h"
 
 @interface CLPostView () <GLPLabelDelegate, GLPImageViewDelegate, UIActionSheetDelegate>
 
@@ -51,6 +52,8 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (strong, nonatomic) GLPPost *post;
+
+@property (weak, nonatomic) IBOutlet VideoView *videoView;
 
 @end
 
@@ -100,6 +103,7 @@
     [self setLikeImageToButton];
     [self.timeLocationView setLocation:post.location andTime:post.dateEventStarts];
     [self configurePostImage];
+    [self configureVideo];
     
     [self setUserViewData];
     
@@ -161,14 +165,25 @@
     }
     else if([self.post isVideoPost])
     {
-        
     }
     else
     {
         self.postImageView.image = [GLPImageHelper placeholderLiveEventImage];
     }
     
-    return;
+}
+
+- (void)configureVideo
+{
+    if(![self.post isVideoPost])
+    {
+        self.videoView.hidden = YES;
+        
+        return;
+    }
+    
+    self.videoView.hidden = NO;
+    [self.videoView setUpVideoViewWithPost:self.post];
 }
 
 - (void)setUserViewData
@@ -279,11 +294,9 @@
 
 - (IBAction)goingButtonTouched:(id)sender
 {
-    DDLogDebug(@"CLPostView goingButtonTouched tag %ld", self.goingButton.tag);
-    
     BOOL attend = (self.goingButton.tag == 1) ? NO : YES;
     
-    [[CampusLiveManager sharedInstance] attendToEvent:attend withPostRemoteKey:self.post.remoteKey withImage:self.postImageView.image];
+    [[CampusLiveManager sharedInstance] attendToEvent:attend withPostRemoteKey:self.post.remoteKey withImage:[self getPostImage]];
 
     [self makeGoingButtonSelected:attend];
 }
@@ -463,6 +476,24 @@
 - (BOOL)isCurrentPostBelongsToCurrentUser
 {
     return ([SessionManager sharedInstance].user.remoteKey == self.post.author.remoteKey);
+}
+
+/**
+ Depending on what kind of post is the current (video, image, text), returns
+ the appropriate image.
+ 
+ @return the appropriate image.
+ */
+- (UIImage *)getPostImage
+{
+    if ([self.post isVideoPost])
+    {
+        return [self.videoView thumbnailImage];
+    }
+    else
+    {
+        return self.postImageView.image;
+    }
 }
 
 #pragma mark - Static

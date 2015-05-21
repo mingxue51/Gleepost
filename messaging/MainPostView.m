@@ -76,8 +76,6 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
 
-//@property (weak, nonatomic) IBOutlet UILabel *viewsCountLabel;
-
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingViewIndicator;
@@ -926,6 +924,28 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     return ([SessionManager sharedInstance].user.remoteKey == self.post.author.remoteKey);
 }
 
+/**
+ Depending on what kind of post is the current (video, image, text), returns
+ the appropriate image.
+ 
+ @return the appropriate image.
+ */
+- (UIImage *)getPostImage
+{
+    if ([self.post isVideoPost])
+    {
+        return [self.videoView thumbnailImage];
+    }
+    else if([self.post imagePost])
+    {
+        return self.postImageView.image;
+    }
+    else
+    {
+        return [GLPImageHelper placeholderLiveEventImage];
+    }
+}
+
 #pragma mark - Actions
 
 -(IBAction)likePost:(id)sender
@@ -1039,12 +1059,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 
 - (void)notifyViewPostAfterGoingPressed
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post" : _post, @"attend" : @(YES), @"post_image" : _postImageView.image}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post" : _post, @"attend" : @(YES), @"post_image" : [self getPostImage]}];
 }
 
 - (void)sendNotificationGoingUnpressed
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_UNTOUCHED object:self userInfo:@{@"post" : _post, @"attend" : @(NO), @"post_image" : _postImageView.image}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_UNTOUCHED object:self userInfo:@{@"post" : _post, @"attend" : @(NO), @"post_image" : [self getPostImage]}];
 }
 
 - (void)notifyToRefreshThePostInCampusWall

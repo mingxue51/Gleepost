@@ -99,12 +99,15 @@
     self.viewDidAppearFirstOccurrence = NO;
 }
 
-//- (void)viewDidDisappear:(BOOL)animated
-//{
-//    [[PendingPostManager sharedInstance] reset];
-//    
-//    [super viewDidDisappear:animated];
-//}
+- (void)viewDidDisappear:(BOOL)animated
+{
+    if(self.navBarTransparentMode)
+    {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    }
+    
+    [super viewDidDisappear:animated];
+}
 
 - (void)intialiseObjects
 {
@@ -137,11 +140,7 @@
     [self.view addSubview:self.fakeNavigationBar];
     
     [self.navigationController.navigationBar setButton:kLeft specialButton:kQuit withImageName:@"cancel" withButtonSize:CGSizeMake(19.0, 21.0) withSelector:@selector(dismiss:) andTarget:self];
-    
-    if(self.groupPost)
-    {
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
-    }
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 - (void)configureIsGroupPost

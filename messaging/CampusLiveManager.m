@@ -14,6 +14,7 @@
 #import "DateFormatterHelper.h"
 #import "GLPPostManager.h"
 #import "GLPPostNotificationHelper.h"
+#import "GLPVideoLoaderManager.h"
 
 @interface CampusLiveManager ()
 
@@ -64,6 +65,7 @@ static CampusLiveManager *instance = nil;
             
             if(success)
             {
+                [[GLPVideoLoaderManager sharedInstance] addVideoPosts:posts];
                 self.liveEventPosts = posts;
             }
             

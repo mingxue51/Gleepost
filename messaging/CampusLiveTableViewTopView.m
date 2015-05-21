@@ -12,6 +12,7 @@
 #import "CampusLiveManager.h"
 #import "CLPostView.h"
 #import "GLPPost.h"
+#import "GLPVideoLoaderManager.h"
 
 @interface CampusLiveTableViewTopView ()
 
@@ -140,9 +141,8 @@
         //note that it is only safe to use the reusingView if we return the same nib for each
         //item view, if different items have different contents, ignore the reusingView value
         
-        view = [[NSBundle mainBundle] loadNibNamed:@"PostImageView" owner:self options:nil][0];
+        view = [[NSBundle mainBundle] loadNibNamed:@"CLPostView" owner:self options:nil][0];
 
-        DDLogDebug(@"view y %f", view.frame.origin.y);
         CGRectSetY(view, -60);
         
         view.tag = index;
@@ -208,6 +208,12 @@
     GLPPost *post = [[CampusLiveManager sharedInstance] eventPostAtIndex:index];
     
     CLPostView *itemView = (CLPostView *)[self.swipeView itemViewAtIndex:index];
+    
+    if([post isVideoPost])
+    {
+        DDLogDebug(@"CampusLiveTableViewTopView %@", post.eventTitle);
+        [[GLPVideoLoaderManager sharedInstance] visiblePosts:@[post]];
+    }
     
     [itemView setPost:post];
 }

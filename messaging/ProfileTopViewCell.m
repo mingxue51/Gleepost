@@ -163,10 +163,6 @@ const CGFloat PROFILE_TOP_VIEW_HEIGHT = 238;
 
 + (CGFloat)profileTopViewHeight
 {
-    //const float PROFILE_TOP_VIEW_HEIGHT = 238;
-
-    DDLogDebug(@"ProfileTopView : %f", [GLPSegmentView segmentHeight]);
-    
     return PROFILE_TOP_VIEW_HEIGHT + [GLPSegmentView segmentHeight];
 }
 

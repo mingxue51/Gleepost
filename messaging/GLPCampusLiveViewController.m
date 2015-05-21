@@ -11,7 +11,6 @@
 #import "UINavigationBar+Utils.h"
 #import "CampusLiveFakeNavigationBarView.h"
 #import "SwipeView.h"
-#import "CLPostTableView.h"
 #import "CampusLiveManager.h"
 #import "CampusLiveTableViewTopView.h"
 #import "GLPiOSSupportHelper.h"
