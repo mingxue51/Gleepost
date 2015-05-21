@@ -22,6 +22,7 @@
 - (NSInteger)liveSummaryPostsLeftCount;
 
 - (GLPPost *)eventPostAtIndex:(NSInteger)index;
+- (NSInteger)indexOfPostWithRemoteKey:(NSInteger)postRemoteKey;
 - (NSInteger)eventsCount;
 - (void)attendToEvent:(BOOL)attend withPostRemoteKey:(NSInteger)postRemoteKey withImage:(UIImage *)postImage;
 - (void)deletePostWithPost:(GLPPost *)post;
@@ -29,5 +30,6 @@
 
 -(int)findMostCloseToNowLivePostWithPosts:(NSArray *)posts;
 -(void)postLike:(BOOL)like withPostRemoteKey:(NSInteger)postRemoteKey;
+- (void)clearData;
 
 @end

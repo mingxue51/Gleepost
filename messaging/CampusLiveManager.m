@@ -19,6 +19,10 @@
 @interface CampusLiveManager ()
 
 @property (strong, nonatomic) NSArray *liveEventPosts;
+
+/** Helps to return in O(1) complexity posts' index. <postRemoteKey, index> */
+@property (strong, nonatomic) NSMutableDictionary *liveEventPostDictionary;
+
 @property (strong, nonatomic) GLPLiveSummary *liveSummary;
 @property (strong, nonatomic) dispatch_queue_t queue;
 
@@ -46,6 +50,8 @@ static CampusLiveManager *instance = nil;
     if(self)
     {
         self.queue = dispatch_queue_create("com.gleepost.queue.campuslivemanager", DISPATCH_QUEUE_CONCURRENT);
+        self.liveEventPostDictionary = [[NSMutableDictionary alloc] init];
+        self.liveSummary = [[GLPLiveSummary alloc] init];
     }
     
     return self;
@@ -102,6 +108,24 @@ static CampusLiveManager *instance = nil;
     DDLogDebug(@"CampusLiveManager eventPostAtIndex %@", [self.liveEventPosts objectAtIndex:index]);
     
     return [self.liveEventPosts objectAtIndex:index];
+}
+
+- (NSInteger)indexOfPostWithRemoteKey:(NSInteger)postRemoteKey
+{
+//    NSInteger index = 0;
+//    
+//    for(GLPPost *p in self.liveEventPosts)
+//    {
+//        if(p.remoteKey == postRemoteKey)
+//        {
+//            return index;
+//        }
+//        ++index;
+//    }
+//    
+//    return NSNotFound;
+    
+     return [[self.liveEventPostDictionary objectForKey:@(postRemoteKey)] integerValue];
 }
 
 - (NSInteger)eventsCount
@@ -189,7 +213,7 @@ static CampusLiveManager *instance = nil;
         
         if(success)
         {
-            [self savePostsInLocalDatabaseIfNotExist:posts];
+            [self savePostsInLocalDatabaseAndInDictionary:posts];
             
             callbackBlock(YES, posts);
         }
@@ -243,11 +267,16 @@ static CampusLiveManager *instance = nil;
     
 }
 
-- (void)savePostsInLocalDatabaseIfNotExist:(NSArray *)posts
+- (void)savePostsInLocalDatabaseAndInDictionary:(NSArray *)posts
 {
+    
+    NSInteger index = 0;
+    
     for(GLPPost *post in posts)
     {
         [GLPPostDao saveOrUpdatePost:post];
+        [self.liveEventPostDictionary setObject:@(index) forKey:@(post.remoteKey)];
+        ++index;
     }
 }
 
@@ -398,6 +427,11 @@ static CampusLiveManager *instance = nil;
     NSDate *date = [DateFormatterHelper generateDateAfterDays:-numberOfDays];
     
     return date;
+}
+
+- (void)clearData
+{
+    instance = [[CampusLiveManager alloc] init];
 }
 
 @end

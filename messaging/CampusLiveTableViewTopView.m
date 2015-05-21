@@ -58,12 +58,16 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postsFetched:) name:GLPNOTIFICATION_CAMPUS_LIVE_POSTS_FETCHED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(postDeleted:) name:GLPNOTIFICATION_POST_DELETED object:nil];
+    
+    //For now don't use this approach because we are facing strange issues. SwipeView library is not able to reload cell at index.
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageForPostFetched:) name:GLPNOTIFICATION_CAMPUS_LIVE_IMAGE_LOADED object:nil];
 }
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CAMPUS_LIVE_POSTS_FETCHED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_DELETED object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_CAMPUS_LIVE_IMAGE_LOADED object:nil];
 }
 
 #pragma mark - Client
@@ -98,6 +102,29 @@
 {
     [self.swipeView reloadData];
 }
+
+//- (void)imageForPostFetched:(NSNotification *)notification
+//{
+////    UIImage *img = d[@"image_loaded"];
+//    NSInteger remoteKey = [notification.userInfo[@"remote_key"] integerValue];
+//    
+//    //NSInteger postIndex = [[CampusLiveManager sharedInstance] indexOfPostWithRemoteKey:remoteKey];
+//    
+//    
+//    for(NSInteger index = 0; index < [[CampusLiveManager sharedInstance] eventsCount]; ++index)
+//    {
+//        GLPPost *post = [[CampusLiveManager sharedInstance] eventPostAtIndex:index];
+//        
+//        if(post.remoteKey == remoteKey)
+//        {
+//            DDLogDebug(@"CampusLiveTableViewTopView reload cell %@", post.eventTitle);
+//            [self.swipeView reloadItemAtIndex:index];
+//            break;
+//        }
+//    }
+//    
+//    //[self.swipeView reloadData];
+//}
 
 #pragma mark - SwipeViewDelegate
 

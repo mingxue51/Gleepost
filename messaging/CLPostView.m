@@ -29,6 +29,7 @@
 #import "GLPPostNotificationHelper.h"
 #import "UIColor+GLPAdditions.h"
 #import "VideoView.h"
+#import "GLPPostImageLoader.h"
 
 @interface CLPostView () <GLPLabelDelegate, GLPImageViewDelegate, UIActionSheetDelegate>
 
@@ -143,6 +144,10 @@
     self.likesLabel.text = [NSString stringWithFormat:@"%ld", (long)self.post.likes];
 }
 
+/**
+ We are using the simple approach (SDWebImage default library's methods) and not the GLPCLPostImageLoader 
+ approach because we used to facing UI issues and crashes.
+ */
 - (void)configurePostImage
 {
     NSURL *imageUrl = nil;
@@ -161,7 +166,7 @@
     
     if(imageUrl)
     {
-        [self.postImageView setImageWithURL:imageUrl placeholderImage:nil usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [self.postImageView setImageWithURL:imageUrl placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     }
     else if([self.post isVideoPost])
     {

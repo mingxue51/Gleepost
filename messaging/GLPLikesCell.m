@@ -35,19 +35,13 @@
 
 - (void)setLikedUsers:(NSArray *)users
 {
-
     [self formatAndInitialiseImages];
     [self configureCellStyle];
     self.users = users;
-    DDLogDebug(@"GLPLikesCell users %@", self.users);
-    
     [self configureBubbles];
     [self hideAllUnnecessaryBubbles];
     [self addImagesToImageViews];
     [self configureLastBubble];
-    
-
-
 }
 
 - (void)setLikedUsers:(NSArray *)users withAnimation:(BOOL)animation
@@ -92,10 +86,7 @@
     for(NSUInteger index = 0; index < self.users.count; ++index)
     {
         GLPUser *user = self.users[index];
-        
         [self setImageWithUrl:user.profileImageUrl toImageViewTag:index + 1];
-        DDLogDebug(@"User profile image %@", user.profileImageUrl);
-
     }
 }
 
