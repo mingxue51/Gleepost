@@ -91,12 +91,12 @@
     [self.view addSubview:self.fakeNavigationBar];
     
     [self.navigationController.navigationBar invisible];
-
-    
 //    self.title = @"NEW POST";
     
 //    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
 }
+
+
 
 - (void)configureConstrainsDependingOnScreenSize
 {

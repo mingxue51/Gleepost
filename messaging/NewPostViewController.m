@@ -789,25 +789,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     }
 }
 
-//-(BOOL)isGroupPost
-//{
-//    if([self.delegate isKindOfClass:[GLPTimelineViewController class]])
-//    {
-//        return NO;
-//    }
-//    else if ([self.delegate isKindOfClass:[GroupViewController class]])
-//    {
-//        return YES;
-//    }
-//    else
-//    {
-//        DDLogError(@"ERROR: NewPostViewController needs to be called only from GroupViewController or GLPTimelineViewController.");
-//        
-//        return NO;
-//    }
-//}
-
-
 - (IBAction)addImageOrImage:(id)sender
 {
     [self performSegueWithIdentifier:@"show image selector" sender:self];
@@ -876,28 +857,6 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     [_postUploader uploadImageToQueue:self.imgToUpload];
     
 }
-//
-//#pragma mark - Action Sheet delegate
-//
-//- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-//{
-//    NSString *selectedButtonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
-//    
-//    if([selectedButtonTitle isEqualToString:@"Add an image"])
-//    {
-//        //Add image.
-////        [self.fdTakeController takePhotoOrChooseFromLibrary];
-//
-//    }
-//    else if([selectedButtonTitle isEqualToString:@"Capture a video"])
-//    {
-//        //Remove video preview view if is on the `.
-//        [self removeVideoPreviewView];
-//        
-//        //Capture a video.
-//        [self performSegueWithIdentifier:@"capture video" sender:self];
-//    }
-//}
 
 #pragma mark - Video
 

@@ -55,6 +55,7 @@
 - (void)formatNavigationBar
 {
     DDLogDebug(@"FakeNavigationBarNewPostView : formatNavigationBar");
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
 
 /*

@@ -99,16 +99,6 @@
     self.viewDidAppearFirstOccurrence = NO;
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
-    if(self.navBarTransparentMode)
-    {
-        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    }
-    
-    [super viewDidDisappear:animated];
-}
-
 - (void)intialiseObjects
 {
     self.tdNavigationNewPost = [[TDNavigationNewPost alloc] init];
@@ -127,6 +117,11 @@
 - (void)dealloc
 {    
     [[PendingPostManager sharedInstance] reset];
+    
+    if(self.navBarTransparentMode)
+    {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    }
 }
 
 - (void)configureNavigationBar

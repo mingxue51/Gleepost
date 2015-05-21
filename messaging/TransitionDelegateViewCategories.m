@@ -43,7 +43,6 @@
 
 - (id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
     
-    NSLog(@"interactionControllerForDismissal");
     return nil;
 }
 
