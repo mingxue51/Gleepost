@@ -491,13 +491,13 @@
  */
 - (UIImage *)getPostImage
 {
-    if ([self.post isVideoPost])
+    if([self.post isVideoPost])
     {
         return [self.videoView thumbnailImage];
     }
     else
     {
-        return self.postImageView.image;
+        return (self.postImageView.image) ? self.postImageView.image : [UIImage imageNamed:nil];
     }
 }
 

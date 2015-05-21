@@ -255,10 +255,11 @@ static CampusLiveManager *instance = nil;
         }
         
     }];
+
     
     if(attend)
     {
-        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post" : post, @"attend" : @(attend), @"post_image" : postImage}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post" : post, @"attend" : @(attend), @"post_image" : (postImage) ? postImage : [NSNull null]}];
     }
     else
     {

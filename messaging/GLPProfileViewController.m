@@ -1326,7 +1326,12 @@
 {
     _selectedPost = notification.userInfo[@"post"];
     UIImage *image = notification.userInfo[@"post_image"];
-
+    
+    if([image isEqual:[NSNull null]])
+    {
+        image = nil;
+    }
+    
     //Show the pop up view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
