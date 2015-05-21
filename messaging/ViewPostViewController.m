@@ -40,6 +40,7 @@
 #import "ViewPostTitleCell.h"
 #import "GLPLikesCell.h"
 #import "GLPViewImageHelper.h"
+#import "CampusLiveManager.h"
 
 @interface ViewPostViewController () <GLPAttendingPopUpViewControllerDelegate, GLPLikesCellDelegate>
 
@@ -1106,26 +1107,21 @@ static bool firstTime = YES;
     {
         [_groupController removePostWithPost:post];
     }
+    else if(self.isFromCampusLive)
+    {
+        //Inform Campus Wall that the campus live status changed.
+        //i.e. refresh campus live.
+        [[CampusLiveManager sharedInstance] deletePostWithPost:post];
+    }
     else
     {
         [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
     }
     
-    if(self.isFromCampusLive)
-    {
-        [self dismissViewControllerAnimated:YES completion:^{
-            
-            //Inform Campus Wall that the campus live status changed.
-            //i.e. refresh campus live.
-            [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:YES];
-            
-        }];
-    }
-    else
-    {
-        // Pop-up view controller.
-        [self.navigationController popViewControllerAnimated:YES];
-    }
+
+    
+    // Pop-up view controller.
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - GLPLikesCellDelegate

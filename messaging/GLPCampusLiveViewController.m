@@ -725,7 +725,7 @@
          in order to fetch it from the server.
          */
         vc.commentJustCreated = nil;
-        vc.isFromCampusLive = NO;
+        vc.isFromCampusLive = YES;
         vc.post = self.selectedPost;
         vc.showComment = self.focusOnCommentInViewPostVC;
     }

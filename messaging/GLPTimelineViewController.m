@@ -1592,9 +1592,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    DDLogDebug(@"view did scroll %f", scrollView.contentOffset.y);
-    
+{    
     [self makeVisibleOrInvisibleActivityIndicatorWithOffset:scrollView.contentOffset.y];
     
     [_flurryVisibleProcessor resetVisibleCells];

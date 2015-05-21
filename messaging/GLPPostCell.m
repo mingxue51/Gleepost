@@ -279,6 +279,12 @@ const float ONE_LINE_LIMIT = 18.0;
     }
     else
     {
+        if([self isViewPost])
+        {
+            [_delegate removePostWithPost:_post];
+            return;
+        }
+        
         [self deletePostFromServer];
     }
 }
