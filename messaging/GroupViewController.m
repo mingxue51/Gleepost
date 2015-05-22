@@ -750,6 +750,7 @@ const float TOP_OFF_SET = -64.0;
     if(indexPath.row == 0)
     {
         groupDescrViewCell = [tableView dequeueReusableCellWithIdentifier:CellDescriptionGroupIdentifier forIndexPath:indexPath];
+        
         [groupDescrViewCell setDelegate:self];
         groupDescrViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
         [groupDescrViewCell setGroupData:_group];

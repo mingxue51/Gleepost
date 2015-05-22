@@ -724,7 +724,7 @@
          Forward data of the post the to the view. Or in future just forward the post id
          in order to fetch it from the server.
          */
-        vc.commentJustCreated = nil;
+        vc.commentJustCreated = NO;
         vc.isFromCampusLive = YES;
         vc.post = self.selectedPost;
         vc.showComment = self.focusOnCommentInViewPostVC;

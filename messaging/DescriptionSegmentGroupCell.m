@@ -35,7 +35,6 @@
 @implementation DescriptionSegmentGroupCell
 
 const float GROUP_DESCR_VIEW_HEIGHT = 84;
-const float DESCR_LBL_WIDTH = 290;
 
 - (void)awakeFromNib
 {
@@ -51,7 +50,7 @@ const float DESCR_LBL_WIDTH = 290;
 {
     [_descriptionLbl setText:group.groupDescription];
     
-    [_labelHeight setConstant:[UILabel getContentLabelSizeForContent:group.groupDescription withFont:[UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:15.0] andWidht:DESCR_LBL_WIDTH]];
+    [_labelHeight setConstant:[DescriptionSegmentGroupCell labelHeightWithDescription:group.groupDescription]];
         
     if([group.groupDescription isEqualToString:@""] || !group.groupDescription)
     {
@@ -60,6 +59,18 @@ const float DESCR_LBL_WIDTH = 290;
     
     GLPConversation *conversation = [[GLPLiveGroupConversationsManager sharedInstance] findByRemoteKey:group.conversationRemoteKey];
     [self setNumberOfNotifications:conversation.unreadMessagesCount];
+    
+    
+    UIView *cellScrollView = self.superview;
+    [cellScrollView.layer setMasksToBounds:NO];
+    
+    for(UIView *v in self.subviews)
+    {
+        UIView *superV = v.superview;
+        
+        [superV.layer setMasksToBounds:NO];
+    }
+    
     
 //    [_descriptionLbl setHeightDependingOnText:group.groupDescription withFont:_font];
     
@@ -147,8 +158,7 @@ const float DESCR_LBL_WIDTH = 290;
 
 + (float)getCellHeightWithGroup:(GLPGroup *)group
 {
-    float lblHeight = [UILabel getContentLabelSizeForContent:group.groupDescription withFont:[UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:15.0] andWidht:DESCR_LBL_WIDTH];
-    
+    CGFloat lblHeight = [self labelHeightWithDescription:group.groupDescription];
     
     if(lblHeight == 1.0)
     {
@@ -157,6 +167,16 @@ const float DESCR_LBL_WIDTH = 290;
     
     return lblHeight + GROUP_DESCR_VIEW_HEIGHT;
     
+}
+
++ (CGFloat)labelWidth
+{
+    return [GLPiOSSupportHelper screenWidth] - (15 * 2);
+}
+
++ (CGFloat)labelHeightWithDescription:(NSString *)description
+{
+    return [UILabel getContentLabelSizeForContent:description withFont:[UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:15.0] andWidht:[self labelWidth]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

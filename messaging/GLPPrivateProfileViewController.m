@@ -245,7 +245,6 @@
 {
     if(self.transparentNavBar)
     {
-        [self.navigationController.navigationBar invisible];
         [self.navigationController.navigationBar whiteTranslucentBackgroundFormatWithShadow:YES andView:self.view];
     }
     else

@@ -2320,6 +2320,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 {
     [self removeGoingButtonNotification];
     [[GLPVideoLoaderManager sharedInstance] enableTimelineJustFetched];
+    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPCampusLiveViewController *campusLiveVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPCampusLiveViewController"];
     campusLiveVC.delegate = self;

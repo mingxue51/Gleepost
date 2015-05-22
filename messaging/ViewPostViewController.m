@@ -322,34 +322,7 @@ static BOOL likePushed;
     {
         [self.navigationController.navigationBar setButton:kRight withImageName:@"pad_icon" withButtonSize:CGSizeMake(25.0, 25.0) withSelector:@selector(showAttendees) andTarget:self];
     }
-    
-    if(self.isFromCampusLive)
-    {
-        [self addCustomBackButton];
-    }
 }
-
--(void)addCustomBackButton
-{
-    UIImage *img = [UIImage imageNamed:@"cancel"];
-    
-    UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
-    [btn addTarget:self action:@selector(dismiss:) forControlEvents:UIControlEventTouchUpInside];
-    [btn setBackgroundImage:img forState:UIControlStateNormal];
-    [btn setFrame:CGRectMake(0, 0, 19, 21)];
-    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
-        
-    //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss:)];
-}
-
--(void)dismiss:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
-}
-
 
 /**
  If post comes from notifications post is loaded in this method.

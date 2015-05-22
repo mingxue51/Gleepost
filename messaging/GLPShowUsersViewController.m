@@ -35,7 +35,7 @@
     [super viewDidLoad];
     [self initialiseObjects];
     [self configureView];
-    [self configureNavigationBar];
+//    [self configureNavigationBar];
     [self configureTableView];
     [self loadAttendeesIfNeeded];
     [self showUsers];
@@ -44,6 +44,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self configureNavigationBar];
     
 }
 
@@ -68,7 +69,7 @@
     else
     {
         [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
-        self.title = _selectedTitle;
+        self.navigationItem.title = self.selectedTitle;
     }
 
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];

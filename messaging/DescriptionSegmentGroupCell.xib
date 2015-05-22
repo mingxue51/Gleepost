@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
@@ -22,7 +22,7 @@
                             <constraint firstAttribute="width" secondItem="2jr-qC-Y2d" secondAttribute="height" multiplier="73:10" id="wyA-Qw-U45"/>
                         </constraints>
                     </view>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="2eP-nG-eU0">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="2eP-nG-eU0">
                         <rect key="frame" x="15" y="10" width="290" height="18"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="18" id="oFg-AP-25j"/>
@@ -59,9 +59,9 @@
                     <constraint firstAttribute="trailing" secondItem="Osz-eM-p8Y" secondAttribute="trailing" constant="5" id="Ig2-tr-bAc"/>
                     <constraint firstItem="2jr-qC-Y2d" firstAttribute="top" secondItem="Xpk-OO-Rws" secondAttribute="bottom" constant="-13" id="QNw-D4-Iie"/>
                     <constraint firstItem="2eP-nG-eU0" firstAttribute="top" secondItem="gXy-uL-jgy" secondAttribute="top" constant="10" id="RHz-W7-RQm"/>
+                    <constraint firstItem="2jr-qC-Y2d" firstAttribute="top" secondItem="2eP-nG-eU0" secondAttribute="bottom" constant="12" id="ZKN-pm-MxT"/>
                     <constraint firstAttribute="trailing" secondItem="Xpk-OO-Rws" secondAttribute="trailing" constant="5" id="h0f-du-E3b"/>
                     <constraint firstAttribute="trailing" secondItem="2eP-nG-eU0" secondAttribute="trailing" constant="15" id="i1d-nO-krO"/>
-                    <constraint firstAttribute="bottom" secondItem="2jr-qC-Y2d" secondAttribute="bottom" constant="14" id="uMv-uq-WDN"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
