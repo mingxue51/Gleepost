@@ -33,7 +33,7 @@
  @param percentage the percentage of the vote.
  @param enable if YES then show all the data (percentage and bar).
  */
-- (void)setTitle:(NSString *)title withPercentage:(CGFloat)percentage withIndexRow:(NSInteger)indexRow enable:(BOOL)enable
+- (void)setTitle:(NSString *)title withPercentage:(CGFloat)percentage withIndexRow:(NSInteger)indexRow enable:(BOOL)enable animateBars:(BOOL)animateBars
 {
     self.titleLabel.text = title;
     self.titleLabel.tag = indexRow;
@@ -41,8 +41,7 @@
     [self enabledMode:enable];
     [self configureProgressBarWithIndexRow:indexRow];
     [self configureGestures];
-    [self.progressBar setProgress:percentage animated:NO];
-    
+    [self.progressBar setProgress:percentage animated:animateBars];
 }
 
 - (void)configureGestures
