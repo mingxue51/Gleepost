@@ -79,7 +79,7 @@
 
 @property (assign, nonatomic) BOOL postUploaded;
 
-@property (strong, nonatomic) NSMutableArray *notifications;
+//@property (strong, nonatomic) NSMutableArray *notifications;
 
 @property (assign, nonatomic) BOOL tabButtonEnabled;
 
@@ -407,7 +407,7 @@
     _transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
 
     // internal notifications
-    _notifications = [NSMutableArray array];
+//    _notifications = [NSMutableArray array];
     _unreadNotificationsCount = 0;
     
     _postUploaded = NO;
@@ -728,10 +728,10 @@
 
     [GLPNotificationManager loadNotificationsWithLocalCallback:^(BOOL success, NSArray *notifications) {
         
-        _notifications = notifications.mutableCopy;
+//        _notifications = notifications.mutableCopy;
         
         [_notificationsOrganiser resetData];
-        [_notificationsOrganiser organiseNotifications:_notifications];
+        [_notificationsOrganiser organiseNotifications:notifications];
         
         if(_selectedTab == kButtonRight) {
             [self notificationsTabClick];
@@ -747,10 +747,10 @@
         
     } andRemoteCallback:^(BOOL success, NSArray *remoteNotifications) {
         
-        _notifications = remoteNotifications.mutableCopy;
+//        _notifications = remoteNotifications.mutableCopy;
         
         [_notificationsOrganiser resetData];
-        [_notificationsOrganiser organiseNotifications:_notifications];
+        [_notificationsOrganiser organiseNotifications:remoteNotifications];
         
         if(_selectedTab == kButtonRight) {
             //[self notificationsTabClick];
@@ -763,9 +763,11 @@
                 [self.tableView reloadData];
             }
         }
+        
+        DDLogInfo(@"GLPProfileViewController - Unread: %ld / Total: %lu", (long)_unreadNotificationsCount, (unsigned long)remoteNotifications.count);
+
     }];
     
-    DDLogInfo(@"GLPProfileViewController - Unread: %d / Total: %d", _unreadNotificationsCount, _notifications.count);
 }
 
 - (void)refreshNotifications
@@ -778,14 +780,14 @@
         
     } andRemoteCallback:^(BOOL success, NSArray *remoteNotifications) {
         
-        _notifications = remoteNotifications.mutableCopy;
+//        _notifications = remoteNotifications.mutableCopy;
         
         [_notificationsOrganiser resetData];
-        [_notificationsOrganiser organiseNotifications:_notifications];
+        [_notificationsOrganiser organiseNotifications:remoteNotifications];
         
         [self.tableView reloadData];
         
-        DDLogInfo(@"Notifications after remote refresh: %ld", (unsigned long)_notifications.count);
+        DDLogInfo(@"Notifications after remote refresh: %ld", (unsigned long)remoteNotifications.count);
     }];
 }
 
@@ -803,14 +805,14 @@
     
     NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:notifications.count];
     int i = 0;
-    for(id not in notifications) {
-        [_notifications insertObject:not atIndex:i];
+    for(GLPNotification *not in notifications) {
+//        [_notifications insertObject:not atIndex:i];
         [indexPaths addObject:[NSIndexPath indexPathForRow:i + 2 inSection:0]];
         ++i;
     }
     
     [_notificationsOrganiser resetData];
-    [_notificationsOrganiser organiseNotifications:_notifications];
+    [_notificationsOrganiser organiseNotifications:notifications];
     
     [self.tableView reloadData];
     
@@ -971,7 +973,8 @@
     {
         NSInteger extraRow = 0;
         
-        if(_notifications.count == 0)
+//        if(_notifications.count == 0)
+        if([self.notificationsOrganiser notificationsEmpty])
         {
             [_emptyNotificationsMessage showEmptyMessageView];
         }

@@ -102,7 +102,7 @@ const CGFloat PROFILE_TOP_VIEW_HEIGHT = 238;
 
 #pragma mark - Modifiers
 
--(void)showNotificationBubbleWithNotificationCount:(int)notificationCount
+-(void)showNotificationBubbleWithNotificationCount:(NSInteger)notificationCount
 {
     [_notificationImageView setHidden:NO];
     [_notificationLabel setHidden:NO];

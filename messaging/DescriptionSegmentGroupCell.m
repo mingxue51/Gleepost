@@ -59,23 +59,6 @@ const float GROUP_DESCR_VIEW_HEIGHT = 84;
     
     GLPConversation *conversation = [[GLPLiveGroupConversationsManager sharedInstance] findByRemoteKey:group.conversationRemoteKey];
     [self setNumberOfNotifications:conversation.unreadMessagesCount];
-    
-    
-    UIView *cellScrollView = self.superview;
-    [cellScrollView.layer setMasksToBounds:NO];
-    
-    for(UIView *v in self.subviews)
-    {
-        UIView *superV = v.superview;
-        
-        [superV.layer setMasksToBounds:NO];
-    }
-    
-    
-//    [_descriptionLbl setHeightDependingOnText:group.groupDescription withFont:_font];
-    
-//    [ShapeFormatterHelper setBorderToView:_descriptionLbl withColour:[UIColor redColor] andWidth:1.0f];
-    
 }
 
 #pragma mark - GLPSegmentViewDelegate

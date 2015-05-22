@@ -944,9 +944,9 @@ static WebClient *instance = nil;
 
 #pragma mark - Groups
 
--(void)getGroupDescriptionWithId:(int)groupId withCallbackBlock:(void (^) (BOOL success, GLPGroup *group, NSString *errorMessage))callbackBlock
+-(void)getGroupDescriptionWithId:(NSInteger)groupId withCallbackBlock:(void (^) (BOOL success, GLPGroup *group, NSString *errorMessage))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"networks/%d",groupId];
+    NSString *path = [NSString stringWithFormat:@"networks/%ld",(long)groupId];
     
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

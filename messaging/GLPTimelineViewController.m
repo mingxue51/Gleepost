@@ -47,7 +47,6 @@
 #import "GLPiOSSupportHelper.h"
 #import "TableViewHelper.h"
 #import "GLPFlurryVisibleCellProcessor.h"
-#import "EmptyMessage.h"
 #import "GLPVideoLoaderManager.h"
 #import "GLPWalkthroughViewController.h"
 #import "UINavigationBar+Format.h"
@@ -141,8 +140,6 @@
 @property (strong, nonatomic) GLPFlurryVisibleCellProcessor *flurryVisibleProcessor;
 @property (strong, nonatomic) GLPTrackViewsCountProcessor *trackViewsCountProcessor;
 @property (strong, nonatomic) GLPCampusWallAsyncProcessor *campusWallAsyncProcessor;
-
-@property (strong ,nonatomic ) EmptyMessage *emptyGroupPostsMessage;
 
 //@property (strong, nonatomic) EmptyMessage *emptyCategoryPostsMessage;
 
@@ -332,20 +329,9 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     
     self.postIndexToReload = -1;
     
-    //Initialize temporary top image view.
-//    _topImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, -20.0, 320.0, 20.0)];
-//    [_topImageView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
-//    
-//    [self.view addSubview:_topImageView];
-    
     _flurryVisibleProcessor = [[GLPFlurryVisibleCellProcessor alloc] init];
     _trackViewsCountProcessor = [[GLPTrackViewsCountProcessor alloc] init];
     _campusWallAsyncProcessor = [[GLPCampusWallAsyncProcessor alloc] init];
-    _emptyGroupPostsMessage = [[EmptyMessage alloc] initWithText:@"No more group posts." withPosition:EmptyMessagePositionFurtherBottom andTableView:self.tableView];
-    
-//    _emptyCategoryPostsMessage = [[EmptyMessage alloc] initWithText:@"No posts yet" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
-//    
-//    [_emptyCategoryPostsMessage hideEmptyMessageView];
     
     _walkthroughFinished = NO;
     
@@ -855,8 +841,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     {
         index+=1;
     }
-    
-    DDLogDebug(@"refreshCellViewWithIndex %lu", (unsigned long)index);
     
     if([self cellNeedsReloadWithIndex:index])
     {
@@ -1707,8 +1691,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    DDLogDebug(@"scrollViewDidEndDecelerating1 did scroll: %f", scrollView.contentOffset.y);
-    
     if(self.posts.count == 0)
     {
         return;
@@ -1716,8 +1698,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 
     if(self.isLoading )
     {
-        DDLogDebug(@"scrollViewDidEndDecelerating1 is loading abort.");
-        
         return;
     }
     
@@ -1731,8 +1711,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     
     [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
     
-    DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
-    
     [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
     
     _tableViewFirstTimeScrolled = YES;
@@ -1740,15 +1718,10 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-//    DDLogDebug(@"scrollViewDidEndDragging2 did scroll: %f", scrollView.contentOffset.y);
-    
     if(decelerate == 0)
     {
-        //|| scrollView.contentOffset.y < 0
         if(self.isLoading )
         {
-            DDLogDebug(@"scrollViewDidEndDragging2 is loading abort.");
-            
             return;
         }
         
@@ -1865,10 +1838,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    [_emptyGroupPostsMessage hideEmptyMessageView];
-    
-    DDLogDebug(@"numberOfRowsInSection Posts count %ld", (unsigned long)self.posts.count);
-    
     if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
     {
         return self.posts.count + 2;
@@ -2398,7 +2367,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
             
             [*postsYValues addObject:@(rectInTableView.size.height/2.0 + rectInSuperview.origin.y)];
             
-            DDLogDebug(@"-> Post: %@, Y: %f %f result %f", post, rectInSuperview.origin.y, rectInTableView.size.height, rectInTableView.size.height/2.0 + rectInSuperview.origin.y);
+//            DDLogDebug(@"-> Post: %@, Y: %f %f result %f", post, rectInSuperview.origin.y, rectInTableView.size.height, rectInTableView.size.height/2.0 + rectInSuperview.origin.y);
         }
     }
     
@@ -2554,8 +2523,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 
 - (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
 {
-    DDLogDebug(@"navigateToPostForCommentWithIndexPath Post index path %ld : %ld", (long)postIndexPath.row, (long)postIndexPath.section);
-
     _showComment = YES;
     self.selectedPost = [self.posts objectAtIndex:postIndexPath.row];
     self.selectedIndex = postIndexPath.row;
@@ -2744,13 +2711,8 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     
     if(filteredArray.count > 0)
     {
-        DDLogDebug(@"Post visible after reloading: %@", filteredArray);
-        
         return YES;
     }
-    
-    DDLogDebug(@"Post not visible after reloading: %@", filteredArray);
-    
     
     return NO;
 }

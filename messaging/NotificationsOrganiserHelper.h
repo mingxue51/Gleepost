@@ -13,6 +13,7 @@
 @interface NotificationsOrganiserHelper : NSObject
 
 - (void)organiseNotifications:(NSArray *)notifications;
+- (BOOL)notificationsEmpty;
 - (NSInteger)numberOfSections;
 - (NSString *)headerInSection:(NSInteger)sectionIndex;
 - (NSArray *)notificationsAtSectionIndex:(NSInteger)sectionIndex;
