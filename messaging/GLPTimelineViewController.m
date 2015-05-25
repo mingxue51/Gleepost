@@ -37,8 +37,6 @@
 #import "GLPProfileLoader.h"
 #import "GLPNewCategoriesViewController.h"
 #import "TransitionDelegateViewCategories.h"
-#import "CampusWallHeader.h"
-#import "CampusWallHeaderSimpleView.h"
 #import "UIImage+StackBlur.h"
 #import "ConversationManager.h"
 #import "AnimationDayController.h"
@@ -124,9 +122,7 @@
 @property (assign, nonatomic) BOOL hidden;
 
 //Header.
-@property (weak, nonatomic) CampusWallHeaderSimpleView *campusWallHeader;
 @property (strong, nonatomic)  UploadingProgressView *pView;
-//@property (strong, nonatomic) FakeNavigationBar *reNavBar;
 
 //Groups.
 @property (strong, nonatomic) CampusWallGroupsPostsManager *groupsPostsManager;
@@ -1051,12 +1047,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     
     [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts, NSArray *deletedPosts) {
         [self stopLoading];
-        
-        if(!saveScrollingState)
-        {
-            //Load campus live events posts.
-            [_campusWallHeader reloadData];
-        }
         
         if(deletedPosts.count > 0)
         {
@@ -2641,7 +2631,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 //    [[SessionManager sharedInstance] setCurrentCategory:nil];
     
     [self.tableView reloadData];
-    [self updateTitleView];
     [self loadInitialGroupsPosts];
 }
 
@@ -2649,9 +2638,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 {
     //Initialise categories to all.
     [[CategoryManager sharedInstance] setSelectedCategory:nil];
-    
-    [self updateTitleView];
-
     [self loadInitialPosts];
 }
 
@@ -2694,11 +2680,6 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vpvc];
     navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navigationController animated:YES completion:nil];
-}
-
--(void)updateTitleView
-{
-    [self.campusWallHeader groupFeedDisabled];
 }
 
 #pragma mark - Helpers

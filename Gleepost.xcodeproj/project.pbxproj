@@ -86,10 +86,7 @@
 		58204E781862061600702F4F /* GLPPostOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58204E771862061600702F4F /* GLPPostOperation.m */; };
 		58204E7B186207AF00702F4F /* GLPQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58204E7A186207AF00702F4F /* GLPQueueManager.m */; };
 		582064901AC0751600A596E4 /* UIImageView+GLPFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 5820648F1AC0751600A596E4 /* UIImageView+GLPFormat.m */; };
-		5821278F1891627D00BF36E5 /* VSScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5821278C1891627D00BF36E5 /* VSScrollView.m */; };
-		582127901891627D00BF36E5 /* VSScrollViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5821278E1891627D00BF36E5 /* VSScrollViewCell.m */; };
 		582127921891657100BF36E5 /* CampusWallHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 582127911891657100BF36E5 /* CampusWallHeaderCell.xib */; };
-		58212795189165B200BF36E5 /* CampusWallHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 58212794189165B200BF36E5 /* CampusWallHeaderCell.m */; };
 		582143D017FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 582143CB17FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m */; };
 		582143D117FC59F50032ECEB /* TPKeyboardAvoidingTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 582143CD17FC59F50032ECEB /* TPKeyboardAvoidingTableView.m */; };
 		582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 582143CF17FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m */; };
@@ -108,8 +105,6 @@
 		5824F4591AC314510074A3EB /* GLPIntroAnimationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5824F4581AC314510074A3EB /* GLPIntroAnimationHelper.m */; };
 		5825C30F1AF0F194000CC73B /* PollFakeNavigationBarNewPostView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5825C30E1AF0F194000CC73B /* PollFakeNavigationBarNewPostView.m */; };
 		5825C3111AF0F50A000CC73B /* PollFakeNavigationBarNewPostView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5825C3101AF0F50A000CC73B /* PollFakeNavigationBarNewPostView.xib */; };
-		58272F7D1896804300CD7522 /* FakeNavigationBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58272F7C1896804300CD7522 /* FakeNavigationBar.xib */; };
-		58272F801896807900CD7522 /* FakeNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 58272F7F1896807900CD7522 /* FakeNavigationBar.m */; };
 		58272F831896824500CD7522 /* fake_nav_background.png in Resources */ = {isa = PBXBuildFile; fileRef = 58272F821896824500CD7522 /* fake_nav_background.png */; };
 		58273F1A1A26895C00425605 /* GLPPendingPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58273F191A26895C00425605 /* GLPPendingPostsViewController.m */; };
 		58273F1E1A26977D00425605 /* GLPPostsOrganiserHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58273F1D1A26977D00425605 /* GLPPostsOrganiserHelper.m */; };
@@ -815,9 +810,6 @@
 		58FD706B189001D70024E8A1 /* GLPCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58FD706A189001D70024E8A1 /* GLPCategoryCell.xib */; };
 		58FD706F189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD706E189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m */; };
 		58FD7072189009190024E8A1 /* TransitionDelegateViewCategories.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7071189009190024E8A1 /* TransitionDelegateViewCategories.m */; };
-		58FD7074189040920024E8A1 /* CampusWallHeaderScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58FD7073189040920024E8A1 /* CampusWallHeaderScrollView.xib */; };
-		58FD7077189041560024E8A1 /* CampusWallHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7076189041560024E8A1 /* CampusWallHeader.m */; };
-		58FD707A189042A20024E8A1 /* CampusWallHeaderSimpleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FD7079189042A20024E8A1 /* CampusWallHeaderSimpleView.m */; };
 		80112B97180F03B9006A35AA /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B94180F03B9006A35AA /* HPGrowingTextView.m */; };
 		80112B98180F03B9006A35AA /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B96180F03B9006A35AA /* HPTextViewInternal.m */; };
 		80112B9B180F2494006A35AA /* NSDate+UTC.m in Sources */ = {isa = PBXBuildFile; fileRef = 80112B9A180F2494006A35AA /* NSDate+UTC.m */; };
@@ -1098,13 +1090,7 @@
 		58204E7A186207AF00702F4F /* GLPQueueManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPQueueManager.m; sourceTree = "<group>"; };
 		5820648E1AC0751600A596E4 /* UIImageView+GLPFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+GLPFormat.h"; sourceTree = "<group>"; };
 		5820648F1AC0751600A596E4 /* UIImageView+GLPFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+GLPFormat.m"; sourceTree = "<group>"; };
-		5821278B1891627D00BF36E5 /* VSScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSScrollView.h; sourceTree = "<group>"; };
-		5821278C1891627D00BF36E5 /* VSScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSScrollView.m; sourceTree = "<group>"; };
-		5821278D1891627D00BF36E5 /* VSScrollViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSScrollViewCell.h; sourceTree = "<group>"; };
-		5821278E1891627D00BF36E5 /* VSScrollViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VSScrollViewCell.m; sourceTree = "<group>"; };
 		582127911891657100BF36E5 /* CampusWallHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CampusWallHeaderCell.xib; sourceTree = "<group>"; };
-		58212793189165B200BF36E5 /* CampusWallHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusWallHeaderCell.h; sourceTree = "<group>"; };
-		58212794189165B200BF36E5 /* CampusWallHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusWallHeaderCell.m; sourceTree = "<group>"; };
 		582143CA17FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingCollectionView.h; sourceTree = "<group>"; };
 		582143CB17FC59F50032ECEB /* TPKeyboardAvoidingCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPKeyboardAvoidingCollectionView.m; sourceTree = "<group>"; };
 		582143CC17FC59F50032ECEB /* TPKeyboardAvoidingTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPKeyboardAvoidingTableView.h; sourceTree = "<group>"; };
@@ -1136,9 +1122,6 @@
 		5825C30D1AF0F194000CC73B /* PollFakeNavigationBarNewPostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollFakeNavigationBarNewPostView.h; sourceTree = "<group>"; };
 		5825C30E1AF0F194000CC73B /* PollFakeNavigationBarNewPostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollFakeNavigationBarNewPostView.m; sourceTree = "<group>"; };
 		5825C3101AF0F50A000CC73B /* PollFakeNavigationBarNewPostView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PollFakeNavigationBarNewPostView.xib; sourceTree = "<group>"; };
-		58272F7C1896804300CD7522 /* FakeNavigationBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FakeNavigationBar.xib; sourceTree = "<group>"; };
-		58272F7E1896807900CD7522 /* FakeNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FakeNavigationBar.h; sourceTree = "<group>"; };
-		58272F7F1896807900CD7522 /* FakeNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FakeNavigationBar.m; sourceTree = "<group>"; };
 		58272F821896824500CD7522 /* fake_nav_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fake_nav_background.png; sourceTree = "<group>"; };
 		58273F181A26895C00425605 /* GLPPendingPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPendingPostsViewController.h; sourceTree = "<group>"; };
 		58273F191A26895C00425605 /* GLPPendingPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPendingPostsViewController.m; sourceTree = "<group>"; };
@@ -2145,11 +2128,6 @@
 		58FD706E189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnimatedTransitioningViewCategories.m; sourceTree = "<group>"; };
 		58FD7070189009190024E8A1 /* TransitionDelegateViewCategories.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionDelegateViewCategories.h; sourceTree = "<group>"; };
 		58FD7071189009190024E8A1 /* TransitionDelegateViewCategories.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransitionDelegateViewCategories.m; sourceTree = "<group>"; };
-		58FD7073189040920024E8A1 /* CampusWallHeaderScrollView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CampusWallHeaderScrollView.xib; sourceTree = "<group>"; };
-		58FD7075189041560024E8A1 /* CampusWallHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusWallHeader.h; sourceTree = "<group>"; };
-		58FD7076189041560024E8A1 /* CampusWallHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusWallHeader.m; sourceTree = "<group>"; };
-		58FD7078189042A20024E8A1 /* CampusWallHeaderSimpleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusWallHeaderSimpleView.h; sourceTree = "<group>"; };
-		58FD7079189042A20024E8A1 /* CampusWallHeaderSimpleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusWallHeaderSimpleView.m; sourceTree = "<group>"; };
 		64FB1B8562848E93945E5C37 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		80112B93180F03B9006A35AA /* HPGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HPGrowingTextView.h; sourceTree = "<group>"; };
 		80112B94180F03B9006A35AA /* HPGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HPGrowingTextView.m; sourceTree = "<group>"; };
@@ -2586,17 +2564,6 @@
 				585020411AD5D12200195520 /* GLPFinalNewEventAnimationHelper.m */,
 			);
 			name = Animations;
-			sourceTree = "<group>";
-		};
-		5821278A189161C800BF36E5 /* VSScroller */ = {
-			isa = PBXGroup;
-			children = (
-				5821278B1891627D00BF36E5 /* VSScrollView.h */,
-				5821278C1891627D00BF36E5 /* VSScrollView.m */,
-				5821278D1891627D00BF36E5 /* VSScrollViewCell.h */,
-				5821278E1891627D00BF36E5 /* VSScrollViewCell.m */,
-			);
-			name = VSScroller;
 			sourceTree = "<group>";
 		};
 		582128331891A7E200BF36E5 /* Categories */ = {
@@ -4960,7 +4927,6 @@
 				5867FF5618B64D180080AD9D /* Copy Label */,
 				580FF15018AA6D810026B65B /* Time formatter */,
 				5832C4C618998554004FC4F6 /* Blur */,
-				5821278A189161C800BF36E5 /* VSScroller */,
 				806E3D891832B1A40063AACE /* HexColors */,
 				806E3D591832B1960063AACE /* TSMessages */,
 			);
@@ -5156,12 +5122,6 @@
 				803B6084181FFE8A00A178EB /* GLPLoadingCell.m */,
 				58FD7067189001AA0024E8A1 /* GLPCategoryCell.h */,
 				58FD7068189001AA0024E8A1 /* GLPCategoryCell.m */,
-				58FD7075189041560024E8A1 /* CampusWallHeader.h */,
-				58FD7076189041560024E8A1 /* CampusWallHeader.m */,
-				58FD7078189042A20024E8A1 /* CampusWallHeaderSimpleView.h */,
-				58FD7079189042A20024E8A1 /* CampusWallHeaderSimpleView.m */,
-				58212793189165B200BF36E5 /* CampusWallHeaderCell.h */,
-				58212794189165B200BF36E5 /* CampusWallHeaderCell.m */,
 				C0090C1E18A8BC2800153878 /* GLPLoadMoreCell.h */,
 				C0090C1F18A8BC2800153878 /* GLPLoadMoreCell.m */,
 				586F9C4E19881A2B0093A946 /* DescriptionSegmentGroupCell.h */,
@@ -5428,8 +5388,6 @@
 				80B2A4341833C9DF002AB1F0 /* GLPNewElementsIndicatorView.m */,
 				80DC9AF0184616F000A8E48B /* GLPConversationPictureImageView.h */,
 				80DC9AF1184616F000A8E48B /* GLPConversationPictureImageView.m */,
-				58272F7E1896807900CD7522 /* FakeNavigationBar.h */,
-				58272F7F1896807900CD7522 /* FakeNavigationBar.m */,
 				58774D3F196568350034A1C6 /* GLPSearchBar.h */,
 				58774D40196568350034A1C6 /* GLPSearchBar.m */,
 				58350A6C198AF9C2000BB1CA /* GLPNetworkErrorView.h */,
@@ -5549,7 +5507,6 @@
 				58F294FB19353C0700A638BA /* New post */,
 				5871E43A192621D6009B5A74 /* Post */,
 				58428E2A18A2668500B82E4B /* Register */,
-				58FD7073189040920024E8A1 /* CampusWallHeaderScrollView.xib */,
 				584CF66E1823017B00EFABB8 /* GLPNotificationCell.xib */,
 				58D0E2611850BB80005879F4 /* GLPNotCell.xib */,
 				80B2A42C1833C86E002AB1F0 /* GLPNewElementsIndicatorView.xib */,
@@ -5557,7 +5514,6 @@
 				58FD706A189001D70024E8A1 /* GLPCategoryCell.xib */,
 				582127911891657100BF36E5 /* CampusWallHeaderCell.xib */,
 				58AD86BB1892D6E500016C6D /* GLPIntroducedProfile.xib */,
-				58272F7C1896804300CD7522 /* FakeNavigationBar.xib */,
 				58711A6A18C6586D00798F13 /* MemberCell.xib */,
 				58D19D9318C7668000CB13CC /* CreateGroupCell.xib */,
 				58A75FBF19523BC80060060D /* MessageCell.xib */,
@@ -6098,7 +6054,6 @@
 				5879AC921964697E0053262A /* add_button_background.png in Resources */,
 				58C1698D19C26ED000F4C203 /* icon_comment.png in Resources */,
 				80A21D4518AD136200559BF6 /* internal_notification_cell_commented@2x.png in Resources */,
-				58272F7D1896804300CD7522 /* FakeNavigationBar.xib in Resources */,
 				58D0E2621850BB80005879F4 /* GLPNotCell.xib in Resources */,
 				5897351E193FA0F10048BA85 /* login_separator_line.png in Resources */,
 				585106DB199D87DA000F06BB /* kind_of_event_speaker.png in Resources */,
@@ -6281,7 +6236,6 @@
 				588CDF7A19764FB100373EE3 /* right_arrow.png in Resources */,
 				5866F16918844F05007484CF /* blades_night_copy.png in Resources */,
 				589EAD2E18A4472D005B2F4C /* pick_pic_old.png in Resources */,
-				58FD7074189040920024E8A1 /* CampusWallHeaderScrollView.xib in Resources */,
 				58AD86A818929F2200016C6D /* mutual_button.png in Resources */,
 				586866DC19B695AE00803512 /* going_unpushed_back_btn_old.png in Resources */,
 				588D858D1959FB49002F516A /* GroupCollectionViewCell.xib in Resources */,
@@ -6507,7 +6461,6 @@
 				58233BD61AE8D51100533370 /* GLPPollDaoParser.m in Sources */,
 				80809AF01895DAB90077D227 /* GLPTableViewController.m in Sources */,
 				5863179D19872E96006D79E2 /* GLPGroupStretchedImageView.m in Sources */,
-				582127901891627D00BF36E5 /* VSScrollViewCell.m in Sources */,
 				5885A66719190A18009FEAD4 /* EmptyMessage.m in Sources */,
 				58D70D5B1A8525BD0023B478 /* LoggedInUserProfileManager.m in Sources */,
 				588DE5DA18A96552001D344D /* PickDateEventViewController.m in Sources */,
@@ -6606,10 +6559,8 @@
 				58C341E71AF78A2E0075D15C /* GLPCampusLiveViewController.m in Sources */,
 				589EAD1B18A41B95005B2F4C /* SignUpFiveView.m in Sources */,
 				5850203C1AD5416800195520 /* GLPPickTimeAnimationHelper.m in Sources */,
-				58FD707A189042A20024E8A1 /* CampusWallHeaderSimpleView.m in Sources */,
 				581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */,
 				5821CFA619A2DD6500274FE4 /* CommentCell.m in Sources */,
-				58212795189165B200BF36E5 /* CampusWallHeaderCell.m in Sources */,
 				58BF03E918F2FFAA00149602 /* GLPFlurryVisibleCellProcessor.m in Sources */,
 				580004DE1A729D4300463276 /* GLPGroupCell.m in Sources */,
 				58A75FBE19523AC60060060D /* MessengerViewController.m in Sources */,
@@ -6741,7 +6692,6 @@
 				585106CE199D8635000F06BB /* FinalNewPostViewController.m in Sources */,
 				803FF9991897D932000B1955 /* GLPLoadingCellDelegate.m in Sources */,
 				5890252D1AE54EC500A3104D /* PollingDataView.m in Sources */,
-				5821278F1891627D00BF36E5 /* VSScrollView.m in Sources */,
 				58F562A51923A5ED00841918 /* GLPVideoUploader.m in Sources */,
 				582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
 				581C311D188EFE6800BAA082 /* GLPCategory.m in Sources */,
@@ -6816,14 +6766,12 @@
 				80FC6C1218A02339006D06F8 /* GLPViewControllerHelper.m in Sources */,
 				587805B21920E2CE0002472B /* KZCameraView.m in Sources */,
 				58CEA1E818C69560009FDF2C /* CampusWallGroupsPostsManager.m in Sources */,
-				58FD7077189041560024E8A1 /* CampusWallHeader.m in Sources */,
 				80C8BA5318103248004F70DB /* GLPConversation.m in Sources */,
 				58299EA8184636160045427E /* GLPPostNotificationHelper.m in Sources */,
 				8087E436180ED90F00938264 /* AppearanceHelper.m in Sources */,
 				5879AC82196435C40053262A /* GLPCheckNameCell.m in Sources */,
 				58ECE0CC1A24123200B38FBA /* GLPReviewHistory.m in Sources */,
 				58ECE0C81A23DB0700B38FBA /* GLPApprovalManager.m in Sources */,
-				58272F801896807900CD7522 /* FakeNavigationBar.m in Sources */,
 				58350A6E198AF9C2000BB1CA /* GLPNetworkErrorView.m in Sources */,
 				58C1E2D61ACFCEAE00A986F0 /* UINavigationBar+Animations.m in Sources */,
 				585CAD7E1ADE70C500EF6FFA /* GLPLikesCell.m in Sources */,
