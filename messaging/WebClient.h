@@ -95,7 +95,7 @@ extern NSString * const kWebserviceBaseUrl;
 
 // groups
 -(void)getGroupDescriptionWithId:(NSInteger)groupId withCallbackBlock:(void (^) (BOOL success, GLPGroup *group, NSString *errorMessage))callbackBlock;
--(void)getPostsAfter:(GLPPost *)post withGroupId:(int)groupId callback:(void (^)(BOOL success, NSArray *posts))callbackBlock;
+-(void)getPostsAfter:(GLPPost *)post withGroupId:(NSInteger)groupId callback:(void (^)(BOOL success, NSArray *posts))callbackBlock;
 -(void)getGroupswithCallbackBlock:(void (^) (BOOL success, NSArray *groups))callbackBlock;
 -(void)getMembersWithGroupRemoteKey:(int)remoteKey withCallbackBlock:(void (^) (BOOL success, NSArray *members))callbackBlock;
 - (void)makeMemberAsAdmin:(GLPMember *)member withCallbackBlock:(void (^) (BOOL success))callbackBlock;

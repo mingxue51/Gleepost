@@ -1033,16 +1033,16 @@ static WebClient *instance = nil;
     }];
 }
 
--(void)getPostsAfter:(GLPPost *)post withGroupId:(int)groupId callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
+-(void)getPostsAfter:(GLPPost *)post withGroupId:(NSInteger)groupId callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
 {
     NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
     
     if(post)
     {
-        params[@"before"] = [NSNumber numberWithInt:post.remoteKey];
+        params[@"before"] = [NSNumber numberWithInteger:post.remoteKey];
     }
     
-    NSString *path = [NSString stringWithFormat:@"networks/%d/posts",groupId];
+    NSString *path = [NSString stringWithFormat:@"networks/%ld/posts",(long)groupId];
 
     [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         

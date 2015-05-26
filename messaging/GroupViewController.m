@@ -61,7 +61,7 @@
 @property (strong, nonatomic) NSArray *members;
 @property (assign, nonatomic) BOOL commentCreated;
 @property (strong, nonatomic) GLPPost *selectedPost;
-@property (assign, nonatomic) int currentNumberOfRows;
+@property (assign, nonatomic) NSInteger currentNumberOfRows;
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
 @property (strong, nonatomic) TransitionDelegateViewCategories *transitionNewPostViewController;
 
@@ -70,7 +70,7 @@
 
 //Properties for refresh loader.
 @property (assign, nonatomic) BOOL isLoading;
-@property (assign, nonatomic) int insertedNewRowsCount; // count of new rows inserted
+@property (assign, nonatomic) NSInteger insertedNewRowsCount; // count of new rows inserted
 @property (strong, nonatomic) GLPNewElementsIndicatorView *elementsIndicatorView;
 
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
@@ -254,13 +254,8 @@ const float TOP_OFF_SET = -64.0;
     }
     
     [self.tableView setTableFooterView:[[UIView alloc] init]];
-
-    
     _tableView.contentInset = UIEdgeInsetsMake(185, 0, 0, 0);
-    
-    
     [_tableView addSubview:_strechedImageView];
-
 }
 
 - (void)configureTopImageView
@@ -499,7 +494,11 @@ const float TOP_OFF_SET = -64.0;
     {
         FLog(@"Refresh cell with index: %d Group name %@", index, self.group.name);
 
-        [self refreshCellViewWithIndex:index+1];
+        //TODO: For now we removing that but we should come back to integrate the
+        //new approach of loading the images. (same we used to use for campus live).
+        //[self refreshCellViewWithIndex:index+1];
+        
+        [self.tableView reloadData];
     }
 }
 
@@ -631,6 +630,8 @@ const float TOP_OFF_SET = -64.0;
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView endUpdates];
+    
+//    [self.tableView reloadData];
 }
 
 - (void)updateTableViewWithNewPostsAndScrollToTop:(int)count
@@ -657,7 +658,7 @@ const float TOP_OFF_SET = -64.0;
     
 }
 
-- (void)updateTableViewWithNewPosts:(int)count
+- (void)updateTableViewWithNewPosts:(NSInteger)count
 {
     CGPoint tableViewOffset = [self.tableView contentOffset];
     [UIView setAnimationsEnabled:NO];
@@ -677,6 +678,9 @@ const float TOP_OFF_SET = -64.0;
     tableViewOffset.y += heightForNewRows;
     
     [self.tableView setContentOffset:tableViewOffset animated:NO];
+    
+    DDLogDebug(@"updateTableViewWithNewPosts with rows %@", rowsInsertIndexPath);
+    
     [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
     
     [UIView setAnimationsEnabled:YES];
@@ -864,7 +868,7 @@ const float TOP_OFF_SET = -64.0;
 {
     // hide the new elements indicator if needed when we are on top
     if(!self.elementsIndicatorView.hidden && (indexPath.row == 0 || indexPath.row < self.insertedNewRowsCount)) {
-        NSLog(@"HIDE %d - %d", indexPath.row, self.insertedNewRowsCount);
+        NSLog(@"HIDE %ld - %ld", (long)indexPath.row, (long)self.insertedNewRowsCount);
         
         self.insertedNewRowsCount = 0; // reset the count
         [self hideNewElementsIndicatorView];
@@ -1401,10 +1405,6 @@ const float TOP_OFF_SET = -64.0;
             
             [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
             
-            //New methodology of loading images.
-            [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
-            
-            
             // update table view and keep the scrolling state
             if(saveScrollingState)
             {
@@ -1414,6 +1414,13 @@ const float TOP_OFF_SET = -64.0;
                 // save the new rows count in order to know when (at what scroll position) to hide the new elements indicator
                 self.insertedNewRowsCount += posts.count;
             }
+            
+            
+            //New methodology of loading images.
+            [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
+            
+            
+
         }
         
         // or scroll to the top
@@ -1424,9 +1431,6 @@ const float TOP_OFF_SET = -64.0;
         }
         
     }];
-    
-
-
 }
 
 

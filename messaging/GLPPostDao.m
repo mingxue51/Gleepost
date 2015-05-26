@@ -843,7 +843,6 @@
     
     if([entity isPollPost])
     {
-        DDLogDebug(@"GLPPostDao : updatePost");
         [GLPPollDao saveOrUpdatePoll:entity.poll withPostRemoteKey:entity.remoteKey db:db];
     }
     
@@ -854,7 +853,7 @@
 {
     [GLPPostDao updatePostSendingData:entity inDb:db];
     
-    DDLogDebug(@"updateVideoPostSendingData post key: %d :%@", entity.key, entity.content);
+    DDLogDebug(@"updateVideoPostSendingData post key: %ld :%@", (long)entity.key, entity.content);
     
     if(entity.remoteKey != 0)
     {
