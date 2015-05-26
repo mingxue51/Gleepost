@@ -70,10 +70,11 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
     NSDictionary *userInfo = notification.userInfo;
     
     PollOperationStatus operationStatus = [userInfo[@"kind_of_operation"] integerValue];
-    NSInteger postRemoteKey = [userInfo[@"post_remote_key"] integerValue];
+    NSInteger postRemoteKey = [userInfo[@"poll_remote_key"] integerValue];
     
     if(postRemoteKey != self.postRemoteKey)
     {
+        DDLogError(@"PollingPostView wrong post abort. %ld, %ld", (long)postRemoteKey, (long)self.postRemoteKey);
         return;
     }
     
@@ -86,7 +87,16 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
     }
     else if(operationStatus == kPollUpdated)
     {
-        self.pollData = userInfo[@"poll_updated_data"];
+//        self.pollData = userInfo[@"poll_updated_data"];
+        [self.pollData updateVotesWithWebSocketData:userInfo[@"poll_updated_data"]];
+        DDLogDebug(@"PollingPostView poll updated %@", self.pollData.votes);
+        //TODO: see if that works without this condition.
+//        if(self.userJustVoted)
+//        {
+//            DDLogInfo(@"PollingPostView user just voted abort.");
+//            return;
+//        }
+        
         [self.tableView reloadData];
     }
 }
@@ -158,6 +168,8 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    DDLogDebug(@"PollingPostView numberOfRowsInSection %ld", self.pollData.options.count);
+    
     return self.pollData.options.count;
 }
 

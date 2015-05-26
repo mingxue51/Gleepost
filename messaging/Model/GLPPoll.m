@@ -70,6 +70,12 @@
     }
 }
 
+- (void)updateVotesWithWebSocketData:(GLPPoll *)webSocketPoll
+{
+    self.options = webSocketPoll.options;
+    [self setVotes:webSocketPoll.votes.mutableCopy];
+}
+
 - (void)userVotedWithOption:(NSString *)option
 {
     NSInteger vote = [[self.votes objectForKey:option] integerValue];

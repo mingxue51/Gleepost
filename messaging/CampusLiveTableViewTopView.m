@@ -19,7 +19,6 @@
 @property (weak, nonatomic) IBOutlet SwipeView *swipeView;
 @property (strong, nonatomic) NSMutableArray *lastVisibleCells;
 
-
 @end
 
 @implementation CampusLiveTableViewTopView
@@ -72,16 +71,12 @@
 - (void)loadLiveEventPosts
 {
     [[CampusLiveManager sharedInstance] getLiveEventPosts];
-    
-    DDLogDebug(@"CampusLiveTableViewTopView loadLiveEventPosts");
 }
 
 #pragma mark - NSNotification methods
 
 - (void)postsFetched:(NSNotification *)notification
 {
-    DDLogDebug(@"CampusLiveTableViewTopView : postsFetched %@", notification.userInfo);
-    
     BOOL success = [notification.userInfo[@"posts_loaded_status"] boolValue];
     
     if(!success)
@@ -201,8 +196,7 @@
 {
     if(index >= [[CampusLiveManager sharedInstance] eventsCount] || index < 0)
     {
-        DDLogDebug(@"CampusLiveTableViewTopView : reached last or the first post abort.");
-        
+        //Reached last or the first post abort.
         return;
     }
     
@@ -212,7 +206,6 @@
     
     if([post isVideoPost])
     {
-        DDLogDebug(@"CampusLiveTableViewTopView %@", post.eventTitle);
         [[GLPVideoLoaderManager sharedInstance] visiblePosts:@[post]];
     }
     

@@ -197,7 +197,8 @@
 
 + (void)showReportedDone
 {
-    [WebClientHelper showStandardErrorWithTitle:@"Post Reported" andContent:@"Thanks for helping us keep Gleepost a fun and safe environment. Our team will review this post ASAP."];
+    [WebClientHelper showStandardErrorWithTitle:@"Post Reported" andContent: [[GLPThemeManager sharedInstance] appNameWithString:@"Thanks for helping us keep %@ a fun and safe environment. Our team will review this post ASAP."]];
+    
 
 }
 

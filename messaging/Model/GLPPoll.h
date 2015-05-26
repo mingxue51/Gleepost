@@ -23,6 +23,7 @@
 - (id)initWithKey:(NSInteger)key;
 - (void)setVotes:(NSMutableDictionary *)votes;
 - (void)userVotedWithOption:(NSString *)option;
+- (void)updateVotesWithWebSocketData:(GLPPoll *)webSocketPoll;
 - (void)revertVotingWithOption:(NSString *)option;
 - (CGFloat)voteInPercentageWithOption:(NSString *)option;
 - (BOOL)pollEnded;
