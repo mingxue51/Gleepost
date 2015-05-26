@@ -107,6 +107,11 @@
     if(self.isNewPoll)
     {
         self.postUploader = [[GLPPostUploader alloc] init];
+        
+        if(self.pollImage)
+        {
+            [self.postUploader uploadImageToQueue:self.pollImage];
+        }
     }
 }
 

@@ -854,6 +854,11 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     
     self.imgToUpload = image;
     
+    if([[PendingPostManager sharedInstance] kindOfPost] == kPollPost)
+    {
+        return;
+    }
+    
     [_postUploader uploadImageToQueue:self.imgToUpload];
     
 }
@@ -1314,6 +1319,7 @@ const float LIGHT_BLACK_RGB = 200.0f/255.0f;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
     PickDateEventViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"PickDateEventViewController"];
     cvc.isNewPoll = YES;
+    cvc.pollImage = self.imgToUpload;
     [self.navigationController pushViewController:cvc animated:NO];
 }
 
