@@ -88,6 +88,11 @@
         return;
     }
     
+    if(self.isTransparentMode)
+    {
+        return;
+    }
+    
     [UIView animateWithDuration:self.animationDuration delay:0.0 options:UIViewAnimationCurveEaseOut | UIViewAnimationCurveEaseOut  animations:^{
         
         [self makeBackgroundViewTransparent:YES];
@@ -102,10 +107,17 @@
 
 - (void)colourMode
 {
-    
     CampusWallFakeNavigationBar *externalView = (CampusWallFakeNavigationBar *)self.externalView;
-
-    [externalView.loadingView stopAnimating];
+    
+    if([externalView.loadingView isAnimating])
+    {
+        [externalView.loadingView stopAnimating];
+    }
+    
+    if(!self.isTransparentMode)
+    {
+        return;
+    }
     
     [UIView animateWithDuration:self.animationDuration delay:0.0 options:UIViewAnimationCurveEaseOut | UIViewAnimationCurveEaseOut  animations:^{
 
@@ -122,6 +134,11 @@
 {    
     CampusWallFakeNavigationBar *externalView = (CampusWallFakeNavigationBar *)self.externalView;
 
+    if([externalView.loadingView isAnimating])
+    {
+        return;
+    }
+    
     self.isLoading = YES;
     [externalView.loadingView startAnimating];
 }
