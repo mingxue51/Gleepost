@@ -17,5 +17,6 @@
 - (NSInteger)speakersPostCount;
 - (NSInteger)partiesPostCount;
 - (NSInteger)eventsLeftCount;
+- (NSInteger)totalPosts;
 
 @end

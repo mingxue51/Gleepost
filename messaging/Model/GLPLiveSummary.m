@@ -44,20 +44,10 @@
     if(self)
     {
         self.byCategoryPosts = categoryData;
-        [self findTotalPosts];
+        self.totalPosts = [[self.byCategoryPosts objectForKey:@(17)] integerValue];
     }
     
     return self;
-}
-
-- (void)findTotalPosts
-{
-    for(NSNumber *number in self.byCategoryPosts)
-    {
-        self.totalPosts += [[self.byCategoryPosts objectForKey:number] integerValue];
-    }
-    
-    DDLogDebug(@"GLPLiveSummary findTotalPosts %ld", self.totalPosts);
 }
 
 - (void)configureCategoriesData:(NSDictionary *)categoryData

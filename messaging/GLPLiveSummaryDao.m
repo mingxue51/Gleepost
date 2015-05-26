@@ -64,6 +64,9 @@
         success = [GLPLiveSummaryDao saveCategoryKey:[categoryKey integerValue] withCategoryPostsCount:categoryPostCount db:db];
     }
     
+    //For now 17 is all in CategoryManager enum.
+    success = [GLPLiveSummaryDao saveCategoryKey:17 withCategoryPostsCount:[liveSummary totalPosts] db:db];
+    
     return success;
 }
 
