@@ -14,7 +14,7 @@
 @synthesize key = _key;
 @synthesize isFromPushNotification = _isFromPushNotification;
 
--(id)initWithName:(NSString *)name andRemoteKey:(int)remoteKey
+-(id)initWithName:(NSString *)name andRemoteKey:(NSInteger)remoteKey
 {
     self = [super init];
     

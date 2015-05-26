@@ -39,6 +39,11 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
     [self registerNotifications];
 }
 
+- (void)dealloc
+{
+    
+}
+
 #pragma mark - Configuration
 
 - (void)registerCell
@@ -74,7 +79,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
     
     if(postRemoteKey != self.postRemoteKey)
     {
-        DDLogError(@"PollingPostView wrong post abort. %ld, %ld", (long)postRemoteKey, (long)self.postRemoteKey);
+        DDLogError(@"PollingPostView wrong post abort %@. %ld, %ld", self.pollData.options, (long)postRemoteKey, (long)self.postRemoteKey);
         return;
     }
     

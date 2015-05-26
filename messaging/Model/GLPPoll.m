@@ -72,6 +72,7 @@
 
 - (void)updateVotesWithWebSocketData:(GLPPoll *)webSocketPoll
 {
+    self.sumVotes = 0;
     self.options = webSocketPoll.options;
     [self setVotes:webSocketPoll.votes.mutableCopy];
 }

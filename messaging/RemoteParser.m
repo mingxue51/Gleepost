@@ -968,9 +968,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     [group setPrivacyWithString:json[@"privacy"]];
     
     if(json[@"last_activity"])
-    {
-        DDLogDebug(@"RemoteParser : parseGroupFromJson %@", json[@"last_activity"]);
-        
+    {        
         group.lastActivity = [RemoteParser parseDateFromString:json[@"last_activity"]];
     }
     
