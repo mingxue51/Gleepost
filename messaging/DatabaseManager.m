@@ -192,6 +192,11 @@ static DatabaseManager *instance = nil;
              location_address text, \
              group_remote_key integer);"];
             
+            // live summary
+            [db executeUpdate:@"create table live_summary ( \
+             category_remote_key integer primary key, \
+             category_posts_count integer);"];
+            
             // poll
             [db executeUpdate:@"create table polls ( \
              key integer primary key autoincrement, \

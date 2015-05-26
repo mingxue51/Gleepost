@@ -322,6 +322,8 @@
 		585AE272192BF35600174CED /* proximity-7_old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE26E192BF35600174CED /* proximity-7_old@2x.png */; };
 		585AE273192BF35600174CED /* man-7_old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE26F192BF35600174CED /* man-7_old@2x.png */; };
 		585AE274192BF35600174CED /* id-card-7_old@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 585AE270192BF35600174CED /* id-card-7_old@2x.png */; };
+		585C2B971B136FEF0076E78F /* GLPLiveSummaryDaoParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C2B961B136FEF0076E78F /* GLPLiveSummaryDaoParser.m */; };
+		585C2B9A1B1458B60076E78F /* GLPLiveSummaryDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C2B991B1458B60076E78F /* GLPLiveSummaryDao.m */; };
 		585C514519227006000910DA /* VideoPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514419227006000910DA /* VideoPreviewView.m */; };
 		585C514819227B13000910DA /* GLPVideoUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C514719227B13000910DA /* GLPVideoUploadManager.m */; };
 		585C784E193DF3B2007E699B /* WTSecondScreenView.m in Sources */ = {isa = PBXBuildFile; fileRef = 585C784D193DF3B2007E699B /* WTSecondScreenView.m */; };
@@ -1428,6 +1430,10 @@
 		585AE26E192BF35600174CED /* proximity-7_old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "proximity-7_old@2x.png"; sourceTree = "<group>"; };
 		585AE26F192BF35600174CED /* man-7_old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "man-7_old@2x.png"; sourceTree = "<group>"; };
 		585AE270192BF35600174CED /* id-card-7_old@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "id-card-7_old@2x.png"; sourceTree = "<group>"; };
+		585C2B951B136FEF0076E78F /* GLPLiveSummaryDaoParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveSummaryDaoParser.h; sourceTree = "<group>"; };
+		585C2B961B136FEF0076E78F /* GLPLiveSummaryDaoParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveSummaryDaoParser.m; sourceTree = "<group>"; };
+		585C2B981B1458B60076E78F /* GLPLiveSummaryDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLiveSummaryDao.h; sourceTree = "<group>"; };
+		585C2B991B1458B60076E78F /* GLPLiveSummaryDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveSummaryDao.m; sourceTree = "<group>"; };
 		585C514319227006000910DA /* VideoPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoPreviewView.h; sourceTree = "<group>"; };
 		585C514419227006000910DA /* VideoPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoPreviewView.m; sourceTree = "<group>"; };
 		585C514619227B13000910DA /* GLPVideoUploadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVideoUploadManager.h; sourceTree = "<group>"; };
@@ -5586,6 +5592,8 @@
 				58ECE0D11A2419B900B38FBA /* GLPReviewHistoryDao.m */,
 				58233BD71AE8DBC600533370 /* GLPPollDao.h */,
 				58233BD81AE8DBC600533370 /* GLPPollDao.m */,
+				585C2B981B1458B60076E78F /* GLPLiveSummaryDao.h */,
+				585C2B991B1458B60076E78F /* GLPLiveSummaryDao.m */,
 			);
 			name = Dao;
 			sourceTree = "<group>";
@@ -5623,6 +5631,8 @@
 				58ECE0CE1A24175E00B38FBA /* GLPReviewHistoryDaoParser.m */,
 				58233BD41AE8D51100533370 /* GLPPollDaoParser.h */,
 				58233BD51AE8D51100533370 /* GLPPollDaoParser.m */,
+				585C2B951B136FEF0076E78F /* GLPLiveSummaryDaoParser.h */,
+				585C2B961B136FEF0076E78F /* GLPLiveSummaryDaoParser.m */,
 			);
 			name = DaoParser;
 			sourceTree = "<group>";
@@ -6705,6 +6715,7 @@
 				58ACD1D218F599E200BD576B /* DCIntrospect.m in Sources */,
 				58459FB919901CF300E7D3C2 /* FakeNavigationBarView.m in Sources */,
 				587805B01920E2CE0002472B /* AVCamUtilities.m in Sources */,
+				585C2B971B136FEF0076E78F /* GLPLiveSummaryDaoParser.m in Sources */,
 				581BD8681913E05E006F8BCD /* ThermometerCircleView.m in Sources */,
 				586F6EF9191BAE4A00BDF558 /* GLPFBInvitationsViewController.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
@@ -6752,6 +6763,7 @@
 				58E17EEE1A950D51006A5552 /* GLPMessageDetailsSegmentCell.m in Sources */,
 				582B404B18AD6C4A00BC4285 /* SoundHelper.m in Sources */,
 				587EA4A417F9C4A0005B3286 /* MemberCell.m in Sources */,
+				585C2B9A1B1458B60076E78F /* GLPLiveSummaryDao.m in Sources */,
 				80666C441806DA7A00E4E515 /* RemoteParser.m in Sources */,
 				80666C541806E11000E4E515 /* GLPMessage+CellLogic.m in Sources */,
 				588C688C1AD2876200E00F48 /* GLPFakeNavigationBarView.m in Sources */,

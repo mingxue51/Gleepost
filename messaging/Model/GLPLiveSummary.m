@@ -13,7 +13,6 @@
 @interface GLPLiveSummary ()
 
 @property (assign, nonatomic) NSInteger totalPosts;
-@property (strong, nonatomic) NSDictionary *byCategoryPosts;
 
 @end
 
@@ -30,6 +29,35 @@
     }
     
     return self;
+}
+
+/**
+ This method is used only from GLPLiveSummaryDaoParser class.
+ 
+ @param categoryData the category data represented by <category_remote_key, category's_post_count>.
+ 
+ */
+- (id)initWithCategoryData:(NSDictionary *)categoryData
+{
+    self = [self init];
+    
+    if(self)
+    {
+        self.byCategoryPosts = categoryData;
+        [self findTotalPosts];
+    }
+    
+    return self;
+}
+
+- (void)findTotalPosts
+{
+    for(NSNumber *number in self.byCategoryPosts)
+    {
+        self.totalPosts += [[self.byCategoryPosts objectForKey:number] integerValue];
+    }
+    
+    DDLogDebug(@"GLPLiveSummary findTotalPosts %ld", self.totalPosts);
 }
 
 - (void)configureCategoriesData:(NSDictionary *)categoryData
@@ -50,6 +78,9 @@
     }
     
     self.byCategoryPosts = categoryPosts.mutableCopy;
+    
+    DDLogDebug(@"GLPLiveSummary configureCategoriesData %@", self.byCategoryPosts);
+
 }
 
 - (NSInteger)speakersPostCount

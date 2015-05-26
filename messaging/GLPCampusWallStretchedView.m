@@ -125,6 +125,8 @@ const float kCWStretchedImageHeight = 350;
     
     self.dataView = [[UIView alloc] initWithFrame:CGRectMake(0.0, topLabelBottomEdge + 10.0, [GLPiOSSupportHelper screenWidth], 50.0)];
     
+    self.dataView.alpha = 0.0;
+    
     self.dataView.center = CGPointMake([GLPiOSSupportHelper screenWidth] / 2, self.dataView.center.y);
     
     self.dataView.backgroundColor = [UIColor clearColor];
@@ -310,8 +312,10 @@ const float kCWStretchedImageHeight = 350;
     self.centerNumberLabel.text = [NSString stringWithFormat:@"%ld", (long)[[CampusLiveManager sharedInstance] liveSummarySpeakersCount]];
     self.rightNumberLabel.text = [NSString stringWithFormat:@"+%ld", (long)[[CampusLiveManager sharedInstance] liveSummaryPostsLeftCount]];
 
+    [self refreshPositioningOnElements];
+    
     [UIView animateWithDuration:0.3 animations:^{
-        [self refreshPositioningOnElements];
+        self.dataView.alpha = 1.0;
     }];
 }
 

@@ -49,9 +49,6 @@
     self.swipeView.pagingEnabled = YES;
     self.swipeView.itemsPerPage = 1;
     self.swipeView.defersItemViewLoading = YES;
-//
-//    [self.swipeView scrollToItemAtIndex:1 duration:0.0];
-//    [self.swipeView scrollToItemAtIndex:0 duration:0.0];
 }
 
 - (void)configureNotifications
@@ -102,29 +99,6 @@
 {
     [self.swipeView reloadData];
 }
-
-//- (void)imageForPostFetched:(NSNotification *)notification
-//{
-////    UIImage *img = d[@"image_loaded"];
-//    NSInteger remoteKey = [notification.userInfo[@"remote_key"] integerValue];
-//    
-//    //NSInteger postIndex = [[CampusLiveManager sharedInstance] indexOfPostWithRemoteKey:remoteKey];
-//    
-//    
-//    for(NSInteger index = 0; index < [[CampusLiveManager sharedInstance] eventsCount]; ++index)
-//    {
-//        GLPPost *post = [[CampusLiveManager sharedInstance] eventPostAtIndex:index];
-//        
-//        if(post.remoteKey == remoteKey)
-//        {
-//            DDLogDebug(@"CampusLiveTableViewTopView reload cell %@", post.eventTitle);
-//            [self.swipeView reloadItemAtIndex:index];
-//            break;
-//        }
-//    }
-//    
-//    //[self.swipeView reloadData];
-//}
 
 #pragma mark - SwipeViewDelegate
 

@@ -101,15 +101,17 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
     self.pollData = pollData;
     self.postRemoteKey = postRemoteKey;
     
+    [self.pollingDataView setPollData:pollData];
+    
     //TODO: See if that is good to have it here.
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.pollingDataView setPollData:pollData];
-
-        });
-        
-    });
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self.pollingDataView setPollData:pollData];
+//
+//        });
+//        
+//    });
     
     [self.tableView reloadData];
     [self.tableView setUserInteractionEnabled:YES];

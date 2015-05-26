@@ -15,12 +15,13 @@
 #import "GLPPostManager.h"
 #import "GLPPostNotificationHelper.h"
 #import "GLPVideoLoaderManager.h"
+#import "GLPLiveSummaryDao.h"
 
 @interface CampusLiveManager ()
 
 @property (strong, nonatomic) NSArray *liveEventPosts;
 
-/** Helps to return in O(1) complexity posts' index. <postRemoteKey, index> */
+/** Helps to return in O(1) complexity posts' index. <postRemoteKey, index>. NOT USED for now. */
 @property (strong, nonatomic) NSMutableDictionary *liveEventPostDictionary;
 
 @property (strong, nonatomic) GLPLiveSummary *liveSummary;
@@ -85,14 +86,19 @@ static CampusLiveManager *instance = nil;
 
 - (void)getLiveSummary
 {
+    GLPLiveSummary *liveSummary = [GLPLiveSummaryDao findCurrentLiveSummary];
+    
+    self.liveSummary = (liveSummary) ? liveSummary : self.liveSummary;
+    
+    [self notifyCampusWallTopViewWithStatus:YES];
+    
     NSDate *tomorrow = [DateFormatterHelper generateDateWithLastMinutePlusDates:1];
     
     [[WebClient sharedInstance] campusLiveSummaryUntil:tomorrow callbackBlock:^(BOOL success, GLPLiveSummary *liveSummary) {
        
         if(success)
         {
-            DDLogDebug(@"CampusLiveManager getLiveSummary");
-            
+            [GLPLiveSummaryDao saveLiveSummary:liveSummary];
             self.liveSummary = liveSummary;
         }
         
@@ -105,8 +111,6 @@ static CampusLiveManager *instance = nil;
 
 - (GLPPost *)eventPostAtIndex:(NSInteger)index
 {
-    DDLogDebug(@"CampusLiveManager eventPostAtIndex %@", [self.liveEventPosts objectAtIndex:index]);
-    
     return [self.liveEventPosts objectAtIndex:index];
 }
 

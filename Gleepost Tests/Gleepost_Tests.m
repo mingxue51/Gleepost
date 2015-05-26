@@ -15,6 +15,8 @@
 #import "GLPPostManager.h"
 #import "GLPPoll.h"
 #import "GLPPollDao.h"
+#import "GLPLiveSummaryDao.h"
+#import "GLPLiveSummary.h"
 
 @interface Gleepost_Tests : XCTestCase
 
@@ -35,6 +37,24 @@
 - (void)testFindPollDb {
     
     
+}
+
+- (void)testLiveSummaryOperations
+{
+    GLPLiveSummary *liveSummary = [self setUpLiveSummary];
+    XCTAssert([GLPLiveSummaryDao saveLiveSummary:liveSummary], @"Failed to save live summary");
+    XCTAssert([GLPLiveSummaryDao findCurrentLiveSummary], @"Failed to find live summary");
+}
+
+- (GLPLiveSummary *)setUpLiveSummary
+{
+    NSMutableDictionary *liveDictionary = [[NSMutableDictionary alloc] init];
+    
+    [liveDictionary setObject:@(43) forKey:@"party"];
+    [liveDictionary setObject:@(12) forKey:@"sports"];
+    [liveDictionary setObject:@(68) forKey:@"food"];
+    
+    return [[GLPLiveSummary alloc] initWithTotalPosts:100 andByCategoryData:liveDictionary.mutableCopy];
 }
 
 - (void)testPollDbOperations

@@ -10,7 +10,10 @@
 
 @interface GLPLiveSummary : NSObject
 
+@property (strong, nonatomic) NSDictionary *byCategoryPosts;
+
 - (id)initWithTotalPosts:(NSInteger)totalPosts andByCategoryData:(NSDictionary *)byCategoryData;
+- (id)initWithCategoryData:(NSDictionary *)categoryData;
 - (NSInteger)speakersPostCount;
 - (NSInteger)partiesPostCount;
 - (NSInteger)eventsLeftCount;

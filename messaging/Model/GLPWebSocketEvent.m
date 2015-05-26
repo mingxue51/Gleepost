@@ -40,8 +40,9 @@
         _type = kGLPWebSocketEventTypeVote;
     }
     else {
+  
         
-        [WebClientHelper showWebSocketReceivedBadEvent:string];
+//        [WebClientHelper showWebSocketReceivedBadEvent:string];
         
 //        [NSException raise:@"GLPWebSocketEventType unknown" format:@"For string value: %@", string];
     }
