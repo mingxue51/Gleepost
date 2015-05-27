@@ -41,25 +41,7 @@
     [self enabledMode:enable];
     [self configureProgressBarWithIndexRow:indexRow];
     [self configureGestures];
-    
-    DDLogDebug(@"GLPPollingOptionCell animated bars %d with title %@ percentage %f", animateBars, title, percentage);
-    
-//    [UIView animateWithDuration:1.0 animations:^{
-//        
-//        self.progressBar.progress = percentage;
-//
-//    }];
-    
-//    self.progressBar.progress = percentage;
-    
-//    if(percentage == 1.0)
-//    {
-//        self.progressBar.progress = percentage;
-//    }
-//    else
-//    {
-        [self.progressBar setProgress:percentage animated:animateBars];
-//    }
+    [self.progressBar setProgress:percentage animated:animateBars];
 }
 
 - (void)configureGestures
