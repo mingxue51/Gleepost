@@ -49,6 +49,8 @@ static const CGFloat kProfileImageViewOppositeSideMargin = 6;
 static const CGFloat kTimeLabelBottomMargin = 0;
 static const CGFloat kContentLabelVerticalPadding = 15; //10
 static const CGFloat kContentLabelHorizontalPadding = 20; //15
+static const CGFloat kContentImageVerticalPadding = 5; //10
+
 static const CGFloat kErrorImageSideMargin = 6;
 static const CGFloat kOppositeSideMarginWithoutError = 30;
 static const CGFloat kOppositeSideMarginWithError = 10 + kErrorImageW + kErrorImageSideMargin;
@@ -113,7 +115,7 @@ static const CGFloat kTextSize = 15;
         UIView *view = [UIView new];
         
         [ShapeFormatterHelper setRoundedViewWithNotClipToBounds:view toDiameter:32.0];
-
+        
         UILabel *label = [UILabel new];
         label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize];
         label.numberOfLines = 0;
@@ -162,6 +164,22 @@ static const CGFloat kTextSize = 15;
         [self.contentView addSubview:readReceiptMessage];
     }
     
+    // image view
+    {
+        UIImageView *messageImageView = [UIImageView new];
+        messageImageView.contentMode = UIViewContentModeScaleAspectFill;
+        messageImageView.backgroundColor = [AppearanceHelper grayGleepostColour];
+
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(messageImageClick)];
+        [messageImageView addGestureRecognizer:tap];
+        messageImageView.clipsToBounds = YES;
+        CGRectSetWH(messageImageView, [GLPMessageCell imageMessageWidth], [GLPMessageCell imageMessageHeight]);
+        [ShapeFormatterHelper setRoundedViewWithNotClipToBounds:messageImageView toDiameter:32.0];
+        messageImageView.userInteractionEnabled = YES;
+        messageImageView.hidden = YES;
+        [self.contentView addSubview:messageImageView];
+    }
+    
     self.selectedBackgroundView = [UIView new];
     
     self.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -184,7 +202,16 @@ static const CGFloat kTextSize = 15;
         [self setHiddedElementsOnSystemMessage:NO];
         [self configureProfileImage];
         [self configureTimeLabel];
-        [self configureMessageText];
+        
+        if([self.message isImageMessage])
+        {
+            [self configureMessageImage];
+        }
+        else
+        {
+            [self configureMessageText];
+        }
+        
         [self configureReadReceiptLabel];
     }
     
@@ -274,8 +301,40 @@ static const CGFloat kTextSize = 15;
     }
 }
 
+- (void)configureMessageImage
+{
+    DDLogDebug(@"GLPMessageCell configureMessageImage %@", self.message.content);
+    UIImageView *imageView = self.contentView.subviews[6];
+    UIView *view = self.contentView.subviews[2];
+    view.hidden = YES;
+    imageView.hidden = NO;
+    
+    
+    imageView.alpha = _message.sendStatus == kSendStatusLocal ? 0.15 : 1;
+    
+    //Configure positioning.
+    
+    CGFloat x = [self xForCurrentSide:kSideMarginIncludingProfileImage w:[GLPMessageCell imageMessageWidth]];
+
+    _height += kContentImageVerticalPadding;
+    
+    imageView.frame = CGRectMake(x, _height, [GLPMessageCell imageMessageWidth], [GLPMessageCell imageMessageHeight]);
+    
+    [imageView setImageWithURL:[NSURL URLWithString:_message.content] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+
+    UIButton *errorButton = self.contentView.subviews[3];
+    
+    //For now hide it.
+    errorButton.hidden = YES;
+    
+    _height += [GLPMessageCell imageMessageHeight];
+}
+
 - (void)configureMessageText
 {
+    UIImageView *imageView = self.contentView.subviews[6];
+    imageView.hidden = YES;
+    
     UIView *view = self.contentView.subviews[2];
     UILabel *label = view.subviews[0];
     UIButton *errorButton = self.contentView.subviews[3];
@@ -373,6 +432,12 @@ static const CGFloat kTextSize = 15;
     [_delegate mainViewClickForMessage:_message];
 }
 
+- (void)messageImageClick
+{
+    UIImageView *imageView = self.contentView.subviews[6];
+    [_delegate messageImageClickedForMessage:_message withImageView:imageView];
+}
+
 # pragma mark - Helpers
 
 + (CGSize)contentLabelSizeForMessage:(GLPMessage *)message
@@ -406,7 +471,14 @@ static const CGFloat kTextSize = 15;
         height = kTimeLabelH + kTimeLabelBottomMargin;
     }
     
-    height += [GLPMessageCell contentLabelSizeForMessage:message].height;
+    if([message isImageMessage])
+    {
+        height += [GLPMessageCell imageMessageHeight];
+    }
+    else
+    {
+        height += [GLPMessageCell contentLabelSizeForMessage:message].height;
+    }
     
     if(![message isKindOfClass:[GLPSystemMessage class]])
     {
@@ -448,6 +520,16 @@ static const CGFloat kTextSize = 15;
     height += kBottomMargin;
     
     return height + kViewModeMargin;
+}
+
++ (CGFloat)imageMessageHeight
+{
+    return 200;
+}
+
++ (CGFloat)imageMessageWidth
+{
+    return [GLPiOSSupportHelper screenWidth] * 0.43;
 }
 
 - (CGFloat)xForCurrentSide:(CGFloat)x w:(CGFloat)w

@@ -39,6 +39,30 @@
     return YES;
 }
 
+- (BOOL)isImageMessage
+{
+    if(![self.content componentsSeparatedByString:@" "])
+    {
+        return NO;
+    }
+    
+    // A list of extensions to check against
+    NSArray *imageExtensions = @[@"png", @"jpg", @"gif"]; //...
+    
+    // Iterate & match the URL objects from your checking results
+    NSURL *url = [NSURL URLWithString:self.content];
+    
+    NSString *extension = [url pathExtension];
+    
+    if ([imageExtensions containsObject:extension])
+    {
+        NSLog(@"Image URL: %@", url);
+        
+        return YES;
+    }
+    
+    return NO;
+}
 
 # pragma mark - Copy
 

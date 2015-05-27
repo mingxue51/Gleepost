@@ -53,6 +53,7 @@
 #import "GLPReadReceiptsManager.h"
 #import "GLPReadReceipt.h"
 #import "GLPMessageDetailsViewController.h"
+#import "GLPViewImageHelper.h"
 
 @interface GLPConversationViewController ()
 
@@ -979,6 +980,11 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 {
     _selectedMessage = message;
     [self performSegueWithIdentifier:@"show message details" sender:self];
+}
+
+- (void)messageImageClickedForMessage:(GLPMessage *)message withImageView:(UIImageView *)imageView
+{
+    [GLPViewImageHelper showImageInViewController:self withImageView:imageView];
 }
 
 

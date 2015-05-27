@@ -31,5 +31,6 @@
 @property (assign, nonatomic) BOOL belongsToGroup;
 
 - (BOOL)followsPreviousMessage:(GLPMessage *)message;
+- (BOOL)isImageMessage;
 
 @end
