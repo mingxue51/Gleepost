@@ -12,6 +12,8 @@
 
 +(void)setRoundedView:(UIView *)roundedView toDiameter:(float)newSize;
 
++ (void)setRoundedViewWithNotClipToBounds:(UIView *)roundedView toDiameter:(float)newSize;
+
 +(void)createTwoTopCornerRadius:(UIImageView*)imageView withViewBounts:(CGRect)viewBounds andSizeOfCorners:(CGSize)sizeOfCorners;
 
 +(void)setCornerRadiusWithView:(UIView*)imageView andValue:(int)value;

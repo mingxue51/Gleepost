@@ -24,6 +24,14 @@
     roundedView.center = saveCenter;
 }
 
++ (void)setRoundedViewWithNotClipToBounds:(UIView *)roundedView toDiameter:(float)newSize
+{
+    CGPoint saveCenter = roundedView.center;
+    CGRect newFrame = CGRectMake(roundedView.frame.origin.x, roundedView.frame.origin.y, newSize, newSize);
+    roundedView.frame = newFrame;
+    roundedView.layer.cornerRadius = newSize / 2.0;
+    roundedView.center = saveCenter;
+}
 
 /**
  Converts the two top corners of an image view from straight to circles.

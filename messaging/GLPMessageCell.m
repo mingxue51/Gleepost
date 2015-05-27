@@ -106,34 +106,20 @@ static const CGFloat kTextSize = 15;
         label.font = [UIFont fontWithName:GLP_TITLE_FONT size:10.0f];
         label.userInteractionEnabled = NO;
         [self.contentView addSubview:label];
-        
-//        [ShapeFormatterHelper setBorderToView:label withColour:[UIColor redColor] andWidth:1.0];
     }
 
     // text view
     {
         UIView *view = [UIView new];
-//        view.layer.cornerRadius = 12.0;
-        [ShapeFormatterHelper setCornerRadiusWithView:view andValue:3];
         
-        UIImageView *imageView = [UIImageView new];
-        imageView.image = [UIImage imageNamed:@"yourchatbubble4"];
-        imageView.layer.masksToBounds = YES;
-//        imageView.layer.cornerRadius = 12.0;
-        [ShapeFormatterHelper setCornerRadiusWithView:imageView andValue:4];
-        
-        
-//        imageView.layer.borderColor = [[UIColor colorWithRed:3.0/255.0 green:215.0/255.0 blue:215.0/255.0 alpha:1.0] CGColor];
-//        imageView.layer.borderWidth = 2;
-        
+        [ShapeFormatterHelper setRoundedViewWithNotClipToBounds:view toDiameter:32.0];
+
         UILabel *label = [UILabel new];
-        label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize]; //16
+        label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize];
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByWordWrapping;
         
         view.userInteractionEnabled = YES;
-        
-        [view addSubview:imageView];
         [view addSubview:label];
         
         UITapGestureRecognizer *tapGestrureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainViewClick)];
@@ -291,8 +277,7 @@ static const CGFloat kTextSize = 15;
 - (void)configureMessageText
 {
     UIView *view = self.contentView.subviews[2];
-    UIImageView *imageView = view.subviews[0];
-    UILabel *label = view.subviews[1];
+    UILabel *label = view.subviews[0];
     UIButton *errorButton = self.contentView.subviews[3];
 
     CGSize labelSize = [GLPMessageCell contentLabelSizeForMessage:_message];
@@ -311,28 +296,23 @@ static const CGFloat kTextSize = 15;
 
     view.alpha = _message.sendStatus == kSendStatusLocal ? 0.15 : 1;
     
-
-    imageView.frame = CGRectMake(0, 0, w, h);
-
     label.frame = CGRectMake(kContentLabelHorizontalPadding / 2, kContentLabelVerticalPadding / 2, labelSize.width, labelSize.height);
     label.text = _message.content;
         
     if(_isOnLeftSide) {
 //        view.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:234.0/255.0 blue:176.0/255.0 alpha:1.0];
         view.backgroundColor = [AppearanceHelper lightGrayGleepostColour];
-        imageView.hidden = YES;
         label.textColor = [UIColor blackColor];
         label.backgroundColor = [UIColor clearColor];
         [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderMessengerGleepostColour] andWidth:0.5];
 
     } else {
 //        view.backgroundColor = [UIColor clearColor];
-        imageView.hidden = YES;
-        view.backgroundColor = [AppearanceHelper blueGleepostColour];
+        view.backgroundColor = [AppearanceHelper greenGleepostColour];
 //        label.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor];
-        [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderBlueMessengerGleepostColour] andWidth:0.5];
+        [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderGreenMessengerGleepostColour] andWidth:0.5];
     }
     
     

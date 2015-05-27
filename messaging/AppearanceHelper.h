@@ -27,6 +27,7 @@
 + (UIColor *)blueGleepostColour;
 + (UIColor *)borderMessengerGleepostColour;
 + (UIColor *)borderBlueMessengerGleepostColour;
++ (UIColor *)borderGreenMessengerGleepostColour;
 + (UIColor *)greenGleepostColour;
 + (UIColor *)blackGleepostColour;
 + (UIColor *)yellowGleepostColour;
