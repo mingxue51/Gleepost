@@ -173,8 +173,6 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 20;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    DDLogDebug(@"PollingPostView numberOfRowsInSection %ld", self.pollData.options.count);
-    
     return self.pollData.options.count;
 }
 

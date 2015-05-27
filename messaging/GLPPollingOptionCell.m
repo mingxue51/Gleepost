@@ -52,14 +52,14 @@
     
 //    self.progressBar.progress = percentage;
     
-    if(percentage == 1.0)
-    {
-        self.progressBar.progress = percentage;
-    }
-    else
-    {
+//    if(percentage == 1.0)
+//    {
+//        self.progressBar.progress = percentage;
+//    }
+//    else
+//    {
         [self.progressBar setProgress:percentage animated:animateBars];
-    }
+//    }
 }
 
 - (void)configureGestures
@@ -91,6 +91,7 @@
     self.progressBar.trackTintColor = [UIColor whiteColor];
     self.progressBar.hideStripes = YES;
     self.progressBar.stripesColor = [UIColor clearColor];
+    self.progressBar.progress = 0.0;
 }
 
 /**
