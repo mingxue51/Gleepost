@@ -11,7 +11,8 @@
 typedef NS_ENUM(NSUInteger, TableActivityIndicatorPosition) {
     kActivityIndicatorCenter = 0,
     kActivityIndicatorTop,
-    kActivityIndicatorBottom
+    kActivityIndicatorBottom,
+    kActivityIndicatorMaxBottom
 };
 
 @interface GLPTableActivityIndicator : NSObject

@@ -15,6 +15,7 @@
 #import "GLPPickTimeAnimationHelper.h"
 #import "GLPApplicationHelper.h"
 #import "GLPPostUploader.h"
+#import "DateFormatterHelper.h"
 
 @interface PickDateEventViewController () <UINavigationControllerDelegate, GLPPickTimeAnimationHelperDelegate>
 
@@ -106,6 +107,11 @@
     if(self.isNewPoll)
     {
         self.postUploader = [[GLPPostUploader alloc] init];
+        
+        if(self.pollImage)
+        {
+            [self.postUploader uploadImageToQueue:self.pollImage];
+        }
     }
 }
 
@@ -144,24 +150,19 @@
 
 -(void)setUpDatePicker
 {
-    NSDate* now = [NSDate date];
+    NSDate *minimimDate = [NSDate date];
     
-    // Get current NSDate without seconds & milliseconds, so that I can better compare the chosen date to the minimum & maximum dates.
-    NSCalendar* calendar = [NSCalendar currentCalendar];
+    if([self isNewPoll])
+    {
+        minimimDate = [DateFormatterHelper generateDateAfterMinutes:17];
+    }
     
-    NSDateComponents* nowWithoutSecondsComponents = [calendar components:
-                                                     (NSEraCalendarUnit|NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit) fromDate:now] ;
+    _datePicker.minimumDate = minimimDate;
     
-    NSDate* nowWithoutSeconds = [calendar dateFromComponents:nowWithoutSecondsComponents] ;
-
-    _datePicker.minimumDate = nowWithoutSeconds;
-    
-    
-    //TODO: Uncomment the following code to set maximum date. More here: http://stackoverflow.com/questions/14694452/uidatepicker-set-maximum-date
-//    NSDateComponents* addOneMonthComponents = [NSDateComponents new] ;
-//    addOneMonthComponents.month = 1 ;
-//    NSDate* oneMonthFromNowWithoutSeconds = [calendar dateByAddingComponents:addOneMonthComponents toDate:nowWithoutSeconds options:0] ;
-//    picker.maximumDate = oneMonthFromNowWithoutSeconds ;
+    if([self isNewPoll])
+    {
+        _datePicker.maximumDate = [DateFormatterHelper generateDateAfterDays:31];
+    }
 }
 
 - (void)loadDateIfNeeded

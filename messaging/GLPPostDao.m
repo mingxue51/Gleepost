@@ -535,7 +535,7 @@
 {
     [localPosts removeObjectsInArray:remotePosts];
     
-    DDLogDebug(@"GLPPostDao : subtractRemotePosts %d : %d", remotePosts.count, localPosts.count);
+    DDLogDebug(@"GLPPostDao : subtractRemotePosts %lu : %lu", (unsigned long)remotePosts.count, (unsigned long)localPosts.count);
 
     if(localPosts.count == remotePosts.count)
     {
@@ -843,7 +843,6 @@
     
     if([entity isPollPost])
     {
-        DDLogDebug(@"GLPPostDao : updatePost");
         [GLPPollDao saveOrUpdatePoll:entity.poll withPostRemoteKey:entity.remoteKey db:db];
     }
     
@@ -854,7 +853,7 @@
 {
     [GLPPostDao updatePostSendingData:entity inDb:db];
     
-    DDLogDebug(@"updateVideoPostSendingData post key: %d :%@", entity.key, entity.content);
+    DDLogDebug(@"updateVideoPostSendingData post key: %ld :%@", (long)entity.key, entity.content);
     
     if(entity.remoteKey != 0)
     {

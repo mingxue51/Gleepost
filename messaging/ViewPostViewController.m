@@ -19,8 +19,6 @@
 #import "ContactsManager.h"
 #import "UIViewController+Flurry.h"
 #import "GLPPostNotificationHelper.h"
-#import "ViewPostImageViewController.h"
-#import "TransitionDelegateViewImage.h"
 #import "AppearanceHelper.h"
 #import "GLPCommentUploader.h"
 #import "GLPCommentManager.h"
@@ -32,7 +30,6 @@
 #import "ShapeFormatterHelper.h"
 #import "UIColor+GLPAdditions.h"
 #import "GLPShowLocationViewController.h"
-#import "GLPViewImageViewController.h"
 #import "GLPiOSSupportHelper.h"
 #import "GLPCategory.h"
 #import "TDPopUpAfterGoingView.h"
@@ -42,6 +39,8 @@
 #import "GLPTableActivityIndicator.h"
 #import "ViewPostTitleCell.h"
 #import "GLPLikesCell.h"
+#import "GLPViewImageHelper.h"
+#import "CampusLiveManager.h"
 
 @interface ViewPostViewController () <GLPAttendingPopUpViewControllerDelegate, GLPLikesCellDelegate>
 
@@ -54,9 +53,6 @@
 @property (strong, nonatomic) IBOutlet UIView *commentFormView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *commentFormViewHeight;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *commentFormDistanceFromBottom;
-
-
-@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 
@@ -223,7 +219,6 @@ static BOOL likePushed;
 
 -(void)initialiseElements
 {
-    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     self.transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorCenter withView:self.tableView];
     
@@ -327,34 +322,7 @@ static BOOL likePushed;
     {
         [self.navigationController.navigationBar setButton:kRight withImageName:@"pad_icon" withButtonSize:CGSizeMake(25.0, 25.0) withSelector:@selector(showAttendees) andTarget:self];
     }
-    
-    if(self.isFromCampusLive)
-    {
-        [self addCustomBackButton];
-    }
 }
-
--(void)addCustomBackButton
-{
-    UIImage *img = [UIImage imageNamed:@"cancel"];
-    
-    UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
-    [btn addTarget:self action:@selector(dismiss:) forControlEvents:UIControlEventTouchUpInside];
-    [btn setBackgroundImage:img forState:UIControlStateNormal];
-    [btn setFrame:CGRectMake(0, 0, 19, 21)];
-    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
-        
-    //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss:)];
-}
-
--(void)dismiss:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
-}
-
 
 /**
  If post comes from notifications post is loaded in this method.
@@ -482,13 +450,19 @@ static BOOL likePushed;
 - (void)goingButtonTouchedWithNotification:(NSNotification *)notification
 {    
     GLPPost *incomingPost = notification.userInfo[@"post"];
+    UIImage *image = notification.userInfo[@"post_image"];
+
+    if([image isEqual:[NSNull null]])
+    {
+        image = nil;
+    }
     
     //Show the pop up view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
-    [cvc setEventPost:incomingPost];
+    [cvc setEventPost:incomingPost withImage:image];
     
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     
@@ -630,24 +604,10 @@ static bool firstTime = YES;
     
 }
 
-
--(void)viewPostImage:(UIImage*)postImage
+- (void)viewPostImageView:(UIImageView *)postImageView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = postImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+    [GLPViewImageHelper showImageInViewController:self withImageView:postImageView];
 }
-
 
 - (void)setBackgroundToNavigationBar
 {
@@ -1120,26 +1080,21 @@ static bool firstTime = YES;
     {
         [_groupController removePostWithPost:post];
     }
+    else if(self.isFromCampusLive)
+    {
+        //Inform Campus Wall that the campus live status changed.
+        //i.e. refresh campus live.
+        [[CampusLiveManager sharedInstance] deletePostWithPost:post];
+    }
     else
     {
         [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
     }
     
-    if(self.isFromCampusLive)
-    {
-        [self dismissViewControllerAnimated:YES completion:^{
-            
-            //Inform Campus Wall that the campus live status changed.
-            //i.e. refresh campus live.
-            [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:YES];
-            
-        }];
-    }
-    else
-    {
-        // Pop-up view controller.
-        [self.navigationController popViewControllerAnimated:YES];
-    }
+
+    
+    // Pop-up view controller.
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - GLPLikesCellDelegate

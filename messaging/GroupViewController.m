@@ -14,7 +14,6 @@
 #import "GLPPostImageLoader.h"
 #import "GLPPostNotificationHelper.h"
 #import "ViewPostViewController.h"
-#import "TransitionDelegateViewImage.h"
 #import "MemberCell.h"
 #import "GLPPrivateProfileViewController.h"
 #import "WebClient.h"
@@ -38,7 +37,6 @@
 #import "GLPShowLocationViewController.h"
 #import "GLPLiveGroupManager.h"
 #import "GLPLiveGroupPostManager.h"
-#import "GLPViewImageViewController.h"
 #import "GLPGroupSettingsViewController.h"
 #import "ChangeGroupImageProgressView.h"
 #import "GLPCalendarManager.h"
@@ -55,7 +53,7 @@
 #import "GLPCampusWallAsyncProcessor.h"
 #import "GLPLiveGroupConversationsManager.h"
 #import "TransitionDelegateViewCategories.h"
-
+#import "GLPViewImageHelper.h"
 
 @interface GroupViewController () <GLPAttendingPopUpViewControllerDelegate, GLPGroupSettingsViewControllerDelegate, GLPPublicGroupPopUpViewControllerDelegate>
 
@@ -63,8 +61,7 @@
 @property (strong, nonatomic) NSArray *members;
 @property (assign, nonatomic) BOOL commentCreated;
 @property (strong, nonatomic) GLPPost *selectedPost;
-@property (assign, nonatomic) int currentNumberOfRows;
-@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
+@property (assign, nonatomic) NSInteger currentNumberOfRows;
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
 @property (strong, nonatomic) TransitionDelegateViewCategories *transitionNewPostViewController;
 
@@ -73,7 +70,7 @@
 
 //Properties for refresh loader.
 @property (assign, nonatomic) BOOL isLoading;
-@property (assign, nonatomic) int insertedNewRowsCount; // count of new rows inserted
+@property (assign, nonatomic) NSInteger insertedNewRowsCount; // count of new rows inserted
 @property (strong, nonatomic) GLPNewElementsIndicatorView *elementsIndicatorView;
 
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
@@ -88,7 +85,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (strong, nonatomic) GLPStretchedImageView *strechedImageView;
+@property (strong, nonatomic) GLPGroupStretchedImageView *strechedImageView;
 
 @property (strong, nonatomic) FakeNavigationBarView *fakeNavigationBar;
 
@@ -257,18 +254,13 @@ const float TOP_OFF_SET = -64.0;
     }
     
     [self.tableView setTableFooterView:[[UIView alloc] init]];
-
-    
     _tableView.contentInset = UIEdgeInsetsMake(185, 0, 0, 0);
-    
-    
     [_tableView addSubview:_strechedImageView];
-
 }
 
 - (void)configureTopImageView
 {
-    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPStretchedImageView" owner:self options:nil];
+    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPGroupStretchedImageView" owner:self options:nil];
     
     _strechedImageView = [array objectAtIndex:0];
     
@@ -278,7 +270,7 @@ const float TOP_OFF_SET = -64.0;
     
     [_strechedImageView setTextInTitle:_group.name];
     
-    [_strechedImageView setViewControllerDelegate:self];
+    _strechedImageView.delegate = self;
     
     [_strechedImageView setGesture:YES];
 }
@@ -311,9 +303,7 @@ const float TOP_OFF_SET = -64.0;
     self.isLoading = NO;
 //    self.firstLoadSuccessful = NO;
     self.loadingCellStatus = kGLPLoadingCellStatusFinished;
-    
-    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
-    
+
     self.transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
     
     _fakeNavigationBar = [[FakeNavigationBarView alloc] initWithTitle:_group.name];
@@ -504,7 +494,11 @@ const float TOP_OFF_SET = -64.0;
     {
         FLog(@"Refresh cell with index: %d Group name %@", index, self.group.name);
 
-        [self refreshCellViewWithIndex:index+1];
+        //TODO: For now we removing that but we should come back to integrate the
+        //new approach of loading the images. (same we used to use for campus live).
+        //[self refreshCellViewWithIndex:index+1];
+        
+        [self.tableView reloadData];
     }
 }
 
@@ -636,6 +630,8 @@ const float TOP_OFF_SET = -64.0;
     [self.tableView beginUpdates];
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.tableView endUpdates];
+    
+//    [self.tableView reloadData];
 }
 
 - (void)updateTableViewWithNewPostsAndScrollToTop:(int)count
@@ -662,7 +658,7 @@ const float TOP_OFF_SET = -64.0;
     
 }
 
-- (void)updateTableViewWithNewPosts:(int)count
+- (void)updateTableViewWithNewPosts:(NSInteger)count
 {
     CGPoint tableViewOffset = [self.tableView contentOffset];
     [UIView setAnimationsEnabled:NO];
@@ -682,6 +678,9 @@ const float TOP_OFF_SET = -64.0;
     tableViewOffset.y += heightForNewRows;
     
     [self.tableView setContentOffset:tableViewOffset animated:NO];
+    
+    DDLogDebug(@"updateTableViewWithNewPosts with rows %@", rowsInsertIndexPath);
+    
     [self.tableView insertRowsAtIndexPaths:rowsInsertIndexPath withRowAnimation:UITableViewRowAnimationFade];
     
     [UIView setAnimationsEnabled:YES];
@@ -755,6 +754,7 @@ const float TOP_OFF_SET = -64.0;
     if(indexPath.row == 0)
     {
         groupDescrViewCell = [tableView dequeueReusableCellWithIdentifier:CellDescriptionGroupIdentifier forIndexPath:indexPath];
+        
         [groupDescrViewCell setDelegate:self];
         groupDescrViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
         [groupDescrViewCell setGroupData:_group];
@@ -868,7 +868,7 @@ const float TOP_OFF_SET = -64.0;
 {
     // hide the new elements indicator if needed when we are on top
     if(!self.elementsIndicatorView.hidden && (indexPath.row == 0 || indexPath.row < self.insertedNewRowsCount)) {
-        NSLog(@"HIDE %d - %d", indexPath.row, self.insertedNewRowsCount);
+        NSLog(@"HIDE %ld - %ld", (long)indexPath.row, (long)self.insertedNewRowsCount);
         
         self.insertedNewRowsCount = 0; // reset the count
         [self hideNewElementsIndicatorView];
@@ -1405,10 +1405,6 @@ const float TOP_OFF_SET = -64.0;
             
             [self.posts insertObjects:posts atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, posts.count)]];
             
-            //New methodology of loading images.
-            [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
-            
-            
             // update table view and keep the scrolling state
             if(saveScrollingState)
             {
@@ -1418,6 +1414,13 @@ const float TOP_OFF_SET = -64.0;
                 // save the new rows count in order to know when (at what scroll position) to hide the new elements indicator
                 self.insertedNewRowsCount += posts.count;
             }
+            
+            
+            //New methodology of loading images.
+            [[GLPPostImageLoader sharedInstance] addPostsImages:posts];
+            
+            
+
         }
         
         // or scroll to the top
@@ -1428,9 +1431,6 @@ const float TOP_OFF_SET = -64.0;
         }
         
     }];
-    
-
-
 }
 
 
@@ -1614,21 +1614,6 @@ const float TOP_OFF_SET = -64.0;
     }
 }
 
-//-(void)viewPostImage:(UIImage*)postImage
-//{
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-//    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-//    vc.image = postImage;
-//    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-//    vc.modalPresentationStyle = UIModalPresentationCustom;
-//    
-//    [vc setTransitioningDelegate:self.transitionViewImageController];
-//    
-//    [self.view setBackgroundColor:[UIColor whiteColor]];
-//    [self presentViewController:vc animated:YES completion:nil];
-//}
-
-
 #pragma mark - New comment delegate
 
 -(void)setPreviousViewToNavigationBar
@@ -1785,33 +1770,27 @@ const float TOP_OFF_SET = -64.0;
     [self performSegueWithIdentifier:@"view post" sender:self];
 }
 
--(void)viewPostImage:(UIImage*)postImage
+-(void)viewPostImageView:(UIImageView *)postImageView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = postImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+    [GLPViewImageHelper showImageInViewController:self withImageView:postImageView];
 }
 
 - (void)goingButtonTouchedWithNotification:(NSNotification *)notification
 {
     _selectedPost = notification.userInfo[@"post"];
+    UIImage *image = notification.userInfo[@"post_image"];
+
+    if([image isEqual:[NSNull null]])
+    {
+        image = nil;
+    }
     
     //Show the pop up view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
-    [cvc setEventPost:_selectedPost];
+    [cvc setEventPost:_selectedPost withImage:image];
     
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     
@@ -1972,21 +1951,9 @@ const float TOP_OFF_SET = -64.0;
 
 #pragma mark - Navigation
 
--(void)showImage
+- (void)showImage
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = _groupImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+    [GLPViewImageHelper showImageInViewController:self withImageView:self.strechedImageView];
 }
 
 

@@ -56,6 +56,11 @@ NSString *CAMPUS_WALL_TITLE = @"STANFORD WALL";
     return [self.rightNavBarElementColour filledImageFrom:rightImage];
 }
 
+- (UIImage *)topItemColouredImage:(UIImage *)topImage
+{
+    return [self.primaryColour filledImageFrom:topImage];
+}
+
 - (NSString *)campusWallTitle
 {
     return CAMPUS_WALL_TITLE;

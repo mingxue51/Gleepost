@@ -19,7 +19,7 @@
 
 @property (assign, nonatomic) UIView<GLPPollingOptionCellDelegate> *delegate;
 
-- (void)setTitle:(NSString *)title withPercentage:(CGFloat)percentage withIndexRow:(NSInteger)indexRow enable:(BOOL)enable;
+- (void)setTitle:(NSString *)title withPercentage:(CGFloat)percentage withIndexRow:(NSInteger)indexRow enable:(BOOL)enable animateBars:(BOOL)animateBars;
 
 + (CGFloat)height;
 

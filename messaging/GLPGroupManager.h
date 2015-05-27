@@ -24,7 +24,7 @@
 
 + (void)removeMemberFromAdministrator:(GLPMember *)member withCallbackBlock:(void (^) (BOOL success))callbackBlock;
 
-+ (void)loadRemotePostsBefore:(GLPPost *)post withGroupRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
++ (void)loadRemotePostsBefore:(GLPPost *)post withGroupRemoteKey:(NSInteger)remoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
 
 + (void)loadPreviousPostsAfter:(GLPPost *)post withGroupRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback;
 

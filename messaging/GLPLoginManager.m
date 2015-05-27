@@ -29,6 +29,7 @@
 #import "GLPLiveGroupManager.h"
 #import "GLPLiveGroupConversationsManager.h"
 #import "ImageFormatterHelper.h"
+#import "CampusLiveManager.h"
 
 @implementation GLPLoginManager
 
@@ -288,6 +289,8 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS object:self];
     
     [[GLPPushManager sharedInstance] unregisterPushTokenWithAuthParams:authParams];
+    
+    [[CampusLiveManager sharedInstance] clearData];
     
     [UICKeyChainStore removeItemForKey:@"facebook.email"];
 }

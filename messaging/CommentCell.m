@@ -23,6 +23,7 @@
 
 @property (assign, nonatomic) float heightOfCell;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentLabelHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromBottom;
 @property (weak, nonatomic) IBOutlet UIImageView *backgoundImageView;
 @property (assign, nonatomic) CommentCellType cellType;
 
@@ -35,7 +36,7 @@
 static const float FixedSizeOfTextCell = 53.0; //Before was 90. 75
 static const float FollowingCellPadding = 0.0;
 static const float CommentContentViewPadding = 0.0;  //15 before.
-static const float CommentContentLabelMargin = 40.0;
+static const float CommentContentLabelMargin = 20 + 36 + 5 + 20;
 
 
 @implementation CommentCell
@@ -68,7 +69,7 @@ static const float CommentContentLabelMargin = 40.0;
     
     [_userImageView setImageUrl:comment.author.profileImageUrl withPlaceholderImage:[GLPImageHelper placeholderUserImagePath]];
     [_userImageView setTag:comment.author.remoteKey];
-    [_userImageView setViewControllerDelegate:_delegate];
+    _userImageView.delegate = _delegate;
     [_userImageView setGesture:YES];
 
     
@@ -86,10 +87,6 @@ static const float CommentContentLabelMargin = 40.0;
     
     //Set post's time.
     [self.postDateLabel setText:[[currentDate timeAgo] uppercaseString]];
-    
-    
-    DDLogDebug(@"Comment Cell : content width %f", self.contentLabel.frame.size.width);
-
     
 //    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor] andWidth:0.5];
 //    [ShapeFormatterHelper setBorderToView:self.postDateLabel withColour:[UIColor blackColor] andWidth:1.0];
@@ -128,12 +125,15 @@ static const float CommentContentLabelMargin = 40.0;
 
 - (void)configureCommentCell
 {
+    self.distanceFromBottom.constant = -1.0;
+    
     switch (_cellType) {
         case kTopCommentCell:
             [self configureTopCell];
             break;
             
         case kBottomCommentCell:
+            self.distanceFromBottom.constant = 0.0;
             [self configureBottomCell];
             break;
             
@@ -149,9 +149,6 @@ static const float CommentContentLabelMargin = 40.0;
             DDLogDebug(@"Default");
             break;
     }
-    
-//    [self formatBackgroundView];
-
 }
 
 -(void)setCellHeight:(NSString*)content
@@ -212,7 +209,7 @@ static const float CommentContentLabelMargin = 40.0;
 
 - (void)configureMiddleCell
 {
-    DDLogDebug(@"Middle cell sublayers %@", self.contentView.layer.sublayers);
+    [self.backgoundImageView layoutIfNeeded];
     
     [ShapeFormatterHelper removeTopCellBottomLine:self.contentView];
     [_backgoundImageView addRightBorderWithWidth:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
@@ -261,7 +258,7 @@ static const float CommentContentLabelMargin = 40.0;
     UIFont *font = [UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:15.0];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
-    
+        
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){[CommentCell getMaxLabelContentWidth], CGFLOAT_MAX}
                                                options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
                                                context:nil];

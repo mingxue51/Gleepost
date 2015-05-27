@@ -18,6 +18,7 @@
 #import "GLPConversationRead.h"
 #import "GLPReviewHistory.h"
 #import "GLPSystemMessage.h"
+#import "GLPLiveSummary.h"
 
 @interface RemoteParser()
 
@@ -649,6 +650,8 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         DDLogDebug(@"RemoteParser : poll %@", post);
     }
     
+    post.sendStatus = kSendStatusSent;
+    
     return post;
 }
 
@@ -910,6 +913,15 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     return delimitedCommaTags;
 }
 
+#pragma mark - Campus Live
+
++ (GLPLiveSummary *)parseLiveSummaryWithJson:(NSDictionary *)json
+{
+    DDLogDebug(@"Remote parser parseLiveSummaryWithJson %@", json);
+    
+    return [[GLPLiveSummary alloc] initWithTotalPosts:[json[@"total-posts"] integerValue] andByCategoryData:json[@"by-category"]];
+}
+
 #pragma mark - Attendees
 
 +(NSInteger)parseNewPopularity:(NSDictionary *)json
@@ -956,9 +968,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     [group setPrivacyWithString:json[@"privacy"]];
     
     if(json[@"last_activity"])
-    {
-        DDLogDebug(@"RemoteParser : parseGroupFromJson %@", json[@"last_activity"]);
-        
+    {        
         group.lastActivity = [RemoteParser parseDateFromString:json[@"last_activity"]];
     }
     

@@ -17,6 +17,8 @@
 #import "SRWebSocket.h"
 #import "GLPGroup.h"
 
+@class GLPLiveSummary;
+
 @interface WebClient : AFHTTPClient
 
 extern NSString * const kWebserviceBaseUrl;
@@ -68,7 +70,7 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)editPost:(GLPPost *)editedPost callbackBlock:(void (^)(BOOL success, GLPPost *updatedPost))callbackBlock;
 -(void)getPostWithRemoteKey:(NSInteger)remoteKey withCallbackBlock:(void (^) (BOOL success, GLPPost *post))callbackBlock;
 -(void)loadUserPostsAfter:(GLPPost *)post withRemoteKey:(int)remoteKey callbackBlock:(void (^) (BOOL success, NSArray *posts))callbackBlock;
--(void)deletePostWithRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock;
+- (void)deletePostWithRemoteKey:(NSInteger)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock;
 - (void)reportPostWithRemoteKey:(NSInteger)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock;
 - (void)loadAttendeesWithPostRemoteKey:(NSInteger)postRemoteKey callback:(void (^)(NSArray *users, BOOL success))callback;
 
@@ -79,7 +81,7 @@ extern NSString * const kWebserviceBaseUrl;
 - (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock;
 - (void)createComment:(GLPComment *)comment callbackBlock:(void (^)(BOOL success))callbackBlock;
 
--(void)attendEvent:(BOOL)attend withPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success, NSInteger popularity))callbackBlock;
+-(void)attendEvent:(BOOL)attend withPostRemoteKey:(NSInteger)postRemoteKey callbackBlock:(void (^) (BOOL success, NSInteger popularity))callbackBlock;
 
 - (void)getConversationsFilterByLive:(BOOL)live withCallbackBlock:(void (^)(BOOL success, NSArray *conversations))callbackBlock;
 - (void)getConversationForRemoteKey:(NSInteger)remoteKey withCallback:(void (^)(BOOL success, GLPConversation *conversation))callback;
@@ -92,8 +94,8 @@ extern NSString * const kWebserviceBaseUrl;
 
 
 // groups
--(void)getGroupDescriptionWithId:(int)groupId withCallbackBlock:(void (^) (BOOL success, GLPGroup *group, NSString *errorMessage))callbackBlock;
--(void)getPostsAfter:(GLPPost *)post withGroupId:(int)groupId callback:(void (^)(BOOL success, NSArray *posts))callbackBlock;
+-(void)getGroupDescriptionWithId:(NSInteger)groupId withCallbackBlock:(void (^) (BOOL success, GLPGroup *group, NSString *errorMessage))callbackBlock;
+-(void)getPostsAfter:(GLPPost *)post withGroupId:(NSInteger)groupId callback:(void (^)(BOOL success, NSArray *posts))callbackBlock;
 -(void)getGroupswithCallbackBlock:(void (^) (BOOL success, NSArray *groups))callbackBlock;
 -(void)getMembersWithGroupRemoteKey:(int)remoteKey withCallbackBlock:(void (^) (BOOL success, NSArray *members))callbackBlock;
 - (void)makeMemberAsAdmin:(GLPMember *)member withCallbackBlock:(void (^) (BOOL success))callbackBlock;
@@ -155,6 +157,9 @@ extern NSString * const kWebserviceBaseUrl;
 // pending posts
 
 - (void)getPostsWaitingForApprovalCallbackBlock:(void (^) (BOOL success, NSArray *pendingPosts))callbackBlock;
+
+// campus live
+- (void)campusLiveSummaryUntil:(NSDate *)until callbackBlock:(void (^) (BOOL success, GLPLiveSummary *liveSummary))callbackBlock;
 
 // approval
 - (void)getApprovalStatusCallbackBlock:(void (^) (BOOL success, NSInteger level))callbackBlock;

@@ -7,6 +7,7 @@
 //
 
 #import "GLPPoll.h"
+#import "NSDate+Calculations.h"
 
 @implementation GLPPoll
 
@@ -69,6 +70,13 @@
     }
 }
 
+- (void)updateVotesWithWebSocketData:(GLPPoll *)webSocketPoll
+{
+    self.sumVotes = 0;
+    self.options = webSocketPoll.options;
+    [self setVotes:webSocketPoll.votes.mutableCopy];
+}
+
 - (void)userVotedWithOption:(NSString *)option
 {
     NSInteger vote = [[self.votes objectForKey:option] integerValue];
@@ -91,6 +99,11 @@
 {
     _usersVote = usersVote;
     self.didUserVote = (_usersVote) ? YES : NO;
+}
+
+- (BOOL)pollEnded
+{
+    return ([[self.expirationDate substractWithDate:[NSDate date]] isEqualToString:@"ENDED"]);
 }
 
 - (NSString *)description

@@ -94,6 +94,17 @@
 #define GLPNOTIFICATION_GROUPS_LOADED                   @"GLPGroupsLoaded"
 #define GLPNOTIFICATION_POST_IMAGE_LOADED               @"GLPPostImageLoaded"
 
+#define GLPNOTIFICATION_CAMPUS_LIVE_POSTS_FETCHED       @"GLPCampusLivePostsFetched"
+#define GLPNOTIFICATION_CAMPUS_LIVE_SUMMARY_FETCHED     @"GLPCampusLiveSummaryFetched"
+#define GLPNOTIFICATION_COMMENTS_FETCHED                @"GLPCommentsFetched"
+#define GLPNOTIFICATION_CL_IMAGE_SHOULD_VIEWED          @"GLPCLImageShouldViewed"
+#define GLPNOTIFICATION_CL_SHOW_MORE_OPTIONS            @"GLPCLShowMoreOptions"
+#define GLPNOTIFICATION_CL_COMMENT_BUTTON_TOUCHED       @"GLPCLCommentButtonTouched"
+
+#define GLPNOTIFICATION_CL_SHOW_SHARE_OPTIONS           @"GLPCLShowShareOptions"
+#define GLPNOTIFICATION_RELOAD_CL_COMMENTS_LIKES        @"GLPReloadCLCommentsLikes"
+#define GLPNOTIFICATION_CL_POST_TOUCHED                 @"GLPCLPostTouched"
+
 
 #define GLPNOTIFICATION_GROUPS_FECTHED_AFTER_QUERY      @"GLPGroupsFetchedAfterQuery"
 #define GLPNOTIFICATION_USER_GROUPS_LOADED              @"GLPUserGroupsLoaded"

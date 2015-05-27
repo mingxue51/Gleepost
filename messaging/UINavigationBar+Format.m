@@ -83,7 +83,7 @@
     
     UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, [GLPiOSSupportHelper screenWidth], 64.0)];
     
-    [topView setBackgroundColor:[UIColor whiteColor]];
+    [topView setBackgroundColor:[[GLPThemeManager sharedInstance] navigationBarColour]];
     
     UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 63.0, [GLPiOSSupportHelper screenWidth], 1.0)];
     

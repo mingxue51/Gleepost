@@ -71,6 +71,16 @@
     }
 }
 
+- (BOOL)notificationsEmpty
+{
+    if(self.sections.count == 0)
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
 #pragma mark - Operations
 
 - (void)addNotification:(GLPNotification *)notification withHeader:(NSString *)header

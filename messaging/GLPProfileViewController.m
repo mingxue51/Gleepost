@@ -26,7 +26,6 @@
 #import "GLPPostImageLoader.h"
 #import "GLPProfileLoader.h"
 #import "GLPInvitationManager.h"
-#import "TransitionDelegateViewImage.h"
 #import "GLPSettingsViewController.h"
 #import "GLPiOSSupportHelper.h"
 #import "GroupViewController.h"
@@ -39,7 +38,6 @@
 #import "GLPVideoLoaderManager.h"
 #import "GLPShowLocationViewController.h"
 #import "ChangeImageProgressView.h"
-#import "GLPViewImageViewController.h"
 #import "NotificationsOrganiserHelper.h"
 #import "GLPLiveGroupManager.h"
 #import "GLPCalendarManager.h"
@@ -53,6 +51,7 @@
 #import "GLPTableActivityIndicator.h"
 #import "LoggedInUserProfileManager.h"
 #import "GLPLoadingCell.h"
+#import "GLPViewImageHelper.h"
 
 @interface GLPProfileViewController () <MFMessageComposeViewControllerDelegate, UIActionSheetDelegate, GLPAttendingPopUpViewControllerDelegate>
 
@@ -76,13 +75,11 @@
 
 @property (assign, nonatomic) BOOL commentCreated;
 
-@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
-
 @property (strong, nonatomic) NSDate *commentNotificationDate;
 
 @property (assign, nonatomic) BOOL postUploaded;
 
-@property (strong, nonatomic) NSMutableArray *notifications;
+//@property (strong, nonatomic) NSMutableArray *notifications;
 
 @property (assign, nonatomic) BOOL tabButtonEnabled;
 
@@ -407,14 +404,10 @@
     
     self.numberOfRows = 1;
     
-    //Used for viewing post image.
-    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
-    
     _transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
 
-    
     // internal notifications
-    _notifications = [NSMutableArray array];
+//    _notifications = [NSMutableArray array];
     _unreadNotificationsCount = 0;
     
     _postUploaded = NO;
@@ -594,19 +587,19 @@
 
 -(void)showImage
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = _user.profileImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+//    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
+//    viewImage.image = _user.profileImage;
+//    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
+//    viewImage.modalPresentationStyle = UIModalPresentationCustom;
+//    
+//    if(![GLPiOSSupportHelper isIOS6])
+//    {
+//        [viewImage setTransitioningDelegate:self.transitionViewImageController];
+//    }
+//    
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:viewImage animated:YES completion:nil];
 }
 
 #pragma mark - ImageSelectorViewControllerDelegate
@@ -735,10 +728,10 @@
 
     [GLPNotificationManager loadNotificationsWithLocalCallback:^(BOOL success, NSArray *notifications) {
         
-        _notifications = notifications.mutableCopy;
+//        _notifications = notifications.mutableCopy;
         
         [_notificationsOrganiser resetData];
-        [_notificationsOrganiser organiseNotifications:_notifications];
+        [_notificationsOrganiser organiseNotifications:notifications];
         
         if(_selectedTab == kButtonRight) {
             [self notificationsTabClick];
@@ -754,10 +747,10 @@
         
     } andRemoteCallback:^(BOOL success, NSArray *remoteNotifications) {
         
-        _notifications = remoteNotifications.mutableCopy;
+//        _notifications = remoteNotifications.mutableCopy;
         
         [_notificationsOrganiser resetData];
-        [_notificationsOrganiser organiseNotifications:_notifications];
+        [_notificationsOrganiser organiseNotifications:remoteNotifications];
         
         if(_selectedTab == kButtonRight) {
             //[self notificationsTabClick];
@@ -770,9 +763,11 @@
                 [self.tableView reloadData];
             }
         }
+        
+        DDLogInfo(@"GLPProfileViewController - Unread: %ld / Total: %lu", (long)_unreadNotificationsCount, (unsigned long)remoteNotifications.count);
+
     }];
     
-    DDLogInfo(@"GLPProfileViewController - Unread: %d / Total: %d", _unreadNotificationsCount, _notifications.count);
 }
 
 - (void)refreshNotifications
@@ -785,14 +780,14 @@
         
     } andRemoteCallback:^(BOOL success, NSArray *remoteNotifications) {
         
-        _notifications = remoteNotifications.mutableCopy;
+//        _notifications = remoteNotifications.mutableCopy;
         
         [_notificationsOrganiser resetData];
-        [_notificationsOrganiser organiseNotifications:_notifications];
+        [_notificationsOrganiser organiseNotifications:remoteNotifications];
         
         [self.tableView reloadData];
         
-        DDLogInfo(@"Notifications after remote refresh: %ld", (unsigned long)_notifications.count);
+        DDLogInfo(@"Notifications after remote refresh: %ld", (unsigned long)remoteNotifications.count);
     }];
 }
 
@@ -810,14 +805,14 @@
     
     NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:notifications.count];
     int i = 0;
-    for(id not in notifications) {
-        [_notifications insertObject:not atIndex:i];
+    for(GLPNotification *not in notifications) {
+//        [_notifications insertObject:not atIndex:i];
         [indexPaths addObject:[NSIndexPath indexPathForRow:i + 2 inSection:0]];
         ++i;
     }
     
     [_notificationsOrganiser resetData];
-    [_notificationsOrganiser organiseNotifications:_notifications];
+    [_notificationsOrganiser organiseNotifications:notifications];
     
     [self.tableView reloadData];
     
@@ -978,7 +973,8 @@
     {
         NSInteger extraRow = 0;
         
-        if(_notifications.count == 0)
+//        if(_notifications.count == 0)
+        if([self.notificationsOrganiser notificationsEmpty])
         {
             [_emptyNotificationsMessage showEmptyMessageView];
         }
@@ -1302,34 +1298,9 @@
 
 #pragma mark - View image delegate
 
--(void)viewPostImage:(UIImage*)postImage
+-(void)viewPostImageView:(UIImageView *)postImageView
 {
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-//    ViewPostImageViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ViewPostImage"];
-//    vc.image = postImage;
-//    vc.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-//    vc.modalPresentationStyle = UIModalPresentationCustom;
-//    
-//    [vc setTransitioningDelegate:self.transitionViewImageController];
-//    
-//    [self.view setBackgroundColor:[UIColor whiteColor]];
-//    [self presentViewController:vc animated:YES completion:nil];
-    
-    
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = postImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+    [GLPViewImageHelper showImageInViewController:self withImageView:postImageView];
 }
 
 #pragma mark - GLPPostCellDelegate
@@ -1357,13 +1328,19 @@
 - (void)goingButtonTouchedWithNotification:(NSNotification *)notification
 {
     _selectedPost = notification.userInfo[@"post"];
+    UIImage *image = notification.userInfo[@"post_image"];
+    
+    if([image isEqual:[NSNull null]])
+    {
+        image = nil;
+    }
     
     //Show the pop up view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
-    [cvc setEventPost:_selectedPost];
+    [cvc setEventPost:_selectedPost withImage:image];
     
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     

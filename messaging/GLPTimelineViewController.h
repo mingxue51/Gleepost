@@ -12,7 +12,7 @@
 #import "ViewImageDelegate.h"
 #import "GLPPostCell.h"
 
-@interface GLPTimelineViewController : UITableViewController <GLPNewElementsIndicatorViewDelegate, NewCommentDelegate, ViewImageDelegate, RemovePostCellDelegate, GLPPostCellDelegate>
+@interface GLPTimelineViewController : UIViewController <GLPNewElementsIndicatorViewDelegate, NewCommentDelegate, ViewImageDelegate, RemovePostCellDelegate, GLPPostCellDelegate>
 
 @property BOOL readyToReloadPosts;
 
@@ -22,8 +22,6 @@
 -(void)reloadNewImagePostWithPost:(GLPPost*)inPost;
 -(void)refreshPostsWithNewCategory;
 -(void)newPostButtonClick;
--(void)showCategories:(id)sender;
-
 -(void)loadGroupsFeed;
 
 -(void)loadRegularPosts;

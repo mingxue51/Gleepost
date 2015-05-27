@@ -21,11 +21,14 @@
 + (NSString *)dateUnixFormat:(NSDate *)date;
 +(NSDate *)generateDateAfterDays:(int)days;
 +(NSDate *)generateDateAfterHours:(int)hours;
++ (NSDate *)generateDateAfterMinutes:(NSInteger)minutes;
 +(NSDate *)generateTodayDateWhenItStarts;
 +(NSDate *)generateDateWithLastMinutePlusDates:(int)dates;
 +(NSArray *)generateTheNextDayStartAndEnd;
 +(BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate;
 + (NSDate *)generateDateBeforeDays:(NSInteger)days;
 + (NSDate *)addHours:(NSUInteger)hours toDate:(NSDate *)date;
+
++ (NSString *)generateStringTimeForPostEventWithTime:(NSDate *)date;
 
 @end

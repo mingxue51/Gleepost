@@ -11,6 +11,7 @@
 //
 
 #import "EmptyMessage.h"
+#import "GLPiOSSupportHelper.h"
 
 @interface EmptyMessage ()
 
@@ -74,7 +75,9 @@
 
 -(float)positionForBottom
 {
-    return (IS_IPHONE_5) ? 320.0f : 300.0f;
+    return [GLPiOSSupportHelper screenHeight] * 0.6;
+    
+//    return (IS_IPHONE_5) ? 320.0f : 300.0f;
 }
 
 -(float)positionForFurtherBottom
@@ -86,11 +89,11 @@
 {
     _emptyMessageView.backgroundColor = [UIColor clearColor];
     
-    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 320.0f, 50.0f)];
+    _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, [GLPiOSSupportHelper screenWidth], 50.0f)];
     _titleLabel.font = [UIFont boldSystemFontOfSize:18];
     _titleLabel.numberOfLines = 1;
     _titleLabel.lineBreakMode = NSLineBreakByCharWrapping;
-    _titleLabel.shadowColor = [UIColor lightTextColor];
+//    _titleLabel.shadowColor = [UIColor lightTextColor];
     _titleLabel.textColor = [UIColor colorWithRed:230.0f/255.0f green:230.0f/255.0f blue:230.0f/255.0f alpha:1.0f];
     _titleLabel.shadowOffset = CGSizeMake(0, 1);
     _titleLabel.backgroundColor = [UIColor clearColor];

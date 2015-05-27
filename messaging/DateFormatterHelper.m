@@ -7,6 +7,8 @@
 //
 
 #import "DateFormatterHelper.h"
+#import "NSDate+TimeAgo.h"
+#import "NSDate+HumanizedTime.h"
 
 @implementation DateFormatterHelper
 
@@ -142,6 +144,18 @@
     return date;
 }
 
++ (NSDate *)generateDateAfterMinutes:(NSInteger)minutes
+{
+    NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
+    
+    [comp setDay:comp.day];
+    [comp setHour:comp.hour];
+    [comp setMinute:comp.minute+minutes];
+    NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comp];
+    
+    return date;
+}
+
 +(NSDate *)generateDateWithLastMinutePlusDates:(int)dates
 {
     NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
@@ -202,6 +216,25 @@
     NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comp];
     
     return date;
+}
+
+#pragma mark - For UI
+
++ (NSString *)generateStringTimeForPostEventWithTime:(NSDate *)date
+{
+    if ([[NSDate date] compare:date] == NSOrderedDescending)
+    {
+        return [date timeAgo];
+        
+    } else if ([[NSDate date] compare:date] == NSOrderedAscending)
+    {
+        
+        return [date stringWithHumanizedTimeDifference:NSDateHumanizedSuffixLeft withFullString:YES];
+    
+    } else
+    {
+        return [date timeAgo];
+    }
 }
 
 #pragma mark - Date as param

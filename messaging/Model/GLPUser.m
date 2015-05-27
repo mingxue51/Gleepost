@@ -110,7 +110,7 @@
     return self.remoteKey;
 }
 
--(NSString*)description
+-(NSString *)description
 {
     return [NSString stringWithFormat:@"Remote Key: %ld, Username: %@, Image: %@, Message: %@, Rsvps: %@, Groups: %@, Posts: %@",(long)self.remoteKey, self.name, self.profileImageUrl, self.personalMessage, _rsvpCount, _groupCount, _postsCount];
 }

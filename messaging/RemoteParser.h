@@ -16,6 +16,7 @@
 #import "GLPNotification.h"
 #import "GLPWebSocketEvent.h"
 #import "GLPGroup.h"
+#import "GLPLiveSummary.h"
 
 @interface RemoteParser : NSObject
 
@@ -54,7 +55,7 @@
 + (NSArray *)parseCommentsFromJson:(NSArray *)jsonComments forPost:(GLPPost *)post;
 + (NSString*)parseCategoriesToTags:(NSArray*)categories;
 + (NSString *)generatePollOptionsInCDFormatWithOptions:(NSArray *)options;
-
++ (GLPLiveSummary *)parseLiveSummaryWithJson:(NSDictionary *)json;
 // polling
 
 + (GLPPoll *)parsePollDataWithPollData:(NSDictionary *)jsonData;

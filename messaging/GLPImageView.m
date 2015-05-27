@@ -9,6 +9,7 @@
 #import "GLPImageView.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
+#import "ShapeFormatterHelper.h"
 
 @interface GLPImageView ()
 
@@ -38,6 +39,12 @@
 - (void)configureImageView
 {
     [self setUserInteractionEnabled:YES];
+}
+
+- (void)makeImageRounded
+{
+    [self layoutIfNeeded];
+    [ShapeFormatterHelper setRoundedView:self toDiameter:self.frame.size.height];
 }
 
 - (void)setImageUrl:(NSString *)imageUrl withPlaceholderImage:(NSString *)imagePath
@@ -83,11 +90,11 @@
 - (void)imageTouched
 {
     
-    if(_viewControllerDelegate)
+    if(self.delegate)
     {
-        if([_viewControllerDelegate respondsToSelector:@selector(imageTouchedWithImageView:)])
+        if([self.delegate respondsToSelector:@selector(imageTouchedWithImageView:)])
         {
-            [_viewControllerDelegate imageTouchedWithImageView:self];
+            [self.delegate imageTouchedWithImageView:self];
         }
     }
 //    else if (_normalViewDelegate)

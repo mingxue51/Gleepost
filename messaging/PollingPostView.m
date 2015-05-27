@@ -21,6 +21,8 @@
 @property (strong, nonatomic) GLPPoll *pollData;
 @property (assign, nonatomic) NSInteger postRemoteKey;
 
+@property (assign, nonatomic) BOOL userJustVoted;
+
 @end
 
 const CGFloat POLLING_TWO_LINES_HEIGHT = 45.0;
@@ -35,6 +37,11 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 16;
     [super awakeFromNib];
     [self registerCell];
     [self registerNotifications];
+}
+
+- (void)dealloc
+{
+    
 }
 
 #pragma mark - Configuration
@@ -56,6 +63,11 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 16;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POLL_VIEW_STATUS_CHANGED object:nil];
 }
 
+- (void)initialiseObjects
+{
+    self.userJustVoted = NO;
+}
+
 #pragma mark - NSNotification methods
 
 - (void)responseFromServer:(NSNotification *)notification
@@ -63,10 +75,11 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 16;
     NSDictionary *userInfo = notification.userInfo;
     
     PollOperationStatus operationStatus = [userInfo[@"kind_of_operation"] integerValue];
-    NSInteger postRemoteKey = [userInfo[@"post_remote_key"] integerValue];
+    NSInteger postRemoteKey = [userInfo[@"poll_remote_key"] integerValue];
     
     if(postRemoteKey != self.postRemoteKey)
     {
+        DDLogError(@"PollingPostView wrong post abort %@. %ld, %ld", self.pollData.options, (long)postRemoteKey, (long)self.postRemoteKey);
         return;
     }
     
@@ -79,7 +92,16 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 16;
     }
     else if(operationStatus == kPollUpdated)
     {
-        self.pollData = userInfo[@"poll_updated_data"];
+//        self.pollData = userInfo[@"poll_updated_data"];
+        [self.pollData updateVotesWithWebSocketData:userInfo[@"poll_updated_data"]];
+        DDLogDebug(@"PollingPostView poll updated %@", self.pollData.votes);
+        //TODO: see if that works without this condition.
+//        if(self.userJustVoted)
+//        {
+//            DDLogInfo(@"PollingPostView user just voted abort.");
+//            return;
+//        }
+        
         [self.tableView reloadData];
     }
 }
@@ -90,15 +112,28 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 16;
 {
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    [self initialiseObjects];
     self.pollData = pollData;
     self.postRemoteKey = postRemoteKey;
+    
     [self.pollingDataView setPollData:pollData];
+    
+    //TODO: See if that is good to have it here.
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self.pollingDataView setPollData:pollData];
+//
+//        });
+//        
+//    });
+    
     [self.tableView reloadData];
     [self.tableView setUserInteractionEnabled:YES];
     
     if([self.pollData didUserVote])
     {
-        DDLogDebug(@"PollingPostView : user voted %@", self.pollData.options[0]);
+        DDLogDebug(@"PollingPostView : user voted %@", self.pollData.options);
     }
 }
 
@@ -148,7 +183,7 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 16;
     CGFloat optionPercentage = [self.pollData voteInPercentageWithOption:optionTitle];
 //    DDLogDebug(@"PollingPostView : percentage %f option %@ user did vote %d", optionPercentage, optionTitle, self.pollData.didUserVote);
     
-    [cell setTitle:optionTitle withPercentage:optionPercentage withIndexRow:indexPath.row enable:self.pollData.didUserVote];
+    [cell setTitle:optionTitle withPercentage:optionPercentage withIndexRow:indexPath.row enable:self.pollData.didUserVote || [self.pollData pollEnded] animateBars:self.userJustVoted];
     cell.delegate = self;
     return cell;
 }
@@ -183,9 +218,13 @@ const CGFloat POLLING_CELL_FIXED_HEIGHT = 100.0 - 16;
 {
     DDLogDebug(@"PollingPostView : increaseVoteAndUnlockPollCellInOption option %ld %@ %@", (long)option, self.pollData.options[option], self.pollData.options);
     
+    self.userJustVoted = YES;
+    
     [self.pollData userVotedWithOption:self.pollData.options[option]];
     [self.pollingDataView setPollData:self.pollData];
     [self.tableView reloadData];
+    
+    [[GLPPollOperationManager sharedInstance] updatePollLocallyWithNewData:self.pollData withPostRemoteKey:self.postRemoteKey];
 }
 
 - (void)refreshCellWithRow:(NSInteger)row withRowAnimation:(UITableViewRowAnimation)rowAnimation

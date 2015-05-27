@@ -59,6 +59,10 @@
             yPosition = ([[UIScreen mainScreen] bounds].size.height/2 + _activityIndicator.frame.size.height * 3);
             break;
             
+            case kActivityIndicatorMaxBottom:
+            yPosition = ([[UIScreen mainScreen] bounds].size.height - _activityIndicator.frame.size.height * 5);
+            break;
+            
         default:
             break;
     }

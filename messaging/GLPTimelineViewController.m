@@ -19,8 +19,6 @@
 #import "NewPostView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "AppearanceHelper.h"
-#import "ViewPostImageViewController.h"
-#import "TransitionDelegateViewImage.h"
 #import "GLPPostManager.h"
 #import "GLPLoadingCell.h"
 #import "SessionManager.h"
@@ -39,9 +37,6 @@
 #import "GLPProfileLoader.h"
 #import "GLPNewCategoriesViewController.h"
 #import "TransitionDelegateViewCategories.h"
-#import "CampusWallHeader.h"
-#import "CampusWallHeaderSimpleView.h"
-#import "FakeNavigationBar.h"
 #import "UIImage+StackBlur.h"
 #import "ConversationManager.h"
 #import "AnimationDayController.h"
@@ -50,7 +45,6 @@
 #import "GLPiOSSupportHelper.h"
 #import "TableViewHelper.h"
 #import "GLPFlurryVisibleCellProcessor.h"
-#import "EmptyMessage.h"
 #import "GLPVideoLoaderManager.h"
 #import "GLPWalkthroughViewController.h"
 #import "UINavigationBar+Format.h"
@@ -62,7 +56,6 @@
 #import "UploadingProgressView.h"
 #import "NewPostViewController.h"
 #import "GLPShowLocationViewController.h"
-#import "GLPViewImageViewController.h"
 #import "CategoryManager.h"
 #import "GLPAttendingPopUpViewController.h"
 #import "TDPopUpAfterGoingView.h"
@@ -75,10 +68,13 @@
 #import "GLPCategoryTitleCell.h"
 #import "GLPTrackViewsCountProcessor.h"
 #import "GLPCampusWallAsyncProcessor.h"
-#import "URBMediaFocusViewController.h"
 #import "GLPCategoryCell.h"
+#import "GLPCampusWallStretchedView.h"
+#import "CampusWallFakeNavigationBar.h"
+#import "GLPCampusLiveViewController.h"
+#import "GLPViewImageHelper.h"
 
-@interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate, GLPCategoriesViewControllerDelegate>
+@interface GLPTimelineViewController () <GLPAttendingPopUpViewControllerDelegate, GLPCategoriesViewControllerDelegate, GLPCampusWallStretchedViewDelegate, GLPCampusLiveViewControllerDelegate>
 
 @property (strong, nonatomic) NSMutableArray *posts;
 @property (strong, nonatomic) GLPPost *selectedPost;
@@ -86,10 +82,7 @@
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
 @property (strong, nonatomic) NSMutableArray *shownCells;
 @property (strong, nonatomic) NewPostView *postView;
-@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
 @property (strong, nonatomic) TransitionDelegateViewCategories *transitionCategoriesViewController;
-
-@property (strong, nonatomic) URBMediaFocusViewController *mediaFocusViewController;
 
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
 @property (strong, nonatomic) UIImage *imageToBeView;
@@ -129,9 +122,7 @@
 @property (assign, nonatomic) BOOL hidden;
 
 //Header.
-@property (weak, nonatomic) CampusWallHeaderSimpleView *campusWallHeader;
 @property (strong, nonatomic)  UploadingProgressView *pView;
-//@property (strong, nonatomic) FakeNavigationBar *reNavBar;
 
 //Groups.
 @property (strong, nonatomic) CampusWallGroupsPostsManager *groupsPostsManager;
@@ -146,8 +137,6 @@
 @property (strong, nonatomic) GLPTrackViewsCountProcessor *trackViewsCountProcessor;
 @property (strong, nonatomic) GLPCampusWallAsyncProcessor *campusWallAsyncProcessor;
 
-@property (strong ,nonatomic ) EmptyMessage *emptyGroupPostsMessage;
-
 //@property (strong, nonatomic) EmptyMessage *emptyCategoryPostsMessage;
 
 @property (assign, nonatomic, getter = isWalkthroughFinished) BOOL walkthroughFinished;
@@ -161,13 +150,22 @@
 
 @property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
+@property (strong, nonatomic) GLPCampusWallStretchedView *strechedImageView;
+
+@property (strong, nonatomic) CampusWallFakeNavigationBar *fakeNavigationBar;
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (assign, nonatomic) BOOL viewDisappeared;
+
 @end
 
 
 @implementation GLPTimelineViewController
 
 //Constants.
-const float TOP_OFFSET = 180.0f;
+const float TOP_OFFSET = -64.0;
+const float OFFSET_START_ANIMATING_CW = 360.0;
 
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -186,6 +184,8 @@ const float TOP_OFFSET = 180.0f;
 {
     [super viewDidLoad];
     
+    [self configureTopImageView];
+
     [self configTableView];
 
     [self configHeader];
@@ -197,13 +197,18 @@ const float TOP_OFFSET = 180.0f;
     [self initialiseObjects];
     
     [self addNavigationButtons];
+
     
-    NSTimer *t = [NSTimer timerWithTimeInterval:0.5f target:self selector:@selector(startLoadingContents:) userInfo:nil repeats:NO];
-    [t fire];
+     //Moved to GLPNetworkManager.
+//    NSTimer *t = [NSTimer timerWithTimeInterval:0.5f target:self selector:@selector(startLoadingContents:) userInfo:nil repeats:NO];
+//    [t fire];
     
     [self loadInitialPosts];
     
     [self startBackgroundOperations];
+    
+    [self configNavigationBar];
+
     
     //Find the sunset sunrise for preparation of the new chat.
     //TODO: That's will be used in GleepostSD app.
@@ -218,11 +223,13 @@ const float TOP_OFFSET = 180.0f;
     
     [self configureRefreshControl];
     
-    [self configNavigationBar];
+    [self configureNavigationBarBackground];
     
     [self showNetworkErrorViewIfNeeded];
     
+    self.viewDisappeared = NO;
 }
+
 
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -267,7 +274,9 @@ const float TOP_OFFSET = 180.0f;
     
     //Show navigation bar.
 //    [self contract];
+    self.viewDisappeared = YES;
 
+    [super viewWillDisappear:animated];
     
 }
 
@@ -292,9 +301,7 @@ const float TOP_OFFSET = 180.0f;
     
     //Create the array and initialise.
     self.shownCells = [[NSMutableArray alloc] init];
-    
-    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
-    
+        
     self.transitionCategoriesViewController = [[TransitionDelegateViewCategories alloc] init];
     
     self.transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
@@ -318,20 +325,9 @@ const float TOP_OFFSET = 180.0f;
     
     self.postIndexToReload = -1;
     
-    //Initialize temporary top image view.
-//    _topImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, -20.0, 320.0, 20.0)];
-//    [_topImageView setBackgroundColor:[AppearanceHelper defaultGleepostColour]];
-//    
-//    [self.view addSubview:_topImageView];
-    
     _flurryVisibleProcessor = [[GLPFlurryVisibleCellProcessor alloc] init];
     _trackViewsCountProcessor = [[GLPTrackViewsCountProcessor alloc] init];
     _campusWallAsyncProcessor = [[GLPCampusWallAsyncProcessor alloc] init];
-    _emptyGroupPostsMessage = [[EmptyMessage alloc] initWithText:@"No more group posts." withPosition:EmptyMessagePositionFurtherBottom andTableView:self.tableView];
-    
-//    _emptyCategoryPostsMessage = [[EmptyMessage alloc] initWithText:@"No posts yet" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
-//    
-//    [_emptyCategoryPostsMessage hideEmptyMessageView];
     
     _walkthroughFinished = NO;
     
@@ -340,12 +336,8 @@ const float TOP_OFFSET = 180.0f;
     _showComment = NO;
     
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorBottom withView:self.tableView];
-    _mediaFocusViewController = [[URBMediaFocusViewController alloc] init];
     
-    _mediaFocusViewController.parallaxEnabled = NO;
-    _mediaFocusViewController.shouldShowPhotoActions = YES;
-    _mediaFocusViewController.shouldRotateToDeviceOrientation = NO;
-    _mediaFocusViewController.shouldBlurBackground = NO;
+    self.viewDisappeared = NO;
 }
 
 - (void)startBackgroundOperations
@@ -497,8 +489,6 @@ const float TOP_OFFSET = 180.0f;
  */
 - (void)updateViewsCounter:(NSNotification *)notification
 {
-    DDLogDebug(@"GLPTimelineViewController : notification %@", notification.userInfo);
-    
     NSInteger postRemoteKey = [notification.userInfo[@"PostRemoteKey"] integerValue];
     NSInteger viewsCount = [notification.userInfo[@"UpdatedViewsCount"] integerValue];
     
@@ -551,20 +541,9 @@ const float TOP_OFFSET = 180.0f;
     }
 }
 
--(void)deletePost:(NSNotification *)notification
+- (void)deletePost:(NSNotification *)notification
 {
-    NSDictionary *notificationDic = notification.userInfo;
-    
-    BOOL postFromCampusLive = [notificationDic[@"ComesFromCampusLive"] boolValue];
-    
-    if(postFromCampusLive)
-    {
-        //Refresh campus live.
-        [_campusWallHeader reloadData];
-        return;
-    }
-    
-    int index = -1;
+    NSInteger index = -1;
     
     index = [GLPPostNotificationHelper parseNotificationAndFindIndexWithNotification:notification withPostsArray:self.posts];
     
@@ -587,50 +566,26 @@ const float TOP_OFFSET = 180.0f;
 
 #pragma mark - Init config
 
-/**
- Starts loading in the background some basic contents of the app like messages, profiles etc.
- 
- //Moved to GLPNetworkManager.
- */
-
--(void)startLoadingContents:(id)sender
-{
-    
-    //[[GLPMessagesLoader sharedInstance] loadLiveConversations];
-    //[[GLPMessagesLoader sharedInstance] loadConversations];
-//    [[GLPProfileLoader sharedInstance] loadUserData];
-    
-    //TODO: Remove this later.
-//    [[ContactsManager sharedInstance] refreshContacts];
-    
-    
-    
-    //Load groups' posts.
-//    [[CampusWallGroupsPostsManager sharedInstance] loadGroupPosts];
-
-}
-
 - (void)configAppearance
 {
-    //[AppearanceHelper setNavigationBarBackgroundImageFor:self imageName:@"navigationbar2" forBarMetrics:UIBarMetricsDefault];
-
-    //[AppearanceHelper setNavigationBarBlurBackgroundFor:self WithImage:nil];
-    
-    
-//    UIColor *tabColour = [[GLPThemeManager sharedInstance] colorForTabBar];
-
     UIColor *tabColour = [[GLPThemeManager sharedInstance] tabbarSelectedColour];
 
     [AppearanceHelper showTabBar:self];
 
-    
-    
-//    UIColor *tabColour = [UIColor colorWithRed:75.0/255.0 green:208.0/255.0 blue:210.0/255.0 alpha:1.0];
     self.tabBarController.tabBar.tintColor = tabColour;
     
     [AppearanceHelper setSelectedColourForTabbarItem:self.homeTabbarItem withColour:tabColour];
     
     [self setCustomBackgroundToTableView];
+    
+    if([self.fakeNavigationBar isTransparentMode])
+    {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    }
+    else
+    {
+        [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+    }
 }
 
 -(void)setCustomBackgroundToTableView
@@ -714,8 +669,27 @@ const float TOP_OFFSET = 180.0f;
 - (void)configureRefreshControl
 {
     // refresh control
-    self.refreshControl = [[UIRefreshControl alloc] initWithCustomLoader];
-    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
+//    self.refreshControl = [[UIRefreshControl alloc] initWithCustomLoader];
+//    [self.refreshControl addTarget:self action:@selector(loadEarlierPostsFromPullToRefresh) forControlEvents:UIControlEventValueChanged];
+}
+
+- (void)configureTopImageView
+{
+    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPCampusWallStretchedImageView" owner:self options:nil];
+    
+    _strechedImageView = [array objectAtIndex:0];
+    
+    _strechedImageView.frame = CGRectMake(0, -kCWStretchedImageHeight, [GLPiOSSupportHelper screenWidth], kCWStretchedImageHeight);
+    
+    [self.strechedImageView setImage:[UIImage imageNamed:@"campus_wall_header_back.jpg"]];
+    
+    self.strechedImageView.delegate = self;
+    
+//    [_strechedImageView setTextInTitle:_group.name];
+    
+//    [_strechedImageView setViewControllerDelegate:self];
+    
+    [_strechedImageView setGesture:YES];
 }
 
 - (void)configTableView
@@ -733,6 +707,11 @@ const float TOP_OFFSET = 180.0f;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostPollCell" bundle:nil] forCellReuseIdentifier:@"PollCell"];
 
+    [self.tableView setTableFooterView:[[UIView alloc] init]];
+    
+    self.tableView.contentInset = UIEdgeInsetsMake(240, 0, 0, 0);
+
+    [self.tableView addSubview:self.strechedImageView];
     
 //    [self.tableView registerNib:[UINib nibWithNibName:@"CampusWallHeaderScrollView" bundle:nil] forHeaderFooterViewReuseIdentifier:@"CampusWallHeaderSimple"];
 
@@ -750,16 +729,27 @@ const float TOP_OFFSET = 180.0f;
 {
     //Load the header of the table view.
     
-    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"CampusWallHeaderScrollView" owner:self options:nil];
+//    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"CampusWallHeaderScrollView" owner:self options:nil];
+//    
+//    //Set delegate.
+//    self.campusWallHeader = [array objectAtIndex:0];
+//    [self.campusWallHeader formatElements];
+//    [self.campusWallHeader setDelegate:self];
+//    
+//    self.tableView.tableHeaderView = self.campusWallHeader;
+//    
+//    [self.campusWallHeader reloadData];
     
-    //Set delegate.
-    self.campusWallHeader = [array objectAtIndex:0];
-    [self.campusWallHeader formatElements];
-    [self.campusWallHeader setDelegate:self];
     
-    self.tableView.tableHeaderView = self.campusWallHeader;
+//    NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"GLPCampusWallTopView" owner:self options:nil];
+//    
+//    //Set delegate.
+//    
+//    self.tableView.tableHeaderView = [array objectAtIndex:0];
     
-    [self.campusWallHeader reloadData];
+
+    
+    
     [self.navigationController.navigationBar addSubview:[[GLPVideoPostCWProgressManager sharedInstance] progressView]];
 }
 
@@ -775,21 +765,32 @@ const float TOP_OFFSET = 180.0f;
 
 #pragma mark - Navigation bar
 
+- (void)configureNavigationBarBackground
+{
+    [self.navigationController.navigationBar invisible];
+}
+
 -(void)configNavigationBar
 {
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
-    [self.navigationController.navigationBar setCampusWallFontFormat];
-    //Set to all the application the status bar text white.
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+//    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+//    [self.navigationController.navigationBar setCampusWallFontFormat];
     
-    self.navigationController.navigationBar.topItem.title = [[GLPThemeManager sharedInstance] campusWallTitle];
+//    [self.navigationController.navigationBar invisible];
+    
+    self.navigationController.navigationBar.topItem.title = @"";
+    
+    self.fakeNavigationBar = [[CampusWallFakeNavigationBar alloc] initWithTitle:[[GLPThemeManager sharedInstance] campusWallTitle]];
+    
+    [self.view addSubview:self.fakeNavigationBar];
+    
+//    self.navigationController.navigationBar.topItem.title = [[GLPThemeManager sharedInstance] campusWallTitle];
 }
 
 - (void)addNavigationButtons
 {
-    [self.navigationController.navigationBar setButton:kLeft withImageName:@"cards" withButtonSize:CGSizeMake(29.0, 24.0) withSelector:@selector(showCategories:) andTarget:self];
-    
-    [self.navigationController.navigationBar setButton:kRight withImageName:@"pen" withButtonSize:CGSizeMake(23.0, 23.0) withSelector:@selector(newPostButtonClick) andTarget:self];
+    [self.navigationController.navigationBar setButton:kLeft withImageName:@"navigationbar_trans" withButtonSize:CGSizeMake(29.0, 24.0) withSelector:@selector(showCategoriesViewController) andTarget:self];
+//    
+    [self.navigationController.navigationBar setButton:kRight withImageName:@"navigationbar_trans" withButtonSize:CGSizeMake(23.0, 23.0) withSelector:@selector(newPostButtonClick) andTarget:self];
 }
 
 //- (void)showProgressView
@@ -836,8 +837,6 @@ const float TOP_OFFSET = 180.0f;
     {
         index+=1;
     }
-    
-    DDLogDebug(@"refreshCellViewWithIndex %lu", (unsigned long)index);
     
     if([self cellNeedsReloadWithIndex:index])
     {
@@ -1048,12 +1047,6 @@ const float TOP_OFFSET = 180.0f;
     
     [GLPPostManager loadRemotePostsBefore:remotePost withNotUploadedPosts:notUploadedPosts andCurrentPosts:self.posts callback:^(BOOL success, BOOL remain, NSArray *posts, NSArray *deletedPosts) {
         [self stopLoading];
-        
-        if(!saveScrollingState)
-        {
-            //Load campus live events posts.
-            [_campusWallHeader reloadData];
-        }
         
         if(deletedPosts.count > 0)
         {
@@ -1532,16 +1525,16 @@ const float TOP_OFFSET = 180.0f;
 - (void)startLoading
 {
     self.isLoading = YES;
-    
-    [self.refreshControl beginRefreshing];
+    [self.fakeNavigationBar startLoading];
+    //[self.refreshControl beginRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
 - (void)stopLoading
 {
     self.isLoading = NO;
-    
-    [self.refreshControl endRefreshing];
+    [self.fakeNavigationBar stopLoading];
+    //[self.refreshControl endRefreshing];
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
@@ -1572,17 +1565,39 @@ const float TOP_OFFSET = 180.0f;
     self.startContentOffset = self.lastContentOffset = scrollView.contentOffset.y;
 }
 
-
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
+{    
+    [self makeVisibleOrInvisibleActivityIndicatorWithOffset:scrollView.contentOffset.y];
+    
     [_flurryVisibleProcessor resetVisibleCells];
     [_trackViewsCountProcessor resetVisibleCells];
-    
     
     CGFloat currentOffset = scrollView.contentOffset.y;
     CGFloat differenceFromStart = self.startContentOffset - currentOffset;
     CGFloat differenceFromLast =  self.lastContentOffset - currentOffset;
     self.lastContentOffset = currentOffset;
+    
+    
+    CGFloat yOffset  = scrollView.contentOffset.y;
+    
+    [self configureStrechedImageViewWithOffset:yOffset];
+    
+    
+    if(self.viewDisappeared)
+    {
+        return;
+    }
+    
+    if(yOffset > -64)
+    {
+        //Set coloured mode.
+        [self.fakeNavigationBar colourMode];
+    }
+    else
+    {
+        //Set transparent mode.
+        [self.fakeNavigationBar transparentMode];
+    }
     
     
 //    [self.reNavBar setFrame:CGRectMake(0.0f, scrollView.contentOffset.y, 320.0f, 50.0f)];
@@ -1649,14 +1664,14 @@ const float TOP_OFFSET = 180.0f;
     if((differenceFromStart) < 0)
     {
         // scroll up
-        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+        if(scrollView.isTracking && (fabs(differenceFromLast)>1))
         {
             
         }
             //[self expand];
     }
     else {
-        if(scrollView.isTracking && (abs(differenceFromLast)>1))
+        if(scrollView.isTracking && (fabs(differenceFromLast)>1))
         {
             
         }
@@ -1666,8 +1681,6 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    DDLogDebug(@"scrollViewDidEndDecelerating1 did scroll: %f", scrollView.contentOffset.y);
-    
     if(self.posts.count == 0)
     {
         return;
@@ -1675,8 +1688,6 @@ const float TOP_OFFSET = 180.0f;
 
     if(self.isLoading )
     {
-        DDLogDebug(@"scrollViewDidEndDecelerating1 is loading abort.");
-        
         return;
     }
     
@@ -1690,8 +1701,6 @@ const float TOP_OFFSET = 180.0f;
     
     [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
     
-    DDLogDebug(@"scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
-    
     [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
     
     _tableViewFirstTimeScrolled = YES;
@@ -1699,15 +1708,10 @@ const float TOP_OFFSET = 180.0f;
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-//    DDLogDebug(@"scrollViewDidEndDragging2 did scroll: %f", scrollView.contentOffset.y);
-    
     if(decelerate == 0)
     {
-        //|| scrollView.contentOffset.y < 0
         if(self.isLoading )
         {
-            DDLogDebug(@"scrollViewDidEndDragging2 is loading abort.");
-            
             return;
         }
         
@@ -1727,13 +1731,48 @@ const float TOP_OFFSET = 180.0f;
     }
 }
 
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    CGFloat yOffset  = scrollView.contentOffset.y;
+
+    if(yOffset < (-OFFSET_START_ANIMATING_CW) && !self.isLoading)
+    {
+        [self loadEarlierPostsFromPullToRefresh];
+    }
+}
+
 - (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {
     //[self contract];
     return YES;
 }
 
+- (void)configureStrechedImageViewWithOffset:(CGFloat)offset
+{
+    if (offset < -kCWStretchedImageHeight)
+    {
+        CGRect f = _strechedImageView.frame;
+        f.origin.y = offset;
+        f.size.height =  -offset;
+        _strechedImageView.frame = f;
+        
+        [_strechedImageView setHeightOfTransImage:-offset];
+        
+        //        CGRectSetY(_lbl, -yOffset/2);
+    }
+}
 
+- (void)makeVisibleOrInvisibleActivityIndicatorWithOffset:(float)offset
+{
+    if(offset < (-OFFSET_START_ANIMATING_CW))
+    {
+        [self.fakeNavigationBar setHiddenLoader:NO];
+    }
+    else if(!self.isLoading)
+    {
+        [self.fakeNavigationBar setHiddenLoader:YES];
+    }
+}
 
 #pragma mark - Hidden navigation bar
 
@@ -1789,10 +1828,6 @@ const float TOP_OFFSET = 180.0f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    [_emptyGroupPostsMessage hideEmptyMessageView];
-    
-    DDLogDebug(@"numberOfRowsInSection Posts count %ld", (unsigned long)self.posts.count);
-    
     if([[GLPPendingPostsManager sharedInstance] arePendingPosts])
     {
         return self.posts.count + 2;
@@ -2218,7 +2253,7 @@ const float TOP_OFFSET = 180.0f;
 }
 
 
--(void)removeTableViewPostWithIndex:(int)index
+- (void)removeTableViewPostWithIndex:(NSInteger)index
 {
     NSMutableArray *rowsDeleteIndexPath = [[NSMutableArray alloc] init];
     
@@ -2236,6 +2271,33 @@ const float TOP_OFFSET = 180.0f;
     [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
     
     self.isLoading = NO;
+}
+
+#pragma mark - GLPCampusWallStretchedViewDelegate
+
+- (void)takeALookTouched
+{
+    [self removeGoingButtonNotification];
+    [[GLPVideoLoaderManager sharedInstance] enableTimelineJustFetched];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+    GLPCampusLiveViewController *campusLiveVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPCampusLiveViewController"];
+    campusLiveVC.delegate = self;
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:campusLiveVC];
+    navigationController.modalPresentationStyle = UIModalPresentationCustom;
+    [self presentViewController:navigationController animated:YES completion:nil];
+}
+
+#pragma mark - GLPCampusLiveViewControllerDelegate
+
+/** This delegate helps us to identify when the campus live is visible.
+ we need that because there is unexcected behaviour when campus live
+ is visible. That happens because viewDidDisappear is not called.*/
+- (void)campusLiveDisappeared
+{
+    [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
+
+    [self configureGoingButtonNotification];
 }
 
 #pragma mark - GLPCategoriesViewControllerDelegate
@@ -2295,7 +2357,7 @@ const float TOP_OFFSET = 180.0f;
             
             [*postsYValues addObject:@(rectInTableView.size.height/2.0 + rectInSuperview.origin.y)];
             
-            DDLogDebug(@"-> Post: %@, Y: %f %f result %f", post, rectInSuperview.origin.y, rectInTableView.size.height, rectInTableView.size.height/2.0 + rectInSuperview.origin.y);
+//            DDLogDebug(@"-> Post: %@, Y: %f %f result %f", post, rectInSuperview.origin.y, rectInTableView.size.height, rectInTableView.size.height/2.0 + rectInSuperview.origin.y);
         }
     }
     
@@ -2317,24 +2379,9 @@ const float TOP_OFFSET = 180.0f;
 #pragma mark - View image delegate
 
 
--(void)viewPostImage:(UIImage*)postImage
+-(void)viewPostImageView:(UIImageView *)postImageView
 {
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-//    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-//    viewImage.image = postImage;
-//    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-//    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-//    
-//    if(![GLPiOSSupportHelper isIOS6])
-//    {
-//        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-//    }
-//    
-//    [self.view setBackgroundColor:[UIColor whiteColor]];
-//    [self presentViewController:viewImage animated:YES completion:nil];
-    
-    [_mediaFocusViewController showImage:postImage fromView:self.view];
-    
+    [GLPViewImageHelper showImageInViewController:self withImageView:postImageView];
 }
 
 
@@ -2353,7 +2400,6 @@ const float TOP_OFFSET = 180.0f;
 -(void)hideNavigationBarAndButtonWithNewTitle:(NSString*)newTitle
 {
     [self.navigationItem setTitle:newTitle];
-//    self.navigationItem.rightBarButtonItem = nil;
 }
 
 -(void)navigateToViewPostFromCommentWithIndex:(int)postIndex
@@ -2467,8 +2513,6 @@ const float TOP_OFFSET = 180.0f;
 
 - (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath
 {
-    DDLogDebug(@"navigateToPostForCommentWithIndexPath Post index path %ld : %ld", (long)postIndexPath.row, (long)postIndexPath.section);
-
     _showComment = YES;
     self.selectedPost = [self.posts objectAtIndex:postIndexPath.row];
     self.selectedIndex = postIndexPath.row;
@@ -2479,14 +2523,21 @@ const float TOP_OFFSET = 180.0f;
 
 - (void)goingButtonTouchedWithNotification:(NSNotification *)notification
 {
+    
     _selectedPost = notification.userInfo[@"post"];
+    UIImage *image = notification.userInfo[@"post_image"];
+
+    if([image isEqual:[NSNull null]])
+    {
+        image = nil;
+    }
     
     //Show the pop up view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
-    [cvc setEventPost:_selectedPost];
+    [cvc setEventPost:_selectedPost withImage:image];
     
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     
@@ -2543,6 +2594,7 @@ const float TOP_OFFSET = 180.0f;
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"new_post" bundle:nil];
         IntroKindOfNewPostViewController *newPostVC = [storyboard instantiateViewControllerWithIdentifier:@"IntroKindOfNewPostViewController"];
         newPostVC.groupPost = NO;
+        newPostVC.navBarTransparentMode = [self.fakeNavigationBar isTransparentMode];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:newPostVC];
         navigationController.modalPresentationStyle = UIModalPresentationCustom;
         [navigationController setTransitioningDelegate:self.transitionCategoriesViewController];
@@ -2579,7 +2631,6 @@ const float TOP_OFFSET = 180.0f;
 //    [[SessionManager sharedInstance] setCurrentCategory:nil];
     
     [self.tableView reloadData];
-    [self updateTitleView];
     [self loadInitialGroupsPosts];
 }
 
@@ -2587,15 +2638,7 @@ const float TOP_OFFSET = 180.0f;
 {
     //Initialise categories to all.
     [[CategoryManager sharedInstance] setSelectedCategory:nil];
-    
-    [self updateTitleView];
-
     [self loadInitialPosts];
-}
-
--(void)showCategories:(id)sender
-{
-    [self showCategoriesViewController];
 }
 
 - (void)showCategoriesViewController
@@ -2639,11 +2682,6 @@ const float TOP_OFFSET = 180.0f;
     [self presentViewController:navigationController animated:YES completion:nil];
 }
 
--(void)updateTitleView
-{
-    [self.campusWallHeader groupFeedDisabled];
-}
-
 #pragma mark - Helpers
 
 - (BOOL)isPostVisible:(GLPPost *)post
@@ -2654,13 +2692,8 @@ const float TOP_OFFSET = 180.0f;
     
     if(filteredArray.count > 0)
     {
-        DDLogDebug(@"Post visible after reloading: %@", filteredArray);
-        
         return YES;
     }
-    
-    DDLogDebug(@"Post not visible after reloading: %@", filteredArray);
-    
     
     return NO;
 }
@@ -2711,15 +2744,6 @@ const float TOP_OFFSET = 180.0f;
         privateProfileViewController.selectedUserId = self.selectedUserId;
 
     }
-    else if([segue.identifier isEqualToString:@"show image"])
-    {
-        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
-        
-        ViewPostImageViewController *viewPostImageViewController = segue.destinationViewController;
-        
-        viewPostImageViewController.image = self.imageToBeView;
-        
-    }
     else if([segue.identifier isEqualToString:@"view profile"])
     {
         [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
@@ -2739,6 +2763,10 @@ const float TOP_OFFSET = 180.0f;
         showUsersVC.postRemoteKey = _selectedPost.remoteKey;
         
         showUsersVC.selectedTitle = @"GUEST LIST";
+    }
+    else if ([segue.identifier isEqualToString:@"show campus live"])
+    {
+        [segue.destinationViewController setHidesBottomBarWhenPushed:YES];
     }
 }
 

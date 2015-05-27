@@ -186,7 +186,7 @@
     return [GLPPostNotificationHelper findPostIndexWithRemoteKey:remoteKey.integerValue inPosts:posts];
 }
 
-+(int)parseNotificationAndFindIndexWithNotification:(NSNotification *)notification withPostsArray:(NSMutableArray *)posts
++ (NSInteger)parseNotificationAndFindIndexWithNotification:(NSNotification *)notification withPostsArray:(NSMutableArray *)posts
 {
     NSDictionary *dict = [notification userInfo];
     
@@ -195,21 +195,20 @@
     GLPPost *post = [[GLPPost alloc] init];
     
     //Find the index of the post.
-    int index = [GLPPostNotificationHelper findPost:&post with:[remoteKey integerValue] fromPosts:posts];
+    NSInteger index = [GLPPostNotificationHelper findPost:&post with:[remoteKey integerValue] fromPosts:posts];
     
     if(index == -1)
     {
         return index;
     }
     
-    DDLogDebug(@"Post Index %d", index);
     
     [self deletePostWithPost:post posts:posts andIndex:index];
     
     return index;
 }
 
-+(void)deletePostWithPost:(GLPPost *)post posts:(NSMutableArray *)posts andIndex:(int)index
++(void)deletePostWithPost:(GLPPost *)post posts:(NSMutableArray *)posts andIndex:(NSInteger)index
 {
 //    if(post.group)
 //    {
@@ -281,7 +280,7 @@
     return -1;
 }
 
-+(int)findPost:(GLPPost **)post with:(int)remoteKey fromPosts:(NSArray*)posts
++ (NSInteger)findPost:(GLPPost **)post with:(NSInteger)remoteKey fromPosts:(NSArray*)posts
 {
     int i = 0;
     
@@ -300,26 +299,23 @@
 
 +(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(NSInteger)remoteKey numberOfLikes:(NSInteger)likes andNumberOfComments:(NSInteger)comments
 {
-    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:remoteKey],@"RemoteKey", [NSNumber numberWithInt:comments], @"NumberOfComments",[NSNumber numberWithInteger:likes], @"NumberOfLikes", nil];
+    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:remoteKey],@"RemoteKey", [NSNumber numberWithInteger:comments], @"NumberOfComments",[NSNumber numberWithInteger:likes], @"NumberOfLikes", nil];
     
     
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:dataDict];
 }
 
-+(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(int)remoteKey withLiked:(BOOL)liked
++ (void)updatePostWithNotifiationName:(NSString *)notificationName withObject:(id)object remoteKey:(NSInteger)remoteKey withLiked:(BOOL)liked
 {
-    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:remoteKey],@"RemoteKey", [NSNumber numberWithBool:liked], @"Liked", nil];
+    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:remoteKey],@"RemoteKey", [NSNumber numberWithBool:liked], @"Liked", nil];
     
     
     [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:self userInfo:dataDict];
 }
 
-+(void)deletePostNotificationWithPostRemoteKey:(int)remoteKey inCampusLive:(BOOL)postInCampusLive
++ (void)deletePostNotificationWithPostRemoteKey:(NSInteger)remoteKey inCampusLive:(BOOL)postInCampusLive
 {
-    NSDictionary *dataDict = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:remoteKey],@"RemoteKey", [NSNumber numberWithBool:postInCampusLive] , @"ComesFromCampusLive",nil];
-    
-    //TODO: See if the self object is good to set as a parameter.
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_POST_DELETED object:self userInfo:dataDict];
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_POST_DELETED object:self userInfo:@{@"RemoteKey" : [NSNumber numberWithInteger:remoteKey]}];
 }
 
 @end

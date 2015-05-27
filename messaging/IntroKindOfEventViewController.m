@@ -91,12 +91,12 @@
     [self.view addSubview:self.fakeNavigationBar];
     
     [self.navigationController.navigationBar invisible];
-
-    
 //    self.title = @"NEW POST";
     
 //    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
 }
+
+
 
 - (void)configureConstrainsDependingOnScreenSize
 {
@@ -203,44 +203,10 @@
 
 - (IBAction)selectCategory:(UIButton *)senderButton
 {
-//    switch (senderButton.tag) {
-//        case 1:
-//            //Party selected.
-//            break;
-//            
-//        case 2:
-//            //Music selected.
-//            break;
-//            
-//        case 3:
-//            //Sports selected.
-//            break;
-//            
-//        case 4:
-//            //Theater selected.
-//            break;
-//            
-//        case 5:
-//            //Speaker selected.
-//            break;
-//            
-//        case 6:
-//            //Other selected.
-//            break;
-//            
-//        default:
-//            break;
-//    }
-    
-    DDLogInfo(@"Category selected: %@", [[CategoryManager sharedInstance] categoryWithOrderKey:senderButton.tag]);
-    
+    DDLogInfo(@"IntroKindOfEventViewController category selected: %@", [[CategoryManager sharedInstance] categoryWithOrderKey:senderButton.tag]);
     [[PendingPostManager sharedInstance] setCategory: [[CategoryManager sharedInstance] categoryWithOrderKey:senderButton.tag]];
-    
     [self setDelayFromRightToLeft];
     [self animateElementsBeforeGoingBack:NO];
-    
-//    [self performSegueWithIdentifier:@"pick date" sender:self];
-
 }
 
 - (void)navigateToDatePickerView
