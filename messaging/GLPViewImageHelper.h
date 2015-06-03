@@ -8,8 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+@class ImagePickerSheetController;
+
 @interface GLPViewImageHelper : NSObject
 
 + (void)showImageInViewController:(UIViewController *)viewController withImageView:(UIImageView *)imageView;
++ (ImagePickerSheetController *)generateImagePickerForChat;
 
 @end

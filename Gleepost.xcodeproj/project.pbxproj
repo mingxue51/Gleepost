@@ -53,6 +53,21 @@
 		580FF14F18AA58DE0026B65B /* add_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 580FF14E18AA58DE0026B65B /* add_button.png */; };
 		580FF15318AA6DAD0026B65B /* NSDate+HumanizedTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 580FF15218AA6DAD0026B65B /* NSDate+HumanizedTime.m */; };
 		580FF15618AA74400026B65B /* CampusLiveManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 580FF15518AA74400026B65B /* CampusLiveManager.m */; };
+		5810D87C1B1F4E0500AFA557 /* AnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D8751B1F4E0500AFA557 /* AnimationController.swift */; };
+		5810D87D1B1F4E0500AFA557 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D8761B1F4E0500AFA557 /* ImageCollectionViewCell.swift */; };
+		5810D87E1B1F4E0500AFA557 /* ImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D8771B1F4E0500AFA557 /* ImagePickerCollectionView.swift */; };
+		5810D87F1B1F4E0500AFA557 /* ImagePickerSheetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D8781B1F4E0500AFA557 /* ImagePickerSheetController.swift */; };
+		5810D8801B1F4E0500AFA557 /* ImagePreviewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D8791B1F4E0500AFA557 /* ImagePreviewFlowLayout.swift */; };
+		5810D8811B1F4E0500AFA557 /* ImagePreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D87A1B1F4E0500AFA557 /* ImagePreviewTableViewCell.swift */; };
+		5810D8821B1F4E0500AFA557 /* PreviewSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D87B1B1F4E0500AFA557 /* PreviewSupplementaryView.swift */; };
+		5810D8841B1F4EBF00AFA557 /* NerdNation-Bridging-Header.h in Sources */ = {isa = PBXBuildFile; fileRef = 5810D8741B1F4E0400AFA557 /* NerdNation-Bridging-Header.h */; };
+		5810D8881B1F4F5E00AFA557 /* GLPDefaultImageActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5810D8861B1F4F5E00AFA557 /* GLPDefaultImageActionCell.xib */; };
+		5810D8891B1F4F5E00AFA557 /* GLPImageDefaultImageActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5810D8871B1F4F5E00AFA557 /* GLPImageDefaultImageActionCell.xib */; };
+		5810D8901B1F500200AFA557 /* GLPDefaultImageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D88B1B1F500100AFA557 /* GLPDefaultImageAction.swift */; };
+		5810D8911B1F500200AFA557 /* GLPDefaultImageActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D88C1B1F500100AFA557 /* GLPDefaultImageActionCell.swift */; };
+		5810D8921B1F500200AFA557 /* GLPImageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D88D1B1F500100AFA557 /* GLPImageAction.swift */; };
+		5810D8931B1F500200AFA557 /* GLPImageDefaultImageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D88E1B1F500100AFA557 /* GLPImageDefaultImageAction.swift */; };
+		5810D8941B1F500200AFA557 /* GLPImageDefaultImageActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D88F1B1F500200AFA557 /* GLPImageDefaultImageActionCell.swift */; };
 		5810F0B91886F73B0066D4CE /* GLPMessagesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5810F0B81886F73B0066D4CE /* GLPMessagesLoader.m */; };
 		5810F0BC18870C740066D4CE /* GLPProfileLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5810F0BB18870C740066D4CE /* GLPProfileLoader.m */; };
 		58119CC51947992700C2687B /* InfiniteScrollViewPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 58119CC21947992700C2687B /* InfiniteScrollViewPicker.m */; };
@@ -1038,6 +1053,21 @@
 		580FF15218AA6DAD0026B65B /* NSDate+HumanizedTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+HumanizedTime.m"; sourceTree = "<group>"; };
 		580FF15418AA74400026B65B /* CampusLiveManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusLiveManager.h; sourceTree = "<group>"; };
 		580FF15518AA74400026B65B /* CampusLiveManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusLiveManager.m; sourceTree = "<group>"; };
+		5810D8741B1F4E0400AFA557 /* NerdNation-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NerdNation-Bridging-Header.h"; sourceTree = "<group>"; };
+		5810D8751B1F4E0500AFA557 /* AnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationController.swift; sourceTree = "<group>"; };
+		5810D8761B1F4E0500AFA557 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		5810D8771B1F4E0500AFA557 /* ImagePickerCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerCollectionView.swift; sourceTree = "<group>"; };
+		5810D8781B1F4E0500AFA557 /* ImagePickerSheetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerSheetController.swift; sourceTree = "<group>"; };
+		5810D8791B1F4E0500AFA557 /* ImagePreviewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewFlowLayout.swift; sourceTree = "<group>"; };
+		5810D87A1B1F4E0500AFA557 /* ImagePreviewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePreviewTableViewCell.swift; sourceTree = "<group>"; };
+		5810D87B1B1F4E0500AFA557 /* PreviewSupplementaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewSupplementaryView.swift; sourceTree = "<group>"; };
+		5810D8861B1F4F5E00AFA557 /* GLPDefaultImageActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPDefaultImageActionCell.xib; sourceTree = "<group>"; };
+		5810D8871B1F4F5E00AFA557 /* GLPImageDefaultImageActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPImageDefaultImageActionCell.xib; sourceTree = "<group>"; };
+		5810D88B1B1F500100AFA557 /* GLPDefaultImageAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPDefaultImageAction.swift; sourceTree = "<group>"; };
+		5810D88C1B1F500100AFA557 /* GLPDefaultImageActionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPDefaultImageActionCell.swift; sourceTree = "<group>"; };
+		5810D88D1B1F500100AFA557 /* GLPImageAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPImageAction.swift; sourceTree = "<group>"; };
+		5810D88E1B1F500100AFA557 /* GLPImageDefaultImageAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPImageDefaultImageAction.swift; sourceTree = "<group>"; };
+		5810D88F1B1F500200AFA557 /* GLPImageDefaultImageActionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPImageDefaultImageActionCell.swift; sourceTree = "<group>"; };
 		5810F0B71886F73B0066D4CE /* GLPMessagesLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPMessagesLoader.h; sourceTree = "<group>"; };
 		5810F0B81886F73B0066D4CE /* GLPMessagesLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMessagesLoader.m; sourceTree = "<group>"; };
 		5810F0BA18870C740066D4CE /* GLPProfileLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileLoader.h; sourceTree = "<group>"; };
@@ -2536,6 +2566,43 @@
 				580FF15218AA6DAD0026B65B /* NSDate+HumanizedTime.m */,
 			);
 			name = "Time formatter";
+			sourceTree = "<group>";
+		};
+		5810D8731B1F4D6400AFA557 /* ImagePickerSheetController */ = {
+			isa = PBXGroup;
+			children = (
+				5810D8961B1F502000AFA557 /* Model */,
+				5810D8951B1F500500AFA557 /* Cells */,
+				5810D8751B1F4E0500AFA557 /* AnimationController.swift */,
+				5810D8761B1F4E0500AFA557 /* ImageCollectionViewCell.swift */,
+				5810D8771B1F4E0500AFA557 /* ImagePickerCollectionView.swift */,
+				5810D8781B1F4E0500AFA557 /* ImagePickerSheetController.swift */,
+				5810D8791B1F4E0500AFA557 /* ImagePreviewFlowLayout.swift */,
+				5810D87A1B1F4E0500AFA557 /* ImagePreviewTableViewCell.swift */,
+				5810D87B1B1F4E0500AFA557 /* PreviewSupplementaryView.swift */,
+			);
+			name = ImagePickerSheetController;
+			sourceTree = "<group>";
+		};
+		5810D8951B1F500500AFA557 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				5810D88C1B1F500100AFA557 /* GLPDefaultImageActionCell.swift */,
+				5810D88F1B1F500200AFA557 /* GLPImageDefaultImageActionCell.swift */,
+				5810D8861B1F4F5E00AFA557 /* GLPDefaultImageActionCell.xib */,
+				5810D8871B1F4F5E00AFA557 /* GLPImageDefaultImageActionCell.xib */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		5810D8961B1F502000AFA557 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5810D88B1B1F500100AFA557 /* GLPDefaultImageAction.swift */,
+				5810D88D1B1F500100AFA557 /* GLPImageAction.swift */,
+				5810D88E1B1F500100AFA557 /* GLPImageDefaultImageAction.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		58119CC01947991900C2687B /* InfiniteScrollViewPicker */ = {
@@ -4918,6 +4985,7 @@
 		806E3D581832B0850063AACE /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				5810D8731B1F4D6400AFA557 /* ImagePickerSheetController */,
 				58AEF7EC19F887BD00DDAE88 /* FLog */,
 				584FA5EA19B5199C00FBA61F /* PBJVision */,
 				5821CFAB19A2DDBF00274FE4 /* ViewBorders */,
@@ -5216,6 +5284,7 @@
 				80AB892417C267F50053E784 /* Gleepost-Info.plist */,
 				80AB892517C267F50053E784 /* InfoPlist.strings */,
 				80AB892817C267F50053E784 /* main.m */,
+				5810D8741B1F4E0400AFA557 /* NerdNation-Bridging-Header.h */,
 				80AB892A17C267F50053E784 /* Gleepost-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -6228,6 +6297,7 @@
 				585AE26C192BF1FD00174CED /* bird-house-7_old@2x.png in Resources */,
 				58350A6B198AF733000BB1CA /* GLPNetworkErrorView.xib in Resources */,
 				5829F48F18B1546300A7B871 /* pending_request.png in Resources */,
+				5810D8881B1F4F5E00AFA557 /* GLPDefaultImageActionCell.xib in Resources */,
 				585625991AC89FA7006F5EA1 /* Montserrat-Regular.otf in Resources */,
 				588DE5D418A8FA40001D344D /* add_photo_btn.png in Resources */,
 				5887C7F219FF0C65004441B9 /* locker_private_group.png in Resources */,
@@ -6290,6 +6360,7 @@
 				5892F11419FB35E200B6778F /* GLPGroupPostsEmptyView.xib in Resources */,
 				58B7816519F9E719003E0F9A /* profile_placeholder.png in Resources */,
 				587D23CF17EA195D00E0DDFF /* imgbar.png in Resources */,
+				5810D8891B1F4F5E00AFA557 /* GLPImageDefaultImageActionCell.xib in Resources */,
 				587D23D217EA195D00E0DDFF /* tabbar_tab.png in Resources */,
 				582A664818ABD37D00006419 /* verified.png in Resources */,
 				580B8D3D1857A57B00A84E0E /* NotificationsUIView.xib in Resources */,
@@ -6369,6 +6440,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5810D8841B1F4EBF00AFA557 /* NerdNation-Bridging-Header.h in Sources */,
 				584FA60519B51C4D00FBA61F /* PBJVideoView.m in Sources */,
 				584FA60119B51AE700FBA61F /* PBJVideoPlayerController.m in Sources */,
 				58EB10031A765406006BA25C /* GLPMainGroupsViewController.m in Sources */,
@@ -6389,6 +6461,7 @@
 				585790D31A366DE300418528 /* GLPVideoPendingPostProgressManager.m in Sources */,
 				585106C8199D85DB000F06BB /* IntroKindOfNewPostViewController.m in Sources */,
 				58F284DC1A71514D0018ADAB /* PostImageLoader.m in Sources */,
+				5810D87D1B1F4E0500AFA557 /* ImageCollectionViewCell.swift in Sources */,
 				58EA127019FA1079003D264E /* GLPEmptyViewManager.m in Sources */,
 				805358C9182EF1CC00579079 /* GLPPostManager.m in Sources */,
 				5851112A19A7E31000488E79 /* GLPVideoPostCWProgressManager.m in Sources */,
@@ -6448,6 +6521,7 @@
 				58428E3318A27E0F00B82E4B /* LoginView.m in Sources */,
 				58CD30411B00B60B0032D25A /* GLPCLCommentsOperation.m in Sources */,
 				584906C217FDA57B0045B65D /* PostView.m in Sources */,
+				5810D8921B1F500200AFA557 /* GLPImageAction.swift in Sources */,
 				58AEF7EF19F887D500DDAE88 /* FileLogger.m in Sources */,
 				5851957D18CFA26E00F8CE46 /* GLPiOSSupportHelper.m in Sources */,
 				588C689A1AD2D9AA00E00F48 /* GLPAnimationHelper.m in Sources */,
@@ -6455,6 +6529,7 @@
 				58774D41196568350034A1C6 /* GLPSearchBar.m in Sources */,
 				580C0DB21AE13CD100DA9522 /* PollingPostView.m in Sources */,
 				58273F1E1A26977D00425605 /* GLPPostsOrganiserHelper.m in Sources */,
+				5810D8811B1F4E0500AFA557 /* ImagePreviewTableViewCell.swift in Sources */,
 				8087E42D180EC02E00938264 /* _Comment.m in Sources */,
 				58D113D618857D3A00C6B953 /* GLPPostImageLoader.m in Sources */,
 				5809FF0D1A403F7000AF7912 /* GLPPostImageOperation.m in Sources */,
@@ -6588,6 +6663,7 @@
 				584FA5F519B5199C00FBA61F /* PBJVision.m in Sources */,
 				58DF415E186463E000D53723 /* GLPPostUploaderManager.m in Sources */,
 				5890D0401A2AA7D10088C302 /* GLPViewPendingPostViewController.m in Sources */,
+				5810D8941B1F500200AFA557 /* GLPImageDefaultImageActionCell.swift in Sources */,
 				581AAF0B181DA08D00F091A9 /* LongPollContactsOperation.m in Sources */,
 				805358CC182EF37600579079 /* GLPPostDao.m in Sources */,
 				5828D7B0181E9B5E002D71F9 /* GLPLiveConversationDaoParser.m in Sources */,
@@ -6658,6 +6734,7 @@
 				589E9C241AD3CB970050C119 /* GLPEventNewPostAnimationHelper.m in Sources */,
 				58A1D073199BF91200BA7980 /* GLPLabel.m in Sources */,
 				584CF66718227BA700EFABB8 /* GLPContactDaoParser.m in Sources */,
+				5810D8821B1F4E0500AFA557 /* PreviewSupplementaryView.swift in Sources */,
 				584D208E19534AC400E571DF /* GLPSegmentView.m in Sources */,
 				582E44D9197E1E7F000BE3EC /* GLPServerPathManager.m in Sources */,
 				5823932718CB9A04001BC88C /* MembersViewController.m in Sources */,
@@ -6681,6 +6758,7 @@
 				58A75EBF1921097A0082F316 /* VideoProgressView.m in Sources */,
 				58CFC776196312E700FF1E40 /* GLPSimpleNameCell.m in Sources */,
 				80323E1A189A788400968FE9 /* GLPConversationViewController.m in Sources */,
+				5810D87C1B1F4E0500AFA557 /* AnimationController.swift in Sources */,
 				588C688F1AD2927A00E00F48 /* FakeNavigationBarNewPostView.m in Sources */,
 				585C784E193DF3B2007E699B /* WTSecondScreenView.m in Sources */,
 				58FD706F189008BA0024E8A1 /* AnimatedTransitioningViewCategories.m in Sources */,
@@ -6689,6 +6767,7 @@
 				58EDC5281A77F7D20042567C /* GLPImageCacheHelper.m in Sources */,
 				582A663618AB963700006419 /* EventBarView.m in Sources */,
 				58ECE0D21A2419B900B38FBA /* GLPReviewHistoryDao.m in Sources */,
+				5810D8931B1F500200AFA557 /* GLPImageDefaultImageAction.swift in Sources */,
 				58406AFE1823FCBE0032353E /* NewPostView.m in Sources */,
 				58ECE0D61A241E7900B38FBA /* GLPPendingPostsManager.m in Sources */,
 				80DDDF36180FD799009E17BD /* GLPLoginManager.m in Sources */,
@@ -6701,6 +6780,7 @@
 				5819E65818C7C442003361B3 /* NewGroupViewController.m in Sources */,
 				585106CE199D8635000F06BB /* FinalNewPostViewController.m in Sources */,
 				803FF9991897D932000B1955 /* GLPLoadingCellDelegate.m in Sources */,
+				5810D87F1B1F4E0500AFA557 /* ImagePickerSheetController.swift in Sources */,
 				5890252D1AE54EC500A3104D /* PollingDataView.m in Sources */,
 				58F562A51923A5ED00841918 /* GLPVideoUploader.m in Sources */,
 				582143D217FC59F50032ECEB /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
@@ -6772,6 +6852,7 @@
 				5890D214184763E700E293DD /* GLPThemeManager.m in Sources */,
 				58119CC61947992700C2687B /* UIView+viewController.m in Sources */,
 				58774D331964972F0034A1C6 /* GLPRefreshControl.m in Sources */,
+				5810D8801B1F4E0500AFA557 /* ImagePreviewFlowLayout.swift in Sources */,
 				80C8BA72181048E9004F70DB /* GLPMessageDaoParser.m in Sources */,
 				58B7816019F9E6B0003E0F9A /* GLPImageHelper.m in Sources */,
 				585C7CD9181688CD00173C38 /* LiveChatsView.m in Sources */,
@@ -6783,7 +6864,9 @@
 				8087E436180ED90F00938264 /* AppearanceHelper.m in Sources */,
 				5879AC82196435C40053262A /* GLPCheckNameCell.m in Sources */,
 				58ECE0CC1A24123200B38FBA /* GLPReviewHistory.m in Sources */,
+				5810D87E1B1F4E0500AFA557 /* ImagePickerCollectionView.swift in Sources */,
 				58ECE0C81A23DB0700B38FBA /* GLPApprovalManager.m in Sources */,
+				5810D8911B1F500200AFA557 /* GLPDefaultImageActionCell.swift in Sources */,
 				58350A6E198AF9C2000BB1CA /* GLPNetworkErrorView.m in Sources */,
 				58C1E2D61ACFCEAE00A986F0 /* UINavigationBar+Animations.m in Sources */,
 				585CAD7E1ADE70C500EF6FFA /* GLPLikesCell.m in Sources */,
@@ -6800,6 +6883,7 @@
 				58A855C11949BA8C0059CF57 /* GLPButton.m in Sources */,
 				5855CDA41B0600380006D278 /* GLPLiveSummary.m in Sources */,
 				8087E42F180EC02E00938264 /* Comment.m in Sources */,
+				5810D8901B1F500200AFA557 /* GLPDefaultImageAction.swift in Sources */,
 				5887C7E119FDA52A004441B9 /* AttendingPostsOrganiserHelper.m in Sources */,
 				58D70D581A8513400023B478 /* ProfileManager.m in Sources */,
 				589EFD9F182D38CA00EBEB2E /* GLPLiveUserDao.m in Sources */,
@@ -6938,6 +7022,8 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
+				DEFINES_MODULE = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -6973,6 +7059,8 @@
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
+				DEFINES_MODULE = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
@@ -6992,15 +7080,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "messaging/Gleepost-Prefix.pch";
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = NerdNation;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0256016b-1542-4682-9bd1-87142a468957";
+				SWIFT_OBJC_BRIDGING_HEADER = "messaging/NerdNation-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -7012,15 +7106,20 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEFINES_MODULE = YES;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "messaging/Gleepost-Prefix.pch";
 				INFOPLIST_FILE = "messaging/Gleepost-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = NerdNation;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1b7d7eae-d231-4947-b9ae-c3e4bdf24f11";
+				SWIFT_OBJC_BRIDGING_HEADER = "messaging/NerdNation-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

@@ -5,10 +5,15 @@
 //  Created by Silouanos on 19/05/15.
 //  Copyright (c) 2015 Gleepost. All rights reserved.
 //
-//  Helper that shows an image in a view controller. To be extended for further operations.
+//  Helper that includes image operations:
+//  Shows an image in a view controller.
+//  Presents an iOS 8 image picker.
+//  To be extended for further operations.
 
 #import "GLPViewImageHelper.h"
 #import "JTSImageViewController.h"
+#import <Photos/Photos.h>
+#import "NerdNation-Swift.h"
 
 @implementation GLPViewImageHelper
 
@@ -29,6 +34,20 @@
     
     // Present the view controller.
     [imageViewer showFromViewController:viewController transition:JTSImageViewControllerTransition_FromOriginalPosition];
+}
+
++ (ImagePickerSheetController *)generateImagePickerForChat
+{
+//    [PHPhotoLibrary authorizationStatus];
+    
+    ImagePickerSheetController *imagePickerController = [[ImagePickerSheetController alloc] init];
+    
+    [imagePickerController addAction:[[GLPImageDefaultImageAction alloc] initWithTitle:@"Select a location" secondaryTitle:@"Select a location" imageName:@"pick_location"]];
+    
+    [imagePickerController addAction:[[GLPDefaultImageAction alloc] initWithTitle:@"Cancel" secondaryTitle:@"Cancel"]];
+    
+    return imagePickerController;
+    
 }
 
 @end

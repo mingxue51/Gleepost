@@ -54,6 +54,7 @@
 #import "GLPReadReceipt.h"
 #import "GLPMessageDetailsViewController.h"
 #import "GLPViewImageHelper.h"
+//#import "Nerdnation-Swift.h"
 
 @interface GLPConversationViewController ()
 
@@ -985,6 +986,14 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 - (void)messageImageClickedForMessage:(GLPMessage *)message withImageView:(UIImageView *)imageView
 {
     [GLPViewImageHelper showImageInViewController:self withImageView:imageView];
+}
+
+#pragma mark - Selectors
+
+- (IBAction)pickImage:(id)sender
+{
+    ImagePickerSheetController *imagePicketSheetController = [GLPViewImageHelper generateImagePickerForChat];
+    [self presentViewController:imagePicketSheetController animated:YES completion:nil];
 }
 
 
