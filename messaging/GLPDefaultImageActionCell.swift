@@ -17,9 +17,10 @@ class GLPDefaultImageActionCell: UITableViewCell {
         // Initialization code
     }
     
-    internal func setData(data: GLPDefaultImageAction, useSecondaryTitle: Bool)
+    internal func setData(data: GLPDefaultImageAction)
     {
-        self.titleLabel.text = useSecondaryTitle ? data.secondaryTitle : data.title
+        self.titleLabel.text = data.title
+        self.titleLabel.textColor = data.textColour
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

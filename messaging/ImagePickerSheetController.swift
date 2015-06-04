@@ -145,13 +145,13 @@ private let assetsMaxNumber: Int = 20;
         if let imageDefaultAction = action as? GLPImageDefaultImageAction
         {
             let cell = tableView.dequeueReusableCellWithIdentifier(imageDefaultAction.cellName(), forIndexPath: indexPath) as! GLPImageDefaultImageActionCell
-            cell.setData(imageDefaultAction, useSecondaryTitle: false)
+            cell.setData(imageDefaultAction)
             return cell
         }
         else if let defaultAction = action as? GLPDefaultImageAction
         {
             let cell = tableView.dequeueReusableCellWithIdentifier(defaultAction.cellName(), forIndexPath: indexPath) as! GLPDefaultImageActionCell
-            cell.setData(defaultAction, useSecondaryTitle: false)
+            cell.setData(defaultAction)
             return cell
         }
         else if let multipleImagesAction = action as? GLPMultipleImagesAction
@@ -245,9 +245,13 @@ private let assetsMaxNumber: Int = 20;
         if !selected {
             selectedPhotoIndices.append(indexPath.section)
             
+            self.updateImageCounterCell()
+            
             if !enlargedPreviews {
                 enlargedPreviews = true
                 
+                //Add secondary image actions in actions array.
+                self.switchImageActions(applyInitialActions: false)
                 self.collectionView.imagePreviewLayout.invalidationCenteredIndexPath = indexPath
                 
                 view.setNeedsLayout()
@@ -268,14 +272,16 @@ private let assetsMaxNumber: Int = 20;
                     
                     collectionView.setContentOffset(contentOffset, animated: true)
                 }
-                
+                self.updateImageCounterCell()
                 reloadButtonTitles()
             }
         }
         else {
             selectedPhotoIndices.removeAtIndex(find(selectedPhotoIndices, indexPath.section)!)
+            self.updateImageCounterCell()
             reloadButtonTitles()
         }
+        
         
         if let sectionView = supplementaryViews[indexPath.section] {
             sectionView.selected = !selected
@@ -298,6 +304,35 @@ private let assetsMaxNumber: Int = 20;
     func addSecondaryAction(action: GLPImageAction)
     {
         secondaryActions.append(action)
+    }
+    
+    /**
+        Clears the actions array (if needed) and copies the new array
+        depending on the initialActions variable.
+    
+        :param: applyInitialActions if true copies the initialActions array otherwise the secondaryActions.
+    */
+    private func switchImageActions(#applyInitialActions: Bool)
+    {
+        actions = applyInitialActions ? initialActions : secondaryActions
+    }
+    
+    private func updateImageCounterCell()
+    {
+        if !self.enlargedPreviews
+        {
+            return
+        }
+        
+        for imageAction in self.actions
+        {
+            if let defaultImageAction = imageAction as? GLPDefaultImageAction
+            {
+                defaultImageAction.increaseCount(selectedPhotoIndices.count)
+            }
+        }
+        
+    
     }
     
     // MARK: - Photos

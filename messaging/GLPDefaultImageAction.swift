@@ -10,19 +10,28 @@ import UIKit
 
 class GLPDefaultImageAction: GLPImageAction, Printable
 {
-    let title: String
-    let secondaryTitle: String
+    var title: String
+    let textColour: UIColor
+    var imagesCount: Int
     
-    init(title: String, secondaryTitle: String)
+    init(title: String, textColour: UIColor)
     {
         self.title = title
-        self.secondaryTitle = secondaryTitle
-//        super.init()
+        self.textColour = textColour
+        self.imagesCount = 1
+        super.init()
+    }
+    
+    func increaseCount(newNumber: Int)
+    {
+        var finalIndex = 0
+        title = title.stringByReplacingOccurrencesOfString("\(self.imagesCount)", withString: "\(newNumber)", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        self.imagesCount = newNumber
     }
     
     override var description: String
     {
-        return "title \(self.title) secondary title \(self.secondaryTitle)"
+        return "title \(self.title)"
     }
     
     override func cellName() -> String {

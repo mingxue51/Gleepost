@@ -12,9 +12,8 @@ class GLPImageDefaultImageActionCell: GLPDefaultImageActionCell {
 
     @IBOutlet weak var leftImageView: UIImageView!
     
-    
-    override func setData(data: GLPDefaultImageAction, useSecondaryTitle: Bool) {
-        super.setData(data, useSecondaryTitle: useSecondaryTitle)
+    override func setData(data: GLPDefaultImageAction) {
+        super.setData(data)
         self.setImage(imageDefaultImageAction: data as! GLPImageDefaultImageAction)
     }
     
