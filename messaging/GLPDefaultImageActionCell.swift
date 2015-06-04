@@ -9,8 +9,6 @@
 import UIKit
 
 class GLPDefaultImageActionCell: UITableViewCell {
-
-    static let reuseIdentifierName = "GLPDefaultImageActionCell"
     
     @IBOutlet weak var titleLabel: UILabel!
     

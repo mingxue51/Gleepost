@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GLPMultipleImagesActionCell" id="KGk-i7-Jjw" customClass="GLPMultipleImagesActionCell" customModule="NerdNation" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P9Q-gJ-vMB">
+                        <rect key="frame" x="135" y="0.0" width="50" height="43"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="5wU-e4-y6U"/>
+                        </constraints>
+                        <state key="normal" image="capture">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="captureImage:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Zzf-tM-RiU"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c3Z-HL-Jxc">
+                        <rect key="frame" x="50" y="0.0" width="50" height="43"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="Vce-dH-Fnl"/>
+                        </constraints>
+                        <state key="normal" image="camera_roll">
+                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="goToCameraRoll:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="xeV-st-a3E"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d1n-32-hCP">
+                        <rect key="frame" x="220" y="0.0" width="50" height="43"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="50" id="ICG-cD-mnj"/>
+                        </constraints>
+                        <state key="normal" image="search_image">
+                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="searchForImage:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="PcY-PO-Jy7"/>
+                        </connections>
+                    </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yNh-N3-ol1">
+                        <rect key="frame" x="0.0" y="42" width="320" height="1"/>
+                        <color key="backgroundColor" red="0.96862745100000003" green="0.96862745100000003" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="AqV-gY-HSR"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="P9Q-gJ-vMB" secondAttribute="bottom" id="0Ua-3d-zjX"/>
+                    <constraint firstItem="c3Z-HL-Jxc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="50" id="4S4-Ee-v1o"/>
+                    <constraint firstItem="yNh-N3-ol1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="4dC-Aw-25W"/>
+                    <constraint firstAttribute="bottom" secondItem="d1n-32-hCP" secondAttribute="bottom" id="CxT-Q5-yAO"/>
+                    <constraint firstAttribute="trailing" secondItem="d1n-32-hCP" secondAttribute="trailing" constant="50" id="ELD-tb-kS6"/>
+                    <constraint firstItem="d1n-32-hCP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="GTI-xk-zcm"/>
+                    <constraint firstAttribute="bottom" secondItem="yNh-N3-ol1" secondAttribute="bottom" id="IIC-gv-swX"/>
+                    <constraint firstAttribute="trailing" secondItem="yNh-N3-ol1" secondAttribute="trailing" id="lgt-9W-4on"/>
+                    <constraint firstAttribute="centerX" secondItem="P9Q-gJ-vMB" secondAttribute="centerX" id="lks-z7-3nO"/>
+                    <constraint firstAttribute="bottom" secondItem="c3Z-HL-Jxc" secondAttribute="bottom" id="p4r-FS-XOM"/>
+                    <constraint firstItem="P9Q-gJ-vMB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="p5E-Uf-VKC"/>
+                    <constraint firstItem="c3Z-HL-Jxc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="sfy-Yc-sTY"/>
+                </constraints>
+            </tableViewCellContentView>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="camera_roll" width="23" height="18"/>
+        <image name="capture" width="23" height="17"/>
+        <image name="search_image" width="15" height="16"/>
+    </resources>
+</document>

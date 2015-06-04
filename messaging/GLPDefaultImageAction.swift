@@ -17,11 +17,15 @@ class GLPDefaultImageAction: GLPImageAction, Printable
     {
         self.title = title
         self.secondaryTitle = secondaryTitle
-        super.init()
+//        super.init()
     }
     
     override var description: String
     {
         return "title \(self.title) secondary title \(self.secondaryTitle)"
+    }
+    
+    override func cellName() -> String {
+        return "GLPDefaultImageActionCell"
     }
 }

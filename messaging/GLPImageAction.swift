@@ -16,9 +16,24 @@ public enum GLPImageActionStyle: Int
     case Cancel
 }
 
-@objc class GLPImageAction: NSObject
+/**
+    Each class that inherits the GLPImageAction should
+    implement the cellName to be used in the ImagePickerSheetController.
+*/
+protocol GLPImageActionProtocol
+{
+    mutating func cellName() -> String
+}
+
+@objc class GLPImageAction: NSObject, GLPImageActionProtocol
 {
     override init()
     {
+        
+    }
+    
+    func cellName() -> String
+    {
+        return "GLPImageActionCell"
     }
 }

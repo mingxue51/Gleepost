@@ -42,12 +42,32 @@
     
     ImagePickerSheetController *imagePickerController = [[ImagePickerSheetController alloc] init];
     
-    [imagePickerController addAction:[[GLPImageDefaultImageAction alloc] initWithTitle:@"Select a location" secondaryTitle:@"Select a location" imageName:@"pick_location"]];
-    
-    [imagePickerController addAction:[[GLPDefaultImageAction alloc] initWithTitle:@"Cancel" secondaryTitle:@"Cancel"]];
+    imagePickerController = [self configureInitialActionsWithImagePicker:imagePickerController];
+    imagePickerController = [self configureSecondaryActionsWithImagePicker:imagePickerController];
     
     return imagePickerController;
+}
+
++ (ImagePickerSheetController *)configureInitialActionsWithImagePicker:(ImagePickerSheetController *)imagePicker
+{
+    [imagePicker addInitialAction:[[GLPMultipleImagesAction alloc] initWithImagesNames:@[@"test", @"test2", @"test3"]]];
     
+    [imagePicker addInitialAction:[[GLPImageDefaultImageAction alloc] initWithTitle:@"Select a location" secondaryTitle:@"Select a location" imageName:@"pick_location"]];
+    
+    [imagePicker addInitialAction:[[GLPDefaultImageAction alloc] initWithTitle:@"Cancel" secondaryTitle:@"Cancel"]];
+    
+    return imagePicker;
+}
+
++ (ImagePickerSheetController *)configureSecondaryActionsWithImagePicker:(ImagePickerSheetController *)imagePicker
+{
+    [imagePicker addSecondaryAction:[[GLPDefaultImageAction alloc] initWithTitle:@"Send 1 image" secondaryTitle:@"Send 1 image"]];
+    
+    [imagePicker addSecondaryAction:[[GLPImageDefaultImageAction alloc] initWithTitle:@"back to options" secondaryTitle:@"" imageName:@"back_to_pick_image"]];
+    
+    [imagePicker addSecondaryAction:[[GLPDefaultImageAction alloc] initWithTitle:@"Cancel" secondaryTitle:@"Cancel"]];
+    
+    return imagePicker;
 }
 
 @end

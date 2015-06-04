@@ -68,6 +68,9 @@
 		5810D8921B1F500200AFA557 /* GLPImageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D88D1B1F500100AFA557 /* GLPImageAction.swift */; };
 		5810D8931B1F500200AFA557 /* GLPImageDefaultImageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D88E1B1F500100AFA557 /* GLPImageDefaultImageAction.swift */; };
 		5810D8941B1F500200AFA557 /* GLPImageDefaultImageActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D88F1B1F500200AFA557 /* GLPImageDefaultImageActionCell.swift */; };
+		5810D8991B207DEB00AFA557 /* GLPMultipleImagesActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D8971B207DEB00AFA557 /* GLPMultipleImagesActionCell.swift */; };
+		5810D89A1B207DEB00AFA557 /* GLPMultipleImagesActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5810D8981B207DEB00AFA557 /* GLPMultipleImagesActionCell.xib */; };
+		5810D89C1B207F5100AFA557 /* GLPMultipleImagesAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D89B1B207F5100AFA557 /* GLPMultipleImagesAction.swift */; };
 		5810F0B91886F73B0066D4CE /* GLPMessagesLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5810F0B81886F73B0066D4CE /* GLPMessagesLoader.m */; };
 		5810F0BC18870C740066D4CE /* GLPProfileLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5810F0BB18870C740066D4CE /* GLPProfileLoader.m */; };
 		58119CC51947992700C2687B /* InfiniteScrollViewPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 58119CC21947992700C2687B /* InfiniteScrollViewPicker.m */; };
@@ -1068,6 +1071,9 @@
 		5810D88D1B1F500100AFA557 /* GLPImageAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPImageAction.swift; sourceTree = "<group>"; };
 		5810D88E1B1F500100AFA557 /* GLPImageDefaultImageAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPImageDefaultImageAction.swift; sourceTree = "<group>"; };
 		5810D88F1B1F500200AFA557 /* GLPImageDefaultImageActionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPImageDefaultImageActionCell.swift; sourceTree = "<group>"; };
+		5810D8971B207DEB00AFA557 /* GLPMultipleImagesActionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPMultipleImagesActionCell.swift; sourceTree = "<group>"; };
+		5810D8981B207DEB00AFA557 /* GLPMultipleImagesActionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GLPMultipleImagesActionCell.xib; sourceTree = "<group>"; };
+		5810D89B1B207F5100AFA557 /* GLPMultipleImagesAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPMultipleImagesAction.swift; sourceTree = "<group>"; };
 		5810F0B71886F73B0066D4CE /* GLPMessagesLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPMessagesLoader.h; sourceTree = "<group>"; };
 		5810F0B81886F73B0066D4CE /* GLPMessagesLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPMessagesLoader.m; sourceTree = "<group>"; };
 		5810F0BA18870C740066D4CE /* GLPProfileLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPProfileLoader.h; sourceTree = "<group>"; };
@@ -2591,6 +2597,8 @@
 				5810D88F1B1F500200AFA557 /* GLPImageDefaultImageActionCell.swift */,
 				5810D8861B1F4F5E00AFA557 /* GLPDefaultImageActionCell.xib */,
 				5810D8871B1F4F5E00AFA557 /* GLPImageDefaultImageActionCell.xib */,
+				5810D8971B207DEB00AFA557 /* GLPMultipleImagesActionCell.swift */,
+				5810D8981B207DEB00AFA557 /* GLPMultipleImagesActionCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -2601,6 +2609,7 @@
 				5810D88B1B1F500100AFA557 /* GLPDefaultImageAction.swift */,
 				5810D88D1B1F500100AFA557 /* GLPImageAction.swift */,
 				5810D88E1B1F500100AFA557 /* GLPImageDefaultImageAction.swift */,
+				5810D89B1B207F5100AFA557 /* GLPMultipleImagesAction.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -6100,6 +6109,7 @@
 				589EAD0E18A403F8005B2F4C /* SignUpThreeView.xib in Resources */,
 				58E18B941945CF3E0029C764 /* calendar.png in Resources */,
 				58902496195DCA0A00084E2F /* party_category.png in Resources */,
+				5810D89A1B207DEB00AFA557 /* GLPMultipleImagesActionCell.xib in Resources */,
 				583809F119DD9BF500275B4D /* snap_photo.png in Resources */,
 				5843328F180F09C900BD9F74 /* Gleepost2.png in Resources */,
 				5806C761191BFA5D005C907E /* fb_login.png in Resources */,
@@ -6697,6 +6707,7 @@
 				584C1EEA181AC53600862E81 /* GLPContact.m in Sources */,
 				58E26BF31AF542A400730C27 /* GLPStretchedImageView.m in Sources */,
 				58040E911A8CE7CA00B29247 /* GLPConversationHelper.m in Sources */,
+				5810D8991B207DEB00AFA557 /* GLPMultipleImagesActionCell.swift in Sources */,
 				5827B8911945C85F00DFC76E /* GBInfiniteScrollViewPage.m in Sources */,
 				58BDB3061A8BD2C70031A26D /* GLPLiveGroupConversationsManager.m in Sources */,
 				8056763F1805997B006E058E /* UserNetwork.m in Sources */,
@@ -6739,6 +6750,7 @@
 				582E44D9197E1E7F000BE3EC /* GLPServerPathManager.m in Sources */,
 				5823932718CB9A04001BC88C /* MembersViewController.m in Sources */,
 				58299B7619FA165D00702381 /* GLPPostsEmptyView.m in Sources */,
+				5810D89C1B207F5100AFA557 /* GLPMultipleImagesAction.swift in Sources */,
 				58EB664C1829667100CE6550 /* ShapeFormatterHelper.m in Sources */,
 				80B2A4351833C9DF002AB1F0 /* GLPNewElementsIndicatorView.m in Sources */,
 				588D858B1959F8FD002F516A /* GLPGroupsViewController.m in Sources */,

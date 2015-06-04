@@ -18,4 +18,8 @@ class GLPImageDefaultImageAction: GLPDefaultImageAction
         self.imageName = imageName
         super.init(title: title, secondaryTitle: secondaryTitle)
     }
+    
+    override func cellName() -> String {
+        return "GLPImageDefaultImageActionCell"
+    }
 }

@@ -28,11 +28,13 @@ private let assetsMaxNumber: Int = 20;
         tableView.layoutMargins = UIEdgeInsetsZero
         tableView.separatorInset = UIEdgeInsetsZero
         tableView.registerClass(ImagePreviewTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(ImagePreviewTableViewCell.self))
-        tableView.registerNib(UINib(nibName: GLPDefaultImageActionCell.reuseIdentifierName, bundle: nil), forCellReuseIdentifier: GLPDefaultImageActionCell.reuseIdentifierName)
         
-        //GLPImageDefaultImageAction
-        tableView.registerNib(UINib(nibName: "GLPImageDefaultImageActionCell", bundle: nil), forCellReuseIdentifier: "GLPImageDefaultImageActionCell")
-
+        //Register cells depending on actions.
+        for action in self.actions
+        {
+            let nib = UINib(nibName: action.cellName(), bundle: nil)
+            tableView.registerNib(nib, forCellReuseIdentifier: action.cellName())
+        }
         
         return tableView
     }()
@@ -61,6 +63,8 @@ private let assetsMaxNumber: Int = 20;
     }()
     
     private(set) var actions = [GLPImageAction]()
+    private(set) var initialActions = [GLPImageAction]()
+    private(set) var secondaryActions = [GLPImageAction]()
     private var assets = [PHAsset]()
     private var selectedPhotoIndices = [Int]()
     private(set) var enlargedPreviews = false
@@ -138,26 +142,24 @@ private let assetsMaxNumber: Int = 20;
         
         let action = actions[indexPath.row]
         
-//        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell.self), forIndexPath: indexPath) as! UITableViewCell
-//        cell.textLabel?.textAlignment = .Center
-//        cell.textLabel?.textColor = tableView.tintColor
-//        cell.textLabel?.font = UIFont.systemFontOfSize(21)
-//        cell.textLabel?.text = selectedPhotoIndices.count > 0 ? action.secondaryTitle(selectedPhotoIndices.count) : action.title
-//        cell.layoutMargins = UIEdgeInsetsZero
-        
         if let imageDefaultAction = action as? GLPImageDefaultImageAction
         {
-            let cell = tableView.dequeueReusableCellWithIdentifier("GLPImageDefaultImageActionCell", forIndexPath: indexPath) as! GLPImageDefaultImageActionCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(imageDefaultAction.cellName(), forIndexPath: indexPath) as! GLPImageDefaultImageActionCell
             cell.setData(imageDefaultAction, useSecondaryTitle: false)
             return cell
         }
         else if let defaultAction = action as? GLPDefaultImageAction
         {
-            let cell = tableView.dequeueReusableCellWithIdentifier(GLPDefaultImageActionCell.reuseIdentifierName, forIndexPath: indexPath) as! GLPDefaultImageActionCell
+            let cell = tableView.dequeueReusableCellWithIdentifier(defaultAction.cellName(), forIndexPath: indexPath) as! GLPDefaultImageActionCell
             cell.setData(defaultAction, useSecondaryTitle: false)
             return cell
         }
-
+        else if let multipleImagesAction = action as? GLPMultipleImagesAction
+        {
+            let cell = tableView.dequeueReusableCellWithIdentifier(multipleImagesAction.cellName(), forIndexPath: indexPath) as! GLPMultipleImagesActionCell
+            
+            return cell
+        }
         
         return tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(UITableViewCell.self), forIndexPath: indexPath) as! UITableViewCell
     }
@@ -282,15 +284,20 @@ private let assetsMaxNumber: Int = 20;
     
     // MARK: - Actions
     
-    func addAction(action: GLPImageAction) {
+    func addInitialAction(action: GLPImageAction) {
 //        let cancelActions = actions.filter { $0.style == ImageActionStyle.Cancel }
 //        if action.style == .Cancel && cancelActions.count > 0 {
 //            // precondition() would be more swifty here, but that's not really testable as of now
 //            NSException(name: NSInternalInconsistencyException, reason: "ImagePickerSheetController can only have one action with a style of .Cancel", userInfo: nil).raise()
 //        }
         
-
+        initialActions.append(action)
         actions.append(action)
+    }
+    
+    func addSecondaryAction(action: GLPImageAction)
+    {
+        secondaryActions.append(action)
     }
     
     // MARK: - Photos
