@@ -9,11 +9,13 @@
 
 import UIKit
 
-public enum GLPImageActionStyle: Int
+@objc enum GLPImageActionStyle: Int
 {
-    case Default = 1
-    case MultipleImages
+    case PickLocation
+    case MultipleOptions
     case Cancel
+    case SendImage
+    case BackToOptions
 }
 
 /**
@@ -27,9 +29,11 @@ protocol GLPImageActionProtocol
 
 @objc class GLPImageAction: NSObject, GLPImageActionProtocol
 {
-    override init()
+    let imageActionStyle: GLPImageActionStyle
+    
+    init(imageActionStyle: GLPImageActionStyle)
     {
-        
+        self.imageActionStyle = imageActionStyle
     }
     
     func cellName() -> String

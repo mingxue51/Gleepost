@@ -13,10 +13,10 @@ class GLPImageDefaultImageAction: GLPDefaultImageAction
 {
     let imageName: String
     
-    init(title: String, imageName: String, textColour: UIColor)
+    init(title: String, imageName: String, textColour: UIColor, imageActionStyle: GLPImageActionStyle)
     {
         self.imageName = imageName
-        super.init(title: title, textColour: textColour)
+        super.init(title: title, textColour: textColour, imageActionStyle: imageActionStyle)
     }
     
     override func cellName() -> String {

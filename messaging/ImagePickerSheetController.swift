@@ -175,6 +175,7 @@ private let assetsMaxNumber: Int = 20;
         
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         
+//        if let dismissAction = actions[index.row] as? GLPDefa
 //        actions[indexPath.row].handle(numberOfPhotos: selectedPhotoIndices.count)
     }
     

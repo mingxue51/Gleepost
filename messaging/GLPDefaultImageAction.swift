@@ -14,12 +14,12 @@ class GLPDefaultImageAction: GLPImageAction, Printable
     let textColour: UIColor
     var imagesCount: Int
     
-    init(title: String, textColour: UIColor)
+    init(title: String, textColour: UIColor, imageActionStyle: GLPImageActionStyle)
     {
         self.title = title
         self.textColour = textColour
         self.imagesCount = 1
-        super.init()
+        super.init(imageActionStyle: imageActionStyle)
     }
     
     func increaseCount(newNumber: Int)
