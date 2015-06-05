@@ -173,7 +173,18 @@ private let assetsMaxNumber: Int = 20;
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        //presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        
+        let action = actions[indexPath.row]
+        
+        switch action.imageActionStyle
+        {
+        case .BackToOptions:
+            self.goBackToInitialView()
+            
+        default:
+            println("Default")
+        }
         
 //        if let dismissAction = actions[index.row] as? GLPDefa
 //        actions[indexPath.row].handle(numberOfPhotos: selectedPhotoIndices.count)
@@ -289,6 +300,26 @@ private let assetsMaxNumber: Int = 20;
         }
     }
     
+    // MARK: - Action options
+    
+    private func goBackToInitialView()
+    {
+        self.selectedPhotoIndices.removeAll(keepCapacity: false)
+        self.updateImageCounterCell()
+
+        self.enlargedPreviews = false
+        self.switchImageActions(applyInitialActions: true)
+        view.setNeedsLayout()
+        UIView.animateWithDuration(enlargementAnimationDuration, animations: {
+            self.tableView.beginUpdates()
+            self.tableView.endUpdates()
+            self.collectionView.imagePreviewLayout.showsSupplementaryViews = false
+            self.view.layoutIfNeeded()
+            }, completion: { finished in
+                self.reloadButtonTitles()
+        })
+    }
+    
     // MARK: - Actions
     
     func addInitialAction(action: GLPImageAction) {
@@ -329,7 +360,7 @@ private let assetsMaxNumber: Int = 20;
         {
             if let defaultImageAction = imageAction as? GLPDefaultImageAction
             {
-                defaultImageAction.increaseCount(selectedPhotoIndices.count)
+                defaultImageAction.increaseCount(selectedPhotoIndices.count == 0 ? 1 : selectedPhotoIndices.count)
             }
         }
         
