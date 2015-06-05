@@ -176,17 +176,19 @@ private let assetsMaxNumber: Int = 20;
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         
-        //presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
-        
         let action = actions[indexPath.row]
         
         switch action.imageActionStyle
         {
+        case .PickLocation:
+            self.sendLocation()
+        case .SendImage:
+            self.sendImages()
         case .BackToOptions:
             self.goBackToInitialView(indexPath)
-            
+        
         default:
-            println("Default")
+            presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
         }
         
 //        if let dismissAction = actions[index.row] as? GLPDefa
@@ -196,7 +198,7 @@ private let assetsMaxNumber: Int = 20;
     // MARK: - UICollectionViewDataSource
     
     public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        return assets.count
+        return assets.count + 1
     }
     
     public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -205,6 +207,12 @@ private let assetsMaxNumber: Int = 20;
     
     public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(NSStringFromClass(ImageCollectionViewCell.self), forIndexPath: indexPath) as! ImageCollectionViewCell
+        
+        if indexPath.section == self.assets.count
+        {
+            cell.imageView.image = UIImage(named: "add_image_to_the_end")
+            return cell
+        }
         
         let asset = assets[indexPath.section]
         let size = sizeForAsset(asset)
@@ -217,6 +225,7 @@ private let assetsMaxNumber: Int = 20;
     }
     
     public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+            
         let view = collectionView.dequeueReusableSupplementaryViewOfKind(UICollectionElementKindSectionHeader, withReuseIdentifier: NSStringFromClass(PreviewSupplementaryView.self), forIndexPath: indexPath) as! PreviewSupplementaryView
         view.userInteractionEnabled = false
         view.buttonInset = UIEdgeInsetsMake(0.0, collectionViewCheckmarkInset, collectionViewCheckmarkInset, 0.0)
@@ -230,6 +239,13 @@ private let assetsMaxNumber: Int = 20;
     // MARK: - UICollectionViewDelegateFlowLayout
     
     public func collectionView(collectionView: UICollectionView, layout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        if indexPath.section == self.assets.count
+        {
+            let asset = assets[indexPath.section - 1]
+            return sizeForAsset(asset)
+        }
+        
         let asset = assets[indexPath.section]
         
         return sizeForAsset(asset)
@@ -256,6 +272,13 @@ private let assetsMaxNumber: Int = 20;
     }
     
     public func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        if indexPath.section == self.assets.count
+        {
+            self.showFullSizeImagePicker()
+            return
+        }
+        
         let selected = contains(selectedPhotoIndices, indexPath.section)
         
         if !selected {
@@ -328,6 +351,21 @@ private let assetsMaxNumber: Int = 20;
         })
     }
     
+    private func sendLocation()
+    {
+        
+    }
+    
+    private func sendImages()
+    {
+        
+    }
+    
+    private func showFullSizeImagePicker()
+    {
+        println("ImagePickerSheetController showFullSizeImagePicker")
+    }
+
     // MARK: - Actions
     
     func addInitialAction(action: GLPImageAction) {
