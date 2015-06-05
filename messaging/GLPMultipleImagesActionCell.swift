@@ -10,25 +10,40 @@ import UIKit
 
 class GLPMultipleImagesActionCell: UITableViewCell {
     
+//    @IBOutlet weak var cameraRollButton!
+//    @IBOutlet weak var captureButton!
+//    @IBOutlet weak var captureButton!
+    
+    @IBOutlet var buttons: [UIButton]!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+    }
+    
+    func setData(multipleImagesData: GLPMultipleImagesAction)
+    {
+        for index in 0...buttons.count - 1
+        {
+            let button = buttons[index]
+            button.setImage(UIImage(named: multipleImagesData.array[index]), forState: UIControlState.Normal)
+        }
+        
     }
     
     
     // MARK: - Selectors
     
     @IBAction func captureImage(sender: AnyObject) {
-        
-        println("GLPMutlipleImagesActionCell captureImage")
+        NSNotificationCenter.defaultCenter().postNotificationName(SwiftConstants.GLPNOTIFICATION_SHOW_CAPTURE_VIEW, object: self)
     }
     
     @IBAction func goToCameraRoll(sender: AnyObject) {
-        
+        NSNotificationCenter.defaultCenter().postNotificationName(SwiftConstants.GLPNOTIFICATION_SHOW_IMAGE_PICKER, object: self)
     }
     
     @IBAction func searchForImage(sender: AnyObject) {
-        
+        NSNotificationCenter.defaultCenter().postNotificationName(SwiftConstants.GLPNOTIFICATION_SHOW_PICK_IMAGE_FROM_WEB, object: self)
     }
     
     

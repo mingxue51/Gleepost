@@ -53,6 +53,7 @@
 		580FF14F18AA58DE0026B65B /* add_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 580FF14E18AA58DE0026B65B /* add_button.png */; };
 		580FF15318AA6DAD0026B65B /* NSDate+HumanizedTime.m in Sources */ = {isa = PBXBuildFile; fileRef = 580FF15218AA6DAD0026B65B /* NSDate+HumanizedTime.m */; };
 		580FF15618AA74400026B65B /* CampusLiveManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 580FF15518AA74400026B65B /* CampusLiveManager.m */; };
+		58105EAD1B21FA3400CA4000 /* SwiftConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58105EAC1B21FA3400CA4000 /* SwiftConstants.swift */; };
 		5810D87C1B1F4E0500AFA557 /* AnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D8751B1F4E0500AFA557 /* AnimationController.swift */; };
 		5810D87D1B1F4E0500AFA557 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D8761B1F4E0500AFA557 /* ImageCollectionViewCell.swift */; };
 		5810D87E1B1F4E0500AFA557 /* ImagePickerCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5810D8771B1F4E0500AFA557 /* ImagePickerCollectionView.swift */; };
@@ -1056,6 +1057,7 @@
 		580FF15218AA6DAD0026B65B /* NSDate+HumanizedTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+HumanizedTime.m"; sourceTree = "<group>"; };
 		580FF15418AA74400026B65B /* CampusLiveManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CampusLiveManager.h; sourceTree = "<group>"; };
 		580FF15518AA74400026B65B /* CampusLiveManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CampusLiveManager.m; sourceTree = "<group>"; };
+		58105EAC1B21FA3400CA4000 /* SwiftConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftConstants.swift; sourceTree = "<group>"; };
 		5810D8741B1F4E0400AFA557 /* NerdNation-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NerdNation-Bridging-Header.h"; sourceTree = "<group>"; };
 		5810D8751B1F4E0500AFA557 /* AnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationController.swift; sourceTree = "<group>"; };
 		5810D8761B1F4E0500AFA557 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -5532,6 +5534,7 @@
 				58B7815F19F9E6B0003E0F9A /* GLPImageHelper.m */,
 				58EDC5261A77F7D20042567C /* GLPImageCacheHelper.h */,
 				58EDC5271A77F7D20042567C /* GLPImageCacheHelper.m */,
+				58105EAC1B21FA3400CA4000 /* SwiftConstants.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -6541,6 +6544,7 @@
 				58273F1E1A26977D00425605 /* GLPPostsOrganiserHelper.m in Sources */,
 				5810D8811B1F4E0500AFA557 /* ImagePreviewTableViewCell.swift in Sources */,
 				8087E42D180EC02E00938264 /* _Comment.m in Sources */,
+				58105EAD1B21FA3400CA4000 /* SwiftConstants.swift in Sources */,
 				58D113D618857D3A00C6B953 /* GLPPostImageLoader.m in Sources */,
 				5809FF0D1A403F7000AF7912 /* GLPPostImageOperation.m in Sources */,
 				585106E3199D9E64000F06BB /* PendingPostManager.m in Sources */,

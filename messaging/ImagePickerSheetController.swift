@@ -93,6 +93,22 @@ private let assetsMaxNumber: Int = 20;
         transitioningDelegate = self
     }
     
+    private func configureNotifications()
+    {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("showFullSizeImagePicker"), name: SwiftConstants.GLPNOTIFICATION_SHOW_IMAGE_PICKER, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("showCaptureImageView"), name: SwiftConstants.GLPNOTIFICATION_SHOW_CAPTURE_VIEW, object: nil)
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("showPickImageFromTheWeb"), name: SwiftConstants.GLPNOTIFICATION_SHOW_PICK_IMAGE_FROM_WEB, object: nil)
+    }
+
+    private func removeNotifications()
+    {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: SwiftConstants.GLPNOTIFICATION_SHOW_IMAGE_PICKER, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: SwiftConstants.GLPNOTIFICATION_SHOW_CAPTURE_VIEW, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: SwiftConstants.GLPNOTIFICATION_SHOW_PICK_IMAGE_FROM_WEB, object: nil)
+    }
+    
     // MARK: - View Lifecycle
     
     override public func loadView() {
@@ -104,8 +120,13 @@ private let assetsMaxNumber: Int = 20;
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
         fetchAssets()
+        configureNotifications()
+    }
+    
+    public override func viewWillDisappear(animated: Bool) {
+        self.removeNotifications()
+        super.viewWillDisappear(animated)
     }
     
     // MARK: - UITableViewDataSource
@@ -160,7 +181,7 @@ private let assetsMaxNumber: Int = 20;
         else if let multipleImagesAction = action as? GLPMultipleImagesAction
         {
             let cell = tableView.dequeueReusableCellWithIdentifier(multipleImagesAction.cellName(), forIndexPath: indexPath) as! GLPMultipleImagesActionCell
-            
+            cell.setData(multipleImagesAction)
             return cell
         }
         
@@ -361,9 +382,19 @@ private let assetsMaxNumber: Int = 20;
         
     }
     
-    private func showFullSizeImagePicker()
+    func showFullSizeImagePicker()
     {
         println("ImagePickerSheetController showFullSizeImagePicker")
+    }
+    
+    func showCaptureImageView()
+    {
+        println("ImagePickerSheetController showCaptureImageView")
+    }
+    
+    func showPickImageFromTheWeb()
+    {
+        println("ImagePickerSheetController showPickImageFromTheWeb")
     }
 
     // MARK: - Actions

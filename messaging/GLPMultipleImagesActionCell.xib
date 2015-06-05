@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,10 +16,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P9Q-gJ-vMB">
-                        <rect key="frame" x="135" y="0.0" width="50" height="43"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="50" id="5wU-e4-y6U"/>
-                        </constraints>
+                        <rect key="frame" x="112" y="0.0" width="96" height="43"/>
                         <state key="normal" image="capture">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -27,10 +25,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c3Z-HL-Jxc">
-                        <rect key="frame" x="50" y="0.0" width="50" height="43"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="50" id="Vce-dH-Fnl"/>
-                        </constraints>
+                        <rect key="frame" x="0.0" y="0.0" width="96" height="43"/>
                         <state key="normal" image="camera_roll">
                             <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </state>
@@ -39,10 +34,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d1n-32-hCP">
-                        <rect key="frame" x="220" y="0.0" width="50" height="43"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="50" id="ICG-cD-mnj"/>
-                        </constraints>
+                        <rect key="frame" x="224" y="0.0" width="96" height="43"/>
                         <state key="normal" image="search_image">
                             <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         </state>
@@ -60,19 +52,27 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="P9Q-gJ-vMB" secondAttribute="bottom" id="0Ua-3d-zjX"/>
-                    <constraint firstItem="c3Z-HL-Jxc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="50" id="4S4-Ee-v1o"/>
+                    <constraint firstItem="c3Z-HL-Jxc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="4S4-Ee-v1o"/>
                     <constraint firstItem="yNh-N3-ol1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="4dC-Aw-25W"/>
                     <constraint firstAttribute="bottom" secondItem="d1n-32-hCP" secondAttribute="bottom" id="CxT-Q5-yAO"/>
-                    <constraint firstAttribute="trailing" secondItem="d1n-32-hCP" secondAttribute="trailing" constant="50" id="ELD-tb-kS6"/>
                     <constraint firstItem="d1n-32-hCP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="GTI-xk-zcm"/>
                     <constraint firstAttribute="bottom" secondItem="yNh-N3-ol1" secondAttribute="bottom" id="IIC-gv-swX"/>
+                    <constraint firstItem="P9Q-gJ-vMB" firstAttribute="width" secondItem="yNh-N3-ol1" secondAttribute="width" multiplier="0.3" id="Qwd-Km-X01"/>
+                    <constraint firstItem="c3Z-HL-Jxc" firstAttribute="width" secondItem="yNh-N3-ol1" secondAttribute="width" multiplier="0.3" id="SAm-Dq-mSo"/>
+                    <constraint firstAttribute="trailing" secondItem="d1n-32-hCP" secondAttribute="trailing" id="UTy-95-10n"/>
                     <constraint firstAttribute="trailing" secondItem="yNh-N3-ol1" secondAttribute="trailing" id="lgt-9W-4on"/>
                     <constraint firstAttribute="centerX" secondItem="P9Q-gJ-vMB" secondAttribute="centerX" id="lks-z7-3nO"/>
+                    <constraint firstItem="d1n-32-hCP" firstAttribute="width" secondItem="yNh-N3-ol1" secondAttribute="width" multiplier="0.3" id="oFo-XK-4WK"/>
                     <constraint firstAttribute="bottom" secondItem="c3Z-HL-Jxc" secondAttribute="bottom" id="p4r-FS-XOM"/>
                     <constraint firstItem="P9Q-gJ-vMB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="p5E-Uf-VKC"/>
                     <constraint firstItem="c3Z-HL-Jxc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="sfy-Yc-sTY"/>
                 </constraints>
             </tableViewCellContentView>
+            <connections>
+                <outletCollection property="buttons" destination="c3Z-HL-Jxc" collectionClass="NSMutableArray" id="Nfy-hu-Nre"/>
+                <outletCollection property="buttons" destination="P9Q-gJ-vMB" collectionClass="NSMutableArray" id="b6f-eI-0ds"/>
+                <outletCollection property="buttons" destination="d1n-32-hCP" collectionClass="NSMutableArray" id="0Bb-v7-Kvw"/>
+            </connections>
         </tableViewCell>
     </objects>
     <resources>

@@ -51,7 +51,7 @@
 
 + (ImagePickerSheetController *)configureInitialActionsWithImagePicker:(ImagePickerSheetController *)imagePicker
 {
-    [imagePicker addInitialAction:[[GLPMultipleImagesAction alloc] initWithImagesNames:@[@"test", @"test2", @"test3"] imageActionStyle:GLPImageActionStyleMultipleOptions]];
+    [imagePicker addInitialAction:[[GLPMultipleImagesAction alloc] initWithImagesNames:@[@"camera_roll", @"capture", @"search_image"] imageActionStyle:GLPImageActionStyleMultipleOptions]];
     
     
     [imagePicker addInitialAction:[[GLPImageDefaultImageAction alloc] initWithTitle:@"Select a location" imageName:@"pick_location" textColour:[UIColor colorWithR:34.0 withG:218.0 andB:160.0] imageActionStyle:GLPImageActionStylePickLocation]];
