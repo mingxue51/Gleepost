@@ -19,6 +19,9 @@ private let assetsMaxNumber: Int = 20;
 
 @objc public class ImagePickerSheetController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate {
     
+    // TODO: not used for now.
+    private var lastCollectionViewSection = 0
+    
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.dataSource = self
@@ -180,7 +183,7 @@ private let assetsMaxNumber: Int = 20;
         switch action.imageActionStyle
         {
         case .BackToOptions:
-            self.goBackToInitialView()
+            self.goBackToInitialView(indexPath)
             
         default:
             println("Default")
@@ -242,6 +245,7 @@ private let assetsMaxNumber: Int = 20;
     // MARK: - UICollectionViewDelegate
     
     public func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        
         let nextIndex = indexPath.row+1
         if nextIndex < assets.count {
             let asset = assets[nextIndex]
@@ -302,13 +306,17 @@ private let assetsMaxNumber: Int = 20;
     
     // MARK: - Action options
     
-    private func goBackToInitialView()
+    private func goBackToInitialView(indexPath: NSIndexPath)
     {
         self.selectedPhotoIndices.removeAll(keepCapacity: false)
         self.updateImageCounterCell()
 
         self.enlargedPreviews = false
         self.switchImageActions(applyInitialActions: true)
+        
+        self.collectionView.imagePreviewLayout.invalidationCenteredIndexPath = NSIndexPath(forRow: 0, inSection: 0)
+
+        
         view.setNeedsLayout()
         UIView.animateWithDuration(enlargementAnimationDuration, animations: {
             self.tableView.beginUpdates()
