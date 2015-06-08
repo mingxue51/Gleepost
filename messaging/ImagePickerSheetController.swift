@@ -203,17 +203,16 @@ private let assetsMaxNumber: Int = 20;
         {
         case .PickLocation:
             self.sendLocation()
+            self.cancel()
         case .SendImage:
             self.sendImages()
+            self.cancel()
         case .BackToOptions:
             self.goBackToInitialView(indexPath)
         
         default:
-            presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+            self.cancel()
         }
-        
-//        if let dismissAction = actions[index.row] as? GLPDefa
-//        actions[indexPath.row].handle(numberOfPhotos: selectedPhotoIndices.count)
     }
     
     // MARK: - UICollectionViewDataSource
@@ -296,7 +295,7 @@ private let assetsMaxNumber: Int = 20;
         
         if indexPath.section == self.assets.count
         {
-            self.showFullSizeImagePicker()
+            NSNotificationCenter.defaultCenter().postNotificationName(SwiftConstants.GLPNOTIFICATION_SHOW_IMAGE_PICKER, object: self)
             return
         }
         
@@ -359,7 +358,6 @@ private let assetsMaxNumber: Int = 20;
         self.switchImageActions(applyInitialActions: true)
         
         self.collectionView.imagePreviewLayout.invalidationCenteredIndexPath = NSIndexPath(forRow: 0, inSection: 0)
-
         
         view.setNeedsLayout()
         UIView.animateWithDuration(enlargementAnimationDuration, animations: {
@@ -379,17 +377,32 @@ private let assetsMaxNumber: Int = 20;
     
     private func sendImages()
     {
+        var images = [UIImage?]()
+        var counter = selectedPhotoIndices.count
         
+        for index in selectedPhotoIndices {
+            let asset = assets[index]
+            
+            requestImageForAsset(asset, deliveryMode: .HighQualityFormat) { image in
+                images.append(image)
+                counter--
+                if counter <= 0 {
+                    println("ImagePickerSheetController sendImages \(images.count)")
+                }
+            }
+        }
     }
     
     func showFullSizeImagePicker()
     {
         println("ImagePickerSheetController showFullSizeImagePicker")
+        cancel()
     }
     
     func showCaptureImageView()
     {
         println("ImagePickerSheetController showCaptureImageView")
+        cancel()
     }
     
     func showPickImageFromTheWeb()

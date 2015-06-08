@@ -466,6 +466,8 @@
 		58837D2F18CDEA5D00EB3435 /* contacts_background_main_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 58837D2E18CDEA5D00EB3435 /* contacts_background_main_2.png */; };
 		58852C111A2E54D50063079C /* edit_location_button_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 58852C101A2E54D50063079C /* edit_location_button_image.png */; };
 		5885A66719190A18009FEAD4 /* EmptyMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 5885A66619190A18009FEAD4 /* EmptyMessage.m */; };
+		5886C7D61B25D83F005B5613 /* GLPPickImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5886C7D51B25D83F005B5613 /* GLPPickImageHelper.swift */; };
+		5886C7D91B25E108005B5613 /* GLPAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5886C7D81B25E108005B5613 /* GLPAdditions.swift */; };
 		58877A60199A070700DAE461 /* UIView+RoudedCorners.m in Sources */ = {isa = PBXBuildFile; fileRef = 58877A5F199A070700DAE461 /* UIView+RoudedCorners.m */; };
 		588794BF18A85177002EEC8A /* whitney-medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 588794BE18A85133002EEC8A /* whitney-medium.ttf */; };
 		5887C7E119FDA52A004441B9 /* AttendingPostsOrganiserHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5887C7E019FDA52A004441B9 /* AttendingPostsOrganiserHelper.m */; };
@@ -1652,6 +1654,8 @@
 		58852C101A2E54D50063079C /* edit_location_button_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit_location_button_image.png; sourceTree = "<group>"; };
 		5885A66519190A18009FEAD4 /* EmptyMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmptyMessage.h; sourceTree = "<group>"; };
 		5885A66619190A18009FEAD4 /* EmptyMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmptyMessage.m; sourceTree = "<group>"; };
+		5886C7D51B25D83F005B5613 /* GLPPickImageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPPickImageHelper.swift; sourceTree = "<group>"; };
+		5886C7D81B25E108005B5613 /* GLPAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPAdditions.swift; sourceTree = "<group>"; };
 		58877A5E199A070700DAE461 /* UIView+RoudedCorners.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+RoudedCorners.h"; sourceTree = "<group>"; };
 		58877A5F199A070700DAE461 /* UIView+RoudedCorners.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+RoudedCorners.m"; sourceTree = "<group>"; };
 		588794BE18A85133002EEC8A /* whitney-medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "whitney-medium.ttf"; sourceTree = "<group>"; };
@@ -3159,6 +3163,7 @@
 			children = (
 				584AC00C1B0B48A7001C7C1B /* GLPViewImageHelper.h */,
 				584AC00D1B0B48A7001C7C1B /* GLPViewImageHelper.m */,
+				5886C7D51B25D83F005B5613 /* GLPPickImageHelper.swift */,
 			);
 			name = Image;
 			sourceTree = "<group>";
@@ -3697,6 +3702,14 @@
 				5885A66619190A18009FEAD4 /* EmptyMessage.m */,
 			);
 			name = Message;
+			sourceTree = "<group>";
+		};
+		5886C7D71B25E0F3005B5613 /* Swift */ = {
+			isa = PBXGroup;
+			children = (
+				5886C7D81B25E108005B5613 /* GLPAdditions.swift */,
+			);
+			name = Swift;
 			sourceTree = "<group>";
 		};
 		5887C7E419FEF665004441B9 /* Pop-ups */ = {
@@ -5309,7 +5322,7 @@
 				803FF9961897D921000B1955 /* Delegate */,
 				8057E33A1834C1040089F4D9 /* Processors */,
 				58808EF31806F4C100E415C1 /* Animations */,
-				80E7478517CEA08F001957E5 /* Categories */,
+				80E7478517CEA08F001957E5 /* Extensions */,
 				80AB896B17C283AF0053E784 /* Constants.h */,
 				80AB893F17C26E540053E784 /* Controllers */,
 				80C8BA4B18102AEE004F70DB /* Dao */,
@@ -5756,9 +5769,10 @@
 			name = "Fake API";
 			sourceTree = "<group>";
 		};
-		80E7478517CEA08F001957E5 /* Categories */ = {
+		80E7478517CEA08F001957E5 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				5886C7D71B25E0F3005B5613 /* Swift */,
 				58465DF2195856FB0021B0FF /* UINavigationBar */,
 				80E7478617CEA0A5001957E5 /* NSString+Utils.h */,
 				80E7478717CEA0A5001957E5 /* NSString+Utils.m */,
@@ -5787,7 +5801,7 @@
 				5820648E1AC0751600A596E4 /* UIImageView+GLPFormat.h */,
 				5820648F1AC0751600A596E4 /* UIImageView+GLPFormat.m */,
 			);
-			name = Categories;
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		80E93FB318C8BD43008769CB /* Contacts */ = {
@@ -6813,6 +6827,7 @@
 				587805B01920E2CE0002472B /* AVCamUtilities.m in Sources */,
 				585C2B971B136FEF0076E78F /* GLPLiveSummaryDaoParser.m in Sources */,
 				581BD8681913E05E006F8BCD /* ThermometerCircleView.m in Sources */,
+				5886C7D91B25E108005B5613 /* GLPAdditions.swift in Sources */,
 				586F6EF9191BAE4A00BDF558 /* GLPFBInvitationsViewController.m in Sources */,
 				80DDDF3C180FE00A009E17BD /* UserManager.m in Sources */,
 				80C8BA75181049BA004F70DB /* GLPMessageDao.m in Sources */,
@@ -6853,6 +6868,7 @@
 				807D5EBD188DEE8700673F01 /* GLPWebSocketClient.m in Sources */,
 				1172680A1887F68C008F5391 /* GLPInvitationManager.m in Sources */,
 				58F284DF1A7154950018ADAB /* GLPGPPostImageLoader.m in Sources */,
+				5886C7D61B25D83F005B5613 /* GLPPickImageHelper.swift in Sources */,
 				5819E66118C7E58E003361B3 /* GLPGroupDao.m in Sources */,
 				802DCE5018AB037100A23511 /* GLPApplicationHelper.m in Sources */,
 				80C8BA56181033CA004F70DB /* GLPComment.m in Sources */,

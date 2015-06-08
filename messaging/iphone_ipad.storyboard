@@ -2263,7 +2263,7 @@
                         <viewControllerLayoutGuide type="bottom" id="JTN-ZV-y9M"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="huw-Qa-xzO">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <collectionView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" minimumZoomScale="0.0" maximumZoomScale="0.0" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="SoY-OL-TmF">
@@ -2612,6 +2612,7 @@
                         <segue destination="chq-8F-SBT" kind="push" identifier="show users" id="ecx-lG-qPa"/>
                         <segue destination="8FW-19-baj" kind="push" identifier="show message details" id="P65-X5-3OO"/>
                         <segue destination="8Cn-bD-MbY" kind="push" identifier="view private profile" id="u37-0Q-37w"/>
+                        <segue destination="YKI-NX-LaO" kind="show" identifier="pick image" id="wHw-Ki-shQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ltB-QK-87t" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -6700,22 +6701,22 @@
         <image name="yourchatbubble4.png" width="477" height="67"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="KTX-M6-QrM"/>
-        <segue reference="jrG-R0-ySl"/>
-        <segue reference="KgO-oz-Ivb"/>
-        <segue reference="ZVe-rT-wgG"/>
         <segue reference="icH-IF-qcr"/>
-        <segue reference="u37-0Q-37w"/>
+        <segue reference="ZVe-rT-wgG"/>
+        <segue reference="jrG-R0-ySl"/>
+        <segue reference="KTX-M6-QrM"/>
+        <segue reference="KgO-oz-Ivb"/>
         <segue reference="ecx-lG-qPa"/>
-        <segue reference="bc7-so-Tnw"/>
-        <segue reference="Th4-GT-P8f"/>
-        <segue reference="2ju-Ui-QdM"/>
-        <segue reference="b0z-f7-UHU"/>
-        <segue reference="a3g-k4-yG4"/>
+        <segue reference="u37-0Q-37w"/>
+        <segue reference="wHw-Ki-shQ"/>
         <segue reference="Is4-hx-aLy"/>
         <segue reference="ZFl-Op-jBD"/>
         <segue reference="WAq-ag-V9L"/>
         <segue reference="Q9z-xI-t0V"/>
         <segue reference="c6M-82-Pnp"/>
+        <segue reference="Th4-GT-P8f"/>
+        <segue reference="2ju-Ui-QdM"/>
+        <segue reference="b0z-f7-UHU"/>
+        <segue reference="a3g-k4-yG4"/>
     </inferredMetricsTieBreakers>
 </document>

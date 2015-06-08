@@ -54,9 +54,10 @@
 #import "GLPReadReceipt.h"
 #import "GLPMessageDetailsViewController.h"
 #import "GLPViewImageHelper.h"
-//#import "Nerdnation-Swift.h"
+#import "ImageSelectorViewController.h"
+#import "NerdNation-Swift.h"
 
-@interface GLPConversationViewController ()
+@interface GLPConversationViewController () <ImageSelectorViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *formView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
@@ -91,6 +92,8 @@
 @property (assign, nonatomic, getter = isCommingFromTableViewClick) BOOL comesFromTableViewClick;
 
 @property (assign, nonatomic, getter=isOffline) BOOL offline;
+
+@property (strong, nonatomic) GLPPickImageHelper *pickImageHelper;
 
 @end
 
@@ -157,6 +160,11 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageSendUpdateFromNotification:) name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedReadReceiptUpdate:) name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pickImageFromFullSelector) name:GLPNOTIFICATION_SHOW_IMAGE_PICKER object:nil];
+ 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pickImageFromCamera) name:GLPNOTIFICATION_SHOW_CAPTURE_VIEW object:nil];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -189,6 +197,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SHOW_IMAGE_PICKER object:nil];
 
     [super viewWillDisappear:animated];
 }
@@ -200,6 +209,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     self.introduced = nil;
     _offline = NO;
     _conversationHelper = [[GLPConversationHelper alloc] initWithBelongsToGroup:(_conversation.groupRemoteKey != 0) ? YES : NO];
+    self.pickImageHelper = [[GLPPickImageHelper alloc] init];
+
 }
 
 - (void)configureTitleNavigationBar
@@ -988,14 +999,32 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [GLPViewImageHelper showImageInViewController:self withImageView:imageView];
 }
 
+#pragma mark - ImageSelectorViewControllerDelegate
+
+- (void)takeImage:(UIImage *)image
+{
+    DDLogDebug(@"ImageSelectorViewControllerDelegate image %@", image);
+}
+
+#pragma mark - NSNotifications
+
+- (void)pickImageFromFullSelector
+{
+    [self performSegueWithIdentifier:@"pick image" sender:self];
+}
+
+- (void)pickImageFromCamera
+{
+    DDLogDebug(@"GLPConversationViewController pickImageFromCamera");
+    [self.pickImageHelper presentCamera:self];
+}
+
 #pragma mark - Selectors
 
 - (IBAction)pickImage:(id)sender
 {
-    ImagePickerSheetController *imagePicketSheetController = [GLPViewImageHelper generateImagePickerForChat];
-    [self presentViewController:imagePicketSheetController animated:YES completion:nil];
+    [self.pickImageHelper presentImagePickerWithViewController:self];
 }
-
 
 # pragma mark - Segue
 
@@ -1020,6 +1049,12 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         GLPMessageDetailsViewController *messageDetailsVC = segue.destinationViewController;
         messageDetailsVC.message = _selectedMessage;
         messageDetailsVC.reads = _conversation.reads;
+    }
+    else if([segue.identifier isEqualToString:@"pick image"])
+    {
+        ImageSelectorViewController *imgSelectorVC = segue.destinationViewController;
+        imgSelectorVC.fromGroupViewController = NO;
+        [imgSelectorVC setDelegate:self];
     }
 }
 

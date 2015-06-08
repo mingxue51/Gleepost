@@ -31,6 +31,9 @@
 #define GLPNOTIFICATION_MESSAGE_SEND_UPDATE             @"GLPMessageSendUpdate"
 #define GLPNOTIFICATION_READ_RECEIPT_RECEIVED           @"GLPReadReceiptReceived"
 
+#define GLPNOTIFICATION_SHOW_IMAGE_PICKER               @"GLPShowImagePicker"
+#define GLPNOTIFICATION_SHOW_CAPTURE_VIEW               @"GLPShowCaptureView"
+
 #define GLPNOTIFICATION_NETWORK_UPDATE                  @"GLPNetworkStatusUpdate"
 #define GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE        @"GLPSynchronizedWithRemote"
 #define GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE    @"GLPNotSynchronizedWithRemote"
