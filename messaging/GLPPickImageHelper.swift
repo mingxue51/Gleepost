@@ -13,7 +13,7 @@ import UIKit
 import MobileCoreServices
 
 @objc class GLPPickImageHelper: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate
-{
+{    
     private lazy var imagePickerSheetController: ImagePickerSheetController = {
        
         let imagePickerSheetController = ImagePickerSheetController()
@@ -30,7 +30,7 @@ import MobileCoreServices
         
         
         imagePickerSheetController.addSecondaryAction(GLPDefaultImageAction(title: "Cancel", textColour: UIColor().customRGB(167.0, customG: 167.0, customB: 167.0), imageActionStyle: .Cancel))
-        
+
         return imagePickerSheetController
         
     }()
@@ -50,7 +50,7 @@ import MobileCoreServices
     
     func presentImagePickerWithViewController(viewController: UIViewController)
     {
-        viewController .presentViewController(imagePickerSheetController, animated: true, completion: nil)
+        viewController.presentViewController(imagePickerSheetController, animated: true, completion: nil)
     }
     
     func presentCamera(viewController: UIViewController)
@@ -66,5 +66,10 @@ import MobileCoreServices
     
     // MARK - UIImagePickerControllerDelegate
     
-    //TODO: Pending implementation.
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingImage image: UIImage!, editingInfo: [NSObject : AnyObject]!)
+    {
+        cameraView.dismissViewControllerAnimated(true, completion: nil)
+        
+        println("GLPPickImageHelper image \(image)")
+    }
 }

@@ -1015,7 +1015,6 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (void)pickImageFromCamera
 {
-    DDLogDebug(@"GLPConversationViewController pickImageFromCamera");
     [self.pickImageHelper presentCamera:self];
 }
 
@@ -1023,6 +1022,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (IBAction)pickImage:(id)sender
 {
+    self.pickImageHelper = [[GLPPickImageHelper alloc] init];
     [self.pickImageHelper presentImagePickerWithViewController:self];
 }
 
