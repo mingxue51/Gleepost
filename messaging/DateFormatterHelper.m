@@ -84,6 +84,11 @@
     return [f stringFromDate:date];
 }
 
++ (NSString *)generateDateTimestamp
+{
+    return [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970] * 1000];
+}
+
 +(NSDate *)generateDateWithDay:(int)day month:(int)month year:(int)year hour:(int)hour andMinutes:(int)minutes
 {
     NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:[NSDate date]];

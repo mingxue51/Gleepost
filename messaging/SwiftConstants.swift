@@ -15,4 +15,6 @@ struct SwiftConstants
     static let GLPNOTIFICATION_SHOW_PICK_IMAGE_FROM_WEB = "GLPShowPickImageFromWeb"
     
     static let GLPNOTIFICATION_SELECTED_IMAGES = "GLPSelectedImages"
+    
+    static let GLPNOTIFICATION_NETWORK_UPDATE = "GLPNetworkStatusUpdate"
 }

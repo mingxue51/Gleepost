@@ -12,7 +12,6 @@
 #import "WebClient.h"
 #import "SessionManager.h"
 #import "GLPPostManager.h"
-#import "GLPQueueManager.h"
 #import "GLPPostOperationManager.h"
 #import "GLPVideoUploadManager.h"
 #import "GLPVideo.h"

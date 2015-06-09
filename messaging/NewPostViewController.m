@@ -12,7 +12,6 @@
 #import "WebClient.h"
 #import "WebClientHelper.h"
 #import "UIPlaceHolderTextView.h"
-#import "Post.h"
 #import "AppearanceHelper.h"
 #import "SessionManager.h"
 #import <QuartzCore/QuartzCore.h>

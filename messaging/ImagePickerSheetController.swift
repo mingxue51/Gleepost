@@ -381,7 +381,7 @@ private let assetsMaxNumber: Int = 20;
     
     private func sendLocation()
     {
-        
+        //Pending.
     }
     
     private func sendImages()

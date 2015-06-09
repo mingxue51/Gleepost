@@ -30,7 +30,6 @@
 		580004E51A72A1CF00463276 /* group_badge.png in Resources */ = {isa = PBXBuildFile; fileRef = 580004E31A72A1CF00463276 /* group_badge.png */; };
 		580004E81A72BFF000463276 /* GLPNewGroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 580004E71A72BFF000463276 /* GLPNewGroupsViewController.m */; };
 		58040E911A8CE7CA00B29247 /* GLPConversationHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 58040E901A8CE7CA00B29247 /* GLPConversationHelper.m */; };
-		58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58056BEB18632DEA0089EB09 /* GLPImageOperation.m */; };
 		58065F8619BF985A00892B6B /* ChangeImageProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58065F8519BF985A00892B6B /* ChangeImageProgressView.m */; };
 		5806C75C191BF603005C907E /* mypost_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C75A191BF603005C907E /* mypost_btn_selected.png */; };
 		5806C75D191BF603005C907E /* notification_btn_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = 5806C75B191BF603005C907E /* notification_btn_selected.png */; };
@@ -102,7 +101,6 @@
 		581C311D188EFE6800BAA082 /* GLPCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C311C188EFE6800BAA082 /* GLPCategory.m */; };
 		581C3120188F068600BAA082 /* GLPCategoryDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C311F188F068600BAA082 /* GLPCategoryDao.m */; };
 		581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C9C4218044CD300279256 /* PullDownScrollView.m */; };
-		58204E781862061600702F4F /* GLPPostOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 58204E771862061600702F4F /* GLPPostOperation.m */; };
 		58204E7B186207AF00702F4F /* GLPQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58204E7A186207AF00702F4F /* GLPQueueManager.m */; };
 		582064901AC0751600A596E4 /* UIImageView+GLPFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 5820648F1AC0751600A596E4 /* UIImageView+GLPFormat.m */; };
 		582127921891657100BF36E5 /* CampusWallHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 582127911891657100BF36E5 /* CampusWallHeaderCell.xib */; };
@@ -750,6 +748,8 @@
 		58DC024D18043DEE0008993A /* ChatViewAnimations.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DC024C18043DEE0008993A /* ChatViewAnimations.m */; };
 		58DE37D71889967A005DBF74 /* GLPNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DE37D61889967A005DBF74 /* GLPNetworkManager.m */; };
 		58DF0EE81AC5B8EF000AD545 /* GLPVerificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF0EE71AC5B8EF000AD545 /* GLPVerificationViewController.m */; };
+		58DF17E31B2721CF0097320B /* GLPImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DF17E21B2721CF0097320B /* GLPImageUploader.swift */; };
+		58DF17E51B2739350097320B /* GLPImageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58DF17E41B2739350097320B /* GLPImageOperation.swift */; };
 		58DF4158186463A900D53723 /* GLPPostOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF4157186463A900D53723 /* GLPPostOperationManager.m */; };
 		58DF415E186463E000D53723 /* GLPPostUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF415D186463E000D53723 /* GLPPostUploaderManager.m */; };
 		58DF4161186463F900D53723 /* GLPImageUploaderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58DF4160186463F900D53723 /* GLPImageUploaderManager.m */; };
@@ -1022,8 +1022,6 @@
 		580004E71A72BFF000463276 /* GLPNewGroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNewGroupsViewController.m; sourceTree = "<group>"; };
 		58040E8F1A8CE7CA00B29247 /* GLPConversationHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPConversationHelper.h; sourceTree = "<group>"; };
 		58040E901A8CE7CA00B29247 /* GLPConversationHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPConversationHelper.m; sourceTree = "<group>"; };
-		58056BEA18632DEA0089EB09 /* GLPImageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPImageOperation.h; sourceTree = "<group>"; };
-		58056BEB18632DEA0089EB09 /* GLPImageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPImageOperation.m; sourceTree = "<group>"; };
 		58065F8419BF985A00892B6B /* ChangeImageProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeImageProgressView.h; sourceTree = "<group>"; };
 		58065F8519BF985A00892B6B /* ChangeImageProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeImageProgressView.m; sourceTree = "<group>"; };
 		5806C75A191BF603005C907E /* mypost_btn_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mypost_btn_selected.png; sourceTree = "<group>"; };
@@ -1126,8 +1124,6 @@
 		581C311F188F068600BAA082 /* GLPCategoryDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCategoryDao.m; sourceTree = "<group>"; };
 		581C9C4118044CD300279256 /* PullDownScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullDownScrollView.h; sourceTree = "<group>"; };
 		581C9C4218044CD300279256 /* PullDownScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullDownScrollView.m; sourceTree = "<group>"; };
-		58204E761862061600702F4F /* GLPPostOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostOperation.h; sourceTree = "<group>"; };
-		58204E771862061600702F4F /* GLPPostOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostOperation.m; sourceTree = "<group>"; };
 		58204E79186207AF00702F4F /* GLPQueueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPQueueManager.h; sourceTree = "<group>"; };
 		58204E7A186207AF00702F4F /* GLPQueueManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPQueueManager.m; sourceTree = "<group>"; };
 		5820648E1AC0751600A596E4 /* UIImageView+GLPFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+GLPFormat.h"; sourceTree = "<group>"; };
@@ -2052,6 +2048,8 @@
 		58DE37D61889967A005DBF74 /* GLPNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPNetworkManager.m; sourceTree = "<group>"; };
 		58DF0EE61AC5B8EF000AD545 /* GLPVerificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPVerificationViewController.h; sourceTree = "<group>"; };
 		58DF0EE71AC5B8EF000AD545 /* GLPVerificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPVerificationViewController.m; sourceTree = "<group>"; };
+		58DF17E21B2721CF0097320B /* GLPImageUploader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPImageUploader.swift; sourceTree = "<group>"; };
+		58DF17E41B2739350097320B /* GLPImageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPImageOperation.swift; sourceTree = "<group>"; };
 		58DF4156186463A900D53723 /* GLPPostOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostOperationManager.h; sourceTree = "<group>"; };
 		58DF4157186463A900D53723 /* GLPPostOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPPostOperationManager.m; sourceTree = "<group>"; };
 		58DF415C186463E000D53723 /* GLPPostUploaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPPostUploaderManager.h; sourceTree = "<group>"; };
@@ -4538,6 +4536,14 @@
 			name = "New Chat Images";
 			sourceTree = "<group>";
 		};
+		58DF17DF1B2720560097320B /* Uploaders (New) */ = {
+			isa = PBXGroup;
+			children = (
+				58DF17E21B2721CF0097320B /* GLPImageUploader.swift */,
+			);
+			name = "Uploaders (New)";
+			sourceTree = "<group>";
+		};
 		58DF41551864636500D53723 /* Post Uploader Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -4948,10 +4954,7 @@
 				80666C7B1806FB6B00E4E515 /* MessageProcessingOperation.m */,
 				80B2A42618338613002AB1F0 /* GLPGetNotificationsOperation.h */,
 				80B2A42718338613002AB1F0 /* GLPGetNotificationsOperation.m */,
-				58204E761862061600702F4F /* GLPPostOperation.h */,
-				58204E771862061600702F4F /* GLPPostOperation.m */,
-				58056BEA18632DEA0089EB09 /* GLPImageOperation.h */,
-				58056BEB18632DEA0089EB09 /* GLPImageOperation.m */,
+				58DF17E41B2739350097320B /* GLPImageOperation.swift */,
 			);
 			name = Operations;
 			sourceTree = "<group>";
@@ -5392,6 +5395,7 @@
 		80AB894A17C26EC10053E784 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				58DF17DF1B2720560097320B /* Uploaders (New) */,
 				584514CC1AF7D91A0061B877 /* Posts */,
 				58D1C1271AE66AF20018A3A9 /* Polling */,
 				58BBD4241A937C0F00E2EBAC /* Conversation */,
@@ -6472,6 +6476,7 @@
 				584FA60119B51AE700FBA61F /* PBJVideoPlayerController.m in Sources */,
 				58EB10031A765406006BA25C /* GLPMainGroupsViewController.m in Sources */,
 				80D1472E1817DE4500F7E3DD /* GLPTabBarController.m in Sources */,
+				58DF17E31B2721CF0097320B /* GLPImageUploader.swift in Sources */,
 				58D4FF3219A53093006E7AC8 /* GLPVideo.m in Sources */,
 				80B2A4251833824F002AB1F0 /* GLPNotificationDao.m in Sources */,
 				580004E81A72BFF000463276 /* GLPNewGroupsViewController.m in Sources */,
@@ -6619,11 +6624,11 @@
 				584FA60419B51B2B00FBA61F /* GLPVideoLoaderManager.m in Sources */,
 				58808EF61806F58400E415C1 /* PopUpMessage.m in Sources */,
 				589EAD1118A40416005B2F4C /* SignUpThreeView.m in Sources */,
+				58DF17E51B2739350097320B /* GLPImageOperation.swift in Sources */,
 				80C92AA218C0C040001CB621 /* GLPMessageCell.m in Sources */,
 				585C93321ACEA505003F9926 /* UIImage+StackBlur.m in Sources */,
 				58ACD1D018F599E200BD576B /* DCCrossHairView.m in Sources */,
 				586135B3187C0722008F0EAE /* ChatViewAnimationsStanford.m in Sources */,
-				58056BEC18632DEA0089EB09 /* GLPImageOperation.m in Sources */,
 				80AB895D17C277D40053E784 /* NewPostViewController.m in Sources */,
 				58536ED918BE77440036FD00 /* GLPTemporaryUserInformationManager.m in Sources */,
 				582840FB180DBFBC000F3CF7 /* CurrentChatButton.m in Sources */,
@@ -6836,7 +6841,6 @@
 				58A9D94819EE4DA40067AB7D /* GLPShowUsersViewController.m in Sources */,
 				58774D44196574260034A1C6 /* UIRefreshControl+CustomLoader.m in Sources */,
 				80809AEC1895B7700077D227 /* GLPTableLoader.m in Sources */,
-				58204E781862061600702F4F /* GLPPostOperation.m in Sources */,
 				58465DF5195857190021B0FF /* UINavigationBar+Format.m in Sources */,
 				58877A60199A070700DAE461 /* UIView+RoudedCorners.m in Sources */,
 				587805AF1920E2CE0002472B /* AVCamRecorder.m in Sources */,
@@ -6968,6 +6972,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -7003,6 +7008,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7055,7 +7061,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				DEFINES_MODULE = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -7092,7 +7098,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				DEFINES_MODULE = YES;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;

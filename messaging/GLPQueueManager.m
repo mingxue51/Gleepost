@@ -7,8 +7,6 @@
 //
 
 #import "GLPQueueManager.h"
-#import "GLPPostOperation.h"
-#import "GLPImageOperation.h"
 
 @interface GLPQueueManager ()
 
@@ -88,18 +86,18 @@ static GLPQueueManager *instance = nil;
 
 -(void)uploadImage:(UIImage*)image withId:(int)key
 {
-    GLPImageOperation *imageOperation = [[GLPImageOperation alloc] initWithImage:image];
-    
-    self.imageUploaded = NO;
-
-    [imageOperation setCompletionBlock:^{
-        NSLog(@"IMAGE OPERATION END");
-        
-
-        
-    }];
-    
-    [self.queue addOperation:imageOperation];
+//    GLPImageOperation *imageOperation = [[GLPImageOperation alloc] initWithImage:image];
+//    
+//    self.imageUploaded = NO;
+//
+//    [imageOperation setCompletionBlock:^{
+//        NSLog(@"IMAGE OPERATION END");
+//        
+//
+//        
+//    }];
+//    
+//    [self.queue addOperation:imageOperation];
 }
 
 -(void)uploadPost:(GLPPost*)post withId:(int)key
