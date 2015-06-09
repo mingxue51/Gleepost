@@ -9,6 +9,12 @@
 import Foundation
 import Photos
 
+@objc protocol ImagePickerSheetControllerDelegate
+{
+    func presentCameraView()
+    func presentFullSizeImagePicker()
+}
+
 private let enlargementAnimationDuration = 0.3
 private let tableViewRowHeight: CGFloat = 60.0
 private let tableViewPreviewRowHeight: CGFloat = 140.0
@@ -17,11 +23,14 @@ private let collectionViewInset: CGFloat = 5.0
 private let collectionViewCheckmarkInset: CGFloat = 3.5
 private let assetsMaxNumber: Int = 20;
 
+
 @objc public class ImagePickerSheetController: UIViewController, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIViewControllerTransitioningDelegate {
     
     // TODO: not used for now.
     private var lastCollectionViewSection = 0
     
+    var delegate: ImagePickerSheetControllerDelegate?
+
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.dataSource = self
@@ -396,13 +405,18 @@ private let assetsMaxNumber: Int = 20;
     func showFullSizeImagePicker()
     {
         println("ImagePickerSheetController showFullSizeImagePicker")
-        cancel()
+        self.cancel { () -> Void in
+            self.delegate!.presentFullSizeImagePicker()
+        }
     }
     
     func showCaptureImageView()
     {
         println("ImagePickerSheetController showCaptureImageView")
-        cancel()
+        
+        self.cancel { () -> Void in
+            self.delegate!.presentCameraView()
+        }
     }
     
     func showPickImageFromTheWeb()
@@ -545,12 +559,24 @@ private let assetsMaxNumber: Int = 20;
     }
     
     @objc private func cancel() {
-        presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
+        presentingViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
+            
+            println("ImagePickerSheetController canceled")
+
+        })
         
 //        let cancelActions = actions.filter { $0.style == ImageActionStyle.Cancel }
 //        if let cancelAction = cancelActions.first {
 //            cancelAction.handle(numberOfPhotos: selectedPhotoIndices.count)
 //        }
+    }
+    
+    private func cancel(completion: () -> Void)
+    {
+        presentingViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
+            println("ImagePickerSheetController canceled")
+            completion()
+        })
     }
     
     // MARK: - Layout

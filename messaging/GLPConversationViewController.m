@@ -57,7 +57,8 @@
 #import "ImageSelectorViewController.h"
 #import "NerdNation-Swift.h"
 
-@interface GLPConversationViewController () <ImageSelectorViewControllerDelegate>
+
+@interface GLPConversationViewController () <ImageSelectorViewControllerDelegate, ImagePickerSheetControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *formView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
@@ -138,33 +139,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     [self hideNetworkErrorViewIfNeeded];
     
-    // keyboard management
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationSyncFromNotification:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationsSyncFromNotification:) name:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncWithRemoteFromNotification:) name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notSyncWithRemoteFromNotification:) name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageSendUpdateFromNotification:) name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedReadReceiptUpdate:) name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pickImageFromFullSelector) name:GLPNOTIFICATION_SHOW_IMAGE_PICKER object:nil];
- 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pickImageFromCamera) name:GLPNOTIFICATION_SHOW_CAPTURE_VIEW object:nil];
-    
+    [self configureNotifications];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -188,7 +163,43 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 //    [[GLPLiveConversationsManager sharedInstance] resetLastShownMessageForConversation:_conversation];
 
     [_conversationHelper resetLastShownMessageForConversation:_conversation];
+
+    [super viewWillDisappear:animated];
+}
+
+#pragma mark - Configuration
+
+- (void)configureNotifications
+{
+    // keyboard management
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationSyncFromNotification:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationsSyncFromNotification:) name:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncWithRemoteFromNotification:) name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notSyncWithRemoteFromNotification:) name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageSendUpdateFromNotification:) name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedReadReceiptUpdate:) name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedImagesReceived:) name:GLPNOTIFICATION_SELECTED_IMAGES object:nil];
+    
+}
+
+- (void)removeNotifications
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
@@ -197,12 +208,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SHOW_IMAGE_PICKER object:nil];
-
-    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SELECTED_IMAGES object:nil];
 }
-
-#pragma mark - Configuration
 
 -(void)initialiseObjects
 {
@@ -1008,14 +1015,24 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 #pragma mark - NSNotifications
 
-- (void)pickImageFromFullSelector
+- (void)selectedImagesReceived:(NSNotification *)notification
 {
-    [self performSegueWithIdentifier:@"pick image" sender:self];
+    NSArray *images = notification.userInfo[@"images"];
+    
+    DDLogDebug(@"GLPConversationViewController images received %@", images);
 }
 
-- (void)pickImageFromCamera
+#pragma mark - ImagePickerSheetControllerDelegate
+
+- (void)presentCameraView
 {
     [self.pickImageHelper presentCamera:self];
+}
+
+- (void)presentFullSizeImagePicker
+{
+    [self performSegueWithIdentifier:@"pick image" sender:self];
+
 }
 
 #pragma mark - Selectors
