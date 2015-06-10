@@ -44,7 +44,7 @@ class GLPImageOperation: NSOperation
     
     private func replaceImageToCache(uploadedUrl: String)
     {
-        
+        GLPImageCacheHelper.replaceImage(image, withImageUrl: timestamp, andOldImageUrl: uploadedUrl)
     }
     
     //MARK: - Client
@@ -61,7 +61,7 @@ class GLPImageOperation: NSOperation
             }
             else
             {
-                
+                println("GLPImageOperation error to upload image")
             }
             
         })

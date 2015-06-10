@@ -386,17 +386,18 @@ private let assetsMaxNumber: Int = 20;
     
     private func sendImages()
     {
-        var images = [UIImage?]()
+        var images = [UIImage]()
         var counter = selectedPhotoIndices.count
         
         for index in selectedPhotoIndices {
             let asset = assets[index]
             
             requestImageForAsset(asset, deliveryMode: .HighQualityFormat) { image in
-                images.append(image)
+                images.append(image!)
                 counter--
                 if counter <= 0 {
                     println("ImagePickerSheetController sendImages \(images.count)")
+                    NSNotificationCenter.defaultCenter().postNotificationName(SwiftConstants.GLPNOTIFICATION_SELECTED_IMAGES, object: nil, userInfo: ["images" : images])
                 }
             }
         }

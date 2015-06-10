@@ -1021,7 +1021,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     DDLogDebug(@"GLPConversationViewController images received %@", images);
     
-//    [[GLPImageUploader sharedInstance] addItems:images];
+    [[GLPImageUploader sharedInstance] addItems:images];
 }
 
 #pragma mark - ImagePickerSheetControllerDelegate

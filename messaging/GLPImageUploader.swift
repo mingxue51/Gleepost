@@ -33,6 +33,12 @@ import UIKit
         return pendingOperations
     }()
     
+    override init() {
+        
+        super.init()
+        self.configureObservers()
+    }
+    
     // MARK: - Configuration
     
     private func configureObservers()
