@@ -98,7 +98,7 @@ import UIKit
     {
         self.pendingOperations.removeValueForKey(timestamp)
         
-        println("GLPImageUploader imageUploaded pending operations left \(self.pendingOperations.count) image url \(imageUrl)")
+        println("GLPImageUploader imageUploaded pending operations left \(self.pendingOperations.count) image url \(imageUrl) timestamp \(timestamp)")
         
         //TODO: Inform UI for changes.
         //                    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPImageUploaded" object:nil userInfo:@{@"imageUrl":imageUrlSend}];

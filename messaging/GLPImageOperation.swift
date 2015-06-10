@@ -51,8 +51,7 @@ class GLPImageOperation: NSOperation
     
     private func processAndUploadImage()
     {
-        
-        WebClient.sharedInstance().uploadImage(resizeImageAndConvertToNSData(), callback: { (success, imageUrl) -> Void in
+        WebClient.sharedInstance().uploadImage(resizeImageAndConvertToNSData(), andTimstamp: timestamp, callback: { (success, imageUrl) -> Void in
             
             if success
             {
@@ -64,7 +63,10 @@ class GLPImageOperation: NSOperation
                 println("GLPImageOperation error to upload image")
             }
             
-        })
+        }) { (progress, timestamp) -> Void in
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(SwiftConstants.GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS, object: self, userInfo: ["status" : progress, "timestamp" : timestamp])
+        }
     }
     
     private func resizeImageAndConvertToNSData() -> NSData

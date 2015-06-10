@@ -688,10 +688,10 @@ static WebClient *instance = nil;
     
     if(post)
     {
-        params[@"before"] = [NSNumber numberWithInt:post.remoteKey];
+        params[@"before"] = [NSNumber numberWithInteger:post.remoteKey];
     }
     
-    NSString *path = [NSString stringWithFormat:@"user/%d/attending", userRemoteKey];
+    NSString *path = [NSString stringWithFormat:@"user/%ld/attending", (long)userRemoteKey];
     
     [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -2019,6 +2019,38 @@ static WebClient *instance = nil;
     
     [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         NSLog(@"Sentt %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+    }];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"upload image response %@", responseObject);
+        
+        NSString *response = [RemoteParser parseImageUrl:(NSDictionary*)operation.responseString];
+        callback(YES, response);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
+    
+    [self enqueueHTTPRequestOperation:operation];
+}
+
+/**
+ Now only is used for uploading an image in chat.
+ */
+-(void)uploadImage:(NSData *)imageData andTimstamp:(NSString *)timestamp callback:(void (^)(BOOL success, NSString *imageUrl))callback progressCallBack:(void (^) (CGFloat progress, NSString *timestamp))progressCallback
+{
+    NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"upload" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        
+        [formData appendPartWithFileData:imageData name:@"image" fileName:[NSString stringWithFormat:@"user_id_%ld_image.png", (long)self.sessionManager.user.remoteKey] mimeType:@"image/png"];
+    }];
+    
+    [request setTimeoutInterval:300];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        NSLog(@"Sentt %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+        
+        progressCallback((CGFloat)totalBytesWritten / (CGFloat )totalBytesExpectedToWrite, timestamp);
     }];
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {

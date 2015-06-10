@@ -56,7 +56,7 @@
 #import "GLPViewImageHelper.h"
 #import "ImageSelectorViewController.h"
 #import "NerdNation-Swift.h"
-
+#import "MRNavigationBarProgressView.h"
 
 @interface GLPConversationViewController () <ImageSelectorViewControllerDelegate, ImagePickerSheetControllerDelegate>
 
@@ -94,7 +94,9 @@
 
 @property (assign, nonatomic, getter=isOffline) BOOL offline;
 
+//Uploading stuff.
 @property (strong, nonatomic) GLPPickImageHelper *pickImageHelper;
+@property (strong, nonatomic) MRNavigationBarProgressView *uploadingMediaProgressView;
 
 @end
 
@@ -115,6 +117,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [self configureTitleNavigationBar];
     [self configureForm];
     [self configureTableView];
+    
+    [self configureNavigationBarProgressView];
     
     _messages = [NSMutableArray array];
     [self reloadWithItems:_messages];
@@ -162,8 +166,12 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 {
 //    [[GLPLiveConversationsManager sharedInstance] resetLastShownMessageForConversation:_conversation];
 
+    [self removeNotifications];
+    
     [_conversationHelper resetLastShownMessageForConversation:_conversation];
 
+    [self removeNavigationBarProgressView];
+    
     [super viewWillDisappear:animated];
 }
 
@@ -196,6 +204,9 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedImagesReceived:) name:GLPNOTIFICATION_SELECTED_IMAGES object:nil];
     
+    //Image uploading
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageUploadingStatusChanged:) name:GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS object:nil];
+
 }
 
 - (void)removeNotifications
@@ -209,6 +220,10 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SELECTED_IMAGES object:nil];
+    
+    //Image uploading.
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS object:nil];
+
 }
 
 -(void)initialiseObjects
@@ -352,6 +367,17 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     self.formTextView.layer.cornerRadius = 3;
     [self.formView setGleepostStyleTopBorder];
+}
+
+- (void)configureNavigationBarProgressView
+{
+    self.uploadingMediaProgressView = [MRNavigationBarProgressView progressViewForNavigationController:self.navigationController];
+    self.uploadingMediaProgressView.progress = 0.0;
+}
+
+- (void)removeNavigationBarProgressView
+{
+    self.uploadingMediaProgressView.progress = 0.0;
 }
 
 - (void)configureTableView
@@ -1010,7 +1036,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (void)takeImage:(UIImage *)image
 {
-    DDLogDebug(@"ImageSelectorViewControllerDelegate image %@", image);
+    [[GLPImageUploader sharedInstance] addItems:@[image]];
 }
 
 #pragma mark - NSNotifications
@@ -1022,6 +1048,20 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     DDLogDebug(@"GLPConversationViewController images received %@", images);
     
     [[GLPImageUploader sharedInstance] addItems:images];
+}
+
+/**
+    Notification contains timestamp and progress status.
+ */
+
+- (void)imageUploadingStatusChanged:(NSNotification *)notification
+{
+    CGFloat status = [notification.userInfo[@"status"] floatValue];
+    NSString *timestamp = notification.userInfo[@"timestamp"];
+    
+    DDLogDebug(@"GLPConversationViewController imageUploadingStatusChanged status %f - %@", status, timestamp);
+    
+    self.uploadingMediaProgressView.progress = status;
 }
 
 #pragma mark - ImagePickerSheetControllerDelegate
