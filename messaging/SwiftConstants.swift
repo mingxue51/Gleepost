@@ -19,4 +19,5 @@ struct SwiftConstants
     static let GLPNOTIFICATION_NETWORK_UPDATE = "GLPNetworkStatusUpdate"
     
     static let GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS = "GLPUploadingImageChangedStatus"
+    static let GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS_INTERNAL = "GLPUploadingImageChangedStatusInternal"
 }

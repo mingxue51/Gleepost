@@ -33,8 +33,14 @@ import UIKit
         return pendingOperations
     }()
     
+    /// Holds a timestamp as a key and the progress value as a value.
+    
+    private lazy var pendingOperationsStatus: [String : Float] = {
+        let pendingOperationsStatus = [String : Float]()
+        return pendingOperationsStatus
+    }()
+    
     override init() {
-        
         super.init()
         self.configureObservers()
     }
@@ -44,15 +50,14 @@ import UIKit
     private func configureObservers()
     {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNetworkStatus:", name: SwiftConstants.GLPNOTIFICATION_NETWORK_UPDATE, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "progressUpdated:", name: SwiftConstants.GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS_INTERNAL, object: nil)
     }
     
     // MARK: - Notifications
     
     func updateNetworkStatus(notification: NSNotification)
     {
-        println("GLPImageUploader updateNetworkStatus \(notification)")
-        
-        
         let userInfo: Dictionary = notification.userInfo!
         
         let isNetwork = userInfo["status"] as! Bool
@@ -62,6 +67,20 @@ import UIKit
             self.resumeOperationsAfterLoosingNetwork()
         }
     }
+    
+    /**
+        Each NSOperation (GLPImageOperation) object sends notification to this
+    */
+    func progressUpdated(notification: NSNotification)
+    {
+        let data = notification.userInfo!
+        let timestamp: String = data["timestamp"] as! String
+        let progress: Float = data["status"] as! Float
+        self.pendingOperationsStatus[timestamp] = progress
+        self.postNotificationToVCAfterProgressChanged()
+    }
+    
+    // MARK: - Operations
     
     func addItems(items: Array<UIImage>)
     {
@@ -92,6 +111,29 @@ import UIKit
         self.operationQueue.addOperation(operation)
     }
     
+    /**
+        Selectes the smaller progress of all pending images and posting NSNotification
+        to the view controller to change the progress.
+    */
+    private func postNotificationToVCAfterProgressChanged()
+    {
+        var smallestProgress: Float = 1.0
+        var timestampOfSmallestProgress: String = ""
+        
+        for (timestamp, progress) in self.pendingOperationsStatus
+        {
+            if progress < smallestProgress
+            {
+                smallestProgress = progress
+                timestampOfSmallestProgress = timestamp
+            }
+        }
+        println("smallest var \(smallestProgress) all variables \(self.pendingOperationsStatus)")
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(SwiftConstants.GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS, object: self, userInfo: ["status" : smallestProgress, "timestamp" : timestampOfSmallestProgress])
+
+    }
+    
     // MARK: - GLPImageOperationDelegate
     
     func imageUploaded(timestamp: String, image: UIImage, imageUrl: String)
@@ -102,6 +144,5 @@ import UIKit
         
         //TODO: Inform UI for changes.
         //                    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPImageUploaded" object:nil userInfo:@{@"imageUrl":imageUrlSend}];
-
     }
 }

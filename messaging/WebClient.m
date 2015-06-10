@@ -2036,7 +2036,7 @@ static WebClient *instance = nil;
 /**
  Now only is used for uploading an image in chat.
  */
--(void)uploadImage:(NSData *)imageData andTimstamp:(NSString *)timestamp callback:(void (^)(BOOL success, NSString *imageUrl))callback progressCallBack:(void (^) (CGFloat progress, NSString *timestamp))progressCallback
+-(void)uploadImage:(NSData *)imageData callback:(void (^)(BOOL success, NSString *imageUrl))callback progressCallBack:(void (^) (CGFloat progress))progressCallback
 {
     NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"upload" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         
@@ -2050,7 +2050,7 @@ static WebClient *instance = nil;
     [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         NSLog(@"Sentt %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
         
-        progressCallback((CGFloat)totalBytesWritten / (CGFloat )totalBytesExpectedToWrite, timestamp);
+        progressCallback((CGFloat)totalBytesWritten / (CGFloat )totalBytesExpectedToWrite);
     }];
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {

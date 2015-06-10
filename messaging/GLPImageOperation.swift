@@ -18,6 +18,7 @@ class GLPImageOperation: NSOperation
 {
     private var image: UIImage
     private let timestamp: String
+    private var progress: Float
     
     var delegate: GLPImageOperationDelegate?
     
@@ -30,6 +31,7 @@ class GLPImageOperation: NSOperation
     {
         self.timestamp = timestamp
         self.image = image
+        self.progress = 0.0
         super.init()
         self.saveImageToCache()
     }
@@ -51,11 +53,11 @@ class GLPImageOperation: NSOperation
     
     private func processAndUploadImage()
     {
-        WebClient.sharedInstance().uploadImage(resizeImageAndConvertToNSData(), andTimstamp: timestamp, callback: { (success, imageUrl) -> Void in
+        WebClient.sharedInstance().uploadImage(resizeImageAndConvertToNSData(), callback: { (success, imageUrl) -> Void in
             
             if success
             {
-                self .replaceImageToCache(imageUrl)
+                self.replaceImageToCache(imageUrl)
                 self.delegate?.imageUploaded(self.timestamp, image: self.image, imageUrl: imageUrl)
             }
             else
@@ -63,9 +65,9 @@ class GLPImageOperation: NSOperation
                 println("GLPImageOperation error to upload image")
             }
             
-        }) { (progress, timestamp) -> Void in
+        }) { (progress) -> Void in
             
-            NSNotificationCenter.defaultCenter().postNotificationName(SwiftConstants.GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS, object: self, userInfo: ["status" : progress, "timestamp" : timestamp])
+            NSNotificationCenter.defaultCenter().postNotificationName(SwiftConstants.GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS_INTERNAL, object: self, userInfo: ["status" : progress, "timestamp" : self.timestamp])
         }
     }
     
