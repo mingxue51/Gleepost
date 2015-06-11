@@ -18,6 +18,11 @@
 
 @class GLPUser;
 
+typedef NS_ENUM(NSUInteger, KindOfMediaMessage) {
+    kImageMessage,
+    kPdfMessage
+};
+
 @interface GLPMessage : GLPEntity <NSCopying>
 
 @property (assign, nonatomic) BOOL seen;

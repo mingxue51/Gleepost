@@ -531,6 +531,14 @@ int const NumberMaxOfMessagesLoaded = 20;
 //    }
 }
 
++ (void)createImageMessageWithTimestamp:(NSString *)timestamp toConversation:(GLPConversation *)conversation
+{
+    DDLogInfo(@"ConversationManager createImageMessageWithTimestamp %@", timestamp);
+    
+    GLPMessage *message = [[GLPMessage alloc] init];
+    message.content = timestamp;
+}
+
 + (NSString *)removeLastNewLinesFromContent:(NSString *)content
 {
     return [content stringByTrimmingCharactersInSet: [NSCharacterSet newlineCharacterSet]];

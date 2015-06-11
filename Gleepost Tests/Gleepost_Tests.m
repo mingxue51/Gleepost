@@ -17,6 +17,7 @@
 #import "GLPPollDao.h"
 #import "GLPLiveSummaryDao.h"
 #import "GLPLiveSummary.h"
+#import "GLPMessage.h"
 
 @interface Gleepost_Tests : XCTestCase
 
@@ -37,6 +38,14 @@
 - (void)testFindPollDb {
     
     
+}
+
+- (void)testMediaMessage
+{
+    GLPMessage *message = [[GLPMessage alloc] init];
+    message.content = @"<http://upload.wikimedia.org/wikipedia/el/8/89/Hellas_Victoria_FC_Logo.jpg|pdf>";
+    
+    XCTAssert(![message isImageMessage], @"Failed to identify image message");
 }
 
 - (void)testLiveSummaryOperations

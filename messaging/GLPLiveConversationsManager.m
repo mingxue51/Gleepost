@@ -110,7 +110,7 @@ static GLPLiveConversationsManager *instance = nil;
             
             [self hideLoadingIndicator];
             
-            DDLogInfo(@"Load conversations sucess, loaded conversations: %d", conversations.count);
+            DDLogInfo(@"Load conversations sucess, loaded conversations: %lu", (unsigned long)conversations.count);
             
             for(GLPConversation *conversation in conversations) {
                 [self internalAddConversation:conversation isEmpty:NO];
@@ -181,7 +181,7 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (void)createRegularConversationWithUser:(GLPUser *)user callback:(void (^)(GLPConversation *conversation))callback
 {
-    DDLogInfo(@"Create regular conversation with user %d - %@", user.remoteKey, user.name);
+    DDLogInfo(@"Create regular conversation with user %ld - %@", (long)user.remoteKey, user.name);
     
     dispatch_async(_queue, ^{
         GLPConversation *conversation = [[WebClient sharedInstance] synchronousCreateConversationWithUser:user];
@@ -1161,7 +1161,7 @@ static GLPLiveConversationsManager *instance = nil;
 // Local message that has not yet been send to the server
 - (void)addLocalMessageToConversation:(GLPMessage *)message
 {
-    DDLogInfo(@"Add local message \"%@\" to conversation with remote key %d", message.content, message.conversation.remoteKey);
+    DDLogInfo(@"Add local message \"%@\" to conversation with remote key %ld", message.content, (long)message.conversation.remoteKey);
     
     // newly inserted message key
     __block NSInteger key;
@@ -1179,7 +1179,7 @@ static GLPLiveConversationsManager *instance = nil;
         [self internalNotifyConversationHasNewLocalMessages:conversation];
     });
     
-    DDLogInfo(@"New local message successfuly added with key: %d", key);
+    DDLogInfo(@"New local message successfuly added with key: %ld", (long)key);
     message.key = key;
 }
 

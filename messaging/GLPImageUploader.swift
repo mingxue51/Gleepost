@@ -50,7 +50,6 @@ import UIKit
     private func configureObservers()
     {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateNetworkStatus:", name: SwiftConstants.GLPNOTIFICATION_NETWORK_UPDATE, object: nil)
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "progressUpdated:", name: SwiftConstants.GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS_INTERNAL, object: nil)
     }
     

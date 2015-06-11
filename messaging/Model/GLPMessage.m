@@ -49,8 +49,15 @@
     // A list of extensions to check against
     NSArray *imageExtensions = @[@"png", @"jpg", @"gif"]; //...
     
+    NSString *urlString = [self parsePossibleImageMessage];
+    
+    if(!urlString)
+    {
+        return NO;
+    }
+    
     // Iterate & match the URL objects from your checking results
-    NSURL *url = [NSURL URLWithString:self.content];
+    NSURL *url = [NSURL URLWithString:urlString];
     
     NSString *extension = [url pathExtension];
     
@@ -62,6 +69,76 @@
     }
     
     return NO;
+}
+
+/**
+    Try to parse the message's content. If the content does not satisfies the 
+    media format returns nil. Otherwise it returns the image url.
+ */
+- (NSString *)parsePossibleImageMessage
+{
+    NSArray *parsedMediaContent = [self parseMediaContent];
+    
+    NSString *metadataImagePattern = [GLPMessage getImagePatternWithKindOfMediaMessage:kImageMessage];
+    
+    if(!parsedMediaContent || ![parsedMediaContent[1] isEqualToString:metadataImagePattern])
+    {
+        return nil;
+    }
+    
+    return parsedMediaContent[0];
+}
+
+- (NSArray *)parseMediaContent
+{
+    if(![self.content containsString:@"|"] || ![self.content containsString:@"<"] || ![self.content containsString:@">"])
+    {
+        return nil;
+    }
+    
+    NSArray *parsedContent = [self.content componentsSeparatedByString:@"|"];
+    
+    if(parsedContent.count < 2)
+    {
+        return nil;
+    }
+    
+    NSMutableString *firstComponent = [NSMutableString stringWithString:parsedContent[0]];
+    [firstComponent deleteCharactersInRange:NSMakeRange(0, 1)];
+    
+    NSMutableString *secondComponent = [NSMutableString stringWithString:parsedContent[1]];
+    [secondComponent deleteCharactersInRange:NSMakeRange(secondComponent.length - 1, 1)];
+    
+    return @[firstComponent, secondComponent];
+}
+
+/**
+    Formats the message to the specific media format.
+ */
++ (NSString *)formatMessageWithKindOfMedia:(KindOfMediaMessage)kindOfMedia withContent:(NSString *)content
+{
+    NSString *metaDataMediaFormat = [GLPMessage getImagePatternWithKindOfMediaMessage:kindOfMedia];
+    return [NSString stringWithFormat:@"<%@|%@>", content, metaDataMediaFormat];
+}
+
++ (NSString *)getImagePatternWithKindOfMediaMessage:(KindOfMediaMessage)kindOfMedia
+{
+    NSString *metaDataMediaFormat = @"";
+    
+    switch (kindOfMedia) {
+        case kImageMessage:
+            metaDataMediaFormat = @"image";
+            break;
+            
+        case kPdfMessage:
+            metaDataMediaFormat = @"pdf";
+            break;
+            
+        default:
+            break;
+    }
+    
+    return metaDataMediaFormat;
 }
 
 # pragma mark - Copy

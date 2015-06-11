@@ -419,7 +419,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
 // Local message that has not yet been send to the server
 - (void)addLocalMessageToConversation:(GLPMessage *)message
 {
-    DDLogInfo(@"Add local message \"%@\" to conversation with remote key %d", message.content, message.conversation.remoteKey);
+    DDLogInfo(@"Add local message \"%@\" to conversation with remote key %ld", message.content, (long)message.conversation.remoteKey);
     
     // newly inserted message key
     __block NSInteger key;
@@ -437,7 +437,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
         [self internalNotifyConversationHasNewLocalMessages:conversation];
     });
     
-    DDLogInfo(@"New local message successfuly added with key: %d", key);
+    DDLogInfo(@"New local message successfuly added with key: %ld", (long)key);
     message.key = key;
 }
 
