@@ -81,14 +81,19 @@ import UIKit
     
     // MARK: - Operations
     
-    func addItems(items: Array<UIImage>)
+    func addItems(items: Array<UIImage>) -> Array<String>
     {
+        var timestamps = Array<String>()
+        
         for image in items
         {
             let timestamp = DateFormatterHelper.generateDateTimestamp()
+            timestamps.append(timestamp)
             self.pendingOperations[timestamp] = image
             self.addOperation(timestamp, image: image)
         }
+        
+        return timestamps
     }
     
     /**
@@ -141,7 +146,7 @@ import UIKit
         
         println("GLPImageUploader imageUploaded pending operations left \(self.pendingOperations.count) image url \(imageUrl) timestamp \(timestamp)")
         
-        //TODO: Inform UI for changes.
-        //                    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:@"GLPImageUploaded" object:nil userInfo:@{@"imageUrl":imageUrlSend}];
+        //Inform UI that an image has uploaded.
+        NSNotificationCenter.defaultCenter().postNotificationNameOnMainThread(SwiftConstants.GLPNOTIFICATION_CHAT_IMAGE_UPLOADED, object: self, userInfo: ["timestamp" : timestamp, "image_url" : imageUrl])
     }
 }

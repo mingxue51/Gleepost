@@ -43,9 +43,9 @@
 - (void)testMediaMessage
 {
     GLPMessage *message = [[GLPMessage alloc] init];
-    message.content = @"<http://upload.wikimedia.org/wikipedia/el/8/89/Hellas_Victoria_FC_Logo.jpg|pdf>";
+    message.content = @"<21312312|image>";
     
-    XCTAssert(![message isImageMessage], @"Failed to identify image message");
+    XCTAssert([message isImageMessage], @"Failed to identify image message");
 }
 
 - (void)testLiveSummaryOperations

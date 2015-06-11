@@ -1047,7 +1047,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     DDLogDebug(@"GLPConversationViewController images received %@", images);
     
-    [[GLPImageUploader sharedInstance] addItems:images];
+    NSArray *timestamps = [[GLPImageUploader sharedInstance] addItems:images];
+    [ConversationManager createImageMessagesWithTimestamps:timestamps toConversation:self.conversation];
 }
 
 /**

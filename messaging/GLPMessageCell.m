@@ -309,7 +309,6 @@ static const CGFloat kTextSize = 15;
     view.hidden = YES;
     imageView.hidden = NO;
     
-    
     imageView.alpha = _message.sendStatus == kSendStatusLocal ? 0.15 : 1;
     
     //Configure positioning.
@@ -320,7 +319,7 @@ static const CGFloat kTextSize = 15;
     
     imageView.frame = CGRectMake(x, _height, [GLPMessageCell imageMessageWidth], [GLPMessageCell imageMessageHeight]);
     
-    [imageView setImageWithURL:[NSURL URLWithString:_message.content] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [imageView setImageWithURL:[NSURL URLWithString:[_message getContentFromMediaContent]] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 
     UIButton *errorButton = self.contentView.subviews[3];
     

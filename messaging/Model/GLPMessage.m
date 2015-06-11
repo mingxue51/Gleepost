@@ -39,6 +39,18 @@
     return YES;
 }
 
+/**
+    This method should be called ONLY from GLPMessageCell and ONLY in case
+    the message is media message.
+ 
+    @return Returns the content of the content when the message is media message.
+    e.g. In case of image url content.
+ */
+- (NSString *)getContentFromMediaContent
+{
+    return [self parseMediaContent][0];
+}
+
 - (BOOL)isImageMessage
 {
     if(![self.content componentsSeparatedByString:@" "])
@@ -47,9 +59,14 @@
     }
     
     // A list of extensions to check against
-    NSArray *imageExtensions = @[@"png", @"jpg", @"gif"]; //...
+    NSArray *imageExtensions = @[@"png", @"jpg", @"gif"];
     
     NSString *urlString = [self parsePossibleImageMessage];
+    
+    if([self doesStringContainTimestamp:urlString])
+    {
+        return YES;
+    }
     
     if(!urlString)
     {
@@ -64,11 +81,16 @@
     if ([imageExtensions containsObject:extension])
     {
         NSLog(@"Image URL: %@", url);
-        
         return YES;
     }
     
     return NO;
+}
+
+- (BOOL)doesStringContainTimestamp:(NSString *)string
+{
+    NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+    return [nf numberFromString:string] != nil;
 }
 
 /**
@@ -111,6 +133,8 @@
     
     return @[firstComponent, secondComponent];
 }
+
+#pragma mark - Static
 
 /**
     Formats the message to the specific media format.

@@ -535,7 +535,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
 // Update once the local message has been sent
 - (void)updateLocalMessageAfterSending:(GLPMessage *)message
 {
-    DDLogInfo(@"Update local message \"%@\" after sending with key: %d", message.content, message.key);
+    DDLogInfo(@"Update local message \"%@\" after sending with key: %ld", message.content, (long)message.key);
     
     dispatch_async(_queue, ^{
         GLPConversation *conversation = _conversations[[NSNumber numberWithInteger:message.conversation.remoteKey]];

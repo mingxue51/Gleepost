@@ -20,4 +20,5 @@ struct SwiftConstants
     
     static let GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS = "GLPUploadingImageChangedStatus"
     static let GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS_INTERNAL = "GLPUploadingImageChangedStatusInternal"
+    static let GLPNOTIFICATION_CHAT_IMAGE_UPLOADED = "GLPChatImageUploaded"
 }

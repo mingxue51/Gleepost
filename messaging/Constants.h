@@ -33,6 +33,7 @@
 
 #define GLPNOTIFICATION_SELECTED_IMAGES                 @"GLPSelectedImages"
 #define GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS  @"GLPUploadingImageChangedStatus"
+#define GLPNOTIFICATION_CHAT_IMAGE_UPLOADED             @"GLPChatImageUploaded"
 
 #define GLPNOTIFICATION_NETWORK_UPDATE                  @"GLPNetworkStatusUpdate"
 #define GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE        @"GLPSynchronizedWithRemote"

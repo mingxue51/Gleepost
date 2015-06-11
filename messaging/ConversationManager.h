@@ -45,6 +45,7 @@ extern int const NumberMaxOfMessagesLoaded;
 + (void)loadPreviousMessagesBefore:(GLPMessage *)message callback:(void (^)(BOOL success, BOOL remains, NSArray *messages))callback;
 
 + (void)createMessageWithContent:(NSString *)content toConversation:(GLPConversation *)conversation;
++ (void)createImageMessagesWithTimestamps:(NSArray *)timestamps toConversation:(GLPConversation *)conversation;
 
 //+ (void)saveMessageFromWebsocket:(GLPMessage *)message forConversationRemoteKey:(int)remoteKey;
 + (void)saveMessage:(GLPMessage *)message forConversationRemoteKey:(int)remoteKey;
