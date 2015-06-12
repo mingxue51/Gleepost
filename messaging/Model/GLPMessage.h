@@ -38,6 +38,7 @@ typedef NS_ENUM(NSUInteger, KindOfMediaMessage) {
 - (BOOL)followsPreviousMessage:(GLPMessage *)message;
 - (BOOL)isImageMessage;
 - (NSString *)getContentFromMediaContent;
+- (BOOL)doesStringContainTimestamp:(NSString *)string;
 + (NSString *)formatMessageWithKindOfMedia:(KindOfMediaMessage)kindOfMedia withContent:(NSString *)content;
 
 @end

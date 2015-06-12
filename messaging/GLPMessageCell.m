@@ -170,6 +170,13 @@ static const CGFloat kTextSize = 15;
         messageImageView.contentMode = UIViewContentModeScaleAspectFill;
         messageImageView.backgroundColor = [AppearanceHelper grayGleepostColour];
 
+        UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+        [activityIndicator setHidesWhenStopped:YES];
+        
+
+        
+
+        
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(messageImageClick)];
         [messageImageView addGestureRecognizer:tap];
         messageImageView.clipsToBounds = YES;
@@ -177,6 +184,15 @@ static const CGFloat kTextSize = 15;
         [ShapeFormatterHelper setRoundedViewWithNotClipToBounds:messageImageView toDiameter:32.0];
         messageImageView.userInteractionEnabled = YES;
         messageImageView.hidden = YES;
+        
+        
+        CGRect imageViewFrame = messageImageView.frame;
+        CGRect indicatorFrame = activityIndicator.frame;
+        
+        [activityIndicator setFrame:CGRectMake((imageViewFrame.size.width / 2) - (indicatorFrame.size.width / 2), imageViewFrame.size.height / 2 + indicatorFrame.size.height / 2, indicatorFrame.size.width, indicatorFrame.size.height)];
+        
+        [messageImageView addSubview:activityIndicator];
+        
         [self.contentView addSubview:messageImageView];
     }
     
@@ -303,7 +319,6 @@ static const CGFloat kTextSize = 15;
 
 - (void)configureMessageImage
 {
-    DDLogDebug(@"GLPMessageCell configureMessageImage %@", self.message.content);
     UIImageView *imageView = self.contentView.subviews[6];
     UIView *view = self.contentView.subviews[2];
     view.hidden = YES;
@@ -319,8 +334,29 @@ static const CGFloat kTextSize = 15;
     
     imageView.frame = CGRectMake(x, _height, [GLPMessageCell imageMessageWidth], [GLPMessageCell imageMessageHeight]);
     
-    [imageView setImageWithURL:[NSURL URLWithString:[_message getContentFromMediaContent]] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    NSString *contentFromMediaContent = [_message getContentFromMediaContent];
+    
+    [imageView setImageWithURL:[NSURL URLWithString:contentFromMediaContent] placeholderImage:nil options:SDWebImageRetryFailed usingActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 
+    //If the image is pending show indicator.
+    if([_message doesStringContainTimestamp:contentFromMediaContent])
+    {
+        UIActivityIndicatorView *indicator = imageView.subviews[0];
+        indicator.hidden = NO;
+        [indicator startAnimating];
+        
+        CGRect imageViewFrame = imageView.frame;
+        CGRect indicatorFrame = indicator.frame;
+        
+        [indicator setFrame:CGRectMake((imageViewFrame.size.width / 2) - (indicatorFrame.size.width / 2), imageViewFrame.size.height / 2 - indicatorFrame.size.height / 2, indicatorFrame.size.width, indicatorFrame.size.height)];
+    }
+    else
+    {
+        UIActivityIndicatorView *indicator = imageView.subviews[0];
+        [indicator stopAnimating];
+    }
+    
+    
     UIButton *errorButton = self.contentView.subviews[3];
     
     //For now hide it.

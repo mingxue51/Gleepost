@@ -63,11 +63,6 @@ import MobileCoreServices
             return
         }
         
-//        if !imagePickerSheetController!.isBeingDismissed()
-//        {
-//            imagePickerSheetController!.dismissViewControllerAnimated(true, completion: nil)
-//        }
-        
         viewController.presentViewController(cameraView, animated: true) { (completed) -> Void in
             
             println("GLPPickImageHelper presentCamera")
@@ -80,6 +75,5 @@ import MobileCoreServices
     {
         cameraView.dismissViewControllerAnimated(true, completion: nil)
         NSNotificationCenter.defaultCenter().postNotificationName(SwiftConstants.GLPNOTIFICATION_SELECTED_IMAGES, object: self, userInfo: ["images" : [image]])
-        println("GLPPickImageHelper image \(image)")
     }
 }
