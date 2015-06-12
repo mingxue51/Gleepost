@@ -39,6 +39,10 @@
     else if([string isEqualToString:@"vote"]) {
         _type = kGLPWebSocketEventTypeVote;
     }
+    else if([string isEqualToString:@"presence"])
+    {
+        _type = kGLPWebSocketEventTypePresence;
+    }
     else {
   
         

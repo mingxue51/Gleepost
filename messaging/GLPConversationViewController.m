@@ -117,8 +117,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [self configureTitleNavigationBar];
     [self configureForm];
     [self configureTableView];
-    
     [self configureNavigationBarProgressView];
+    [self configureViewDidLoadNotifications];
     
     _messages = [NSMutableArray array];
     [self reloadWithItems:_messages];
@@ -202,11 +202,20 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedReadReceiptUpdate:) name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedImagesReceived:) name:GLPNOTIFICATION_SELECTED_IMAGES object:nil];
     
     //Image uploading
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageUploadingStatusChanged:) name:GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS object:nil];
 
+}
+
+- (void)configureViewDidLoadNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedImagesReceived:) name:GLPNOTIFICATION_SELECTED_IMAGES object:nil];
+}
+
+- (void)removeViewDidLoadNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SELECTED_IMAGES object:nil];
 }
 
 - (void)removeNotifications
@@ -219,12 +228,20 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SELECTED_IMAGES object:nil];
     
     //Image uploading.
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS object:nil];
 
 }
+
+- (void)willMoveToParentViewController:(UIViewController *)parent
+{
+    if(!parent)
+    {
+        [self removeViewDidLoadNotifications];
+    }
+}
+
 
 -(void)initialiseObjects
 {
@@ -716,6 +733,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     NSInteger key = [[notification userInfo][@"key"] integerValue];
     NSInteger remoteKey = [[notification userInfo][@"remote_key"] integerValue];
     BOOL sent = [[notification userInfo][@"sent"] boolValue];
+    NSString *updatedContent = [notification userInfo][@"updated_content"];
     
     NSArray *filtered = [_messages filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"key = %d", key]];
     if(filtered.count != 1) {
@@ -728,6 +746,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     if(sent) {
         message.sendStatus = kSendStatusSent;
         message.remoteKey = remoteKey;
+        message.content = (updatedContent) ? updatedContent : message.content;
     } else {
         message.sendStatus = kSendStatusFailure;
     }
@@ -1036,7 +1055,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 
 - (void)takeImage:(UIImage *)image
 {
-    [[GLPImageUploader sharedInstance] addItems:@[image]];
+    [self sendImageMessages:@[image]];
 }
 
 #pragma mark - NSNotifications
@@ -1044,11 +1063,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 - (void)selectedImagesReceived:(NSNotification *)notification
 {
     NSArray *images = notification.userInfo[@"images"];
-    
     DDLogDebug(@"GLPConversationViewController images received %@", images);
-    
-    NSArray *timestamps = [[GLPImageUploader sharedInstance] addItems:images];
-    [ConversationManager createImageMessagesWithTimestamps:timestamps toConversation:self.conversation];
+    [self sendImageMessages:images];
 }
 
 /**
@@ -1075,7 +1091,14 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 - (void)presentFullSizeImagePicker
 {
     [self performSegueWithIdentifier:@"pick image" sender:self];
+}
 
+#pragma mark - Image progressing
+
+- (void)sendImageMessages:(NSArray *)images
+{
+    NSArray *timestamps = [[GLPImageUploader sharedInstance] addItems:images];
+    [ConversationManager createImageMessagesWithTimestamps:timestamps toConversation:self.conversation];
 }
 
 #pragma mark - Selectors
@@ -1085,7 +1108,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [self.pickImageHelper presentImagePickerWithViewController:self];
 }
 
-# pragma mark - Segue
+#pragma mark - Segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {

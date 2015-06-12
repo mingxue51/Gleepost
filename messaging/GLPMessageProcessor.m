@@ -76,6 +76,11 @@ static GLPMessageProcessor *instance = nil;
 
         GLPWebSocketEvent *event = [RemoteParser parseWebSocketEventFromJson:json];
         
+        if(!event)
+        {
+            return;
+        }
+        
         switch (event.type) {
             case kGLPWebSocketEventTypeNewMessage: {
                 DDLogInfo(@"Websocket event: New message");
@@ -145,7 +150,7 @@ static GLPMessageProcessor *instance = nil;
             }
            
             default:
-                DDLogInfo(@"Websocket event: Not recognised");
+                //DDLogInfo(@"Websocket event: Not recognised");
                 break;
         }
     });

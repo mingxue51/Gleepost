@@ -80,7 +80,6 @@
     
     if ([imageExtensions containsObject:extension])
     {
-        NSLog(@"Image URL: %@", url);
         return YES;
     }
     
