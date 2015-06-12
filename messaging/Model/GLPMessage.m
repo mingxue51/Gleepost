@@ -1,5 +1,6 @@
 #import "GLPMessage.h"
 #import "GLPUser.h"
+#import "NSString+Utils.h"
 
 @implementation GLPMessage
 
@@ -81,7 +82,7 @@
 
 - (BOOL)isImageMessage
 {
-    if(![self.content componentsSeparatedByString:@" "])
+    if(![_content componentsSeparatedByString:@" "])
     {
         return NO;
     }
@@ -140,12 +141,12 @@
 
 - (NSArray *)parseMediaContent
 {
-    if(![self.content containsString:@"|"] || ![self.content containsString:@"<"] || ![self.content containsString:@">"])
+    if(![_content containsAString:@"|"] || ![_content containsAString:@"<"] || ![_content containsAString:@">"])
     {
         return nil;
     }
     
-    NSArray *parsedContent = [self.content componentsSeparatedByString:@"|"];
+    NSArray *parsedContent = [_content componentsSeparatedByString:@"|"];
     
     if(parsedContent.count < 2)
     {

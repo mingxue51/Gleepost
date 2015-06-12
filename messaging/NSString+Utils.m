@@ -7,6 +7,7 @@
 //
 
 #import "NSString+Utils.h"
+#import "GLPiOSSupportHelper.h"
 
 @implementation NSString (Utils)
 
@@ -48,6 +49,19 @@
 - (BOOL)exceedsNumberOfCharacters:(NSInteger)noOfCharacters
 {
     return self.length > noOfCharacters;
+}
+
+- (BOOL)containsAString:(NSString *)aString
+{
+    if([GLPiOSSupportHelper isIOS7])
+    {
+        NSRange range = [self rangeOfString:aString];
+        return range.length != 0;
+    }
+    else
+    {
+        return [self containsString:aString];
+    }
 }
 
 @end

@@ -40,7 +40,8 @@ private let assetsMaxNumber: Int = 20;
         tableView.layoutMargins = UIEdgeInsetsZero
         tableView.separatorInset = UIEdgeInsetsZero
         tableView.registerClass(ImagePreviewTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(ImagePreviewTableViewCell.self))
-        
+        tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: NSStringFromClass(UITableViewCell.self))
+
         //Register cells depending on actions.
         for action in self.actions
         {
@@ -154,6 +155,7 @@ private let assetsMaxNumber: Int = 20;
     
     public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
+            
             if assets.count > 0 {
                 return enlargedPreviews ? tableViewEnlargedPreviewRowHeight : tableViewPreviewRowHeight
             }
@@ -169,7 +171,6 @@ private let assetsMaxNumber: Int = 20;
             let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(ImagePreviewTableViewCell.self), forIndexPath: indexPath) as! ImagePreviewTableViewCell
             cell.collectionView = collectionView
             cell.separatorInset = UIEdgeInsets(top: 0, left: tableView.bounds.width, bottom: 0, right: 0)
-            
             return cell
         }
         

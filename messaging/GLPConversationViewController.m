@@ -58,7 +58,7 @@
 #import "NerdNation-Swift.h"
 #import "MRNavigationBarProgressView.h"
 
-@interface GLPConversationViewController () <ImageSelectorViewControllerDelegate, ImagePickerSheetControllerDelegate>
+@interface GLPConversationViewController () <ImageSelectorViewControllerDelegate, ImagePickerSheetControllerDelegate, ImagePickerSheetiOS7ControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *formView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
