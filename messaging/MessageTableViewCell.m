@@ -48,7 +48,7 @@ float const CONVERSATION_CELL_HEIGHT = 65.0;
     _userName.text = conversation.title;
 //    _userName.font = [UIFont fontWithName:GLP_TITLE_FONT size:14.0f];
     
-    _content.text = [conversation getLastMessageOrDefault];
+    _content.text = [conversation getLastMessagesContentOrDefault];
     _content.textColor = [UIColor colorWithR:185.0 withG:185.0 andB:185.0];
 //    _content.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:12.0f];
     _content.numberOfLines = 1;

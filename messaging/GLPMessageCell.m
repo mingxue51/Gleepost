@@ -173,9 +173,6 @@ static const CGFloat kTextSize = 15;
         UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         [activityIndicator setHidesWhenStopped:YES];
         
-
-        
-
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(messageImageClick)];
         [messageImageView addGestureRecognizer:tap];
@@ -184,7 +181,6 @@ static const CGFloat kTextSize = 15;
         [ShapeFormatterHelper setRoundedViewWithNotClipToBounds:messageImageView toDiameter:32.0];
         messageImageView.userInteractionEnabled = YES;
         messageImageView.hidden = YES;
-        
         
         CGRect imageViewFrame = messageImageView.frame;
         CGRect indicatorFrame = activityIndicator.frame;

@@ -22,9 +22,19 @@
     _isOld = NO;
     _sendStatus = kSendStatusLocal;
     _belongsToGroup = NO;
+    _kindOfMediaMessage = kTextMessage;
     return self;
 }
 
+- (void)setContent:(NSString *)content
+{
+    _content = content;
+    
+    if([self isImageMessage])
+    {
+        _kindOfMediaMessage = kImageMessage;
+    }
+}
 
 - (BOOL)followsPreviousMessage:(GLPMessage *)message
 {    
@@ -49,6 +59,24 @@
 - (NSString *)getContentFromMediaContent
 {
     return [self parseMediaContent][0];
+}
+
+/**
+    @return returns the readable content for message. This method 
+    is used because in case of media content, the content is not
+    readable but it's a specific pattern of string.
+ */
+- (NSString *)getReadableContent
+{
+    switch (self.kindOfMediaMessage) {
+        case kImageMessage:
+            return [NSString stringWithFormat:@"%@ sent an image", self.author.name];
+            break;
+            
+        default:
+            return _content;
+            break;
+    }
 }
 
 - (BOOL)isImageMessage

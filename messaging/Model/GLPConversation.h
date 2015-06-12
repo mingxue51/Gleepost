@@ -43,7 +43,7 @@
 - (id)initWithParticipants:(NSArray *)participants expiryDate:(NSDate *)expiryDate ended:(BOOL)ended;
 - (void)setReads:(NSArray *)reads;
 - (GLPUser *)getUniqueParticipant;
-- (NSString *)getLastMessageOrDefault;
+- (NSString *)getLastMessagesContentOrDefault;
 - (NSString *)getLastUpdateOrDefault;
 - (void)updateWithNewMessage:(GLPMessage *)message;
 - (BOOL)setUnreadMessageWithUpdatedConversation:(GLPConversation *)updatedConversation;

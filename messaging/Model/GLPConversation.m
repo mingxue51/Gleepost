@@ -132,7 +132,7 @@
     return _participants[0];
 }
 
-- (NSString *)getLastMessageOrDefault
+- (NSString *)getLastMessagesContentOrDefault
 {
     return _lastMessage ? _lastMessage : @"";
 }
@@ -144,7 +144,8 @@
 
 - (void)updateWithNewMessage:(GLPMessage *)message
 {
-    _lastMessage = message.content;
+//    _lastMessage = message.content;
+    _lastMessage = [message getReadableContent];
     _lastUpdate = message.date;
 }
 
