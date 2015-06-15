@@ -1378,7 +1378,7 @@ static GLPLiveConversationsManager *instance = nil;
             // check that the before message is the last one
             GLPMessage *last = [_conversationsMessages[index] firstObject];
             if(last.remoteKey != message.remoteKey) {
-                DDLogWarn(@"The last message (%d - %@) is not equal to the before message (%d)", last.remoteKey, last.content, message.remoteKey);
+                DDLogWarn(@"The last message (%ld - %@) is not equal to the before message (%ld)", (long)last.remoteKey, last.content, (long)message.remoteKey);
                 return;
             }
         } else {

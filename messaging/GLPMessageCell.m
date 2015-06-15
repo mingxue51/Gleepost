@@ -17,6 +17,7 @@
 #import "GLPSystemMessage.h"
 #import "GLPReadReceiptsManager.h"
 #import "GLPiOSSupportHelper.h"
+#import "NerdNation-Swift.h"
 
 @interface GLPMessageCell()
 
@@ -102,11 +103,14 @@ static const CGFloat kTextSize = 15;
 
     // timeview
     {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake([GLPiOSSupportHelper screenWidth] / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = [UIColor lightGrayColor];
-        label.font = [UIFont fontWithName:GLP_TITLE_FONT size:10.0f];
-        label.userInteractionEnabled = NO;
+//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake([GLPiOSSupportHelper screenWidth] / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
+//        label.textAlignment = NSTextAlignmentCenter;
+//        label.textColor = [UIColor lightGrayColor];
+//        label.font = [UIFont fontWithName:GLP_TITLE_FONT size:10.0f];
+//        label.userInteractionEnabled = NO;
+//        [self.contentView addSubview:label];
+        
+        GLPTimestampMessageLabel *label = [[GLPTimestampMessageLabel alloc] initWithFrame:CGRectMake([GLPiOSSupportHelper screenWidth] / 2 - kTimeLabelW / 2, kTopMargin, kTimeLabelW, kTimeLabelH)];
         [self.contentView addSubview:label];
     }
 
@@ -279,7 +283,9 @@ static const CGFloat kTextSize = 15;
 
 - (void)configureTimeLabel
 {
-    UILabel *label = self.contentView.subviews[1];
+//    UILabel *label = self.contentView.subviews[1];
+    
+    GLPTimestampMessageLabel *label = self.contentView.subviews[1];
     
 //    DDLogDebug(@"configureTimeLabel: %@", _message.content);
     
@@ -287,7 +293,9 @@ static const CGFloat kTextSize = 15;
         label.hidden = NO;
         
 //        label.text = [[[GLPDateFormatterHelper messageDateFormatter] stringFromDate:_message.date] uppercaseString];
-        label.text = [[[GLPDateFormatterHelper messageDateFormatterWithDate:_message.date] stringFromDate:_message.date] uppercaseString];
+//        label.text = [[[GLPDateFormatterHelper messageDateFormatterWithDate:_message.date] stringFromDate:_message.date] uppercaseString];
+        
+        [label setDate:self.message.date];
         
         _height += label.frame.size.height + kTimeLabelBottomMargin;
         
