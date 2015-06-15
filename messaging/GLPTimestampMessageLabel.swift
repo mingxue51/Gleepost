@@ -24,7 +24,8 @@ class GLPTimestampMessageLabel: UILabel
     private lazy var dateTextAttributes: Dictionary<String, AnyObject> = {
        
         var dictionary = Dictionary<String, AnyObject>()
-        dictionary[NSFontAttributeName] = UIFont(name: "HelveticaNeue-Bold", size: 10.0)!
+//        dictionary[NSFontAttributeName] = UIFont(name: "HelveticaNeue-Bold", size: 12.0)!
+        dictionary[NSFontAttributeName] = UIFont.boldSystemFontOfSize(12.0)
         dictionary[NSForegroundColorAttributeName] = self.textColour
         dictionary[NSParagraphStyleAttributeName] = self.paragraphStyle
         return dictionary
@@ -34,7 +35,8 @@ class GLPTimestampMessageLabel: UILabel
     private lazy var timeTextAttributes: Dictionary<String, AnyObject> = {
         
         var dictionary = Dictionary<String, AnyObject>()
-        dictionary[NSFontAttributeName] = UIFont(name: "HelveticaNeue", size: 10.0)
+//        dictionary[NSFontAttributeName] = UIFont(name: "HelveticaNeue", size: 12.0)
+        dictionary[NSFontAttributeName] = UIFont.systemFontOfSize(12.0)
         dictionary[NSForegroundColorAttributeName] = self.textColour
         dictionary[NSParagraphStyleAttributeName] = self.paragraphStyle
         return dictionary
@@ -56,12 +58,6 @@ class GLPTimestampMessageLabel: UILabel
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.configureLabel()
-    }
-    
-    override func awakeFromNib() {
-        
-        println("GLPTimestampMessageLabel awakeFromNib")
-        super.awakeFromNib()
     }
     
     private func configureLabel()
