@@ -869,7 +869,7 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (NSInteger)conversationsCount
 {
-    __block int res = 0;
+    __block NSInteger res = 0;
     
     dispatch_sync(_queue, ^{
         res = _conversations.count;
@@ -880,7 +880,7 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (NSInteger)liveConversationsCount
 {
-    __block int res = 0;
+    __block NSInteger res = 0;
     
     dispatch_sync(_queue, ^{
         res = _liveConversationsCount;
@@ -891,7 +891,7 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (NSInteger)regularConversationsCount
 {
-    __block int res = 0;
+    __block NSInteger res = 0;
     
     dispatch_sync(_queue, ^{
         res = _regularConversationsCount;

@@ -10,6 +10,7 @@
 #import "WebClient.h"
 #import "NSNotificationCenter+Utils.h"
 #import "ConversationManager.h"
+#import "GLPMessageProcessor.h"
 
 @interface GLPLiveGroupConversationsManager ()
 
@@ -53,6 +54,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
     
     _queue = dispatch_queue_create("com.gleepost.queue.livegroupconversation", DISPATCH_QUEUE_SERIAL);
     [self internalConfigureInitialState];
+    [self configureNotifications];
 
     return self;
 }
@@ -82,6 +84,11 @@ static GLPLiveGroupConversationsManager *instance = nil;
     _successfullyLoaded = NO;
     _isSynchronizedWithRemote = NO;
     _areConversationsSync = NO;
+}
+
+- (void)configureNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageMessageUploaded:) name:GLPNOTIFICATION_CHAT_IMAGE_UPLOADED object:nil];
 }
 
 #pragma mark - Basics
@@ -153,6 +160,29 @@ static GLPLiveGroupConversationsManager *instance = nil;
 - (void)loadConversationsWithGroups:(NSArray *)groups
 {
     [self loadConversationsFromDatabase];    
+}
+
+#pragma mark - Image Messages
+
+- (void)imageMessageUploaded:(NSNotification *)notification
+{
+    NSString *timestamp = notification.userInfo[@"timestamp"];
+    NSString *imageUrl = notification.userInfo[@"image_url"];
+    
+    for(NSNumber *conversationRemoteKey in self.conversationsMessages)
+    {
+        NSArray *conversationMessages = self.conversationsMessages[conversationRemoteKey];
+        
+        for(GLPMessage *message in conversationMessages)
+        {
+            if([message isImageMessage] && [timestamp isEqualToString:[message getContentFromMediaContent]])
+            {
+                DDLogDebug(@"GLPLiveGroupConversationsManager imageMessageUploaded message %@ url %@", message, imageUrl);
+                message.content = [GLPMessage formatMessageWithKindOfMedia:kImageMessage withContent:imageUrl];
+                [[GLPMessageProcessor sharedInstance] processLocalMessage:message];
+            }
+        }
+    }
 }
 
 # pragma mark - Conversations database
@@ -566,7 +596,9 @@ static GLPLiveGroupConversationsManager *instance = nil;
         }
         
         DDLogInfo(@"Local message update completed, with sent status: %@", sentLog);
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil userInfo:@{@"key": [NSNumber numberWithInteger:message.key], @"remote_key": [NSNumber numberWithInteger:message.remoteKey], @"sent":[NSNumber numberWithBool:sent]}];
+        
+        //We have updated_content attribute only in case the message is media message.
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil userInfo:@{@"key": [NSNumber numberWithInteger:message.key], @"remote_key": [NSNumber numberWithInteger:message.remoteKey], @"sent":[NSNumber numberWithBool:sent], @"updated_content":message.content}];
     });
 }
 

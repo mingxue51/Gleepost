@@ -737,7 +737,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     NSArray *filtered = [_messages filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"key = %d", key]];
     if(filtered.count != 1) {
-        DDLogError(@"Grave inconsistency: cannot find message in local messages for key: %d - filtered array count: %d", key, filtered.count);
+        DDLogError(@"Grave inconsistency: cannot find message in local messages for key: %ld - filtered array count: %lu", (long)key, (unsigned long)filtered.count);
         return;
     }
     
