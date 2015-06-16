@@ -11,6 +11,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "UIImageView+UIActivityIndicatorForSDWebImage.h"
 #import "GLPImageHelper.h"
+#import "UIImageView+Letters.h"
 
 @implementation GLPConversationPictureImageView
 
@@ -32,13 +33,12 @@
         self.image = [GLPImageHelper placeholderGroupImage];
     } else {
         GLPUser *user = [conversation getUniqueParticipant];
-        UIImage *defaultProfilePicture = [GLPImageHelper placeholderUserImage];
         
         if([user hasProfilePicture]) {
             [self sd_setImageWithURL:[NSURL URLWithString:user.profileImageUrl] placeholderImage:[GLPImageHelper placeholderUserImage] options:SDWebImageRetryFailed];
 
         } else {
-            self.image = defaultProfilePicture;
+            [self setImageWithString:user.name];
         }
         
     }
