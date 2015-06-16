@@ -29,3 +29,4 @@ pod 'YLProgressBar', '~> 3.5.2'
 pod 'SwipeView'
 pod 'JTSImageViewController'
 pod 'MRProgress', '~> 0.8.2'
+pod "UIImageView-Letters"

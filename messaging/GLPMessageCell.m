@@ -37,7 +37,7 @@
 @implementation GLPMessageCell
 
 static const CGFloat KViewW = 320;
-static const CGFloat kProfileImageViewSize = 40;
+static const CGFloat kProfileImageViewSize = 30;
 static const CGFloat kTimeLabelW = 200;
 static const CGFloat kTimeLabelH = 20;
 static const CGFloat kContentLabelMinimalW = 15;
@@ -92,12 +92,8 @@ static const CGFloat kTextSize = 15;
 {
     // profile image
     {
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kProfileImageViewSize, kProfileImageViewSize)];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(profileImageClick)];
-        [imageView addGestureRecognizer:tap];
-        imageView.userInteractionEnabled = YES;
-        imageView.contentMode = UIViewContentModeScaleAspectFill;
-        
+        GLPProfileMessageImageView *imageView = [[GLPProfileMessageImageView alloc] initWithFrame:CGRectMake(0, 0, kProfileImageViewSize, kProfileImageViewSize)];
+        [imageView setGesture:self selector:@selector(profileImageClick)];
         [self.contentView addSubview:imageView];
     }
 
@@ -249,9 +245,7 @@ static const CGFloat kTextSize = 15;
 
 - (void)configureProfileImage
 {
-    UIImageView *imageView = self.contentView.subviews[0];
-    
-//    if(_message.hasHeader) {
+    GLPProfileMessageImageView *imageView = self.contentView.subviews[0];
     
     if(_message.needsProfileImage || _viewMode) {
         
@@ -264,17 +258,7 @@ static const CGFloat kTextSize = 15;
         
         CGRectSetXY(imageView, [self xForCurrentSide:kProfileImageViewSideMargin w:kProfileImageViewSize], kTopMargin + kProfileImageViewTopMargin);
         
-        UIImage *defaultProfilePicture = [GLPImageHelper placeholderUserImage];
-        
-        if([_message.author hasProfilePicture])
-        {
-            [imageView sd_setImageWithURL:[NSURL URLWithString:_message.author.profileImageUrl] placeholderImage:[GLPImageHelper placeholderUserImage] options:SDWebImageRetryFailed];
-        } else
-        {
-            imageView.image = defaultProfilePicture;
-        }
-        
-        [ShapeFormatterHelper setRoundedView:imageView toDiameter:imageView.frame.size.height];
+        [imageView setImage:_message.author.profileImageUrl hasProfileImage:[_message.author hasProfilePicture] userName:_message.author.name];
         
     } else {
         imageView.hidden = YES;

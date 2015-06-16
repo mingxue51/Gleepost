@@ -101,6 +101,7 @@
 		581C311D188EFE6800BAA082 /* GLPCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C311C188EFE6800BAA082 /* GLPCategory.m */; };
 		581C3120188F068600BAA082 /* GLPCategoryDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C311F188F068600BAA082 /* GLPCategoryDao.m */; };
 		581C9C4318044CD300279256 /* PullDownScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 581C9C4218044CD300279256 /* PullDownScrollView.m */; };
+		581DD13B1B30780900A7841C /* GLPProfileMessageImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581DD13A1B30780900A7841C /* GLPProfileMessageImageView.swift */; };
 		58204E7B186207AF00702F4F /* GLPQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 58204E7A186207AF00702F4F /* GLPQueueManager.m */; };
 		582064901AC0751600A596E4 /* UIImageView+GLPFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 5820648F1AC0751600A596E4 /* UIImageView+GLPFormat.m */; };
 		582127921891657100BF36E5 /* CampusWallHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 582127911891657100BF36E5 /* CampusWallHeaderCell.xib */; };
@@ -538,7 +539,6 @@
 		58919A4B19830D4F0033E77A /* GLPThreeSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 58919A4A19830D4F0033E77A /* GLPThreeSegmentView.m */; };
 		5891F80F1977306700065FFC /* IntroSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 5891F80E1977306700065FFC /* IntroSegue.m */; };
 		5891F81319773E8600065FFC /* GLPBadgesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5891F81219773E8500065FFC /* GLPBadgesViewController.m */; };
-		5892611E1B2F13DB00CB74E7 /* GLPDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5892611D1B2F13DB00CB74E7 /* GLPDateFormatter.swift */; };
 		589261201B2F19D200CB74E7 /* GLPTimestampMessageLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5892611F1B2F19D200CB74E7 /* GLPTimestampMessageLabel.swift */; };
 		5892F0F919FAE8B100B6778F /* GLPEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5892F0F819FAE8B100B6778F /* GLPEmptyView.m */; };
 		5892F0FB19FAF49600B6778F /* GLPGroupsEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5892F0FA19FAF49600B6778F /* GLPGroupsEmptyView.xib */; };
@@ -1128,6 +1128,7 @@
 		581C311F188F068600BAA082 /* GLPCategoryDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPCategoryDao.m; sourceTree = "<group>"; };
 		581C9C4118044CD300279256 /* PullDownScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PullDownScrollView.h; sourceTree = "<group>"; };
 		581C9C4218044CD300279256 /* PullDownScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PullDownScrollView.m; sourceTree = "<group>"; };
+		581DD13A1B30780900A7841C /* GLPProfileMessageImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPProfileMessageImageView.swift; sourceTree = "<group>"; };
 		58204E79186207AF00702F4F /* GLPQueueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPQueueManager.h; sourceTree = "<group>"; };
 		58204E7A186207AF00702F4F /* GLPQueueManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPQueueManager.m; sourceTree = "<group>"; };
 		5820648E1AC0751600A596E4 /* UIImageView+GLPFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+GLPFormat.h"; sourceTree = "<group>"; };
@@ -1760,7 +1761,6 @@
 		5891F80E1977306700065FFC /* IntroSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntroSegue.m; sourceTree = "<group>"; };
 		5891F81119773E8500065FFC /* GLPBadgesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPBadgesViewController.h; sourceTree = "<group>"; };
 		5891F81219773E8500065FFC /* GLPBadgesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPBadgesViewController.m; sourceTree = "<group>"; };
-		5892611D1B2F13DB00CB74E7 /* GLPDateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPDateFormatter.swift; sourceTree = "<group>"; };
 		5892611F1B2F19D200CB74E7 /* GLPTimestampMessageLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPTimestampMessageLabel.swift; sourceTree = "<group>"; };
 		5892F0F719FAE8B100B6778F /* GLPEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPEmptyView.h; sourceTree = "<group>"; };
 		5892F0F819FAE8B100B6778F /* GLPEmptyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPEmptyView.m; sourceTree = "<group>"; };
@@ -3383,14 +3383,15 @@
 			name = "Top Views";
 			sourceTree = "<group>";
 		};
-		5863179A19872D70006D79E2 /* Images */ = {
+		5863179A19872D70006D79E2 /* ImageViews */ = {
 			isa = PBXGroup;
 			children = (
 				58E26BF01AF5427F00730C27 /* Stretched Image */,
 				586317A1198746D7006D79E2 /* GLPImageView.h */,
 				586317A2198746D7006D79E2 /* GLPImageView.m */,
+				581DD13A1B30780900A7841C /* GLPProfileMessageImageView.swift */,
 			);
-			name = Images;
+			name = ImageViews;
 			sourceTree = "<group>";
 		};
 		5863179E19872F01006D79E2 /* Images */ = {
@@ -3995,14 +3996,6 @@
 				5891F81219773E8500065FFC /* GLPBadgesViewController.m */,
 			);
 			name = Badges;
-			sourceTree = "<group>";
-		};
-		5892611C1B2F13BB00CB74E7 /* Chat */ = {
-			isa = PBXGroup;
-			children = (
-				5892611D1B2F13DB00CB74E7 /* GLPDateFormatter.swift */,
-			);
-			name = Chat;
 			sourceTree = "<group>";
 		};
 		5897351A193FA0850048BA85 /* Sign up */ = {
@@ -5493,7 +5486,7 @@
 				58EA126D19FA1060003D264E /* Empty Views */,
 				584FA5F719B519EE00FBA61F /* Progress */,
 				58A1D074199BF91700BA7980 /* Labels */,
-				5863179A19872D70006D79E2 /* Images */,
+				5863179A19872D70006D79E2 /* ImageViews */,
 				586317961987220A006D79E2 /* Top Views */,
 				58919A4819830CED0033E77A /* Segments */,
 				58BBACB419787BD600A8A265 /* Collection views */,
@@ -5530,7 +5523,6 @@
 		80AB898217C2A0560053E784 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				5892611C1B2F13BB00CB74E7 /* Chat */,
 				584AC00B1B0B4899001C7C1B /* Image */,
 				5820648D1AC0744D00A596E4 /* Animations */,
 				58040E8E1A8CE7AA00B29247 /* Conversation */,
@@ -6665,6 +6657,7 @@
 				5831930019B59258000E86D7 /* AddressCell.m in Sources */,
 				80666C401806D45700E4E515 /* ConversationManager.m in Sources */,
 				58233BD91AE8DBC600533370 /* GLPPollDao.m in Sources */,
+				581DD13B1B30780900A7841C /* GLPProfileMessageImageView.swift in Sources */,
 				589EAD2B18A445A7005B2F4C /* GLPLoginSignUpViewController.m in Sources */,
 				80D2D0CB180ACD30007FB020 /* NSNumber+Enums.m in Sources */,
 				80DDDF39180FDCC8009E17BD /* DateFormatterHelper.m in Sources */,
@@ -6713,7 +6706,6 @@
 				80AB897417C28C640053E784 /* MessagesViewController.m in Sources */,
 				8087E439180EEAAA00938264 /* _GLPUser.m in Sources */,
 				58428E4918A2AE1900B82E4B /* SignUpOneView.m in Sources */,
-				5892611E1B2F13DB00CB74E7 /* GLPDateFormatter.swift in Sources */,
 				80AB897717C28D750053E784 /* ViewTopicViewController.m in Sources */,
 				584FA5F519B5199C00FBA61F /* PBJVision.m in Sources */,
 				58DF415E186463E000D53723 /* GLPPostUploaderManager.m in Sources */,

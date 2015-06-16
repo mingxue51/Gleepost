@@ -10,7 +10,7 @@
 
 @interface ShapeFormatterHelper : NSObject
 
-+(void)setRoundedView:(UIView *)roundedView toDiameter:(float)newSize;
++(void)setRoundedView:(UIView *)roundedView toDiameter:(CGFloat)newSize;
 
 + (void)setRoundedViewWithNotClipToBounds:(UIView *)roundedView toDiameter:(float)newSize;
 

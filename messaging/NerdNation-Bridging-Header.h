@@ -7,3 +7,7 @@
 #import "WebClient.h"
 #import "ImageFormatterHelper.h"
 #import "NSNotificationCenter+Utils.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import "GLPImageHelper.h"
+#import "ShapeFormatterHelper.h"
+#import "UIImageView+Letters.h"
