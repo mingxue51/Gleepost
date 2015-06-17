@@ -233,7 +233,18 @@
 
 + (UIColor *)greenGleepostColour
 {
-    return [UIColor colorWithR:63.0 withG:219.0 andB:188.0];
+    //return [UIColor colorWithR:63.0 withG:219.0 andB:188.0];
+    
+    //22daa0 40 218 154
+    return [AppearanceHelper colorFromHexString:@"22daa0"];
+}
+
++ (UIColor *)colorFromHexString:(NSString *)hexString {
+    unsigned rgbValue = 0;
+    NSScanner *scanner = [NSScanner scannerWithString:hexString];
+    [scanner setScanLocation:1]; // bypass '#' character
+    [scanner scanHexInt:&rgbValue];
+    return [UIColor colorWithRed:((rgbValue & 0xFF0000) >> 16)/255.0 green:((rgbValue & 0xFF00) >> 8)/255.0 blue:(rgbValue & 0xFF)/255.0 alpha:1.0];
 }
 
 + (UIColor *)blackGleepostColour

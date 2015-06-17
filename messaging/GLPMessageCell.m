@@ -48,7 +48,7 @@ static const CGFloat kProfileImageViewTopMargin = 9;
 static const CGFloat kProfileImageViewSideMargin = 6;
 static const CGFloat kProfileImageViewOppositeSideMargin = 6;
 static const CGFloat kTimeLabelBottomMargin = 0;
-static const CGFloat kContentLabelVerticalPadding = 15; //15
+static const CGFloat kContentLabelVerticalPadding = 14; //15
 static const CGFloat kContentLabelHorizontalPadding = 20; //20
 static const CGFloat kContentImageVerticalPadding = 5; //10
 
@@ -61,7 +61,7 @@ static const CGFloat kBottomMargin = 2; //7
 
 static const CGFloat kViewModeMargin = 10;
 
-static const CGFloat kTextSize = 15;
+static const CGFloat kTextSize = 17;
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -120,8 +120,8 @@ static const CGFloat kTextSize = 15;
         [view addSubview:backImageView];
         
         UILabel *label = [UILabel new];
-        //label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize];
-        label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+        label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize];
+        //label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByWordWrapping;
         
@@ -407,7 +407,7 @@ static const CGFloat kTextSize = 15;
 
     view.alpha = _message.sendStatus == kSendStatusLocal ? 0.15 : 1;
     
-    label.frame = CGRectMake(kContentLabelHorizontalPadding / 2, kContentLabelVerticalPadding / 2 - 1, labelSize.width, labelSize.height);
+    label.frame = CGRectMake(kContentLabelHorizontalPadding / 2, kContentLabelVerticalPadding / 2 - 0.5, labelSize.width, labelSize.height);
     label.text = _message.content;
         
     if(_isOnLeftSide) {
@@ -497,7 +497,7 @@ static const CGFloat kTextSize = 15;
 + (CGSize)contentLabelSizeForMessage:(GLPMessage *)message
 {
     //UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize];
-    UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+    UIFont *font = [UIFont systemFontOfSize:kTextSize];
 
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:message.content attributes:@{NSFontAttributeName: font}];
