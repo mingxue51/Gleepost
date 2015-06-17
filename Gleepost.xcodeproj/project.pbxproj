@@ -167,6 +167,7 @@
 		582A664818ABD37D00006419 /* verified.png in Resources */ = {isa = PBXBuildFile; fileRef = 582A664718ABD37D00006419 /* verified.png */; };
 		582A664A18AC0ABC00006419 /* referesh_campus_live_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 582A664918AC0ABC00006419 /* referesh_campus_live_old.png */; };
 		582A664D18AC215C00006419 /* WalkThroughHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 582A664C18AC215C00006419 /* WalkThroughHelper.m */; };
+		582AB6FA1B318274002F52F6 /* GLPBackgroundMessageImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582AB6F91B318274002F52F6 /* GLPBackgroundMessageImageView.swift */; };
 		582B404718AD3E5800BC4285 /* speaker_category_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 582B404118AD3E5800BC4285 /* speaker_category_old.png */; };
 		582B404B18AD6C4A00BC4285 /* SoundHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 582B404A18AD6C4A00BC4285 /* SoundHelper.m */; };
 		582B404D18AD6DF300BC4285 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 582B404C18AD6DF300BC4285 /* AudioToolbox.framework */; };
@@ -1224,6 +1225,7 @@
 		582A664918AC0ABC00006419 /* referesh_campus_live_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = referesh_campus_live_old.png; sourceTree = "<group>"; };
 		582A664B18AC215C00006419 /* WalkThroughHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WalkThroughHelper.h; sourceTree = "<group>"; };
 		582A664C18AC215C00006419 /* WalkThroughHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WalkThroughHelper.m; sourceTree = "<group>"; };
+		582AB6F91B318274002F52F6 /* GLPBackgroundMessageImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPBackgroundMessageImageView.swift; sourceTree = "<group>"; };
 		582B404118AD3E5800BC4285 /* speaker_category_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = speaker_category_old.png; sourceTree = "<group>"; };
 		582B404918AD6C4A00BC4285 /* SoundHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundHelper.h; sourceTree = "<group>"; };
 		582B404A18AD6C4A00BC4285 /* SoundHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundHelper.m; sourceTree = "<group>"; };
@@ -3390,6 +3392,7 @@
 				586317A1198746D7006D79E2 /* GLPImageView.h */,
 				586317A2198746D7006D79E2 /* GLPImageView.m */,
 				581DD13A1B30780900A7841C /* GLPProfileMessageImageView.swift */,
+				582AB6F91B318274002F52F6 /* GLPBackgroundMessageImageView.swift */,
 			);
 			name = ImageViews;
 			sourceTree = "<group>";
@@ -6863,6 +6866,7 @@
 				584514D81AF8025F0061B877 /* CampusLiveTableViewTopView.m in Sources */,
 				58FD7069189001AA0024E8A1 /* GLPCategoryCell.m in Sources */,
 				80CE307D17CE5092003007D0 /* DateFormatterManager.m in Sources */,
+				582AB6FA1B318274002F52F6 /* GLPBackgroundMessageImageView.swift in Sources */,
 				58774D3919649C980034A1C6 /* UIImage+animatedGIF.m in Sources */,
 				588CDF70197623A700373EE3 /* IntroNewGroupViewController.m in Sources */,
 				58E17EF51A951894006A5552 /* GLPNameTimestampCell.m in Sources */,

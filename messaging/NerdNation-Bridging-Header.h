@@ -11,3 +11,4 @@
 #import "GLPImageHelper.h"
 #import "ShapeFormatterHelper.h"
 #import "UIImageView+Letters.h"
+#import "AppearanceHelper.h"

@@ -49,7 +49,7 @@ static const CGFloat kProfileImageViewSideMargin = 6;
 static const CGFloat kProfileImageViewOppositeSideMargin = 6;
 static const CGFloat kTimeLabelBottomMargin = 0;
 static const CGFloat kContentLabelVerticalPadding = 15; //10
-static const CGFloat kContentLabelHorizontalPadding = 20; //15
+static const CGFloat kContentLabelHorizontalPadding = 20; //20
 static const CGFloat kContentImageVerticalPadding = 5; //10
 
 static const CGFloat kErrorImageSideMargin = 6;
@@ -115,6 +115,9 @@ static const CGFloat kTextSize = 15;
         UIView *view = [UIView new];
         
         [ShapeFormatterHelper setRoundedViewWithNotClipToBounds:view toDiameter:32.0];
+        
+        GLPBackgroundMessageImageView *backImageView = [[GLPBackgroundMessageImageView alloc] initWithFrame:view.frame];
+        [view addSubview:backImageView];
         
         UILabel *label = [UILabel new];
         label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize];
@@ -257,7 +260,6 @@ static const CGFloat kTextSize = 15;
         imageView.hidden = NO;
         
         CGRectSetXY(imageView, [self xForCurrentSide:kProfileImageViewSideMargin w:kProfileImageViewSize], kTopMargin + kProfileImageViewTopMargin);
-        
         [imageView setImage:_message.author.profileImageUrl hasProfileImage:[_message.author hasProfilePicture] userName:_message.author.name];
         
     } else {
@@ -359,8 +361,9 @@ static const CGFloat kTextSize = 15;
     imageView.hidden = YES;
     
     UIView *view = self.contentView.subviews[2];
-    UILabel *label = view.subviews[0];
+    UILabel *label = view.subviews[1];
     UIButton *errorButton = self.contentView.subviews[3];
+    GLPBackgroundMessageImageView *backImageView = view.subviews[0];
 
     CGSize labelSize = [GLPMessageCell contentLabelSizeForMessage:_message];
     
@@ -383,18 +386,23 @@ static const CGFloat kTextSize = 15;
         
     if(_isOnLeftSide) {
 //        view.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:234.0/255.0 blue:176.0/255.0 alpha:1.0];
-        view.backgroundColor = [AppearanceHelper lightGrayGleepostColour];
+//        view.backgroundColor = [AppearanceHelper lightGrayGleepostColour];
+        view.backgroundColor = [UIColor clearColor];
+
         label.textColor = [UIColor blackColor];
         label.backgroundColor = [UIColor clearColor];
-        [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderMessengerGleepostColour] andWidth:0.5];
+//        [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderMessengerGleepostColour] andWidth:0.5];
+        [ShapeFormatterHelper setBorderToView:view withColour:[UIColor clearColor] andWidth:0.5];
+        [backImageView changeImageView:BubbleTypeIncomingTailless size:view.frame];
 
     } else {
-//        view.backgroundColor = [UIColor clearColor];
-        view.backgroundColor = [AppearanceHelper greenGleepostColour];
+        view.backgroundColor = [UIColor clearColor];
 //        label.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor];
-        [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderGreenMessengerGleepostColour] andWidth:0.5];
+//        [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderGreenMessengerGleepostColour] andWidth:0.5];
+        
+        [backImageView changeImageView:BubbleTypeOutgoingTailless size:view.frame];
     }
     
     
