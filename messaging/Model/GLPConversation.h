@@ -22,6 +22,7 @@
 @property (assign, nonatomic) BOOL hasUnreadMessages;
 @property (assign, nonatomic) NSInteger unreadMessagesCount;
 @property (assign, nonatomic) BOOL isGroup;
+@property (assign, nonatomic) BOOL isGroupMessenger;
 @property (assign, nonatomic) BOOL isLive;
 @property (assign, nonatomic) NSInteger groupRemoteKey;
 

@@ -12,3 +12,4 @@
 #import "ShapeFormatterHelper.h"
 #import "UIImageView+Letters.h"
 #import "AppearanceHelper.h"
+#import "GLPLabel.h"

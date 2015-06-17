@@ -13,6 +13,7 @@
 @property (retain, nonatomic) NSString *cellIdentifier;
 @property (assign, nonatomic) BOOL hasHeader;
 @property (assign, nonatomic) BOOL needsProfileImage;
+@property (assign, nonatomic) BOOL needsNameLabel;
 
 extern NSString * const kMessageLeftCell;
 extern NSString * const kMessageRightCell;

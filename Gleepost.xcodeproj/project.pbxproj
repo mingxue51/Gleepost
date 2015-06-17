@@ -602,6 +602,7 @@
 		589EFD9C182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EFD9B182D35F600EBEB2E /* GLPLiveConversationParticipantsDao.m */; };
 		589EFD9F182D38CA00EBEB2E /* GLPLiveUserDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 589EFD9E182D38CA00EBEB2E /* GLPLiveUserDao.m */; };
 		58A1D073199BF91200BA7980 /* GLPLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 58A1D072199BF91200BA7980 /* GLPLabel.m */; };
+		58A2295E1B31D7B200EB9B96 /* GLPNameMessageLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A2295D1B31D7B200EB9B96 /* GLPNameMessageLabel.swift */; };
 		58A75EB21920E72E0082F316 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58A75EB11920E72E0082F316 /* AssetsLibrary.framework */; };
 		58A75EB41920E7510082F316 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58A75EB31920E7510082F316 /* CoreMedia.framework */; };
 		58A75EB61920E7620082F316 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58A75EB51920E7620082F316 /* MediaPlayer.framework */; };
@@ -1843,6 +1844,7 @@
 		589EFD9E182D38CA00EBEB2E /* GLPLiveUserDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLiveUserDao.m; sourceTree = "<group>"; };
 		58A1D071199BF91200BA7980 /* GLPLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLPLabel.h; sourceTree = "<group>"; };
 		58A1D072199BF91200BA7980 /* GLPLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLPLabel.m; sourceTree = "<group>"; };
+		58A2295D1B31D7B200EB9B96 /* GLPNameMessageLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GLPNameMessageLabel.swift; sourceTree = "<group>"; };
 		58A75EB11920E72E0082F316 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		58A75EB31920E7510082F316 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		58A75EB51920E7620082F316 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -4125,6 +4127,7 @@
 				58A1D071199BF91200BA7980 /* GLPLabel.h */,
 				58A1D072199BF91200BA7980 /* GLPLabel.m */,
 				5892611F1B2F19D200CB74E7 /* GLPTimestampMessageLabel.swift */,
+				58A2295D1B31D7B200EB9B96 /* GLPNameMessageLabel.swift */,
 			);
 			name = Labels;
 			sourceTree = "<group>";
@@ -6749,6 +6752,7 @@
 				58040E911A8CE7CA00B29247 /* GLPConversationHelper.m in Sources */,
 				5810D8991B207DEB00AFA557 /* GLPMultipleImagesActionCell.swift in Sources */,
 				5827B8911945C85F00DFC76E /* GBInfiniteScrollViewPage.m in Sources */,
+				58A2295E1B31D7B200EB9B96 /* GLPNameMessageLabel.swift in Sources */,
 				58BDB3061A8BD2C70031A26D /* GLPLiveGroupConversationsManager.m in Sources */,
 				8056763F1805997B006E058E /* UserNetwork.m in Sources */,
 				80666C7C1806FB6B00E4E515 /* MessageProcessingOperation.m in Sources */,

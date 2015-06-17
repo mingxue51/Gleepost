@@ -48,7 +48,7 @@ static const CGFloat kProfileImageViewTopMargin = 9;
 static const CGFloat kProfileImageViewSideMargin = 6;
 static const CGFloat kProfileImageViewOppositeSideMargin = 6;
 static const CGFloat kTimeLabelBottomMargin = 0;
-static const CGFloat kContentLabelVerticalPadding = 15; //10
+static const CGFloat kContentLabelVerticalPadding = 15; //15
 static const CGFloat kContentLabelHorizontalPadding = 20; //20
 static const CGFloat kContentImageVerticalPadding = 5; //10
 
@@ -120,7 +120,8 @@ static const CGFloat kTextSize = 15;
         [view addSubview:backImageView];
         
         UILabel *label = [UILabel new];
-        label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize];
+        //label.font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize];
+        label.font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
         label.numberOfLines = 0;
         label.lineBreakMode = NSLineBreakByWordWrapping;
         
@@ -129,6 +130,9 @@ static const CGFloat kTextSize = 15;
         
         UITapGestureRecognizer *tapGestrureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainViewClick)];
         [view addGestureRecognizer:tapGestrureRecognizer];
+        
+        GLPNameMessageLabel *nameMessageLabel = [[GLPNameMessageLabel alloc] init];
+//        [view addSubview:nameMessageLabel];
         
         [self.contentView addSubview:view];
     }
@@ -217,6 +221,7 @@ static const CGFloat kTextSize = 15;
         [self setHiddedElementsOnSystemMessage:NO];
         [self configureProfileImage];
         [self configureTimeLabel];
+        [self configureNameLabel];
         
         if([self.message isImageMessage])
         {
@@ -288,6 +293,27 @@ static const CGFloat kTextSize = 15;
     } else {
         label.hidden = YES;
     }
+}
+
+/**
+ This method should be executed only when the message belongs to 
+ group messenger chat and when belongs to logged in user's.
+ */
+- (void)configureNameLabel
+{
+//    UIView *view = self.contentView.subviews[2];
+//    
+//    GLPNameMessageLabel *nameMessageLabel = view.subviews[2];
+//    
+//    if([self.message needsNameLabel])
+//    {
+//        nameMessageLabel.hidden = NO;
+//        nameMessageLabel.text = _message.author.name;
+//    }
+//    else
+//    {
+//        nameMessageLabel.hidden = YES;
+//    }
 }
 
 - (void)configureReadReceiptLabel
@@ -381,12 +407,10 @@ static const CGFloat kTextSize = 15;
 
     view.alpha = _message.sendStatus == kSendStatusLocal ? 0.15 : 1;
     
-    label.frame = CGRectMake(kContentLabelHorizontalPadding / 2, kContentLabelVerticalPadding / 2, labelSize.width, labelSize.height);
+    label.frame = CGRectMake(kContentLabelHorizontalPadding / 2, kContentLabelVerticalPadding / 2 - 1, labelSize.width, labelSize.height);
     label.text = _message.content;
         
     if(_isOnLeftSide) {
-//        view.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:234.0/255.0 blue:176.0/255.0 alpha:1.0];
-//        view.backgroundColor = [AppearanceHelper lightGrayGleepostColour];
         view.backgroundColor = [UIColor clearColor];
 
         label.textColor = [UIColor blackColor];
@@ -397,7 +421,6 @@ static const CGFloat kTextSize = 15;
 
     } else {
         view.backgroundColor = [UIColor clearColor];
-//        label.textColor = [UIColor colorWithRed:70.0f/255.0f green:70.0f/255.0f blue:70.0f/255.0f alpha:1.0f];
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor];
 //        [ShapeFormatterHelper setBorderToView:view withColour:[AppearanceHelper borderGreenMessengerGleepostColour] andWidth:0.5];
@@ -473,7 +496,9 @@ static const CGFloat kTextSize = 15;
 
 + (CGSize)contentLabelSizeForMessage:(GLPMessage *)message
 {
-    UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize];
+    //UIFont *font = [UIFont fontWithName:GLP_MESSAGE_FONT size:kTextSize];
+    UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
+
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:message.content attributes:@{NSFontAttributeName: font}];
     

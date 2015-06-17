@@ -479,7 +479,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     BOOL systemMessage = [json[@"system"] boolValue];
     
     if(systemMessage)
-    {
+    {        
         return [[GLPSystemMessage alloc] initWithMessage:message];
     }
 

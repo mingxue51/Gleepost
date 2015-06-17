@@ -5,6 +5,7 @@
 //  Created by Silouanos on 17/06/15.
 //  Copyright (c) 2015 Gleepost. All rights reserved.
 //
+//  Class that is used to represent the background bubble in GLPMessageCell.
 
 import UIKit
 
@@ -18,10 +19,7 @@ import UIKit
 
 class GLPBackgroundMessageImageView: UIImageView
 {
-    //TODO: Add fill colour to the bubble.
-    
     private let capInsets = UIEdgeInsetsMake(17.5, 24.0, 17.5, 24.0)
-
     
     private lazy var incomingBubbleColour: UIColor = {
         return AppearanceHelper.lightGrayGleepostColour()

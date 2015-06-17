@@ -177,6 +177,16 @@
     return NO;
 }
 
+- (BOOL)isGroupMessenger
+{
+    if(_groupRemoteKey != 0)
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
 # pragma mark - Copy
 
 -(id)copyWithZone:(NSZone *)zone
