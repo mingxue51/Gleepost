@@ -61,7 +61,7 @@ static const CGFloat kBottomMargin = 2; //7
 
 static const CGFloat kViewModeMargin = 10;
 
-static const CGFloat kTextSize = 17;
+static const CGFloat kTextSize = 16;
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -403,8 +403,10 @@ static const CGFloat kTextSize = 17;
     CGFloat w = labelSize.width + kContentLabelHorizontalPadding;
     CGFloat h = labelSize.height + kContentLabelVerticalPadding;
     CGFloat x = [self xForCurrentSide:kSideMarginIncludingProfileImage w:w];
+    
+    
     view.frame = CGRectMake(x, _height, w, h);
-
+    
     view.alpha = _message.sendStatus == kSendStatusLocal ? 0.15 : 1;
     
     label.frame = CGRectMake(kContentLabelHorizontalPadding / 2, kContentLabelVerticalPadding / 2 - 0.5, labelSize.width, labelSize.height);

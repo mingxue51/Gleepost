@@ -234,8 +234,6 @@
 + (UIColor *)greenGleepostColour
 {
     //return [UIColor colorWithR:63.0 withG:219.0 andB:188.0];
-    
-    //22daa0 40 218 154
     return [AppearanceHelper colorFromHexString:@"22daa0"];
 }
 
