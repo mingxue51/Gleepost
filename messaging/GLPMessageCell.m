@@ -61,7 +61,7 @@ static const CGFloat kBottomMargin = 2; //7
 
 static const CGFloat kViewModeMargin = 10;
 
-static const CGFloat kTextSize = 16;
+static const CGFloat kTextSize = 14;
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

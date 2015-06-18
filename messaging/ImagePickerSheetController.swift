@@ -466,7 +466,7 @@ private let assetsMaxNumber: Int = 20;
         {
             if let defaultImageAction = imageAction as? GLPDefaultImageAction
             {
-                defaultImageAction.increaseCount(selectedPhotoIndices.count == 0 ? 1 : selectedPhotoIndices.count)
+                defaultImageAction.increaseCount(selectedPhotoIndices.count)
             }
         }
         
