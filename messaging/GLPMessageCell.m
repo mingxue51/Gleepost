@@ -45,8 +45,8 @@ static const CGFloat kErrorImageW = 13;
 static const CGFloat kErrorImageH = 17;
 
 static const CGFloat kProfileImageViewTopMargin = 9;
-static const CGFloat kProfileImageViewSideMargin = 6;
-static const CGFloat kProfileImageViewOppositeSideMargin = 6;
+static const CGFloat kProfileImageViewSideMargin = 4; //6
+static const CGFloat kProfileImageViewOppositeSideMargin = 3; //6
 static const CGFloat kTimeLabelBottomMargin = 0;
 static const CGFloat kContentLabelVerticalPadding = 14; //15
 static const CGFloat kContentLabelHorizontalPadding = 20; //20
@@ -61,7 +61,7 @@ static const CGFloat kBottomMargin = 2; //7
 
 static const CGFloat kViewModeMargin = 10;
 
-static const CGFloat kTextSize = 14;
+static const CGFloat kTextSize = 15;
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
