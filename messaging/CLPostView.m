@@ -510,12 +510,14 @@
 
 + (CGFloat)height
 {
+    CGFloat height = 510;
+    
     if([GLPiOSSupportHelper useShortConstrains])
     {
-        return 500 - 70;
+        return height - 70;
     }
     
-    return 500;
+    return height;
 }
 
 - (CGSize)getContentLabelSizeForContent:(NSString *)content
