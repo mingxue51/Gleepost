@@ -131,9 +131,6 @@ static const CGFloat kTextSize = 16;
         UITapGestureRecognizer *tapGestrureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mainViewClick)];
         [view addGestureRecognizer:tapGestrureRecognizer];
         
-        GLPNameMessageLabel *nameMessageLabel = [[GLPNameMessageLabel alloc] init];
-//        [view addSubview:nameMessageLabel];
-        
         [self.contentView addSubview:view];
     }
     
@@ -197,6 +194,13 @@ static const CGFloat kTextSize = 16;
         [messageImageView addSubview:activityIndicator];
         
         [self.contentView addSubview:messageImageView];
+    }
+    
+    // name label [7] in array
+    {
+        GLPNameMessageLabel *nameMessageLabel = [[GLPNameMessageLabel alloc] init];
+        nameMessageLabel.hidden = YES;
+        [self.contentView addSubview:nameMessageLabel];
     }
     
     self.selectedBackgroundView = [UIView new];
@@ -300,20 +304,19 @@ static const CGFloat kTextSize = 16;
  group messenger chat and when belongs to logged in user's.
  */
 - (void)configureNameLabel
-{
-//    UIView *view = self.contentView.subviews[2];
-//    
-//    GLPNameMessageLabel *nameMessageLabel = view.subviews[2];
-//    
-//    if([self.message needsNameLabel])
-//    {
-//        nameMessageLabel.hidden = NO;
-//        nameMessageLabel.text = _message.author.name;
-//    }
-//    else
-//    {
-//        nameMessageLabel.hidden = YES;
-//    }
+{    
+    GLPNameMessageLabel *nameMessageLabel = self.contentView.subviews[7];
+    
+    if([self.message needsNameLabel])
+    {
+        [nameMessageLabel setUserNameWithUserName:_message.author.name];
+        _height += nameMessageLabel.frame.size.height + [GLPNameMessageLabel labelBottomPadding];
+        nameMessageLabel.hidden = NO;
+    }
+    else
+    {
+        nameMessageLabel.hidden = YES;
+    }
 }
 
 - (void)configureReadReceiptLabel
@@ -529,6 +532,11 @@ static const CGFloat kTextSize = 16;
         height = kTimeLabelH + kTimeLabelBottomMargin;
     }
     
+    if([message needsNameLabel] && ![message isKindOfClass:[GLPSystemMessage class]])
+    {
+        height += [GLPNameMessageLabel labelHeight] + [GLPNameMessageLabel labelBottomPadding];
+    }
+    
     if([message isImageMessage])
     {
         height += [GLPMessageCell imageMessageHeight];
@@ -565,6 +573,10 @@ static const CGFloat kTextSize = 16;
     
     height = kTimeLabelH + kTimeLabelBottomMargin;
     
+    if([message needsNameLabel])
+    {
+        height += [GLPNameMessageLabel labelHeight] + [GLPNameMessageLabel labelBottomPadding];
+    }
     
     height += [GLPMessageCell contentLabelSizeForMessage:message].height;
     

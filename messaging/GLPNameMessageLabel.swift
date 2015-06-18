@@ -37,17 +37,37 @@ class GLPNameMessageLabel: GLPLabel
         self.backgroundColor = UIColor.clearColor()
     }
     
-    func setUserName(userName: String)
+    func setUserName(#userName: String)
     {
         self.hidden = false
         self.text = userName
+        self.frame = CGRectMake(50.0, 20.0, self.getContentLabelWidthForContent(userName), GLPNameMessageLabel.labelHeight())
     }
-    
+
     //MARK: - Static
     
     class func labelHeight() -> CGFloat
     {
-        return 30.0
+        return 10.0
+    }
+    
+    class func labelBottomPadding() -> CGFloat
+    {
+        return 5.0
+    }
+    
+    class func labelTopPadding() -> CGFloat
+    {
+        return 10.0
+    }
+    
+    private func getContentLabelWidthForContent(content: String) -> CGFloat
+    {
+        var attributedText: NSAttributedString = NSAttributedString(string: content, attributes: [NSFontAttributeName : self.customFont])
+        
+        let rect: CGRect = attributedText.boundingRectWithSize(CGSizeMake(CGFloat.max, CGFloat.max), options: (.UsesLineFragmentOrigin | .UsesFontLeading), context: nil)
+        
+        return rect.size.width
     }
 
     /*
