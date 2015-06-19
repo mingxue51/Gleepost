@@ -48,8 +48,8 @@ static const CGFloat kProfileImageViewTopMargin = 9;
 static const CGFloat kProfileImageViewSideMargin = 4; //6
 static const CGFloat kProfileImageViewOppositeSideMargin = 3; //6
 static const CGFloat kTimeLabelBottomMargin = 0;
-static const CGFloat kContentLabelVerticalPadding = 14; //15
-static const CGFloat kContentLabelHorizontalPadding = 20; //20
+static const CGFloat kContentLabelVerticalPadding = 18; //15
+static const CGFloat kContentLabelHorizontalPadding = 24; //20
 static const CGFloat kContentImageVerticalPadding = 5; //10
 
 static const CGFloat kErrorImageSideMargin = 6;
