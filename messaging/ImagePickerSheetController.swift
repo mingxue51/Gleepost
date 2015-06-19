@@ -29,6 +29,9 @@ private let assetsMaxNumber: Int = 20;
     // TODO: not used for now.
     private var lastCollectionViewSection = 0
     
+    private var counterCellDataReloaded = false
+
+    
     var delegate: ImagePickerSheetControllerDelegate?
 
     lazy var tableView: UITableView = {
@@ -309,6 +312,8 @@ private let assetsMaxNumber: Int = 20;
             return
         }
         
+        self.counterCellDataReloaded = false
+
         let selected = contains(selectedPhotoIndices, indexPath.section)
         
         if !selected {
@@ -368,6 +373,10 @@ private let assetsMaxNumber: Int = 20;
         self.switchImageActions(applyInitialActions: true)
         
         self.collectionView.imagePreviewLayout.invalidationCenteredIndexPath = NSIndexPath(forRow: 0, inSection: 0)
+        
+        self.secondaryActions.removeAtIndex(0)
+        let imageAction = GLPDefaultImageAction(title: "Send 1 image", textColour: UIColor().customRGB(34.0, customG: 218.0, customB: 160.0), imageActionStyle: .SendImage)
+        self.secondaryActions.insert(imageAction, atIndex: 0)
         
         view.setNeedsLayout()
         UIView.animateWithDuration(enlargementAnimationDuration, animations: {
@@ -557,6 +566,8 @@ private let assetsMaxNumber: Int = 20;
     // MARK: - Buttons
     
     private func reloadButtonTitles() {
+        
+        self.counterCellDataReloaded = true
         tableView.reloadSections(NSIndexSet(index: 1), withRowAnimation: .None)
     }
     

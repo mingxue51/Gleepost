@@ -24,8 +24,9 @@ class GLPDefaultImageAction: GLPImageAction, Printable
     
     func increaseCount(newNumber: Int)
     {
-        var finalIndex = 0
         title = title.stringByReplacingOccurrencesOfString("\(self.imagesCount)", withString: "\(newNumber)", options: NSStringCompareOptions.LiteralSearch, range: nil)
+        
+        println("GLPDefaultImageAction increaseCount \(title) new number \(newNumber) current image count \(self.imagesCount)")
         self.imagesCount = newNumber
     }
     
