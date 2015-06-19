@@ -17,12 +17,38 @@ import UIKit
     case OutgoingTailless
 }
 
+/**
+    Sets colour to image.
+
+    :param: image image to be changed.
+    :param: colour the colour to fill the image
+
+    :returns: the new image
+*/
+func <(image: UIImage, colour: UIColor) -> UIImage
+{
+    let imageRect = CGRectMake(0.0, 0.0, image.size.width, image.size.height)
+    
+    UIGraphicsBeginImageContextWithOptions(imageRect.size, false, image.scale)
+    let context = UIGraphicsGetCurrentContext()
+    
+    CGContextScaleCTM(context, 1.0, -1.0);
+    CGContextTranslateCTM(context, 0.0, -(imageRect.size.height));
+    CGContextClipToMask(context, imageRect, image.CGImage);
+    CGContextSetFillColorWithColor(context, colour.CGColor);
+    CGContextFillRect(context, imageRect);
+    let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+    UIGraphicsEndImageContext();
+    
+    return newImage
+}
+
 class GLPBackgroundMessageImageView: UIImageView
 {
     private let capInsets = UIEdgeInsetsMake(17.5, 24.0, 17.5, 24.0)
     
     private lazy var incomingBubbleColour: UIColor = {
-        return AppearanceHelper.lightGrayGleepostColour()
+        return AppearanceHelper.lightGrayStrongGleepostColour()
     }()
     
     private lazy var outgoingBubbleColour: UIColor = {
@@ -30,27 +56,27 @@ class GLPBackgroundMessageImageView: UIImageView
     }()
     
     private lazy var outgoingBubbleImage: UIImage = {
-        var incomingBubbleImage = self.setColourToImage(UIImage(named: "bubble_stroked")!, colour: self.outgoingBubbleColour)
+        var incomingBubbleImage = UIImage(named: "bubble_stroked")! < self.outgoingBubbleColour
         incomingBubbleImage = incomingBubbleImage.resizableImageWithCapInsets(self.capInsets, resizingMode: .Stretch)
         return incomingBubbleImage
     }()
     
     private lazy var incomingBubbleImage: UIImage = {
-        var outgoingBubbleImage = self.setColourToImage(UIImage(named: "bubble_stroked")!, colour: self.incomingBubbleColour)
+        var outgoingBubbleImage = UIImage(named: "bubble_stroked")! < self.incomingBubbleColour
         outgoingBubbleImage = UIImage(CGImage: outgoingBubbleImage.CGImage, scale: outgoingBubbleImage.scale, orientation: .UpMirrored)!
         outgoingBubbleImage = outgoingBubbleImage.resizableImageWithCapInsets(self.capInsets, resizingMode: .Stretch)
         return outgoingBubbleImage
     }()
     
     private lazy var outgoingTaillessBubbleImage: UIImage = {
-        var taillessBubbleImage = self.setColourToImage(UIImage(named: "bubble_stroked_tailless")!, colour: self.outgoingBubbleColour)
+        var taillessBubbleImage = UIImage(named: "bubble_stroked_tailless")! < self.outgoingBubbleColour
         taillessBubbleImage = taillessBubbleImage.resizableImageWithCapInsets(self.capInsets, resizingMode: .Stretch)
         return taillessBubbleImage
     }()
     
     private lazy var incomingTaillesBubbleImage: UIImage = {
        
-        var incomingTaillesBubbleImage = self.setColourToImage(UIImage(named: "bubble_stroked_tailless")!, colour: self.incomingBubbleColour)
+        var incomingTaillesBubbleImage = UIImage(named: "bubble_stroked_tailless")! < self.incomingBubbleColour
         incomingTaillesBubbleImage = incomingTaillesBubbleImage.resizableImageWithCapInsets(self.capInsets, resizingMode: .Stretch)
         return incomingTaillesBubbleImage
         
@@ -95,26 +121,6 @@ class GLPBackgroundMessageImageView: UIImageView
         
         self.hidden = false
         self.frame = CGRectMake(0.0, 0.0, size.width + 5, size.height)
-    }
-
-    //MARK: - Helpers
-    
-    private func setColourToImage(image: UIImage, colour: UIColor) -> UIImage
-    {
-        let imageRect = CGRectMake(0.0, 0.0, image.size.width, image.size.height)
-    
-        UIGraphicsBeginImageContextWithOptions(imageRect.size, false, image.scale)
-        let context = UIGraphicsGetCurrentContext()
-        
-        CGContextScaleCTM(context, 1.0, -1.0);
-        CGContextTranslateCTM(context, 0.0, -(imageRect.size.height));
-        CGContextClipToMask(context, imageRect, image.CGImage);
-        CGContextSetFillColorWithColor(context, colour.CGColor);
-        CGContextFillRect(context, imageRect);
-        let newImage: UIImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext();
-        
-        return newImage
     }
     
     

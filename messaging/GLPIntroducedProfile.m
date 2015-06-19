@@ -91,7 +91,7 @@ const float HEIGHT = 210.0f;
 
 - (void)navigateToProfile:(id)sender
 {
-    [self.delegate navigateToProfile:sender];
+//    [self.delegate navigateToProfile:sender];
 }
 
 -(void)addUser:(id)sender

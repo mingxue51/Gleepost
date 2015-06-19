@@ -412,7 +412,7 @@ static const CGFloat kTextSize = 15;
     
     view.alpha = _message.sendStatus == kSendStatusLocal ? 0.15 : 1;
     
-    label.frame = CGRectMake(kContentLabelHorizontalPadding / 2, kContentLabelVerticalPadding / 2 - 0.5, labelSize.width, labelSize.height);
+    label.frame = CGRectMake(kContentLabelHorizontalPadding / 2 + 1.0, kContentLabelVerticalPadding / 2 - 0.5, labelSize.width, labelSize.height);
     label.text = _message.content;
         
     if(_isOnLeftSide) {

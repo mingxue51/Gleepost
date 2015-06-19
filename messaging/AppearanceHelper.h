@@ -47,6 +47,7 @@
 +(UIColor*)colourOfTheFakeNavigationBar;
 +(void)setCustomBackgroundToTableView:(UITableView *)tableView;
 +(UIColor *)lightGrayGleepostColour;
++ (UIColor *)lightGrayStrongGleepostColour;
 +(void)setSegmentFontWithSegment:(UISegmentedControl *)segment;
 +(void)setNavigationBarFontForNavigationBar: (UINavigationBar *)navigationBar;
 +(void)setNavigationBarFormatForNewPostViews:(UINavigationBar *)navigationBar;

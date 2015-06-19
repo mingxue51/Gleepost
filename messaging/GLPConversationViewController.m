@@ -62,7 +62,6 @@
 
 @property (weak, nonatomic) IBOutlet UIView *formView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet HPGrowingTextView *formTextView;
 
 @property (assign, nonatomic) NSInteger selectedUserId;
@@ -249,7 +248,6 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     _offline = NO;
     _conversationHelper = [[GLPConversationHelper alloc] initWithBelongsToGroup:(_conversation.groupRemoteKey != 0) ? YES : NO];
     self.pickImageHelper = [[GLPPickImageHelper alloc] init];
-
 }
 
 - (void)configureTitleNavigationBar
@@ -377,7 +375,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     self.formTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     
     self.formTextView.backgroundColor = [AppearanceHelper lightGrayGleepostColour];
-    [ShapeFormatterHelper setBorderToView:self.formTextView withColour:[AppearanceHelper borderMessengerGleepostColour] andWidth:0.5];
+    [ShapeFormatterHelper setBorderToView:self.formTextView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0];
     self.formTextView.placeholder = @"Type a message...";
     
     self.formTextView.tag = 100;
