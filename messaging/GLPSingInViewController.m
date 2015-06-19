@@ -49,7 +49,7 @@
     
     self.title = @"LOG IN";
     
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"DONE" withButtonSize:CGSizeMake(75, 17) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(login:) andTarget:self];
+    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"DONE" withButtonSize:CGSizeMake(50, 17) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(login:) andTarget:self];
 }
 
 - (void)configureRememberMe

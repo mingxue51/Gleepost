@@ -890,7 +890,7 @@ static bool firstTime = YES;
         else
         {
             titleCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTitle forIndexPath:indexPath];
-            [titleCell setTitle:@"COMMENTS"];
+            [titleCell setTitle:@"Comments"];
             return titleCell;
         }
     }
@@ -899,7 +899,7 @@ static bool firstTime = YES;
         if([self.post isPostLiked])
         {
             titleCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTitle forIndexPath:indexPath];
-            [titleCell setTitle:@"COMMENTS"];
+            [titleCell setTitle:@"Comments"];
             return titleCell;
         }
         else
