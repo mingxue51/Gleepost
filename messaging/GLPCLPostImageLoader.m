@@ -5,6 +5,7 @@
 //  Created by Silouanos on 16/12/14.
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
+//  Suppose to be used for campus live. For now this manager should be disabled.
 
 #import "GLPCLPostImageLoader.h"
 #import "GLPPost.h"
@@ -60,15 +61,11 @@ static GLPCLPostImageLoader *instance = nil;
     BOOL isNetwork = [notification.userInfo[@"status"] boolValue];
     DDLogInfo(@"GLPCLPostImageLoader network status: %d", isNetwork);
     
-    DDLogDebug(@"GLPCLPostImageLoader operation queue count %d %d", _operationQueue.operationCount, _pendingOperations.count);
+    DDLogDebug(@"GLPCLPostImageLoader operation queue count %lu %lu", (unsigned long)_operationQueue.operationCount, (unsigned long)_pendingOperations.count);
 
     if(isNetwork)
     {
         [self retryLoadImagesAfterLostConnection];
-    }
-    else
-    {
-        
     }
 }
 
@@ -118,7 +115,9 @@ static GLPCLPostImageLoader *instance = nil;
 
 - (void)notifyCampusLiveWithImage:(UIImage *)image andPostRemoteKey:(NSInteger)remoteKey
 {    
-    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:[self generateNotificationWithRemoteKey:remoteKey] object:self userInfo:@{@"image_loaded" : image, @"remote_key" : @(remoteKey)}];
+    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_CAMPUS_LIVE_IMAGE_LOADED object:self userInfo:@{@"image_loaded" : image, @"remote_key" : @(remoteKey)}];
+
+    //    [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:[self generateNotificationWithRemoteKey:remoteKey] object:self userInfo:@{@"image_loaded" : image, @"remote_key" : @(remoteKey)}];
 }
 
 - (NSString *)generateNotificationWithRemoteKey:(NSInteger)remoteKey

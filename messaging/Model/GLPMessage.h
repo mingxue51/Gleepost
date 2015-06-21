@@ -18,6 +18,12 @@
 
 @class GLPUser;
 
+typedef NS_ENUM(NSUInteger, KindOfMediaMessage) {
+    kImageMessage,
+    kPdfMessage,
+    kTextMessage
+};
+
 @interface GLPMessage : GLPEntity <NSCopying>
 
 @property (assign, nonatomic) BOOL seen;
@@ -29,7 +35,13 @@
 @property (strong, nonatomic) GLPUser *author;
 @property (strong, nonatomic) GLPConversation *conversation;
 @property (assign, nonatomic) BOOL belongsToGroup;
+@property (assign, nonatomic) KindOfMediaMessage kindOfMediaMessage;
 
 - (BOOL)followsPreviousMessage:(GLPMessage *)message;
+- (BOOL)isImageMessage;
+- (NSString *)getContentFromMediaContent;
+- (NSString *)getReadableContent;
+- (BOOL)doesStringContainTimestamp:(NSString *)string;
++ (NSString *)formatMessageWithKindOfMedia:(KindOfMediaMessage)kindOfMedia withContent:(NSString *)content;
 
 @end

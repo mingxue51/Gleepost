@@ -27,8 +27,11 @@
 + (UIColor *)blueGleepostColour;
 + (UIColor *)borderMessengerGleepostColour;
 + (UIColor *)borderBlueMessengerGleepostColour;
++ (UIColor *)borderGreenMessengerGleepostColour;
 + (UIColor *)greenGleepostColour;
 + (UIColor *)blackGleepostColour;
++ (UIColor *)yellowGleepostColour;
++ (UIColor *)lightRedGleepostColour;
 + (UIColor *)mediumGrayGleepostColour;
 + (UIColor *)firstAutoColour;
 + (UIColor *)secondAutoColour;
@@ -44,6 +47,7 @@
 +(UIColor*)colourOfTheFakeNavigationBar;
 +(void)setCustomBackgroundToTableView:(UITableView *)tableView;
 +(UIColor *)lightGrayGleepostColour;
++ (UIColor *)lightGrayStrongGleepostColour;
 +(void)setSegmentFontWithSegment:(UISegmentedControl *)segment;
 +(void)setNavigationBarFontForNavigationBar: (UINavigationBar *)navigationBar;
 +(void)setNavigationBarFormatForNewPostViews:(UINavigationBar *)navigationBar;

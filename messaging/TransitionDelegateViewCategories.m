@@ -30,8 +30,6 @@
     
     //Here retrieve the very first view controller by just creating a new class to create the animation.
     
-    
-    DDLogDebug(@"Dismiss animation");
     AnimatedTransitioningViewCategories *controller = [[AnimatedTransitioningViewCategories alloc] init];
     controller.presenting = NO;
     
@@ -40,14 +38,11 @@
 
 - (id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id <UIViewControllerAnimatedTransitioning>)animator {
     
-    NSLog(@"interactionControllerForPresentation");
-    
     return nil;
 }
 
 - (id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
     
-    NSLog(@"interactionControllerForDismissal");
     return nil;
 }
 

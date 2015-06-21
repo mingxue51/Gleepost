@@ -31,7 +31,8 @@
  @param comments number of comments.
  
  */
-+(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(int)remoteKey numberOfLikes:(int)likes andNumberOfComments:(int)comments;
++(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(NSInteger)remoteKey numberOfLikes:(NSInteger)likes andNumberOfComments:(NSInteger)comments;
+
 
 +(int)parsePost:(GLPPost **)post imageNotification:(NSNotification*)notification withPostsArray:(NSArray*)posts;
 
@@ -39,13 +40,13 @@
 
 +(int)parseLikedPostNotification:(NSNotification*)notification withPostsArray:(NSArray *)posts;
 
-+(void)updatePostWithNotifiationName:(NSString*)notificationName withObject:(id)object remoteKey:(int)remoteKey withLiked:(BOOL)liked;
++ (void)updatePostWithNotifiationName:(NSString *)notificationName withObject:(id)object remoteKey:(NSInteger)remoteKey withLiked:(BOOL)liked;
 
 +(NSArray *)parseNotification:(NSNotification *)notification withPostsArrayForNewProfileImage:(NSArray *)posts;
 
-+(int)parseNotificationAndFindIndexWithNotification:(NSNotification *)notification withPostsArray:(NSMutableArray *)posts;
++ (NSInteger)parseNotificationAndFindIndexWithNotification:(NSNotification *)notification withPostsArray:(NSMutableArray *)posts;
 
-+(void)deletePostNotificationWithPostRemoteKey:(int)remoteKey inCampusLive:(BOOL)postInCampusLive;
++(void)deletePostNotificationWithPostRemoteKey:(NSInteger)remoteKey inCampusLive:(BOOL)postInCampusLive;
 
 + (NSInteger)findPostIndexWithKey:(NSInteger)key inPosts:(NSArray *)posts;
 

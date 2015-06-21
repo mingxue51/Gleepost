@@ -142,7 +142,7 @@ static GLPNetworkManager *instance = nil;
             {
                 
                 //Check for new notifications.
-                int notificationsNumber = notifications.count;
+                NSInteger notificationsNumber = notifications.count;
                 
                 //Subtract the number of application badge number with number of notifications.
                 conversationsNumber = application.applicationIconBadgeNumber - notificationsNumber;

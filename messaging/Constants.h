@@ -31,6 +31,10 @@
 #define GLPNOTIFICATION_MESSAGE_SEND_UPDATE             @"GLPMessageSendUpdate"
 #define GLPNOTIFICATION_READ_RECEIPT_RECEIVED           @"GLPReadReceiptReceived"
 
+#define GLPNOTIFICATION_SELECTED_IMAGES                 @"GLPSelectedImages"
+#define GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS  @"GLPUploadingImageChangedStatus"
+#define GLPNOTIFICATION_CHAT_IMAGE_UPLOADED             @"GLPChatImageUploaded"
+
 #define GLPNOTIFICATION_NETWORK_UPDATE                  @"GLPNetworkStatusUpdate"
 #define GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE        @"GLPSynchronizedWithRemote"
 #define GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE    @"GLPNotSynchronizedWithRemote"
@@ -94,6 +98,17 @@
 #define GLPNOTIFICATION_GROUPS_LOADED                   @"GLPGroupsLoaded"
 #define GLPNOTIFICATION_POST_IMAGE_LOADED               @"GLPPostImageLoaded"
 
+#define GLPNOTIFICATION_CAMPUS_LIVE_POSTS_FETCHED       @"GLPCampusLivePostsFetched"
+#define GLPNOTIFICATION_CAMPUS_LIVE_SUMMARY_FETCHED     @"GLPCampusLiveSummaryFetched"
+#define GLPNOTIFICATION_COMMENTS_FETCHED                @"GLPCommentsFetched"
+#define GLPNOTIFICATION_CL_IMAGE_SHOULD_VIEWED          @"GLPCLImageShouldViewed"
+#define GLPNOTIFICATION_CL_SHOW_MORE_OPTIONS            @"GLPCLShowMoreOptions"
+#define GLPNOTIFICATION_CL_COMMENT_BUTTON_TOUCHED       @"GLPCLCommentButtonTouched"
+
+#define GLPNOTIFICATION_CL_SHOW_SHARE_OPTIONS           @"GLPCLShowShareOptions"
+#define GLPNOTIFICATION_RELOAD_CL_COMMENTS_LIKES        @"GLPReloadCLCommentsLikes"
+#define GLPNOTIFICATION_CL_POST_TOUCHED                 @"GLPCLPostTouched"
+
 
 #define GLPNOTIFICATION_GROUPS_FECTHED_AFTER_QUERY      @"GLPGroupsFetchedAfterQuery"
 #define GLPNOTIFICATION_USER_GROUPS_LOADED              @"GLPUserGroupsLoaded"
@@ -115,6 +130,9 @@
 
 //NSNotification name that removes all the NSNotifications observers from view controllers. (Usually after logout).
 #define GLPNOTIFICATION_REMOVE_VC_NOTIFICATIONS         @"GLPRemoveVCNotifications"
+
+//NSNotification name that is used for the messages between the GLPPollOperationManager and other poll objects.
+#define GLPNOTIFICATION_POLL_VIEW_STATUS_CHANGED        @"GLPPollViewStatusChanged"
 
 #define GLPNOTIFICATION_UPDATE_EMAIL_TO_VERIFICATION_VIEW   @"GLPUpdateEmailToVerificationView"
 

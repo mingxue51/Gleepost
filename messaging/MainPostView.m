@@ -28,12 +28,19 @@
 #import "GLPImageHelper.h"
 #import "GLPThemeManager.h"
 #import "GLPViewsCountView.h"
+#import "PollingPostView.h"
 
 @interface MainPostView ()
 
 @property (weak, nonatomic) IBOutlet UIView *socialView;
 
 @property (weak, nonatomic) IBOutlet UILabel *likesLbl;
+
+@property (weak, nonatomic) IBOutlet UILabel *pollTitleLabel;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pollTitleLabelHeight;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pollImageViewHeight;
 
 @property (weak, nonatomic) IBOutlet UILabel *commentsLbl;
 
@@ -61,13 +68,13 @@
 
 @property (weak, nonatomic) IBOutlet VideoView *videoView;
 
+@property (weak, nonatomic) IBOutlet PollingPostView *pollingView;
+
 @property (weak, nonatomic) IBOutlet UIImageView *indicatorImageView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *postImageView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *backgroundImageView;
-
-//@property (weak, nonatomic) IBOutlet UILabel *viewsCountLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 
@@ -178,7 +185,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     
     [self setVideo];
     
-//    [self formatElements];
+    [self setPoll];
     
     [self updateIndicatorWithRemoteKey:post.remoteKey];
     
@@ -202,7 +209,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 //    [ShapeFormatterHelper setBorderToView:_videoView withColour:[UIColor redColor] andWidth:1.0];
 //    [ShapeFormatterHelper setBorderToView:_wideCommentBtn withColour:[UIColor redColor]];
     
-//    [ShapeFormatterHelper setBorderToView:_socialView withColour:[UIColor blueColor]];
+//    [ShapeFormatterHelper setBorderToView:self.pollTitleLabel withColour:[UIColor blueColor]];
     
 //    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor blueColor] andWidth:1.0];
     
@@ -212,6 +219,18 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 //    
 //    [ShapeFormatterHelper setBorderToView:_shareBtn withColour:[UIColor greenColor]];
 }
+
+- (void)willRemoveSubview:(UIView *)subview
+{
+    if([subview.class isSubclassOfClass:[PollingPostView class]])
+    {
+        DDLogDebug(@"MainPostView willRemoveSubview %@", [subview class]);
+
+        //Deregister ns notifications from polling post view.
+        [self.pollingView deregisterNotifications];
+    }
+}
+
 
 - (void)setNewViewsCount:(NSNotification *)viewsCountNotification
 {
@@ -231,7 +250,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 
 - (void)dealloc
 {
-    FLog(@"MainView : DEALLOC");
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_POST_CELL_VIEWS_UPDATE object:nil];
 }
 
@@ -527,7 +545,6 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     }
 }
 
-
 -(void)showVideoView
 {
 //    if([_videoView isVideoLoading])
@@ -560,7 +577,31 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     [_postImageView setHidden:NO];
 }
 
+#pragma mark - Poll
 
+- (void)setPoll
+{
+    if([_post isPollPost])
+    {
+        self.pollTitleLabel.text = [NSString stringWithFormat:@"%@", _post.content];
+        self.pollTitleLabelHeight.constant = [PollingPostView pollingTitleHeightWithText:self.post.content];
+        [self.pollingView setPollData:self.post.poll withPostRemoteKey:self.post.remoteKey];
+        [self configurePollImageView];
+    }
+}
+
+- (void)configurePollImageView
+{
+    if([self.post imagePost])
+    {
+        self.pollImageViewHeight.constant = 130.0;
+    }
+    else
+    {
+        self.pollImageViewHeight.constant = 0.0;
+        [self.activityIndicator stopAnimating];
+    }
+}
 
 #pragma mark - Online indicator
 
@@ -613,6 +654,12 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     if(_contentLbl)
     {
        contentAttributeText = [[NSAttributedString alloc] initWithString:_contentLbl.text attributes:@{ NSKernAttributeName : @(0.3f)}];
+    }
+    
+    if([self.post isPollPost])
+    {
+        [ShapeFormatterHelper setCornerRadiusWithView:self andValue:5];
+        [ShapeFormatterHelper setBorderToView:self withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0f];
     }
     
     [ShapeFormatterHelper setRoundedView:_indicatorImageView toDiameter:_indicatorImageView.frame.size.height];
@@ -877,6 +924,28 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
     return ([SessionManager sharedInstance].user.remoteKey == self.post.author.remoteKey);
 }
 
+/**
+ Depending on what kind of post is the current (video, image, text), returns
+ the appropriate image.
+ 
+ @return the appropriate image.
+ */
+- (UIImage *)getPostImage
+{
+    if ([self.post isVideoPost])
+    {
+        return [self.videoView thumbnailImage];
+    }
+    else if([self.post imagePost])
+    {
+        return self.postImageView.image;
+    }
+    else
+    {
+        return [GLPImageHelper placeholderLiveEventImage];
+    }
+}
+
 #pragma mark - Actions
 
 -(IBAction)likePost:(id)sender
@@ -990,17 +1059,14 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 
 - (void)notifyViewPostAfterGoingPressed
 {
-    if(!_post.finalImage && !_post.tempImage)
-    {
-        _post.finalImage = _postImageView.image;
-    }
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post" : _post}];
+    UIImage *image = [self getPostImage];
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_TOUCHED object:self userInfo:@{@"post" : _post, @"attend" : @(YES), @"post_image" : (image) ? image : [NSNull null]}];
 }
 
 - (void)sendNotificationGoingUnpressed
-{    
-    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_UNTOUCHED object:self userInfo:@{@"post" : _post}];
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:GLPNOTIFICATION_GOING_BUTTON_UNTOUCHED object:self userInfo:@{@"post" : _post, @"attend" : @(NO)}];
 }
 
 - (void)notifyToRefreshThePostInCampusWall
@@ -1011,17 +1077,17 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 
 #pragma mark - Client
 
--(void)postLike:(BOOL)like withPostRemoteKey:(int)postRemoteKey
+-(void)postLike:(BOOL)like withPostRemoteKey:(NSInteger)postRemoteKey
 {
     [[WebClient sharedInstance] postLike:like forPostRemoteKey:postRemoteKey callbackBlock:^(BOOL success) {
         
         if(success)
         {
-            DDLogInfo(@"Like %d for post %d succeed.",like, postRemoteKey);
+            DDLogInfo(@"Like %d for post %ld succeed.",like, (long)postRemoteKey);
         }
         else
         {
-            DDLogInfo(@"Like %d for post %d not succeed.",like, postRemoteKey);
+            DDLogInfo(@"Like %d for post %ld not succeed.",like, (long)postRemoteKey);
         }
         
         

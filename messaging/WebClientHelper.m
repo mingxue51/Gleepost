@@ -197,7 +197,8 @@
 
 + (void)showReportedDone
 {
-    [WebClientHelper showStandardErrorWithTitle:@"Post Reported" andContent:@"Thanks for helping us keep Gleepost a fun and safe environment. Our team will review this post ASAP."];
+    [WebClientHelper showStandardErrorWithTitle:@"Post Reported" andContent: [[GLPThemeManager sharedInstance] appNameWithString:@"Thanks for helping us keep %@ a fun and safe environment. Our team will review this post ASAP."]];
+    
 
 }
 
@@ -401,6 +402,13 @@
 + (void)errorLoadingGroup
 {
     [WebClientHelper showStandardErrorWithTitle:@"Error loading group" andContent:@"It seems that you are not belonging to this group anymore"];
+}
+
+#pragma mark - New post
+
++ (void)showTooShortDataMessageError
+{
+    [WebClientHelper showStandardErrorWithTitle:@"Oops!" andContent:@"Too short text in the required text fields!"];
 }
 
 #pragma mark - Testing

@@ -12,6 +12,7 @@
 #import "ShapeFormatterHelper.h"
 #import "GLPLocation.h"
 #import "SessionManager.h"
+#import "DateFormatterHelper.h"
 
 @interface TopPostView ()
 
@@ -95,20 +96,22 @@ const float ONE_LINE_HEIGHT = 20;
 
 -(void)setEventTimeWithTime:(NSDate *)date
 {
-    if ([[NSDate date] compare:date] == NSOrderedDescending)
-    {
-        [_eventTimeLbl setText:[date timeAgo]];
-        
-    } else if ([[NSDate date] compare:date] == NSOrderedAscending)
-    {
-        
-        [_eventTimeLbl setText:[date stringWithHumanizedTimeDifference:NSDateHumanizedSuffixLeft withFullString:YES]];
-        
-    } else
-    {
-        [_eventTimeLbl setText:[date timeAgo]];
-        
-    }
+//    if ([[NSDate date] compare:date] == NSOrderedDescending)
+//    {
+//        [_eventTimeLbl setText:[date timeAgo]];
+//        
+//    } else if ([[NSDate date] compare:date] == NSOrderedAscending)
+//    {
+//        
+//        [_eventTimeLbl setText:[date stringWithHumanizedTimeDifference:NSDateHumanizedSuffixLeft withFullString:YES]];
+//        
+//    } else
+//    {
+//        [_eventTimeLbl setText:[date timeAgo]];
+//        
+//    }
+    
+    _eventTimeLbl.text = [DateFormatterHelper generateStringTimeForPostEventWithTime:date];
 }
 
 #pragma mark - Modifiers

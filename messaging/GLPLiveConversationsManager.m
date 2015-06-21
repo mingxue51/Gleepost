@@ -13,6 +13,7 @@
 #import "NSMutableArray+QueueAdditions.h"
 #import "SessionManager.h"
 #import "GLPReadReceiptsManager.h"
+#import "GLPMessageProcessor.h"
 
 @interface GLPLiveConversationsManager()
 
@@ -71,6 +72,8 @@ static GLPLiveConversationsManager *instance = nil;
     [self internalConfigureInitialState];
     _queue = dispatch_queue_create("com.gleepost.queue.liveconversation", DISPATCH_QUEUE_SERIAL);
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageMessageUploaded:) name:GLPNOTIFICATION_CHAT_IMAGE_UPLOADED object:nil];
+    
     return self;
 }
 
@@ -110,7 +113,7 @@ static GLPLiveConversationsManager *instance = nil;
             
             [self hideLoadingIndicator];
             
-            DDLogInfo(@"Load conversations sucess, loaded conversations: %d", conversations.count);
+            DDLogInfo(@"Load conversations sucess, loaded conversations: %lu", (unsigned long)conversations.count);
             
             for(GLPConversation *conversation in conversations) {
                 [self internalAddConversation:conversation isEmpty:NO];
@@ -181,7 +184,7 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (void)createRegularConversationWithUser:(GLPUser *)user callback:(void (^)(GLPConversation *conversation))callback
 {
-    DDLogInfo(@"Create regular conversation with user %d - %@", user.remoteKey, user.name);
+    DDLogInfo(@"Create regular conversation with user %ld - %@", (long)user.remoteKey, user.name);
     
     dispatch_async(_queue, ^{
         GLPConversation *conversation = [[WebClient sharedInstance] synchronousCreateConversationWithUser:user];
@@ -866,7 +869,7 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (NSInteger)conversationsCount
 {
-    __block int res = 0;
+    __block NSInteger res = 0;
     
     dispatch_sync(_queue, ^{
         res = _conversations.count;
@@ -877,7 +880,7 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (NSInteger)liveConversationsCount
 {
-    __block int res = 0;
+    __block NSInteger res = 0;
     
     dispatch_sync(_queue, ^{
         res = _liveConversationsCount;
@@ -888,7 +891,7 @@ static GLPLiveConversationsManager *instance = nil;
 
 - (NSInteger)regularConversationsCount
 {
-    __block int res = 0;
+    __block NSInteger res = 0;
     
     dispatch_sync(_queue, ^{
         res = _regularConversationsCount;
@@ -897,12 +900,27 @@ static GLPLiveConversationsManager *instance = nil;
     return res;
 }
 
-#pragma mark - Read / Receipts
+#pragma mark - Image Messages
 
-//NOT USED.
-- (void)addReadReceiptWebSocketEvent:(GLPWebSocketEvent *)webSockectEvent
+- (void)imageMessageUploaded:(NSNotification *)notification
 {
-    [[GLPReadReceiptsManager sharedInstance] addReadReceiptWithWebSocketEvent:webSockectEvent];
+    NSString *timestamp = notification.userInfo[@"timestamp"];
+    NSString *imageUrl = notification.userInfo[@"image_url"];
+    
+    for(NSNumber *conversationRemoteKey in self.conversationsMessages)
+    {
+        NSArray *conversationMessages = self.conversationsMessages[conversationRemoteKey];
+        
+        for(GLPMessage *message in conversationMessages)
+        {
+            if([message isImageMessage] && [timestamp isEqualToString:[message getContentFromMediaContent]])
+            {
+                DDLogDebug(@"GLPLiveConversationsManager imageMessageUploaded message %@ url %@", message, imageUrl);
+                message.content = [GLPMessage formatMessageWithKindOfMedia:kImageMessage withContent:imageUrl];
+                [[GLPMessageProcessor sharedInstance] processLocalMessage:message];
+            }
+        }
+    }
 }
 
 # pragma mark - Conversations database
@@ -1161,7 +1179,7 @@ static GLPLiveConversationsManager *instance = nil;
 // Local message that has not yet been send to the server
 - (void)addLocalMessageToConversation:(GLPMessage *)message
 {
-    DDLogInfo(@"Add local message \"%@\" to conversation with remote key %d", message.content, message.conversation.remoteKey);
+    DDLogInfo(@"Add local message \"%@\" to conversation with remote key %ld", message.content, (long)message.conversation.remoteKey);
     
     // newly inserted message key
     __block NSInteger key;
@@ -1179,14 +1197,14 @@ static GLPLiveConversationsManager *instance = nil;
         [self internalNotifyConversationHasNewLocalMessages:conversation];
     });
     
-    DDLogInfo(@"New local message successfuly added with key: %d", key);
+    DDLogInfo(@"New local message successfuly added with key: %ld", (long)key);
     message.key = key;
 }
 
 // Remote message that is received from the server
 - (void)addRemoteMessage:(GLPMessage *)message toConversationWithRemoteKey:(NSInteger)remoteKey
 {
-    DDLogInfo(@"Add remote message \"%@\" to conversation with remote key %d", message.content, remoteKey);
+    DDLogInfo(@"Add remote message \"%@\" to conversation with remote key %ld", message.content, (long)remoteKey);
     
     dispatch_async(_queue, ^{
         NSNumber *index = [NSNumber numberWithInteger:remoteKey];
@@ -1212,7 +1230,7 @@ static GLPLiveConversationsManager *instance = nil;
                 return;
             }
             
-            DDLogInfo(@"Last sync message: %d - %@", lastSyncMessage.key, lastSyncMessage.content);
+            DDLogInfo(@"Last sync message: %ld - %@", (long)lastSyncMessage.key, lastSyncMessage.content);
             
             NSArray *messages = [[WebClient sharedInstance] synchronousGetMessagesForConversation:conversation after:lastSyncMessage before:nil];
             
@@ -1221,7 +1239,7 @@ static GLPLiveConversationsManager *instance = nil;
                 return;
             }
             
-            DDLogInfo(@"Received %d messages with success", messages.count);
+            DDLogInfo(@"Received %lu messages with success", (unsigned long)messages.count);
             
             // reverse order
             messages = [[messages reverseObjectEnumerator] allObjects];
@@ -1337,7 +1355,9 @@ static GLPLiveConversationsManager *instance = nil;
         }
         
         DDLogInfo(@"Local message update completed, with sent status: %@", sentLog);
-        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil userInfo:@{@"key": [NSNumber numberWithInteger:message.key], @"remote_key": [NSNumber numberWithInteger:message.remoteKey], @"sent":[NSNumber numberWithBool:sent]}];
+        
+        //We have updated_content attribute only in case the message is media message.
+        [[NSNotificationCenter defaultCenter] postNotificationNameOnMainThread:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil userInfo:@{@"key": [NSNumber numberWithInteger:message.key], @"remote_key": [NSNumber numberWithInteger:message.remoteKey], @"sent":[NSNumber numberWithBool:sent], @"updated_content":message.content}];
     });
 }
 
@@ -1358,7 +1378,7 @@ static GLPLiveConversationsManager *instance = nil;
             // check that the before message is the last one
             GLPMessage *last = [_conversationsMessages[index] firstObject];
             if(last.remoteKey != message.remoteKey) {
-                DDLogWarn(@"The last message (%d - %@) is not equal to the before message (%d)", last.remoteKey, last.content, message.remoteKey);
+                DDLogWarn(@"The last message (%ld - %@) is not equal to the before message (%ld)", (long)last.remoteKey, last.content, (long)message.remoteKey);
                 return;
             }
         } else {
@@ -1497,7 +1517,7 @@ static GLPLiveConversationsManager *instance = nil;
     
     _conversationsMessagesKeys[index] = [NSNumber numberWithInteger:key];
     
-    DDLogInfo(@"Successful add messages to conversation, last sync message key: %d", key);
+    DDLogInfo(@"Successful add messages to conversation, last sync message key: %ld", (long)key);
 }
 
 - (NSInteger)internalAddMessage:(GLPMessage *)message toConversation:(GLPConversation *)conversation

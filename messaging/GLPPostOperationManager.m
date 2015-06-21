@@ -148,7 +148,7 @@ static GLPPostOperationManager *instance = nil;
  @return YES if post pending, returns NO if the post is already uploaded.
  
  */
--(BOOL)cancelPostWithKey:(int)postKey
+-(BOOL)cancelPostWithKey:(NSInteger)postKey
 {
     NSDate *timestamp = [_postUploader cancelPendingPostWithKey:postKey];
     

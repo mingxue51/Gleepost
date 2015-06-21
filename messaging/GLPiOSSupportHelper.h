@@ -7,10 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface GLPiOSSupportHelper : NSObject
 
 + (BOOL)useShortConstrains;
++ (BOOL)useShortScreenWidthConstrains;
 + (CGFloat)screenWidth;
 + (CGFloat)screenHeight;
 + (void)setBackgroundImageToTableView:(UITableView *)tableView;

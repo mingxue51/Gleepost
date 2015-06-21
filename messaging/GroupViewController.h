@@ -11,7 +11,7 @@
 #import "GLPPostCell.h"
 #import "NewPostViewController.h"
 #import "DescriptionSegmentGroupCell.h"
-#import "GLPStretchedImageView.h"
+#import "GLPGroupStretchedImageView.h"
 #import "ImageSelectorViewController.h"
 
 @protocol GroupViewControllerDelegate <NSObject>

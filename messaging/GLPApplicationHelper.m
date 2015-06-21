@@ -42,4 +42,27 @@
     return NO;
 }
 
++ (NSArray *)customBackButtonWithTarget:(id)target
+{
+    UIButton *backButton =  [UIButton buttonWithType:UIButtonTypeCustom];
+    [backButton setImage:[UIImage imageNamed:@"back_final@2x"] forState:UIControlStateNormal];
+    [backButton addTarget:target action:@selector(backButtonTapped) forControlEvents:UIControlEventTouchUpInside];
+    [backButton setFrame:CGRectMake(0, 0, 33, 22.5)];
+    
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    UIBarButtonItem *fixedItem = [GLPApplicationHelper generateFixedSpaceBarButton];
+    
+    [fixedItem setWidth:-8];
+    
+    
+//    NSArray *barButtonsItems =
+    
+    return @[fixedItem, item];
+}
+
++ (UIBarButtonItem *)generateFixedSpaceBarButton
+{
+    return [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+}
+
 @end

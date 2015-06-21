@@ -147,6 +147,11 @@
     return (_remoteKey != 0);
 }
 
+- (UIImage *)thumbnailImage
+{
+    return self.thumbnailImageView.image;
+}
+
 #pragma mark - Nofications
 
 - (void)videoLoadedFromNotification:(NSNotification *)notification
@@ -255,6 +260,7 @@
     }
     else
     {
+        DDLogDebug(@"VideoView video is not loaded yet");
         [self showLoadingElements];
     }
 }

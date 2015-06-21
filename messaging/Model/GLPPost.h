@@ -11,6 +11,7 @@
 #import "SendStatus.h"
 #import "GLPGroup.h"
 #import "GLPReviewHistory.h"
+#import "GLPPoll.h"
 
 @class GLPVideo;
 @class GLPLocation;
@@ -29,18 +30,20 @@
 @property (strong, nonatomic) NSArray *imagesUrls;
 //This array is filled only if the post is waiting for approval.
 @property (strong, nonatomic) NSMutableArray *reviewHistory;
+@property (strong, nonatomic) NSMutableArray *usersLikedThePost;
 //@property (strong, nonatomic) NSArray *videosUrls;
 //@property (strong, nonatomic) NSString *videoThumbnail;
 //@property (assign, nonatomic) NSNumber *pendingVideoKey;
 /** If we are going to support multible videos change that to an array. */
 @property (strong, nonatomic) GLPVideo *video;
 @property (strong, nonatomic) GLPLocation *location;
+@property (strong, nonatomic) GLPPoll *poll;
 @property (strong, nonatomic) UIImage *tempImage;
 @property (strong, nonatomic) UIImage *finalImage;
 @property (assign, nonatomic) BOOL liked;
 @property (assign, nonatomic) SendStatus sendStatus;
 @property (strong, nonatomic) NSArray *categories;
-@property (assign, nonatomic) int popularity;
+@property (assign, nonatomic) NSInteger popularity;
 @property (assign, nonatomic) NSInteger attendees;
 @property (assign, nonatomic) BOOL attended;
 @property (assign, nonatomic) NSInteger viewsCount;
@@ -55,9 +58,13 @@
 -(BOOL)imagePost;
 -(BOOL)isGroupPost;
 -(BOOL)isVideoPost;
+- (BOOL)isPollPost;
 - (BOOL)isParty;
+- (BOOL)isPostLiked;
+- (BOOL)isPostCommented;
 - (BOOL)isEvent;
 - (void)updatePostWithNewPost:(GLPPost *)newPost;
+- (void)addUserLikedThePost:(GLPUser *)user;
 - (Action)pendingPostStatus;
 - (NSDate *)generateDateEventEnds;
 - (NSString *)locationDescription;

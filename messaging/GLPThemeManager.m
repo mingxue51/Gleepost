@@ -60,6 +60,11 @@ static GLPThemeManager *instance = nil;
     return [self.selectedTheme rightItemColouredImage:rightImage];
 }
 
+- (UIImage *)topItemColouredImage:(UIImage *)topImage
+{
+    return [self.selectedTheme topItemColouredImage:topImage];
+}
+
 - (UIColor *)navigationBarColour
 {
     return [self.selectedTheme navBarBackgroundColour];
@@ -90,7 +95,17 @@ static GLPThemeManager *instance = nil;
     return [AppearanceHelper colourForRegisterTextFields];
 }
 
-- (NSString *)campusWallTitle
+- (UIColor *)rightItemColour;
+{
+    return [self.selectedTheme rightNavBarElementColour];
+}
+
+- (UIColor *)leftItemColour
+{
+    return [self.selectedTheme leftNavBarElementColour];
+}
+
+-(NSString *)campusWallTitle
 {
     return  [self.selectedTheme campusWallTitle];
 }

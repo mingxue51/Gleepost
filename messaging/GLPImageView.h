@@ -17,11 +17,12 @@
 
 @interface GLPImageView : UIImageView
 
-@property (weak, nonatomic) UIViewController<GLPImageViewDelegate> *viewControllerDelegate;
+@property (weak, nonatomic) id<GLPImageViewDelegate> delegate;
 //@property (weak, nonatomic) UIView<GLPImageViewDelegate> *normalViewDelegate;
 
 - (void)setImageUrl:(NSString *)imageUrl withPlaceholderImage:(NSString *)imagePath;
 - (void)setActualImage:(UIImage *)image;
 - (void)setGesture:(BOOL)gesture;
+- (void)makeImageRounded;
 
 @end

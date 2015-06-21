@@ -76,7 +76,7 @@ const float NOTIFICATION_CELL_HEIGHT = 43.0; //60.0
     //Takes the user's image and add it to image.
     GLPUser *user = _notification.user;
     
-    _notificationImageView.viewControllerDelegate = _delegate;
+    _notificationImageView.delegate = _delegate;
     
     [_notificationImageView setImageUrl:user.profileImageUrl withPlaceholderImage:[GLPImageHelper placeholderUserImagePath]];
     

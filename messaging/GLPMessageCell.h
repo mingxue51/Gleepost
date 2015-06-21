@@ -15,6 +15,7 @@
 - (void)profileImageClickForMessage:(GLPMessage *)message;
 - (void)readReceitClickForMessage:(GLPMessage *)message;
 - (void)mainViewClickForMessage:(GLPMessage *)message;
+- (void)messageImageClickedForMessage:(GLPMessage *)message withImageView:(UIImageView *)imageView;
 
 @end
 

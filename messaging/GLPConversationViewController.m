@@ -53,12 +53,15 @@
 #import "GLPReadReceiptsManager.h"
 #import "GLPReadReceipt.h"
 #import "GLPMessageDetailsViewController.h"
+#import "GLPViewImageHelper.h"
+#import "ImageSelectorViewController.h"
+#import "Gleepost-Swift.h"
+#import "MRNavigationBarProgressView.h"
 
-@interface GLPConversationViewController ()
+@interface GLPConversationViewController () <ImageSelectorViewControllerDelegate, ImagePickerSheetControllerDelegate, ImagePickerSheetiOS7ControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIView *formView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet HPGrowingTextView *formTextView;
 
 @property (assign, nonatomic) NSInteger selectedUserId;
@@ -90,6 +93,10 @@
 
 @property (assign, nonatomic, getter=isOffline) BOOL offline;
 
+//Uploading stuff.
+@property (strong, nonatomic) GLPPickImageHelper *pickImageHelper;
+@property (strong, nonatomic) MRNavigationBarProgressView *uploadingMediaProgressView;
+
 @end
 
 @implementation GLPConversationViewController
@@ -109,6 +116,8 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [self configureTitleNavigationBar];
     [self configureForm];
     [self configureTableView];
+    [self configureNavigationBarProgressView];
+    [self configureViewDidLoadNotifications];
     
     _messages = [NSMutableArray array];
     [self reloadWithItems:_messages];
@@ -133,28 +142,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     
     [self hideNetworkErrorViewIfNeeded];
     
-    // keyboard management
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationSyncFromNotification:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationsSyncFromNotification:) name:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncWithRemoteFromNotification:) name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notSyncWithRemoteFromNotification:) name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageSendUpdateFromNotification:) name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedReadReceiptUpdate:) name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
+    [self configureNotifications];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -177,8 +165,60 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
 {
 //    [[GLPLiveConversationsManager sharedInstance] resetLastShownMessageForConversation:_conversation];
 
-    [_conversationHelper resetLastShownMessageForConversation:_conversation];
+    [self removeNotifications];
     
+    [_conversationHelper resetLastShownMessageForConversation:_conversation];
+
+    [self removeNavigationBarProgressView];
+    
+    [super viewWillDisappear:animated];
+}
+
+#pragma mark - Configuration
+
+- (void)configureNotifications
+{
+    // keyboard management
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationSyncFromNotification:) name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(conversationsSyncFromNotification:) name:GLPNOTIFICATION_CONVERSATIONS_SYNC object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(syncWithRemoteFromNotification:) name:GLPNOTIFICATION_SYNCHRONIZED_WITH_REMOTE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(notSyncWithRemoteFromNotification:) name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(messageSendUpdateFromNotification:) name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedReadReceiptUpdate:) name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
+    
+    
+    //Image uploading
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imageUploadingStatusChanged:) name:GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS object:nil];
+
+}
+
+- (void)configureViewDidLoadNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedImagesReceived:) name:GLPNOTIFICATION_SELECTED_IMAGES object:nil];
+}
+
+- (void)removeViewDidLoadNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_SELECTED_IMAGES object:nil];
+}
+
+- (void)removeNotifications
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_ONE_CONVERSATION_SYNC object:nil];
@@ -187,17 +227,27 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_NOT_SYNCHRONIZED_WITH_REMOTE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_MESSAGE_SEND_UPDATE object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_READ_RECEIPT_RECEIVED object:nil];
+    
+    //Image uploading.
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:GLPNOTIFICATION_UPLOADING_IMAGE_CHANGED_STATUS object:nil];
 
-    [super viewWillDisappear:animated];
 }
 
-#pragma mark - Configuration
+- (void)willMoveToParentViewController:(UIViewController *)parent
+{
+    if(!parent)
+    {
+        [self removeViewDidLoadNotifications];
+    }
+}
+
 
 -(void)initialiseObjects
 {
     self.introduced = nil;
     _offline = NO;
     _conversationHelper = [[GLPConversationHelper alloc] initWithBelongsToGroup:(_conversation.groupRemoteKey != 0) ? YES : NO];
+    self.pickImageHelper = [[GLPPickImageHelper alloc] init];
 }
 
 - (void)configureTitleNavigationBar
@@ -325,13 +375,24 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     self.formTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     
     self.formTextView.backgroundColor = [AppearanceHelper lightGrayGleepostColour];
-    [ShapeFormatterHelper setBorderToView:self.formTextView withColour:[AppearanceHelper borderMessengerGleepostColour] andWidth:0.5];
+    [ShapeFormatterHelper setBorderToView:self.formTextView withColour:[AppearanceHelper mediumGrayGleepostColour] andWidth:1.0];
     self.formTextView.placeholder = @"Type a message...";
     
     self.formTextView.tag = 100;
     
     self.formTextView.layer.cornerRadius = 3;
     [self.formView setGleepostStyleTopBorder];
+}
+
+- (void)configureNavigationBarProgressView
+{
+    self.uploadingMediaProgressView = [MRNavigationBarProgressView progressViewForNavigationController:self.navigationController];
+    self.uploadingMediaProgressView.progress = 0.0;
+}
+
+- (void)removeNavigationBarProgressView
+{
+    self.uploadingMediaProgressView.progress = 0.0;
 }
 
 - (void)configureTableView
@@ -670,10 +731,11 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     NSInteger key = [[notification userInfo][@"key"] integerValue];
     NSInteger remoteKey = [[notification userInfo][@"remote_key"] integerValue];
     BOOL sent = [[notification userInfo][@"sent"] boolValue];
+    NSString *updatedContent = [notification userInfo][@"updated_content"];
     
     NSArray *filtered = [_messages filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"key = %d", key]];
     if(filtered.count != 1) {
-        DDLogError(@"Grave inconsistency: cannot find message in local messages for key: %d - filtered array count: %d", key, filtered.count);
+        DDLogError(@"Grave inconsistency: cannot find message in local messages for key: %ld - filtered array count: %lu", (long)key, (unsigned long)filtered.count);
         return;
     }
     
@@ -682,6 +744,7 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     if(sent) {
         message.sendStatus = kSendStatusSent;
         message.remoteKey = remoteKey;
+        message.content = (updatedContent) ? updatedContent : message.content;
     } else {
         message.sendStatus = kSendStatusFailure;
     }
@@ -981,8 +1044,69 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
     [self performSegueWithIdentifier:@"show message details" sender:self];
 }
 
+- (void)messageImageClickedForMessage:(GLPMessage *)message withImageView:(UIImageView *)imageView
+{
+    [GLPViewImageHelper showImageInViewController:self withImageView:imageView];
+}
 
-# pragma mark - Segue
+#pragma mark - ImageSelectorViewControllerDelegate
+
+- (void)takeImage:(UIImage *)image
+{
+    [self sendImageMessages:@[image]];
+}
+
+#pragma mark - NSNotifications
+
+- (void)selectedImagesReceived:(NSNotification *)notification
+{
+    NSArray *images = notification.userInfo[@"images"];
+    DDLogDebug(@"GLPConversationViewController images received %@", images);
+    [self sendImageMessages:images];
+}
+
+/**
+    Notification contains timestamp and progress status.
+ */
+
+- (void)imageUploadingStatusChanged:(NSNotification *)notification
+{
+    CGFloat status = [notification.userInfo[@"status"] floatValue];
+    NSString *timestamp = notification.userInfo[@"timestamp"];
+    
+    DDLogDebug(@"GLPConversationViewController imageUploadingStatusChanged status %f - %@", status, timestamp);
+    
+    self.uploadingMediaProgressView.progress = status;
+}
+
+#pragma mark - ImagePickerSheetControllerDelegate
+
+- (void)presentCameraView
+{
+    [self.pickImageHelper presentCamera:self];
+}
+
+- (void)presentFullSizeImagePicker
+{
+    [self performSegueWithIdentifier:@"pick image" sender:self];
+}
+
+#pragma mark - Image progressing
+
+- (void)sendImageMessages:(NSArray *)images
+{
+    NSArray *timestamps = [[GLPImageUploader sharedInstance] addItems:images];
+    [ConversationManager createImageMessagesWithTimestamps:timestamps toConversation:self.conversation];
+}
+
+#pragma mark - Selectors
+
+- (IBAction)pickImage:(id)sender
+{
+    [self.pickImageHelper presentImagePickerWithViewController:self];
+}
+
+#pragma mark - Segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
@@ -1005,6 +1129,12 @@ static NSString * const kCellIdentifier = @"GLPMessageCell";
         GLPMessageDetailsViewController *messageDetailsVC = segue.destinationViewController;
         messageDetailsVC.message = _selectedMessage;
         messageDetailsVC.reads = _conversation.reads;
+    }
+    else if([segue.identifier isEqualToString:@"pick image"])
+    {
+        ImageSelectorViewController *imgSelectorVC = segue.destinationViewController;
+        imgSelectorVC.fromGroupViewController = NO;
+        [imgSelectorVC setDelegate:self];
     }
 }
 

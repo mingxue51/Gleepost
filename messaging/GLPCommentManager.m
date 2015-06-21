@@ -12,6 +12,8 @@
 
 @implementation GLPCommentManager
 
+//TODO: Remote that method and use everywhere the next one.
+
 + (void)loadCommentsWithLocalCallback:(void (^)(NSArray *comments))localCallback remoteCallback:(void (^)(BOOL success, NSArray *comments))remoteCallback withPost:(GLPPost *)post
 {
     //Load local comments.
@@ -37,6 +39,29 @@
             remoteCallback(success, nil);
         }
     }];
+}
+
++ (void)loadCommentsWithPost:(GLPPost *)post localCallback:(void (^)(NSArray *))localCallback remoteCallback:(void (^)(BOOL, NSArray *))remoteCallback
+{
+    NSArray *localComments = [GLPCommentDao findCommentsByPostRemoteKey:post.remoteKey];
+    localCallback(localComments);
+    
+    [[WebClient sharedInstance] getCommentsForPost:post withCallbackBlock:^(BOOL success, NSArray *comments) {
+        
+        if(success) {
+            
+            //Save new comments in database.
+            [GLPCommentManager saveCommentsInDb:comments];
+            
+            
+            //If there are comments in db and not in server show them.
+            remoteCallback(success, [self addLocalComments:localComments toRemoteComments:comments]);
+            
+        } else {
+            remoteCallback(success, nil);
+        }
+    }];
+    
 }
 
 //+ (void)loadLocalCommentsWithPost:(GLPPost *)post andLocalCallback:(void (^)(NSArray *comments))localCallback

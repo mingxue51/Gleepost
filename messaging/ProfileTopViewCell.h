@@ -29,7 +29,7 @@
 @property (weak, nonatomic) UIViewController <ProfileTopViewCellDelegate> *delegate;
 
 - (void)setUserData:(GLPUser *)userData;
-- (void)showNotificationBubbleWithNotificationCount:(int)notificationCount;
+-(void)showNotificationBubbleWithNotificationCount:(NSInteger)notificationCount;
 - (void)hideNotificationBubble;
 - (void)comesFromPushNotification:(BOOL)fromPN;
 + (CGFloat)profileTopViewHeight;

@@ -16,4 +16,6 @@
 
 @property (assign, nonatomic) NSInteger postRemoteKey;
 
+@property (assign, nonatomic) BOOL transparentNavBar;
+
 @end

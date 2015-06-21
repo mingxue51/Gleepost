@@ -22,6 +22,8 @@
 - (UIImage *)navigationBarImage;
 - (UIImage *)leftItemColouredImage:(UIImage *)leftImage;
 - (UIImage *)rightItemColouredImage:(UIImage *)rightImage;
+- (UIImage *)topItemColouredImage:(UIImage *)topImage;
 - (NSString *)campusWallTitle;
+
 
 @end

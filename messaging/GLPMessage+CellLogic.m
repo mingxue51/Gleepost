@@ -54,6 +54,11 @@ NSString * const kMessageRightCell = @"RightCell";
     objc_setAssociatedObject(self, &kMessageNeedsProfileImage, value, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+- (BOOL)needsNameLabel
+{
+    return (self.conversation.isGroupMessenger && ![self.author isLoggedInUser] && [self needsProfileImage]);
+}
+
 - (BOOL)needsProfileImage
 {
     NSString *value = objc_getAssociatedObject(self, &kMessageNeedsProfileImage);

@@ -47,6 +47,8 @@
             return [NSString stringWithFormat:@"%@ approved your post.", self.user.name];
         case kGLPNotificationTypePostRejected:
             return [NSString stringWithFormat:@"%@ rejected your post.", self.user.name];
+        case kGLPNotificationTypeSomeoneVoted:
+            return [NSString stringWithFormat:@"%@ voted to your poll.", self.user.name];
         default:
             return @"Something happened";
     }

@@ -172,9 +172,9 @@
 
 #pragma mark - Posts methods
 
-+ (void)loadInitialPostsWithGroupId:(int)groupId localCallback:(void (^)(NSArray *localPosts))localCallback remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback
++ (void)loadInitialPostsWithGroupId:(NSInteger)groupId localCallback:(void (^)(NSArray *localPosts))localCallback remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback
 {
-    DDLogInfo(@"load initial group posts with id: %d", groupId);
+    DDLogInfo(@"load initial group posts with id: %ld", (long)groupId);
     
 //    __block NSArray *localEntities = nil;
 //    [DatabaseManager run:^(FMDatabase *db) {
@@ -246,9 +246,9 @@
 }
 
 
-+ (void)loadRemotePostsBefore:(GLPPost *)post withGroupRemoteKey:(int)remoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
++ (void)loadRemotePostsBefore:(GLPPost *)post withGroupRemoteKey:(NSInteger)remoteKey callback:(void (^)(BOOL success, BOOL remain, NSArray *posts))callback
 {
-    NSLog(@"load posts before %d - %@", post.remoteKey, post.content);
+    NSLog(@"load posts before %ld - %@", (long)post.remoteKey, post.content);
     
     [[WebClient sharedInstance] getPostsAfter:nil withGroupId:remoteKey callback:^(BOOL success, NSArray *posts) {
        
@@ -285,7 +285,7 @@
         
         //[newPosts addObject:post]; //[newPosts addObject:post]; [newPosts addObject:post]; // comment / uncomment for debug reasons
         
-        NSLog(@"remote posts %d", newPosts.count);
+        NSLog(@"remote posts %lu", (unsigned long)newPosts.count);
         
         if(!newPosts || newPosts.count == 0) {
             callback(YES, NO, nil);

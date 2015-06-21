@@ -9,7 +9,6 @@
 #import "UIViewController+GAI.h"
 #import "UIViewController+Flurry.h"
 #import "GLPPrivateProfileViewController.h"
-#import "TransitionDelegateViewImage.h"
 #import "ContactsManager.h"
 #import "WebClient.h"
 #import "WebClientHelper.h"
@@ -27,7 +26,6 @@
 #import "GLPBadgesViewController.h"
 #import "ImageFormatterHelper.h"
 #import "GLPShowLocationViewController.h"
-#import "GLPViewImageViewController.h"
 #import "GLPCalendarManager.h"
 #import "GLPAttendingPopUpViewController.h"
 #import "TDPopUpAfterGoingView.h"
@@ -37,6 +35,7 @@
 #import "GLPTrackViewsCountProcessor.h"
 #import "UserProfileManager.h"
 #import "TableViewHelper.h"
+#import "GLPViewImageHelper.h"
 
 @interface GLPPrivateProfileViewController () <GLPAttendingPopUpViewControllerDelegate>
 
@@ -47,9 +46,6 @@
 @property (assign, nonatomic) NSInteger numberOfRows;
 @property (assign, nonatomic) NSInteger currentNumberOfRows;
 
-
-@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
-
 @property (assign, nonatomic) GLPSelectedTab selectedTabStatus;
 
 //Used when there is new comment.
@@ -57,7 +53,7 @@
 
 @property (strong, nonatomic) GLPPost *selectedPost;
 
-@property (assign, nonatomic) int postIndexToReload;
+@property (assign, nonatomic) NSInteger postIndexToReload;
 
 @property (strong, nonatomic) GLPConversation *conversation;
 @property (strong, nonatomic) GLPUser *emptyConversationUser;
@@ -76,6 +72,8 @@
 /** Properties for loading previous posts. */
 @property (assign, nonatomic) BOOL isLoading;
 @property (assign, nonatomic) GLPLoadingCellStatus loadingCellStatus;
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -145,7 +143,6 @@
     self.numberOfRows = 1;
     self.profileImage = nil;
     self.isLoading = NO;
-    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     _emptyPostsMessage = [[EmptyMessage alloc] initWithText:@"No more posts" withPosition:EmptyMessagePositionBottom andTableView:self.tableView];
     _selectedLocation = nil;
     _transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
@@ -201,6 +198,8 @@
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
     
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostPollCell" bundle:nil] forCellReuseIdentifier:@"PollCell"];
+    
     [self.tableView registerNib:[UINib nibWithNibName:@"PostTextCellView" bundle:nil] forCellReuseIdentifier:@"TextCell"];
 }
 
@@ -244,15 +243,23 @@
 
 -(void)configureNavigationBar
 {
+    if(self.transparentNavBar)
+    {
+        [self.navigationController.navigationBar whiteTranslucentBackgroundFormatWithShadow:YES andView:self.view];
+    }
+    else
+    {
+        [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
+    }
+    
     //Change the format of the navigation bar.
     [self.navigationController.navigationBar setFontFormatWithColour:kBlack];
     
-    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
     
     //We are not using the default method for formatting the navigation bar because was causing issues
     //with the navigation to GroupVC.
     
-    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]]];
+//    [self.navigationController.navigationBar setShadowImage:[ImageFormatterHelper generateOnePixelHeightImageWithColour:[AppearanceHelper mediumGrayGleepostColour]]];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 }
@@ -352,19 +359,19 @@
 
 - (void)viewProfileImage:(UIImage *)image
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = image;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
+//    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
+//    viewImage.image = image;
+//    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
+//    viewImage.modalPresentationStyle = UIModalPresentationCustom;
+//    
+//    if(![GLPiOSSupportHelper isIOS6])
+//    {
+//        [viewImage setTransitioningDelegate:self.transitionViewImageController];
+//    }
+//    
+//    [self.view setBackgroundColor:[UIColor whiteColor]];
+//    [self presentViewController:viewImage animated:YES completion:nil];
 }
 
 - (void)badgeTouched
@@ -416,7 +423,8 @@
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
     static NSString *CellIdentifierProfile = @"PrivateProfileTopViewCell";
-    
+    static NSString *CellIdentifierPoll = @"PollCell";
+
     GLPPostCell *postViewCell;
     PrivateProfileTopViewCell *profileView;
     if(indexPath.row == 0)
@@ -430,13 +438,17 @@
         {
             GLPPost *post = [_userProfileManager postWithIndex:indexPath.row - 1];
             
-            if([post imagePost])
+            if([post imagePost] && ![post isPollPost])
             {
                 postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
             }
             else if ([post isVideoPost])
             {
                 postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
+            }
+            else if([post isPollPost])
+            {
+                postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierPoll forIndexPath:indexPath];
             }
             else
             {
@@ -495,13 +507,17 @@
         {
             GLPPost *currentPost = [_userProfileManager postWithIndex:indexPath.row - 1];
                         
-            if([currentPost imagePost])
+            if([currentPost imagePost] && ![currentPost isPollPost])
             {
                 return [GLPPostCell getCellHeightWithContent:currentPost cellType:kImageCell isViewPost:NO];
             }
             else if ([currentPost isVideoPost])
             {
                 return [GLPPostCell getCellHeightWithContent:currentPost cellType:kVideoCell isViewPost:NO];
+            }
+            else if([currentPost isPollPost])
+            {
+                return [GLPPostCell getCellHeightWithContent:currentPost cellType:kPollCell isViewPost:NO];
             }
             else
             {
@@ -726,21 +742,9 @@
 
 #pragma mark - View image delegate
 
--(void)viewPostImage:(UIImage*)postImage
+-(void)viewPostImageView:(UIImageView *)postImageView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = postImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[UIColor whiteColor]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+    [GLPViewImageHelper showImageInViewController:self withImageView:postImageView];
 }
 
 #pragma mark - New comment delegate
@@ -805,12 +809,19 @@
 {
     _selectedPost = notification.userInfo[@"post"];
     
+    UIImage *image = notification.userInfo[@"post_image"];
+    
+    if([image isEqual:[NSNull null]])
+    {
+        image = nil;
+    }
+    
     //Show the pop up view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
-    [cvc setEventPost:_selectedPost];
+    [cvc setEventPost:_selectedPost withImage:image];
     
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     

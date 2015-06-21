@@ -1,5 +1,6 @@
 #import "GLPMessage.h"
 #import "GLPUser.h"
+#import "NSString+Utils.h"
 
 @implementation GLPMessage
 
@@ -22,9 +23,19 @@
     _isOld = NO;
     _sendStatus = kSendStatusLocal;
     _belongsToGroup = NO;
+    _kindOfMediaMessage = kTextMessage;
     return self;
 }
 
+- (void)setContent:(NSString *)content
+{
+    _content = content;
+    
+    if([self isImageMessage])
+    {
+        _kindOfMediaMessage = kImageMessage;
+    }
+}
 
 - (BOOL)followsPreviousMessage:(GLPMessage *)message
 {    
@@ -39,6 +50,148 @@
     return YES;
 }
 
+/**
+    This method should be called ONLY from GLPMessageCell and ONLY in case
+    the message is media message.
+ 
+    @return Returns the content of the content when the message is media message.
+    e.g. In case of image url content.
+ */
+- (NSString *)getContentFromMediaContent
+{
+    return [self parseMediaContent][0];
+}
+
+/**
+    @return returns the readable content for message. This method 
+    is used because in case of media content, the content is not
+    readable but it's a specific pattern of string.
+ */
+- (NSString *)getReadableContent
+{
+    switch (self.kindOfMediaMessage) {
+        case kImageMessage:
+            return [NSString stringWithFormat:@"%@ sent an image", self.author.name];
+            break;
+            
+        default:
+            return _content;
+            break;
+    }
+}
+
+- (BOOL)isImageMessage
+{
+    if(![_content componentsSeparatedByString:@" "])
+    {
+        return NO;
+    }
+    
+    // A list of extensions to check against
+    NSArray *imageExtensions = @[@"png", @"jpg", @"gif"];
+    
+    NSString *urlString = [self parsePossibleImageMessage];
+    
+    if([self doesStringContainTimestamp:urlString])
+    {
+        return YES;
+    }
+    
+    if(!urlString)
+    {
+        return NO;
+    }
+    
+    // Iterate & match the URL objects from your checking results
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    NSString *extension = [url pathExtension];
+    
+    if ([imageExtensions containsObject:extension])
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)doesStringContainTimestamp:(NSString *)string
+{
+    NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+    return [nf numberFromString:string] != nil;
+}
+
+/**
+    Try to parse the message's content. If the content does not satisfies the 
+    media format returns nil. Otherwise it returns the image url.
+ */
+- (NSString *)parsePossibleImageMessage
+{
+    NSArray *parsedMediaContent = [self parseMediaContent];
+    
+    NSString *metadataImagePattern = [GLPMessage getImagePatternWithKindOfMediaMessage:kImageMessage];
+    
+    if(!parsedMediaContent || ![parsedMediaContent[1] isEqualToString:metadataImagePattern])
+    {
+        return nil;
+    }
+    
+    return parsedMediaContent[0];
+}
+
+- (NSArray *)parseMediaContent
+{
+    if(![_content containsAString:@"|"] || ![_content containsAString:@"<"] || ![_content containsAString:@">"])
+    {
+        return nil;
+    }
+    
+    NSArray *parsedContent = [_content componentsSeparatedByString:@"|"];
+    
+    if(parsedContent.count < 2)
+    {
+        return nil;
+    }
+    
+    NSMutableString *firstComponent = [NSMutableString stringWithString:parsedContent[0]];
+    [firstComponent deleteCharactersInRange:NSMakeRange(0, 1)];
+    
+    NSMutableString *secondComponent = [NSMutableString stringWithString:parsedContent[1]];
+    [secondComponent deleteCharactersInRange:NSMakeRange(secondComponent.length - 1, 1)];
+    
+    return @[firstComponent, secondComponent];
+}
+
+#pragma mark - Static
+
+/**
+    Formats the message to the specific media format.
+ */
++ (NSString *)formatMessageWithKindOfMedia:(KindOfMediaMessage)kindOfMedia withContent:(NSString *)content
+{
+    NSString *metaDataMediaFormat = [GLPMessage getImagePatternWithKindOfMediaMessage:kindOfMedia];
+    return [NSString stringWithFormat:@"<%@|%@>", content, metaDataMediaFormat];
+}
+
++ (NSString *)getImagePatternWithKindOfMediaMessage:(KindOfMediaMessage)kindOfMedia
+{
+    NSString *metaDataMediaFormat = @"";
+    
+    switch (kindOfMedia) {
+        case kImageMessage:
+            metaDataMediaFormat = @"image";
+            break;
+            
+        case kPdfMessage:
+            metaDataMediaFormat = @"pdf";
+            break;
+            
+        default:
+            break;
+    }
+    
+    return metaDataMediaFormat;
+}
 
 # pragma mark - Copy
 

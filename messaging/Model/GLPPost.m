@@ -22,7 +22,7 @@
 @synthesize date;
 @synthesize author;
 @synthesize imagesUrls;
-@synthesize sendStatus=_sendStatus; 
+@synthesize sendStatus=_sendStatus;
 //@synthesize liked=_liked;
 
 - (id)init
@@ -35,6 +35,8 @@
     _sendStatus = kSendStatusLocal;
     _pendingInEditMode = NO;
     _viewsCount = 0;
+    self.usersLikedThePost = [[NSMutableArray alloc] init];
+
     return self;
 }
 
@@ -47,6 +49,7 @@
         self.remoteKey = remoteKey;
         _pendingInEditMode = NO;
         _viewsCount = 0;
+        self.usersLikedThePost = [[NSMutableArray alloc] init];
     }
     
     return self;
@@ -88,6 +91,16 @@
     return YES;
 }
 
+- (BOOL)isPollPost
+{
+    if(_poll == nil)
+    {
+        return NO;
+    }
+    
+    return YES;
+}
+
 -(BOOL)isGroupPost
 {
     if(_group != nil)
@@ -112,7 +125,7 @@
 
 - (BOOL)isEvent
 {
-    return self.eventTitle != nil;
+    return self.eventTitle != nil && self.dateEventStarts != nil;
 }
 
 - (Action)pendingPostStatus
@@ -147,6 +160,21 @@
     self.imagesUrls = newPost.imagesUrls;
     
     self.video = newPost.video;
+}
+
+- (BOOL)isPostLiked
+{
+    return self.likes > 0;
+}
+
+- (BOOL)isPostCommented
+{
+    return self.commentsCount > 0;
+}
+
+- (void)addUserLikedThePost:(GLPUser *)user
+{
+    [self.usersLikedThePost addObject:user];
 }
 
 - (NSDate *)generateDateEventEnds
@@ -225,7 +253,7 @@
 {
 //    return [NSString stringWithFormat:@"Post id: %ld, Content: %@ Sending status: %d Date: %@, Group: %@, SendStatus %d, Event date: %@", (long)self.remoteKey, self.content, self.sendStatus, self.date, self.group, self.sendStatus, self.dateEventStarts];
     
-    return [NSString stringWithFormat:@"Post content %@, remote key %d Views count %d", self.content, self.remoteKey, self.viewsCount];
+    return [NSString stringWithFormat:@"Post content %@, Post title %@ remote key %ld", self.content, self.eventTitle, (long)self.remoteKey];
 }
 
 @end

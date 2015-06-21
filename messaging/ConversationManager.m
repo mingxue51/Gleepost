@@ -531,6 +531,37 @@ int const NumberMaxOfMessagesLoaded = 20;
 //    }
 }
 
++ (void)createImageMessagesWithTimestamps:(NSArray *)timestamps toConversation:(GLPConversation *)conversation
+{
+    for (NSString *timestamp in timestamps)
+    {
+        [ConversationManager createImageMessageWithTimestamp:timestamp toConversation:conversation];
+    }
+}
+
++ (void)createImageMessageWithTimestamp:(NSString *)timestamp toConversation:(GLPConversation *)conversation
+{
+    DDLogInfo(@"ConversationManager createImageMessageWithTimestamp %@", timestamp);
+    
+    GLPMessage *message = [[GLPMessage alloc] init];
+    message.content = [GLPMessage formatMessageWithKindOfMedia:kImageMessage withContent:timestamp];
+    message.conversation = conversation;
+    message.date = [NSDate dateInUTC];
+    message.author = [SessionManager sharedInstance].user;
+    message.sendStatus = kSendStatusLocal;
+    message.seen = YES;
+    
+    if(conversation.groupRemoteKey == 0)
+    {
+        [[GLPLiveConversationsManager sharedInstance] addLocalMessageToConversation:message];
+    }
+    else
+    {
+        message.belongsToGroup = YES;
+        [[GLPLiveGroupConversationsManager sharedInstance] addLocalMessageToConversation:message];
+    }
+}
+
 + (NSString *)removeLastNewLinesFromContent:(NSString *)content
 {
     return [content stringByTrimmingCharactersInSet: [NSCharacterSet newlineCharacterSet]];

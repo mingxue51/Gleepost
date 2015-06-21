@@ -69,6 +69,8 @@
 
 + (void)showChangedModeServerMessageWithServerMode:(NSString *)mode;
 
++ (void)showTooShortDataMessageError;
+
 + (void)showErrorSavingEventToCalendar;
 + (void)showEventSuccessfullyAddedToCalendar;
 + (void)showErrorPermissionsToCalendar;

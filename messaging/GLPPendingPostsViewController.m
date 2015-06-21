@@ -19,6 +19,7 @@
 #import "GLPReviewHistory.h"
 #import "GLPPostNotificationHelper.h"
 #import "GLPVideoLoaderManager.h"
+#import "GLPViewImageHelper.h"
 
 @interface GLPPendingPostsViewController () <UITableViewDataSource, UITableViewDelegate, GLPPostCellDelegate, NewCommentDelegate, RemovePostCellDelegate, ViewImageDelegate>
 
@@ -341,9 +342,9 @@
     //TODO: Pending implementation.
 }
 
--(void)viewPostImage:(UIImage*)postImage
+-(void)viewPostImageView:(UIImageView *)postImageView
 {
-    
+    [GLPViewImageHelper showImageInViewController:self withImageView:postImageView];
 }
 
 - (void)navigateToPostForCommentWithIndexPath:(NSIndexPath *)postIndexPath

@@ -24,6 +24,7 @@
 #import "GLPLiveGroupPostManager.h"
 #import "GLPLiveGroupManager.h"
 #import "GLPPendingPostsManager.h"
+#import "GLPLiveSummary.h"
 
 @interface WebClient()
 
@@ -471,7 +472,7 @@ static WebClient *instance = nil;
 {
     NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
     if(post) {
-        params[@"before"] = [NSNumber numberWithInt:post.remoteKey];
+        params[@"before"] = [NSNumber numberWithInteger:post.remoteKey];
     }
     
     if(tag)
@@ -499,7 +500,6 @@ static WebClient *instance = nil;
 //    }
 
     
-    DDLogDebug(@"Create Post params: %@, Categories: %@", params, post.categories);
     
     //TODO: add a new param url rather than call second method after the post request.
     
@@ -508,7 +508,7 @@ static WebClient *instance = nil;
         [params setObject:post.video.pendingKey forKey:@"video"];
     }
     
-    if(post.eventTitle)
+    if(post.dateEventStarts)
     {
         [params setObject:[DateFormatterHelper dateUnixFormat:post.dateEventStarts] forKey:@"event-time"];
         [params setObject:post.eventTitle forKey:@"title"];
@@ -521,6 +521,18 @@ static WebClient *instance = nil;
         [params setObject:post.location.name forKey:@"location-name"];
         [params setObject:post.location.address forKey:@"location-desc"];
     }
+    
+    if([post isPollPost])
+    {
+        [params setObject:[RemoteParser generatePollOptionsInCDFormatWithOptions:post.poll.options] forKey:@"poll-options"];
+        //Add the new time comes from poll.
+        [params setObject:[DateFormatterHelper dateUnixFormat:post.poll.expirationDate] forKey:@"poll-expiry"];
+
+//        [params setObject:[DateFormatterHelper dateUnixFormat:[DateFormatterHelper addHours:5 toDate:[NSDate date]]] forKey:@"poll-expiry"];
+    }
+    
+    DDLogDebug(@"Create Post params: %@, Categories: %@", params, post.categories);
+
     
     [self postPath:[self pathForPost:post] parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -556,11 +568,11 @@ static WebClient *instance = nil;
     }];
 }
 
--(NSString *)pathForPost:(GLPPost *)post
+- (NSString *)pathForPost:(GLPPost *)post
 {
     if(post.group)
     {
-        return [NSString stringWithFormat:@"networks/%d/posts", post.group.remoteKey];
+        return [NSString stringWithFormat:@"networks/%ld/posts", (long)post.group.remoteKey];
     }
     else
     {
@@ -655,7 +667,7 @@ static WebClient *instance = nil;
 
 - (void)getAttendingEventsForUserWithRemoteKey:(NSInteger)userRemoteKey callback:(void (^) (BOOL success, NSArray *posts))callback
 {
-    NSString *path = [NSString stringWithFormat:@"user/%d/attending", userRemoteKey];
+    NSString *path = [NSString stringWithFormat:@"user/%ld/attending", (long)userRemoteKey];
     
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -676,10 +688,10 @@ static WebClient *instance = nil;
     
     if(post)
     {
-        params[@"before"] = [NSNumber numberWithInt:post.remoteKey];
+        params[@"before"] = [NSNumber numberWithInteger:post.remoteKey];
     }
     
-    NSString *path = [NSString stringWithFormat:@"user/%d/attending", userRemoteKey];
+    NSString *path = [NSString stringWithFormat:@"user/%ld/attending", (long)userRemoteKey];
     
     [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -694,7 +706,7 @@ static WebClient *instance = nil;
 
 - (void)getCommentsForPost:(GLPPost *)post withCallbackBlock:(void (^)(BOOL success, NSArray *comments))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"posts/%d/comments", post.remoteKey];
+    NSString *path = [NSString stringWithFormat:@"posts/%ld/comments", (long)post.remoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"0", @"start", nil];
     [params addEntriesFromDictionary:self.sessionManager.authParameters];
@@ -725,9 +737,9 @@ static WebClient *instance = nil;
     }];
 }
 
--(void)postLike:(BOOL)like forPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
+-(void)postLike:(BOOL)like forPostRemoteKey:(NSInteger)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"posts/%d/likes", postRemoteKey];
+    NSString *path = [NSString stringWithFormat:@"posts/%ld/likes", (long)postRemoteKey];
     
     NSString* liked = [NSString stringWithFormat:@"%@",(like?@"true":@"false")];
     
@@ -767,10 +779,10 @@ static WebClient *instance = nil;
 }
 
 
--(void)deletePostWithRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
+- (void)deletePostWithRemoteKey:(NSInteger)postRemoteKey callbackBlock:(void (^) (BOOL success))callbackBlock
 {
     
-    NSString *path = [NSString stringWithFormat:@"posts/%d", postRemoteKey];
+    NSString *path = [NSString stringWithFormat:@"posts/%ld", (long)postRemoteKey];
     
     [self deletePath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -805,7 +817,7 @@ static WebClient *instance = nil;
 {
     NSDictionary *params = [[NSDictionary alloc] initWithDictionary:self.sessionManager.authParameters];
 
-    NSString *path = [NSString stringWithFormat:@"posts/%d/attendees", postRemoteKey];
+    NSString *path = [NSString stringWithFormat:@"posts/%ld/attendees", (long)postRemoteKey];
     
     [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
        
@@ -820,11 +832,34 @@ static WebClient *instance = nil;
     }];
 }
 
+#pragma mark - Voting
+
+- (void)voteWithPostRemoteKey:(NSInteger)postRemoteKey andOption:(NSInteger)option callbackBlock:(void (^) (BOOL success, NSString *statusMsg))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"posts/%ld/votes", (long)postRemoteKey];
+    
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithDictionary:self.sessionManager.authParameters];
+    
+    [params setObject:@(option) forKey:@"option"];
+    
+    DDLogDebug(@"WebClient : voteWithPostRemoteKey params %@", params);
+    
+    [self postPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        callbackBlock(YES, @"success");
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSString *errorMessage = [RemoteParser parsePollVotingErrorMessage:error.localizedRecoverySuggestion];
+        callbackBlock(NO, errorMessage);
+    }];
+}
+
 #pragma mark - Campus Live
 
--(void)attendEvent:(BOOL)attend withPostRemoteKey:(int)postRemoteKey callbackBlock:(void (^) (BOOL success, NSInteger popularity))callbackBlock
+-(void)attendEvent:(BOOL)attend withPostRemoteKey:(NSInteger)postRemoteKey callbackBlock:(void (^) (BOOL success, NSInteger popularity))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"posts/%d/attendees", postRemoteKey];
+    NSString *path = [NSString stringWithFormat:@"posts/%ld/attendees", (long)postRemoteKey];
     
     NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
     
@@ -843,6 +878,26 @@ static WebClient *instance = nil;
        
         callbackBlock(NO, 0);
     }];
+}
+
+- (void)campusLiveSummaryUntil:(NSDate *)until callbackBlock:(void (^) (BOOL success, GLPLiveSummary *liveSummary))callbackBlock
+{
+    NSString *path = [NSString stringWithFormat:@"live_summary"];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:self.sessionManager.authParameters];
+
+    [params setObject:[DateFormatterHelper dateUnixFormat:until] forKey:@"until"];
+    [params setObject:[DateFormatterHelper dateUnixFormat:[NSDate date]] forKey:@"after"];
+    
+    [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+       
+        callbackBlock(YES, [RemoteParser parseLiveSummaryWithJson:responseObject]);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        callbackBlock(NO, nil);
+        
+    }];
+    
 }
 
 //TODO: DEPRECATED.
@@ -889,9 +944,9 @@ static WebClient *instance = nil;
 
 #pragma mark - Groups
 
--(void)getGroupDescriptionWithId:(int)groupId withCallbackBlock:(void (^) (BOOL success, GLPGroup *group, NSString *errorMessage))callbackBlock
+-(void)getGroupDescriptionWithId:(NSInteger)groupId withCallbackBlock:(void (^) (BOOL success, GLPGroup *group, NSString *errorMessage))callbackBlock
 {
-    NSString *path = [NSString stringWithFormat:@"networks/%d",groupId];
+    NSString *path = [NSString stringWithFormat:@"networks/%ld",(long)groupId];
     
     [self getPath:path parameters:self.sessionManager.authParameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -978,16 +1033,16 @@ static WebClient *instance = nil;
     }];
 }
 
--(void)getPostsAfter:(GLPPost *)post withGroupId:(int)groupId callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
+-(void)getPostsAfter:(GLPPost *)post withGroupId:(NSInteger)groupId callback:(void (^)(BOOL success, NSArray *posts))callbackBlock
 {
     NSMutableDictionary *params = [self.sessionManager.authParameters mutableCopy];
     
     if(post)
     {
-        params[@"before"] = [NSNumber numberWithInt:post.remoteKey];
+        params[@"before"] = [NSNumber numberWithInteger:post.remoteKey];
     }
     
-    NSString *path = [NSString stringWithFormat:@"networks/%d/posts",groupId];
+    NSString *path = [NSString stringWithFormat:@"networks/%ld/posts",(long)groupId];
 
     [self getPath:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -1964,6 +2019,36 @@ static WebClient *instance = nil;
     
     [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         NSLog(@"Sentt %lld of %lld bytes", totalBytesWritten, totalBytesExpectedToWrite);
+    }];
+    
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"upload image response %@", responseObject);
+        
+        NSString *response = [RemoteParser parseImageUrl:(NSDictionary*)operation.responseString];
+        callback(YES, response);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        callback(NO, nil);
+    }];
+    
+    [self enqueueHTTPRequestOperation:operation];
+}
+
+/**
+ Now only is used for uploading an image in chat.
+ */
+-(void)uploadImage:(NSData *)imageData callback:(void (^)(BOOL success, NSString *imageUrl))callback progressCallBack:(void (^) (CGFloat progress))progressCallback
+{
+    NSMutableURLRequest *request = [self multipartFormRequestWithMethod:@"POST" path:@"upload" parameters:self.sessionManager.authParameters constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        
+        [formData appendPartWithFileData:imageData name:@"image" fileName:[NSString stringWithFormat:@"user_id_%ld_image.png", (long)self.sessionManager.user.remoteKey] mimeType:@"image/png"];
+    }];
+    
+    [request setTimeoutInterval:300];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {        
+        progressCallback((CGFloat)totalBytesWritten / (CGFloat )totalBytesExpectedToWrite);
     }];
     
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {

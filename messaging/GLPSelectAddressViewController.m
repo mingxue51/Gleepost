@@ -11,6 +11,7 @@
 #import "AddressCell.h"
 #import "WebClient.h"
 #import <MapKit/MapKit.h>
+#import "UINavigationBar+Format.h"
 
 @interface GLPSelectAddressViewController ()
 
@@ -28,6 +29,8 @@
 {
     [super viewDidLoad];
 
+    [self configureNavigationBar];
+    
     [self configureTextField];
     
     [self configureTableView];
@@ -49,6 +52,11 @@
         forControlEvents:UIControlEventEditingChanged];
     
     [_searchField becomeFirstResponder];
+}
+
+- (void)configureNavigationBar
+{
+    [self.navigationController.navigationBar whiteBackgroundFormatWithShadow:YES];
 }
 
 - (void)configureViewController

@@ -37,7 +37,7 @@ typedef NS_ENUM(NSUInteger, GroupPrivacy) {
 
 @property (strong, nonatomic) GLPMember *author;
 
--(id)initWithName:(NSString *)name andRemoteKey:(int)remoteKey;
+- (id)initWithName:(NSString *)name andRemoteKey:(NSInteger)remoteKey;
 - (id)initFromPushNotificationWithRemoteKey:(NSInteger)remoteKey;
 - (NSString *)privacyToString;
 - (NSString *)generatePendingIdentifier;

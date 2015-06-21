@@ -19,8 +19,6 @@
 #import "ContactsManager.h"
 #import "UIViewController+Flurry.h"
 #import "GLPPostNotificationHelper.h"
-#import "ViewPostImageViewController.h"
-#import "TransitionDelegateViewImage.h"
 #import "AppearanceHelper.h"
 #import "GLPCommentUploader.h"
 #import "GLPCommentManager.h"
@@ -32,7 +30,6 @@
 #import "ShapeFormatterHelper.h"
 #import "UIColor+GLPAdditions.h"
 #import "GLPShowLocationViewController.h"
-#import "GLPViewImageViewController.h"
 #import "GLPiOSSupportHelper.h"
 #import "GLPCategory.h"
 #import "TDPopUpAfterGoingView.h"
@@ -40,8 +37,12 @@
 #import "GLPCalendarManager.h"
 #import "GLPShowUsersViewController.h"
 #import "GLPTableActivityIndicator.h"
+#import "ViewPostTitleCell.h"
+#import "GLPLikesCell.h"
+#import "GLPViewImageHelper.h"
+#import "CampusLiveManager.h"
 
-@interface ViewPostViewController () <GLPAttendingPopUpViewControllerDelegate>
+@interface ViewPostViewController () <GLPAttendingPopUpViewControllerDelegate, GLPLikesCellDelegate>
 
 @property (strong, nonatomic) NSMutableArray *comments;
 @property (strong, nonatomic) NSDateFormatter *dateFormatter;
@@ -53,17 +54,15 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *commentFormViewHeight;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *commentFormDistanceFromBottom;
 
-
-@property (strong, nonatomic) TransitionDelegateViewImage *transitionViewImageController;
-
 @property (strong, nonatomic) GLPLocation *selectedLocation;
 
 @property (assign, nonatomic) BOOL postReadyToBeShown;
+@property (assign, nonatomic) BOOL showUsersLikedThePost;
 
 @property (strong, nonatomic) TDPopUpAfterGoingView *transitionViewPopUpAttend;
 @property (strong, nonatomic) GLPTableActivityIndicator *tableActivityIndicator;
 
-
+@property (weak, nonatomic) IBOutlet UITapGestureRecognizer *tapGesture;
 
 @end
 
@@ -90,6 +89,9 @@ static BOOL likePushed;
     [self selfLoadPost];
     
     [self configureNavigationItems];
+    
+    self.tableView.delegate = self;
+    
     
    // [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     
@@ -121,10 +123,6 @@ static BOOL likePushed;
     }
 
     [self showCommentIfNeeded];
-    
-
-//    [self registerNotifications];
-    
     [self sendStatistics];
     
     _tableView.contentInset = UIEdgeInsetsMake(0, 0, 20, 0);
@@ -221,7 +219,6 @@ static BOOL likePushed;
 
 -(void)initialiseElements
 {
-    self.transitionViewImageController = [[TransitionDelegateViewImage alloc] init];
     self.transitionViewPopUpAttend = [[TDPopUpAfterGoingView alloc] init];
     _tableActivityIndicator = [[GLPTableActivityIndicator alloc] initWithPosition:kActivityIndicatorCenter withView:self.tableView];
     
@@ -236,6 +233,9 @@ static BOOL likePushed;
     self.comments = [[NSMutableArray alloc] init];
     
     _selectedLocation = nil;
+    
+    self.showUsersLikedThePost = NO;
+    self.tapGesture.enabled = NO;
     
     if(_post.content)
     {
@@ -256,11 +256,14 @@ static BOOL likePushed;
     
     [self.tableView registerNib:[UINib nibWithNibName:@"PostVideoCell" bundle:nil] forCellReuseIdentifier:@"VideoCell"];
 
+    [self.tableView registerNib:[UINib nibWithNibName:@"PostPollCell" bundle:nil] forCellReuseIdentifier:@"PollCell"];
     
     //Register nib files in table view.
     [self.tableView registerNib:[UINib nibWithNibName:@"CommentTextCellView" bundle:nil] forCellReuseIdentifier:@"CommentTextCell"];
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"CommentTitleCellView" bundle:nil] forCellReuseIdentifier:@"CommentTitleCellView"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"ViewPostTitleCell" bundle:nil] forCellReuseIdentifier:@"ViewPostTitleCell"];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:@"GLPLikesCell" bundle:nil] forCellReuseIdentifier:@"GLPLikesCell"];
 }
 
 -(void)registerNotifications
@@ -315,38 +318,11 @@ static BOOL likePushed;
 
 - (void)configureNavigationItems
 {
-    if(_post.eventTitle)
+    if([_post isEvent])
     {
         [self.navigationController.navigationBar setButton:kRight withImageName:@"pad_icon" withButtonSize:CGSizeMake(25.0, 25.0) withSelector:@selector(showAttendees) andTarget:self];
     }
-    
-    if(self.isFromCampusLive)
-    {
-        [self addCustomBackButton];
-    }
 }
-
--(void)addCustomBackButton
-{
-    UIImage *img = [UIImage imageNamed:@"cancel"];
-    
-    UIButton *btn=[UIButton buttonWithType:UIButtonTypeCustom];
-    [btn addTarget:self action:@selector(dismiss:) forControlEvents:UIControlEventTouchUpInside];
-    [btn setBackgroundImage:img forState:UIControlStateNormal];
-    [btn setFrame:CGRectMake(0, 0, 19, 21)];
-    
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
-        
-    //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(dismiss:)];
-}
-
--(void)dismiss:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:^{
-        
-    }];
-}
-
 
 /**
  If post comes from notifications post is loaded in this method.
@@ -474,13 +450,19 @@ static BOOL likePushed;
 - (void)goingButtonTouchedWithNotification:(NSNotification *)notification
 {    
     GLPPost *incomingPost = notification.userInfo[@"post"];
+    UIImage *image = notification.userInfo[@"post_image"];
+
+    if([image isEqual:[NSNull null]])
+    {
+        image = nil;
+    }
     
     //Show the pop up view.
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPAttendingPopUpViewController *cvc = [storyboard instantiateViewControllerWithIdentifier:@"GLPAttendingPopUpViewController"];
     
     [cvc setDelegate:self];
-    [cvc setEventPost:incomingPost];
+    [cvc setEventPost:incomingPost withImage:image];
     
     cvc.modalPresentationStyle = UIModalPresentationCustom;
     
@@ -493,6 +475,7 @@ static BOOL likePushed;
 
 - (void)showAttendees
 {
+    self.showUsersLikedThePost = NO;
     [self performSegueWithIdentifier:@"show attendees" sender:self];
 }
 
@@ -621,24 +604,10 @@ static bool firstTime = YES;
     
 }
 
-
--(void)viewPostImage:(UIImage*)postImage
+- (void)viewPostImageView:(UIImageView *)postImageView
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
-    GLPViewImageViewController *viewImage = [storyboard instantiateViewControllerWithIdentifier:@"GLPViewImageViewController"];
-    viewImage.image = postImage;
-    viewImage.view.backgroundColor = self.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.89];
-    viewImage.modalPresentationStyle = UIModalPresentationCustom;
-    
-    if(![GLPiOSSupportHelper isIOS6])
-    {
-        [viewImage setTransitioningDelegate:self.transitionViewImageController];
-    }
-    
-    [self.view setBackgroundColor:[AppearanceHelper lightGrayGleepostColour]];
-    [self presentViewController:viewImage animated:YES completion:nil];
+    [GLPViewImageHelper showImageInViewController:self withImageView:postImageView];
 }
-
 
 - (void)setBackgroundToNavigationBar
 {
@@ -839,10 +808,24 @@ static bool firstTime = YES;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSInteger numberOfRows = 1;
+    
     if(_postReadyToBeShown)
     {
         //Add 1 in order to create another cell for post.
-        return self.comments.count+2;
+//        return self.comments.count+2;
+        
+        if([_post isPostLiked])
+        {
+            ++numberOfRows;
+        }
+        
+        if(self.comments.count > 0)
+        {
+            numberOfRows += (self.comments.count + 1);
+        }
+        
+        return numberOfRows;
     }
     
     return 0;
@@ -855,15 +838,18 @@ static bool firstTime = YES;
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
     static NSString *CellIdentifierComment = @"CommentTextCell";
-    static NSString *CellIdentifierTitle = @"CommentTitleCellView";
-    
+    static NSString *CellIdentifierTitle = @"ViewPostTitleCell";
+    static NSString *CellIdentifierLikesCell = @"GLPLikesCell";
+    static NSString *CellIdentifierPoll = @"PollCell";
+
     GLPPostCell *postViewCell;
-    
     CommentCell *cell;
+    ViewPostTitleCell *titleCell;
+    GLPLikesCell *likesCell;
     
     if(indexPath.row == 0)
     {
-        if([_post imagePost])
+        if([_post imagePost] && ![_post isPollPost])
         {
             //If image.
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierWithImage forIndexPath:indexPath];
@@ -875,6 +861,10 @@ static bool firstTime = YES;
             postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
 //            [postViewCell reloadMedia:self.mediaNeedsToReload];
         }
+        else if([_post isPollPost])
+        {
+            postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierPoll forIndexPath:indexPath];
+        }
         else
         {
             //If text.
@@ -882,49 +872,81 @@ static bool firstTime = YES;
         }
         
         postViewCell.delegate = self;
-        
-        //Add touch gestures to like and share buttons.
-//        [self buttonWithName:@"Like" andSubviews:[postViewCell.socialPanel subviews] withCell:postViewCell andPostIndex:indexPath.row];
-//        
-//        [self buttonWithName:@"Comment" andSubviews:[postViewCell.socialPanel subviews] withCell:postViewCell andPostIndex:indexPath.row];
-//        [self buttonWithName:@"" andSubviews:[postViewCell.socialPanel subviews] withCell:postViewCell andPostIndex:indexPath.row];
-        
-        
-        
-//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
-//        [tap setNumberOfTapsRequired:1];
-//        [postViewCell.userImageView addGestureRecognizer:tap];
-        
-        
         [postViewCell setIsViewPost:YES];
         [postViewCell setPost:_post withPostIndexPath:indexPath];
-        
         
         return postViewCell;
 
     }
-    else if (indexPath.row == 1)
+    else if(indexPath.row == 1)
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTitle forIndexPath:indexPath];
-        
-        return cell;
+        if([self.post isPostLiked])
+        {
+            likesCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierLikesCell forIndexPath:indexPath];
+            [likesCell setLikedUsers:self.post.usersLikedThePost];
+            likesCell.delegate = self;
+            return likesCell;
+        }
+        else
+        {
+            titleCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTitle forIndexPath:indexPath];
+            [titleCell setTitle:@"Comments"];
+            return titleCell;
+        }
+    }
+    else if (indexPath.row == 2)
+    {
+        if([self.post isPostLiked])
+        {
+            titleCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTitle forIndexPath:indexPath];
+            [titleCell setTitle:@"Comments"];
+            return titleCell;
+        }
+        else
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierComment forIndexPath:indexPath];
+            
+            [cell setDelegate:self];
+            
+            GLPComment *comment = self.comments[0];
+            
+            [cell setComment:comment withIndex:0 andNumberOfComments:_comments.count];
+            
+            return cell;
+        }
+
     }
     else
     {
-        //TODO: Fix cell by removing the dynamic data generation.
         
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierComment forIndexPath:indexPath];
-        
-        [cell setDelegate:self];
-        
-        GLPComment *comment = self.comments[indexPath.row - 2];
-        
-        [cell setComment:comment withIndex:indexPath.row - 2 andNumberOfComments:_comments.count];
-        
-        return cell;
+        if([self.post isPostLiked])
+        {
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierComment forIndexPath:indexPath];
+            
+            [cell setDelegate:self];
+            
+            GLPComment *comment = self.comments[indexPath.row - 3];
+            
+            [cell setComment:comment withIndex:indexPath.row - 3 andNumberOfComments:_comments.count];
+            
+            return cell;
+        }
+        else
+        {
+            //TODO: Fix cell by removing the dynamic data generation.
+            
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierComment forIndexPath:indexPath];
+            
+            [cell setDelegate:self];
+            
+            GLPComment *comment = self.comments[indexPath.row - 2];
+            
+            [cell setComment:comment withIndex:indexPath.row - 2 andNumberOfComments:_comments.count];
+            
+            return cell;
+        }
     }
 }
-
 
 #pragma mark - Table view delegate
 
@@ -937,6 +959,8 @@ static bool firstTime = YES;
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+    
+
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -945,7 +969,7 @@ static bool firstTime = YES;
     
     if(indexPath.row == 0)
     {
-        if([self.post imagePost])
+        if([self.post imagePost] && ![_post isPollPost])
         {
             return [GLPPostCell getCellHeightWithContent:self.post cellType:kImageCell isViewPost:YES] + 10.0f;
             
@@ -955,6 +979,10 @@ static bool firstTime = YES;
         {
             return [GLPPostCell getCellHeightWithContent:self.post cellType:kVideoCell isViewPost:YES] + 10.0f;
         }
+        else if ([self.post isPollPost])
+        {
+            return [GLPPostCell getCellHeightWithContent:self.post cellType:kPollCell isViewPost:NO] + 10.0f;
+        }
         else
         {
              return [GLPPostCell getCellHeightWithContent:self.post cellType:kTextCell isViewPost:YES] + 10.0f;
@@ -963,13 +991,42 @@ static bool firstTime = YES;
     }
     else if (indexPath.row == 1)
     {
-        return 30.0;
+        if([self.post isPostLiked])
+        {
+            return [GLPLikesCell height];
+        }
+        else
+        {
+            return 30.0;
+        }
+    }
+    else if(indexPath.row == 2)
+    {
+        if([self.post isPostLiked])
+        {
+            return 30.0;
+        }
+        else
+        {
+            GLPComment *comment = [self.comments objectAtIndex:0];
+            
+            return [CommentCell getCellHeightWithContent:comment.content image:NO];
+        }
     }
     else
     {
-        GLPComment *comment = [self.comments objectAtIndex:indexPath.row-2];
-        
-        return [CommentCell getCellHeightWithContent:comment.content image:NO];
+        if([self.post isPostLiked])
+        {
+            GLPComment *comment = [self.comments objectAtIndex:indexPath.row-3];
+            
+            return [CommentCell getCellHeightWithContent:comment.content image:NO];
+        }
+        else
+        {
+            GLPComment *comment = [self.comments objectAtIndex:indexPath.row-2];
+            
+            return [CommentCell getCellHeightWithContent:comment.content image:NO];
+        }
     }
     
 }
@@ -1023,26 +1080,29 @@ static bool firstTime = YES;
     {
         [_groupController removePostWithPost:post];
     }
+    else if(self.isFromCampusLive)
+    {
+        //Inform Campus Wall that the campus live status changed.
+        //i.e. refresh campus live.
+        [[CampusLiveManager sharedInstance] deletePostWithPost:post];
+    }
     else
     {
         [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:NO];
     }
     
-    if(self.isFromCampusLive)
-    {
-        [self dismissViewControllerAnimated:YES completion:^{
-            
-            //Inform Campus Wall that the campus live status changed.
-            //i.e. refresh campus live.
-            [GLPPostNotificationHelper deletePostNotificationWithPostRemoteKey:post.remoteKey inCampusLive:YES];
-            
-        }];
-    }
-    else
-    {
-        // Pop-up view controller.
-        [self.navigationController popViewControllerAnimated:YES];
-    }
+
+    
+    // Pop-up view controller.
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - GLPLikesCellDelegate
+
+- (void)likesCellTouched
+{
+    self.showUsersLikedThePost = YES;
+    [self performSegueWithIdentifier:@"show attendees" sender:self];
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -1155,6 +1215,8 @@ static bool firstTime = YES;
 
 - (void)growingTextViewDidBeginEditing:(HPGrowingTextView *)growingTextView
 {
+    self.tapGesture.enabled = YES;
+
     if(self.comments.count == 0)
     {
         CGPoint origin = growingTextView.frame.origin;
@@ -1166,7 +1228,7 @@ static bool firstTime = YES;
         
         DDLogDebug(@"growingTextViewDidBeginEditing: %@", growingTextView);
         
-        [self.tableView setContentOffset:offset animated:NO];
+//        [self.tableView setContentOffset:offset animated:NO];
     }
 }
 
@@ -1233,8 +1295,10 @@ static bool firstTime = YES;
 
 - (IBAction)tableViewClicked:(id)sender
 {
-    NSLog(@"Table View Touched");
+    DDLogDebug(@"View Touched");
     [self hideKeyboardFromTextViewIfNeeded];
+    
+    self.tapGesture.enabled = NO;
 }
 
 
@@ -1332,14 +1396,14 @@ static bool firstTime = YES;
 
 }
 
-- (void)scrollToBottomAndUpdateTableViewWithNewComments:(int)count
+- (void)scrollToBottomAndUpdateTableViewWithNewComments:(NSInteger)count
 {
     
     
     NSMutableArray *rowsInsertIndexPath = [[NSMutableArray alloc] init];
         
     
-    for(int i = self.comments.count; i < self.comments.count+count; i++)
+    for(NSInteger i = self.comments.count; i < self.comments.count+count; i++)
     {
         [rowsInsertIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
     }
@@ -1369,9 +1433,23 @@ static bool firstTime = YES;
 
 - (void)scrollToTheEndAnimated:(BOOL)animated
 {
-    if(self.comments.count > 0)
+    if(self.comments.count > 0 && [self.post isPostLiked])
     {
-    
+        NSUInteger numberOfRows = self.comments.count + 1;
+        
+        if([self.post isPostLiked])
+        {
+            numberOfRows += 1;
+        }
+        
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:numberOfRows inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    }
+    else if (self.comments.count == 0 && [self.post isPostLiked])
+    {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+    }
+    else if(self.comments.count > 0 && ![self.post isPostLiked])
+    {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:self.comments.count + 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     }
     else
@@ -1435,9 +1513,16 @@ static bool firstTime = YES;
     {
         GLPShowUsersViewController *showUsersVC = segue.destinationViewController;
         
-        showUsersVC.postRemoteKey = _post.remoteKey;
-        
-        showUsersVC.selectedTitle = @"GUEST LIST";
+        if(self.showUsersLikedThePost)
+        {
+            showUsersVC.users = self.post.usersLikedThePost;
+            showUsersVC.selectedTitle = @"LIKED BY";
+        }
+        else
+        {
+            showUsersVC.postRemoteKey = _post.remoteKey;
+            showUsersVC.selectedTitle = @"GUEST LIST";
+        }
     }
 }
 

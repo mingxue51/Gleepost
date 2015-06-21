@@ -1,109 +1,54 @@
 //
-//  GLPStretchedImageView.m
+//  GLPGroupStretchedImageView.m
 //  Gleepost
 //
-//  Created by Σιλουανός on 28/7/14.
-//  Copyright (c) 2014 Gleepost. All rights reserved.
+//  Created by Silouanos on 02/05/15.
+//  Copyright (c) 2015 Gleepost. All rights reserved.
 //
 
 #import "GLPStretchedImageView.h"
-#import "ShapeFormatterHelper.h"
-#import "NSString+Utils.h"
 #import "GLPiOSSupportHelper.h"
+#import "NSString+Utils.h"
 
 @interface GLPStretchedImageView ()
 
-@property (strong, nonatomic) UILabel *title;
-@property (strong, nonatomic) UIFont *font;
 @property (strong, nonatomic) UIImageView *transImageView;
-//@property (strong, nonatomic) UIButton *joinButton;
+@property (strong, nonatomic) UIColor *transImageViewColour;
+@property (assign, nonatomic) CGFloat transImageViewAlpha;
+
 @end
 
 @implementation GLPStretchedImageView
 
-const float kStretchedImageHeight = 250;
-
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
-    self = [super initWithCoder:aDecoder];
+    self = [super initWithCoder:coder];
     
     if (self)
     {
-        [self configureFont];
-
-        [self configureLabel];
-        
-//        [self configureJoinButton];
-        
+        self.transImageViewColour = [UIColor blackColor];
+        self.transImageViewAlpha = 0.5;
         [self configureTransparentImageView];
     }
-    
     return self;
 }
 
-#pragma mark - Configuration
-//
-//- (void)configureJoinButton
-//{
-//    _joinButton = [[UIButton alloc] initWithFrame:CGRectMake(20.0f, self.frame.size.height - 45, 40.0f, 40.0f)];
-//    
-//    [_joinButton setBackgroundImage:[UIImage imageNamed:@"temp_request_to_join"] forState:UIControlStateNormal];
-//    
-//    [_joinButton addTarget:self action:@selector(joinOrRequestToJoin) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    [self addSubview:_joinButton];
-//}
-
-- (void)configureLabel
-{
-    CGFloat screenWidth = [GLPiOSSupportHelper screenWidth];
-    
-    _title = [[UILabel alloc] initWithFrame:CGRectMake(20.0, 130.0, screenWidth - 40, 80.0)];
-    
-    [_title setCenter:CGPointMake(screenWidth / 2, _title.center.y)];
-    
-    [_title setFont:_font];
-    
-    [_title setTextColor:[UIColor whiteColor]];
-    
-    [_title setTextAlignment:NSTextAlignmentCenter];
-    
-    [_title setNumberOfLines:0];
-    
-//    [ShapeFormatterHelper setBorderToView:_title withColour:[UIColor redColor] andWidth:1.0];
-    
-    [self addSubview:_title];
-}
-
-- (void)configureFont
-{
-    _font = [UIFont fontWithName:@"HelveticaNeue" size:22.0];
-}
 
 - (void)configureTransparentImageView
 {
-    _transImageView = [[UIImageView alloc] initWithFrame:self.frame];
+    self.transImageView = [[UIImageView alloc] initWithFrame:self.frame];
+    self.transImageView.tag = 5;
+    CGRectSetW(self.transImageView, [GLPiOSSupportHelper screenWidth]);
     
-    CGRectSetW(_transImageView, [GLPiOSSupportHelper screenWidth]);
+    [self.transImageView setBackgroundColor:self.transImageViewColour];
     
-    [_transImageView setBackgroundColor:[UIColor blackColor]];
+    [self.transImageView setAlpha:self.transImageViewAlpha];
     
-    [_transImageView setAlpha:0.5 ];
+    [self.transImageView setClipsToBounds:YES];
     
-    [_transImageView setClipsToBounds:YES];
+    [self addSubview:self.transImageView];
     
-    [self addSubview:_transImageView];
-    
-    [self sendSubviewToBack:_transImageView];
-}
-
-#pragma mark - Modifiers
-
-- (void)setTextInTitle:(NSString *)text
-{
-    [_title setText:text];
-    
-    CGRectSetH(_title, [self getContentLabelSizeForContent:text]);
+    [self sendSubviewToBack:self.transImageView];
 }
 
 - (void)setHeightOfTransImage:(float)height
@@ -121,29 +66,35 @@ const float kStretchedImageHeight = 250;
     }
 }
 
-#pragma mark - Helpers
-
-- (float)getContentLabelSizeForContent:(NSString *)content
+- (void)setColourOverlay:(UIColor *)colourOverlay
 {
-    int maxWidth = _title.frame.size.width;
-    
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: _font}];
-    
-    CGRect rect = [attributedText boundingRectWithSize:(CGSize){maxWidth, CGFLOAT_MAX}
-                                               options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading)
-                                               context:nil];
-    
-    return rect.size.height;
+    [self removeTransImageView];
+    self.transImageViewColour = colourOverlay;
+    [self configureTransparentImageView];
 }
 
+- (void)setAlphaOverlay:(CGFloat)alpha
+{
+    [self removeTransImageView];
+    self.transImageViewAlpha = alpha;
+    [self configureTransparentImageView];
+}
 
-
+- (void)removeTransImageView
+{
+    for(UIView *v in self.subviews)
+    {
+        if(v.tag == 5)
+        {
+            [v removeFromSuperview];
+        }
+    }
+}
 
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
+- (void)drawRect:(CGRect)rect {
     // Drawing code
 }
 */

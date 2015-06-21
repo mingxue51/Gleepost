@@ -17,7 +17,6 @@
 {
     GLPComment *comment = [self createCommentWithConent:content andPost:post];
     
-    
     //Save comment locally.
     [GLPCommentDao save:comment];
     

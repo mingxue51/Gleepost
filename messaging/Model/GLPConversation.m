@@ -132,7 +132,7 @@
     return _participants[0];
 }
 
-- (NSString *)getLastMessageOrDefault
+- (NSString *)getLastMessagesContentOrDefault
 {
     return _lastMessage ? _lastMessage : @"";
 }
@@ -144,7 +144,8 @@
 
 - (void)updateWithNewMessage:(GLPMessage *)message
 {
-    _lastMessage = message.content;
+//    _lastMessage = message.content;
+    _lastMessage = [message getReadableContent];
     _lastUpdate = message.date;
 }
 
@@ -170,6 +171,16 @@
         
         self.hasUnreadMessages = YES;
         
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)isGroupMessenger
+{
+    if(_groupRemoteKey != 0)
+    {
         return YES;
     }
     

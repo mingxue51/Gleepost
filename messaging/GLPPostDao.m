@@ -17,6 +17,7 @@
 #import "GLPLocation.h"
 #import "CategoryManager.h"
 #import "GLPReviewHistoryDaoParser.h"
+#import "GLPPollDao.h"
 
 @implementation GLPPostDao
 
@@ -48,6 +49,8 @@
     
     [GLPPostDao loadVideosWithPosts:result withDb:db];
     
+    [GLPPostDao loadPollPostDataIfNeededWithPosts:result db:db];
+    
     return result;
 }
 
@@ -75,6 +78,7 @@
     
     [GLPPostDao loadVideosWithPosts:result withDb:db];
 
+    [GLPPostDao loadPollPostDataIfNeededWithPosts:result db:db];
     
     return result;
 }
@@ -101,7 +105,7 @@
     
     [GLPPostDao loadVideosWithPosts:result withDb:db];
     
-    
+    [GLPPostDao loadPollPostDataIfNeededWithPosts:result db:db];
     
     return result;
 }
@@ -143,6 +147,8 @@
     
     [GLPPostDao loadVideosWithPosts:result withDb:db];
     
+    [GLPPostDao loadPollPostDataIfNeededWithPosts:result db:db];
+    
     return result;
 }
 
@@ -174,6 +180,8 @@
     
     [GLPPostDao loadVideosWithPosts:result withDb:db];
     
+    [GLPPostDao loadPollPostDataIfNeededWithPosts:result db:db];
+    
     return result;
 }
 
@@ -195,6 +203,8 @@
     [GLPPostDao loadImagesWithPosts:result withDb:db];
     
     [GLPPostDao loadVideosWithPosts:result withDb:db];
+    
+    [GLPPostDao loadPollPostDataIfNeededWithPosts:result db:db];
     
     return result;
 }
@@ -230,6 +240,8 @@
     [GLPPostDao loadImagesWithPosts:result withDb:db];
     
     [GLPPostDao loadVideosWithPosts:result withDb:db];
+    
+    [GLPPostDao loadPollPostDataIfNeededWithPosts:result db:db];
     
     return result;
 }
@@ -286,6 +298,14 @@
     for(GLPPost *currentPost in posts)
     {
         [GLPPostDao loadImagesWithPost:currentPost db:db];
+    }
+}
+
++ (void)loadPollPostDataIfNeededWithPosts:(NSMutableArray *)posts db:(FMDatabase *)db
+{
+    for(GLPPost *currentPost in posts)
+    {
+        currentPost.poll = [GLPPollDao findPollWithPostRemoteKey:currentPost.remoteKey db:db];
     }
 }
 
@@ -376,6 +396,7 @@
         
         [GLPPostDao loadImagesWithPosts:pendingPosts withDb:db];
         [GLPPostDao loadVideosWithPosts:pendingPosts withDb:db];
+        [GLPPostDao loadPollPostDataIfNeededWithPosts:pendingPosts db:db];
     }];
     
     return pendingPosts;
@@ -514,7 +535,7 @@
 {
     [localPosts removeObjectsInArray:remotePosts];
     
-    DDLogDebug(@"GLPPostDao : subtractRemotePosts %d : %d", remotePosts.count, localPosts.count);
+    DDLogDebug(@"GLPPostDao : subtractRemotePosts %lu : %lu", (unsigned long)remotePosts.count, (unsigned long)localPosts.count);
 
     if(localPosts.count == remotePosts.count)
     {
@@ -575,7 +596,7 @@
     
     int eventDate = [entity.dateEventStarts timeIntervalSince1970];
     
-    int groupRemoteKey = entity.group ? entity.group.remoteKey : 0;
+    NSInteger groupRemoteKey = entity.group ? entity.group.remoteKey : 0;
     
     BOOL postSaved;
     
@@ -636,6 +657,15 @@
     if([entity isVideoPost])
     {
         [GLPPostDao saveVideoWithEntity:entity inDb:db];
+    }
+    
+    if([entity isPollPost] && entity.remoteKey == 0)
+    {
+        [GLPPollDao savePollBeforeSent:entity.poll withPostKey:entity.key db:db];
+    }
+    else if([entity isPollPost] && entity.remoteKey != 0)
+    {
+        [GLPPollDao saveOrUpdatePoll:entity.poll withPostRemoteKey:entity.remoteKey db:db];
     }
     
     //Save the author.
@@ -764,6 +794,9 @@
          entity.remoteKey,
          entity.sendStatus,
          entity.key];
+        
+        [GLPPollDao updatePollAfterSent:entity.poll withPostKey:entity.key withRemoteKey:entity.remoteKey db:db];
+
     } else
     {
         DDLogDebug(@"updatePostSendingData remote key zero");
@@ -771,7 +804,6 @@
          entity.sendStatus,
          entity.key];
     }
-    
     
     //Insert post's categories.
     for(GLPCategory *category in entity.categories)
@@ -809,6 +841,11 @@
         [GLPPostDao updateImagesWithEntity:entity db:db];
     }
     
+    if([entity isPollPost])
+    {
+        [GLPPollDao saveOrUpdatePoll:entity.poll withPostRemoteKey:entity.remoteKey db:db];
+    }
+    
     //TODO: Add operation to update video as well.
 }
 
@@ -816,7 +853,7 @@
 {
     [GLPPostDao updatePostSendingData:entity inDb:db];
     
-    DDLogDebug(@"updateVideoPostSendingData post key: %d :%@", entity.key, entity.content);
+    DDLogDebug(@"updateVideoPostSendingData post key: %ld :%@", (long)entity.key, entity.content);
     
     if(entity.remoteKey != 0)
     {
@@ -852,6 +889,8 @@
     
     [db executeUpdateWithFormat:@"delete from review_history where post_remote_key=%d",
      entity.remoteKey];
+    
+    [GLPPollDao deletePollWithPostRemoteKey:entity.remoteKey db:db];
     
     DDLogDebug(@"GLPPostDao : deletePostWithPost %@ %ld - %d", entity.content, (long)entity.group.remoteKey, b);
 }

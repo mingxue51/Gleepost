@@ -18,6 +18,7 @@
 #import "GLPConversationRead.h"
 #import "GLPReviewHistory.h"
 #import "GLPSystemMessage.h"
+#import "GLPLiveSummary.h"
 
 @interface RemoteParser()
 
@@ -230,7 +231,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     if(json[@"mostRecentMessage"] && json[@"mostRecentMessage"] != [NSNull null]) {
         GLPMessage *message = [RemoteParser parseMessageFromJson:json[@"mostRecentMessage"] forConversation:nil];
-        conversation.lastMessage = ([message isKindOfClass:[GLPSystemMessage class]]) ? [(GLPSystemMessage *)message systemContent] : message.content;
+        conversation.lastMessage = ([message isKindOfClass:[GLPSystemMessage class]]) ? [(GLPSystemMessage *)message systemContent] : [message getReadableContent];
     }
     
     conversation.lastUpdate = [RemoteParser parseDateFromString:json[@"lastActivity"]];
@@ -478,7 +479,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     BOOL systemMessage = [json[@"system"] boolValue];
     
     if(systemMessage)
-    {
+    {        
         return [[GLPSystemMessage alloc] initWithMessage:message];
     }
 
@@ -542,7 +543,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.author = [RemoteParser parseUserFromJson:json[@"by"]];
     post.date = [RemoteParser parseDateFromString:json[@"timestamp"]];
     post.content = json[@"text"];
-
     post.commentsCount = [json[@"comment_count"] integerValue];
 
     post.likes = [json[@"like_count"] integerValue];
@@ -568,6 +568,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
         if([attributes objectForKey:@"event-time"])
         {
             post.dateEventStarts = [RemoteParser parseDateFromString:[attributes objectForKey:@"event-time"]];
+            post.eventTitle = [attributes objectForKey:@"title"];
+        }
+        else
+        {
             post.eventTitle = [attributes objectForKey:@"title"];
         }
     }
@@ -608,11 +612,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     
     post.liked = NO;
     
-    if(usersLiked && usersLiked != (id)[NSNull null])
+    if(usersLiked && usersLiked != (id)[NSNull null] && post.usersLikedThePost.count == 0)
     {
         for(NSDictionary *userLiked in usersLiked)
         {
-            
             NSDictionary *dict = [userLiked objectForKey:@"by"];
             
             NSNumber *userRemoteKey = [dict objectForKey:@"id"];
@@ -620,9 +623,9 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
             if([userRemoteKey integerValue] == [[SessionManager sharedInstance]user].remoteKey)
             {
                 post.liked = YES;
-                break;
             }
             
+            [post addUserLikedThePost:[RemoteParser parseUserFromJson:dict]];
         }
     }
     
@@ -640,8 +643,31 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     post.attended = [json[@"attending"] boolValue];
+    post.poll = [RemoteParser parsePollDataWithPollData:json[@"poll"]];
+    
+    if([post isPollPost])
+    {
+        DDLogDebug(@"RemoteParser : poll %@", post);
+    }
+    
+    post.sendStatus = kSendStatusSent;
     
     return post;
+}
+
++ (GLPPoll *)parsePollDataWithPollData:(NSDictionary *)jsonData
+{
+    if(!jsonData)
+    {
+        return nil;
+    }
+    
+    GLPPoll *poll = [[GLPPoll alloc] init];
+    poll.expirationDate = [RemoteParser parseDateFromString:jsonData[@"expires-at"]];
+    poll.usersVote = jsonData[@"your-vote"];
+    poll.options = jsonData[@"options"];
+    [poll setVotes:jsonData[@"votes"]];
+    return poll;
 }
 
 + (GLPVideo *)parseVideosData:(NSArray *)jsonArray
@@ -862,7 +888,38 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
     
     return delimitedCommaTags;
+}
+
++ (NSString *)generatePollOptionsInCDFormatWithOptions:(NSArray *)options
+{
+    NSMutableString *delimitedCommaTags = [NSMutableString string];
+
+    NSInteger index = 0;
     
+    for(NSString *option in options)
+    {
+        if(index == options.count-1)
+        {
+            [delimitedCommaTags appendString:[NSString stringWithFormat:@"%@", option]];
+        }
+        else
+        {
+            [delimitedCommaTags appendString:[NSString stringWithFormat:@"%@,",option]];
+        }
+        
+        ++index;
+    }
+    
+    return delimitedCommaTags;
+}
+
+#pragma mark - Campus Live
+
++ (GLPLiveSummary *)parseLiveSummaryWithJson:(NSDictionary *)json
+{
+    DDLogDebug(@"Remote parser parseLiveSummaryWithJson %@", json);
+    
+    return [[GLPLiveSummary alloc] initWithTotalPosts:[json[@"total-posts"] integerValue] andByCategoryData:json[@"by-category"]];
 }
 
 #pragma mark - Attendees
@@ -911,9 +968,7 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     [group setPrivacyWithString:json[@"privacy"]];
     
     if(json[@"last_activity"])
-    {
-        DDLogDebug(@"RemoteParser : parseGroupFromJson %@", json[@"last_activity"]);
-        
+    {        
         group.lastActivity = [RemoteParser parseDateFromString:json[@"last_activity"]];
     }
     
@@ -1138,6 +1193,21 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     }
 }
 
++ (NSString *)parsePollVotingErrorMessage:(NSString *)error
+{
+    if(!error)
+    {
+        return @"network issue";
+    }
+    
+    if([error rangeOfString:@"You already voted"].location != NSNotFound)
+    {
+        return @"already voted";
+    }
+    
+    return @"unspecified error occurred";
+}
+
 #pragma mark - Images
 
 +(NSString*)parseImageUrl:(NSString*)url
@@ -1230,6 +1300,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     {
         type = kGLPNotificationTypePostRejected;
     }
+    else if ([notificationsType isEqualToString:@"poll_vote"])
+    {
+        type = kGLPNotificationTypeSomeoneVoted;
+    }
     
     notification.notificationType = type;
     notification.seen = [json[@"seen"] boolValue];
@@ -1268,7 +1342,11 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     event.data = json[@"data"];
     event.location = json[@"location"];
     
-    DDLogDebug(@"RemoteParser : parseWebSocketEventFromJson %@", json);
+    if(event.type != kGLPWebSocketEventTypePresence)
+    {
+        DDLogDebug(@"RemoteParser : parseWebSocketEventFromJson %@", json);
+    }
+    
     
     return event;
 }

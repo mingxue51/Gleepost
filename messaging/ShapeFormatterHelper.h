@@ -10,7 +10,9 @@
 
 @interface ShapeFormatterHelper : NSObject
 
-+(void)setRoundedView:(UIView *)roundedView toDiameter:(float)newSize;
++(void)setRoundedView:(UIView *)roundedView toDiameter:(CGFloat)newSize;
+
++ (void)setRoundedViewWithNotClipToBounds:(UIView *)roundedView toDiameter:(float)newSize;
 
 +(void)createTwoTopCornerRadius:(UIImageView*)imageView withViewBounts:(CGRect)viewBounds andSizeOfCorners:(CGSize)sizeOfCorners;
 
@@ -35,5 +37,9 @@
 + (void)resetAnyFormatOnView:(UIView *)view;
 
 +(void)setBorderToView:(UIView *)view withColour:(UIColor *)colour;
+
++(void)formatTopCellWithBackgroundView:(UIImageView *)backgroundView andSuperView:(UIView *)superview;
++ (void)formatBottomCellWithBackgroundView:(UIImageView *)backgroundImageView andSuperView:(UIView *)superview;
++ (void)removeTopCellBottomLine:(UIView *)superview;
 
 @end

@@ -15,7 +15,8 @@
 typedef NS_ENUM(NSInteger, GLPCellType) {
     kTextCell,
     kImageCell,
-    kVideoCell
+    kVideoCell,
+    kPollCell
 };
 
 @protocol RemovePostCellDelegate <NSObject>
@@ -57,11 +58,14 @@ extern const float TEXT_CELL_HEIGHT;
 -(void)setPost:(GLPPost *)post withPostIndexPath:(NSIndexPath *)indexPath;
 
 +(CGFloat)getCellHeightWithContent:(GLPPost *)post cellType:(GLPCellType)cellType isViewPost:(BOOL)isViewPost;
++(CGSize)getContentLabelSizeForContent:(NSString *)content isViewPost:(BOOL)isViewPost cellType:(GLPCellType)cellType;
 
 -(void)reloadMedia:(BOOL)loadMedia;
 
 -(void)setIsViewPost:(BOOL)isViewPost;
 
 - (void)deregisterNotificationsInVideoView;
+
+- (GLPPost *)viewPost;
 
 @end

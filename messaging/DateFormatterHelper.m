@@ -7,6 +7,8 @@
 //
 
 #import "DateFormatterHelper.h"
+#import "NSDate+TimeAgo.h"
+#import "NSDate+HumanizedTime.h"
 
 @implementation DateFormatterHelper
 
@@ -82,6 +84,12 @@
     return [f stringFromDate:date];
 }
 
++ (NSString *)generateDateTimestamp
+{
+    NSMutableString *timestamp = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970] * 1000].mutableCopy;
+    return [timestamp stringByReplacingOccurrencesOfString:@"." withString:@""];
+}
+
 +(NSDate *)generateDateWithDay:(int)day month:(int)month year:(int)year hour:(int)hour andMinutes:(int)minutes
 {
     NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit) fromDate:[NSDate date]];
@@ -137,6 +145,18 @@
     [comp setHour:comp.hour+hours];
     [comp setMinute:comp.minute];
     //    [comp setYear:year];
+    NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comp];
+    
+    return date;
+}
+
++ (NSDate *)generateDateAfterMinutes:(NSInteger)minutes
+{
+    NSDateComponents *comp = [[NSCalendar currentCalendar] components:(NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:[NSDate date]];
+    
+    [comp setDay:comp.day];
+    [comp setHour:comp.hour];
+    [comp setMinute:comp.minute+minutes];
     NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:comp];
     
     return date;
@@ -204,6 +224,25 @@
     return date;
 }
 
+#pragma mark - For UI
+
++ (NSString *)generateStringTimeForPostEventWithTime:(NSDate *)date
+{
+    if ([[NSDate date] compare:date] == NSOrderedDescending)
+    {
+        return [date timeAgo];
+        
+    } else if ([[NSDate date] compare:date] == NSOrderedAscending)
+    {
+        
+        return [date stringWithHumanizedTimeDifference:NSDateHumanizedSuffixLeft withFullString:YES];
+    
+    } else
+    {
+        return [date timeAgo];
+    }
+}
+
 #pragma mark - Date as param
 
 +(BOOL)date:(NSDate*)date isBetweenDate:(NSDate*)beginDate andDate:(NSDate*)endDate
@@ -226,5 +265,6 @@
     [comp setMinute:comp.minute];
     return [[NSCalendar currentCalendar] dateFromComponents:comp];
 }
+
 
 @end

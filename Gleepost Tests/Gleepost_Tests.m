@@ -13,6 +13,11 @@
 #import "GLPReviewHistory.h"
 #import "GLPPost.h"
 #import "GLPPostManager.h"
+#import "GLPPoll.h"
+#import "GLPPollDao.h"
+#import "GLPLiveSummaryDao.h"
+#import "GLPLiveSummary.h"
+#import "GLPMessage.h"
 
 @interface Gleepost_Tests : XCTestCase
 
@@ -30,9 +35,63 @@
     [super tearDown];
 }
 
-- (void)testExample {
+- (void)testFindPollDb {
     
+    
+}
 
+- (void)testMediaMessage
+{
+    GLPMessage *message = [[GLPMessage alloc] init];
+    message.content = @"<21312312|image>";
+    
+    XCTAssert([message isImageMessage], @"Failed to identify image message");
+}
+
+- (void)testLiveSummaryOperations
+{
+    GLPLiveSummary *liveSummary = [self setUpLiveSummary];
+    XCTAssert([GLPLiveSummaryDao saveLiveSummary:liveSummary], @"Failed to save live summary");
+    XCTAssert([GLPLiveSummaryDao findCurrentLiveSummary], @"Failed to find live summary");
+}
+
+- (GLPLiveSummary *)setUpLiveSummary
+{
+    NSMutableDictionary *liveDictionary = [[NSMutableDictionary alloc] init];
+    
+    [liveDictionary setObject:@(43) forKey:@"party"];
+    [liveDictionary setObject:@(12) forKey:@"sports"];
+    [liveDictionary setObject:@(68) forKey:@"food"];
+    
+    return [[GLPLiveSummary alloc] initWithTotalPosts:100 andByCategoryData:liveDictionary.mutableCopy];
+}
+
+- (void)testPollDbOperations
+{
+    GLPPoll *poll = [self setUpPoll];
+    poll.key = 1;
+    
+    XCTAssert([GLPPollDao saveOrUpdatePoll:poll withPostRemoteKey:99999991], @"Failed to save or update poll");
+    
+    [poll.votes setObject:@(232) forKey:@"Hellas Cyprus"];
+    
+    XCTAssert([GLPPollDao saveOrUpdatePoll:poll withPostRemoteKey:99999991], @"Failed to save or update poll");
+    
+    XCTAssert([GLPPollDao findPollWithPostRemoteKey:99999991], @"Failed to find poll");
+    
+    XCTAssert([GLPPollDao deletePollWithPostRemoteKey:99999991], @"Failed to delete poll");
+}
+
+- (GLPPoll *)setUpPoll
+{
+    GLPPoll *poll = [[GLPPoll alloc] init];
+    poll.expirationDate = [NSDate date];
+    
+    poll.options = @[@"Hillary Clinton", @"Hellas Cyprus"];
+    [poll setVotes: @{@"Hillary Clinton" : @(1)}.mutableCopy];
+    poll.usersVote = @"Hillary Clinton";
+    
+    return poll;
 }
 
 - (void)testThemeManager

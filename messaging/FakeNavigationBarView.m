@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 Gleepost. All rights reserved.
 //
 //  This is a fake navigation bar and for now is used only in GroupViewController.
-//  It's created to avoid the so-called "black issue" during the navigation between
+//  It's created to avoid the so-called "black issue" during the navigation, for instance, between
 //  GroupViewController and GLPGroupsViewController.
+//  This navigation bar could be used to any view controller needs more customisation
+//  on navigation bar's titles or any other kind of customisation.
 
 #import "FakeNavigationBarView.h"
 #import "ShapeFormatterHelper.h"
@@ -29,15 +31,13 @@
 
 - (id)initWithTitle:(NSString *)title
 {
-    self = [super init];
+    self = [super initWithNibName:@"FakeNavigationBarView"];
     
     if(self)
     {
         _title = title;
-        
         [self initiliaseObjects];
-        
-        [self configureView];
+        [self configureTitle];
     }
     
     return self;
@@ -46,34 +46,47 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
-    [self formatNavigationBar];
+}
+
+- (void)configureTitle
+{
+    [(FakeNavigationBarView *)self.externalView setTitle:[_title uppercaseString]];
 }
 
 - (void)formatNavigationBar
 {
+    [super formatNavigationBar];
+    
     [self.titleLbl setTextColor: [[GLPThemeManager sharedInstance] navigationBarTitleColour]];
-    [self setBackgroundColor:[[GLPThemeManager sharedInstance] navigationBarColour]];
 }
 
 - (void)initiliaseObjects
 {
-    _animationDuration = 0.3 ;
-}
-
-- (void)configureView
-{
-    FakeNavigationBarView *view = [[[NSBundle mainBundle] loadNibNamed:@"FakeNavigationBarView" owner:self options:nil] objectAtIndex:0];
-    CGRectSetW(view, [GLPiOSSupportHelper screenWidth]);
-    [self setFrame:view.frame];
-    [view setTitle:[_title uppercaseString]];
-    [self addSubview:view];
+    _animationDuration = 0.3;
 }
 
 - (void)setTitle:(NSString *)title
 {
     [_titleLbl setText:title];
 }
+
+#pragma mark - Used from subclasses
+
+- (void)setTitleToLabel:(NSString *)title
+{
+    [(FakeNavigationBarView *)self.externalView setTitle:[title uppercaseString]];
+}
+
+- (void)setTitleColour:(UIColor *)colour
+{
+    [self.titleLbl setTextColor:colour];
+}
+
+- (void)setAlphaToTitle:(CGFloat)alpha
+{
+    self.titleLbl.alpha = alpha;
+}
+
 
 - (void)hideNavigationBar
 {
@@ -109,12 +122,6 @@
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
 
-}
-
-- (void)setTitleToBar:(NSString *)title
-{
-    _title = title;
-    [self configureView];
 }
 
 /*

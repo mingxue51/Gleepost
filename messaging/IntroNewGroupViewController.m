@@ -111,26 +111,7 @@
 
 - (void)selectSecretGroup
 {
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone" bundle:nil];
-//    GLPSelectCategoryViewController *categoriesVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPSelectCategoryViewController"];
-//    [categoriesVC setDelegate:self];
-//    categoriesVC.view.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.67];
-//    
-//    categoriesVC.modalPresentationStyle = UIModalPresentationCustom;
-//    
-//    
-//    if(![GLPiOS6Helper isIOS6])
-//    {
-//        [categoriesVC setTransitioningDelegate:_transitionViewCategories];
-//    }
-//    
-//    
-//    [self presentViewController:categoriesVC animated:YES completion:nil];
-    
-//    [[PendingGroupManager sharedInstance] setPrivacy:kSecret];
-    
     _currentGroupPrivacy = kSecretGroup;
-
     [self performSegueWithIdentifier:@"new group" sender:self];
 }
 

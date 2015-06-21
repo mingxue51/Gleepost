@@ -206,6 +206,11 @@
     return [UIColor colorWithR:205 withG:66 andB:77]; //241, 91, 104
 }
 
++ (UIColor *)lightRedGleepostColour
+{
+    return [UIColor colorWithR:234.0 withG:78.0 andB:60.0];
+}
+
 + (UIColor *)blueGleepostColour
 {
     return [UIColor colorWithR:52 withG:152 andB:218];
@@ -221,9 +226,23 @@
     return [UIColor colorWithR:64.0 withG:145.0 andB:199.0];
 }
 
++ (UIColor *)borderGreenMessengerGleepostColour
+{
+    return [UIColor colorWithR:153 withG:236 andB:208];
+}
+
 + (UIColor *)greenGleepostColour
 {
-    return [UIColor colorWithR:63.0 withG:219.0 andB:188.0];
+    //return [UIColor colorWithR:63.0 withG:219.0 andB:188.0];
+    return [AppearanceHelper colorFromHexString:@"22daa0"];
+}
+
++ (UIColor *)colorFromHexString:(NSString *)hexString {
+    unsigned rgbValue = 0;
+    NSScanner *scanner = [NSScanner scannerWithString:hexString];
+    [scanner setScanLocation:1]; // bypass '#' character
+    [scanner scanHexInt:&rgbValue];
+    return [UIColor colorWithRed:((rgbValue & 0xFF0000) >> 16)/255.0 green:((rgbValue & 0xFF00) >> 8)/255.0 blue:(rgbValue & 0xFF)/255.0 alpha:1.0];
 }
 
 + (UIColor *)blackGleepostColour
@@ -231,14 +250,24 @@
     return [UIColor colorWithR:54.0 withG:47.0 andB:45.0];
 }
 
++ (UIColor *)yellowGleepostColour
+{
+    return [UIColor colorWithR:251.0 withG:204.0 andB:36.0];
+}
+
 + (UIColor *)firstAutoColour
 {
-    return [UIColor colorWithR:29.0 withG:177 andB:177];
+    //return [UIColor colorWithR:29.0 withG:177 andB:177];
+    //218,46,53
+    //old 241, 91, 104
+    return [UIColor colorWithR:218 withG:46 andB:53];
 }
 
 + (UIColor *)secondAutoColour
 {
-    return [UIColor colorWithR:52 withG:152 andB:218];
+    //58,182,151
+    //old 52, 152, 2182
+    return [UIColor colorWithR:58 withG:182 andB:151];
 }
 
 + (UIColor *)thirdAutoColour
@@ -281,6 +310,11 @@
 +(UIColor *)lightGrayGleepostColour
 {
     return [UIColor colorWithRed:245.0f/255.0f green:245.0f/255.0f blue:245.0f/255.0f alpha:1.0f];
+}
+
++(UIColor *)lightGrayStrongGleepostColour
+{
+    return [UIColor colorWithRed:240.0f/255.0f green:240.0f/255.0f blue:240.0f/255.0f alpha:1.0f];
 }
 
 + (UIColor *)mediumGrayGleepostColour

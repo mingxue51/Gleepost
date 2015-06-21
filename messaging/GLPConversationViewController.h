@@ -12,12 +12,11 @@
 #import "HPGrowingTextView.h"
 #import "GLPMessageCell.h"
 
-@interface GLPConversationViewController : GLPTableViewController <UITextViewDelegate, HPGrowingTextViewDelegate, UIGestureRecognizerDelegate, GLPMessageCellDelegate, UIViewControllerTransitionCoordinator>
+@interface GLPConversationViewController : GLPTableViewController <UITextViewDelegate, HPGrowingTextViewDelegate, UIGestureRecognizerDelegate, GLPMessageCellDelegate>
 
 @property (strong, nonatomic) GLPConversation *conversation;
 @property (assign, nonatomic) BOOL comesFromPN;
 
--(void)navigateToProfile:(id)sender;
--(void)disableAddUserButton;
+- (void)disableAddUserButton;
 
 @end

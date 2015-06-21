@@ -188,14 +188,14 @@
 
 + (void)loadInitialPostsWithLocalCallback:(void (^)(NSArray *localPosts))localCallback remoteCallback:(void (^)(BOOL success, BOOL remain, NSArray *remotePosts))remoteCallback
 {
-    NSLog(@"load initial posts");
+    DDLogInfo(@"load initial posts");
     
     __block NSArray *localEntities = nil;
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
         localEntities = [GLPPostDao findLastPostsInDb:db];
     }];
     
-    NSLog(@"local posts %d", localEntities.count);
+    DDLogInfo(@"local posts %lu", (unsigned long)localEntities.count);
     
     if(localEntities.count > 0) {
         localCallback(localEntities);
@@ -210,7 +210,7 @@
         }
     
         
-        NSLog(@"remote posts %d", posts.count);
+        DDLogInfo(@"remote posts %lu", (unsigned long)posts.count);
         
         if(!posts || posts.count == 0) {
             remoteCallback(YES, NO, nil);

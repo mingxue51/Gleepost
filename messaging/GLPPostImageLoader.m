@@ -82,11 +82,6 @@ static GLPPostImageLoader *instance = nil;
 {
     posts = [self findImagePosts:posts];
     
-    for(GLPPost *p in posts)
-    {
-        DDLogDebug(@"GLPPostImageLoader : post %@", p.content);
-    }
-    
     __block BOOL newPost = NO;
  
     __block BOOL readyToConsume = NO;

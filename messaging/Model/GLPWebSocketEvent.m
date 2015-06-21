@@ -36,15 +36,23 @@
     else if([string isEqualToString:@"views"]) {
         _type = kGLPWebSocketEventTypeViews;
     }
+    else if([string isEqualToString:@"vote"]) {
+        _type = kGLPWebSocketEventTypeVote;
+    }
+    else if([string isEqualToString:@"presence"])
+    {
+        _type = kGLPWebSocketEventTypePresence;
+    }
     else {
+  
         
-        [WebClientHelper showWebSocketReceivedBadEvent:string];
+//        [WebClientHelper showWebSocketReceivedBadEvent:string];
         
 //        [NSException raise:@"GLPWebSocketEventType unknown" format:@"For string value: %@", string];
     }
 }
 
-- (int)conversationRemoteKeyFromLocation
+- (NSInteger)webSocketMessageRemoteKeyFromLocation
 {
     NSRange range = [_location rangeOfString:@"/" options:NSBackwardsSearch];
     return [[_location substringFromIndex:range.location + 1] intValue];

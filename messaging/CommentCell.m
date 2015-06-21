@@ -23,7 +23,7 @@
 
 @property (assign, nonatomic) float heightOfCell;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentLabelHeight;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *backgroundViewHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *distanceFromBottom;
 @property (weak, nonatomic) IBOutlet UIImageView *backgoundImageView;
 @property (assign, nonatomic) CommentCellType cellType;
 
@@ -33,10 +33,10 @@
 @end
 
 
-static const float FixedSizeOfTextCell = 75.0; //Before was 90. 45
+static const float FixedSizeOfTextCell = 53.0; //Before was 90. 75
 static const float FollowingCellPadding = 0.0;
 static const float CommentContentViewPadding = 0.0;  //15 before.
-static const float CommentContentLabelMargin = 40.0;
+static const float CommentContentLabelMargin = 20 + 36 + 5 + 20;
 
 
 @implementation CommentCell
@@ -69,7 +69,7 @@ static const float CommentContentLabelMargin = 40.0;
     
     [_userImageView setImageUrl:comment.author.profileImageUrl withPlaceholderImage:[GLPImageHelper placeholderUserImagePath]];
     [_userImageView setTag:comment.author.remoteKey];
-    [_userImageView setViewControllerDelegate:_delegate];
+    _userImageView.delegate = _delegate;
     [_userImageView setGesture:YES];
 
     
@@ -86,11 +86,10 @@ static const float CommentContentLabelMargin = 40.0;
     NSDate *currentDate = comment.date;
     
     //Set post's time.
-    [self.postDateLabel setText:[currentDate timeAgo]];
+    [self.postDateLabel setText:[[currentDate timeAgo] uppercaseString]];
     
-    
-    DDLogDebug(@"Comment Cell : content width %f", self.contentLabel.frame.size.width);
-
+//    [ShapeFormatterHelper setBorderToView:self withColour:[UIColor redColor] andWidth:0.5];
+//    [ShapeFormatterHelper setBorderToView:self.postDateLabel withColour:[UIColor blackColor] andWidth:1.0];
     
     //Add touch gesture to profile image.
 //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navigateToProfile:)];
@@ -126,12 +125,15 @@ static const float CommentContentLabelMargin = 40.0;
 
 - (void)configureCommentCell
 {
+    self.distanceFromBottom.constant = -1.0;
+    
     switch (_cellType) {
         case kTopCommentCell:
             [self configureTopCell];
             break;
             
         case kBottomCommentCell:
+            self.distanceFromBottom.constant = 0.0;
             [self configureBottomCell];
             break;
             
@@ -139,13 +141,14 @@ static const float CommentContentLabelMargin = 40.0;
             [self configureTopBottomCommentCell];
             break;
             
-        default:
+        case kMiddleCommentCell:
             [self configureMiddleCell];
             break;
+            
+        default:
+            DDLogDebug(@"Default");
+            break;
     }
-    
-//    [self formatBackgroundView];
-
 }
 
 -(void)setCellHeight:(NSString*)content
@@ -183,10 +186,6 @@ static const float CommentContentLabelMargin = 40.0;
     
     [self.contentLabelHeight setConstant:heightSize.height];
     
-    
-    [self configureBackgroudViewHeight];
-    
-    
     [ShapeFormatterHelper resetAnyFormatOnView:_backgoundImageView];
 
     
@@ -205,12 +204,14 @@ static const float CommentContentLabelMargin = 40.0;
 
 - (void)configureTopCell
 {
-    [_backgoundImageView setRoundedCorners:UIRectCornerTopLeft | UIRectCornerTopRight radius:4.0];
+    [ShapeFormatterHelper formatTopCellWithBackgroundView:_backgoundImageView andSuperView:self.contentView];
 }
 
 - (void)configureMiddleCell
 {
-    [_backgoundImageView addBottomBorderWithHeight:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
+    [self.backgoundImageView layoutIfNeeded];
+    
+    [ShapeFormatterHelper removeTopCellBottomLine:self.contentView];
     [_backgoundImageView addRightBorderWithWidth:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
     [_backgoundImageView addLeftBorderWithWidth:1.0 andColor:[AppearanceHelper mediumGrayGleepostColour]];
 }
@@ -227,28 +228,23 @@ static const float CommentContentLabelMargin = 40.0;
      We are adding these 2 image views to the view because there was a problem
      with the 2 sides borders.
      */
-    UIImageView *im = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, 0.0, 1.0, 2.0)];
-    [im setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
+//    UIImageView *im = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, 0.0, 1.0, 2.0)];
+//    [im setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
+//    
+//    [self.contentView addSubview:im];
+//
+//    im = [[UIImageView alloc] initWithFrame:CGRectMake([GLPiOSSupportHelper screenWidth] - 11, 0.0, 1.0, 2.0)];
+//    [im setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
+//    
+//    [self.contentView addSubview:im];
+//
+//    [_backgoundImageView setRoundedCorners:UIRectCornerBottomRight | UIRectCornerBottomLeft radius:4.0];
+//    
+//    [_backgoundImageView addTopBorderWithHeight:2.0 andColor:[UIColor whiteColor]];
     
-    [self.contentView addSubview:im];
+    [ShapeFormatterHelper removeTopCellBottomLine:self.contentView];
 
-    im = [[UIImageView alloc] initWithFrame:CGRectMake(309.0, 0.0, 1.0, 2.0)];
-    [im setBackgroundColor:[AppearanceHelper mediumGrayGleepostColour]];
-    
-    [self.contentView addSubview:im];
-    
-    [_backgoundImageView setRoundedCorners:UIRectCornerBottomRight | UIRectCornerBottomLeft radius:4.0];
-    
-    [_backgoundImageView addTopBorderWithHeight:2.0 andColor:[UIColor whiteColor]];
-}
-
-- (void)configureBackgroudViewHeight
-{
-    float contentLabelHeight = _contentLabelHeight.constant;
-    
-    [_backgroundViewHeight setConstant:contentLabelHeight + FixedSizeOfTextCell];
-    
-    CGRectSetH(_backgoundImageView, contentLabelHeight + FixedSizeOfTextCell);
+    [ShapeFormatterHelper formatBottomCellWithBackgroundView:_backgoundImageView andSuperView:self.contentView];
 }
 
 - (void)formatBackgroundView
@@ -262,9 +258,7 @@ static const float CommentContentLabelMargin = 40.0;
     UIFont *font = [UIFont fontWithName:GLP_HELV_NEUE_LIGHT size:15.0];
     
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:content attributes:@{NSFontAttributeName: font}];
-    
-    DDLogDebug(@"CommentCell content label size %f", [CommentCell getMaxLabelContentWidth]);
-    
+        
     CGRect rect = [attributedText boundingRectWithSize:(CGSize){[CommentCell getMaxLabelContentWidth], CGFLOAT_MAX}
                                                options:(NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading)
                                                context:nil];

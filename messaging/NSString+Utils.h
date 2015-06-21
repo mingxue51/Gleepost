@@ -18,4 +18,6 @@
 
 - (BOOL)exceedsNumberOfCharacters:(NSInteger)noOfCharacters;
 
+- (BOOL)containsAString:(NSString *)aString;
+
 @end

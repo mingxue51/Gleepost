@@ -18,7 +18,9 @@ typedef enum {
     kGLPWebSocketEventTypeNotification,
     kGLPWebSocketEventTypeVideoReady,
     kGLPWebSocketEventTypeRead,
-    kGLPWebSocketEventTypeViews
+    kGLPWebSocketEventTypeViews,
+    kGLPWebSocketEventTypeVote,
+    kGLPWebSocketEventTypePresence
 } GLPWebSocketEventType;
 
 @property (assign, nonatomic) GLPWebSocketEventType type;
@@ -26,6 +28,6 @@ typedef enum {
 @property (strong, nonatomic) NSString *location;
 
 - (void)typeFromString:(NSString *)string;
-- (int)conversationRemoteKeyFromLocation;
+- (NSInteger)webSocketMessageRemoteKeyFromLocation;
 
 @end

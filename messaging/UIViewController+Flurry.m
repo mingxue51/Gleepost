@@ -15,9 +15,9 @@
     [Flurry logEvent:view];
 }
 
--(void)sendView:(NSString *)view withId:(int)remoteKey
+-(void)sendView:(NSString *)view withId:(NSInteger)remoteKey
 {
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%d", remoteKey], @"Key", nil];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"%ld", (long)remoteKey], @"Key", nil];
     [Flurry logEvent:view withParameters:params];
 }
 

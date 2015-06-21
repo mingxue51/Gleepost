@@ -23,5 +23,10 @@ pod 'Facebook-iOS-SDK', '3.19'
 pod 'FXPageControl', '1.3.2'
 pod 'TAPKeyboardPop', '~> 0.1.2'
 pod 'GPUImage'
-pod "URBMediaFocusViewController"
 pod 'pop', '~> 1.0'
+pod 'FXBlurView'
+pod 'YLProgressBar', '~> 3.5.2'
+pod 'SwipeView'
+pod 'JTSImageViewController'
+pod 'MRProgress', '~> 0.8.2'
+pod "UIImageView-Letters"
