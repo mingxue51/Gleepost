@@ -260,7 +260,8 @@
     //return [UIColor colorWithR:29.0 withG:177 andB:177];
     //218,46,53
     //old 241, 91, 104
-    return [UIColor colorWithR:218 withG:46 andB:53];
+    //return [UIColor colorWithR:218 withG:46 andB:53];
+    return [AppearanceHelper colorFromHexString:@"#059bbf"];
 }
 
 + (UIColor *)secondAutoColour
