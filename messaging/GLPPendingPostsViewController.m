@@ -54,7 +54,7 @@
 {
     [self removeNotifications];
     
-    [[GLPVideoLoaderManager sharedInstance] enableTimelineJustFetched];
+    [[GLPVideoLoaderManager sharedInstance] enableViewJustViewed];
 
     [super viewWillDisappear:animated];
 }
@@ -161,7 +161,7 @@
     {
         if(indexPath.row != 0)
         {
-            [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
+            [[GLPVideoLoaderManager sharedInstance] disableViewJustViewed];
         }
         
         postViewCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];

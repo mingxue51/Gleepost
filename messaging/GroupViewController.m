@@ -154,7 +154,7 @@ const float TOP_OFF_SET = -64.0;
         [self navigateToMessenger];
     }
     
-    [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
+    [[GLPVideoLoaderManager sharedInstance] disableViewJustViewed];
 }
 
 - (void)viewWillAppear:(BOOL)animated

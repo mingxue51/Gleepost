@@ -270,7 +270,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     // hide new element visual indicator if needed
     [self hideNewElementsIndicatorView];
     
-    [[GLPVideoLoaderManager sharedInstance] enableTimelineJustFetched];
+    [[GLPVideoLoaderManager sharedInstance] enableViewJustViewed];
     
     //Show navigation bar.
 //    [self contract];
@@ -1907,7 +1907,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
         
         if(indexPath.row != 0)
         {
-            [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
+            [[GLPVideoLoaderManager sharedInstance] disableViewJustViewed];
         }
                 
         postCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierVideo forIndexPath:indexPath];
@@ -2280,7 +2280,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 - (void)takeALookTouched
 {
     [self removeGoingButtonNotification];
-    [[GLPVideoLoaderManager sharedInstance] enableTimelineJustFetched];
+    [[GLPVideoLoaderManager sharedInstance] enableViewJustViewed];
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"iphone_ipad" bundle:nil];
     GLPCampusLiveViewController *campusLiveVC = [storyboard instantiateViewControllerWithIdentifier:@"GLPCampusLiveViewController"];
@@ -2297,7 +2297,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
  is visible. That happens because viewDidDisappear is not called.*/
 - (void)campusLiveDisappeared
 {
-    [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
+    [[GLPVideoLoaderManager sharedInstance] disableViewJustViewed];
 
     [self configureGoingButtonNotification];
 }
