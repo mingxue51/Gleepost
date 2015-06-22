@@ -54,6 +54,7 @@
 #import "GLPLiveGroupConversationsManager.h"
 #import "TransitionDelegateViewCategories.h"
 #import "GLPViewImageHelper.h"
+#import "GLPVideoLoaderManager.h"
 
 @interface GroupViewController () <GLPAttendingPopUpViewControllerDelegate, GLPGroupSettingsViewControllerDelegate, GLPPublicGroupPopUpViewControllerDelegate>
 
@@ -128,7 +129,6 @@ const float TOP_OFF_SET = -64.0;
     
     [self initialiseObjects];
     
-
     [self configureTopImageView];
     [self configureTableView];
     [self loadPosts];
@@ -153,6 +153,8 @@ const float TOP_OFF_SET = -64.0;
     {
         [self navigateToMessenger];
     }
+    
+    [[GLPVideoLoaderManager sharedInstance] disableViewJustViewed];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -927,6 +929,7 @@ const float TOP_OFF_SET = -64.0;
     [self makeVisibleOrInvisibleNavigationBarWithOffset:yOffset];
     
     [_trackViewsCountProcessor resetVisibleCells];
+
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
@@ -963,6 +966,8 @@ const float TOP_OFF_SET = -64.0;
     DDLogDebug(@"GroupVC scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
     
     [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
+    
+    [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
 }
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -981,6 +986,8 @@ const float TOP_OFF_SET = -64.0;
         DDLogDebug(@"GroupVC scrollViewDidEndDragging2 posts: %@", visiblePosts);
         
         [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
+        
+        [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
     }
 }
 
@@ -1156,6 +1163,8 @@ const float TOP_OFF_SET = -64.0;
     [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
     
     [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+    
+    [[GLPVideoLoaderManager sharedInstance] addVideoPosts:self.posts];
     
     [self.tableView reloadData];
     

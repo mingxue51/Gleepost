@@ -28,7 +28,7 @@
 
 @property (assign, nonatomic) BOOL insertedPostVideoWithNilAsset;
 
-@property (assign, nonatomic) BOOL timelineJustFetched;
+@property (assign, nonatomic) BOOL viewJustViewed;
 
 @property (assign, nonatomic) GLPVideoLoaderActive active;
 
@@ -85,7 +85,7 @@ static GLPVideoLoaderManager *instance = nil;
     
     _insertedPostVideoWithNilAsset = NO;
     
-    _timelineJustFetched = YES;
+    _viewJustViewed = YES;
 }
 
 
@@ -222,7 +222,7 @@ static GLPVideoLoaderManager *instance = nil;
         DDLogDebug(@"Asset not nil from Video View");
     }
     
-    if(_timelineJustFetched)
+    if(_viewJustViewed)
     {
         videoPlayer = [[PBJVideoPlayerController alloc] init];
         [videoPlayer setVideoAsset:asset];
@@ -246,14 +246,14 @@ static GLPVideoLoaderManager *instance = nil;
     [self addVideoWithUrl:post.video.url andPostRemoteKey:post.remoteKey];
 }
 
-- (void)disableTimelineJustFetched
+- (void)disableViewJustViewed
 {
-    _timelineJustFetched = NO;
+    _viewJustViewed = NO;
 }
 
-- (void)enableTimelineJustFetched
+- (void)enableViewJustViewed
 {
-    _timelineJustFetched = YES;
+    _viewJustViewed = YES;
 }
 
 

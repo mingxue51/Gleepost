@@ -63,6 +63,12 @@ int const NumberMaxOfMessagesLoaded = 20;
         [GLPConversationDao saveIfNotExist:conversation db:db];
 
     }];
+    
+    [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
+        
+        [GLPUserDao saveUsersIfNotExists:conversation.participants db:db];
+        
+    }];
 }
 
 + (void)saveOrUpdateReadWithReadReceipt:(GLPReadReceipt *)readReceipt
