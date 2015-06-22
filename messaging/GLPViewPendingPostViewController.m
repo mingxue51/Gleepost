@@ -21,7 +21,7 @@
 #import "GLPTableActivityIndicator.h"
 #import "AppearanceHelper.h"
 
-@interface GLPViewPendingPostViewController () <UITableViewDataSource, UITabBarDelegate, GLPPostCellDelegate, GLPImageViewDelegate, GLPLabelDelegate>
+@interface GLPViewPendingPostViewController () <UITableViewDataSource, UITabBarDelegate, GLPPostCellDelegate, GLPImageViewDelegate, GLPLabelDelegate, RemovePostCellDelegate, NewCommentDelegate, ViewImageDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (assign, nonatomic) NSInteger selectedUserRemoteKey;

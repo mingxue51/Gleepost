@@ -268,7 +268,8 @@
 {
     //58,182,151
     //old 52, 152, 2182
-    return [UIColor colorWithR:58 withG:182 andB:151];
+//    return [UIColor colorWithR:58 withG:182 andB:151];
+    return [AppearanceHelper colorFromHexString:@"#7d87cb"];
 }
 
 + (UIColor *)thirdAutoColour
