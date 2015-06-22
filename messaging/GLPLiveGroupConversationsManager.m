@@ -474,7 +474,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
 // Remote message that is received from the server
 - (void)addRemoteMessage:(GLPMessage *)message toConversationWithRemoteKey:(NSInteger)remoteKey
 {
-    DDLogInfo(@"Add remote message \"%@\" to conversation with remote key %d", message.content, remoteKey);
+    DDLogInfo(@"Add remote message \"%@\" to conversation with remote key %ld", message.content, (long)remoteKey);
     
     dispatch_async(_queue, ^{
         NSNumber *index = [NSNumber numberWithInteger:remoteKey];
@@ -500,7 +500,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
                 return;
             }
             
-            DDLogInfo(@"Last sync message: %d - %@", lastSyncMessage.key, lastSyncMessage.content);
+            DDLogInfo(@"Last sync message: %ld - %@", (long)lastSyncMessage.key, lastSyncMessage.content);
             
             NSArray *messages = [[WebClient sharedInstance] synchronousGetMessagesForConversation:conversation after:lastSyncMessage before:nil];
             
@@ -509,7 +509,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
                 return;
             }
             
-            DDLogInfo(@"Received %d messages with success", messages.count);
+            DDLogInfo(@"Received %lu messages with success", (unsigned long)messages.count);
             
             // reverse order
             messages = [[messages reverseObjectEnumerator] allObjects];
@@ -523,7 +523,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
             _conversationsSyncStatuses[index] = [NSNumber numberWithBool:YES];
             DDLogInfo(@"Synced complete");
         }
-        //TODO: COMMENTED OUT that because sometimes the internalInsertMessages was called before showing the latest message to conversation. I don't now if that's good but we will see.
+        //TODO: COMMENTED OUT that because sometimes the internalInsertMessages was called before showing the latest message to conversation. I don't know if that's good but we will see.
         //        GLPMessage *existingMessage = [self internalFindMessageByRemoteKey:message.remoteKey inConversation:conversation];
         
         GLPMessage *existingMessage = nil;
@@ -651,7 +651,7 @@ static GLPLiveGroupConversationsManager *instance = nil;
     
     _conversationsMessagesKeys[index] = [NSNumber numberWithInteger:key];
     
-    DDLogInfo(@"Successful add messages to conversation, last sync message key: %d", key);
+    DDLogInfo(@"Successful add messages to conversation, last sync message key: %ld", (long)key);
 }
 
 // Internal

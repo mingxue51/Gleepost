@@ -514,14 +514,12 @@
         {
             if(p.group == nil)
             {
-                FLog(@"Post should have a group before save to local database %@", p.group);
                 p.group = [[GLPGroup alloc] init];
                 p.group.remoteKey = groupRemoteKey;
             }
             
             if(p.group.remoteKey == 0)
             {
-                FLog(@"Group post group attribute should not be 0");
                 p.group.remoteKey = groupRemoteKey;
             }
             

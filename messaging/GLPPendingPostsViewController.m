@@ -446,7 +446,7 @@
         //Avoid any out of bounds access in array
         [visiblePosts addObject:[_pendingPostOrganiser postWithIndex:path.row andSectionIndex:path.section]];
         
-        DDLogDebug(@"Visible cell with row %d and section %d", path.row, path.section);
+        DDLogDebug(@"Visible cell with row %ld and section %ld", (long)path.row, (long)path.section);
         
     }
     

@@ -172,25 +172,23 @@
  */
 + (void)saveIfNotExist:(GLPConversation *)entity db:(FMDatabase *)db
 {
-    // save the users that does not exist
-    // first because we want the key to exists
-    NSMutableArray *keys = [NSMutableArray array];
-    for(GLPUser *user in entity.participants) {
-        int key = user.key;
-        
-        if(key == 0) {
-            GLPUser *existingUser = [GLPUserDao findByRemoteKey:user.remoteKey db:db];
-            
-            if(existingUser) {
-                key = existingUser.key;
-            } else {
-                [GLPUserDao save:user inDb:db];
-                key = user.key;
-            }
-        }
-        
-        [keys addObject:[NSNumber numberWithInt:key]];
-    }
+//    // save the users that does not exist
+//    // first because we want the key to exists
+//    for(GLPUser *user in entity.participants) {
+//        NSInteger key = user.key;
+//        
+//        if(key == 0) {
+//            GLPUser *existingUser = [GLPUserDao findByRemoteKey:user.remoteKey db:db];
+//            
+//            if(existingUser) {
+//                key = existingUser.key;
+//            } else {
+//                [GLPUserDao save:user inDb:db];
+//                key = user.key;
+//            }
+//        }
+//    }
+    FLog(@"GLPConversationDao saveIfNotExist begin");
     
     GLPConversation *conv = [GLPConversationDao findByRemoteKey:entity.remoteKey db:db];
 
@@ -206,6 +204,7 @@
         //Update conversation.
         [GLPConversationDao update:entity db:db];
     }
+    FLog(@"GLPConversationDao saveIfNotExist end");
 }
 
 + (void)saveReadReceiptIfNotExist:(GLPReadReceipt *)readReceipt db:(FMDatabase *)db

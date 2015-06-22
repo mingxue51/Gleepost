@@ -1330,7 +1330,7 @@ static WebClient *instance = nil;
         [params setObject:[NSNumber numberWithInteger:beforeRemoteKey] forKey:@"before"];
     }
     
-    NSString *path = [NSString stringWithFormat:@"conversations/%d/messages", conversation.remoteKey];
+    NSString *path = [NSString stringWithFormat:@"conversations/%ld/messages", (long)conversation.remoteKey];
     
     __block NSArray *result = nil;
     
