@@ -7011,8 +7011,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Silouanos Nicolaou (DKMY49E8DL)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Silouanos Nicolaou (DKMY49E8DL)";
 				DEFINES_MODULE = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -7021,7 +7021,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "0256016b-1542-4682-9bd1-87142a468957";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "0256016b-1542-4682-9bd1-87142a468957";
 				SWIFT_OBJC_BRIDGING_HEADER = "messaging/NerdNation-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -7037,8 +7037,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Gleepost LTD (X99AUPHK24)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Gleepost LTD (X99AUPHK24)";
 				DEFINES_MODULE = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -7047,7 +7047,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Gleepost;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "1b7d7eae-d231-4947-b9ae-c3e4bdf24f11";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1b7d7eae-d231-4947-b9ae-c3e4bdf24f11";
 				SWIFT_OBJC_BRIDGING_HEADER = "messaging/NerdNation-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;

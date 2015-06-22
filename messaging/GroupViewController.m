@@ -54,6 +54,7 @@
 #import "GLPLiveGroupConversationsManager.h"
 #import "TransitionDelegateViewCategories.h"
 #import "GLPViewImageHelper.h"
+#import "GLPVideoLoaderManager.h"
 
 @interface GroupViewController () <GLPAttendingPopUpViewControllerDelegate, GLPGroupSettingsViewControllerDelegate, GLPPublicGroupPopUpViewControllerDelegate>
 
@@ -128,7 +129,6 @@ const float TOP_OFF_SET = -64.0;
     
     [self initialiseObjects];
     
-
     [self configureTopImageView];
     [self configureTableView];
     [self loadPosts];
@@ -153,6 +153,8 @@ const float TOP_OFF_SET = -64.0;
     {
         [self navigateToMessenger];
     }
+    
+    [[GLPVideoLoaderManager sharedInstance] disableTimelineJustFetched];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -449,6 +451,7 @@ const float TOP_OFF_SET = -64.0;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    FLog(@"GroupViewController didReceiveMemoryWarning");
 }
 
 #pragma mark - Notifications methods
@@ -963,6 +966,8 @@ const float TOP_OFF_SET = -64.0;
     DDLogDebug(@"GroupVC scrollViewDidEndDecelerating1 posts: %@", visiblePosts);
     
     [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
+    
+    [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
 }
 
 -(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -981,6 +986,7 @@ const float TOP_OFF_SET = -64.0;
         DDLogDebug(@"GroupVC scrollViewDidEndDragging2 posts: %@", visiblePosts);
         
         [_trackViewsCountProcessor trackVisiblePosts:visiblePosts withPostsYValues:postsYValues];
+        [[GLPVideoLoaderManager sharedInstance] visiblePosts:visiblePosts];
     }
 }
 
@@ -1156,6 +1162,8 @@ const float TOP_OFF_SET = -64.0;
     [GLPPostManager setFakeKeysToPrivateProfilePosts:self.posts];
     
     [[GLPPostImageLoader sharedInstance] addPostsImages:self.posts];
+    
+    [[GLPVideoLoaderManager sharedInstance] addVideoPosts:self.posts];
     
     [self.tableView reloadData];
     

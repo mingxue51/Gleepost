@@ -564,9 +564,13 @@
         
         incomingPosts = [GLPPostDao findAllPendingPostsWithVideosInDb:db];
                 
-        callback(incomingPosts);
         
     }];
+    
+    DDLogDebug(@"GLPPostManager searchForPendingVideoPostCallback %ld", (unsigned long)incomingPosts.count);
+    
+    callback(incomingPosts);
+
 }
 
 +(void)createLocalPost:(GLPPost *)post

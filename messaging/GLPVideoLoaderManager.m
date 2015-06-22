@@ -184,13 +184,11 @@ static GLPVideoLoaderManager *instance = nil;
 //        videoPlayer = [[PBJVideoPlayerController alloc] init];
 //        [videoPlayer setVideoAsset:asset];
         
-        
         NSAssert(post.video.url, @"Post video url should be not nil");
         
         asset =  [AVURLAsset URLAssetWithURL:[NSURL URLWithString:post.video.url] options:nil];
         
         DDLogDebug(@"Asset: %@, URL: %@", asset, post.video.url);
-        
         
         @try {
             
@@ -226,7 +224,6 @@ static GLPVideoLoaderManager *instance = nil;
     {
         videoPlayer = [[PBJVideoPlayerController alloc] init];
         [videoPlayer setVideoAsset:asset];
-        
         return videoPlayer;
     }
     

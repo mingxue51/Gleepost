@@ -221,7 +221,7 @@ const float FIXED_BOTTOM_MEDIA_VIEW_HEIGHT = 330; //315
 }
 
 - (void)willRemoveSubview:(UIView *)subview
-{
+{    
     if([subview.class isSubclassOfClass:[PollingPostView class]])
     {
         DDLogDebug(@"MainPostView willRemoveSubview %@", [subview class]);

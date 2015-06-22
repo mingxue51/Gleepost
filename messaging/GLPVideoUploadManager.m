@@ -159,6 +159,7 @@ static GLPVideoUploadManager *instance = nil;
 
 - (void)checkForNonUploadedVideoPosts
 {
+    
     if([self isCheckingForPendingVideoPosts])
     {
         DDLogInfo(@"Can't check for non uploaded video posts, is already checking.");

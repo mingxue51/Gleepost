@@ -89,6 +89,8 @@
         
         if(p)
         {
+            DDLogDebug(@"VideoView pbjvideoplayercontroller ready");
+            
             _previewVC = p;
             
             [NSThread detachNewThreadSelector:@selector(videoLoadedWithPBJVideoVC) toTarget:self withObject:nil];
@@ -99,7 +101,7 @@
 
 - (void)dealloc
 {
-    DDLogDebug(@"DEALLOC: %@", _post.content);
+    DDLogDebug(@"VIDEO VIEW DEALLOC: %@", _post.content);
     
     [self deregisterNotifications];
 }
@@ -113,7 +115,7 @@
 //    PBJVideoPlayerController *videoPlayer =  d[@(_remoteKey)];
     
     
-    DDLogDebug(@"Set up video controller: %@ : %d : %@", _previewVC, _previewVC.bufferingState, _post.content);
+    DDLogDebug(@"Set up video controller: %@ : %ld : %@", _previewVC, (long)_previewVC.bufferingState, _post.content);
     
     if(_previewVC)
     {
@@ -125,7 +127,6 @@
 //        _previewVC = videoPlayer;
         
         _previewVC.view.frame = _videoView.bounds;
-
         
         _previewVC.view.tag = _remoteKey;
         
@@ -228,7 +229,6 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoLoadedFromNotification:) name:notificationName object:nil];
     
-    
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(videoLoaded) name:GLPNOTIFICATION_VIDEO_LOADED object:nil];
 }
 
@@ -260,7 +260,7 @@
     }
     else
     {
-        DDLogDebug(@"VideoView video is not loaded yet");
+        DDLogDebug(@"VideoView video is not loaded yet previewVC %@ state %d", previewVC, previewVC.playbackState);
         [self showLoadingElements];
     }
 }
@@ -352,10 +352,15 @@
 
 - (void)showLoadingElements
 {
+
     [_loadingIndicatorView setHidden:NO];
+
     [_loadingIndicatorView startAnimating];
+
     [self setHiddenToPlayImage:YES];
+
     [_videoView setHidden:YES];
+    
 
 //    [_playButton setEnabled:NO];
 }
