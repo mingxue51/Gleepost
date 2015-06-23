@@ -52,7 +52,7 @@
         case kGLPNotificationTypeSomeoneAttended:
             return [NSString stringWithFormat:@"%@ attended your event.", self.user.name];
         case kGLPNotificationTypeCommentedOnComment:
-            return [NSString stringWithFormat:@"%@ commented below your comment", self.user.name];
+            return [NSString stringWithFormat:@"%@ also commented on a post you commented on.", self.user.name];
         default:
             return @"Something happened";
     }

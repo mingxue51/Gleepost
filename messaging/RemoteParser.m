@@ -645,11 +645,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.attended = [json[@"attending"] boolValue];
     post.poll = [RemoteParser parsePollDataWithPollData:json[@"poll"]];
     
-    if([post isPollPost])
-    {
-        DDLogDebug(@"RemoteParser : poll %@", post);
-    }
-    
     post.sendStatus = kSendStatusSent;
     
     return post;

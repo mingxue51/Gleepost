@@ -16,7 +16,7 @@
 #import "NSMutableArray+QueueAdditions.h"
 //#import "GLPVideoCellManager.h"
 
-@interface GLPVideoLoaderManager () <NSCacheDelegate>
+@interface GLPVideoLoaderManager ()
 
 /** Contains post remote key as a key and Asset as a value */
 @property (strong, nonatomic) NSCache *videoAssetsCache;
@@ -64,13 +64,6 @@ static GLPVideoLoaderManager *instance = nil;
 - (void)setVideoLoaderActive:(GLPVideoLoaderActive)active
 {
     _active = active;
-}
-
-#pragma mark - NSCacheDelegate
-
-- (void)cache:(NSCache *)cache willEvictObject:(id)obj
-{
-    DDLogDebug(@"GLPVideoLoaderManager willEvictObject %@", obj);
 }
 
 - (void)clearCache
