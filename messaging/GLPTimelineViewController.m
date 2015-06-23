@@ -1567,7 +1567,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {    
-    [self makeVisibleOrInvisibleActivityIndicatorWithOffset:scrollView.contentOffset.y];
+    //[self makeVisibleOrInvisibleActivityIndicatorWithOffset:scrollView.contentOffset.y];
     
     [_flurryVisibleProcessor resetVisibleCells];
     [_trackViewsCountProcessor resetVisibleCells];
@@ -2703,6 +2703,7 @@ const float OFFSET_START_ANIMATING_CW = 360.0;
     [super didReceiveMemoryWarning];
     
     FLog(@"GLPTimelineViewController : didReceiveMemoryWarning");
+    [[GLPVideoLoaderManager sharedInstance] clearCache];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
