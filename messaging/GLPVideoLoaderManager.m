@@ -28,7 +28,7 @@
 
 @property (assign, nonatomic) BOOL insertedPostVideoWithNilAsset;
 
-@property (assign, nonatomic) BOOL viewJustLaunched;
+@property (assign, nonatomic) BOOL viewJustViewed;
 
 @property (assign, nonatomic) GLPVideoLoaderActive active;
 
@@ -66,9 +66,9 @@ static GLPVideoLoaderManager *instance = nil;
     _active = active;
 }
 
--(void)dealloc
+- (void)clearCache
 {
-
+    [self.videoAssetsCache removeAllObjects];
 }
 
 #pragma mark - Configuration
@@ -85,7 +85,7 @@ static GLPVideoLoaderManager *instance = nil;
     
     _insertedPostVideoWithNilAsset = NO;
     
-    _viewJustLaunched = YES;
+    _viewJustViewed = YES;
 }
 
 
@@ -220,7 +220,7 @@ static GLPVideoLoaderManager *instance = nil;
         DDLogDebug(@"Asset not nil from Video View");
     }
     
-    if(_viewJustLaunched)
+    if(_viewJustViewed)
     {
         videoPlayer = [[PBJVideoPlayerController alloc] init];
         [videoPlayer setVideoAsset:asset];
@@ -245,12 +245,12 @@ static GLPVideoLoaderManager *instance = nil;
 
 - (void)disableViewJustViewed
 {
-    _viewJustLaunched = NO;
+    _viewJustViewed = NO;
 }
 
 - (void)enableViewJustViewed
 {
-    _viewJustLaunched = YES;
+    _viewJustViewed = YES;
 }
 
 

@@ -645,11 +645,6 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     post.attended = [json[@"attending"] boolValue];
     post.poll = [RemoteParser parsePollDataWithPollData:json[@"poll"]];
     
-    if([post isPollPost])
-    {
-        DDLogDebug(@"RemoteParser : poll %@", post);
-    }
-    
     post.sendStatus = kSendStatusSent;
     
     return post;
@@ -1303,6 +1298,14 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     else if ([notificationsType isEqualToString:@"poll_vote"])
     {
         type = kGLPNotificationTypeSomeoneVoted;
+    }
+    else if ([notificationsType isEqualToString:@"attended"])
+    {
+        type = kGLPNotificationTypeSomeoneAttended;
+    }
+    else if ([notificationsType isEqualToString:@"commented2"])
+    {
+        type = kGLPNotificationTypeCommentedOnComment;
     }
     
     notification.notificationType = type;

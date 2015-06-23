@@ -13,3 +13,5 @@
 "group_post" = "%@ posted to %@.";
 "approved_post" = "%@ approved your post.";
 "rejected_post" = "%@ rejected your post.";
+"attended" = "%@ attended your event.";
+"commented2" = "%@ also commented on a post you commented on.";

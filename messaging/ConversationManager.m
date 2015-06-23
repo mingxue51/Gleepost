@@ -65,7 +65,6 @@ int const NumberMaxOfMessagesLoaded = 20;
     }];
     
     [DatabaseManager transaction:^(FMDatabase *db, BOOL *rollback) {
-       
         [GLPUserDao saveUsersIfNotExists:conversation.participants db:db];
         
     }];

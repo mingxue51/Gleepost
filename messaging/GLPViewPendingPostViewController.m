@@ -20,6 +20,7 @@
 #import "ContactsManager.h"
 #import "GLPTableActivityIndicator.h"
 #import "AppearanceHelper.h"
+#import "ViewPostTitleCell.h"
 
 @interface GLPViewPendingPostViewController () <UITableViewDataSource, UITabBarDelegate, GLPPostCellDelegate, GLPImageViewDelegate, GLPLabelDelegate, RemovePostCellDelegate, NewCommentDelegate, ViewImageDelegate>
 
@@ -68,7 +69,7 @@
     //Register nib files in table view.
     [self.tableView registerNib:[UINib nibWithNibName:@"CommentTextCellView" bundle:nil] forCellReuseIdentifier:@"CommentTextCell"];
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"CommentTitleCellView" bundle:nil] forCellReuseIdentifier:@"CommentTitleCellView"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"ViewPostTitleCell" bundle:nil] forCellReuseIdentifier:@"ViewPostTitleCell"];
 }
 
 - (void)initialiseObjects
@@ -88,7 +89,8 @@
 - (void)configureNavigationBar
 {
 //    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"EDIT" withButtonSize:CGSizeMake(50, 20) withSelector:@selector(editPendingPost) andTarget:self];
-    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"EDIT" withButtonSize:CGSizeMake(50.0, 20.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(editPendingPost:) andTarget:self];
+    
+//    [self.navigationController.navigationBar setTextButton:kRight withTitle:@"EDIT" withButtonSize:CGSizeMake(50.0, 20.0) withColour:[AppearanceHelper greenGleepostColour] withSelector:@selector(editPendingPost) andTarget:self];
 
 }
 
@@ -133,7 +135,9 @@
         }
     }
     
-    return self.pendingPost.reviewHistory.count + 2;
+    return (self.pendingPost.reviewHistory.count == 0) ? 1 : self.pendingPost.reviewHistory.count + 2;
+    
+//    return self.pendingPost.reviewHistory.count + 2;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -142,10 +146,10 @@
     static NSString *CellIdentifierWithoutImage = @"TextCell";
     static NSString *CellIdentifierVideo = @"VideoCell";
     static NSString *CellIdentifierComment = @"CommentTextCell";
-    static NSString *CellIdentifierTitle = @"CommentTitleCellView";
+    static NSString *CellIdentifierTitle = @"ViewPostTitleCell";
     
+    ViewPostTitleCell *viewPostTitleCell;
     GLPPostCell *postViewCell;
-    
     CommentCell *cell;
     
 
@@ -178,9 +182,9 @@
     }
     else if (indexPath.row == 1)
     {
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTitle forIndexPath:indexPath];
-        
-        return cell;
+        viewPostTitleCell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierTitle forIndexPath:indexPath];
+        [viewPostTitleCell setTitle:@"Comments"];
+        return viewPostTitleCell;
     }
     else
     {

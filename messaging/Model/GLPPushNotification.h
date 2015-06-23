@@ -18,6 +18,8 @@ typedef NS_ENUM(NSUInteger, PNKind) {
     kPNKindNewAppVersion,
     kPNKindPostApproved,
     kPNKindPostRejected,
+    kPNKindPostAttended,
+    kPNKindUserCommmentedOnSamePost,
     kPNKindUnknown
 };
 

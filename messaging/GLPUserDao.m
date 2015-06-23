@@ -84,17 +84,18 @@
 }
 
 + (void)saveUsersIfNotExists:(NSArray *)users db:(FMDatabase *)db
+
 {
     FLog(@"GLPUserDao saveUsersIfNotExists begin");
     
     // save the users that does not exist
     // first because we want the key to exists
     for(GLPUser *user in users) {
+        
         NSInteger key = user.key;
         
         if(key == 0) {
             GLPUser *existingUser = [GLPUserDao findByRemoteKey:user.remoteKey db:db];
-            
             if(existingUser) {
                 key = existingUser.key;
             } else {
@@ -106,6 +107,30 @@
     
     FLog(@"GLPUserDao saveUsersIfNotExists end");
 }
+
+//+ (void)save:(GLPUser *)entity inDb:(FMDatabase *)db
+//{
+//    FLog(@"GLPUserDao saveUsersIfNotExists begin");
+//    
+//    // save the users that does not exist
+//    // first because we want the key to exists
+//    for(GLPUser *user in users) {
+//        NSInteger key = user.key;
+//        
+//        if(key == 0) {
+//            GLPUser *existingUser = [GLPUserDao findByRemoteKey:user.remoteKey db:db];
+//            
+//            if(existingUser) {
+//                key = existingUser.key;
+//            } else {
+//                [GLPUserDao save:user inDb:db];
+//                key = user.key;
+//            }
+//        }
+//    }
+//    
+//    FLog(@"GLPUserDao saveUsersIfNotExists end");
+//}
 
 + (void)save:(GLPUser *)entity inDb:(FMDatabase *)db
 {

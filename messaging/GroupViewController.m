@@ -930,6 +930,7 @@ const float TOP_OFF_SET = -64.0;
     [self makeVisibleOrInvisibleNavigationBarWithOffset:yOffset];
     
     [_trackViewsCountProcessor resetVisibleCells];
+
 }
 
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset

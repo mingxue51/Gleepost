@@ -49,6 +49,10 @@
             return [NSString stringWithFormat:@"%@ rejected your post.", self.user.name];
         case kGLPNotificationTypeSomeoneVoted:
             return [NSString stringWithFormat:@"%@ voted to your poll.", self.user.name];
+        case kGLPNotificationTypeSomeoneAttended:
+            return [NSString stringWithFormat:@"%@ attended your event.", self.user.name];
+        case kGLPNotificationTypeCommentedOnComment:
+            return [NSString stringWithFormat:@"%@ also commented on a post you commented on.", self.user.name];
         default:
             return @"Something happened";
     }

@@ -31,6 +31,7 @@ typedef NS_ENUM(NSUInteger, GLPVideoLoaderActive) {
 - (void)replaceVideoWithPost:(GLPPost *)post;
 - (PBJVideoPlayerController *)videoWithPostRemoteKey:(NSInteger)remoteKey;
 - (void)setVideoLoaderActive:(GLPVideoLoaderActive)active;
+- (void)clearCache;
 //- (void)configureVideoPlayerControllerAndPostNotificationWithRemoteKey:(NSNumber *)remoteKey callbackBlock:(void (^) (NSNumber *remoteKey, PBJVideoPlayerController *player))callbackBlock;
 //- (void)setVideoPost:(GLPPost *)post;
 //- (void)removeVideoPost:(GLPPost *)post;
