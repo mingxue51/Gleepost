@@ -68,6 +68,15 @@
             _postId = json[@"post-id"];
             break;
             
+        case kPNKindPostAttended:
+            _postId = json[@"post-id"];
+            DDLogDebug(@"GLPPushNotification post id %@", _postId);
+            break;
+            
+        case kPNKindUserCommmentedOnSamePost:
+            _postId = json[@"post-id"];
+            break;
+            
         case kPNKindUnknown:
             DDLogError(@"Unknown push notification.");
             break;
@@ -118,6 +127,14 @@
     else if ([kindOfPN isEqualToString:@"rejected_post"])
     {
         _kindOfPN = kPNKindPostRejected;
+    }
+    else if ([kindOfPN isEqualToString:@"attended"])
+    {
+        _kindOfPN = kPNKindPostAttended;
+    }
+    else if ([kindOfPN isEqualToString:@"commented2"])
+    {
+        _kindOfPN = kPNKindUserCommmentedOnSamePost;
     }
     else
     {

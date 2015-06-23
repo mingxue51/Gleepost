@@ -269,6 +269,8 @@ static NSString * const kCustomURLViewPost  = @"viewpost";
         case kPNKindLikedYourPost:
         case kPNKindCommentedYourPost:
         case kPNKindPostApproved:
+        case kPNKindPostAttended:
+        case kPNKindUserCommmentedOnSamePost:
             [self navigateToPostWithPNNotification:pushNotification];
             break;
             
