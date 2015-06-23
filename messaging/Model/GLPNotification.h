@@ -15,6 +15,7 @@ typedef enum {
     kGLPNotificationTypeAddedYou,
     kGLPNotificationTypeAcceptedYou,
     kGLPNotificationTypeCommented,
+    kGLPNotificationTypeCommentedOnComment,
     kGLPNotificationTypeLiked,
     kGLPNotificationTypeAddedGroup,
     kGLPNotificationTypeCreatedPostGroup,

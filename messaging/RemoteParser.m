@@ -1308,6 +1308,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     {
         type = kGLPNotificationTypeSomeoneAttended;
     }
+    else if ([notificationsType isEqualToString:@"commented2"])
+    {
+        type = kGLPNotificationTypeCommentedOnComment;
+    }
     
     notification.notificationType = type;
     notification.seen = [json[@"seen"] boolValue];

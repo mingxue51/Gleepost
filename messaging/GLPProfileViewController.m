@@ -1171,12 +1171,12 @@
             GLPNotification *notification = [_notificationsOrganiser notificationWithIndex:indexPath.row andSectionIndex:indexPath.section - 1];
             
             // navigate to post.
-            if(notification.notificationType == kGLPNotificationTypeLiked || notification.notificationType == kGLPNotificationTypeCommented || notification.notificationType == kGLPNotificationTypeSomeoneVoted || notification.notificationType == kGLPNotificationTypeSomeoneAttended)
+            if(notification.notificationType == kGLPNotificationTypeLiked || notification.notificationType == kGLPNotificationTypeCommented || notification.notificationType == kGLPNotificationTypeSomeoneVoted || notification.notificationType == kGLPNotificationTypeSomeoneAttended || notification.notificationType == kGLPNotificationTypeCommentedOnComment)
             {
                 self.selectedPost = [[GLPPost alloc] initWithRemoteKey:notification.postRemoteKey];
                 self.isPostFromNotifications = YES;
                 
-                if(notification.notificationType == kGLPNotificationTypeCommented)
+                if(notification.notificationType == kGLPNotificationTypeCommented || notification.notificationType == kGLPNotificationTypeCommentedOnComment)
                 {
                     //Add the date of the notification to the view post view controller.
                     self.commentNotificationDate = notification.date;
