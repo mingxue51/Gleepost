@@ -70,7 +70,6 @@
             
         case kPNKindPostAttended:
             _postId = json[@"post-id"];
-            DDLogDebug(@"GLPPushNotification post id %@", _postId);
             break;
             
         case kPNKindUserCommmentedOnSamePost:
