@@ -176,7 +176,7 @@
     // first because we want the key to exists
     NSMutableArray *keys = [NSMutableArray array];
     for(GLPUser *user in entity.participants) {
-        int key = user.key;
+        NSInteger key = user.key;
         
         if(key == 0) {
             GLPUser *existingUser = [GLPUserDao findByRemoteKey:user.remoteKey db:db];
@@ -189,7 +189,7 @@
             }
         }
         
-        [keys addObject:[NSNumber numberWithInt:key]];
+        [keys addObject:[NSNumber numberWithInteger:key]];
     }
     
     GLPConversation *conv = [GLPConversationDao findByRemoteKey:entity.remoteKey db:db];

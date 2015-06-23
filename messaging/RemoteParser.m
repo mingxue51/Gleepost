@@ -1304,6 +1304,10 @@ static NSDateFormatter *dateFormatterWithNanoSeconds = nil;
     {
         type = kGLPNotificationTypeSomeoneVoted;
     }
+    else if ([notificationsType isEqualToString:@"attended"])
+    {
+        type = kGLPNotificationTypeSomeoneAttended;
+    }
     
     notification.notificationType = type;
     notification.seen = [json[@"seen"] boolValue];
